@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;base.h&quot;
+macro_line|#include &quot;fs/fs.h&quot;
 multiline_comment|/*&n; * hotplugging invokes what /proc/sys/kernel/hotplug says (normally&n; * /sbin/hotplug) when devices get added or removed.&n; *&n; * This invokes a user mode policy agent, typically helping to load driver&n; * or other modules, configure the device, and more.  Drivers can provide&n; * a MODULE_DEVICE_TABLE to help with module loading subtasks.&n; */
 DECL|macro|BUFFER_SIZE
 mdefine_line|#define BUFFER_SIZE&t;1024&t;/* should be enough memory for the env */
@@ -44,6 +45,10 @@ comma
 op_star
 id|scratch
 suffix:semicolon
+r_char
+op_star
+id|dev_path
+suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
@@ -51,6 +56,9 @@ r_int
 id|i
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|dev_length
 suffix:semicolon
 id|pr_debug
 (paren
@@ -74,9 +82,6 @@ c_cond
 (paren
 op_logical_neg
 id|dev-&gt;bus
-op_logical_or
-op_logical_neg
-id|dev-&gt;bus-&gt;hotplug
 )paren
 r_return
 op_minus
@@ -193,6 +198,77 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|dev_length
+op_assign
+id|get_devpath_length
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|dev_length
+op_add_assign
+id|strlen
+c_func
+(paren
+l_string|&quot;root&quot;
+)paren
+suffix:semicolon
+id|dev_path
+op_assign
+id|kmalloc
+(paren
+id|dev_length
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev_path
+)paren
+(brace
+id|kfree
+(paren
+id|buffer
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|envp
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|memset
+(paren
+id|dev_path
+comma
+l_int|0x00
+comma
+id|dev_length
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|dev_path
+comma
+l_string|&quot;root&quot;
+)paren
+suffix:semicolon
+id|fill_devpath
+(paren
+id|dev
+comma
+id|dev_path
+comma
+id|dev_length
+)paren
+suffix:semicolon
 multiline_comment|/* only one standardized param to hotplug command: the bus name */
 id|argv
 (braket
@@ -236,7 +312,6 @@ id|scratch
 op_assign
 id|buffer
 suffix:semicolon
-multiline_comment|/* action:  add, remove */
 id|envp
 (braket
 id|i
@@ -258,7 +333,34 @@ id|action
 op_plus
 l_int|1
 suffix:semicolon
-multiline_comment|/* have the bus specific function set up the rest of the environment */
+id|envp
+(braket
+id|i
+op_increment
+)braket
+op_assign
+id|scratch
+suffix:semicolon
+id|scratch
+op_add_assign
+id|sprintf
+(paren
+id|scratch
+comma
+l_string|&quot;DEVICE=%s&quot;
+comma
+id|dev_path
+)paren
+op_plus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;bus-&gt;hotplug
+)paren
+(brace
+multiline_comment|/* have the bus specific function add its stuff */
 id|retval
 op_assign
 id|dev-&gt;bus-&gt;hotplug
@@ -305,6 +407,7 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
+)brace
 id|pr_debug
 (paren
 l_string|&quot;%s: %s %s %s %s %s %s&bslash;n&quot;
@@ -321,8 +424,6 @@ id|argv
 l_int|1
 )braket
 comma
-id|action
-comma
 id|envp
 (braket
 l_int|0
@@ -336,6 +437,11 @@ comma
 id|envp
 (braket
 l_int|2
+)braket
+comma
+id|envp
+(braket
+l_int|3
 )braket
 )paren
 suffix:semicolon
@@ -369,6 +475,11 @@ id|retval
 suffix:semicolon
 m_exit
 suffix:colon
+id|kfree
+(paren
+id|dev_path
+)paren
+suffix:semicolon
 id|kfree
 (paren
 id|buffer
