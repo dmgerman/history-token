@@ -88,7 +88,13 @@ comma
 multiline_comment|/* list terminator */
 )brace
 suffix:semicolon
-multiline_comment|/* not exporting this prevents the depmod from generating the map that causes the modules to be isnserted as driver.&n; * we do not want this, we want the script run.&n;MODULE_DEVICE_TABLE ( usb, udsl_usb_ids);&n;*/
+id|MODULE_DEVICE_TABLE
+(paren
+id|usb
+comma
+id|udsl_usb_ids
+)paren
+suffix:semicolon
 multiline_comment|/* context declarations */
 DECL|struct|udsl_data_ctx
 r_struct
