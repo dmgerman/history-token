@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -1992,89 +1993,6 @@ l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Make disk drivers accept operations, again */
-DECL|function|drivers_unsuspend
-r_static
-r_void
-id|drivers_unsuspend
-c_func
-(paren
-r_void
-)paren
-(brace
-id|device_resume
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Called from process context */
-DECL|function|drivers_suspend
-r_static
-r_int
-id|drivers_suspend
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|device_suspend
-c_func
-(paren
-l_int|4
-)paren
-suffix:semicolon
-)brace
-DECL|macro|RESUME_PHASE1
-mdefine_line|#define RESUME_PHASE1 1 /* Called from interrupts disabled */
-DECL|macro|RESUME_PHASE2
-mdefine_line|#define RESUME_PHASE2 2 /* Called with interrupts enabled */
-DECL|macro|RESUME_ALL_PHASES
-mdefine_line|#define RESUME_ALL_PHASES (RESUME_PHASE1 | RESUME_PHASE2)
-DECL|function|drivers_resume
-r_static
-r_void
-id|drivers_resume
-c_func
-(paren
-r_int
-id|flags
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|RESUME_PHASE1
-)paren
-(brace
-id|device_resume
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|RESUME_PHASE2
-)paren
-(brace
-macro_line|#ifdef SUSPEND_CONSOLE
-id|update_screen
-c_func
-(paren
-id|fg_console
-)paren
-suffix:semicolon
-multiline_comment|/* Hmm, is this the problem? */
-macro_line|#endif
-)brace
-)brace
 DECL|function|suspend_prepare_image
 r_static
 r_int
@@ -2304,7 +2222,7 @@ c_func
 r_void
 )paren
 (brace
-id|drivers_unsuspend
+id|device_resume
 c_func
 (paren
 )paren
@@ -2464,6 +2382,12 @@ id|suspend_pagedir_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Done to disable interrupts */
+id|device_power_down
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
 id|PRINTK
 c_func
 (paren
@@ -2522,6 +2446,11 @@ r_int
 id|pagedir_save
 )paren
 suffix:semicolon
+id|device_power_up
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -2529,10 +2458,26 @@ op_amp
 id|suspend_pagedir_lock
 )paren
 suffix:semicolon
-id|drivers_resume
+id|device_resume
 c_func
 (paren
-id|RESUME_ALL_PHASES
+)paren
+suffix:semicolon
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_screen
+c_func
+(paren
+id|fg_console
+)paren
+suffix:semicolon
+multiline_comment|/* Hmm, is this the problem? */
+id|release_console_sem
+c_func
+(paren
 )paren
 suffix:semicolon
 id|PRINTK
@@ -2624,9 +2569,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|device_power_down
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
 id|is_problem
 op_assign
 id|suspend_prepare_image
+c_func
+(paren
+)paren
+suffix:semicolon
+id|device_power_up
 c_func
 (paren
 )paren
@@ -2818,14 +2774,18 @@ multiline_comment|/* Save state of all device drivers, and stop them. */
 r_if
 c_cond
 (paren
-id|drivers_suspend
+(paren
+id|res
+op_assign
+id|device_suspend
 c_func
 (paren
+l_int|4
+)paren
 )paren
 op_eq
 l_int|0
 )paren
-(brace
 multiline_comment|/* If stopping device drivers worked, we proceed basically into&n;&t;&t;&t; * suspend_save_image.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic(0) returns after system is resumed.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic() copies all &quot;used&quot; memory to &quot;free&quot; memory, then&n;&t;&t;&t; * unsuspends all device drivers, and writes memory to disk&n;&t;&t;&t; * using normal kernel mechanism.&n;&t;&t;&t; */
 id|do_magic
 c_func
@@ -2833,7 +2793,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-)brace
 id|thaw_processes
 c_func
 (paren
@@ -4650,6 +4609,12 @@ l_int|0
 )paren
 r_goto
 id|read_failure
+suffix:semicolon
+id|device_suspend
+c_func
+(paren
+l_int|4
+)paren
 suffix:semicolon
 id|do_magic
 c_func
