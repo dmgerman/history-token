@@ -4105,6 +4105,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_SWAPOFF
+suffix:semicolon
 id|err
 op_assign
 id|try_to_unuse
@@ -4112,6 +4116,11 @@ c_func
 (paren
 id|type
 )paren
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_SWAPOFF
 suffix:semicolon
 r_if
 c_cond
