@@ -232,6 +232,10 @@ id|req-&gt;wb_offset
 op_assign
 id|offset
 suffix:semicolon
+id|req-&gt;wb_pgbase
+op_assign
+id|offset
+suffix:semicolon
 id|req-&gt;wb_bytes
 op_assign
 id|count
@@ -819,7 +823,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;wb_offset
+id|req-&gt;wb_pgbase
 op_ne
 l_int|0
 )paren
@@ -846,7 +850,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;wb_offset
+id|req-&gt;wb_pgbase
 op_plus
 id|req-&gt;wb_bytes
 op_ne

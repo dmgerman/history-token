@@ -408,6 +408,10 @@ r_struct
 id|videobuf_buffer
 op_star
 id|vb
+comma
+r_enum
+id|v4l2_field
+id|field
 )paren
 suffix:semicolon
 DECL|member|buf_queue
@@ -477,6 +481,17 @@ DECL|member|msize
 r_int
 id|msize
 suffix:semicolon
+DECL|member|field
+r_enum
+id|v4l2_field
+id|field
+suffix:semicolon
+DECL|member|last
+r_enum
+id|v4l2_field
+id|last
+suffix:semicolon
+multiline_comment|/* for field=V4L2_FIELD_ALTERNATE */
 DECL|member|bufs
 r_struct
 id|videobuf_buffer
@@ -585,6 +600,10 @@ comma
 r_enum
 id|v4l2_buf_type
 id|type
+comma
+r_enum
+id|v4l2_field
+id|field
 comma
 r_int
 id|msize

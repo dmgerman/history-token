@@ -7,11 +7,7 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/zftape.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,6)
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#endif
 macro_line|#include &quot;../zftape/zftape-init.h&quot;
 macro_line|#include &quot;../zftape/zftape-eof.h&quot;
 macro_line|#include &quot;../zftape/zftape-ctl.h&quot;
@@ -4210,7 +4206,6 @@ id|TRACE_EXIT
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VER(2,1,3)
 r_if
 c_cond
 (paren
@@ -4232,33 +4227,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|TRACE_CATCH
-c_func
-(paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-id|mtftseg-&gt;mt_data
-comma
-id|mtftseg-&gt;mt_result
-)paren
-comma
-)paren
-suffix:semicolon
-id|memcpy_tofs
-c_func
-(paren
-id|mtftseg-&gt;mt_data
-comma
-id|zft_deblock_buf
-comma
-id|mtftseg-&gt;mt_result
-)paren
-suffix:semicolon
-macro_line|#endif
 id|TRACE_EXIT
 l_int|0
 suffix:semicolon
@@ -4402,7 +4370,6 @@ op_ne
 id|FT_WR_DELETE
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VER(2,1,3)
 r_if
 c_cond
 (paren
@@ -4424,33 +4391,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|TRACE_CATCH
-c_func
-(paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|mtftseg-&gt;mt_data
-comma
-id|FT_SEGMENT_SIZE
-)paren
-comma
-)paren
-suffix:semicolon
-id|memcpy_fromfs
-c_func
-(paren
-id|zft_deblock_buf
-comma
-id|mtftseg-&gt;mt_data
-comma
-id|FT_SEGMENT_SIZE
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 id|mtftseg-&gt;mt_result
 op_assign
@@ -6022,7 +5962,6 @@ op_amp
 id|_IOC_WRITE
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VER(2,1,3)
 r_if
 c_cond
 (paren
@@ -6045,34 +5984,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|TRACE_CATCH
-c_func
-(paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|arg
-comma
-id|arg_size
-)paren
-comma
-)paren
-suffix:semicolon
-id|memcpy_fromfs
-c_func
-(paren
-op_amp
-id|krnl_arg
-comma
-id|arg
-comma
-id|arg_size
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 id|TRACE
 c_func
@@ -6292,7 +6203,6 @@ id|_IOC_READ
 )paren
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VER(2,1,3)
 r_if
 c_cond
 (paren
@@ -6315,34 +6225,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|TRACE_CATCH
-c_func
-(paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-id|arg
-comma
-id|arg_size
-)paren
-comma
-)paren
-suffix:semicolon
-id|memcpy_tofs
-c_func
-(paren
-id|arg
-comma
-op_amp
-id|krnl_arg
-comma
-id|arg_size
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 id|TRACE_EXIT
 id|result

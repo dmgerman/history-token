@@ -3,7 +3,7 @@ macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,1)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,4)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -41,7 +41,7 @@ mdefine_line|#define RESOURCE_OVERLAY       1
 DECL|macro|RESOURCE_VIDEO
 mdefine_line|#define RESOURCE_VIDEO         2
 DECL|macro|RESOURCE_VBI
-mdefine_line|#define RESOURCE_VBI           3
+mdefine_line|#define RESOURCE_VBI           4
 DECL|macro|RAW_LINES
 mdefine_line|#define RAW_LINES            640
 DECL|macro|RAW_BPL
@@ -349,10 +349,21 @@ r_struct
 id|videobuf_queue
 id|cap
 suffix:semicolon
-DECL|member|buf
+multiline_comment|/* struct bttv_buffer       buf; */
+DECL|member|fmt
+r_const
 r_struct
-id|bttv_buffer
-id|buf
+id|bttv_format
+op_star
+id|fmt
+suffix:semicolon
+DECL|member|width
+r_int
+id|width
+suffix:semicolon
+DECL|member|height
+r_int
+id|height
 suffix:semicolon
 multiline_comment|/* current settings */
 DECL|member|ovfmt
@@ -978,6 +989,7 @@ suffix:semicolon
 multiline_comment|/* dev name */
 DECL|member|cardid
 r_int
+r_int
 id|cardid
 suffix:semicolon
 multiline_comment|/* pci subsystem id (bt878 based ones) */
@@ -1136,10 +1148,6 @@ DECL|member|field_count
 r_int
 id|field_count
 suffix:semicolon
-DECL|member|digital_video
-r_int
-id|digital_video
-suffix:semicolon
 multiline_comment|/* various options */
 DECL|member|opt_combfilter
 r_int
@@ -1271,9 +1279,9 @@ DECL|member|errors
 r_int
 id|errors
 suffix:semicolon
-DECL|member|user
+DECL|member|users
 r_int
-id|user
+id|users
 suffix:semicolon
 DECL|member|init
 r_struct
