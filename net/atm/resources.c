@@ -1700,6 +1700,7 @@ r_int
 )paren
 (paren
 r_int
+r_int
 )paren
 id|buf
 )paren
@@ -1712,6 +1713,7 @@ r_int
 )paren
 (paren
 r_int
+r_int
 )paren
 id|buf
 )paren
@@ -1723,6 +1725,7 @@ c_func
 r_int
 )paren
 (paren
+r_int
 r_int
 )paren
 id|buf

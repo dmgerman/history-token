@@ -191,16 +191,10 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_open, entry inode %x file %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_open, entry inode %p file %p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inode
 comma
-(paren
-r_int
-)paren
 id|file
 )paren
 suffix:semicolon
@@ -246,16 +240,10 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_close, entry inode %x file %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_close, entry inode %p file %p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inode
 comma
-(paren
-r_int
-)paren
 id|file
 )paren
 suffix:semicolon
@@ -327,16 +315,10 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl, entry inode %x file %x cmd %x arg %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl, entry inode %p file %p cmd %x arg %x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inode
 comma
-(paren
-r_int
-)paren
 id|file
 comma
 id|iocmd

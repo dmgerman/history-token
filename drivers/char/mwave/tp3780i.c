@@ -255,13 +255,10 @@ c_func
 (paren
 id|TRACE_TP3780I
 comma
-l_string|&quot;tp3780i::UartInterrupt entry irq %x dev_id %x&bslash;n&quot;
+l_string|&quot;tp3780i::UartInterrupt entry irq %x dev_id %p&bslash;n&quot;
 comma
 id|irq
 comma
-(paren
-r_int
-)paren
 id|dev_id
 )paren
 suffix:semicolon
@@ -322,13 +319,10 @@ c_func
 (paren
 id|TRACE_TP3780I
 comma
-l_string|&quot;tp3780i::DspInterrupt entry irq %x dev_id %x&bslash;n&quot;
+l_string|&quot;tp3780i::DspInterrupt entry irq %x dev_id %p&bslash;n&quot;
 comma
 id|irq
 comma
-(paren
-r_int
-)paren
 id|dev_id
 )paren
 suffix:semicolon
