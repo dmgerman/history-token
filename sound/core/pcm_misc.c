@@ -5,26 +5,31 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 DECL|macro|SND_PCM_FORMAT_UNKNOWN
 mdefine_line|#define SND_PCM_FORMAT_UNKNOWN (-1)
+multiline_comment|/* NOTE: &quot;signed&quot; prefix must be given below since the default char is&n; *       unsigned on some architectures!&n; */
 DECL|struct|pcm_format_data
 r_struct
 id|pcm_format_data
 (brace
 DECL|member|width
+r_int
 r_char
 id|width
 suffix:semicolon
 multiline_comment|/* bit width */
 DECL|member|phys
+r_int
 r_char
 id|phys
 suffix:semicolon
 multiline_comment|/* physical bit width */
 DECL|member|le
+r_int
 r_char
 id|le
 suffix:semicolon
 multiline_comment|/* 0 = big-endian, 1 = little-endian, -1 = others */
 DECL|member|signd
+r_int
 r_char
 id|signd
 suffix:semicolon
