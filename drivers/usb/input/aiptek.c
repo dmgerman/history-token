@@ -2729,9 +2729,7 @@ id|buffer
 comma
 id|size
 comma
-l_int|5
-op_star
-id|HZ
+l_int|5000
 )paren
 suffix:semicolon
 )brace
@@ -2798,9 +2796,7 @@ id|buffer
 comma
 id|size
 comma
-l_int|5
-op_star
-id|HZ
+l_int|5000
 )paren
 suffix:semicolon
 )brace
