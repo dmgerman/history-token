@@ -2606,6 +2606,17 @@ r_struct
 id|request
 op_star
 id|rq
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|rq
 op_assign
 id|HWGROUP
 c_func
@@ -2614,6 +2625,15 @@ id|drive
 )paren
 op_member_access_from_pointer
 id|rq
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2813,7 +2833,7 @@ id|rq
 op_assign
 l_int|NULL
 suffix:semicolon
-id|blkdev_release_request
+id|end_that_request_last
 c_func
 (paren
 id|rq
@@ -2828,20 +2848,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq-&gt;sem
-op_ne
-l_int|NULL
-)paren
-id|up
-c_func
-(paren
-id|rq-&gt;sem
-)paren
-suffix:semicolon
-multiline_comment|/* inform originator that rq has been serviced */
 )brace
 multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; */
 DECL|function|ide_dump_status
@@ -6954,6 +6960,9 @@ r_struct
 id|list_head
 op_star
 id|queue_head
+op_assign
+op_amp
+id|drive-&gt;queue.queue_head
 suffix:semicolon
 id|DECLARE_MUTEX_LOCKED
 c_func
@@ -7027,11 +7036,6 @@ id|io_request_lock
 comma
 id|flags
 )paren
-suffix:semicolon
-id|queue_head
-op_assign
-op_amp
-id|drive-&gt;queue.queue_head
 suffix:semicolon
 r_if
 c_cond

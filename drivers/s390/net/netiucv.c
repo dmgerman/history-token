@@ -1681,7 +1681,7 @@ id|kmalloc
 (paren
 id|buffer_length
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 op_or
 id|GFP_DMA
 )paren

@@ -732,6 +732,7 @@ id|useraddr
 OL
 r_sizeof
 (paren
+r_struct
 id|user_regs_struct
 )paren
 )paren
@@ -740,6 +741,7 @@ id|copymax
 op_assign
 r_sizeof
 (paren
+r_struct
 id|user_regs_struct
 )paren
 suffix:semicolon

@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -179,6 +180,8 @@ r_return
 id|p
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MK7
+multiline_comment|/*&n; *&t;The K7 has streaming cache bypass load/store. The Cyrix III, K6 and&n; *&t;other MMX using processors do not.&n; */
 DECL|function|fast_clear_page
 r_static
 r_void
@@ -399,6 +402,276 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+multiline_comment|/*&n; *&t;Generic MMX implementation without K7 specific streaming&n; */
+DECL|function|fast_clear_page
+r_static
+r_void
+id|fast_clear_page
+c_func
+(paren
+r_void
+op_star
+id|page
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_USEDFPU
+)paren
+)paren
+id|clts
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot; fnsave %0; fwait&bslash;n&quot;
+op_scope_resolution
+l_string|&quot;m&quot;
+(paren
+id|current-&gt;thread.i387
+)paren
+)paren
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_USEDFPU
+suffix:semicolon
+)brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;  pxor %%mm0, %%mm0&bslash;n&quot;
+suffix:colon
+suffix:colon
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|4096
+op_div
+l_int|128
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;  movq %%mm0, (%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 8(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 16(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 24(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 32(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 40(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 48(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 56(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 64(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 72(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 80(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 88(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 96(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 104(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 112(%0)&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 120(%0)&bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|page
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|page
+op_add_assign
+l_int|128
+suffix:semicolon
+)brace
+id|stts
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|fast_copy_page
+r_static
+r_void
+id|fast_copy_page
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+op_star
+id|from
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_USEDFPU
+)paren
+)paren
+id|clts
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot; fnsave %0; fwait&bslash;n&quot;
+op_scope_resolution
+l_string|&quot;m&quot;
+(paren
+id|current-&gt;thread.i387
+)paren
+)paren
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_USEDFPU
+suffix:semicolon
+)brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;1: prefetch (%0)&bslash;n&quot;
+l_string|&quot;   prefetch 64(%0)&bslash;n&quot;
+l_string|&quot;   prefetch 128(%0)&bslash;n&quot;
+l_string|&quot;   prefetch 192(%0)&bslash;n&quot;
+l_string|&quot;   prefetch 256(%0)&bslash;n&quot;
+l_string|&quot;2:  &bslash;n&quot;
+l_string|&quot;.section .fixup, &bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;3: movw $0x1AEB, 1b&bslash;n&quot;
+multiline_comment|/* jmp on 26 bytes */
+l_string|&quot;   jmp 2b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;.align 4&bslash;n&quot;
+l_string|&quot;&t;.long 1b, 3b&bslash;n&quot;
+l_string|&quot;.previous&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|from
+)paren
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|4096
+op_div
+l_int|64
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;1: prefetch 320(%0)&bslash;n&quot;
+l_string|&quot;2: movq (%0), %%mm0&bslash;n&quot;
+l_string|&quot;   movq 8(%0), %%mm1&bslash;n&quot;
+l_string|&quot;   movq 16(%0), %%mm2&bslash;n&quot;
+l_string|&quot;   movq 24(%0), %%mm3&bslash;n&quot;
+l_string|&quot;   movq %%mm0, (%1)&bslash;n&quot;
+l_string|&quot;   movq %%mm1, 8(%1)&bslash;n&quot;
+l_string|&quot;   movq %%mm2, 16(%1)&bslash;n&quot;
+l_string|&quot;   movq %%mm3, 24(%1)&bslash;n&quot;
+l_string|&quot;   movq 32(%0), %%mm0&bslash;n&quot;
+l_string|&quot;   movq 40(%0), %%mm1&bslash;n&quot;
+l_string|&quot;   movq 48(%0), %%mm2&bslash;n&quot;
+l_string|&quot;   movq 56(%0), %%mm3&bslash;n&quot;
+l_string|&quot;   movq %%mm0, 32(%1)&bslash;n&quot;
+l_string|&quot;   movq %%mm1, 40(%1)&bslash;n&quot;
+l_string|&quot;   movq %%mm2, 48(%1)&bslash;n&quot;
+l_string|&quot;   movq %%mm3, 56(%1)&bslash;n&quot;
+l_string|&quot;.section .fixup, &bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;3: movw $0x05EB, 1b&bslash;n&quot;
+multiline_comment|/* jmp on 5 bytes */
+l_string|&quot;   jmp 2b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;.align 4&bslash;n&quot;
+l_string|&quot;&t;.long 1b, 3b&bslash;n&quot;
+l_string|&quot;.previous&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|from
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|to
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|from
+op_add_assign
+l_int|64
+suffix:semicolon
+id|to
+op_add_assign
+l_int|64
+suffix:semicolon
+)brace
+id|stts
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; *&t;Favour MMX for page clear and copy. &n; */
 DECL|function|slow_zero_page
 r_static

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -24,7 +24,22 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/cpcmd.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
+DECL|variable|memory_size
+r_int
+r_int
+id|memory_size
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|machine_flags
+r_int
+r_int
+id|machine_flags
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|boot_cpu_addr
 id|__u16
 id|boot_cpu_addr
@@ -52,27 +67,6 @@ id|NR_CPUS
 suffix:semicolon
 multiline_comment|/* logical cpu to cpu address */
 multiline_comment|/*&n; * Setup options&n; */
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-r_extern
-r_int
-id|rd_doload
-suffix:semicolon
-multiline_comment|/* 1 = load ramdisk, 0 = don&squot;t load */
-r_extern
-r_int
-id|rd_prompt
-suffix:semicolon
-multiline_comment|/* 1 = prompt for ramdisk, 0 = don&squot;t prompt*/
-r_extern
-r_int
-id|rd_image_start
-suffix:semicolon
-multiline_comment|/* starting block # of image        */
-macro_line|#endif
-r_extern
-r_int
-id|root_mountflags
-suffix:semicolon
 r_extern
 r_int
 id|_text
@@ -670,42 +664,9 @@ op_assign
 id|to_kdev_t
 c_func
 (paren
-id|ORIG_ROOT_DEV
+l_int|0x0100
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-id|rd_image_start
-op_assign
-id|RAMDISK_FLAGS
-op_amp
-id|RAMDISK_IMAGE_START_MASK
-suffix:semicolon
-id|rd_prompt
-op_assign
-(paren
-(paren
-id|RAMDISK_FLAGS
-op_amp
-id|RAMDISK_PROMPT_FLAG
-)paren
-op_ne
-l_int|0
-)paren
-suffix:semicolon
-id|rd_doload
-op_assign
-(paren
-(paren
-id|RAMDISK_FLAGS
-op_amp
-id|RAMDISK_LOAD_FLAG
-)paren
-op_ne
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* nasty stuff with PARMAREAs. we use head.S or parameterline&n;&t;  if (!MOUNT_ROOT_RDONLY)&n;&t;  root_mountflags &amp;= ~MS_RDONLY;&n;&t;*/
 id|memory_start
 op_assign
 (paren
@@ -718,7 +679,7 @@ suffix:semicolon
 multiline_comment|/* fixit if use $CODELO etc*/
 id|memory_end
 op_assign
-id|MEMORY_SIZE
+id|memory_size
 suffix:semicolon
 multiline_comment|/* detected in head.s */
 id|init_mm.start_code

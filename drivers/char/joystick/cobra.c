@@ -741,7 +741,7 @@ op_amp
 (paren
 l_int|0x20
 op_lshift
-id|i
+id|j
 )paren
 )paren
 suffix:semicolon

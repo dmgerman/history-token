@@ -26,7 +26,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/misc390.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|variable|semaphore_wake_lock
 id|spinlock_t
@@ -1142,21 +1141,16 @@ l_int|4
 )braket
 suffix:semicolon
 macro_line|#if CONFIG_REMOTE_DEBUG
+r_struct
 id|gdb_pt_regs
 id|childregs
 suffix:semicolon
 macro_line|#else
+r_struct
 id|pt_regs
 id|childregs
 suffix:semicolon
 macro_line|#endif
-id|__u32
-id|pgm_old_ilc
-suffix:semicolon
-multiline_comment|/* single step magic from entry.S */
-id|__u32
-id|pgm_svc_step
-suffix:semicolon
 )brace
 op_star
 id|frame
@@ -1260,11 +1254,12 @@ r_int
 )paren
 id|frame
 suffix:semicolon
-id|frame-&gt;pgm_svc_step
+id|frame-&gt;childregs.old_ilc
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
-multiline_comment|/* Nope we aren&squot;t single stepping an svc */
+multiline_comment|/* We are not single stepping an svc */
 multiline_comment|/* save fprs, if used in last task */
 id|save_fp_regs
 c_func

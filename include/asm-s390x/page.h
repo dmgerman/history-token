@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/asm-s390/page.h&n; *&n; *  S390 version&n; * 
 macro_line|#ifndef _S390_PAGE_H
 DECL|macro|_S390_PAGE_H
 mdefine_line|#define _S390_PAGE_H
+macro_line|#include &lt;asm/setup.h&gt;
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT      12
@@ -11,11 +12,151 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK       (~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * gcc uses builtin, i.e. MVCLE for both operations&n; */
-DECL|macro|clear_page
-mdefine_line|#define clear_page(page)        memset((void *)(page), 0, PAGE_SIZE)
-DECL|macro|copy_page
-mdefine_line|#define copy_page(to,from)      memcpy((void *)(to), (void *)(from), PAGE_SIZE)
+DECL|function|clear_page
+r_static
+r_inline
+r_void
+id|clear_page
+c_func
+(paren
+r_void
+op_star
+id|page
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;   lgr  2,%0&bslash;n&quot;
+l_string|&quot;   lghi 3,4096&bslash;n&quot;
+l_string|&quot;   slgr 1,1&bslash;n&quot;
+l_string|&quot;   mvcl 2,0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|page
+)paren
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;1&quot;
+comma
+l_string|&quot;2&quot;
+comma
+l_string|&quot;3&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|copy_page
+r_static
+r_inline
+r_void
+id|copy_page
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+op_star
+id|from
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|MACHINE_HAS_MVPG
+)paren
+id|asm
+r_volatile
+(paren
+l_string|&quot;   sgr  0,0&bslash;n&quot;
+l_string|&quot;   mvpg %0,%1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|to
+)paren
+)paren
+comma
+l_string|&quot;a&quot;
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|from
+)paren
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;0&quot;
+)paren
+suffix:semicolon
+r_else
+id|asm
+r_volatile
+(paren
+l_string|&quot;   mvc  0(256,%0),0(%1)&bslash;n&quot;
+l_string|&quot;   mvc  256(256,%0),256(%1)&bslash;n&quot;
+l_string|&quot;   mvc  512(256,%0),512(%1)&bslash;n&quot;
+l_string|&quot;   mvc  768(256,%0),768(%1)&bslash;n&quot;
+l_string|&quot;   mvc  1024(256,%0),1024(%1)&bslash;n&quot;
+l_string|&quot;   mvc  1280(256,%0),1280(%1)&bslash;n&quot;
+l_string|&quot;   mvc  1536(256,%0),1536(%1)&bslash;n&quot;
+l_string|&quot;   mvc  1792(256,%0),1792(%1)&bslash;n&quot;
+l_string|&quot;   mvc  2048(256,%0),2048(%1)&bslash;n&quot;
+l_string|&quot;   mvc  2304(256,%0),2304(%1)&bslash;n&quot;
+l_string|&quot;   mvc  2560(256,%0),2560(%1)&bslash;n&quot;
+l_string|&quot;   mvc  2816(256,%0),2816(%1)&bslash;n&quot;
+l_string|&quot;   mvc  3072(256,%0),3072(%1)&bslash;n&quot;
+l_string|&quot;   mvc  3328(256,%0),3328(%1)&bslash;n&quot;
+l_string|&quot;   mvc  3584(256,%0),3584(%1)&bslash;n&quot;
+l_string|&quot;   mvc  3840(256,%0),3840(%1)&bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|to
+)paren
+)paren
+comma
+l_string|&quot;a&quot;
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|from
+)paren
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
 DECL|macro|clear_user_page
 mdefine_line|#define clear_user_page(page, vaddr)    clear_page(page)
 DECL|macro|copy_user_page

@@ -1545,13 +1545,6 @@ op_amp
 l_int|0x7
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;fragment not rounded to 8bytes&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;   It is not in specs, but I see no reasons&n;&t;&t;&t;   to send an error in this case. --ANK&n;&t;&t;&t; */
 r_if
 c_cond
@@ -1560,6 +1553,7 @@ id|offset
 op_eq
 l_int|0
 )paren
+(brace
 id|icmpv6_param_prob
 c_func
 (paren
@@ -1571,6 +1565,10 @@ op_amp
 id|skb-&gt;nh.ipv6h-&gt;payload_len
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_else
 r_goto
 id|err
 suffix:semicolon

@@ -1,10 +1,9 @@
 multiline_comment|/*&n; * Network block device - make block devices work over TCP&n; *&n; * Note that you can not swap over this thing, yet. Seems to work but&n; * deadlocks sometimes - you can not swap over TCP in general.&n; * &n; * Copyright 1997-2000 Pavel Machek &lt;pavel@ucw.cz&gt;&n; * &n; * (part of code stolen from loop.c)&n; *&n; * 97-3-25 compiled 0-th version, not yet tested it &n; *   (it did not work, BTW) (later that day) HEY! it works!&n; *   (bit later) hmm, not that much... 2:00am next day:&n; *   yes, it works, but it gives something like 50kB/sec&n; * 97-4-01 complete rewrite to make it possible for many requests at &n; *   once to be processed&n; * 97-4-11 Making protocol independent of endianity etc.&n; * 97-9-13 Cosmetic changes&n; * 98-5-13 Attempt to make 64-bit-clean on 64-bit machines&n; * 99-1-11 Attempt to make 64-bit-clean on 32-bit machines &lt;ankry@mif.pg.gda.pl&gt;&n; * 01-2-27 Fix to store proper blockcount for kernel (calculated using&n; *   BLOCK_SIZE_BITS, not device blocksize) &lt;aga@permonline.ru&gt;&n; *&n; * possible FIXME: make set_sock / set_blksize / set_size / do_it one syscall&n; * why not: would need verify_area and friends, would share yet another &n; *          structure with userland&n; */
-DECL|macro|NBD_PLUGGABLE
-macro_line|#undef&t;NBD_PLUGGABLE
 DECL|macro|PARANOIA
 mdefine_line|#define PARANOIA
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
@@ -82,21 +81,6 @@ r_int
 id|requests_out
 suffix:semicolon
 macro_line|#endif
-DECL|function|nbd_plug_device
-r_static
-r_void
-id|nbd_plug_device
-c_func
-(paren
-id|request_queue_t
-op_star
-id|q
-comma
-id|kdev_t
-id|dev
-)paren
-(brace
-)brace
 DECL|function|nbd_open
 r_static
 r_int
@@ -181,6 +165,9 @@ id|buf
 comma
 r_int
 id|size
+comma
+r_int
+id|msg_flags
 )paren
 (brace
 id|mm_segment_t
@@ -300,7 +287,9 @@ l_int|0
 suffix:semicolon
 id|msg.msg_flags
 op_assign
-l_int|0
+id|msg_flags
+op_or
+id|MSG_NOSIGNAL
 suffix:semicolon
 r_if
 c_cond
@@ -457,6 +446,14 @@ r_struct
 id|nbd_request
 id|request
 suffix:semicolon
+r_int
+r_int
+id|size
+op_assign
+id|req-&gt;nr_sectors
+op_lshift
+l_int|9
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -497,9 +494,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|req-&gt;current_nr_sectors
-op_lshift
-l_int|9
+id|size
 )paren
 suffix:semicolon
 id|memcpy
@@ -536,6 +531,15 @@ r_sizeof
 (paren
 id|request
 )paren
+comma
+id|req-&gt;cmd
+op_eq
+id|WRITE
+ques
+c_cond
+id|MSG_MORE
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -559,12 +563,21 @@ op_eq
 id|WRITE
 )paren
 (brace
+r_struct
+id|buffer_head
+op_star
+id|bh
+op_assign
+id|req-&gt;bh
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
 l_string|&quot;data, &quot;
 )paren
 suffix:semicolon
+r_do
+(brace
 id|result
 op_assign
 id|nbd_xmit
@@ -574,11 +587,18 @@ l_int|1
 comma
 id|sock
 comma
-id|req-&gt;buffer
+id|bh-&gt;b_data
 comma
-id|req-&gt;current_nr_sectors
-op_lshift
-l_int|9
+id|bh-&gt;b_size
+comma
+id|bh-&gt;b_reqnext
+op_eq
+l_int|NULL
+ques
+c_cond
+l_int|0
+suffix:colon
+id|MSG_MORE
 )paren
 suffix:semicolon
 r_if
@@ -594,6 +614,19 @@ c_func
 l_string|&quot;Send data failed.&quot;
 )paren
 suffix:semicolon
+id|bh
+op_assign
+id|bh-&gt;b_reqnext
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|bh
+)paren
+(brace
+suffix:semicolon
+)brace
 )brace
 r_return
 suffix:semicolon
@@ -664,6 +697,8 @@ r_sizeof
 (paren
 id|reply
 )paren
+comma
+id|MSG_WAITALL
 )paren
 suffix:semicolon
 r_if
@@ -761,12 +796,21 @@ op_eq
 id|READ
 )paren
 (brace
+r_struct
+id|buffer_head
+op_star
+id|bh
+op_assign
+id|req-&gt;bh
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
 l_string|&quot;data, &quot;
 )paren
 suffix:semicolon
+r_do
+(brace
 id|result
 op_assign
 id|nbd_xmit
@@ -776,11 +820,11 @@ l_int|0
 comma
 id|lo-&gt;sock
 comma
-id|req-&gt;buffer
+id|bh-&gt;b_data
 comma
-id|req-&gt;current_nr_sectors
-op_lshift
-l_int|9
+id|bh-&gt;b_size
+comma
+id|MSG_WAITALL
 )paren
 suffix:semicolon
 r_if
@@ -796,6 +840,19 @@ c_func
 l_string|&quot;Recv data failed.&quot;
 )paren
 suffix:semicolon
+id|bh
+op_assign
+id|bh-&gt;b_reqnext
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|bh
+)paren
+(brace
+suffix:semicolon
+)brace
 )brace
 id|DEBUG
 c_func
@@ -831,9 +888,6 @@ r_struct
 id|request
 op_star
 id|req
-suffix:semicolon
-r_int
-id|dequeued
 suffix:semicolon
 id|down
 (paren
@@ -966,8 +1020,6 @@ op_amp
 id|lo-&gt;queue_lock
 )paren
 suffix:semicolon
-id|dequeued
-op_assign
 id|nbd_end_request
 c_func
 (paren
@@ -978,22 +1030,6 @@ id|down
 (paren
 op_amp
 id|lo-&gt;queue_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dequeued
-)paren
-id|list_add
-c_func
-(paren
-op_amp
-id|req-&gt;queue
-comma
-op_amp
-id|lo-&gt;queue_head
 )paren
 suffix:semicolon
 )brace
@@ -1021,9 +1057,6 @@ r_struct
 id|request
 op_star
 id|req
-suffix:semicolon
-r_int
-id|dequeued
 suffix:semicolon
 macro_line|#ifdef PARANOIA
 r_if
@@ -1128,8 +1161,6 @@ op_amp
 id|lo-&gt;queue_lock
 )paren
 suffix:semicolon
-id|dequeued
-op_assign
 id|nbd_end_request
 c_func
 (paren
@@ -1141,22 +1172,6 @@ c_func
 (paren
 op_amp
 id|lo-&gt;queue_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dequeued
-)paren
-id|list_add
-c_func
-(paren
-op_amp
-id|req-&gt;queue
-comma
-op_amp
-id|lo-&gt;queue_head
 )paren
 suffix:semicolon
 )brace
@@ -2032,12 +2047,10 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * And here should be modules and kernel interface &n; *  (Just smiley confuses emacs :-)&n; */
-macro_line|#ifdef MODULE
-DECL|macro|nbd_init
-mdefine_line|#define nbd_init init_module
-macro_line|#endif
 DECL|function|nbd_init
+r_static
 r_int
+id|__init
 id|nbd_init
 c_func
 (paren
@@ -2135,20 +2148,6 @@ comma
 id|do_nbd_request
 )paren
 suffix:semicolon
-macro_line|#ifndef NBD_PLUGGABLE
-id|blk_queue_pluggable
-c_func
-(paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
-comma
-id|nbd_plug_device
-)paren
-suffix:semicolon
-macro_line|#endif
 id|blk_queue_headactive
 c_func
 (paren
@@ -2338,10 +2337,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|nbd_cleanup
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|nbd_cleanup
 c_func
 (paren
 r_void
@@ -2389,5 +2389,24 @@ l_string|&quot;nbd: module cleaned up.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|nbd_init
+id|module_init
+c_func
+(paren
+id|nbd_init
+)paren
+suffix:semicolon
+DECL|variable|nbd_cleanup
+id|module_exit
+c_func
+(paren
+id|nbd_cleanup
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Network Block Device&quot;
+)paren
+suffix:semicolon
 eof

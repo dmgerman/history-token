@@ -3,62 +3,47 @@ macro_line|#ifndef _ASM_S390_SETUP_H
 DECL|macro|_ASM_S390_SETUP_H
 mdefine_line|#define _ASM_S390_SETUP_H
 DECL|macro|PARMAREA
-mdefine_line|#define PARMAREA 0x10400
+mdefine_line|#define PARMAREA&t;&t;0x10400
+DECL|macro|COMMAND_LINE_SIZE
+mdefine_line|#define COMMAND_LINE_SIZE &t;896
+DECL|macro|RAMDISK_ORIGIN
+mdefine_line|#define RAMDISK_ORIGIN&t;&t;0x800000
+DECL|macro|RAMDISK_SIZE
+mdefine_line|#define RAMDISK_SIZE&t;&t;0x800000
 macro_line|#ifndef __ASSEMBLER__
-DECL|macro|ORIG_ROOT_DEV
-mdefine_line|#define ORIG_ROOT_DEV     (*(unsigned long *) (0x10400))
-DECL|macro|MOUNT_ROOT_RDONLY
-mdefine_line|#define MOUNT_ROOT_RDONLY (*(unsigned short *) (0x10404))
-DECL|macro|MEMORY_SIZE
-mdefine_line|#define MEMORY_SIZE       (*(unsigned long *)  (0x10406))
-DECL|macro|MACHINE_FLAGS
-mdefine_line|#define MACHINE_FLAGS     (*(unsigned long *)  (0x1040a))
+DECL|macro|IPL_DEVICE
+mdefine_line|#define IPL_DEVICE        (*(unsigned long *)  (0x10404))
 DECL|macro|INITRD_START
-mdefine_line|#define INITRD_START      (*(unsigned long *)  (0x1040e))
+mdefine_line|#define INITRD_START      (*(unsigned long *)  (0x1040C))
 DECL|macro|INITRD_SIZE
-mdefine_line|#define INITRD_SIZE       (*(unsigned long *)  (0x10412))
-DECL|macro|RAMDISK_FLAGS
-mdefine_line|#define RAMDISK_FLAGS     (*(unsigned short *) (0x10416))
+mdefine_line|#define INITRD_SIZE       (*(unsigned long *)  (0x10414))
 DECL|macro|COMMAND_LINE
 mdefine_line|#define COMMAND_LINE      ((char *)            (0x10480))
+multiline_comment|/*&n; * Machine features detected in head.S&n; */
+r_extern
+r_int
+r_int
+id|machine_flags
+suffix:semicolon
+DECL|macro|MACHINE_IS_VM
+mdefine_line|#define MACHINE_IS_VM    (machine_flags &amp; 1)
+DECL|macro|MACHINE_HAS_IEEE
+mdefine_line|#define MACHINE_HAS_IEEE (machine_flags &amp; 2)
+DECL|macro|MACHINE_IS_P390
+mdefine_line|#define MACHINE_IS_P390  (machine_flags &amp; 4)
+DECL|macro|MACHINE_HAS_CSP
+mdefine_line|#define MACHINE_HAS_CSP  (machine_flags &amp; 8)
+DECL|macro|MACHINE_HAS_MVPG
+mdefine_line|#define MACHINE_HAS_MVPG (machine_flags &amp; 16)
 macro_line|#else 
-DECL|macro|ORIG_ROOT_DEV
-mdefine_line|#define ORIG_ROOT_DEV     0x10400
-DECL|macro|MOUNT_ROOT_RDONLY
-mdefine_line|#define MOUNT_ROOT_RDONLY 0x10404
-DECL|macro|MEMORY_SIZE
-mdefine_line|#define MEMORY_SIZE       0x10406
-DECL|macro|MACHINE_FLAGS
-mdefine_line|#define MACHINE_FLAGS     0x1040a
+DECL|macro|IPL_DEVICE
+mdefine_line|#define IPL_DEVICE        0x10404
 DECL|macro|INITRD_START
-mdefine_line|#define INITRD_START      0x1040e
+mdefine_line|#define INITRD_START      0x1040C
 DECL|macro|INITRD_SIZE
-mdefine_line|#define INITRD_SIZE       0x10412
-DECL|macro|RAMDISK_FLAGS
-mdefine_line|#define RAMDISK_FLAGS     0x10416
+mdefine_line|#define INITRD_SIZE       0x10414
 DECL|macro|COMMAND_LINE
 mdefine_line|#define COMMAND_LINE      0x10480
 macro_line|#endif
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 896
-multiline_comment|/*&n; * Machine features detected in head.S&n; */
-DECL|macro|MACHINE_IS_VM
-mdefine_line|#define MACHINE_IS_VM    (MACHINE_FLAGS &amp; 1)
-DECL|macro|MACHINE_HAS_IEEE
-mdefine_line|#define MACHINE_HAS_IEEE (MACHINE_FLAGS &amp; 2)
-DECL|macro|MACHINE_IS_P390
-mdefine_line|#define MACHINE_IS_P390  (MACHINE_FLAGS &amp; 4)
-DECL|macro|MACHINE_HAS_CSP
-mdefine_line|#define MACHINE_HAS_CSP  (MACHINE_FLAGS &amp; 8)
-DECL|macro|RAMDISK_ORIGIN
-mdefine_line|#define RAMDISK_ORIGIN            0x800000
-DECL|macro|RAMDISK_BLKSIZE
-mdefine_line|#define RAMDISK_BLKSIZE           0x1000
-DECL|macro|RAMDISK_IMAGE_START_MASK
-mdefine_line|#define RAMDISK_IMAGE_START_MASK  0x07FF
-DECL|macro|RAMDISK_PROMPT_FLAG
-mdefine_line|#define RAMDISK_PROMPT_FLAG       0x8000
-DECL|macro|RAMDISK_LOAD_FLAG
-mdefine_line|#define RAMDISK_LOAD_FLAG         0x4000
 macro_line|#endif
 eof

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  drivers/s390/net/iucv.c&n; *    Support for VM IUCV functions for use by other part of the&n; *    kernel or loadable modules.&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Xenia Tkatschow (xenia@us.ibm.com)&n; *               Alan Altmark (Alan_Altmark@us.ibm.com)&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -20,11 +21,6 @@ singleline_comment|//#define DEBUG3
 singleline_comment|//#define DEBUG         /* Turns Printk&squot;s on                         */
 singleline_comment|//#define DEBUG2        /* This prints the parameter list before and */
 multiline_comment|/* after the b2f0 call to cp                 */
-macro_line|#ifdef CONFIG_MODULES
-DECL|macro|EXPORT_SYMTAB
-mdefine_line|#define EXPORT_SYMTAB
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#endif
 DECL|macro|NULL
 macro_line|#undef NULL
 DECL|macro|NULL
@@ -7954,7 +7950,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MODULES
 DECL|variable|iucv_accept
 id|EXPORT_SYMBOL
 (paren
@@ -8099,5 +8094,4 @@ id|EXPORT_SYMBOL
 id|iucv_unregister
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

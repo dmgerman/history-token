@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: adi.c,v 1.12 2000/06/03 20:18:52 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: adi.c,v 1.15 2001/01/09 13:32:39 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * Logitech ADI joystick family driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
@@ -2071,12 +2071,6 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|adi-&gt;length
-op_ne
-(paren
 id|t
 op_assign
 l_int|8
@@ -2094,6 +2088,22 @@ op_plus
 id|adi-&gt;hats
 op_star
 l_int|4
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|adi-&gt;length
+op_ne
+id|t
+op_logical_and
+id|adi-&gt;length
+op_ne
+id|t
+op_plus
+(paren
+id|t
+op_amp
+l_int|1
 )paren
 )paren
 (brace

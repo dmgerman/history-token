@@ -24,7 +24,22 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/cpcmd.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
+DECL|variable|memory_size
+r_int
+r_int
+id|memory_size
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|machine_flags
+r_int
+r_int
+id|machine_flags
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|boot_cpu_addr
 id|__u16
 id|boot_cpu_addr
@@ -52,27 +67,6 @@ id|NR_CPUS
 suffix:semicolon
 multiline_comment|/* logical cpu to cpu address */
 multiline_comment|/*&n; * Setup options&n; */
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-r_extern
-r_int
-id|rd_doload
-suffix:semicolon
-multiline_comment|/* 1 = load ramdisk, 0 = don&squot;t load */
-r_extern
-r_int
-id|rd_prompt
-suffix:semicolon
-multiline_comment|/* 1 = prompt for ramdisk, 0 = don&squot;t prompt*/
-r_extern
-r_int
-id|rd_image_start
-suffix:semicolon
-multiline_comment|/* starting block # of image        */
-macro_line|#endif
-r_extern
-r_int
-id|root_mountflags
-suffix:semicolon
 r_extern
 r_int
 id|_text
@@ -678,41 +672,9 @@ op_assign
 id|to_kdev_t
 c_func
 (paren
-id|ORIG_ROOT_DEV
+l_int|0x0100
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-id|rd_image_start
-op_assign
-id|RAMDISK_FLAGS
-op_amp
-id|RAMDISK_IMAGE_START_MASK
-suffix:semicolon
-id|rd_prompt
-op_assign
-(paren
-(paren
-id|RAMDISK_FLAGS
-op_amp
-id|RAMDISK_PROMPT_FLAG
-)paren
-op_ne
-l_int|0
-)paren
-suffix:semicolon
-id|rd_doload
-op_assign
-(paren
-(paren
-id|RAMDISK_FLAGS
-op_amp
-id|RAMDISK_LOAD_FLAG
-)paren
-op_ne
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 id|memory_start
 op_assign
 (paren
@@ -725,7 +687,7 @@ suffix:semicolon
 multiline_comment|/* fixit if use $CODELO etc*/
 id|memory_end
 op_assign
-id|MEMORY_SIZE
+id|memory_size
 suffix:semicolon
 multiline_comment|/*&n;         * We need some free virtual space to be able to do vmalloc.&n;         * On a machine with 2GB memory we make sure that we have at&n;         * least 128 MB free space for vmalloc.&n;         */
 r_if
@@ -747,21 +709,6 @@ l_int|1024
 op_star
 l_int|1024
 suffix:semicolon
-id|memory_start
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_end
-suffix:semicolon
-multiline_comment|/* fixit if use $CODELO etc*/
-id|memory_end
-op_assign
-id|MEMORY_SIZE
-suffix:semicolon
-multiline_comment|/* detected in head.s */
 id|init_mm.start_code
 op_assign
 id|PAGE_OFFSET
@@ -1204,11 +1151,6 @@ comma
 id|bootmap_size
 )paren
 suffix:semicolon
-id|paging_init
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_if
 c_cond
@@ -1269,6 +1211,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+id|paging_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|alloc_bootmem_low

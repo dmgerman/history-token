@@ -9,12 +9,14 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &quot;../../../arch/s390/kernel/cpcmd.h&quot;
+macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &quot;ctrlchar.h&quot;
 DECL|macro|NR_3215
 mdefine_line|#define NR_3215&t;&t;    1
 DECL|macro|NR_3215_REQ
@@ -349,7 +351,7 @@ comma
 op_amp
 id|str
 comma
-l_int|16
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1841,6 +1843,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_char
+op_star
+id|cchar
+suffix:semicolon
 id|tty
 op_assign
 id|raw-&gt;tty
@@ -1908,104 +1914,36 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|cchar
+op_assign
+id|ctrlchar_handle
+c_func
+(paren
+id|raw-&gt;inbuf
+comma
 id|count
-op_eq
-l_int|2
-op_logical_and
-(paren
-multiline_comment|/* hat is 0xb0 in codepage 037 (US etc.) and thus */
-multiline_comment|/* converted to 0x5e in ascii (&squot;^&squot;) */
-id|strncmp
-c_func
-(paren
-id|raw-&gt;inbuf
 comma
-l_string|&quot;^c&quot;
-comma
-l_int|2
+id|tty
 )paren
-op_eq
-l_int|0
-op_logical_or
-multiline_comment|/* hat is 0xb0 in several other codepages (German,*/
-multiline_comment|/* UK, ...) and thus converted to ascii octal 252 */
-id|strncmp
-c_func
-(paren
-id|raw-&gt;inbuf
-comma
-l_string|&quot;&bslash;252c&quot;
-comma
-l_int|2
-)paren
-op_eq
-l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/* emulate a control C = break */
-id|tty-&gt;flip.count
-op_increment
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-op_assign
-id|TTY_NORMAL
-suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-op_assign
-id|INTR_CHAR
-c_func
-(paren
-id|tty
-)paren
-suffix:semicolon
-id|tty_flip_buffer_push
-c_func
-(paren
-id|raw-&gt;tty
-)paren
-suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren
-id|count
+id|cchar
 op_eq
-l_int|2
-op_logical_and
 (paren
-id|strncmp
-c_func
-(paren
-id|raw-&gt;inbuf
-comma
-l_string|&quot;^d&quot;
-comma
-l_int|2
+r_char
+op_star
 )paren
-op_eq
-l_int|0
-op_logical_or
-id|strncmp
-c_func
-(paren
-id|raw-&gt;inbuf
-comma
-l_string|&quot;&bslash;252d&quot;
-comma
-l_int|2
+op_minus
+l_int|1
 )paren
-op_eq
-l_int|0
-)paren
-)paren
-(brace
-multiline_comment|/* emulate a control D = end of file */
+r_goto
+id|in_out
+suffix:semicolon
 id|tty-&gt;flip.count
 op_increment
 suffix:semicolon
@@ -2019,73 +1957,8 @@ op_star
 id|tty-&gt;flip.char_buf_ptr
 op_increment
 op_assign
-id|EOF_CHAR
-c_func
-(paren
-id|tty
-)paren
-suffix:semicolon
-id|tty_flip_buffer_push
-c_func
-(paren
-id|raw-&gt;tty
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|count
-op_eq
-l_int|2
-op_logical_and
-(paren
-id|strncmp
-c_func
-(paren
-id|raw-&gt;inbuf
-comma
-l_string|&quot;^z&quot;
-comma
-l_int|2
-)paren
-op_eq
-l_int|0
-op_logical_or
-id|strncmp
-c_func
-(paren
-id|raw-&gt;inbuf
-comma
-l_string|&quot;&bslash;252z&quot;
-comma
-l_int|2
-)paren
-op_eq
-l_int|0
-)paren
-)paren
-(brace
-multiline_comment|/* emulate a control Z = suspend */
-id|tty-&gt;flip.count
-op_increment
-suffix:semicolon
 op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-op_assign
-id|TTY_NORMAL
-suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-op_assign
-id|SUSP_CHAR
-c_func
-(paren
-id|tty
-)paren
+id|cchar
 suffix:semicolon
 id|tty_flip_buffer_push
 c_func
@@ -2211,6 +2084,8 @@ op_sub_assign
 id|req-&gt;len
 suffix:semicolon
 )brace
+id|in_out
+suffix:colon
 id|raw-&gt;flags
 op_and_assign
 op_complement
@@ -3373,64 +3248,6 @@ suffix:semicolon
 multiline_comment|/* console not found */
 )brace
 macro_line|#ifdef CONFIG_3215_CONSOLE
-multiline_comment|/*&n; * Try to request the console IRQ. Called from init/main.c&n; */
-DECL|function|con3215_activate
-r_int
-id|con3215_activate
-c_func
-(paren
-r_void
-)paren
-(brace
-id|raw3215_info
-op_star
-id|raw
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|MACHINE_IS_VM
-op_logical_and
-op_logical_neg
-id|MACHINE_IS_P390
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|raw
-op_assign
-id|raw3215
-(braket
-l_int|0
-)braket
-suffix:semicolon
-multiline_comment|/* 3215 console is the first one */
-r_if
-c_cond
-(paren
-id|raw
-op_eq
-l_int|NULL
-op_logical_or
-id|raw-&gt;irq
-op_eq
-op_minus
-l_int|1
-)paren
-multiline_comment|/* console device not found in con3215_init */
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_return
-id|raw3215_startup
-c_func
-(paren
-id|raw
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Write a string to the 3215 console&n; */
 r_static
 r_void
@@ -4519,7 +4336,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * 3215 console driver boottime initialization code.&n; * Register console. We can&squot;t request the IRQ here, because&n; * it&squot;s too early (kmalloc isn&squot;t working yet). We&squot;ll have to&n; * buffer all the console requests until we can request the&n; * irq. For this purpose we use some pages of fixed memory.&n; */
+multiline_comment|/*&n; * 3215 console initialization code called from console_init().&n; * NOTE: This is called before kmalloc is available.&n; */
 DECL|function|con3215_init
 r_void
 id|__init
@@ -4629,6 +4446,11 @@ op_assign
 id|req
 suffix:semicolon
 )brace
+id|ctrlchar_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_3215_CONSOLE
 id|raw3215
 (braket
@@ -4715,6 +4537,23 @@ op_amp
 id|raw-&gt;empty_wait
 )paren
 suffix:semicolon
+multiline_comment|/* Request the console irq */
+r_if
+c_cond
+(paren
+id|raw3215_startup
+c_func
+(paren
+id|raw
+)paren
+op_ne
+l_int|0
+)paren
+id|raw-&gt;irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4788,6 +4627,28 @@ l_string|&quot;Couldn&squot;t find a 3215 console device&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
+)brace
+multiline_comment|/*&n; * 3215 tty registration code called from tty_init().&n; * Most kernel services (incl. kmalloc) are available at this poimt.&n; */
+DECL|function|tty3215_init
+r_void
+id|__init
+id|tty3215_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|MACHINE_IS_VM
+op_logical_and
+op_logical_neg
+id|MACHINE_IS_P390
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the tty_driver structure&n;&t; * Entries in tty3215_driver that are NOT initialized:&n;&t; * proc_entry, set_termios, flush_buffer, set_ldisc, write_proc&n;&t; */
 id|memset
 c_func

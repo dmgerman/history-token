@@ -1,4 +1,5 @@
 multiline_comment|/* &n; * File...........: linux/drivers/s390/ccwcache.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Martin Schiwdefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000a&n; &n; * History of changes&n; * 11/14/00 redesign by Martin Schwidefsky&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
@@ -22,10 +23,8 @@ mdefine_line|#define CCW_CACHE_TYPE (GFP_ATOMIC)
 DECL|macro|kmem_cache_destroy
 mdefine_line|#define kmem_cache_destroy(x) do {} while(0)
 macro_line|#endif
-macro_line|#ifdef PRINTK_HEADER
 DECL|macro|PRINTK_HEADER
 macro_line|#undef PRINTK_HEADER
-macro_line|#endif
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;ccwcache&quot;
 multiline_comment|/* pointer to list of allocated requests */
@@ -1197,4 +1196,18 @@ id|debug_area
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ccw_alloc_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ccw_alloc_request
+)paren
+suffix:semicolon
+DECL|variable|ccw_free_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ccw_free_request
+)paren
+suffix:semicolon
 eof

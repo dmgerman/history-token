@@ -443,6 +443,13 @@ macro_line|#else
 DECL|macro|fs_dprintk
 mdefine_line|#define fs_dprintk(f, str...) /* nothing */
 macro_line|#endif
+DECL|variable|fs_keystream
+r_static
+r_int
+id|fs_keystream
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef DEBUG
 multiline_comment|/* I didn&squot;t forget to set this to zero before shipping. Hit me with a stick &n;   if you get this with the debug default not set to zero again. -- REW */
 DECL|variable|fs_debug
@@ -479,6 +486,14 @@ id|MODULE_PARM
 c_func
 (paren
 id|num
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|fs_keystream
 comma
 l_string|&quot;i&quot;
 )paren
@@ -784,7 +799,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* It seems the ATM forum recomends this horribly complicated 16bit&n; * floating point format. Turns out the Ambassador uses the exact same&n; * encoding. I just copied it over. If Mitch agrees, I&squot;ll move it over&n; * to the atm_misc file or something like that. (and remove it from &n; * here and the ambassador driver) -- REW&n; */
+multiline_comment|/* It seems the ATM forum recommends this horribly complicated 16bit&n; * floating point format. Turns out the Ambassador uses the exact same&n; * encoding. I just copied it over. If Mitch agrees, I&squot;ll move it over&n; * to the atm_misc file or something like that. (and remove it from &n; * here and the ambassador driver) -- REW&n; */
 multiline_comment|/* The good thing about this format is that it is monotonic. So, &n;   a conversion routine need not be very complicated. To be able to&n;   round &quot;nearest&quot; we need to take along a few extra bits. Lets&n;   put these after 16 bits, so that we can just return the top 16&n;   bits of the 32bit number as the result:&n;&n;   int mr (unsigned int rate, int r) &n;     {&n;     int e = 16+9;&n;     static int round[4]={0, 0, 0xffff, 0x8000};&n;     if (!rate) return 0;&n;     while (rate &amp; 0xfc000000) {&n;       rate &gt;&gt;= 1;&n;       e++;&n;     }&n;     while (! (rate &amp; 0xfe000000)) {&n;       rate &lt;&lt;= 1;&n;       e--;&n;     }&n;&n;// Now the mantissa is in positions bit 16-25. Excepf for the &quot;hidden 1&quot; that&squot;s in bit 26.&n;     rate &amp;= ~0x02000000;&n;// Next add in the exponent&n;     rate |= e &lt;&lt; (16+9);&n;// And perform the rounding:&n;     return (rate + round[r]) &gt;&gt; 16;&n;   }&n;&n;   14 lines-of-code. Compare that with the 120 that the Ambassador&n;   guys needed. (would be 8 lines shorter if I&squot;d try to really reduce&n;   the number of lines:&n;&n;   int mr (unsigned int rate, int r) &n;   {&n;     int e = 16+9;&n;     static int round[4]={0, 0, 0xffff, 0x8000};&n;     if (!rate) return 0;&n;     for (;  rate &amp; 0xfc000000 ;rate &gt;&gt;= 1, e++);&n;     for (;!(rate &amp; 0xfe000000);rate &lt;&lt;= 1, e--);&n;     return ((rate &amp; ~0x02000000) | (e &lt;&lt; (16+9)) + round[r]) &gt;&gt; 16;&n;   }&n;&n;   Exercise for the reader: Remove one more line-of-code, without&n;   cheating. (Just joining two lines is cheating). (I know it&squot;s&n;   possible, don&squot;t think you&squot;ve beat me if you found it... If you&n;   manage to lose two lines or more, keep me updated! ;-)&n;&n;   -- REW */
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP      1
@@ -2008,6 +2023,11 @@ id|qe
 )paren
 (brace
 r_case
+l_int|0x01
+suffix:colon
+multiline_comment|/* This is for AAL0 where we put the chip in streaming mode */
+multiline_comment|/* Fall through */
+r_case
 l_int|0x02
 suffix:colon
 multiline_comment|/* Process a real txdone entry. */
@@ -2414,6 +2434,10 @@ id|qe
 )paren
 (brace
 r_case
+l_int|0x1
+suffix:colon
+multiline_comment|/* Fall through for streaming mode */
+r_case
 l_int|0x2
 suffix:colon
 multiline_comment|/* Packet received OK.... */
@@ -2800,9 +2824,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|atm_vcc-&gt;qos.aal
 op_ne
 id|ATM_AAL5
+)paren
+op_logical_and
+(paren
+id|atm_vcc-&gt;qos.aal
+op_ne
+id|ATM_AAL2
+)paren
 )paren
 r_return
 op_minus
@@ -3132,6 +3164,42 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate the &quot;open&quot; entry from the high priority txq. This makes&n;&t;&t;   it most likely that the chip will notice it. It also prevents us&n;&t;&t;   from having to wait for completion. On the other hand, we may&n;&t;&t;   need to wait for completion anyway, to see if it completed&n;&t;&t;   succesfully. */
+r_switch
+c_cond
+(paren
+id|atm_vcc-&gt;qos.aal
+)paren
+(brace
+r_case
+id|ATM_AAL2
+suffix:colon
+r_case
+id|ATM_AAL0
+suffix:colon
+id|tc-&gt;flags
+op_assign
+l_int|0
+op_or
+id|TC_FLAGS_TRANSPARENT_PAYLOAD
+op_or
+id|TC_FLAGS_PACKET
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|28
+)paren
+op_or
+id|TC_FLAGS_TYPE_UBR
+multiline_comment|/* XXX Change to VBR -- PVDL */
+op_or
+id|TC_FLAGS_CAL0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ATM_AAL5
+suffix:colon
 id|tc-&gt;flags
 op_assign
 l_int|0
@@ -3145,6 +3213,22 @@ id|TC_FLAGS_TYPE_CBR
 op_or
 id|TC_FLAGS_CAL0
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+(paren
+l_string|&quot;Unknown aal: %d&bslash;n&quot;
+comma
+id|atm_vcc-&gt;qos.aal
+)paren
+suffix:semicolon
+id|tc-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Docs are vague about this atm_hdr field. By the way, the FS&n;&t;&t; * chip makes odd errors if lower bits are set.... -- REW */
 id|tc-&gt;atm_hdr
 op_assign
@@ -3529,6 +3613,49 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_switch
+c_cond
+(paren
+id|atm_vcc-&gt;qos.aal
+)paren
+(brace
+r_case
+id|ATM_AAL0
+suffix:colon
+r_case
+id|ATM_AAL2
+suffix:colon
+id|submit_command
+(paren
+id|dev
+comma
+op_amp
+id|dev-&gt;hp_txq
+comma
+id|QE_CMD_CONFIG_RX
+op_or
+id|QE_CMD_IMM_INQ
+op_or
+id|vcc-&gt;channo
+comma
+id|RC_FLAGS_TRANSP
+op_or
+id|RC_FLAGS_BFPS_BFP
+op_star
+id|bfp
+op_or
+id|RC_FLAGS_RXBM_PSB
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ATM_AAL5
+suffix:colon
 id|submit_command
 (paren
 id|dev
@@ -3554,6 +3681,10 @@ l_int|0
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 suffix:semicolon
 r_if
 c_cond
@@ -6594,7 +6725,7 @@ comma
 l_int|0
 op_or
 (paren
-l_int|0
+id|fs_keystream
 op_star
 id|SARMODE1_DEFHEC
 )paren

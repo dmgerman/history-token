@@ -2,6 +2,7 @@ multiline_comment|/*&n; * File...........: linux/include/asm/todclk.h&n; * Autho
 macro_line|#ifndef __ASM_TODCLK_H
 DECL|macro|__ASM_TODCLK_H
 mdefine_line|#define __ASM_TODCLK_H
+macro_line|#ifdef __KERNEL__
 DECL|macro|TOD_uSEC
 mdefine_line|#define TOD_uSEC (0x1000ULL)
 DECL|macro|TOD_mSEC
@@ -12,5 +13,6 @@ DECL|macro|TOD_MIN
 mdefine_line|#define TOD_MIN (60 * TOD_SEC)
 DECL|macro|TOD_HOUR
 mdefine_line|#define TOD_HOUR (60 * TOD_MIN)
+macro_line|#endif
 macro_line|#endif
 eof

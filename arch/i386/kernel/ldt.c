@@ -274,25 +274,6 @@ op_star
 id|LDT_ENTRY_SIZE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|mm-&gt;mm_users
-)paren
-OG
-l_int|1
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;LDT allocated for cloned task!&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Possibly do an SMP cross-call to other CPUs to reload&n;&t;&t; * their LDTs?&n;&t;&t; */
 id|load_LDT
 c_func

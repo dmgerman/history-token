@@ -63,6 +63,12 @@ DECL|macro|fp_send_sig
 mdefine_line|#define fp_send_sig&t;send_sig
 DECL|macro|kern_fp_enter
 mdefine_line|#define kern_fp_enter&t;fp_enter
+r_extern
+r_char
+id|fpe_type
+(braket
+)braket
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* kernel function prototypes required */
 r_void
@@ -111,7 +117,33 @@ r_int
 op_star
 id|userRegisters
 suffix:semicolon
+macro_line|#ifdef MODULE
+multiline_comment|/*&n; * Return 0 if we can be unloaded.  This can only happen if&n; * kern_fp_enter is still pointing at nwfpe_enter&n; */
+DECL|function|fpe_unload
+r_static
+r_int
+id|fpe_unload
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+id|kern_fp_enter
+op_eq
+id|nwfpe_enter
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|fpe_init
+r_static
 r_int
 id|__init
 id|fpe_init
@@ -134,6 +166,7 @@ r_union
 id|fp_state
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -141,8 +174,54 @@ id|KERN_ERR
 l_string|&quot;nwfpe: bad structure size&bslash;n&quot;
 )paren
 suffix:semicolon
-r_else
-(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+macro_line|#ifdef MODULE
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mod_member_present
+c_func
+(paren
+op_amp
+id|__this_module
+comma
+id|can_unload
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|__this_module.can_unload
+op_assign
+id|fpe_unload
+suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|fpe_type
+(braket
+l_int|0
+)braket
+op_logical_and
+id|strcmp
+c_func
+(paren
+id|fpe_type
+comma
+l_string|&quot;nwfpe&quot;
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Display title, version and copyright information. */
 id|printk
 c_func
@@ -161,12 +240,12 @@ id|kern_fp_enter
 op_assign
 id|nwfpe_enter
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
 DECL|function|fpe_exit
+r_static
 r_void
 id|__exit
 id|fpe_exit

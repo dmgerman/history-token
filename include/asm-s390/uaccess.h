@@ -4,9 +4,6 @@ DECL|macro|__S390_UACCESS_H
 mdefine_line|#define __S390_UACCESS_H
 multiline_comment|/*&n; * User space memory access functions&n; */
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#if 0
-macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#endif
 DECL|macro|VERIFY_READ
 mdefine_line|#define VERIFY_READ     0
 DECL|macro|VERIFY_WRITE

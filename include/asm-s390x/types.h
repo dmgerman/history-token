@@ -72,14 +72,6 @@ id|saddr_t
 suffix:semicolon
 multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoid name space clashes&n; */
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef TRUE
-DECL|macro|TRUE
-mdefine_line|#define TRUE 1
-macro_line|#endif
-macro_line|#ifndef FALSE
-DECL|macro|FALSE
-mdefine_line|#define FALSE 0
-macro_line|#endif
 DECL|typedef|s8
 r_typedef
 r_int

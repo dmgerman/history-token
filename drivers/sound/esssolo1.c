@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *      esssolo1.c  --  ESS Technology Solo1 (ES1946) audio driver.&n; *&n; *      Copyright (C) 1998-2000  Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module command line parameters:&n; *   none so far&n; *&n; *  Supported devices:&n; *  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n; *  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n; *  /dev/midi   simple MIDI UART interface, no ioctl&n; *&n; *  Revision history&n; *    10.11.1998   0.1   Initial release (without any hardware)&n; *    22.03.1999   0.2   cinfo.blocks should be reset after GETxPTR ioctl.&n; *                       reported by Johan Maes &lt;joma@telindus.be&gt;&n; *                       return EAGAIN instead of EBUSY when O_NONBLOCK&n; *                       read/write cannot be executed&n; *    07.04.1999   0.3   implemented the following ioctl&squot;s: SOUND_PCM_READ_RATE, &n; *                       SOUND_PCM_READ_CHANNELS, SOUND_PCM_READ_BITS; &n; *                       Alpha fixes reported by Peter Jones &lt;pjones@redhat.com&gt;&n; *    15.06.1999   0.4   Fix bad allocation bug.&n; *                       Thanks to Deti Fliegl &lt;fliegl@in.tum.de&gt;&n; *    28.06.1999   0.5   Add pci_set_master&n; *    12.08.1999   0.6   Fix MIDI UART crashing the driver&n; *                       Changed mixer semantics from OSS documented&n; *                       behaviour to OSS &quot;code behaviour&quot;.&n; *                       Recording might actually work now.&n; *                       The real DDMA controller address register is at PCI config&n; *                       0x60, while the register at 0x18 is used as a placeholder&n; *                       register for BIOS address allocation. This register&n; *                       is supposed to be copied into 0x60, according&n; *                       to the Solo1 datasheet. When I do that, I can access&n; *                       the DDMA registers except the mask bit, which&n; *                       is stuck at 1. When I copy the contents of 0x18 +0x10&n; *                       to the DDMA base register, everything seems to work.&n; *                       The fun part is that the Windows Solo1 driver doesn&squot;t&n; *                       seem to do these tricks.&n; *                       Bugs remaining: plops and clicks when starting/stopping playback&n; *    31.08.1999   0.7   add spin_lock_init&n; *                       replaced current-&gt;state = x with set_current_state(x)&n; *    03.09.1999   0.8   change read semantics for MIDI to match&n; *                       OSS more closely; remove possible wakeup race&n; *    07.10.1999   0.9   Fix initialization; complain if sequencer writes time out&n; *                       Revised resource grabbing for the FM synthesizer&n; *    28.10.1999   0.10  More waitqueue races fixed&n; *    09.12.1999   0.11  Work around stupid Alpha port issue (virt_to_bus(kmalloc(GFP_DMA)) &gt; 16M)&n; *                       Disabling recording on Alpha&n; *    12.01.2000   0.12  Prevent some ioctl&squot;s from returning bad count values on underrun/overrun;&n; *                       Tim Janik&squot;s BSE (Bedevilled Sound Engine) found this&n; *                       Integrated (aka redid 8-)) APM support patch by Zach Brown&n; *    07.02.2000   0.13  Use pci_alloc_consistent and pci_register_driver&n; *    19.02.2000   0.14  Use pci_dma_supported to determine if recording should be disabled&n; *    13.03.2000   0.15  Reintroduce initialization of a couple of PCI config space registers&n; *    21.11.2000   0.16  Initialize dma buffers in poll, otherwise poll may return a bogus mask&n; */
+multiline_comment|/*&n; *      esssolo1.c  --  ESS Technology Solo1 (ES1946) audio driver.&n; *&n; *      Copyright (C) 1998-2001  Thomas Sailer (t.sailer@alumni.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module command line parameters:&n; *   none so far&n; *&n; *  Supported devices:&n; *  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n; *  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n; *  /dev/midi   simple MIDI UART interface, no ioctl&n; *&n; *  Revision history&n; *    10.11.1998   0.1   Initial release (without any hardware)&n; *    22.03.1999   0.2   cinfo.blocks should be reset after GETxPTR ioctl.&n; *                       reported by Johan Maes &lt;joma@telindus.be&gt;&n; *                       return EAGAIN instead of EBUSY when O_NONBLOCK&n; *                       read/write cannot be executed&n; *    07.04.1999   0.3   implemented the following ioctl&squot;s: SOUND_PCM_READ_RATE, &n; *                       SOUND_PCM_READ_CHANNELS, SOUND_PCM_READ_BITS; &n; *                       Alpha fixes reported by Peter Jones &lt;pjones@redhat.com&gt;&n; *    15.06.1999   0.4   Fix bad allocation bug.&n; *                       Thanks to Deti Fliegl &lt;fliegl@in.tum.de&gt;&n; *    28.06.1999   0.5   Add pci_set_master&n; *    12.08.1999   0.6   Fix MIDI UART crashing the driver&n; *                       Changed mixer semantics from OSS documented&n; *                       behaviour to OSS &quot;code behaviour&quot;.&n; *                       Recording might actually work now.&n; *                       The real DDMA controller address register is at PCI config&n; *                       0x60, while the register at 0x18 is used as a placeholder&n; *                       register for BIOS address allocation. This register&n; *                       is supposed to be copied into 0x60, according&n; *                       to the Solo1 datasheet. When I do that, I can access&n; *                       the DDMA registers except the mask bit, which&n; *                       is stuck at 1. When I copy the contents of 0x18 +0x10&n; *                       to the DDMA base register, everything seems to work.&n; *                       The fun part is that the Windows Solo1 driver doesn&squot;t&n; *                       seem to do these tricks.&n; *                       Bugs remaining: plops and clicks when starting/stopping playback&n; *    31.08.1999   0.7   add spin_lock_init&n; *                       replaced current-&gt;state = x with set_current_state(x)&n; *    03.09.1999   0.8   change read semantics for MIDI to match&n; *                       OSS more closely; remove possible wakeup race&n; *    07.10.1999   0.9   Fix initialization; complain if sequencer writes time out&n; *                       Revised resource grabbing for the FM synthesizer&n; *    28.10.1999   0.10  More waitqueue races fixed&n; *    09.12.1999   0.11  Work around stupid Alpha port issue (virt_to_bus(kmalloc(GFP_DMA)) &gt; 16M)&n; *                       Disabling recording on Alpha&n; *    12.01.2000   0.12  Prevent some ioctl&squot;s from returning bad count values on underrun/overrun;&n; *                       Tim Janik&squot;s BSE (Bedevilled Sound Engine) found this&n; *                       Integrated (aka redid 8-)) APM support patch by Zach Brown&n; *    07.02.2000   0.13  Use pci_alloc_consistent and pci_register_driver&n; *    19.02.2000   0.14  Use pci_dma_supported to determine if recording should be disabled&n; *    13.03.2000   0.15  Reintroduce initialization of a couple of PCI config space registers&n; *    21.11.2000   0.16  Initialize dma buffers in poll, otherwise poll may return a bogus mask&n; *    12.12.2000   0.17  More dma buffer initializations, patch from&n; *                       Tjeerd Mulder &lt;tjeerd.mulder@fujitsu-siemens.com&gt;&n; *    31.01.2001   0.18  Register/Unregister gameport, original patch from&n; *                       Nathaniel Daw &lt;daw@cs.cmu.edu&gt;&n; *                       Fix SETTRIGGER non OSS API conformity&n; *    10.03.2001         provide abs function, prevent picking up a bogus kernel macro&n; *                       for abs. Bug report by Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; */
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -23,9 +23,85 @@ macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &quot;dm.h&quot;
+macro_line|#if defined(CONFIG_INPUT_ANALOG) || defined(CONFIG_INPUT_ANALOG_MODULE)
+macro_line|#include &lt;linux/gameport.h&gt;
+macro_line|#else
+DECL|struct|gameport
+r_struct
+id|gameport
+(brace
+DECL|member|io
+r_int
+id|io
+suffix:semicolon
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|function|gameport_register_port
+r_extern
+r_inline
+r_void
+id|gameport_register_port
+c_func
+(paren
+r_struct
+id|gameport
+op_star
+id|gameport
+)paren
+(brace
+)brace
+DECL|function|gameport_unregister_port
+r_extern
+r_inline
+r_void
+id|gameport_unregister_port
+c_func
+(paren
+r_struct
+id|gameport
+op_star
+id|gameport
+)paren
+(brace
+)brace
+macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|OSS_DOCUMENTED_MIXER_SEMANTICS
 macro_line|#undef OSS_DOCUMENTED_MIXER_SEMANTICS
+multiline_comment|/* --------------------------------------------------------------------- */
+multiline_comment|/* prevent picking up a bogus abs macro */
+DECL|macro|abs
+macro_line|#undef abs
+DECL|function|abs
+r_extern
+r_inline
+r_int
+id|abs
+c_func
+(paren
+r_int
+id|x
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|x
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|x
+suffix:semicolon
+r_return
+id|x
+suffix:semicolon
+)brace
 multiline_comment|/* --------------------------------------------------------------------- */
 macro_line|#ifndef PCI_VENDOR_ID_ESS
 DECL|macro|PCI_VENDOR_ID_ESS
@@ -113,7 +189,6 @@ DECL|member|sbbase
 DECL|member|vcbase
 DECL|member|ddmabase
 DECL|member|mpubase
-DECL|member|gpbase
 r_int
 r_int
 id|iobase
@@ -125,8 +200,6 @@ comma
 id|ddmabase
 comma
 id|mpubase
-comma
-id|gpbase
 suffix:semicolon
 multiline_comment|/* long for SPARC */
 DECL|member|irq
@@ -284,6 +357,12 @@ id|endcleared
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|enabled
+r_int
+id|enabled
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|ossfragshift
 r_int
 id|ossfragshift
@@ -358,6 +437,11 @@ suffix:semicolon
 DECL|member|midi
 )brace
 id|midi
+suffix:semicolon
+DECL|member|gameport
+r_struct
+id|gameport
+id|gameport
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1889,6 +1973,10 @@ op_assign
 id|db-&gt;numfrag
 op_lshift
 id|db-&gt;fragshift
+suffix:semicolon
+id|db-&gt;enabled
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
@@ -5508,6 +5596,11 @@ op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|s-&gt;dma_adc.enabled
+)paren
 id|start_adc
 c_func
 (paren
@@ -5936,6 +6029,11 @@ id|ret
 op_add_assign
 id|cnt
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s-&gt;dma_adc.enabled
+)paren
 id|start_adc
 c_func
 (paren
@@ -6383,6 +6481,11 @@ op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|s-&gt;dma_dac.enabled
+)paren
 id|start_dac
 c_func
 (paren
@@ -6525,6 +6628,11 @@ id|ret
 op_add_assign
 id|cnt
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s-&gt;dma_dac.enabled
+)paren
 id|start_dac
 c_func
 (paren
@@ -7800,6 +7908,10 @@ id|s
 r_return
 id|ret
 suffix:semicolon
+id|s-&gt;dma_dac.enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|start_adc
 c_func
 (paren
@@ -7828,12 +7940,18 @@ l_string|&quot;solo1: cannot start recording, DDMA mask bit stuck at 1&bslash;n&
 suffix:semicolon
 )brace
 r_else
+(brace
+id|s-&gt;dma_dac.enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|stop_adc
 c_func
 (paren
 id|s
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -7870,6 +7988,10 @@ id|s
 r_return
 id|ret
 suffix:semicolon
+id|s-&gt;dma_dac.enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|start_dac
 c_func
 (paren
@@ -7878,12 +8000,18 @@ id|s
 suffix:semicolon
 )brace
 r_else
+(brace
+id|s-&gt;dma_dac.enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|stop_dac
 c_func
 (paren
 id|s
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0
@@ -7912,7 +8040,7 @@ op_logical_neg
 id|s-&gt;dma_dac.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf_dac
 c_func
@@ -7920,9 +8048,11 @@ c_func
 id|s
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -8032,7 +8162,7 @@ op_logical_neg
 id|s-&gt;dma_adc.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf_adc
 c_func
@@ -8040,9 +8170,11 @@ c_func
 id|s
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -8145,7 +8277,7 @@ op_logical_neg
 id|s-&gt;dma_dac.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf_dac
 c_func
@@ -8153,9 +8285,11 @@ c_func
 id|s
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -8233,7 +8367,7 @@ op_logical_neg
 id|s-&gt;dma_adc.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf_adc
 c_func
@@ -8241,9 +8375,11 @@ c_func
 id|s
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -8337,7 +8473,7 @@ op_logical_neg
 id|s-&gt;dma_dac.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf_dac
 c_func
@@ -8345,9 +8481,11 @@ c_func
 id|s
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -9274,6 +9412,10 @@ id|s-&gt;dma_adc.subdivision
 op_assign
 l_int|0
 suffix:semicolon
+id|s-&gt;dma_adc.enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|s-&gt;dma_dac.ossfragshift
 op_assign
 id|s-&gt;dma_dac.ossmaxfrags
@@ -9281,6 +9423,10 @@ op_assign
 id|s-&gt;dma_dac.subdivision
 op_assign
 l_int|0
+suffix:semicolon
+id|s-&gt;dma_dac.enabled
+op_assign
+l_int|1
 suffix:semicolon
 id|s-&gt;open_mode
 op_or_assign
@@ -11174,6 +11320,11 @@ id|set_current_state
 c_func
 (paren
 id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -13524,9 +13675,19 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-id|s-&gt;gpbase
+id|s-&gt;gameport.io
 op_assign
 id|pci_resource_start
+c_func
+(paren
+id|pcidev
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|s-&gt;gameport.size
+op_assign
+id|pci_resource_len
 c_func
 (paren
 id|pcidev
@@ -13649,6 +13810,47 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|s-&gt;gameport.size
+)paren
+id|s-&gt;gameport.io
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|s-&gt;gameport.io
+op_logical_and
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|s-&gt;gameport.io
+comma
+id|s-&gt;gameport.size
+comma
+l_string|&quot;ESS Solo1&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;solo1: gameport io ports in use&bslash;n&quot;
+)paren
+suffix:semicolon
+id|s-&gt;gameport.io
+op_assign
+id|s-&gt;gameport.size
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|request_irq
 c_func
 (paren
@@ -13693,9 +13895,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;solo1: joystick port at %#lx&bslash;n&quot;
+l_string|&quot;solo1: joystick port at %#x&bslash;n&quot;
 comma
-id|s-&gt;gpbase
+id|s-&gt;gameport.io
 op_plus
 l_int|1
 )paren
@@ -13801,6 +14003,14 @@ id|s
 r_goto
 id|err
 suffix:semicolon
+multiline_comment|/* register gameport */
+id|gameport_register_port
+c_func
+(paren
+op_amp
+id|s-&gt;gameport
+)paren
+suffix:semicolon
 multiline_comment|/* store it in the driver field */
 id|pci_set_drvdata
 c_func
@@ -13900,6 +14110,19 @@ id|s
 suffix:semicolon
 id|err_irq
 suffix:colon
+r_if
+c_cond
+(paren
+id|s-&gt;gameport.io
+)paren
+id|release_region
+c_func
+(paren
+id|s-&gt;gameport.io
+comma
+id|s-&gt;gameport.size
+)paren
+suffix:semicolon
 id|release_region
 c_func
 (paren
@@ -14051,6 +14274,28 @@ comma
 id|s
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s-&gt;gameport.io
+)paren
+(brace
+id|gameport_unregister_port
+c_func
+(paren
+op_amp
+id|s-&gt;gameport
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|s-&gt;gameport.io
+comma
+id|s-&gt;gameport.size
+)paren
+suffix:semicolon
+)brace
 id|release_region
 c_func
 (paren
@@ -14216,7 +14461,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;solo1: version v0.16 time &quot;
+l_string|&quot;solo1: version v0.18 time &quot;
 id|__TIME__
 l_string|&quot; &quot;
 id|__DATE__

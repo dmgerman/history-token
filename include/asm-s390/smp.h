@@ -3,28 +3,39 @@ macro_line|#ifndef __ASM_SMP_H
 DECL|macro|__ASM_SMP_H
 mdefine_line|#define __ASM_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_SMP
-macro_line|#ifndef __ASSEMBLY__
+macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_SMP) &amp;&amp; !defined(__ASSEMBLY__)
 macro_line|#include &lt;asm/lowcore.h&gt;
-macro_line|#include &lt;linux/threads.h&gt;  
-singleline_comment|// FOR NR_CPUS definition only.
-macro_line|#include &lt;linux/kernel.h&gt;   
-singleline_comment|// FOR FASTCALL definition
-DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current-&gt;processor)
+multiline_comment|/*&n;  s390 specific smp.c headers&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|intresting
+r_int
+id|intresting
+suffix:semicolon
+DECL|member|ccode
+id|sigp_ccode
+id|ccode
+suffix:semicolon
+DECL|member|status
+id|__u32
+id|status
+suffix:semicolon
+DECL|member|cpu
+id|__u16
+id|cpu
+suffix:semicolon
+DECL|typedef|sigp_info
+)brace
+id|sigp_info
+suffix:semicolon
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
 multiline_comment|/*&n; *&t;This magic constant controls our willingness to transfer&n; *&t;a process across CPUs. Such a transfer incurs misses on the L1&n; *&t;cache, and on a P6 or P5 with multiple L2 caches L2 hits. My&n; *&t;gut feeling is this will vary by board in value. For a board&n; *&t;with separate L2 cache it probably depends also on the RSS, and&n; *&t;for a board with shared L2 cache it ought to decay fast as other&n; *&t;processes are run.&n; */
 DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;20&t;&t;/* Schedule penalty */
-r_extern
-r_void
-id|count_cpus
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+DECL|macro|smp_processor_id
+mdefine_line|#define smp_processor_id() (current-&gt;processor)
 DECL|function|cpu_logical_map
 r_extern
 id|__inline__
@@ -94,30 +105,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;  s390 specific smp.c headers&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|intresting
-r_int
-id|intresting
-suffix:semicolon
-DECL|member|ccode
-id|sigp_ccode
-id|ccode
-suffix:semicolon
-DECL|member|status
-id|__u32
-id|status
-suffix:semicolon
-DECL|member|cpu
-id|__u16
-id|cpu
-suffix:semicolon
-DECL|typedef|sigp_info
-)brace
-id|sigp_info
-suffix:semicolon
 id|sigp_ccode
 id|smp_ext_call
 c_func
@@ -128,7 +115,7 @@ comma
 r_void
 (paren
 op_star
-id|callback
+id|cb
 )paren
 (paren
 r_void
@@ -151,7 +138,7 @@ c_func
 r_void
 (paren
 op_star
-id|callback
+id|cb
 )paren
 (paren
 r_void
@@ -204,7 +191,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

@@ -2341,7 +2341,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|reterror
+id|reterrflg
 suffix:semicolon
 )brace
 id|ireg-&gt;iis
@@ -2379,7 +2379,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|reterror
+id|reterrflg
 suffix:semicolon
 )brace
 id|cnt

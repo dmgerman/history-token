@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tapechar.h&n; *    character device frontend for tape device driver&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; *  UNDER CONSTRUCTION: Work in progress...:-)&n; ****************************************************************************&n; */
+multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tapechar.h&n; *    character device frontend for tape device driver&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001 IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *               Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; *&n; ****************************************************************************&n; */
 macro_line|#ifndef TAPEBLOCK_H
 DECL|macro|TAPEBLOCK_H
 mdefine_line|#define TAPEBLOCK_H
@@ -8,7 +8,8 @@ DECL|macro|TAPEBLOCK_READAHEAD
 mdefine_line|#define TAPEBLOCK_READAHEAD 30
 DECL|macro|TAPEBLOCK_MAJOR
 mdefine_line|#define TAPEBLOCK_MAJOR 0
-r_static
+DECL|macro|TAPEBLOCK_DEFAULTMODE
+mdefine_line|#define TAPEBLOCK_DEFAULTMODE 0060644
 r_int
 id|tapeblock_open
 c_func
@@ -22,7 +23,6 @@ id|file
 op_star
 )paren
 suffix:semicolon
-r_static
 r_int
 id|tapeblock_release
 c_func
@@ -53,7 +53,6 @@ op_star
 id|tape
 )paren
 suffix:semicolon
-r_static
 r_int
 id|tapeblock_mediumdetect
 c_func
@@ -61,6 +60,28 @@ c_func
 id|tape_info_t
 op_star
 id|tape
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+r_void
+id|tapeblock_mkdevfstree
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+suffix:semicolon
+macro_line|#endif
+r_int
+id|tapeblock_init
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|tapeblock_uninit
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif

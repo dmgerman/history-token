@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tapechar.c&n; *    character device frontend for tape device driver&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *               Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&n; *  UNDER CONSTRUCTION: Work in progress...:-)&n; ****************************************************************************&n; */
+multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tapechar.c&n; *    character device frontend for tape device driver&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001 IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *               Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; *&n; ****************************************************************************&n; */
 macro_line|#include &quot;tapedefs.h&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -10,6 +10,8 @@ macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#ifdef MODULE
+DECL|macro|__NO_VERSION__
+mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#endif
 macro_line|#include &quot;tape.h&quot;
@@ -97,6 +99,103 @@ id|tape_major
 op_assign
 id|TAPE_MAJOR
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+r_void
+DECL|function|tapechar_mkdevfstree
+id|tapechar_mkdevfstree
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+(brace
+id|tape-&gt;devfs_char_dir
+op_assign
+id|devfs_mk_dir
+(paren
+id|tape-&gt;devfs_dir
+comma
+l_string|&quot;char&quot;
+comma
+id|tape
+)paren
+suffix:semicolon
+id|tape-&gt;devfs_nonrewinding
+op_assign
+id|devfs_register
+c_func
+(paren
+id|tape-&gt;devfs_char_dir
+comma
+l_string|&quot;nonrewinding&quot;
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|tape_major
+comma
+id|tape-&gt;nor_minor
+comma
+id|TAPECHAR_DEFAULTMODE
+comma
+op_amp
+id|tape_fops
+comma
+id|tape
+)paren
+suffix:semicolon
+id|tape-&gt;devfs_rewinding
+op_assign
+id|devfs_register
+c_func
+(paren
+id|tape-&gt;devfs_char_dir
+comma
+l_string|&quot;rewinding&quot;
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|tape_major
+comma
+id|tape-&gt;rew_minor
+comma
+id|TAPECHAR_DEFAULTMODE
+comma
+op_amp
+id|tape_fops
+comma
+id|tape
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|tapechar_rmdevfstree
+id|tapechar_rmdevfstree
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+(brace
+id|devfs_unregister
+c_func
+(paren
+id|tape-&gt;devfs_nonrewinding
+)paren
+suffix:semicolon
+id|devfs_unregister
+c_func
+(paren
+id|tape-&gt;devfs_rewinding
+)paren
+suffix:semicolon
+id|devfs_unregister
+c_func
+(paren
+id|tape-&gt;devfs_char_dir
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_void
 DECL|function|tapechar_setup
 id|tapechar_setup
@@ -106,7 +205,14 @@ op_star
 id|tape
 )paren
 (brace
-singleline_comment|// nothing to do
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|tapechar_mkdevfstree
+c_func
+(paren
+id|tape
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 DECL|function|tapechar_init
@@ -135,6 +241,20 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Register the tape major number to the kernel */
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|result
+op_assign
+id|devfs_register_chrdev
+(paren
+id|tape_major
+comma
+l_string|&quot;tape&quot;
+comma
+op_amp
+id|tape_fops
+)paren
+suffix:semicolon
+macro_line|#else
 id|result
 op_assign
 id|register_chrdev
@@ -147,6 +267,7 @@ op_amp
 id|tape_fops
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -259,6 +380,16 @@ id|charfront-&gt;device_setup
 op_assign
 id|tapechar_setup
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|charfront-&gt;mkdevfstree
+op_assign
+id|tapechar_mkdevfstree
+suffix:semicolon
+id|charfront-&gt;rmdevfstree
+op_assign
+id|tapechar_rmdevfstree
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef TAPE_DEBUG
 id|debug_text_event
 (paren
@@ -349,7 +480,6 @@ l_string|&quot;tape&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Tape device read function&n; */
-r_static
 id|ssize_t
 DECL|function|tape_read
 id|tape_read
@@ -699,6 +829,43 @@ id|tapestate_get
 (paren
 id|tape
 )paren
+op_eq
+id|TS_NOT_OPER
+)paren
+(brace
+id|tape-&gt;blk_minor
+op_assign
+id|tape-&gt;rew_minor
+op_assign
+id|tape-&gt;nor_minor
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|tape-&gt;devinfo.irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|s390irq_spin_unlock_irqrestore
+(paren
+id|tape-&gt;devinfo.irq
+comma
+id|lockflags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|tapestate_get
+(paren
+id|tape
+)paren
 op_ne
 id|TS_DONE
 )paren
@@ -771,7 +938,6 @@ id|tape-&gt;devstat.rescnt
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Tape device write function&n; */
-r_static
 id|ssize_t
 DECL|function|tape_write
 id|tape_write
@@ -1147,8 +1313,66 @@ comma
 id|lockflags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|tape-&gt;rc
+op_eq
+op_minus
+id|ENOSPC
+)paren
+op_logical_and
+(paren
+id|i
+op_ne
+l_int|0
+)paren
+)paren
+r_return
+id|i
+op_star
+id|block_size
+suffix:semicolon
 r_return
 id|tape-&gt;rc
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|tapestate_get
+(paren
+id|tape
+)paren
+op_eq
+id|TS_NOT_OPER
+)paren
+(brace
+id|tape-&gt;blk_minor
+op_assign
+id|tape-&gt;rew_minor
+op_assign
+id|tape-&gt;nor_minor
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|tape-&gt;devinfo.irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|s390irq_spin_unlock_irqrestore
+(paren
+id|tape-&gt;devinfo.irq
+comma
+id|lockflags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -2047,6 +2271,43 @@ id|tapestate_get
 (paren
 id|tape
 )paren
+op_eq
+id|TS_NOT_OPER
+)paren
+(brace
+id|tape-&gt;blk_minor
+op_assign
+id|tape-&gt;rew_minor
+op_assign
+id|tape-&gt;nor_minor
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|tape-&gt;devinfo.irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|s390irq_spin_unlock_irqrestore
+(paren
+id|tape-&gt;devinfo.irq
+comma
+id|lockflags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|tapestate_get
+(paren
+id|tape
+)paren
 op_ne
 id|TS_DONE
 )paren
@@ -2149,7 +2410,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Tape device io controls.&n; */
-r_static
 r_int
 DECL|function|tape_ioctl
 id|tape_ioctl
@@ -2780,7 +3040,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Tape device open function.&n; */
-r_static
 r_int
 DECL|function|tape_open
 id|tape_open
@@ -2996,7 +3255,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Tape device release function.&n; */
-r_static
 r_int
 DECL|function|tape_release
 id|tape_release
@@ -3030,10 +3288,6 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|rc
-suffix:semicolon
-id|inode
-op_assign
-id|filp-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 id|ti
 op_assign

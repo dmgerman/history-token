@@ -24,7 +24,7 @@ DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_S390
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(x) &bslash;&n;        ((x)-&gt;e_machine == ELF_ARCH &amp;&amp; (x)-&gt;e_ident[EI_CLASS] == ELF_CLASS)
+mdefine_line|#define elf_check_arch(x) &bslash;&n;        (((x)-&gt;e_machine == EM_S390 || (x)-&gt;e_machine == EM_S390_OLD) &bslash;&n;         &amp;&amp; (x)-&gt;e_ident[EI_CLASS] == ELF_CLASS)
 multiline_comment|/* For SVR4/S390 the function pointer to be registered with `atexit` is&n;   passed in R14. */
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r) &bslash;&n;&t;do { &bslash;&n;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;current-&gt;thread.flags = 0; &bslash;&n;&t;} while(0)

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.com, 1998-1999&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.COM, 1998,1999&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &quot;softfloat.h&quot;
 macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpsr.h&quot;
@@ -6,7 +6,7 @@ macro_line|#include &quot;fpa11.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
 macro_line|#include &quot;fpmodule.inl&quot;
 DECL|variable|floatx80Constant
-r_static
+r_const
 id|floatx80
 id|floatx80Constant
 (braket
@@ -71,7 +71,7 @@ multiline_comment|/* extended 10.0 */
 )brace
 suffix:semicolon
 DECL|variable|float64Constant
-r_static
+r_const
 id|float64
 id|float64Constant
 (braket
@@ -104,7 +104,7 @@ multiline_comment|/* double 10.0 */
 )brace
 suffix:semicolon
 DECL|variable|float32Constant
-r_static
+r_const
 id|float32
 id|float32Constant
 (braket
@@ -136,60 +136,6 @@ l_int|0x41200000
 multiline_comment|/* single 10.0 */
 )brace
 suffix:semicolon
-DECL|function|getExtendedConstant
-id|floatx80
-id|getExtendedConstant
-c_func
-(paren
-r_const
-r_int
-r_int
-id|nIndex
-)paren
-(brace
-r_return
-id|floatx80Constant
-(braket
-id|nIndex
-)braket
-suffix:semicolon
-)brace
-DECL|function|getDoubleConstant
-id|float64
-id|getDoubleConstant
-c_func
-(paren
-r_const
-r_int
-r_int
-id|nIndex
-)paren
-(brace
-r_return
-id|float64Constant
-(braket
-id|nIndex
-)braket
-suffix:semicolon
-)brace
-DECL|function|getSingleConstant
-id|float32
-id|getSingleConstant
-c_func
-(paren
-r_const
-r_int
-r_int
-id|nIndex
-)paren
-(brace
-r_return
-id|float32Constant
-(braket
-id|nIndex
-)braket
-suffix:semicolon
-)brace
 DECL|function|getTransferLength
 r_int
 r_int
@@ -450,8 +396,10 @@ r_return
 id|nRc
 suffix:semicolon
 )brace
-multiline_comment|/* contition code lookup table&n; index into the table is test code: EQ, NE, ... LT, GT, AL, NV&n; bit position in short is condition code: NZCV */
+multiline_comment|/* condition code lookup table&n; index into the table is test code: EQ, NE, ... LT, GT, AL, NV&n; bit position in short is condition code: NZCV */
 DECL|variable|aCC
+r_static
+r_const
 r_int
 r_int
 id|aCC

@@ -1,11 +1,12 @@
-multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tapechar.h&n; *    character device frontend for tape device driver&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *               Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&n; *  UNDER CONSTRUCTION: Work in progress...:-)&n; ****************************************************************************&n; */
+multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tapechar.h&n; *    character device frontend for tape device driver&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001 IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *               Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; *&n; ****************************************************************************&n; */
 macro_line|#ifndef TAPECHAR_H
 DECL|macro|TAPECHAR_H
 mdefine_line|#define TAPECHAR_H
+DECL|macro|TAPECHAR_DEFAULTMODE
+mdefine_line|#define TAPECHAR_DEFAULTMODE 0020644
 DECL|macro|TAPE_MAJOR
 mdefine_line|#define  TAPE_MAJOR                    0        /* get dynamic major since no major officialy defined for tape */
 multiline_comment|/*&n; * Prototypes for tape_fops&n; */
-r_static
 id|ssize_t
 id|tape_read
 c_func
@@ -23,7 +24,6 @@ id|loff_t
 op_star
 )paren
 suffix:semicolon
-r_static
 id|ssize_t
 id|tape_write
 c_func
@@ -42,7 +42,6 @@ id|loff_t
 op_star
 )paren
 suffix:semicolon
-r_static
 r_int
 id|tape_ioctl
 c_func
@@ -62,7 +61,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_static
 r_int
 id|tape_open
 (paren
@@ -75,7 +73,6 @@ id|file
 op_star
 )paren
 suffix:semicolon
-r_static
 r_int
 id|tape_release
 (paren
@@ -86,6 +83,28 @@ comma
 r_struct
 id|file
 op_star
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+r_void
+id|tapechar_mkdevfstree
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+suffix:semicolon
+macro_line|#endif
+r_void
+id|tapechar_init
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|tapechar_uninit
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* TAPECHAR_H */

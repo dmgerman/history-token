@@ -260,6 +260,12 @@ id|low
 )paren
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Clear it */
 id|wrmsr
 c_func

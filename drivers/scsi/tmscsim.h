@@ -5,15 +5,6 @@ DECL|macro|_TMSCSIM_H
 mdefine_line|#define _TMSCSIM_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* 2.0 compat */
-macro_line|#if defined(__SMP__) &amp;&amp; !defined(CONFIG_SMP)
-macro_line|# if LINUX_VERSION_CODE &lt; KERNEL_VERSION (2,2,0)
-DECL|macro|CONFIG_SMP
-macro_line|#  define CONFIG_SMP
-macro_line|# else
-macro_line|#  error __SMP__ defined but not CONFIG_SMP
-macro_line|# endif
-macro_line|#endif
 DECL|macro|IRQ_NONE
 mdefine_line|#define IRQ_NONE 255
 DECL|macro|MAX_ADAPTER_NUM

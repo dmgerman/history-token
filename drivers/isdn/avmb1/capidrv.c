@@ -9079,9 +9079,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;capidrv-%d: if_sendbuf called with invalid driverId %d!&bslash;n&quot;
-comma
-id|card-&gt;contrnr
+l_string|&quot;capidrv: if_sendbuf called with invalid driverId %d!&bslash;n&quot;
 comma
 id|id
 )paren
@@ -9514,9 +9512,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;capidrv-%d: if_readstat called with invalid driverId %d!&bslash;n&quot;
-comma
-id|card-&gt;contrnr
+l_string|&quot;capidrv: if_readstat called with invalid driverId %d!&bslash;n&quot;
 comma
 id|id
 )paren

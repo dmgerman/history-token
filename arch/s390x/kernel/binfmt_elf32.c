@@ -10,7 +10,7 @@ DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_S390
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(x) &bslash;&n;&t;((x)-&gt;e_machine == ELF_ARCH &amp;&amp; (x)-&gt;e_ident[EI_CLASS] == ELF_CLASS)
+mdefine_line|#define elf_check_arch(x) &bslash;&n;&t;(((x)-&gt;e_machine == EM_S390 || (x)-&gt;e_machine == EM_S390_OLD) &bslash;&n;         &amp;&amp; (x)-&gt;e_ident[EI_CLASS] == ELF_CLASS)
 multiline_comment|/* ELF register definitions */
 DECL|macro|NUM_GPRS
 mdefine_line|#define NUM_GPRS      16

@@ -145,10 +145,10 @@ mdefine_line|#define I2C_TEA6300        0x80
 DECL|macro|I2C_DPL3518
 mdefine_line|#define I2C_DPL3518&t;   0x84
 multiline_comment|/* more card-specific defines */
-DECL|macro|PT2254_L_CHANEL
-mdefine_line|#define PT2254_L_CHANEL 0x10
-DECL|macro|PT2254_R_CHANEL
-mdefine_line|#define PT2254_R_CHANEL 0x08
+DECL|macro|PT2254_L_CHANNEL
+mdefine_line|#define PT2254_L_CHANNEL 0x10
+DECL|macro|PT2254_R_CHANNEL
+mdefine_line|#define PT2254_R_CHANNEL 0x08
 DECL|macro|PT2254_DBS_IN_2
 mdefine_line|#define PT2254_DBS_IN_2 0x400
 DECL|macro|PT2254_DBS_IN_10

@@ -1,12 +1,13 @@
 macro_line|#ifndef _LINUX_JOYSTICK_H
 DECL|macro|_LINUX_JOYSTICK_H
 mdefine_line|#define _LINUX_JOYSTICK_H
-multiline_comment|/*&n; * $Id: joystick.h,v 1.2 2000/05/29 10:54:53 vojtech Exp $&n; *&n; *  Copyright (C) 1996-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: joystick.h,v 1.3 2000/11/30 11:07:05 vojtech Exp $&n; *&n; *  Copyright (C) 1996-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 multiline_comment|/*&n; * Version&n; */
 DECL|macro|JS_VERSION
-mdefine_line|#define JS_VERSION&t;&t;0x020000
+mdefine_line|#define JS_VERSION&t;&t;0x020100
 multiline_comment|/*&n; * Types and constants for reading from /dev/js&n; */
 DECL|macro|JS_EVENT_BUTTON
 mdefine_line|#define JS_EVENT_BUTTON&t;&t;0x01&t;/* button pressed/released */
@@ -22,7 +23,7 @@ DECL|member|time
 id|__u32
 id|time
 suffix:semicolon
-multiline_comment|/* event timestamp in miliseconds */
+multiline_comment|/* event timestamp in milliseconds */
 DECL|member|value
 id|__s16
 id|value
@@ -42,17 +43,25 @@ multiline_comment|/* axis/button number */
 suffix:semicolon
 multiline_comment|/*&n; * IOCTL commands for joystick driver&n; */
 DECL|macro|JSIOCGVERSION
-mdefine_line|#define JSIOCGVERSION&t;&t;_IOR(&squot;j&squot;, 0x01, __u32)&t;&t;&t;/* get driver version */
+mdefine_line|#define JSIOCGVERSION&t;&t;_IOR(&squot;j&squot;, 0x01, __u32)&t;&t;&t;&t;/* get driver version */
 DECL|macro|JSIOCGAXES
-mdefine_line|#define JSIOCGAXES&t;&t;_IOR(&squot;j&squot;, 0x11, __u8)&t;&t;&t;/* get number of axes */
+mdefine_line|#define JSIOCGAXES&t;&t;_IOR(&squot;j&squot;, 0x11, __u8)&t;&t;&t;&t;/* get number of axes */
 DECL|macro|JSIOCGBUTTONS
-mdefine_line|#define JSIOCGBUTTONS&t;&t;_IOR(&squot;j&squot;, 0x12, __u8)&t;&t;&t;/* get number of buttons */
+mdefine_line|#define JSIOCGBUTTONS&t;&t;_IOR(&squot;j&squot;, 0x12, __u8)&t;&t;&t;&t;/* get number of buttons */
 DECL|macro|JSIOCGNAME
-mdefine_line|#define JSIOCGNAME(len)&t;&t;_IOC(_IOC_READ, &squot;j&squot;, 0x13, len)         /* get identifier string */
+mdefine_line|#define JSIOCGNAME(len)&t;&t;_IOC(_IOC_READ, &squot;j&squot;, 0x13, len)&t;&t;&t;/* get identifier string */
 DECL|macro|JSIOCSCORR
-mdefine_line|#define JSIOCSCORR&t;&t;_IOW(&squot;j&squot;, 0x21, struct js_corr)&t;&t;/* set correction values */
+mdefine_line|#define JSIOCSCORR&t;&t;_IOW(&squot;j&squot;, 0x21, struct js_corr)&t;&t;&t;/* set correction values */
 DECL|macro|JSIOCGCORR
-mdefine_line|#define JSIOCGCORR&t;&t;_IOR(&squot;j&squot;, 0x22, struct js_corr)&t;&t;/* get correction values */
+mdefine_line|#define JSIOCGCORR&t;&t;_IOR(&squot;j&squot;, 0x22, struct js_corr)&t;&t;&t;/* get correction values */
+DECL|macro|JSIOCSAXMAP
+mdefine_line|#define JSIOCSAXMAP&t;&t;_IOW(&squot;j&squot;, 0x31, __u8[ABS_MAX])&t;&t;&t;/* set axis mapping */
+DECL|macro|JSIOCGAXMAP
+mdefine_line|#define JSIOCGAXMAP&t;&t;_IOR(&squot;j&squot;, 0x32, __u8[ABS_MAX])&t;&t;&t;/* get axis mapping */
+DECL|macro|JSIOCSBTNMAP
+mdefine_line|#define JSIOCSBTNMAP&t;&t;_IOW(&squot;j&squot;, 0x33, __u16[KEY_MAX - BTN_MISC])&t;/* set button mapping */
+DECL|macro|JSIOCGBTNMAP
+mdefine_line|#define JSIOCGBTNMAP&t;&t;_IOR(&squot;j&squot;, 0x34, __u16[KEY_MAX - BTN_MISC])&t;/* get button mapping */
 multiline_comment|/*&n; * Types and constants for get/set correction&n; */
 DECL|macro|JS_CORR_NONE
 mdefine_line|#define JS_CORR_NONE&t;&t;0x00&t;/* returns raw values */

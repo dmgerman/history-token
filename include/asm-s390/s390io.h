@@ -366,11 +366,6 @@ id|__u8
 id|qlpm
 suffix:semicolon
 multiline_comment|/* queued logical path mask */
-DECL|member|syncnt
-id|__u32
-id|syncnt
-suffix:semicolon
-multiline_comment|/* sync I/O recursive usage count */
 DECL|typedef|ioinfo_t
 )brace
 id|__attribute__

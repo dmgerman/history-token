@@ -768,7 +768,7 @@ id|regs
 comma
 r_sizeof
 (paren
-id|s390_regs_common
+id|_s390_regs_common
 )paren
 )paren
 suffix:semicolon
@@ -847,7 +847,7 @@ id|sregs-&gt;regs
 comma
 r_sizeof
 (paren
-id|s390_regs_common
+id|_s390_regs_common
 )paren
 )paren
 suffix:semicolon
@@ -942,6 +942,7 @@ id|sigcontext
 op_star
 id|sc
 comma
+r_struct
 id|pt_regs
 op_star
 id|regs
@@ -2526,6 +2527,18 @@ id|SIGFPE
 suffix:colon
 r_case
 id|SIGSEGV
+suffix:colon
+r_case
+id|SIGBUS
+suffix:colon
+r_case
+id|SIGSYS
+suffix:colon
+r_case
+id|SIGXCPU
+suffix:colon
+r_case
+id|SIGXFSZ
 suffix:colon
 r_if
 c_cond

@@ -1993,7 +1993,7 @@ OG
 id|chain
 )paren
 (brace
-id|bforget
+id|brelse
 c_func
 (paren
 id|partial-&gt;bh
@@ -2860,6 +2860,12 @@ op_star
 id|count
 suffix:semicolon
 multiline_comment|/* Writer: end */
+id|mark_inode_dirty
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 id|ext2_free_blocks
 (paren
 id|inode
@@ -2867,12 +2873,6 @@ comma
 id|block_to_free
 comma
 id|count
-)paren
-suffix:semicolon
-id|mark_inode_dirty
-c_func
-(paren
-id|inode
 )paren
 suffix:semicolon
 id|free_this
@@ -2904,6 +2904,12 @@ op_star
 id|count
 suffix:semicolon
 multiline_comment|/* Writer: end */
+id|mark_inode_dirty
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 id|ext2_free_blocks
 (paren
 id|inode
@@ -2911,12 +2917,6 @@ comma
 id|block_to_free
 comma
 id|count
-)paren
-suffix:semicolon
-id|mark_inode_dirty
-c_func
-(paren
-id|inode
 )paren
 suffix:semicolon
 )brace

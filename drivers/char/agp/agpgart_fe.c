@@ -3353,7 +3353,12 @@ op_star
 )paren
 id|reserve.seg_list
 comma
-id|GFP_KERNEL
+r_sizeof
+(paren
+id|agp_segment
+)paren
+op_star
+id|reserve.seg_count
 )paren
 )paren
 (brace

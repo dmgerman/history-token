@@ -91,9 +91,11 @@ DECL|macro|CDROM_DEBUG
 mdefine_line|#define CDROM_DEBUG&t;&t;0x5330&t;/* Turn debug messages on/off */
 DECL|macro|CDROM_GET_CAPABILITY
 mdefine_line|#define CDROM_GET_CAPABILITY&t;0x5331&t;/* get capabilities */
+multiline_comment|/* Note that scsi/scsi_ioctl.h also uses 0x5382 - 0x5386.&n; * Future CDROM ioctls should be kept below 0x537F&n; */
 multiline_comment|/* This ioctl is only used by sbpcd at the moment */
 DECL|macro|CDROMAUDIOBUFSIZ
 mdefine_line|#define CDROMAUDIOBUFSIZ        0x5382&t;/* set the audio buffer size */
+multiline_comment|/* conflict with SCSI_IOCTL_GET_IDLUN */
 multiline_comment|/* DVD-ROM Specific ioctls */
 DECL|macro|DVD_READ_STRUCT
 mdefine_line|#define DVD_READ_STRUCT&t;&t;0x5390  /* Read structure */

@@ -7365,9 +7365,9 @@ l_int|5
 suffix:semicolon
 id|bits_out
 op_or_assign
-id|PT2254_L_CHANEL
+id|PT2254_L_CHANNEL
 op_or
-id|PT2254_R_CHANEL
+id|PT2254_R_CHANNEL
 suffix:semicolon
 id|data
 op_assign

@@ -68,62 +68,42 @@ r_int
 id|nr
 )paren
 (brace
-r_static
-r_const
-id|__u16
-id|tr_op
-(braket
-)braket
-op_assign
-(brace
-l_int|0xDC00
-comma
-l_int|0x1000
-comma
-l_int|0x3000
-)brace
+r_if
+c_cond
+(paren
+id|nr
+op_le
+l_int|0
+)paren
+r_return
 suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;   lr    1,%0&bslash;n&quot;
-l_string|&quot;   lr    2,%1&bslash;n&quot;
-l_string|&quot;   lr    3,%2&bslash;n&quot;
-l_string|&quot;   ahi   2,-256&bslash;n&quot;
-l_string|&quot;   jm    1f&bslash;n&quot;
-l_string|&quot;0: tr    0(256,1),0(3)&bslash;n&quot;
-l_string|&quot;   ahi   1,256&bslash;n&quot;
-l_string|&quot;   ahi   2,-256&bslash;n&quot;
-l_string|&quot;   jp    0b&bslash;n&quot;
-l_string|&quot;1: ahi   2,255&bslash;n&quot;
-l_string|&quot;   jm    2f&bslash;n&quot;
-l_string|&quot;   ex    2,%3&bslash;n&quot;
-l_string|&quot;2:&quot;
+l_string|&quot;   bras 1,1f&bslash;n&quot;
+l_string|&quot;   tr   0(1,%0),0(%2)&bslash;n&quot;
+l_string|&quot;0: la   %0,256(%0)&bslash;n&quot;
+l_string|&quot;   tr   0(256,%0),0(%2)&bslash;n&quot;
+l_string|&quot;1: ahi  %1,-256&bslash;n&quot;
+l_string|&quot;   jp   0b&bslash;n&quot;
+l_string|&quot;   ex   %1,0(1)&quot;
 suffix:colon
-multiline_comment|/* no output */
-suffix:colon
-l_string|&quot;a&quot;
+l_string|&quot;+&amp;a&quot;
 (paren
 id|addr
 )paren
 comma
-l_string|&quot;d&quot;
+l_string|&quot;+&amp;a&quot;
 (paren
 id|nr
+op_minus
+l_int|1
 )paren
-comma
+suffix:colon
 l_string|&quot;a&quot;
 (paren
 id|codepage
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-id|tr_op
-(braket
-l_int|0
-)braket
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
@@ -131,10 +111,6 @@ comma
 l_string|&quot;memory&quot;
 comma
 l_string|&quot;1&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;3&quot;
 )paren
 suffix:semicolon
 )brace

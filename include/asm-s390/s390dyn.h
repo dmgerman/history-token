@@ -2,6 +2,9 @@ multiline_comment|/*&n; *  arch/s390/kernel/s390dyn.h&n; *   S/390 data definiti
 macro_line|#ifndef __s390dyn_h
 DECL|macro|__s390dyn_h
 mdefine_line|#define __s390dyn_h
+macro_line|#ifndef _LINUX_LIST_H
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#endif
 r_struct
 id|_devreg
 suffix:semicolon
@@ -58,6 +61,11 @@ r_typedef
 r_struct
 id|_devreg
 (brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 r_union
 (brace
 DECL|member|devno
@@ -80,18 +88,6 @@ suffix:semicolon
 DECL|member|oper_func
 id|oper_handler_func_t
 id|oper_func
-suffix:semicolon
-DECL|member|prev
-r_struct
-id|_devreg
-op_star
-id|prev
-suffix:semicolon
-DECL|member|next
-r_struct
-id|_devreg
-op_star
-id|next
 suffix:semicolon
 DECL|typedef|devreg_t
 )brace

@@ -2537,25 +2537,7 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|oldhw
-op_logical_or
-id|memcmp
-c_func
-(paren
-id|hw-&gt;DACreg
-comma
-id|oldhw-&gt;DACreg
-comma
-r_sizeof
-(paren
-id|MGA1064_DAC_regs
-)paren
-)paren
-)paren
+multiline_comment|/*&n;&t; * We must ALWAYS reprogram hardware due to broken XF4 matrox drivers...&n;&t; *&n;&t; * if (!oldhw || memcmp(hw-&gt;DACreg, oldhw-&gt;DACreg, sizeof(MGA1064_DAC_regs))) &n;&t; */
 (brace
 r_int
 r_int

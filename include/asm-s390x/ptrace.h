@@ -2,36 +2,308 @@ multiline_comment|/*&n; *  include/asm-s390/ptrace.h&n; *&n; *  S390 version&n; 
 macro_line|#ifndef _S390_PTRACE_H
 DECL|macro|_S390_PTRACE_H
 mdefine_line|#define _S390_PTRACE_H
+multiline_comment|/*&n; * Offsets in the user_regs_struct. They are used for the ptrace&n; * system call and in entry.S&n; */
+DECL|macro|PT_PSWMASK
+mdefine_line|#define PT_PSWMASK  0x00
+DECL|macro|PT_PSWADDR
+mdefine_line|#define PT_PSWADDR  0x08
+DECL|macro|PT_GPR0
+mdefine_line|#define PT_GPR0     0x10
+DECL|macro|PT_GPR1
+mdefine_line|#define PT_GPR1     0x18
+DECL|macro|PT_GPR2
+mdefine_line|#define PT_GPR2     0x20
+DECL|macro|PT_GPR3
+mdefine_line|#define PT_GPR3     0x28
+DECL|macro|PT_GPR4
+mdefine_line|#define PT_GPR4     0x30
+DECL|macro|PT_GPR5
+mdefine_line|#define PT_GPR5     0x38
+DECL|macro|PT_GPR6
+mdefine_line|#define PT_GPR6     0x40
+DECL|macro|PT_GPR7
+mdefine_line|#define PT_GPR7     0x48
+DECL|macro|PT_GPR8
+mdefine_line|#define PT_GPR8     0x50
+DECL|macro|PT_GPR9
+mdefine_line|#define PT_GPR9     0x58
+DECL|macro|PT_GPR10
+mdefine_line|#define PT_GPR10    0x60
+DECL|macro|PT_GPR11
+mdefine_line|#define PT_GPR11    0x68
+DECL|macro|PT_GPR12
+mdefine_line|#define PT_GPR12    0x70
+DECL|macro|PT_GPR13
+mdefine_line|#define PT_GPR13    0x78
+DECL|macro|PT_GPR14
+mdefine_line|#define PT_GPR14    0x80
+DECL|macro|PT_GPR15
+mdefine_line|#define PT_GPR15    0x88
+DECL|macro|PT_ACR0
+mdefine_line|#define PT_ACR0     0x90
+DECL|macro|PT_ACR1
+mdefine_line|#define PT_ACR1     0x94
+DECL|macro|PT_ACR2
+mdefine_line|#define PT_ACR2     0x98
+DECL|macro|PT_ACR3
+mdefine_line|#define PT_ACR3     0x9C
+DECL|macro|PT_ACR4
+mdefine_line|#define PT_ACR4&t;    0xA0
+DECL|macro|PT_ACR5
+mdefine_line|#define PT_ACR5&t;    0xA4
+DECL|macro|PT_ACR6
+mdefine_line|#define PT_ACR6&t;    0xA8
+DECL|macro|PT_ACR7
+mdefine_line|#define PT_ACR7&t;    0xAC
+DECL|macro|PT_ACR8
+mdefine_line|#define PT_ACR8&t;    0xB0
+DECL|macro|PT_ACR9
+mdefine_line|#define PT_ACR9&t;    0xB4
+DECL|macro|PT_ACR10
+mdefine_line|#define PT_ACR10    0xB8
+DECL|macro|PT_ACR11
+mdefine_line|#define PT_ACR11    0xBC
+DECL|macro|PT_ACR12
+mdefine_line|#define PT_ACR12    0xC0
+DECL|macro|PT_ACR13
+mdefine_line|#define PT_ACR13    0xC4
+DECL|macro|PT_ACR14
+mdefine_line|#define PT_ACR14    0xC8
+DECL|macro|PT_ACR15
+mdefine_line|#define PT_ACR15    0xCC
+DECL|macro|PT_ORIGGPR2
+mdefine_line|#define PT_ORIGGPR2 0xD0
+DECL|macro|PT_FPC
+mdefine_line|#define PT_FPC&t;    0xD8
+DECL|macro|PT_FPR0
+mdefine_line|#define PT_FPR0     0xE0
+DECL|macro|PT_FPR1
+mdefine_line|#define PT_FPR1     0xE8
+DECL|macro|PT_FPR2
+mdefine_line|#define PT_FPR2     0xF0
+DECL|macro|PT_FPR3
+mdefine_line|#define PT_FPR3     0xF8
+DECL|macro|PT_FPR4
+mdefine_line|#define PT_FPR4     0x100
+DECL|macro|PT_FPR5
+mdefine_line|#define PT_FPR5     0x108
+DECL|macro|PT_FPR6
+mdefine_line|#define PT_FPR6     0x110
+DECL|macro|PT_FPR7
+mdefine_line|#define PT_FPR7     0x118
+DECL|macro|PT_FPR8
+mdefine_line|#define PT_FPR8     0x120
+DECL|macro|PT_FPR9
+mdefine_line|#define PT_FPR9     0x128
+DECL|macro|PT_FPR10
+mdefine_line|#define PT_FPR10    0x130
+DECL|macro|PT_FPR11
+mdefine_line|#define PT_FPR11    0x138
+DECL|macro|PT_FPR12
+mdefine_line|#define PT_FPR12    0x140
+DECL|macro|PT_FPR13
+mdefine_line|#define PT_FPR13    0x148
+DECL|macro|PT_FPR14
+mdefine_line|#define PT_FPR14    0x150
+DECL|macro|PT_FPR15
+mdefine_line|#define PT_FPR15    0x158
+DECL|macro|PT_CR_9
+mdefine_line|#define PT_CR_9     0x160
+DECL|macro|PT_CR_10
+mdefine_line|#define PT_CR_10    0x168
+DECL|macro|PT_CR_11
+mdefine_line|#define PT_CR_11    0x170
+DECL|macro|PT_IEEE_IP
+mdefine_line|#define PT_IEEE_IP  0x1A8
+DECL|macro|PT_LASTOFF
+mdefine_line|#define PT_LASTOFF  PT_IEEE_IP
+DECL|macro|PT_ENDREGS
+mdefine_line|#define PT_ENDREGS  0x1B0-1
+DECL|macro|NUM_GPRS
+mdefine_line|#define NUM_GPRS      16
+DECL|macro|NUM_FPRS
+mdefine_line|#define NUM_FPRS      16
+DECL|macro|NUM_CRS
+mdefine_line|#define NUM_CRS       16
+DECL|macro|NUM_ACRS
+mdefine_line|#define NUM_ACRS      16
+DECL|macro|GPR_SIZE
+mdefine_line|#define GPR_SIZE      8
+DECL|macro|FPR_SIZE
+mdefine_line|#define FPR_SIZE      8
+DECL|macro|FPC_SIZE
+mdefine_line|#define FPC_SIZE      4
+DECL|macro|FPC_PAD_SIZE
+mdefine_line|#define FPC_PAD_SIZE  4 /* gcc insists on aligning the fpregs */
+DECL|macro|CR_SIZE
+mdefine_line|#define CR_SIZE       8
+DECL|macro|ACR_SIZE
+mdefine_line|#define ACR_SIZE      4
+DECL|macro|STACK_FRAME_OVERHEAD
+mdefine_line|#define STACK_FRAME_OVERHEAD    160      /* size of minimum stack frame */
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/s390-regs-common.h&gt;
-macro_line|#include &lt;asm/current.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
-DECL|macro|S390_REGS
-mdefine_line|#define S390_REGS   &bslash;&n;S390_REGS_COMMON    &bslash;&n;addr_t orig_gpr2;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/current.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
+multiline_comment|/* this typedef defines how a Program Status Word looks like */
 r_typedef
 r_struct
 (brace
-id|S390_REGS
-DECL|typedef|s390_regs
+DECL|member|mask
+id|__u64
+id|mask
+suffix:semicolon
+DECL|member|addr
+id|__u64
+id|addr
+suffix:semicolon
+DECL|typedef|psw_t
 )brace
+id|psw_t
 id|__attribute__
 (paren
 (paren
-id|packed
+id|aligned
+c_func
+(paren
+l_int|8
 )paren
 )paren
+)paren
+suffix:semicolon
+macro_line|#ifdef __KERNEL__
+DECL|macro|FIX_PSW
+mdefine_line|#define FIX_PSW(addr) ((unsigned long)(addr))
+DECL|macro|ADDR_BITS_REMOVE
+mdefine_line|#define ADDR_BITS_REMOVE(addr) ((addr))
+macro_line|#endif
+r_typedef
+r_union
+(brace
+DECL|member|f
+r_float
+id|f
+suffix:semicolon
+DECL|member|d
+r_float
+id|d
+suffix:semicolon
+DECL|member|ui
+id|__u64
+id|ui
+suffix:semicolon
+r_struct
+(brace
+DECL|member|hi
+id|__u32
+id|hi
+suffix:semicolon
+DECL|member|lo
+id|__u32
+id|lo
+suffix:semicolon
+DECL|member|fp
+)brace
+id|fp
+suffix:semicolon
+DECL|typedef|freg_t
+)brace
+id|freg_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|fpc
+id|__u32
+id|fpc
+suffix:semicolon
+DECL|member|fprs
+id|freg_t
+id|fprs
+(braket
+id|NUM_FPRS
+)braket
+suffix:semicolon
+DECL|typedef|s390_fp_regs
+)brace
+id|s390_fp_regs
+suffix:semicolon
+DECL|macro|FPC_EXCEPTION_MASK
+mdefine_line|#define FPC_EXCEPTION_MASK      0xF8000000
+DECL|macro|FPC_FLAGS_MASK
+mdefine_line|#define FPC_FLAGS_MASK          0x00F80000
+DECL|macro|FPC_DXC_MASK
+mdefine_line|#define FPC_DXC_MASK            0x0000FF00
+DECL|macro|FPC_RM_MASK
+mdefine_line|#define FPC_RM_MASK             0x00000003
+DECL|macro|FPC_VALID_MASK
+mdefine_line|#define FPC_VALID_MASK          0xF8F8FF03
+multiline_comment|/*&n; * The first entries in pt_regs, gdb_pt_regs and user_regs_struct&n; * are common for all three structures. The s390_regs structure&n; * covers the common parts. It simplifies copying the common part&n; * between the three structures.&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|psw
+id|psw_t
+id|psw
+suffix:semicolon
+DECL|member|gprs
+id|__u64
+id|gprs
+(braket
+id|NUM_GPRS
+)braket
+suffix:semicolon
+DECL|member|acrs
+id|__u32
+id|acrs
+(braket
+id|NUM_ACRS
+)braket
+suffix:semicolon
+DECL|member|orig_gpr2
+id|__u64
+id|orig_gpr2
+suffix:semicolon
+DECL|typedef|s390_regs
+)brace
 id|s390_regs
 suffix:semicolon
+multiline_comment|/*&n; * The pt_regs struct defines the way the registers are stored on&n; * the stack during a system call.&n; */
 DECL|struct|pt_regs
 r_struct
 id|pt_regs
 (brace
-id|S390_REGS
+DECL|member|psw
+id|psw_t
+id|psw
+suffix:semicolon
+DECL|member|gprs
+id|__u64
+id|gprs
+(braket
+id|NUM_GPRS
+)braket
+suffix:semicolon
+DECL|member|acrs
+id|__u32
+id|acrs
+(braket
+id|NUM_ACRS
+)braket
+suffix:semicolon
+DECL|member|orig_gpr2
+id|__u64
+id|orig_gpr2
+suffix:semicolon
 DECL|member|trap
 id|__u32
 id|trap
+suffix:semicolon
+DECL|member|old_ilc
+id|__u32
+id|old_ilc
 suffix:semicolon
 )brace
 id|__attribute__
@@ -41,17 +313,40 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * The gdb_pt_regs struct is used instead of the pt_regs structure&n; * if kernel remote debugging is used.&n; */
 macro_line|#if CONFIG_REMOTE_DEBUG
-r_typedef
+DECL|struct|gdb_pt_regs
 r_struct
+id|gdb_pt_regs
 (brace
-id|S390_REGS
+DECL|member|psw
+id|psw_t
+id|psw
+suffix:semicolon
+DECL|member|gprs
+id|__u64
+id|gprs
+(braket
+id|NUM_GPRS
+)braket
+suffix:semicolon
+DECL|member|acrs
+id|__u32
+id|acrs
+(braket
+id|NUM_ACRS
+)braket
+suffix:semicolon
+DECL|member|orig_gpr2
+id|__u64
+id|orig_gpr2
+suffix:semicolon
 DECL|member|trap
 id|__u32
 id|trap
 suffix:semicolon
 DECL|member|crs
-id|addr_t
+id|__u32
 id|crs
 (braket
 l_int|16
@@ -61,22 +356,15 @@ DECL|member|fp_regs
 id|s390_fp_regs
 id|fp_regs
 suffix:semicolon
-DECL|typedef|gdb_pt_regs
 )brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|gdb_pt_regs
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n; * Now for the program event recording (trace) definitions.&n; */
 r_typedef
 r_struct
 (brace
 DECL|member|cr
-id|addr_t
+id|__u64
 id|cr
 (braket
 l_int|3
@@ -114,7 +402,7 @@ id|em_instruction_fetch
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Switching on storage alteration automatically fixes&n;&t;   the storage alteration event bit in the users std. */
+multiline_comment|/*&n;&t; * Switching on storage alteration automatically fixes&n;&t; * the storage alteration event bit in the users std.&n;&t; */
 DECL|member|em_storage_alteration
 r_int
 id|em_storage_alteration
@@ -155,11 +443,7 @@ l_int|1
 suffix:semicolon
 r_int
 suffix:colon
-l_int|5
-suffix:semicolon
-r_int
-suffix:colon
-l_int|16
+l_int|21
 suffix:semicolon
 DECL|member|starting_addr
 id|addr_t
@@ -187,17 +471,14 @@ DECL|member|perc_atmid
 id|__u16
 id|perc_atmid
 suffix:semicolon
-multiline_comment|/* 0x096 */
 DECL|member|address
 id|addr_t
 id|address
 suffix:semicolon
-multiline_comment|/* 0x098 */
 DECL|member|access_id
 id|__u8
 id|access_id
 suffix:semicolon
-multiline_comment|/* 0x0a1 */
 DECL|typedef|per_lowcore_words
 )brace
 id|per_lowcore_words
@@ -283,9 +564,9 @@ id|atmid_psw_bit_17
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|ai
+DECL|member|si
 r_int
-id|ai
+id|si
 suffix:colon
 l_int|2
 suffix:semicolon
@@ -317,24 +598,6 @@ id|packed
 )paren
 suffix:semicolon
 r_typedef
-r_enum
-(brace
-DECL|enumerator|primary_asce
-id|primary_asce
-comma
-DECL|enumerator|ar_asce
-id|ar_asce
-comma
-DECL|enumerator|secondary_asce
-id|secondary_asce
-comma
-DECL|enumerator|home_space_asce
-id|home_space_asce
-DECL|typedef|per_ai_codes
-)brace
-id|per_ai_codes
-suffix:semicolon
-r_typedef
 r_struct
 (brace
 r_union
@@ -358,9 +621,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Use these flags instead of setting em_instruction_fetch */
-multiline_comment|/* directly they are used so that single stepping can be */
-multiline_comment|/* switched on &amp; off while not affecting other tracing */
+multiline_comment|/*&n;&t; * Use these flags instead of setting em_instruction_fetch&n;&t; * directly they are used so that single stepping can be&n;&t; * switched on &amp; off while not affecting other tracing&n;&t; */
 DECL|member|single_step
 r_int
 id|single_step
@@ -377,7 +638,7 @@ r_int
 suffix:colon
 l_int|30
 suffix:semicolon
-multiline_comment|/* These addresses are copied into cr10 &amp; cr11 if single stepping&n;&t;   is switched off */
+multiline_comment|/*&n;&t; * These addresses are copied into cr10 &amp; cr11 if single&n;&t; * stepping is switched off&n;&t; */
 DECL|member|starting_addr
 id|addr_t
 id|starting_addr
@@ -411,873 +672,26 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* this struct defines the way the registers are stored on the&n;   stack during a system call. If you change the pt_regs structure,&n;   you&squot;ll need to change user.h too. &n;&n;   N.B. if you modify the pt_regs struct the strace command also has to be&n;   modified &amp; recompiled  ( just wait till we have gdb going ).&n;&n;*/
-DECL|struct|user_regs_struct
+r_typedef
 r_struct
-id|user_regs_struct
 (brace
-id|S390_REGS
-DECL|member|fp_regs
-id|s390_fp_regs
-id|fp_regs
+DECL|member|len
+id|__u32
+id|len
 suffix:semicolon
-multiline_comment|/* These per registers are in here so that gdb can modify them itself&n; * as there is no &quot;official&quot; ptrace interface for hardware watchpoints.&n; * this is the way intel does it&n; */
-DECL|member|per_info
-id|per_struct
-id|per_info
-suffix:semicolon
-DECL|member|ieee_instruction_pointer
+DECL|member|kernel_addr
 id|addr_t
-id|ieee_instruction_pointer
+id|kernel_addr
 suffix:semicolon
-multiline_comment|/* Used to give failing instruction back to user for ieee exceptions */
-)brace
+DECL|member|process_addr
+id|addr_t
+id|process_addr
 suffix:semicolon
-DECL|typedef|user_regs_struct
-r_typedef
-r_struct
-id|user_regs_struct
-id|user_regs_struct
-suffix:semicolon
-DECL|typedef|pt_regs
-r_typedef
-r_struct
-id|pt_regs
-id|pt_regs
-suffix:semicolon
-macro_line|#ifdef __KERNEL__
-DECL|macro|user_mode
-mdefine_line|#define user_mode(regs) (((regs)-&gt;psw.mask &amp; PSW_PROBLEM_STATE) != 0)
-DECL|macro|instruction_pointer
-mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;psw.addr)
-r_extern
-r_void
-id|show_regs
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_char
-op_star
-id|task_show_regs
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_char
-op_star
-id|buffer
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|macro|FIX_PSW
-mdefine_line|#define FIX_PSW(addr) ((unsigned long)(addr))
-DECL|macro|MULT_PROCPTR_TYPES
-mdefine_line|#define MULT_PROCPTR_TYPES    ((CONFIG_BINFMT_ELF)&amp;&amp;(CONFIG_BINFMT_TOC))
-r_typedef
-r_struct
-(brace
-DECL|member|addr
-r_int
-id|addr
-suffix:semicolon
-DECL|member|toc
-r_int
-id|toc
-suffix:semicolon
-DECL|typedef|routine_descriptor
-)brace
-id|routine_descriptor
-suffix:semicolon
-r_extern
-r_void
-id|fix_routine_descriptor_regs
-c_func
-(paren
-id|routine_descriptor
-op_star
-id|rdes
-comma
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-id|__inline__
-r_void
-DECL|function|fix_routine_descriptor_regs
-id|fix_routine_descriptor_regs
-c_func
-(paren
-id|routine_descriptor
-op_star
-id|rdes
-comma
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-id|regs-&gt;psw.addr
-op_assign
-id|FIX_PSW
-c_func
-(paren
-id|rdes-&gt;addr
-)paren
-suffix:semicolon
-id|regs-&gt;gprs
-(braket
-l_int|12
-)braket
-op_assign
-id|rdes-&gt;toc
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Compiler optimisation should save this stuff from being non optimal&n; * &amp; remove uneccessary code ( isnt gcc great DJB. )&n; */
-multiline_comment|/*I&squot;m just using this an indicator of what binformat we are using&n; * (DJB) N.B. this needs to stay a macro unfortunately as I am otherwise&n; * dereferencing incomplete pointer types in with load_toc_binary&n; */
-macro_line|#if MULT_PROCPTR_TYPES
-DECL|macro|uses_routine_descriptors
-mdefine_line|#define uses_routine_descriptors() &bslash;&n;(current-&gt;binfmt-&gt;load_binary==load_toc_binary)
-macro_line|#else
-macro_line|#if CONFIG_BINFMT_TOC
-DECL|macro|uses_routine_descriptors
-mdefine_line|#define uses_routine_descriptors() 1
-macro_line|#else
-DECL|macro|uses_routine_descriptors
-mdefine_line|#define uses_routine_descriptors() 0
-macro_line|#endif
-macro_line|#endif
-DECL|macro|pt_off
-mdefine_line|#define pt_off(ptreg)   offsetof(user_regs_struct,ptreg)
-r_enum
-(brace
-DECL|enumerator|PT_PSWMASK
-id|PT_PSWMASK
-op_assign
-id|pt_off
-c_func
-(paren
-id|psw.mask
-)paren
-comma
-DECL|enumerator|PT_PSWADDR
-id|PT_PSWADDR
-op_assign
-id|pt_off
-c_func
-(paren
-id|psw.addr
-)paren
-comma
-DECL|enumerator|PT_GPR0
-id|PT_GPR0
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|0
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR1
-id|PT_GPR1
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|1
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR2
-id|PT_GPR2
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|2
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR3
-id|PT_GPR3
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|3
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR4
-id|PT_GPR4
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|4
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR5
-id|PT_GPR5
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|5
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR6
-id|PT_GPR6
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|6
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR7
-id|PT_GPR7
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|7
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR8
-id|PT_GPR8
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|8
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR9
-id|PT_GPR9
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|9
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR10
-id|PT_GPR10
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|10
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR11
-id|PT_GPR11
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|11
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR12
-id|PT_GPR12
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|12
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR13
-id|PT_GPR13
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|13
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR14
-id|PT_GPR14
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|14
-)braket
-)paren
-comma
-DECL|enumerator|PT_GPR15
-id|PT_GPR15
-op_assign
-id|pt_off
-c_func
-(paren
-id|gprs
-(braket
-l_int|15
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR0
-id|PT_ACR0
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|0
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR1
-id|PT_ACR1
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|1
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR2
-id|PT_ACR2
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|2
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR3
-id|PT_ACR3
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|3
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR4
-id|PT_ACR4
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|4
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR5
-id|PT_ACR5
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|5
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR6
-id|PT_ACR6
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|6
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR7
-id|PT_ACR7
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|7
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR8
-id|PT_ACR8
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|8
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR9
-id|PT_ACR9
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|9
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR10
-id|PT_ACR10
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|10
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR11
-id|PT_ACR11
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|11
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR12
-id|PT_ACR12
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|12
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR13
-id|PT_ACR13
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|13
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR14
-id|PT_ACR14
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|14
-)braket
-)paren
-comma
-DECL|enumerator|PT_ACR15
-id|PT_ACR15
-op_assign
-id|pt_off
-c_func
-(paren
-id|acrs
-(braket
-l_int|15
-)braket
-)paren
-comma
-DECL|enumerator|PT_ORIGGPR2
-id|PT_ORIGGPR2
-op_assign
-id|pt_off
-c_func
-(paren
-id|orig_gpr2
-)paren
-comma
-DECL|enumerator|PT_FPC
-id|PT_FPC
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fpc
-)paren
-comma
-multiline_comment|/*&n; *      A nasty fact of life that the ptrace api&n; *      only supports passing of longs.&n; */
-DECL|enumerator|PT_FPR0
-id|PT_FPR0
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|0
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR1
-id|PT_FPR1
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|1
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR2
-id|PT_FPR2
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|2
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR3
-id|PT_FPR3
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|3
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR4
-id|PT_FPR4
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|4
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR5
-id|PT_FPR5
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|5
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR6
-id|PT_FPR6
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|6
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR7
-id|PT_FPR7
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|7
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR8
-id|PT_FPR8
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|8
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR9
-id|PT_FPR9
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|9
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR10
-id|PT_FPR10
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|10
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR11
-id|PT_FPR11
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|11
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR12
-id|PT_FPR12
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|12
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR13
-id|PT_FPR13
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|13
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR14
-id|PT_FPR14
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|14
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_FPR15
-id|PT_FPR15
-op_assign
-id|pt_off
-c_func
-(paren
-id|fp_regs.fprs
-(braket
-l_int|15
-)braket
-dot
-id|d
-)paren
-comma
-DECL|enumerator|PT_CR_9
-id|PT_CR_9
-op_assign
-id|pt_off
-c_func
-(paren
-id|per_info.control_regs.words.cr
-(braket
-l_int|0
-)braket
-)paren
-comma
-DECL|enumerator|PT_CR_10
-id|PT_CR_10
-op_assign
-id|pt_off
-c_func
-(paren
-id|per_info.control_regs.words.cr
-(braket
-l_int|1
-)braket
-)paren
-comma
-DECL|enumerator|PT_CR_11
-id|PT_CR_11
-op_assign
-id|pt_off
-c_func
-(paren
-id|per_info.control_regs.words.cr
-(braket
-l_int|2
-)braket
-)paren
-comma
-DECL|enumerator|PT_IEEE_IP
-id|PT_IEEE_IP
-op_assign
-id|pt_off
-c_func
-(paren
-id|ieee_instruction_pointer
-)paren
-comma
-DECL|enumerator|PT_LASTOFF
-id|PT_LASTOFF
-op_assign
-id|PT_IEEE_IP
-comma
-DECL|enumerator|PT_ENDREGS
-id|PT_ENDREGS
-op_assign
-r_sizeof
-(paren
-id|user_regs_struct
-)paren
-op_minus
-l_int|1
-)brace
-suffix:semicolon
-DECL|macro|PTRACE_AREA
-mdefine_line|#define PTRACE_AREA &bslash;&n;__u32 len;          &bslash;&n;addr_t  kernel_addr; &bslash;&n;addr_t  process_addr;
-r_typedef
-r_struct
-(brace
-id|PTRACE_AREA
 DECL|typedef|ptrace_area
 )brace
 id|ptrace_area
 suffix:semicolon
-multiline_comment|/*&n;  390 specific non posix ptrace requests&n;  I chose unusual values so they are unlikely to clash with future ptrace definitions.&n; */
+multiline_comment|/*&n; * S/390 specific non posix ptrace requests. I chose unusual values so&n; * they are unlikely to clash with future ptrace definitions.&n; */
 DECL|macro|PTRACE_PEEKUSR_AREA
 mdefine_line|#define PTRACE_PEEKUSR_AREA           0x5000
 DECL|macro|PTRACE_POKEUSR_AREA
@@ -1290,7 +704,7 @@ DECL|macro|PTRACE_POKETEXT_AREA
 mdefine_line|#define PTRACE_POKETEXT_AREA&t;      0x5004
 DECL|macro|PTRACE_POKEDATA_AREA
 mdefine_line|#define PTRACE_POKEDATA_AREA &t;      0x5005
-multiline_comment|/* PT_PROT definition is loosely based on hppa bsd definition in gdb/hppab-nat.c */
+multiline_comment|/*&n; * PT_PROT definition is loosely based on hppa bsd definition in&n; * gdb/hppab-nat.c&n; */
 DECL|macro|PTRACE_PROT
 mdefine_line|#define PTRACE_PROT                       21
 r_typedef
@@ -1327,5 +741,91 @@ DECL|typedef|ptprot_area
 )brace
 id|ptprot_area
 suffix:semicolon
+multiline_comment|/* Sequence of bytes for breakpoint illegal instruction.  */
+DECL|macro|S390_BREAKPOINT
+mdefine_line|#define S390_BREAKPOINT     {0x0,0x1}
+DECL|macro|S390_BREAKPOINT_U16
+mdefine_line|#define S390_BREAKPOINT_U16 ((__u16)0x0001)
+DECL|macro|S390_SYSCALL_OPCODE
+mdefine_line|#define S390_SYSCALL_OPCODE ((__u16)0x0a00)
+DECL|macro|S390_SYSCALL_SIZE
+mdefine_line|#define S390_SYSCALL_SIZE   2
+multiline_comment|/*&n; * The user_regs_struct defines the way the user registers are&n; * store on the stack for signal handling.&n; */
+DECL|struct|user_regs_struct
+r_struct
+id|user_regs_struct
+(brace
+DECL|member|psw
+id|psw_t
+id|psw
+suffix:semicolon
+DECL|member|gprs
+id|__u64
+id|gprs
+(braket
+id|NUM_GPRS
+)braket
+suffix:semicolon
+DECL|member|acrs
+id|__u32
+id|acrs
+(braket
+id|NUM_ACRS
+)braket
+suffix:semicolon
+DECL|member|orig_gpr2
+id|__u64
+id|orig_gpr2
+suffix:semicolon
+DECL|member|fp_regs
+id|s390_fp_regs
+id|fp_regs
+suffix:semicolon
+multiline_comment|/*&n;&t; * These per registers are in here so that gdb can modify them&n;&t; * itself as there is no &quot;official&quot; ptrace interface for hardware&n;&t; * watchpoints. This is the way intel does it.&n;&t; */
+DECL|member|per_info
+id|per_struct
+id|per_info
+suffix:semicolon
+DECL|member|ieee_instruction_pointer
+id|addr_t
+id|ieee_instruction_pointer
+suffix:semicolon
+multiline_comment|/* Used to give failing instruction back to user for ieee exceptions */
+)brace
+suffix:semicolon
+macro_line|#ifdef __KERNEL__
+DECL|macro|user_mode
+mdefine_line|#define user_mode(regs) (((regs)-&gt;psw.mask &amp; PSW_PROBLEM_STATE) != 0)
+DECL|macro|instruction_pointer
+mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;psw.addr)
+r_extern
+r_void
+id|show_regs
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|task_show_regs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+r_char
+op_star
+id|buffer
+)paren
+suffix:semicolon
 macro_line|#endif
+macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#endif /* _S390X_PTRACE_H */
 eof

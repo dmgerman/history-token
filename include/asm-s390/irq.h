@@ -1,6 +1,6 @@
-macro_line|#ifndef __irq_h
-DECL|macro|__irq_h
-mdefine_line|#define __irq_h
+macro_line|#ifndef _ASM_IRQ_H
+DECL|macro|_ASM_IRQ_H
+mdefine_line|#define _ASM_IRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/hardirq.h&gt;
@@ -31,70 +31,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Interrupt controller descriptor. This is all we need&n; * to describe about the low-level hardware.&n; */
-DECL|struct|hw_interrupt_type
-r_struct
-id|hw_interrupt_type
-(brace
-DECL|member|typename
-r_const
-id|__u8
-op_star
-r_typename
-suffix:semicolon
-DECL|member|handle
-r_int
-(paren
-op_star
-id|handle
-)paren
-(paren
-r_int
-r_int
-id|irq
-comma
-r_int
-id|cpu
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-DECL|member|enable
-r_int
-(paren
-op_star
-id|enable
-)paren
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|member|disable
-r_int
-(paren
-op_star
-id|disable
-)paren
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Status: reason for being disabled: somebody has&n; * done a &quot;disable_irq()&quot; or we must not re-enter the&n; * already executing irq..&n; */
-DECL|macro|IRQ_INPROGRESS
-mdefine_line|#define IRQ_INPROGRESS  1
-DECL|macro|IRQ_DISABLED
-mdefine_line|#define IRQ_DISABLED    2
-DECL|macro|IRQ_PENDING
-mdefine_line|#define IRQ_PENDING     4
 multiline_comment|/*&n; * path management control word&n; */
 r_typedef
 r_struct
@@ -332,7 +268,7 @@ id|ssi
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* suppress-suspended interruption */
+multiline_comment|/* supress-suspended interruption */
 DECL|member|zcc
 id|__u32
 id|zcc
@@ -581,7 +517,7 @@ DECL|member|flags
 id|__u8
 id|flags
 suffix:semicolon
-multiline_comment|/* flags, like IDA addressing, etc. */
+multiline_comment|/* flags, like IDA adressing, etc. */
 DECL|member|count
 id|__u16
 id|count
@@ -1612,56 +1548,27 @@ id|__u32
 id|intparm
 )paren
 suffix:semicolon
-DECL|struct|s390_irqaction
+r_typedef
 r_struct
-id|s390_irqaction
 (brace
 DECL|member|handler
 id|io_handler_func_t
 id|handler
 suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
+multiline_comment|/* interrupt handler routine */
 DECL|member|name
 r_const
 r_char
 op_star
 id|name
 suffix:semicolon
+multiline_comment|/* device name */
 DECL|member|dev_id
 id|devstat_t
 op_star
 id|dev_id
 suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * This is the &quot;IRQ descriptor&quot;, which contains various information&n; * about the irq, including what kind of hardware handling it has,&n; * whether it is disabled etc etc.&n; *&n; * Pad this out to 32 bytes for cache and indexing reasons.&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|status
-r_int
-r_int
-id|status
-suffix:semicolon
-multiline_comment|/* IRQ status - IRQ_INPROGRESS, IRQ_DISABLED */
-DECL|member|handler
-r_struct
-id|hw_interrupt_type
-op_star
-id|handler
-suffix:semicolon
-multiline_comment|/* handle/enable/disable functions */
-DECL|member|action
-r_struct
-id|s390_irqaction
-op_star
-id|action
-suffix:semicolon
-multiline_comment|/* IRQ action list */
+multiline_comment|/* device status block */
 DECL|typedef|irq_desc_t
 )brace
 id|irq_desc_t
@@ -1812,7 +1719,7 @@ DECL|macro|DOIO_TIMEOUT
 mdefine_line|#define DOIO_TIMEOUT             0x0080 /* 3 secs. timeout for sync. I/O */
 DECL|macro|DOIO_DONT_CALL_INTHDLR
 mdefine_line|#define DOIO_DONT_CALL_INTHDLR   0x0100 /* don&squot;t call interrupt handler */
-multiline_comment|/*&n; * do_IO()&n; *&n; * Start a S/390 channel program. When the interrupt arrives&n; *  handle_IRQ_event() is called, which eventually calls the&n; *  IRQ handler, either immediately, delayed (dev-end missing,&n; *  or sense required) or never (no IRQ handler registered -&n; *  should never occur, as the IRQ (subchannel ID) should be&n; *  disabled if no handler is present. Depending on the action&n; *  taken, do_IO() returns :  0      - Success&n; *                           -EIO    - Status pending&n; *                                        see : action-&gt;dev_id-&gt;cstat&n; *                                              action-&gt;dev_id-&gt;dstat&n; *                           -EBUSY  - Device busy&n; *                           -ENODEV - Device not operational&n; */
+multiline_comment|/*&n; * do_IO()&n; *&n; *  Start a S/390 channel program. When the interrupt arrives, the&n; *  IRQ handler is called, either immediately, delayed (dev-end missing,&n; *  or sense required) or never (no IRQ handler registered -&n; *  should never occur, as the IRQ (subchannel ID) should be&n; *  disabled if no handler is present. Depending on the action&n; *  taken, do_IO() returns :  0      - Success&n; *                           -EIO    - Status pending&n; *                                        see : action-&gt;dev_id-&gt;cstat&n; *                                              action-&gt;dev_id-&gt;dstat&n; *                           -EBUSY  - Device busy&n; *                           -ENODEV - Device not operational&n; */
 r_int
 id|do_IO
 c_func
@@ -2126,23 +2033,6 @@ id|dev_id
 suffix:semicolon
 r_extern
 r_int
-id|handle_IRQ_event
-c_func
-(paren
-r_int
-r_int
-id|irq
-comma
-r_int
-id|cpu
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|set_cons_dev
 c_func
 (paren
@@ -2192,25 +2082,21 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;LGR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#else
-l_string|&quot;LR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#endif
-l_string|&quot;STSCH 0(%2)&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   lr    1,%1&bslash;n&quot;
+l_string|&quot;   stsch 0(%2)&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|ccode
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;d&quot;
 (paren
 id|irq
 op_or
-l_int|0x10000L
+l_int|0x10000
 )paren
 comma
 l_string|&quot;a&quot;
@@ -2250,21 +2136,17 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;LGR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#else
-l_string|&quot;LR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#endif
-l_string|&quot;MSCH 0(%2)&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   lr    1,%1&bslash;n&quot;
+l_string|&quot;   msch  0(%2)&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|ccode
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;d&quot;
 (paren
 id|irq
 op_or
@@ -2308,12 +2190,12 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;    lgr  1,%1&bslash;n&quot;
+l_string|&quot;    lr   1,%1&bslash;n&quot;
 l_string|&quot;    msch 0(%2)&bslash;n&quot;
 l_string|&quot;0:  ipm  %0&bslash;n&quot;
 l_string|&quot;    srl  %0,28&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
+macro_line|#ifdef CONFIG_ARCH_S390X
 l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;2:  l    %0,%3&bslash;n&quot;
 l_string|&quot;    jg   1b&bslash;n&quot;
@@ -2322,12 +2204,12 @@ l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
 l_string|&quot;   .align 8&bslash;n&quot;
 l_string|&quot;   .quad 0b,2b&bslash;n&quot;
 l_string|&quot;.previous&quot;
-macro_line|#else
 l_string|&quot;    lr   1,%1&bslash;n&quot;
 l_string|&quot;    msch 0(%2)&bslash;n&quot;
 l_string|&quot;0:  ipm  %0&bslash;n&quot;
 l_string|&quot;    srl  %0,28&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
+macro_line|#else
 l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;2:  l    %0,%3&bslash;n&quot;
 l_string|&quot;    bras 1,3f&bslash;n&quot;
@@ -2346,7 +2228,7 @@ l_string|&quot;=d&quot;
 id|ccode
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;d&quot;
 (paren
 id|irq
 op_or
@@ -2395,21 +2277,17 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;LGR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#else
-l_string|&quot;LR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#endif
-l_string|&quot;TSCH 0(%2)&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   lr    1,%1&bslash;n&quot;
+l_string|&quot;   tsch  0(%2)&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|ccode
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;d&quot;
 (paren
 id|irq
 op_or
@@ -2450,9 +2328,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;TPI 0(%1)&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   tpi   0(%1)&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
@@ -2496,21 +2374,17 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;LGR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#else
-l_string|&quot;LR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#endif
-l_string|&quot;SSCH 0(%2)&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   lr    1,%1&bslash;n&quot;
+l_string|&quot;   ssch  0(%2)&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|ccode
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;d&quot;
 (paren
 id|irq
 op_or
@@ -2549,21 +2423,17 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;LGR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#else
-l_string|&quot;LR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#endif
-l_string|&quot;RSCH&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   lr    1,%1&bslash;n&quot;
+l_string|&quot;   rsch&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|ccode
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;d&quot;
 (paren
 id|irq
 op_or
@@ -2597,21 +2467,17 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;LGR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#else
-l_string|&quot;LR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#endif
-l_string|&quot;CSCH&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   lr    1,%1&bslash;n&quot;
+l_string|&quot;   csch&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|ccode
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;d&quot;
 (paren
 id|irq
 op_or
@@ -2645,21 +2511,17 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;LGR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#else
-l_string|&quot;LR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#endif
-l_string|&quot;HSCH&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   lr    1,%1&bslash;n&quot;
+l_string|&quot;   hsch&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|ccode
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;d&quot;
 (paren
 id|irq
 op_or
@@ -2692,9 +2554,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;IAC 1&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   iac   1&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
@@ -2729,21 +2591,17 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;LGR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#else
-l_string|&quot;LR 1,%1&bslash;n&bslash;t&quot;
-macro_line|#endif
-l_string|&quot;RCHP&bslash;n&bslash;t&quot;
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   lr    1,%1&bslash;n&quot;
+l_string|&quot;   rchp&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|ccode
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;d&quot;
 (paren
 id|chpid
 )paren
@@ -2880,15 +2738,14 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;SAM31&bslash;n&bslash;t&quot;
-l_string|&quot;DIAG %1,0,0x210&bslash;n&bslash;t&quot;
-l_string|&quot;SAM64&bslash;n&bslash;t&quot;
+l_string|&quot;   sam31&bslash;n&quot;
+l_string|&quot;   diag  %1,0,0x210&bslash;n&quot;
+l_string|&quot;   sam64&bslash;n&quot;
 macro_line|#else
-l_string|&quot;LR 1,%1&bslash;n&bslash;t&quot;
-l_string|&quot;.long 0x83110210&bslash;n&bslash;t&quot;
+l_string|&quot;   diag  %1,0,0x210&bslash;n&quot;
 macro_line|#endif
-l_string|&quot;IPM %0&bslash;n&bslash;t&quot;
-l_string|&quot;SRL %0,28&bslash;n&bslash;t&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
@@ -2955,7 +2812,6 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ARCH_S390X
 r_while
 c_loop
 (paren
@@ -2975,27 +2831,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-r_while
-c_loop
-(paren
-id|test_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|global_irq_lock
-)paren
-)paren
-(brace
-id|eieio
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 DECL|function|irq_exit
 r_static
@@ -3122,6 +2957,8 @@ DECL|macro|s390irq_spin_lock_irqsave
 mdefine_line|#define s390irq_spin_lock_irqsave(irq,flags) &bslash;&n;        spin_lock_irqsave(&amp;(ioinfo[irq]-&gt;irq_lock), flags)
 DECL|macro|s390irq_spin_unlock_irqrestore
 mdefine_line|#define s390irq_spin_unlock_irqrestore(irq,flags) &bslash;&n;        spin_unlock_irqrestore(&amp;(ioinfo[irq]-&gt;irq_lock), flags)
+DECL|macro|touch_nmi_watchdog
+mdefine_line|#define touch_nmi_watchdog() do { } while(0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

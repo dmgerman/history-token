@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  arch/s390/kernel/s390_ext.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Holger Smolinski (Holger.Smolinski@de.ibm.com),&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
@@ -283,4 +284,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|register_external_interrupt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_external_interrupt
+)paren
+suffix:semicolon
+DECL|variable|unregister_external_interrupt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_external_interrupt
+)paren
+suffix:semicolon
 eof

@@ -1296,12 +1296,6 @@ c_cond
 id|bh
 )paren
 (brace
-id|kunmap
-c_func
-(paren
-id|bh-&gt;b_page
-)paren
-suffix:semicolon
 id|__free_page
 c_func
 (paren
@@ -1678,6 +1672,8 @@ id|BH_Lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * easy way out, although it does waste some memory for &lt; PAGE_SIZE&n;&t; * blocks... if highmem bounce buffering can get away with it,&n;&t; * so can we :-)&n;&t; */
+r_do
+(brace
 id|bh-&gt;b_page
 op_assign
 id|alloc_page
@@ -1686,9 +1682,36 @@ c_func
 id|GFP_BUFFER
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bh-&gt;b_page
+)paren
+r_break
+suffix:semicolon
+id|run_task_queue
+c_func
+(paren
+op_amp
+id|tq_disk
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|bh-&gt;b_data
 op_assign
-id|kmap
+id|page_address
 c_func
 (paren
 id|bh-&gt;b_page
@@ -1902,6 +1925,7 @@ op_amp
 id|LO_FLAGS_DO_BMAP
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * rbh locked at this point, noone else should clear&n;&t;&t; * the dirty flag&n;&t;&t; */
 r_if
 c_cond
 (paren

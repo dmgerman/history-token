@@ -1,7 +1,7 @@
 macro_line|#ifndef __CS461X_H
 DECL|macro|__CS461X_H
 mdefine_line|#define __CS461X_H
-multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Definitions for Cirrus Logic CS461x chips&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; *  Copyright (c) by Cirrus Logic Corporation &lt;pcaudio@crystal.cirrus.com&gt;&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Definitions for Cirrus Logic CS461x chips&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#ifndef PCI_VENDOR_ID_CIRRUS
 DECL|macro|PCI_VENDOR_ID_CIRRUS
 mdefine_line|#define PCI_VENDOR_ID_CIRRUS            0x1013
@@ -2196,5 +2196,143 @@ DECL|macro|CS461X_MODE_OUTPUT
 mdefine_line|#define CS461X_MODE_OUTPUT&t;(1&lt;&lt;0)&t; /* MIDI UART - output */ 
 DECL|macro|CS461X_MODE_INPUT
 mdefine_line|#define CS461X_MODE_INPUT&t;(1&lt;&lt;1)&t; /* MIDI UART - input */
+singleline_comment|//****************************************************************************
+singleline_comment|//
+singleline_comment|// The following define the offsets of the AC97 shadow registers, which appear
+singleline_comment|// as a virtual extension to the base address register zero memory range.
+singleline_comment|//
+singleline_comment|//****************************************************************************
+DECL|macro|AC97_REG_OFFSET_MASK
+mdefine_line|#define AC97_REG_OFFSET_MASK                    0x0000007EL
+DECL|macro|AC97_CODEC_NUMBER_MASK
+mdefine_line|#define AC97_CODEC_NUMBER_MASK                  0x00003000L
+DECL|macro|BA0_AC97_RESET
+mdefine_line|#define BA0_AC97_RESET                          0x00001000L
+DECL|macro|BA0_AC97_MASTER_VOLUME
+mdefine_line|#define BA0_AC97_MASTER_VOLUME                  0x00001002L
+DECL|macro|BA0_AC97_HEADPHONE_VOLUME
+mdefine_line|#define BA0_AC97_HEADPHONE_VOLUME               0x00001004L
+DECL|macro|BA0_AC97_MASTER_VOLUME_MONO
+mdefine_line|#define BA0_AC97_MASTER_VOLUME_MONO             0x00001006L
+DECL|macro|BA0_AC97_MASTER_TONE
+mdefine_line|#define BA0_AC97_MASTER_TONE                    0x00001008L
+DECL|macro|BA0_AC97_PC_BEEP_VOLUME
+mdefine_line|#define BA0_AC97_PC_BEEP_VOLUME                 0x0000100AL
+DECL|macro|BA0_AC97_PHONE_VOLUME
+mdefine_line|#define BA0_AC97_PHONE_VOLUME                   0x0000100CL
+DECL|macro|BA0_AC97_MIC_VOLUME
+mdefine_line|#define BA0_AC97_MIC_VOLUME                     0x0000100EL
+DECL|macro|BA0_AC97_LINE_IN_VOLUME
+mdefine_line|#define BA0_AC97_LINE_IN_VOLUME                 0x00001010L
+DECL|macro|BA0_AC97_CD_VOLUME
+mdefine_line|#define BA0_AC97_CD_VOLUME                      0x00001012L
+DECL|macro|BA0_AC97_VIDEO_VOLUME
+mdefine_line|#define BA0_AC97_VIDEO_VOLUME                   0x00001014L
+DECL|macro|BA0_AC97_AUX_VOLUME
+mdefine_line|#define BA0_AC97_AUX_VOLUME                     0x00001016L
+DECL|macro|BA0_AC97_PCM_OUT_VOLUME
+mdefine_line|#define BA0_AC97_PCM_OUT_VOLUME                 0x00001018L
+DECL|macro|BA0_AC97_RECORD_SELECT
+mdefine_line|#define BA0_AC97_RECORD_SELECT                  0x0000101AL
+DECL|macro|BA0_AC97_RECORD_GAIN
+mdefine_line|#define BA0_AC97_RECORD_GAIN                    0x0000101CL
+DECL|macro|BA0_AC97_RECORD_GAIN_MIC
+mdefine_line|#define BA0_AC97_RECORD_GAIN_MIC                0x0000101EL
+DECL|macro|BA0_AC97_GENERAL_PURPOSE
+mdefine_line|#define BA0_AC97_GENERAL_PURPOSE                0x00001020L
+DECL|macro|BA0_AC97_3D_CONTROL
+mdefine_line|#define BA0_AC97_3D_CONTROL                     0x00001022L
+DECL|macro|BA0_AC97_MODEM_RATE
+mdefine_line|#define BA0_AC97_MODEM_RATE                     0x00001024L
+DECL|macro|BA0_AC97_POWERDOWN
+mdefine_line|#define BA0_AC97_POWERDOWN                      0x00001026L
+DECL|macro|BA0_AC97_EXT_AUDIO_ID
+mdefine_line|#define BA0_AC97_EXT_AUDIO_ID                   0x00001028L
+DECL|macro|BA0_AC97_EXT_AUDIO_POWER
+mdefine_line|#define BA0_AC97_EXT_AUDIO_POWER                0x0000102AL
+DECL|macro|BA0_AC97_PCM_FRONT_DAC_RATE
+mdefine_line|#define BA0_AC97_PCM_FRONT_DAC_RATE             0x0000102CL
+DECL|macro|BA0_AC97_PCM_SURR_DAC_RATE
+mdefine_line|#define BA0_AC97_PCM_SURR_DAC_RATE              0x0000102EL
+DECL|macro|BA0_AC97_PCM_LFE_DAC_RATE
+mdefine_line|#define BA0_AC97_PCM_LFE_DAC_RATE               0x00001030L
+DECL|macro|BA0_AC97_PCM_LR_ADC_RATE
+mdefine_line|#define BA0_AC97_PCM_LR_ADC_RATE                0x00001032L
+DECL|macro|BA0_AC97_MIC_ADC_RATE
+mdefine_line|#define BA0_AC97_MIC_ADC_RATE                   0x00001034L
+DECL|macro|BA0_AC97_6CH_VOL_C_LFE
+mdefine_line|#define BA0_AC97_6CH_VOL_C_LFE                  0x00001036L
+DECL|macro|BA0_AC97_6CH_VOL_SURROUND
+mdefine_line|#define BA0_AC97_6CH_VOL_SURROUND               0x00001038L
+DECL|macro|BA0_AC97_RESERVED_3A
+mdefine_line|#define BA0_AC97_RESERVED_3A                    0x0000103AL
+DECL|macro|BA0_AC97_EXT_MODEM_ID
+mdefine_line|#define BA0_AC97_EXT_MODEM_ID                   0x0000103CL
+DECL|macro|BA0_AC97_EXT_MODEM_POWER
+mdefine_line|#define BA0_AC97_EXT_MODEM_POWER                0x0000103EL
+DECL|macro|BA0_AC97_LINE1_CODEC_RATE
+mdefine_line|#define BA0_AC97_LINE1_CODEC_RATE               0x00001040L
+DECL|macro|BA0_AC97_LINE2_CODEC_RATE
+mdefine_line|#define BA0_AC97_LINE2_CODEC_RATE               0x00001042L
+DECL|macro|BA0_AC97_HANDSET_CODEC_RATE
+mdefine_line|#define BA0_AC97_HANDSET_CODEC_RATE             0x00001044L
+DECL|macro|BA0_AC97_LINE1_CODEC_LEVEL
+mdefine_line|#define BA0_AC97_LINE1_CODEC_LEVEL              0x00001046L
+DECL|macro|BA0_AC97_LINE2_CODEC_LEVEL
+mdefine_line|#define BA0_AC97_LINE2_CODEC_LEVEL              0x00001048L
+DECL|macro|BA0_AC97_HANDSET_CODEC_LEVEL
+mdefine_line|#define BA0_AC97_HANDSET_CODEC_LEVEL            0x0000104AL
+DECL|macro|BA0_AC97_GPIO_PIN_CONFIG
+mdefine_line|#define BA0_AC97_GPIO_PIN_CONFIG                0x0000104CL
+DECL|macro|BA0_AC97_GPIO_PIN_TYPE
+mdefine_line|#define BA0_AC97_GPIO_PIN_TYPE                  0x0000104EL
+DECL|macro|BA0_AC97_GPIO_PIN_STICKY
+mdefine_line|#define BA0_AC97_GPIO_PIN_STICKY                0x00001050L
+DECL|macro|BA0_AC97_GPIO_PIN_WAKEUP
+mdefine_line|#define BA0_AC97_GPIO_PIN_WAKEUP                0x00001052L
+DECL|macro|BA0_AC97_GPIO_PIN_STATUS
+mdefine_line|#define BA0_AC97_GPIO_PIN_STATUS                0x00001054L
+DECL|macro|BA0_AC97_MISC_MODEM_AFE_STAT
+mdefine_line|#define BA0_AC97_MISC_MODEM_AFE_STAT            0x00001056L
+DECL|macro|BA0_AC97_RESERVED_58
+mdefine_line|#define BA0_AC97_RESERVED_58                    0x00001058L
+DECL|macro|BA0_AC97_CRYSTAL_REV_N_FAB_ID
+mdefine_line|#define BA0_AC97_CRYSTAL_REV_N_FAB_ID           0x0000105AL
+DECL|macro|BA0_AC97_TEST_AND_MISC_CTRL
+mdefine_line|#define BA0_AC97_TEST_AND_MISC_CTRL             0x0000105CL
+DECL|macro|BA0_AC97_AC_MODE
+mdefine_line|#define BA0_AC97_AC_MODE                        0x0000105EL
+DECL|macro|BA0_AC97_MISC_CRYSTAL_CONTROL
+mdefine_line|#define BA0_AC97_MISC_CRYSTAL_CONTROL           0x00001060L
+DECL|macro|BA0_AC97_LINE1_HYPRID_CTRL
+mdefine_line|#define BA0_AC97_LINE1_HYPRID_CTRL              0x00001062L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_64
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_64             0x00001064L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_66
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_66             0x00001066L
+DECL|macro|BA0_AC97_SPDIF_CONTROL
+mdefine_line|#define BA0_AC97_SPDIF_CONTROL                  0x00001068L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_6A
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_6A             0x0000106AL
+DECL|macro|BA0_AC97_VENDOR_RESERVED_6C
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_6C             0x0000106CL
+DECL|macro|BA0_AC97_VENDOR_RESERVED_6E
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_6E             0x0000106EL
+DECL|macro|BA0_AC97_VENDOR_RESERVED_70
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_70             0x00001070L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_72
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_72             0x00001072L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_74
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_74             0x00001074L
+DECL|macro|BA0_AC97_CAL_ADDRESS
+mdefine_line|#define BA0_AC97_CAL_ADDRESS                    0x00001076L
+DECL|macro|BA0_AC97_CAL_DATA
+mdefine_line|#define BA0_AC97_CAL_DATA                       0x00001078L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_7A
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_7A             0x0000107AL
+DECL|macro|BA0_AC97_VENDOR_ID1
+mdefine_line|#define BA0_AC97_VENDOR_ID1                     0x0000107CL
+DECL|macro|BA0_AC97_VENDOR_ID2
+mdefine_line|#define BA0_AC97_VENDOR_ID2                     0x0000107EL
 macro_line|#endif&t;&t;&t;&t;/* __CS461X_H */
 eof

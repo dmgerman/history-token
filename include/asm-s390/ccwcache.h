@@ -194,6 +194,8 @@ DECL|macro|CQR_STATUS_ERROR
 mdefine_line|#define CQR_STATUS_ERROR    0x05&t;/* request is completed with error */
 DECL|macro|CQR_STATUS_FAILED
 mdefine_line|#define CQR_STATUS_FAILED   0x06&t;/* request is finally failed */
+DECL|macro|CQR_STATUS_PENDING
+mdefine_line|#define CQR_STATUS_PENDING  0x07        /* request is waiting for interrupt - ERP only */ 
 DECL|macro|CQR_FLAGS_CHAINED
 mdefine_line|#define CQR_FLAGS_CHAINED  0x01&t;/* request is chained by another (last CCW is TIC) */
 macro_line|#ifdef __KERNEL__

@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tape3490.c&n; *    tape device discipline for 3490E tapes.&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *               Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&n; *  UNDER CONSTRUCTION: Work in progress...:-)&n; ****************************************************************************&n; */
+multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tape3490.c&n; *    tape device discipline for 3490E tapes.&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001 IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *               Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; ****************************************************************************&n; */
 macro_line|#include &quot;tapedefs.h&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/ccwcache.h&gt;&t;/* CCW allocations      */
@@ -27,7 +27,7 @@ id|tape34xx_unused_done
 comma
 l_int|NULL
 comma
-id|tape34xx_unused_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -40,7 +40,7 @@ id|tape34xx_idle_done
 comma
 l_int|NULL
 comma
-id|tape34xx_idle_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -79,7 +79,7 @@ id|tape34xx_block_done
 comma
 l_int|NULL
 comma
-id|tape34xx_block_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -157,7 +157,7 @@ id|tape34xx_fsf_init_done
 comma
 l_int|NULL
 comma
-id|tape34xx_fsf_init_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -183,7 +183,7 @@ id|tape34xx_lbl_init_done
 comma
 l_int|NULL
 comma
-id|tape34xx_lbl_init_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -218,7 +218,7 @@ multiline_comment|/* TS_NOP_INIT */
 (brace
 l_int|NULL
 comma
-l_int|NULL
+id|tape34xx_rfo_init_done
 comma
 l_int|NULL
 comma
@@ -287,7 +287,7 @@ id|tape34xx_rfo_init_done
 comma
 l_int|NULL
 comma
-id|tape34xx_rfo_init_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -313,7 +313,7 @@ id|tape34xx_rew_init_done
 comma
 l_int|NULL
 comma
-id|tape34xx_rew_init_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -326,7 +326,7 @@ id|tape34xx_rew_release_init_done
 comma
 l_int|NULL
 comma
-id|tape34xx_rew_release_init_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -339,7 +339,7 @@ id|tape34xx_run_init_done
 comma
 l_int|NULL
 comma
-id|tape34xx_run_init_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -469,7 +469,7 @@ id|tape34xx_wri_init_done
 comma
 l_int|NULL
 comma
-id|tape34xx_wri_init_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -482,7 +482,7 @@ id|tape34xx_wtm_init_done
 comma
 l_int|NULL
 comma
-id|tape34xx_wtm_init_error
+l_int|NULL
 comma
 l_int|NULL
 )brace
@@ -516,16 +516,14 @@ suffix:colon
 id|ctype
 suffix:colon
 l_int|0x3490
-comma
-id|dtype
-suffix:colon
-l_int|0x3490
 )brace
 )brace
 comma
 id|flag
 suffix:colon
 id|DEVREG_MATCH_CU_TYPE
+op_or
+id|DEVREG_TYPE_DEVCHARS
 comma
 id|oper_func
 suffix:colon
@@ -673,6 +671,10 @@ suffix:semicolon
 id|disc-&gt;setup_assist
 op_assign
 id|tape3490_setup_assist
+suffix:semicolon
+id|disc-&gt;error_recovery
+op_assign
+id|tape34xx_error_recovery
 suffix:semicolon
 id|disc-&gt;write_block
 op_assign

@@ -3,7 +3,6 @@ macro_line|#ifndef __ASM_SYSTEM_H
 DECL|macro|__ASM_SYSTEM_H
 mdefine_line|#define __ASM_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#endif
@@ -19,6 +18,22 @@ DECL|macro|nop
 mdefine_line|#define nop() __asm__ __volatile__ (&quot;nop&quot;)
 DECL|macro|xchg
 mdefine_line|#define xchg(ptr,x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))
+r_extern
+r_void
+id|__misaligned_u16
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__misaligned_u32
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|__xchg
 r_static
 r_inline
@@ -57,18 +72,18 @@ multiline_comment|/* isolate last 2 bits */
 l_string|&quot;   xr    %0,1&bslash;n&quot;
 multiline_comment|/* align ptr */
 l_string|&quot;   bras  2,0f&bslash;n&quot;
-l_string|&quot;   icm   1,8,%1&bslash;n&quot;
+l_string|&quot;   icm   1,8,3(%1)&bslash;n&quot;
 multiline_comment|/* for ptr&amp;3 == 0 */
-l_string|&quot;   stcm  0,8,%1&bslash;n&quot;
-l_string|&quot;   icm   1,4,%1&bslash;n&quot;
+l_string|&quot;   stcm  0,8,3(%1)&bslash;n&quot;
+l_string|&quot;   icm   1,4,3(%1)&bslash;n&quot;
 multiline_comment|/* for ptr&amp;3 == 1 */
-l_string|&quot;   stcm  0,4,%1&bslash;n&quot;
-l_string|&quot;   icm   1,2,%1&bslash;n&quot;
+l_string|&quot;   stcm  0,4,3(%1)&bslash;n&quot;
+l_string|&quot;   icm   1,2,3(%1)&bslash;n&quot;
 multiline_comment|/* for ptr&amp;3 == 2 */
-l_string|&quot;   stcm  0,2,%1&bslash;n&quot;
-l_string|&quot;   icm   1,1,%1&bslash;n&quot;
+l_string|&quot;   stcm  0,2,3(%1)&bslash;n&quot;
+l_string|&quot;   icm   1,1,3(%1)&bslash;n&quot;
 multiline_comment|/* for ptr&amp;3 == 3 */
-l_string|&quot;   stcm  0,1,%1&bslash;n&quot;
+l_string|&quot;   stcm  0,1,3(%1)&bslash;n&quot;
 l_string|&quot;0: sll   1,3&bslash;n&quot;
 l_string|&quot;   la    2,0(1,2)&bslash;n&quot;
 multiline_comment|/* r2 points to an icm */
@@ -87,12 +102,12 @@ l_string|&quot;+a&amp;&quot;
 (paren
 id|ptr
 )paren
-comma
-l_string|&quot;+m&quot;
+suffix:colon
+l_string|&quot;a&quot;
 (paren
+op_amp
 id|x
 )paren
-suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 comma
@@ -102,6 +117,8 @@ l_string|&quot;1&quot;
 comma
 l_string|&quot;2&quot;
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|2
@@ -119,10 +136,9 @@ op_amp
 l_int|1
 )paren
 (brace
-id|panic
+id|__misaligned_u16
 c_func
 (paren
-l_string|&quot;misaligned (__u16 *) in __xchg&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -135,12 +151,12 @@ multiline_comment|/* isolate bit 2^1 */
 l_string|&quot;   xr    %0,1&bslash;n&quot;
 multiline_comment|/* align ptr */
 l_string|&quot;   bras  2,0f&bslash;n&quot;
-l_string|&quot;   icm   1,12,%1&bslash;n&quot;
+l_string|&quot;   icm   1,12,2(%1)&bslash;n&quot;
 multiline_comment|/* for ptr&amp;2 == 0 */
-l_string|&quot;   stcm  0,12,%1&bslash;n&quot;
-l_string|&quot;   icm   1,3,%1&bslash;n&quot;
+l_string|&quot;   stcm  0,12,2(%1)&bslash;n&quot;
+l_string|&quot;   icm   1,3,2(%1)&bslash;n&quot;
 multiline_comment|/* for ptr&amp;2 == 1 */
-l_string|&quot;   stcm  0,3,%1&bslash;n&quot;
+l_string|&quot;   stcm  0,3,2(%1)&bslash;n&quot;
 l_string|&quot;0: sll   1,2&bslash;n&quot;
 l_string|&quot;   la    2,0(1,2)&bslash;n&quot;
 multiline_comment|/* r2 points to an icm */
@@ -159,12 +175,12 @@ l_string|&quot;+a&amp;&quot;
 (paren
 id|ptr
 )paren
-comma
-l_string|&quot;+m&quot;
+suffix:colon
+l_string|&quot;a&quot;
 (paren
+op_amp
 id|x
 )paren
-suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 comma
@@ -193,10 +209,9 @@ op_amp
 l_int|3
 )paren
 (brace
-id|panic
+id|__misaligned_u32
 c_func
 (paren
-l_string|&quot;misaligned (__u32 *) in __xchg&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

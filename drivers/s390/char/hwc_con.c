@@ -8,19 +8,13 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &quot;ctrlchar.h&quot;
 macro_line|#include &quot;hwc_rw.h&quot;
-r_extern
-r_void
-id|hwc_tty_init
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_HWC_CONSOLE
 DECL|macro|hwc_console_major
 mdefine_line|#define  hwc_console_major 4
 DECL|macro|hwc_console_minor
-mdefine_line|#define  hwc_console_minor 0
+mdefine_line|#define  hwc_console_minor 64
 DECL|macro|hwc_console_name
 mdefine_line|#define  hwc_console_name  &quot;console&quot;
 r_void
@@ -178,7 +172,7 @@ id|hwc_console_init
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_3215
+macro_line|#if defined(CONFIG_3215_CONSOLE) || defined(CONFIG_3270_CONSOLE)
 r_if
 c_cond
 (paren
@@ -194,6 +188,10 @@ id|MACHINE_IS_P390
 )paren
 r_return
 suffix:semicolon
+id|ctrlchar_init
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -204,10 +202,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|hwc_tty_init
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_HWC_CONSOLE
 id|register_console
 (paren

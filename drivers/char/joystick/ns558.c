@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ns558.c,v 1.16 2000/08/17 20:03:56 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *  Copyright (c) 1999 Brian Gerst&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: ns558.c,v 1.27 2001/03/28 09:25:05 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *  Copyright (c) 1999 Brian Gerst&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * NS558 based standard IBM game port driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;asm/io.h&gt;
@@ -29,6 +29,8 @@ id|ns558_isa_portlist
 )braket
 op_assign
 (brace
+l_int|0x200
+comma
 l_int|0x201
 comma
 l_int|0x202
@@ -941,28 +943,69 @@ DECL|macro|NSS558_ISAPNP
 mdefine_line|#define NSS558_ISAPNP
 macro_line|#endif
 macro_line|#ifdef NSS558_ISAPNP
-multiline_comment|/*&n; * PnP IDs:&n; *&n; * CTL00c1 - SB AWE32 PnP&n; * CTL00c3 - SB AWE64 PnP&n; * CTL00f0 - SB16 PnP / Vibra 16x&n; * CTL7001 - SB Vibra16C PnP&n; * CSC0b35 - Crystal ** doesn&squot;t have compatibility ID **&n; * TER1141 - Terratec AD1818&n; * YMM0800 - Yamaha OPL3-SA3&n; *&n; * PNPb02f - Generic gameport&n; */
-DECL|struct|pnp_devid
+multiline_comment|/*&n; * PnP IDs:&n; *&n; * @P@0001 - ALS 100 (no comp. ID)&n; * CTL00c1 - SB AWE32 PnP&n; * CTL00c3 - SB AWE64 PnP&n; * CTL00f0 - SB16 PnP / Vibra 16x&n; * CTL7001 - SB Vibra16C PnP (no comp. ID)&n; * CTL7002 - SB AWE32 (no comp. ID)&n; * CSC0b35 - Crystal (no comp. ID)&n; * TER1141 - Terratec AD1818&n; * YMM0800 - Yamaha OPL3-SA3&n; *&n; * PNPb02f - Generic gameport&n; */
+DECL|variable|pnp_devids
 r_static
 r_struct
-id|pnp_devid
-(brace
-DECL|member|vendor
-DECL|member|device
-r_int
-r_int
-id|vendor
-comma
-id|device
-suffix:semicolon
-DECL|variable|pnp_devids
-)brace
+id|isapnp_device_id
 id|pnp_devids
 (braket
 )braket
 op_assign
 (brace
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_VENDOR
+c_func
+(paren
+l_char|&squot;@&squot;
+comma
+l_char|&squot;P&squot;
+comma
+l_char|&squot;@&squot;
+)paren
+comma
+id|ISAPNP_DEVICE
+c_func
+(paren
+l_int|0x0001
+)paren
+comma
+l_int|0
+)brace
+comma
+(brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_VENDOR
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;T&squot;
+comma
+l_char|&squot;L&squot;
+)paren
+comma
+id|ISAPNP_DEVICE
+c_func
+(paren
+l_int|0x7001
+)paren
+comma
+l_int|0
+)brace
+comma
+(brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -978,9 +1021,15 @@ c_func
 (paren
 l_int|0x7002
 )paren
+comma
+l_int|0
 )brace
 comma
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -996,9 +1045,15 @@ c_func
 (paren
 l_int|0x0b35
 )paren
+comma
+l_int|0
 )brace
 comma
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -1014,6 +1069,8 @@ c_func
 (paren
 l_int|0xb02f
 )paren
+comma
+l_int|0
 )brace
 comma
 (brace
@@ -1022,6 +1079,14 @@ comma
 )brace
 comma
 )brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|isapnp
+comma
+id|pnp_devids
+)paren
 suffix:semicolon
 DECL|function|ns558_pnp_probe
 r_static
@@ -1314,7 +1379,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|pnp_devid
+id|isapnp_device_id
 op_star
 id|devid
 suffix:semicolon
@@ -1381,7 +1446,7 @@ l_int|NULL
 comma
 id|devid-&gt;vendor
 comma
-id|devid-&gt;device
+id|devid-&gt;function
 comma
 id|dev
 )paren

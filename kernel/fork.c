@@ -71,8 +71,9 @@ id|flags
 )paren
 suffix:semicolon
 id|wait-&gt;flags
-op_assign
-l_int|0
+op_and_assign
+op_complement
+id|WQ_FLAG_EXCLUSIVE
 suffix:semicolon
 id|__add_wait_queue
 c_func
@@ -120,7 +121,7 @@ id|flags
 )paren
 suffix:semicolon
 id|wait-&gt;flags
-op_assign
+op_or_assign
 id|WQ_FLAG_EXCLUSIVE
 suffix:semicolon
 id|__add_wait_queue_tail

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * dasdfmt.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Corporation&n; *    Author(s): Utz Bacher, &lt;utz.bacher@de.ibm.com&gt;&n; *&n; *  Device-in-use-checks by Fritz Elfert, &lt;felfert@to.com&gt;&n; *&n; * Still to do:&n; *   detect non-switch parameters (&quot;dasdfmt -n 170 XY&quot;) and complain about them &n; */
+multiline_comment|/*&n; *&n; * dasdfmt.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Corporation&n; *    Author(s): Utz Bacher, &lt;utz.bacher@de.ibm.com&gt;&n; *&n; *  Device-in-use-checks by Fritz Elfert, &lt;felfert@to.com&gt;&n; *  Compatible Disk Layout enhancements by Carsten Otte, &lt;cotte@de.ibm.com&gt;&n; *&n; * Still to do:&n; *   detect non-switch parameters (&quot;dasdfmt -n 170 XY&quot;) and complain about them &n; */
 multiline_comment|/* #define _LINUX_BLKDEV_H */
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;stdio.h&gt;
@@ -693,7 +693,7 @@ macro_line|#ifdef RANGE_FORMATTING
 id|printf
 c_func
 (paren
-l_string|&quot;Usage: %s [-htvyLV] [-l &lt;label&gt;] [-b &lt;blocksize&gt;] [&lt;range&gt;] &quot;
+l_string|&quot;Usage: %s [-htvyCLV] [-l &lt;label&gt;] [-b &lt;blocksize&gt;] [&lt;range&gt;] &quot;
 "&bslash;"
 l_string|&quot;&lt;diskspec&gt;&bslash;n&bslash;n&quot;
 comma
@@ -704,7 +704,7 @@ macro_line|#else /* RANGE_FORMATTING */
 id|printf
 c_func
 (paren
-l_string|&quot;Usage: %s [-htvyLV] [-l &lt;label&gt;] [-b &lt;blocksize&gt;] &quot;
+l_string|&quot;Usage: %s [-htvyCLV] [-l &lt;label&gt;] [-b &lt;blocksize&gt;] &quot;
 "&bslash;"
 l_string|&quot;&lt;diskspec&gt;&bslash;n&bslash;n&quot;
 comma
@@ -722,6 +722,12 @@ id|printf
 c_func
 (paren
 l_string|&quot;       -v means verbose mode&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;       -C means format compatible disk layout&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printf
@@ -918,7 +924,7 @@ c_func
 (paren
 id|line
 comma
-l_string|&quot;%X %*[(A-Z)] at (%d:%d)&quot;
+l_string|&quot;%X %*[(A-Z) ] at (%d:%d)&quot;
 comma
 op_amp
 id|d
@@ -1035,7 +1041,9 @@ id|EXIT_FAILURE
 comma
 l_string|&quot;%s: failed to find device in the /proc &quot;
 "&bslash;"
-l_string|&quot;filesystem (are you sure to have the right param line?)&bslash;n&quot;
+l_string|&quot;filesystem (are you sure to have the right parameter &quot;
+"&bslash;"
+l_string|&quot;dasd=xxx?)&bslash;n&quot;
 comma
 id|prog_name
 )paren
@@ -2449,6 +2457,23 @@ comma
 id|minor_no
 )paren
 suffix:semicolon
+id|get_xno_from_xno
+c_func
+(paren
+op_amp
+id|devno
+comma
+op_amp
+id|major_no
+comma
+op_amp
+id|minor_no
+comma
+id|GIVEN_MAJOR
+op_or
+id|GIVEN_MINOR
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2495,23 +2520,6 @@ id|withoutprompt
 )paren
 )paren
 (brace
-id|get_xno_from_xno
-c_func
-(paren
-op_amp
-id|devno
-comma
-op_amp
-id|major_no
-comma
-op_amp
-id|minor_no
-comma
-id|GIVEN_MAJOR
-op_or
-id|GIVEN_MINOR
-)paren
-suffix:semicolon
 id|printf
 c_func
 (paren
@@ -2573,6 +2581,30 @@ c_func
 l_string|&quot;   Disk label              : %s&bslash;n&quot;
 comma
 id|label
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|format_params.intensity
+op_ne
+id|DASD_FORMAT_DEFAULT_INTENSITY
+)paren
+id|printf
+c_func
+(paren
+l_string|&quot;   Compatible Disk Layout  : %s&bslash;n&quot;
+comma
+(paren
+id|format_params.intensity
+op_amp
+l_int|0x08
+)paren
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef RANGE_FORMATTING
@@ -2846,7 +2878,7 @@ c_func
 (paren
 id|fd
 comma
-id|BLKGETSIZE
+id|BLKSSZGET
 comma
 op_amp
 id|new_blksize
@@ -3331,7 +3363,7 @@ id|argc
 comma
 id|argv
 comma
-l_string|&quot;r:s:e:b:n:l:f:hLty?vV&quot;
+l_string|&quot;r:s:e:b:n:l:f:ChLty?vV&quot;
 )paren
 )paren
 op_ne
@@ -3352,7 +3384,7 @@ id|argc
 comma
 id|argv
 comma
-l_string|&quot;b:n:l:f:hLty?vV&quot;
+l_string|&quot;b:n:l:f:ChLty?vV&quot;
 )paren
 )paren
 op_ne
@@ -3412,6 +3444,15 @@ c_func
 (paren
 l_int|0
 )paren
+suffix:semicolon
+r_case
+l_char|&squot;C&squot;
+suffix:colon
+id|format_params.intensity
+op_and_assign
+l_int|0x08
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_char|&squot;V&squot;

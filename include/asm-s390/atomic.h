@@ -28,6 +28,8 @@ DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)  { (i) }
 DECL|macro|atomic_eieio
 mdefine_line|#define atomic_eieio()          __asm__ __volatile__ (&quot;BCR 15,0&quot;)
+DECL|macro|__CS_LOOP
+mdefine_line|#define __CS_LOOP(old, new, ptr, op_val, op_string)&t;&t;&t;&bslash;&n;        __asm__ __volatile__(&quot;   l     %0,0(%2)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;0: lr    %1,%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;                             op_string &quot;  %1,%3&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   cs    %0,%1,0(%2)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   jl    0b&quot;&t;&t;&t;&t;&bslash;&n;                             : &quot;=&amp;d&quot; (old), &quot;=&amp;d&quot; (new)&t;&t;&t;&bslash;&n;&t;&t;&t;     : &quot;a&quot; (ptr), &quot;d&quot; (op_val) : &quot;cc&quot; );
 DECL|function|atomic_read
 r_static
 id|__inline__
@@ -116,35 +118,23 @@ op_star
 id|v
 )paren
 (brace
-id|__asm__
-id|__volatile__
+r_int
+id|old
+comma
+r_new
+suffix:semicolon
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    2,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    1,0&bslash;n&quot;
-l_string|&quot;   ar    1,%1&bslash;n&quot;
-l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
+comma
 id|i
-)paren
-suffix:colon
-l_string|&quot;0&quot;
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;ar&quot;
 )paren
 suffix:semicolon
 )brace
@@ -163,44 +153,26 @@ id|v
 )paren
 (brace
 r_int
-id|newval
+id|old
+comma
+r_new
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    1,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    %1,0&bslash;n&quot;
-l_string|&quot;   ar    %1,%2&bslash;n&quot;
-l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
 comma
-l_string|&quot;=&amp;d&quot;
-(paren
-id|newval
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
 id|i
-)paren
-suffix:colon
-l_string|&quot;0&quot;
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;ar&quot;
 )paren
 suffix:semicolon
 r_return
-id|newval
+r_new
 suffix:semicolon
 )brace
 DECL|function|atomic_add_negative
@@ -219,44 +191,26 @@ id|v
 )paren
 (brace
 r_int
-id|newval
+id|old
+comma
+r_new
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    1,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    %1,0&bslash;n&quot;
-l_string|&quot;   ar    %1,%2&bslash;n&quot;
-l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
-l_string|&quot;   jl    0b&bslash;n&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
 comma
-l_string|&quot;=&amp;d&quot;
-(paren
-id|newval
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
 id|i
-)paren
-suffix:colon
-l_string|&quot;0&quot;
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;ar&quot;
 )paren
 suffix:semicolon
 r_return
-id|newval
+r_new
 OL
 l_int|0
 suffix:semicolon
@@ -276,35 +230,23 @@ op_star
 id|v
 )paren
 (brace
-id|__asm__
-id|__volatile__
+r_int
+id|old
+comma
+r_new
+suffix:semicolon
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    2,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    1,0&bslash;n&quot;
-l_string|&quot;   sr    1,%1&bslash;n&quot;
-l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
+comma
 id|i
-)paren
-suffix:colon
-l_string|&quot;0&quot;
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;sr&quot;
 )paren
 suffix:semicolon
 )brace
@@ -321,31 +263,23 @@ op_star
 id|v
 )paren
 (brace
-id|__asm__
-id|__volatile__
+r_int
+id|old
+comma
+r_new
+suffix:semicolon
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    2,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    1,0&bslash;n&quot;
-l_string|&quot;   ahi   1,1&bslash;n&quot;
-l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
-suffix:colon
-suffix:colon
-l_string|&quot;0&quot;
 comma
-l_string|&quot;1&quot;
+l_int|1
 comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;ar&quot;
 )paren
 suffix:semicolon
 )brace
@@ -363,40 +297,26 @@ id|v
 )paren
 (brace
 r_int
-id|i
+id|old
+comma
+r_new
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    1,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    %1,0&bslash;n&quot;
-l_string|&quot;   ahi   %1,1&bslash;n&quot;
-l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
 comma
-l_string|&quot;=&amp;d&quot;
-(paren
-id|i
-)paren
-suffix:colon
-suffix:colon
-l_string|&quot;0&quot;
+l_int|1
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;ar&quot;
 )paren
 suffix:semicolon
 r_return
-id|i
+r_new
 suffix:semicolon
 )brace
 DECL|function|atomic_inc_and_test
@@ -413,40 +333,26 @@ id|v
 )paren
 (brace
 r_int
-id|i
+id|old
+comma
+r_new
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    1,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    %1,0&bslash;n&quot;
-l_string|&quot;   ahi   %1,1&bslash;n&quot;
-l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
 comma
-l_string|&quot;=&amp;d&quot;
-(paren
-id|i
-)paren
-suffix:colon
-suffix:colon
-l_string|&quot;0&quot;
+l_int|1
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;ar&quot;
 )paren
 suffix:semicolon
 r_return
-id|i
+r_new
 op_ne
 l_int|0
 suffix:semicolon
@@ -464,31 +370,23 @@ op_star
 id|v
 )paren
 (brace
-id|__asm__
-id|__volatile__
+r_int
+id|old
+comma
+r_new
+suffix:semicolon
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    2,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    1,0&bslash;n&quot;
-l_string|&quot;   ahi   1,-1&bslash;n&quot;
-l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
-suffix:colon
-suffix:colon
-l_string|&quot;0&quot;
 comma
-l_string|&quot;1&quot;
+l_int|1
 comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;sr&quot;
 )paren
 suffix:semicolon
 )brace
@@ -506,40 +404,26 @@ id|v
 )paren
 (brace
 r_int
-id|i
+id|old
+comma
+r_new
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    1,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    %1,0&bslash;n&quot;
-l_string|&quot;   ahi   %1,-1&bslash;n&quot;
-l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
 comma
-l_string|&quot;=&amp;d&quot;
-(paren
-id|i
-)paren
-suffix:colon
-suffix:colon
-l_string|&quot;0&quot;
+l_int|1
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;sr&quot;
 )paren
 suffix:semicolon
 r_return
-id|i
+r_new
 suffix:semicolon
 )brace
 DECL|function|atomic_dec_and_test
@@ -556,40 +440,26 @@ id|v
 )paren
 (brace
 r_int
-id|i
+id|old
+comma
+r_new
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    1,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    %1,0&bslash;n&quot;
-l_string|&quot;   ahi   %1,-1&bslash;n&quot;
-l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
 comma
-l_string|&quot;=&amp;d&quot;
-(paren
-id|i
-)paren
-suffix:colon
-suffix:colon
-l_string|&quot;0&quot;
+l_int|1
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;sr&quot;
 )paren
 suffix:semicolon
 r_return
-id|i
+r_new
 op_eq
 l_int|0
 suffix:semicolon
@@ -610,38 +480,24 @@ op_star
 id|v
 )paren
 (brace
-id|__asm__
-id|__volatile__
+r_int
+id|old
+comma
+r_new
+suffix:semicolon
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    2,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    1,0&bslash;n&quot;
-l_string|&quot;   nr    1,%1&bslash;n&quot;
-l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
+comma
 op_complement
-(paren
 id|mask
-)paren
-)paren
-suffix:colon
-l_string|&quot;0&quot;
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;nr&quot;
 )paren
 suffix:semicolon
 )brace
@@ -661,35 +517,23 @@ op_star
 id|v
 )paren
 (brace
-id|__asm__
-id|__volatile__
+r_int
+id|old
+comma
+r_new
+suffix:semicolon
+id|__CS_LOOP
 c_func
 (paren
-l_string|&quot;   la    2,%0&bslash;n&quot;
-l_string|&quot;   l     0,%0&bslash;n&quot;
-l_string|&quot;0: lr    1,0&bslash;n&quot;
-l_string|&quot;   or    1,%1&bslash;n&quot;
-l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
-l_string|&quot;   jl    0b&quot;
-suffix:colon
-l_string|&quot;+m&quot;
-(paren
-op_star
+id|old
+comma
+r_new
+comma
 id|v
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
+comma
 id|mask
-)paren
-suffix:colon
-l_string|&quot;0&quot;
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;cc&quot;
+l_string|&quot;or&quot;
 )paren
 suffix:semicolon
 )brace
@@ -719,24 +563,22 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;  la   1,%1&bslash;n&quot;
 l_string|&quot;  lr   0,%2&bslash;n&quot;
-l_string|&quot;  cs   0,%3,0(1)&bslash;n&quot;
+l_string|&quot;  cs   0,%3,0(%1)&bslash;n&quot;
 l_string|&quot;  ipm  %0&bslash;n&quot;
 l_string|&quot;  srl  %0,28&bslash;n&quot;
 l_string|&quot;0:&quot;
 suffix:colon
-l_string|&quot;=&amp;r&quot;
+l_string|&quot;=&amp;d&quot;
 (paren
 id|retval
 )paren
-comma
-l_string|&quot;+m&quot;
+suffix:colon
+l_string|&quot;a&quot;
 (paren
-op_star
 id|v
 )paren
-suffix:colon
+comma
 l_string|&quot;d&quot;
 (paren
 id|expected_oldval
@@ -748,8 +590,6 @@ id|new_val
 )paren
 suffix:colon
 l_string|&quot;0&quot;
-comma
-l_string|&quot;1&quot;
 comma
 l_string|&quot;cc&quot;
 )paren
@@ -781,17 +621,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;   la  2,%0&bslash;n&quot;
-l_string|&quot;0: lr  1,%1&bslash;n&quot;
-l_string|&quot;   cs  1,%2,0(2)&bslash;n&quot;
+l_string|&quot;0: lr  0,%1&bslash;n&quot;
+l_string|&quot;   cs  0,%2,0(%0)&bslash;n&quot;
 l_string|&quot;   jl  0b&bslash;n&quot;
 suffix:colon
-l_string|&quot;+m&quot;
+suffix:colon
+l_string|&quot;a&quot;
 (paren
-op_star
 id|v
 )paren
-suffix:colon
+comma
 l_string|&quot;d&quot;
 (paren
 id|expected_oldval
@@ -804,9 +643,7 @@ id|new_val
 suffix:colon
 l_string|&quot;cc&quot;
 comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;2&quot;
+l_string|&quot;0&quot;
 )paren
 suffix:semicolon
 )brace

@@ -65,6 +65,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/blk.h&gt;&t;/* to get disk capacity */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -75,15 +76,13 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;qlogicfas.h&quot;
-macro_line|#include&lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
 multiline_comment|/*----------------------------------------------------------------*/
 multiline_comment|/* driver state info, local to driver */
 DECL|variable|qbase
 r_static
 r_int
 id|qbase
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Port */
 DECL|variable|qinitid
@@ -2401,6 +2400,7 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/* look for qlogic card and init if found */
 DECL|function|qlogicfas_detect
 r_int
+id|__QLINIT
 id|qlogicfas_detect
 c_func
 (paren
@@ -2460,12 +2460,15 @@ l_int|0x100
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|qbase
 comma
 l_int|0x10
+comma
+l_string|&quot;qlogicfas&quot;
 )paren
 )paren
 (brace
@@ -2870,16 +2873,6 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-id|request_region
-c_func
-(paren
-id|qbase
-comma
-l_int|0x10
-comma
-l_string|&quot;qlogicfas&quot;
-)paren
-suffix:semicolon
 id|hreg
 op_assign
 id|scsi_register
@@ -2891,6 +2884,15 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* no host data */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hreg
+)paren
+r_goto
+id|err_release_mem
+suffix:semicolon
 id|hreg-&gt;io_port
 op_assign
 id|qbase
@@ -2940,6 +2942,32 @@ id|qinfo
 suffix:semicolon
 r_return
 l_int|1
+suffix:semicolon
+id|err_release_mem
+suffix:colon
+id|release_region
+c_func
+(paren
+id|qbase
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|host-&gt;can_queue
+)paren
+id|free_irq
+c_func
+(paren
+id|qlirq
+comma
+id|do_ql_ihandl
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*----------------------------------------------------------------*/

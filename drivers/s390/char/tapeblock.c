@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tapeblock.c&n; *    block device frontend for tape device driver&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; *  UNDER CONSTRUCTION: Work in progress...:-)&n; ****************************************************************************&n; */
+multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tapeblock.c&n; *    block device frontend for tape device driver&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001 IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *               Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; *&n; ****************************************************************************&n; */
 macro_line|#include &quot;tapedefs.h&quot;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
@@ -9,6 +9,8 @@ macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/s390dyn.h&gt;
 macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#ifdef MODULE
+DECL|macro|__NO_VERSION__
+mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#endif
 macro_line|#include &quot;tape.h&quot;
@@ -78,6 +80,74 @@ id|kdev_t
 id|kdev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+r_void
+DECL|function|tapeblock_mkdevfstree
+id|tapeblock_mkdevfstree
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+(brace
+id|tape-&gt;devfs_block_dir
+op_assign
+id|devfs_mk_dir
+(paren
+id|tape-&gt;devfs_dir
+comma
+l_string|&quot;block&quot;
+comma
+id|tape
+)paren
+suffix:semicolon
+id|tape-&gt;devfs_disc
+op_assign
+id|devfs_register
+c_func
+(paren
+id|tape-&gt;devfs_block_dir
+comma
+l_string|&quot;disc&quot;
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|tapeblock_major
+comma
+id|tape-&gt;blk_minor
+comma
+id|TAPEBLOCK_DEFAULTMODE
+comma
+op_amp
+id|tapeblock_fops
+comma
+id|tape
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|tapeblock_rmdevfstree
+id|tapeblock_rmdevfstree
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+(brace
+id|devfs_unregister
+c_func
+(paren
+id|tape-&gt;devfs_disc
+)paren
+suffix:semicolon
+id|devfs_unregister
+c_func
+(paren
+id|tape-&gt;devfs_block_dir
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_void
 DECL|function|tapeblock_setup
 id|tapeblock_setup
@@ -136,8 +206,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|tapeblock_mkdevfstree
+c_func
+(paren
+id|tape
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
-r_void
+r_int
 DECL|function|tapeblock_init
 id|tapeblock_init
 c_func
@@ -165,6 +243,21 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Register the tape major number to the kernel */
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|result
+op_assign
+id|devfs_register_blkdev
+c_func
+(paren
+id|tapeblock_major
+comma
+l_string|&quot;tBLK&quot;
+comma
+op_amp
+id|tapeblock_fops
+)paren
+suffix:semicolon
+macro_line|#else
 id|result
 op_assign
 id|register_blkdev
@@ -178,6 +271,7 @@ op_amp
 id|tapeblock_fops
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -426,6 +520,16 @@ id|blkfront-&gt;device_setup
 op_assign
 id|tapeblock_setup
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|blkfront-&gt;mkdevfstree
+op_assign
+id|tapeblock_mkdevfstree
+suffix:semicolon
+id|blkfront-&gt;rmdevfstree
+op_assign
+id|tapeblock_rmdevfstree
+suffix:semicolon
+macro_line|#endif
 id|blkfront-&gt;next
 op_assign
 l_int|NULL
@@ -488,6 +592,9 @@ op_assign
 id|tape-&gt;next
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_void
 DECL|function|tapeblock_uninit
@@ -506,7 +613,6 @@ l_string|&quot;tBLK&quot;
 )paren
 suffix:semicolon
 )brace
-r_static
 r_int
 DECL|function|tapeblock_open
 id|tapeblock_open
@@ -726,7 +832,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 r_int
 DECL|function|tapeblock_release
 id|tapeblock_release
@@ -752,10 +857,6 @@ id|ti
 comma
 op_star
 id|lastti
-suffix:semicolon
-id|inode
-op_assign
-id|filp-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 id|ti
 op_assign
@@ -875,7 +976,7 @@ id|debug_text_event
 (paren
 id|tape_debug_area
 comma
-l_int|6
+l_int|3
 comma
 l_string|&quot;b:notidle!&quot;
 )paren
@@ -932,6 +1033,12 @@ macro_line|#ifdef MODULE
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* MODULE */
+id|invalidate_buffers
+c_func
+(paren
+id|inode-&gt;i_rdev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1128,6 +1235,17 @@ id|tape-&gt;current_request
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tapestate_get
+c_func
+(paren
+id|tape
+)paren
+op_ne
+id|TS_NOT_OPER
+)paren
 id|tapestate_set
 c_func
 (paren
@@ -1299,15 +1417,53 @@ singleline_comment|// tape should be idle now, request should be freed!
 r_if
 c_cond
 (paren
+id|tapestate_get
+(paren
+id|tape
+)paren
+op_eq
+id|TS_NOT_OPER
+)paren
+(brace
+id|tape-&gt;blk_minor
+op_assign
+id|tape-&gt;rew_minor
+op_assign
+id|tape-&gt;nor_minor
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|tape-&gt;devinfo.irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
+r_if
+c_cond
+(paren
 id|list_empty
-c_func
 (paren
 op_amp
 id|tape-&gt;request_queue.queue_head
 )paren
 )paren
 (brace
-singleline_comment|// nothing more to do ;)
+macro_line|#else
+r_if
+c_cond
+(paren
+id|tape-&gt;request_queue
+op_eq
+l_int|NULL
+)paren
+(brace
+macro_line|#endif
+singleline_comment|// nothing more to do or device has dissapeared;)
 macro_line|#ifdef TAPE_DEBUG
 id|debug_text_event
 (paren
@@ -1740,6 +1896,7 @@ id|tape-&gt;bh_scheduled
 r_return
 suffix:semicolon
 )brace
+macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -1747,6 +1904,7 @@ op_amp
 id|tape-&gt;bh_tq.list
 )paren
 suffix:semicolon
+macro_line|#endif
 id|tape-&gt;bh_tq.sync
 op_assign
 l_int|0
@@ -1895,7 +2053,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|tapeblock_mediumdetect
-r_static
 r_int
 id|tapeblock_mediumdetect
 c_func
@@ -1934,6 +2091,12 @@ l_string|&quot;b:medDet&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|PRINT_WARN
+c_func
+(paren
+l_string|&quot;Detecting media size. This will take _long_, so get yourself a coffee...&bslash;n&quot;
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -2117,6 +2280,43 @@ id|lockflags
 )paren
 suffix:semicolon
 r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|tapestate_get
+(paren
+id|tape
+)paren
+op_eq
+id|TS_NOT_OPER
+)paren
+(brace
+id|tape-&gt;blk_minor
+op_assign
+id|tape-&gt;rew_minor
+op_assign
+id|tape-&gt;nor_minor
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|tape-&gt;devinfo.irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|s390irq_spin_unlock_irqrestore
+(paren
+id|tape-&gt;devinfo.irq
+comma
+id|lockflags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -2323,6 +2523,43 @@ id|tapestate_get
 (paren
 id|tape
 )paren
+op_eq
+id|TS_NOT_OPER
+)paren
+(brace
+id|tape-&gt;blk_minor
+op_assign
+id|tape-&gt;rew_minor
+op_assign
+id|tape-&gt;nor_minor
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|tape-&gt;devinfo.irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|s390irq_spin_unlock_irqrestore
+(paren
+id|tape-&gt;devinfo.irq
+comma
+id|lockflags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|tapestate_get
+(paren
+id|tape
+)paren
 op_ne
 id|TS_DONE
 )paren
@@ -2519,6 +2756,43 @@ comma
 id|lockflags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tapestate_get
+(paren
+id|tape
+)paren
+op_eq
+id|TS_NOT_OPER
+)paren
+(brace
+id|tape-&gt;blk_minor
+op_assign
+id|tape-&gt;rew_minor
+op_assign
+id|tape-&gt;nor_minor
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|tape-&gt;devinfo.irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|s390irq_spin_unlock_irqrestore
+(paren
+id|tape-&gt;devinfo.irq
+comma
+id|lockflags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

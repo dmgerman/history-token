@@ -322,8 +322,9 @@ DECL|macro|ORDERED_QUEUE_TAG
 mdefine_line|#define ORDERED_QUEUE_TAG   0x22
 multiline_comment|/*&n; * Here are some scsi specific ioctl commands which are sometimes useful.&n; */
 multiline_comment|/* These are a few other constants  only used by scsi  devices */
+multiline_comment|/* Note that include/linux/cdrom.h also defines IOCTL 0x5300 - 0x5395 */
 DECL|macro|SCSI_IOCTL_GET_IDLUN
-mdefine_line|#define SCSI_IOCTL_GET_IDLUN 0x5382
+mdefine_line|#define SCSI_IOCTL_GET_IDLUN 0x5382&t;/* conflicts with CDROMAUDIOBUFSIZ */
 multiline_comment|/* Used to turn on and off tagged queuing for scsi devices */
 DECL|macro|SCSI_IOCTL_TAGGED_ENABLE
 mdefine_line|#define SCSI_IOCTL_TAGGED_ENABLE 0x5383

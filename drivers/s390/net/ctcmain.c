@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ctcmain.c,v 1.11 2000/12/15 19:34:54 bird Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; * &t;      Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * $Log: ctcmain.c,v $&n; * Revision 1.11  2000/12/15 19:34:54  bird&n; * struct ctc_priv_t: set type of tbusy to &quot;unsigned long&quot;&n; *&n; * Revision 1.10  2000/12/14 16:49:50  bird&n; * ch_action_txretry(): added missing clear_normalized_cda()&n; *&n; * Revision 1.9  2000/12/14 13:56:53  felfert&n; * Eliminated a compiler warning when building in old kernel.&n; *&n; * Revision 1.8  2000/12/14 13:11:59  felfert&n; * static ccws now separately allocated.&n; * remove locally allocated ccw for setup.&n; *&n; * Revision 1.7  2000/12/14 03:32:15  bird&n; * Fixes for &gt;2GB memory.   Switch on checksumming.&n; *&n; * Revision 1.6  2000/12/07 20:08:30  felfert&n; * Modified RX channel initialization to be compatible with VM TCP&n; *&n; * Revision 1.5  2000/12/07 18:15:05  felfert&n; * Added workaround against VM TCP bug.&n; * Fixed an error message.&n; *&n; * Revision 1.4  2000/12/06 16:55:57  felfert&n; * Removed check for double call of ctc_setup().&n; * ctc_setup can now handle mutiple calls.&n; *&n; * Revision 1.3  2000/12/06 16:48:44  felfert&n; * New initialization.&n; * Removed old cvs log from 2.2 kernel.&n; *&n; * Revision 1.2  2000/12/06 14:13:46  felfert&n; * New unified configuration.&n; *&n; * Revision 1.1  2000/11/30 11:21:08  bird&n; * Support for new ctc driver&n; */
+multiline_comment|/*&n; * $Id: ctcmain.c,v 1.17 2001/01/23 14:23:51 felfert Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * $Log: ctcmain.c,v $&n; * Revision 1.17  2001/01/23 14:23:51  felfert&n; * Added ctc based tty.&n; *&n; * Revision 1.16  2001/01/18 16:10:53  felfert&n; * Added fixes by acme@conectiva.com.br.&n; *&n; * Revision 1.15  2001/01/12 15:40:11  felfert&n; * Fixed ITPM# PL030052IME (Unitchecks when using real escon).&n; *&n; * Revision 1.14  2001/01/11 17:43:52  felfert&n; * Fixed ITPM# PL030051IME (Initialization of escon).&n; *&n; * Revision 1.13  2001/01/11 16:40:26  smolinsk&n; * resolved name space conflict with LVM and renamed&n; *  dev_info_t to s390_dev_info_t&n; * worked around a bug in OSA microcode by stepping back to 2k IDALS in idals.c&n; *&n; * Revision 1.12  2000/12/27 09:40:45  tonn&n; * upgrade to test12&n; *&n; * Revision 1.11  2000/12/15 19:34:54  bird&n; * struct ctc_priv_t: set type of tbusy to &quot;unsigned long&quot;&n; *&n; * Revision 1.10  2000/12/14 16:49:50  bird&n; * ch_action_txretry(): added missing clear_normalized_cda()&n; *&n; * Revision 1.9  2000/12/14 13:56:53  felfert&n; * Eliminated a compiler warning when building in old kernel.&n; *&n; * Revision 1.8  2000/12/14 13:11:59  felfert&n; * static ccws now separately allocated.&n; * remove locally allocated ccw for setup.&n; *&n; * Revision 1.7  2000/12/14 03:32:15  bird&n; * Fixes for &gt;2GB memory.   Switch on checksumming.&n; *&n; * Revision 1.6  2000/12/07 20:08:30  felfert&n; * Modified RX channel initialization to be compatible with VM TCP&n; *&n; * Revision 1.5  2000/12/07 18:15:05  felfert&n; * Added workaround against VM TCP bug.&n; * Fixed an error message.&n; *&n; * Revision 1.4  2000/12/06 16:55:57  felfert&n; * Removed check for double call of ctc_setup().&n; * ctc_setup can now handle mutiple calls.&n; *&n; * Revision 1.3  2000/12/06 16:48:44  felfert&n; * New initialization.&n; * Removed old cvs log from 2.2 kernel.&n; *&n; * Revision 1.2  2000/12/06 14:13:46  felfert&n; * New unified configuration.&n; *&n; * Revision 1.1  2000/11/30 11:21:08  bird&n; * Support for new ctc driver&n; */
 "&f;"
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -13,8 +13,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -35,6 +33,7 @@ DECL|macro|clear_normalized_cda
 macro_line|#  define clear_normalized_cda(ccw)
 macro_line|#endif
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &quot;ctctty.h&quot;
 macro_line|#include &quot;fsm.h&quot;
 macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
@@ -93,8 +92,10 @@ DECL|macro|CTC_PROTO_S390
 mdefine_line|#define CTC_PROTO_S390          0
 DECL|macro|CTC_PROTO_LINUX
 mdefine_line|#define CTC_PROTO_LINUX         1
+DECL|macro|CTC_PROTO_LINUX_TTY
+mdefine_line|#define CTC_PROTO_LINUX_TTY     2
 DECL|macro|CTC_PROTO_MAX
-mdefine_line|#define CTC_PROTO_MAX           1
+mdefine_line|#define CTC_PROTO_MAX           2
 DECL|macro|CTC_BUFSIZE_LIMIT
 mdefine_line|#define CTC_BUFSIZE_LIMIT       65535
 DECL|macro|CTC_BUFSIZE_DEFAULT
@@ -144,6 +145,8 @@ DECL|variable|ctc_no_auto
 r_static
 r_int
 id|ctc_no_auto
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/**&n; * If running on 64 bit, this must be changed. XXX Why? (bird)&n; */
 DECL|typedef|intparm_t
@@ -152,21 +155,6 @@ r_int
 r_int
 id|intparm_t
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020300
-DECL|typedef|net_device
-r_typedef
-r_struct
-id|device
-id|net_device
-suffix:semicolon
-macro_line|#else
-DECL|typedef|net_device
-r_typedef
-r_struct
-id|net_device
-id|net_device
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/**&n; * Definition of a per device parameter block&n; */
 DECL|macro|MAX_PARAM_NAME_LEN
 mdefine_line|#define MAX_PARAM_NAME_LEN 11
@@ -209,6 +197,8 @@ r_static
 id|param
 op_star
 id|params
+op_assign
+l_int|NULL
 suffix:semicolon
 "&f;"
 r_typedef
@@ -284,7 +274,7 @@ DECL|member|flags
 id|__u32
 id|flags
 suffix:semicolon
-multiline_comment|/**&n;&t; * The protocol of this channel (currently always 0)&n;&t; */
+multiline_comment|/**&n;&t; * The protocol of this channel&n;&t; */
 DECL|member|protocol
 id|__u16
 id|protocol
@@ -402,6 +392,8 @@ r_static
 id|channel
 op_star
 id|channels
+op_assign
+l_int|NULL
 suffix:semicolon
 DECL|struct|ctc_priv_t
 r_typedef
@@ -425,6 +417,11 @@ DECL|member|fsm
 id|fsm_instance
 op_star
 id|fsm
+suffix:semicolon
+multiline_comment|/**&n;&t; * The protocol of this device&n;&t; */
+DECL|member|protocol
+id|__u16
+id|protocol
 suffix:semicolon
 DECL|member|channel
 id|channel
@@ -635,13 +632,15 @@ r_void
 r_static
 r_int
 id|printed
+op_assign
+l_int|0
 suffix:semicolon
 r_char
 id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.11 $&quot;
+l_string|&quot;$Revision: 1.17 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -1650,6 +1649,20 @@ r_goto
 id|again
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ch-&gt;protocol
+op_eq
+id|CTC_PROTO_LINUX_TTY
+)paren
+id|ctc_tty_netif_rx
+c_func
+(paren
+id|skb2
+)paren
+suffix:semicolon
+r_else
 id|netif_rx
 c_func
 (paren
@@ -1683,6 +1696,20 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|ch-&gt;protocol
+op_eq
+id|CTC_PROTO_LINUX_TTY
+)paren
+id|ctc_tty_netif_rx
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_else
 id|netif_rx
 c_func
 (paren
@@ -2041,6 +2068,25 @@ r_if
 c_cond
 (paren
 id|sense
+op_amp
+id|SNS0_CMD_REJECT
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ch-%04x: Command reject&bslash;n&quot;
+comma
+id|ch-&gt;devno
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sense
 op_eq
 l_int|0
 )paren
@@ -2049,7 +2095,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;ch-%04x: Unit check&bslash;n&quot;
+l_string|&quot;ch-%04x: Unit check ZERO&bslash;n&quot;
 comma
 id|ch-&gt;devno
 )paren
@@ -2947,9 +2993,11 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: got packet with length &lt; 8&bslash;n&quot;
+l_string|&quot;%s: got packet with length %d &lt; 8&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|len
 )paren
 suffix:semicolon
 id|privptr-&gt;stats.rx_dropped
@@ -2974,9 +3022,11 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: got packet with length &gt; %d&bslash;n&quot;
+l_string|&quot;%s: got packet with length %d &gt; %d&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|len
 comma
 id|ch-&gt;max_bufsize
 )paren
@@ -6528,12 +6578,6 @@ id|name
 l_int|10
 )braket
 suffix:semicolon
-r_int
-id|ret
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6558,9 +6602,19 @@ id|GFP_KERNEL
 op_eq
 l_int|NULL
 )paren
-r_goto
-id|out
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ctc: Out of memory in add_channel&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -6602,9 +6656,25 @@ id|GFP_DMA
 op_eq
 l_int|NULL
 )paren
-r_goto
-id|out_ch
+(brace
+id|kfree
+c_func
+(paren
+id|ch
+)paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ctc: Out of memory in add_channel&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/**&n;&t; * &quot;static&quot; ccws are used in the following way:&n;&t; *&n;&t; * ccw[0..2] (Channel program for generic I/O):&n;&t; *           0: prepare&n;&t; *           1: read or write (depending on direction)&n;&t; *           2: nop&n;&t; * ccw[3..4] (Channel program for initial channel setup):&n;&t; *           3: set extended mode&n;&t; *           4: nop&n;&t; *&n;&t; * ch-&gt;ccw[0..2] are initialized in ch_action_start because&n;&t; * the channel&squot;s direction is yet unknown here.&n;&t; */
 id|ch-&gt;ccw
 (braket
@@ -6729,9 +6799,25 @@ id|ch-&gt;fsm
 op_eq
 l_int|NULL
 )paren
-r_goto
-id|out_ccw
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ctc: Could not create FSM in add_channel&bslash;n&quot;
+)paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ch
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|fsm_newstate
 c_func
 (paren
@@ -6764,9 +6850,31 @@ id|GFP_KERNEL
 op_eq
 l_int|NULL
 )paren
-r_goto
-id|out_ccw
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ctc: Out of memory in add_channel&bslash;n&quot;
+)paren
 suffix:semicolon
+id|kfree_fsm
+c_func
+(paren
+id|ch-&gt;fsm
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ch
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -6834,12 +6942,26 @@ op_member_access_from_pointer
 id|devno
 )paren
 suffix:semicolon
-id|ret
-op_assign
-l_int|0
+id|kfree
+c_func
+(paren
+id|ch-&gt;devstat
+)paren
 suffix:semicolon
-r_goto
-id|out_devstat
+id|kfree_fsm
+c_func
+(paren
+id|ch-&gt;fsm
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ch
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|fsm_settimer
@@ -6877,47 +6999,6 @@ id|ch
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|out_devstat
-suffix:colon
-id|kfree
-c_func
-(paren
-id|ch-&gt;devstat
-)paren
-suffix:semicolon
-id|out_ccw
-suffix:colon
-id|kfree
-c_func
-(paren
-id|ch-&gt;ccw
-)paren
-suffix:semicolon
-id|out_ch
-suffix:colon
-id|kfree
-c_func
-(paren
-id|ch
-)paren
-suffix:semicolon
-id|out
-suffix:colon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;ctc: Out of memory in add_channel&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * scan for all channels and create an entry in the channels list&n; * for every supported channel.&n; *&n; * @param print_result Flag: If !0, print a final result.&n; */
@@ -8662,6 +8743,17 @@ op_assign
 id|skb-&gt;len
 op_plus
 id|LL_HEADER_LENGTH
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ch-&gt;type
+op_eq
+id|channel_type_escon
+)paren
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -11877,7 +11969,7 @@ id|ctc_setup
 suffix:semicolon
 macro_line|#endif
 "&f;"
-multiline_comment|/**&n; *&n; * Setup an interface.&n; *&n; * Like ctc_setup(), ctc_probe() can be called from two different locations:&n; *  - If built as module, it is called from within init_module().&n; *  - If built in monolithic kernel, it is called from within generic network&n; *    layer during initialization for every corresponding device, declared in&n; *    drivers/net/Space.c&n; *&n; * @param dev Pointer to net_device to be initialized.&n; *&n; * @return 0 on success, !0 on failure.&n; */
+multiline_comment|/**&n; *&n; * Setup an interface.&n; *&n; * Like ctc_setup(), ctc_probe() can be called from two different locations:&n; *  - If built as module, it is called from within init_module().&n; *  - If built in monolithic kernel, it is called from within generic network&n; *    layer during initialization for every corresponding device, declared in&n; *    drivers/net/Space.c&n; *&n; * @param dev Pointer to net_device to be initialized.&n; *&n; * @returns 0 on success, !0 on failure.&n; */
 DECL|function|ctc_probe
 r_int
 id|ctc_probe
@@ -12079,6 +12171,10 @@ id|ctc_priv
 op_star
 )paren
 id|dev-&gt;priv
+suffix:semicolon
+id|privptr-&gt;protocol
+op_assign
+id|proto
 suffix:semicolon
 id|privptr-&gt;proc_dentry
 op_assign
@@ -12673,6 +12769,11 @@ id|c
 op_assign
 id|channels
 suffix:semicolon
+id|ctc_tty_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* we are called if all interfaces are down only, so no need&n;&t; * to bother around with locking stuff&n;&t; */
 id|channels
 op_assign
@@ -12796,7 +12897,21 @@ op_member_access_from_pointer
 id|fsm
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|privptr-&gt;protocol
+op_ne
+id|CTC_PROTO_LINUX_TTY
+)paren
 id|unregister_netdev
+c_func
+(paren
+id|nd
+)paren
+suffix:semicolon
+r_else
+id|ctc_tty_unregister_netdev
 c_func
 (paren
 id|nd
@@ -12913,6 +13028,11 @@ suffix:semicolon
 r_int
 id|activated
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|param
 op_star
 id|par
@@ -12949,6 +13069,11 @@ id|par
 op_assign
 id|params
 suffix:semicolon
+id|ctc_tty_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -12983,15 +13108,6 @@ l_string|&quot;escon&quot;
 suffix:colon
 l_string|&quot;ctc&quot;
 suffix:semicolon
-r_int
-id|nlen
-op_assign
-id|strlen
-c_func
-(paren
-id|bname
-)paren
-suffix:semicolon
 id|cnt
 (braket
 id|itype
@@ -13025,10 +13141,15 @@ c_cond
 op_logical_neg
 id|dev
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -13123,6 +13244,26 @@ op_star
 id|p
 )paren
 (brace
+r_int
+id|it
+op_assign
+(paren
+id|strncmp
+c_func
+(paren
+id|dev-&gt;name
+comma
+l_string|&quot;escon&quot;
+comma
+l_int|5
+)paren
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
 id|n
 op_assign
 id|simple_strtoul
@@ -13142,25 +13283,12 @@ id|n
 op_ge
 id|cnt
 (braket
-id|itype
+id|it
 )braket
-op_logical_and
-(paren
-op_logical_neg
-id|strncmp
-c_func
-(paren
-id|par-&gt;name
-comma
-id|bname
-comma
-id|nlen
-)paren
-)paren
 )paren
 id|cnt
 (braket
-id|itype
+id|it
 )braket
 op_assign
 id|n
@@ -13238,6 +13366,16 @@ op_eq
 l_int|0
 )paren
 (brace
+id|ctc_priv
+op_star
+id|privptr
+op_assign
+(paren
+id|ctc_priv
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -13259,7 +13397,15 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|privptr-&gt;protocol
+op_ne
+id|CTC_PROTO_LINUX_TTY
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -13272,21 +13418,11 @@ op_ne
 l_int|0
 )paren
 (brace
-id|ctc_priv
-op_star
-id|privptr
-op_assign
-(paren
-id|ctc_priv
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ctc: Couldn&squot;t register %s&bslash;n&quot;
+l_string|&quot;ctc: Couldn&squot;t register netdev %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -13378,6 +13514,115 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|ctc_tty_register_netdev
+c_func
+(paren
+id|dev
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ctc: Couldn&squot;t register ttydev %s&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|privptr-&gt;channel
+(braket
+id|READ
+)braket
+op_member_access_from_pointer
+id|irq
+comma
+id|privptr-&gt;channel
+(braket
+id|READ
+)braket
+op_member_access_from_pointer
+id|devstat
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|privptr-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|irq
+comma
+id|privptr-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|devstat
+)paren
+suffix:semicolon
+id|channel_free
+c_func
+(paren
+id|privptr-&gt;channel
+(braket
+id|READ
+)braket
+)paren
+suffix:semicolon
+id|channel_free
+c_func
+(paren
+id|privptr-&gt;channel
+(braket
+id|WRITE
+)braket
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev-&gt;priv
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+macro_line|#ifdef DEBUG
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ctc: %s(): register succeed&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;
+id|activated
+op_increment
+suffix:semicolon
+)brace
+)brace
+)brace
+r_else
+(brace
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -13405,6 +13650,12 @@ r_while
 c_loop
 (paren
 id|dev
+op_logical_and
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -13422,13 +13673,24 @@ id|KERN_WARNING
 l_string|&quot;ctc: No devices registered&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|ctc_tty_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE

@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tape3480.h&n; *    tape device discipline for 3480 tapes.&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *               Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&n; *  UNDER CONSTRUCTION: Work in progress...:-)&n; ****************************************************************************&n; */
+multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tape3480.h&n; *    tape device discipline for 3480 tapes.&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001 IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *               Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; ****************************************************************************&n; */
 macro_line|#ifndef _TAPE3480_H
 DECL|macro|_TAPE3480_H
 mdefine_line|#define _TAPE3480_H

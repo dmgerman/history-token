@@ -30,14 +30,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|dump_messages
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|receivemessage
 c_func

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  arch/s390/kernel/smp.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com),&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  based on other smp stuff by &n; *    (c) 1995 Alan Cox, CymruNET Ltd  &lt;alan@cymru.net&gt;&n; *    (c) 1998 Ingo Molnar&n; *&n; * We work with logical cpu numbering everywhere we can. The only&n; * functions using the real cpu address (got from STAP) are the sigp&n; * functions. For all other functions we use the identity mapping.&n; * That means that cpu_number_map[i] == i for every cpu. cpu_number_map is&n; * used e.g. to find the idle task belonging to a logical cpu. Every array&n; * in the kernel is sorted by the logical cpu number and not by the physical&n; * one which is causing all the confusion with __cpu_logical_map and&n; * cpu_number_map in other architectures.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -9,7 +10,7 @@ macro_line|#include &lt;asm/sigp.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
-macro_line|#include &quot;cpcmd.h&quot;
+macro_line|#include &lt;asm/cpcmd.h&gt;
 multiline_comment|/* prototypes */
 r_extern
 r_int
@@ -1457,7 +1458,7 @@ id|sigp_stop
 comma
 l_int|0
 comma
-id|TRUE
+l_int|1
 comma
 l_int|NULL
 )paren
@@ -2175,6 +2176,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|pt_regs
 )paren
 )paren
@@ -2763,4 +2765,32 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+DECL|variable|lowcore_ptr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lowcore_ptr
+)paren
+suffix:semicolon
+DECL|variable|kernel_flag
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kernel_flag
+)paren
+suffix:semicolon
+DECL|variable|smp_ctl_set_bit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_ctl_set_bit
+)paren
+suffix:semicolon
+DECL|variable|smp_ctl_clear_bit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_ctl_clear_bit
+)paren
+suffix:semicolon
 eof

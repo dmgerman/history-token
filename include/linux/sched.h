@@ -1441,6 +1441,54 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|FASTCALL
+c_func
+(paren
+id|__wake_up_ctx
+c_func
+(paren
+id|wait_queue_head_t
+op_star
+id|q
+comma
+r_int
+r_int
+id|mode
+comma
+r_int
+id|count
+comma
+r_int
+id|bit
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|FASTCALL
+c_func
+(paren
+id|__wake_up_sync_ctx
+c_func
+(paren
+id|wait_queue_head_t
+op_star
+id|q
+comma
+r_int
+r_int
+id|mode
+comma
+r_int
+id|count
+comma
+r_int
+id|bit
+)paren
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|FASTCALL
 c_func
@@ -1539,6 +1587,10 @@ DECL|macro|wake_up_interruptible_sync
 mdefine_line|#define wake_up_interruptible_sync(x)&t;__wake_up_sync((x),TASK_INTERRUPTIBLE, 1)
 DECL|macro|wake_up_interruptible_sync_nr
 mdefine_line|#define wake_up_interruptible_sync_nr(x) __wake_up_sync((x),TASK_INTERRUPTIBLE,  nr)
+DECL|macro|wake_up_ctx
+mdefine_line|#define wake_up_ctx(x,count,bit)&t;__wake_up_ctx((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE,count,bit)
+DECL|macro|wake_up_sync_ctx
+mdefine_line|#define wake_up_sync_ctx(x,count,bit)&t;__wake_up_ctx((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE,count,bit)
 id|asmlinkage
 r_int
 id|sys_wait4

@@ -1019,7 +1019,7 @@ OG
 id|chain
 )paren
 (brace
-id|bforget
+id|brelse
 c_func
 (paren
 id|partial-&gt;bh

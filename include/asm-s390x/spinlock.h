@@ -176,6 +176,8 @@ id|rwlock_t
 suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
+DECL|macro|rwlock_init
+mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
 DECL|macro|read_lock
 mdefine_line|#define read_lock(rw)   &bslash;&n;        asm volatile(&quot;   la    1,%0&bslash;n&quot;   &bslash;&n;                     &quot;   lg    2,0(1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: # diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: nihh  2,0x7fff&bslash;n&quot; /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;   /* one more reader */  &bslash;&n;                     &quot;   csg   2,3,0(1)&bslash;n&quot; /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : : &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; );
 DECL|macro|read_unlock

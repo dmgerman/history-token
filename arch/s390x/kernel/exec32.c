@@ -250,4 +250,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|setup_arg_pages32
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|setup_arg_pages32
+)paren
+suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: spaceball.c,v 1.7 2000/06/24 11:55:40 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *  &t;David Thompson&n; *  &t;Joseph Krahn&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: spaceball.c,v 1.8 2000/11/23 11:42:39 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *  &t;David Thompson&n; *  &t;Joseph Krahn&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * SpaceTec SpaceBall 4000 FLX driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; *  Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -331,7 +331,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Spaceball 4000 FLX packets all start with a one letter packet-type decriptor,&n; * and end in 0x0d. It uses &squot;^&squot; as an escape for 0x0d characters which can&n; * occur in the axis values. ^M, ^Q and ^S all mean 0x0d, depending (I think)&n; * on whether the axis value is increasing, decreasing, or same as before.&n; * (I don&squot;t see why this is useful).&n; */
+multiline_comment|/*&n; * Spaceball 4000 FLX packets all start with a one letter packet-type decriptor,&n; * and end in 0x0d. It uses &squot;^&squot; as an escape for CR, XOFF and XON characters which&n; * can occur in the axis values.&n; */
 DECL|function|spaceball_interrupt
 r_static
 r_void
@@ -397,7 +397,7 @@ id|spaceball-&gt;escape
 )paren
 (brace
 id|spaceball-&gt;escape
-op_xor_assign
+op_assign
 l_int|1
 suffix:semicolon
 r_return
@@ -427,8 +427,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|data
-op_assign
-l_int|0xd
+op_and_assign
+l_int|0x1f
 suffix:semicolon
 )brace
 r_default

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  include/asm-s390/queue.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&n; *  A little set of queue utilies.&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
 DECL|struct|queue
 r_typedef
 r_struct
@@ -417,11 +416,11 @@ id|member
 )paren
 (brace
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|get_prev
@@ -479,7 +478,7 @@ id|member
 )paren
 (brace
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 op_star
@@ -494,7 +493,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|remove_from_list
@@ -552,11 +551,11 @@ op_assign
 id|member-&gt;next
 suffix:semicolon
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|remove_from_queue
@@ -648,11 +647,11 @@ id|member-&gt;next
 suffix:semicolon
 )brace
 r_return
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 eof

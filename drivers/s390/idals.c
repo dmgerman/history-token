@@ -1,9 +1,14 @@
 multiline_comment|/* &n;   * File...........: linux/drivers/s390x/idals.c&n;   * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n;   * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n;   * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000a&n;   &n;   * History of changes&n;   * 07/24/00 new file&n;   * 12/13/00 changed IDALs to 4kByte-IDALs&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#ifdef CONFIG_ARCH_S390X
+DECL|macro|IDA_SIZE_LOG
+mdefine_line|#define IDA_SIZE_LOG 12 /* 11 for 2k , 12 for 4k */
+DECL|macro|IDA_BLOCK_SIZE
+mdefine_line|#define IDA_BLOCK_SIZE (1L&lt;&lt;IDA_SIZE_LOG)
 r_void
 DECL|function|set_normalized_cda
 id|set_normalized_cda
@@ -57,7 +62,6 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* do we really need  &squot;+count&squot;? */
 id|cp
 op_member_access_from_pointer
 id|cda
@@ -73,15 +77,23 @@ op_assign
 (paren
 id|address
 op_amp
-l_int|4095L
+(paren
+id|IDA_BLOCK_SIZE
+op_minus
+l_int|1
+)paren
 )paren
 op_plus
 id|count
 op_plus
-l_int|4095L
+(paren
+id|IDA_BLOCK_SIZE
+op_minus
+l_int|1
+)paren
 )paren
 op_rshift
-l_int|12
+id|IDA_SIZE_LOG
 suffix:semicolon
 id|idal
 op_assign
@@ -139,10 +151,14 @@ op_assign
 id|address
 op_amp
 op_minus
-l_int|4096L
+(paren
+id|IDA_BLOCK_SIZE
+)paren
 )paren
 op_plus
-l_int|4096
+(paren
+id|IDA_BLOCK_SIZE
+)paren
 suffix:semicolon
 id|nridaws
 op_decrement
@@ -159,5 +175,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|variable|set_normalized_cda
+id|EXPORT_SYMBOL
+(paren
+id|set_normalized_cda
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

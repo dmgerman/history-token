@@ -190,6 +190,20 @@ op_star
 id|dev_id
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * I originally believed this function wouldn&squot;t be necessary&n; * I subsequently found that reprobing failed in certain cases :-(,&n; * It is just a wrapper for free irq.&n; */
+r_void
+id|chandev_free_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+)paren
+suffix:semicolon
 r_typedef
 r_enum
 (brace

@@ -2,6 +2,49 @@ macro_line|#ifndef DASD_ECKD_H
 DECL|macro|DASD_ECKD_H
 mdefine_line|#define DASD_ECKD_H
 macro_line|#include &quot;dasd_3990_erp.h&quot;
+macro_line|#include &quot;dasd_9343_erp.h&quot;
+DECL|macro|DASD_ECKD_CCW_WRITE
+mdefine_line|#define DASD_ECKD_CCW_WRITE 0x05
+DECL|macro|DASD_ECKD_CCW_READ
+mdefine_line|#define DASD_ECKD_CCW_READ 0x06
+DECL|macro|DASD_ECKD_CCW_WRITE_HOME_ADDRESS
+mdefine_line|#define DASD_ECKD_CCW_WRITE_HOME_ADDRESS 0x09
+DECL|macro|DASD_ECKD_CCW_READ_HOME_ADDRESS
+mdefine_line|#define DASD_ECKD_CCW_READ_HOME_ADDRESS 0x0a
+DECL|macro|DASD_ECKD_CCW_WRITE_KD
+mdefine_line|#define DASD_ECKD_CCW_WRITE_KD 0x0d
+DECL|macro|DASD_ECKD_CCW_READ_KD
+mdefine_line|#define DASD_ECKD_CCW_READ_KD 0x0e
+DECL|macro|DASD_ECKD_CCW_READ_COUNT
+mdefine_line|#define DASD_ECKD_CCW_READ_COUNT 0x12
+DECL|macro|DASD_ECKD_CCW_WRITE_RECORD_ZERO
+mdefine_line|#define DASD_ECKD_CCW_WRITE_RECORD_ZERO 0x15
+DECL|macro|DASD_ECKD_CCW_READ_RECORD_ZERO
+mdefine_line|#define DASD_ECKD_CCW_READ_RECORD_ZERO 0x16
+DECL|macro|DASD_ECKD_CCW_WRITE_CKD
+mdefine_line|#define DASD_ECKD_CCW_WRITE_CKD 0x1d
+DECL|macro|DASD_ECKD_CCW_READ_CKD
+mdefine_line|#define DASD_ECKD_CCW_READ_CKD 0x1e
+DECL|macro|DASD_ECKD_CCW_LOCATE_RECORD
+mdefine_line|#define DASD_ECKD_CCW_LOCATE_RECORD 0x47
+DECL|macro|DASD_ECKD_CCW_DEFINE_EXTENT
+mdefine_line|#define DASD_ECKD_CCW_DEFINE_EXTENT 0x63
+DECL|macro|DASD_ECKD_CCW_WRITE_MT
+mdefine_line|#define DASD_ECKD_CCW_WRITE_MT 0x85
+DECL|macro|DASD_ECKD_CCW_READ_MT
+mdefine_line|#define DASD_ECKD_CCW_READ_MT 0x86
+DECL|macro|DASD_ECKD_CCW_WRITE_KD_MT
+mdefine_line|#define DASD_ECKD_CCW_WRITE_KD_MT 0x8d
+DECL|macro|DASD_ECKD_CCW_READ_KD_MT
+mdefine_line|#define DASD_ECKD_CCW_READ_KD_MT 0x8e
+DECL|macro|DASD_ECKD_CCW_RELEASE
+mdefine_line|#define DASD_ECKD_CCW_RELEASE 0x94
+DECL|macro|DASD_ECKD_CCW_READ_CKD_MT
+mdefine_line|#define DASD_ECKD_CCW_READ_CKD_MT 0x9e
+DECL|macro|DASD_ECKD_CCW_WRITE_CKD_MT
+mdefine_line|#define DASD_ECKD_CCW_WRITE_CKD_MT 0x9d
+DECL|macro|DASD_ECKD_CCW_RESERVE
+mdefine_line|#define DASD_ECKD_CCW_RESERVE 0xB4
 r_typedef
 DECL|struct|eckd_count_t
 r_struct

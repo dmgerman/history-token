@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/s390/boot/silo.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *&n; *    Report bugs to: &lt;linux390@de.ibm.com&gt;&n; *&n; *    Author(s): Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *               Fritz Elfert &lt;felfert@to.com&gt; contributed support for&n; *                &t;/etc/silo.conf based on Intel&squot;s lilo&n; */
+multiline_comment|/*&n; *  arch/s390/boot/silo.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *&n; *    Report bugs to: &lt;linux390@de.ibm.com&gt;&n; *&n; *    Author(s): Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *               Fritz Elfert &lt;felfert@to.com&gt; contributed support for&n; *                &t;/etc/silo.conf based on Intel&squot;s lilo&n; *    Changes  :&n; *               01/15/01 Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                 adapted to deal with devices and bootsects of various sizes&n; */
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;stdio.h&gt;
@@ -2404,6 +2404,11 @@ l_int|4096
 op_assign
 initialization_block
 suffix:semicolon
+r_int
+id|blocksize
+comma
+id|sectsize
+suffix:semicolon
 id|ITRY
 (paren
 id|d_fd
@@ -2671,6 +2676,20 @@ id|ITRY
 id|ioctl
 c_func
 (paren
+id|bd_fd
+comma
+id|BLKSSZGET
+comma
+op_amp
+id|blocksize
+)paren
+)paren
+suffix:semicolon
+id|ITRY
+(paren
+id|ioctl
+c_func
+(paren
 id|s_fd
 comma
 id|FIBMAP
@@ -2725,6 +2744,50 @@ suffix:semicolon
 multiline_comment|/* Now patch the bootsector */
 id|ITRY
 (paren
+id|stat
+(paren
+id|o-&gt;bootsect
+comma
+op_amp
+id|b_st
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sectsize
+op_assign
+id|b_st.st_size
+)paren
+OG
+id|blocksize
+)paren
+(brace
+id|ERROR_LEVEL
+(paren
+l_int|0
+comma
+l_string|&quot;Bootsector is larger than sectorsize of volume %d vs %d&bslash;n&quot;
+comma
+id|sectsize
+comma
+id|blocksize
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|errno
+op_assign
+id|EINVAL
+suffix:semicolon
+)brace
+id|ITRY
+(paren
 id|b_fd
 op_assign
 id|open
@@ -2735,7 +2798,7 @@ id|O_RDONLY
 )paren
 )paren
 suffix:semicolon
-id|NTRY
+id|ITRY
 (paren
 id|read
 (paren
@@ -2743,7 +2806,7 @@ id|b_fd
 comma
 id|buffer
 comma
-l_int|4096
+id|sectsize
 )paren
 )paren
 suffix:semicolon
@@ -2781,7 +2844,7 @@ op_le
 l_int|0
 )paren
 (brace
-id|NTRY
+id|ITRY
 (paren
 id|write
 (paren
@@ -2789,11 +2852,23 @@ id|d_fd
 comma
 id|buffer
 comma
-l_int|4096
+id|sectsize
 )paren
 )paren
 suffix:semicolon
-id|NTRY
+id|ITRY
+(paren
+id|lseek
+(paren
+id|d_fd
+comma
+id|blocksize
+comma
+id|SEEK_SET
+)paren
+)paren
+suffix:semicolon
+id|ITRY
 (paren
 id|write
 (paren
@@ -2801,7 +2876,7 @@ id|d_fd
 comma
 id|buffer
 comma
-l_int|4096
+id|sectsize
 )paren
 )paren
 suffix:semicolon

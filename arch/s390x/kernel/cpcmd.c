@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
+macro_line|#include &lt;asm/cpcmd.h&gt;
 DECL|function|cpcmd
 r_void
 id|cpcmd

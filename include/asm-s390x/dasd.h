@@ -1,7 +1,13 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * History of changes (starts July 2000)&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * History of changes (starts July 2000)&n; * 02/01/01 added dynamic registration of ioctls&n; */
 macro_line|#ifndef DASD_H
 DECL|macro|DASD_H
 mdefine_line|#define DASD_H
+DECL|macro|ERP_DEBUG
+macro_line|#undef ERP_DEBUG               /* enable debug messages */
+DECL|macro|ERP_FULL_ERP
+macro_line|#undef ERP_FULL_ERP            /* enable full ERP - experimental code !!!! */
+DECL|macro|CONFIG_DASD_DYNAMIC
+mdefine_line|#define CONFIG_DASD_DYNAMIC
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|IOCTL_LETTER
@@ -28,6 +34,48 @@ mdefine_line|#define BIODASDFORMAT  _IOW(IOCTL_LETTER,0,format_data_t)
 multiline_comment|/* translate blocknumber of partition to absolute */
 DECL|macro|BIODASDRWTB
 mdefine_line|#define BIODASDRWTB    _IOWR(IOCTL_LETTER,0,int)
+DECL|typedef|dasd_ioctl_fn_t
+r_typedef
+r_int
+(paren
+op_star
+id|dasd_ioctl_fn_t
+)paren
+(paren
+r_struct
+id|inode
+op_star
+id|inp
+comma
+r_int
+id|no
+comma
+r_int
+id|args
+)paren
+suffix:semicolon
+r_int
+id|dasd_ioctl_no_register
+c_func
+(paren
+r_int
+id|no
+comma
+id|dasd_ioctl_fn_t
+id|handler
+)paren
+suffix:semicolon
+r_int
+id|dasd_ioctl_no_unregister
+c_func
+(paren
+r_int
+id|no
+comma
+id|dasd_ioctl_fn_t
+id|handler
+)paren
+suffix:semicolon
 DECL|macro|DASD_NAME
 mdefine_line|#define DASD_NAME &quot;dasd&quot;
 DECL|macro|DASD_PARTN_BITS
@@ -78,6 +126,14 @@ DECL|macro|DASD_FORMAT_DEFAULT_BLOCKSIZE
 mdefine_line|#define DASD_FORMAT_DEFAULT_BLOCKSIZE -1
 DECL|macro|DASD_FORMAT_DEFAULT_INTENSITY
 mdefine_line|#define DASD_FORMAT_DEFAULT_INTENSITY -1
+DECL|macro|DASD_FORMAT_INTENS_WRITE_RECZERO
+mdefine_line|#define DASD_FORMAT_INTENS_WRITE_RECZERO 0x01
+DECL|macro|DASD_FORMAT_INTENS_WRITE_HOMEADR
+mdefine_line|#define DASD_FORMAT_INTENS_WRITE_HOMEADR 0x02
+DECL|macro|DASD_FORMAT_INTENS_INVALIDATE
+mdefine_line|#define DASD_FORMAT_INTENS_INVALIDATE    0x04
+DECL|macro|DASD_FORMAT_INTENS_CDL
+mdefine_line|#define DASD_FORMAT_INTENS_CDL 0x08
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -237,15 +293,34 @@ id|devreg
 suffix:semicolon
 multiline_comment|/* the devreg itself */
 multiline_comment|/* build a linked list of devregs, needed for cleanup */
-DECL|member|next
+DECL|member|list
 r_struct
-id|dasd_devreg_t
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 DECL|typedef|dasd_devreg_t
 )brace
 id|dasd_devreg_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|no
+r_int
+id|no
+suffix:semicolon
+DECL|member|handler
+id|dasd_ioctl_fn_t
+id|handler
+suffix:semicolon
+DECL|typedef|dasd_ioctl_list_t
+)brace
+id|dasd_ioctl_list_t
 suffix:semicolon
 r_typedef
 r_enum
@@ -290,7 +365,7 @@ mdefine_line|#define DASD_SENSE_BIT_3 0x10
 DECL|macro|check_then_set
 mdefine_line|#define check_then_set(where,from,to) &bslash;&n;do { &bslash;&n;        if ((*(where)) != (from) ) { &bslash;&n;                printk (KERN_ERR PRINTK_HEADER &quot;was %d&bslash;n&quot;, *(where)); &bslash;&n;                BUG(); &bslash;&n;        } &bslash;&n;        (*(where)) = (to); &bslash;&n;} while (0)
 DECL|macro|DASD_MESSAGE
-mdefine_line|#define DASD_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;        int d_devno = d_device-&gt;devinfo.devno; &bslash;&n;        int d_irq = d_device-&gt;devinfo.irq; &bslash;&n;        char *d_name = d_device-&gt;name; &bslash;&n;        int d_major = MAJOR(d_device-&gt;kdev); &bslash;&n;        int d_minor = MINOR(d_device-&gt;kdev); &bslash;&n;        printk(d_loglevel PRINTK_HEADER &bslash;&n;               &quot;/dev/%s(%d:%d), 0x%04X on SCH 0x%x:&quot; &bslash;&n;               d_string &quot;&bslash;n&quot;,d_name,d_major,d_minor,d_devno,d_irq,d_args ); &bslash;&n;} while(0)
+mdefine_line|#define DASD_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;        int d_devno = d_device-&gt;devinfo.devno; &bslash;&n;        int d_irq = d_device-&gt;devinfo.irq; &bslash;&n;        char *d_name = d_device-&gt;name; &bslash;&n;        int d_major = MAJOR(d_device-&gt;kdev); &bslash;&n;        int d_minor = MINOR(d_device-&gt;kdev); &bslash;&n;        printk(d_loglevel PRINTK_HEADER &bslash;&n;               &quot;/dev/%s(%d:%d),%04X IRQ0x%x:&quot; &bslash;&n;               d_string &quot;&bslash;n&quot;,d_name,d_major,d_minor,d_devno,d_irq,d_args ); &bslash;&n;} while(0)
 multiline_comment|/* &n; * struct dasd_sizes_t&n; * represents all data needed to access dasd with properly set up sectors&n; */
 r_typedef
 DECL|struct|dasd_sizes_t
@@ -315,6 +390,12 @@ r_int
 id|s2b_shift
 suffix:semicolon
 multiline_comment|/* log2 (bp_block/512) */
+DECL|member|pt_block
+r_int
+r_int
+id|pt_block
+suffix:semicolon
+multiline_comment|/* from which block to read the partn table */
 DECL|typedef|dasd_sizes_t
 )brace
 id|dasd_sizes_t
@@ -339,6 +420,18 @@ DECL|typedef|dasd_chanq_t
 )brace
 id|dasd_chanq_t
 suffix:semicolon
+DECL|macro|DASD_DEVICE_FORMAT_STRING
+mdefine_line|#define DASD_DEVICE_FORMAT_STRING &quot;Device: %p&quot;
+DECL|macro|DASD_DEVICE_DEBUG_EVENT
+mdefine_line|#define DASD_DEVICE_DEBUG_EVENT(d_level, d_device, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( d_device-&gt;debug_area != NULL )&bslash;&n;        debug_sprintf_event(d_device-&gt;debug_area,d_level,&bslash;&n;                    DASD_DEVICE_FORMAT_STRING d_str &quot;&bslash;n&quot;,&bslash;&n;                    d_device, d_data);&bslash;&n;} while(0);
+DECL|macro|DASD_DEVICE_DEBUG_EXCEPTION
+mdefine_line|#define DASD_DEVICE_DEBUG_EXCEPTION(d_level, d_device, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( d_device-&gt;debug_area != NULL )&bslash;&n;        debug_sprintf_exception(d_device-&gt;debug_area,d_level,&bslash;&n;                        DASD_DEVICE_FORMAT_STRING d_str &quot;&bslash;n&quot;,&bslash;&n;                        d_device, d_data);&bslash;&n;} while(0);
+DECL|macro|DASD_DRIVER_FORMAT_STRING
+mdefine_line|#define DASD_DRIVER_FORMAT_STRING &quot;Driver: &lt;[%p]&gt;&quot;
+DECL|macro|DASD_DRIVER_DEBUG_EVENT
+mdefine_line|#define DASD_DRIVER_DEBUG_EVENT(d_level, d_fn, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( dasd_debug_area != NULL )&bslash;&n;        debug_sprintf_event(dasd_debug_area, d_level,&bslash;&n;                    DASD_DRIVER_FORMAT_STRING #d_fn &quot;:&quot; d_str &quot;&bslash;n&quot;,&bslash;&n;                    d_fn, d_data);&bslash;&n;} while(0);
+DECL|macro|DASD_DRIVER_DEBUG_EXCEPTION
+mdefine_line|#define DASD_DRIVER_DEBUG_EXCEPTION(d_level, d_fn, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( dasd_debug_area != NULL )&bslash;&n;        debug_sprintf_exception(dasd_debug_area, d_level,&bslash;&n;                        DASD_DRIVER_FORMAT_STRING #d_fn &quot;:&quot; d_str &quot;&bslash;n&quot;,&bslash;&n;                        d_fn, d_data);&bslash;&n;} while(0);
 r_struct
 id|dasd_device_t
 suffix:semicolon
@@ -631,6 +724,11 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* a name used for tagging and printks */
+DECL|member|max_blocks
+r_int
+id|max_blocks
+suffix:semicolon
+multiline_comment|/* maximum number of blocks to be chained */
 DECL|member|id_check
 id|dasd_ck_id_fn_t
 id|id_check
@@ -712,16 +810,19 @@ DECL|typedef|dasd_discipline_t
 )brace
 id|dasd_discipline_t
 suffix:semicolon
+DECL|macro|DASD_MAJOR_INFO_REGISTERED
+mdefine_line|#define DASD_MAJOR_INFO_REGISTERED 1
+DECL|macro|DASD_MAJOR_INFO_IS_STATIC
+mdefine_line|#define DASD_MAJOR_INFO_IS_STATIC 2
 DECL|struct|major_info_t
 r_typedef
 r_struct
 id|major_info_t
 (brace
-DECL|member|next
+DECL|member|list
 r_struct
-id|major_info_t
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|dasd_device
 r_struct
@@ -729,6 +830,10 @@ id|dasd_device_t
 op_star
 op_star
 id|dasd_device
+suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
 suffix:semicolon
 DECL|member|gendisk
 r_struct
@@ -868,6 +973,11 @@ DECL|member|request_queue
 id|request_queue_t
 id|request_queue
 suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
 DECL|member|dev_status
 id|devstat_t
 id|dev_status
@@ -951,8 +1061,8 @@ DECL|macro|DASD_DEVICE_LEVEL_ANALYSIS_PREPARED
 mdefine_line|#define DASD_DEVICE_LEVEL_ANALYSIS_PREPARED 0x04
 DECL|macro|DASD_DEVICE_LEVEL_ANALYSED
 mdefine_line|#define DASD_DEVICE_LEVEL_ANALYSED 0x08
-DECL|macro|DASD_DEVICE_LEVEL_PARTITIONED
-mdefine_line|#define DASD_DEVICE_LEVEL_PARTITIONED 0x10
+DECL|macro|DASD_DEVICE_LEVEL_ONLINE
+mdefine_line|#define DASD_DEVICE_LEVEL_ONLINE 0x10
 r_int
 id|dasd_init
 (paren
@@ -1039,7 +1149,7 @@ id|ccw_req_t
 op_star
 )paren
 suffix:semicolon
-DECL|variable|genhd_dasd_name
+r_extern
 r_int
 (paren
 op_star
@@ -1058,6 +1168,20 @@ id|gendisk
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|genhd_dasd_fillgeo
+)paren
+(paren
+r_int
+comma
+r_struct
+id|hd_geometry
+op_star
+)paren
+suffix:semicolon
 r_int
 id|dasd_oper_handler
 (paren
@@ -1068,6 +1192,18 @@ id|devreg_t
 op_star
 id|devreg
 )paren
+suffix:semicolon
+r_void
+id|dasd_schedule_bh
+(paren
+id|dasd_device_t
+op_star
+)paren
+suffix:semicolon
+DECL|variable|dasd_debug_area
+id|debug_info_t
+op_star
+id|dasd_debug_area
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;&t;&t;&t;/* DASD_H */

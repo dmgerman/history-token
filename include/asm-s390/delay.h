@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  include/asm-s390/delay.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  Derived from &quot;include/asm-i386/delay.h&quot;&n; *    Copyright (C) 1993 Linus Torvalds&n; *&n; *  Delay routines calling functions in arch/i386/lib/delay.c&n; */
+multiline_comment|/*&n; *  include/asm-s390/delay.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  Derived from &quot;include/asm-i386/delay.h&quot;&n; *    Copyright (C) 1993 Linus Torvalds&n; *&n; *  Delay routines calling functions in arch/s390/lib/delay.c&n; */
 macro_line|#ifndef _S390_DELAY_H
 DECL|macro|_S390_DELAY_H
 mdefine_line|#define _S390_DELAY_H

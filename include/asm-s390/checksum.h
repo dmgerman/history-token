@@ -46,14 +46,29 @@ r_int
 id|sum
 )paren
 (brace
+id|register_pair
+id|rp
+suffix:semicolon
+id|rp.subreg.even
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|buff
+suffix:semicolon
+id|rp.subreg.odd
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|len
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;    lr   2,%1&bslash;n&quot;
-multiline_comment|/* address in gpr 2 */
-l_string|&quot;    lr   3,%2&bslash;n&quot;
-multiline_comment|/* length in gpr 3 */
-l_string|&quot;0:  cksm %0,2&bslash;n&quot;
+l_string|&quot;0:  cksm %0,%1&bslash;n&quot;
 multiline_comment|/* do checksum on longs */
 l_string|&quot;    jo   0b&bslash;n&quot;
 suffix:colon
@@ -61,22 +76,14 @@ l_string|&quot;+&amp;d&quot;
 (paren
 id|sum
 )paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|buff
-)paren
 comma
-l_string|&quot;d&quot;
+l_string|&quot;+&amp;a&quot;
 (paren
-id|len
+id|rp
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;cc&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;3&quot;
 )paren
 suffix:semicolon
 r_return
@@ -279,18 +286,21 @@ r_int
 id|sum
 )paren
 (brace
+id|register_pair
+id|rp
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;    sr   3,3&bslash;n&quot;
-multiline_comment|/* %0 = H*65536 + L */
-l_string|&quot;    lr   2,%0&bslash;n&quot;
-multiline_comment|/* %0 = H L, R2/R3 = H L / 0 0 */
-l_string|&quot;    srdl 2,16&bslash;n&quot;
-multiline_comment|/* %0 = H L, R2/R3 = 0 H / L 0 */
-l_string|&quot;    alr  2,3&bslash;n&quot;
-multiline_comment|/* %0 = H L, R2/R3 = L H / L 0 */
-l_string|&quot;    alr  %0,2&bslash;n&quot;
+l_string|&quot;    slr  %N1,%N1&bslash;n&quot;
+multiline_comment|/* %0 = H L */
+l_string|&quot;    lr   %1,%0&bslash;n&quot;
+multiline_comment|/* %0 = H L, %1 = H L 0 0 */
+l_string|&quot;    srdl %1,16&bslash;n&quot;
+multiline_comment|/* %0 = H L, %1 = 0 H L 0 */
+l_string|&quot;    alr  %1,%N1&bslash;n&quot;
+multiline_comment|/* %0 = H L, %1 = L H L 0 */
+l_string|&quot;    alr  %0,%1&bslash;n&quot;
 multiline_comment|/* %0 = H+L+C L+H */
 l_string|&quot;    srl  %0,16&bslash;n&quot;
 multiline_comment|/* %0 = H+L+C */
@@ -299,13 +309,14 @@ l_string|&quot;+&amp;d&quot;
 (paren
 id|sum
 )paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|rp
+)paren
 suffix:colon
 suffix:colon
 l_string|&quot;cc&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;3&quot;
 )paren
 suffix:semicolon
 r_return
@@ -339,20 +350,37 @@ r_int
 id|ihl
 )paren
 (brace
+id|register_pair
+id|rp
+suffix:semicolon
 r_int
 r_int
 id|sum
+suffix:semicolon
+id|rp.subreg.even
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|iph
+suffix:semicolon
+id|rp.subreg.odd
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ihl
+op_star
+l_int|4
 suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
 l_string|&quot;    sr   %0,%0&bslash;n&quot;
 multiline_comment|/* set sum to zero */
-l_string|&quot;    lr   2,%1&bslash;n&quot;
-multiline_comment|/* address in gpr 2 */
-l_string|&quot;    lr   3,%2&bslash;n&quot;
-multiline_comment|/* length in gpr 3 */
-l_string|&quot;0:  cksm %0,2&bslash;n&quot;
+l_string|&quot;0:  cksm %0,%1&bslash;n&quot;
 multiline_comment|/* do checksum on longs */
 l_string|&quot;    jo   0b&bslash;n&quot;
 suffix:colon
@@ -360,24 +388,14 @@ l_string|&quot;=&amp;d&quot;
 (paren
 id|sum
 )paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|iph
-)paren
 comma
-l_string|&quot;d&quot;
+l_string|&quot;+&amp;a&quot;
 (paren
-id|ihl
-op_star
-l_int|4
+id|rp
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;cc&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;3&quot;
 )paren
 suffix:semicolon
 r_return
@@ -426,12 +444,48 @@ multiline_comment|/* sum += saddr */
 l_string|&quot;    brc   12,0f&bslash;n&quot;
 l_string|&quot;    ahi   %0,1&bslash;n&quot;
 multiline_comment|/* add carry */
-l_string|&quot;0:  alr   %0,%2&bslash;n&quot;
+l_string|&quot;0:&quot;
+suffix:colon
+l_string|&quot;+&amp;d&quot;
+(paren
+id|sum
+)paren
+suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|saddr
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;    alr   %0,%1&bslash;n&quot;
 multiline_comment|/* sum += daddr */
 l_string|&quot;    brc   12,1f&bslash;n&quot;
 l_string|&quot;    ahi   %0,1&bslash;n&quot;
 multiline_comment|/* add carry */
-l_string|&quot;1:  alr   %0,%3&bslash;n&quot;
+l_string|&quot;1:&quot;
+suffix:colon
+l_string|&quot;+&amp;d&quot;
+(paren
+id|sum
+)paren
+suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|daddr
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;    alr   %0,%1&bslash;n&quot;
 multiline_comment|/* sum += (len&lt;&lt;16) + (proto&lt;&lt;8) */
 l_string|&quot;    brc   12,2f&bslash;n&quot;
 l_string|&quot;    ahi   %0,1&bslash;n&quot;
@@ -443,16 +497,6 @@ l_string|&quot;+&amp;d&quot;
 id|sum
 )paren
 suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|saddr
-)paren
-comma
-l_string|&quot;d&quot;
-(paren
-id|daddr
-)paren
-comma
 l_string|&quot;d&quot;
 (paren
 (paren

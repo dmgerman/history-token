@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tape34xx.h&n; *    common tape device discipline for 34xx tapes.&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *               Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&n; *  UNDER CONSTRUCTION: Work in progress...:-)&n; ****************************************************************************&n; */
+multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tape34xx.h&n; *    common tape device discipline for 34xx tapes.&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001 IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *               Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; ****************************************************************************&n; */
 macro_line|#ifndef _TAPE34XX_H
 DECL|macro|_TAPE34XX_H
 mdefine_line|#define _TAPE34XX_H
@@ -117,6 +117,50 @@ DECL|macro|CONTROL_UNIT_END
 mdefine_line|#define CONTROL_UNIT_END DEV_STAT_CU_END      /* redefine from irq.h */
 DECL|macro|INCORR_LEN
 mdefine_line|#define INCORR_LEN       SCHN_STAT_INCORR_LEN /* redefine from irq.h */
+DECL|macro|SENSE_COMMAND_REJECT
+mdefine_line|#define SENSE_COMMAND_REJECT        0x80
+DECL|macro|SENSE_INTERVENTION_REQUIRED
+mdefine_line|#define SENSE_INTERVENTION_REQUIRED 0x40
+DECL|macro|SENSE_BUS_OUT_CHECK
+mdefine_line|#define SENSE_BUS_OUT_CHECK         0x20
+DECL|macro|SENSE_EQUIPMENT_CHECK
+mdefine_line|#define SENSE_EQUIPMENT_CHECK       0x10
+DECL|macro|SENSE_DATA_CHECK
+mdefine_line|#define SENSE_DATA_CHECK            0x08
+DECL|macro|SENSE_OVERRUN
+mdefine_line|#define SENSE_OVERRUN               0x04
+DECL|macro|SENSE_DEFERRED_UNIT_CHECK
+mdefine_line|#define SENSE_DEFERRED_UNIT_CHECK   0x02
+DECL|macro|SENSE_ASSIGNED_ELSEWHERE
+mdefine_line|#define SENSE_ASSIGNED_ELSEWHERE    0x01
+DECL|macro|SENSE_LOCATE_FAILURE
+mdefine_line|#define SENSE_LOCATE_FAILURE        0x80
+DECL|macro|SENSE_DRIVE_ONLINE
+mdefine_line|#define SENSE_DRIVE_ONLINE          0x40
+DECL|macro|SENSE_RESERVED
+mdefine_line|#define SENSE_RESERVED              0x20
+DECL|macro|SENSE_RECORD_SEQUENCE_ERR
+mdefine_line|#define SENSE_RECORD_SEQUENCE_ERR   0x10
+DECL|macro|SENSE_BEGINNING_OF_TAPE
+mdefine_line|#define SENSE_BEGINNING_OF_TAPE     0x08
+DECL|macro|SENSE_WRITE_MODE
+mdefine_line|#define SENSE_WRITE_MODE            0x04
+DECL|macro|SENSE_WRITE_PROTECT
+mdefine_line|#define SENSE_WRITE_PROTECT         0x02
+DECL|macro|SENSE_NOT_CAPABLE
+mdefine_line|#define SENSE_NOT_CAPABLE           0x01
+DECL|macro|SENSE_CHANNEL_ADAPTER_CODE
+mdefine_line|#define SENSE_CHANNEL_ADAPTER_CODE  0xE0
+DECL|macro|SENSE_CHANNEL_ADAPTER_LOC
+mdefine_line|#define SENSE_CHANNEL_ADAPTER_LOC   0x10
+DECL|macro|SENSE_REPORTING_CU
+mdefine_line|#define SENSE_REPORTING_CU          0x08
+DECL|macro|SENSE_AUTOMATIC_LOADER
+mdefine_line|#define SENSE_AUTOMATIC_LOADER      0x04
+DECL|macro|SENSE_TAPE_SYNC_MODE
+mdefine_line|#define SENSE_TAPE_SYNC_MODE        0x02
+DECL|macro|SENSE_TAPE_POSITIONING
+mdefine_line|#define SENSE_TAPE_POSITIONING      0x01
 DECL|struct|_tape34xx_disc_data_t
 r_typedef
 r_struct
@@ -618,15 +662,6 @@ id|tape
 )paren
 suffix:semicolon
 r_void
-id|tape34xx_unused_error
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
 id|tape34xx_idle_done
 c_func
 (paren
@@ -636,25 +671,7 @@ id|tape
 )paren
 suffix:semicolon
 r_void
-id|tape34xx_idle_error
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
 id|tape34xx_block_done
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
-id|tape34xx_block_error
 c_func
 (paren
 id|tape_info_t
@@ -690,15 +707,6 @@ id|tape
 )paren
 suffix:semicolon
 r_void
-id|tape34xx_fsf_init_error
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
 id|tape34xx_bsb_init_done
 c_func
 (paren
@@ -726,15 +734,6 @@ id|tape
 )paren
 suffix:semicolon
 r_void
-id|tape34xx_lbl_init_error
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
 id|tape34xx_nop_init_done
 c_func
 (paren
@@ -745,15 +744,6 @@ id|tape
 suffix:semicolon
 r_void
 id|tape34xx_rfo_init_done
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
-id|tape34xx_rfo_init_error
 c_func
 (paren
 id|tape_info_t
@@ -780,25 +770,7 @@ id|tape
 )paren
 suffix:semicolon
 r_void
-id|tape34xx_rew_init_error
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
 id|tape34xx_rew_release_init_done
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
-id|tape34xx_rew_release_init_error
 c_func
 (paren
 id|tape_info_t
@@ -816,25 +788,7 @@ id|tape
 )paren
 suffix:semicolon
 r_void
-id|tape34xx_run_init_error
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
 id|tape34xx_wri_init_done
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
-r_void
-id|tape34xx_wri_init_error
 c_func
 (paren
 id|tape_info_t
@@ -851,15 +805,6 @@ op_star
 id|tape
 )paren
 suffix:semicolon
-r_void
-id|tape34xx_wtm_init_error
-c_func
-(paren
-id|tape_info_t
-op_star
-id|tape
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|schedule_tapeblock_exec_IO
@@ -867,6 +812,63 @@ id|schedule_tapeblock_exec_IO
 id|tape_info_t
 op_star
 id|tape
+)paren
+suffix:semicolon
+singleline_comment|// the error recovery stuff:
+r_void
+id|tape34xx_error_recovery
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+suffix:semicolon
+r_void
+id|tape34xx_error_recovery_has_failed
+(paren
+id|tape_info_t
+op_star
+id|tape
+comma
+r_int
+id|error_id
+)paren
+suffix:semicolon
+r_void
+id|tape34xx_error_recovery_succeded
+c_func
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+suffix:semicolon
+r_void
+id|tape34xx_error_recovery_do_retry
+c_func
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+suffix:semicolon
+r_void
+id|tape34xx_error_recovery_read_opposite
+(paren
+id|tape_info_t
+op_star
+id|tape
+)paren
+suffix:semicolon
+r_void
+id|tape34xx_error_recovery_HWBUG
+(paren
+id|tape_info_t
+op_star
+id|tape
+comma
+r_int
+id|condno
 )paren
 suffix:semicolon
 macro_line|#endif 

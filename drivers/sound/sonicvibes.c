@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *      sonicvibes.c  --  S3 Sonic Vibes audio driver.&n; *&n; *      Copyright (C) 1998-2000  Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Special thanks to David C. Niemi&n; *&n; *&n; * Module command line parameters:&n; *   none so far&n; *&n; *&n; *  Supported devices:&n; *  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n; *  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n; *  /dev/midi   simple MIDI UART interface, no ioctl&n; *&n; *  The card has both an FM and a Wavetable synth, but I have to figure&n; *  out first how to drive them...&n; *&n; *  Revision history&n; *    06.05.1998   0.1   Initial release&n; *    10.05.1998   0.2   Fixed many bugs, esp. ADC rate calculation&n; *                       First stab at a simple midi interface (no bells&amp;whistles)&n; *    13.05.1998   0.3   Fix stupid cut&amp;paste error: set_adc_rate was called instead of&n; *                       set_dac_rate in the FMODE_WRITE case in sv_open&n; *                       Fix hwptr out of bounds (now mpg123 works)&n; *    14.05.1998   0.4   Don&squot;t allow excessive interrupt rates&n; *    08.06.1998   0.5   First release using Alan Cox&squot; soundcore instead of miscdevice&n; *    03.08.1998   0.6   Do not include modversions.h&n; *                       Now mixer behaviour can basically be selected between&n; *                       &quot;OSS documented&quot; and &quot;OSS actual&quot; behaviour&n; *    31.08.1998   0.7   Fix realplayer problems - dac.count issues&n; *    10.12.1998   0.8   Fix drain_dac trying to wait on not yet initialized DMA&n; *    16.12.1998   0.9   Fix a few f_file &amp; FMODE_ bugs&n; *    06.01.1999   0.10  remove the silly SA_INTERRUPT flag.&n; *                       hopefully killed the egcs section type conflict&n; *    12.03.1999   0.11  cinfo.blocks should be reset after GETxPTR ioctl.&n; *                       reported by Johan Maes &lt;joma@telindus.be&gt;&n; *    22.03.1999   0.12  return EAGAIN instead of EBUSY when O_NONBLOCK&n; *                       read/write cannot be executed&n; *    05.04.1999   0.13  added code to sv_read and sv_write which should detect&n; *                       lockups of the sound chip and revive it. This is basically&n; *                       an ugly hack, but at least applications using this driver&n; *                       won&squot;t hang forever. I don&squot;t know why these lockups happen,&n; *                       it might well be the motherboard chipset (an early 486 PCI&n; *                       board with ALI chipset), since every busmastering 100MB&n; *                       ethernet card I&squot;ve tried (Realtek 8139 and Macronix tulip clone)&n; *                       exhibit similar behaviour (they work for a couple of packets&n; *                       and then lock up and can be revived by ifconfig down/up).&n; *    07.04.1999   0.14  implemented the following ioctl&squot;s: SOUND_PCM_READ_RATE, &n; *                       SOUND_PCM_READ_CHANNELS, SOUND_PCM_READ_BITS; &n; *                       Alpha fixes reported by Peter Jones &lt;pjones@redhat.com&gt;&n; *                       Note: dmaio hack might still be wrong on archs other than i386&n; *    15.06.1999   0.15  Fix bad allocation bug.&n; *                       Thanks to Deti Fliegl &lt;fliegl@in.tum.de&gt;&n; *    28.06.1999   0.16  Add pci_set_master&n; *    03.08.1999   0.17  adapt to Linus&squot; new __setup/__initcall&n; *                       added kernel command line options &quot;sonicvibes=reverb&quot; and &quot;sonicvibesdmaio=dmaioaddr&quot;&n; *    12.08.1999   0.18  module_init/__setup fixes&n; *    24.08.1999   0.19  get rid of the dmaio kludge, replace with allocate_resource&n; *    31.08.1999   0.20  add spin_lock_init&n; *                       use new resource allocation to allocate DDMA IO space&n; *                       replaced current-&gt;state = x with set_current_state(x)&n; *    03.09.1999   0.21  change read semantics for MIDI to match&n; *                       OSS more closely; remove possible wakeup race&n; *    28.10.1999   0.22  More waitqueue races fixed&n; *    01.12.1999   0.23  New argument to allocate_resource&n; *    07.12.1999   0.24  More allocate_resource semantics change&n; *    08.01.2000   0.25  Prevent some ioctl&squot;s from returning bad count values on underrun/overrun;&n; *                       Tim Janik&squot;s BSE (Bedevilled Sound Engine) found this&n; *                       use Martin Mares&squot; pci_assign_resource&n; *    07.02.2000   0.26  Use pci_alloc_consistent and pci_register_driver&n; *    21.11.2000   0.27  Initialize dma buffers in poll, otherwise poll may return a bogus mask&n; *&n; */
+multiline_comment|/*&n; *      sonicvibes.c  --  S3 Sonic Vibes audio driver.&n; *&n; *      Copyright (C) 1998-2001  Thomas Sailer (t.sailer@alumni.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Special thanks to David C. Niemi&n; *&n; *&n; * Module command line parameters:&n; *   none so far&n; *&n; *&n; *  Supported devices:&n; *  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n; *  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n; *  /dev/midi   simple MIDI UART interface, no ioctl&n; *&n; *  The card has both an FM and a Wavetable synth, but I have to figure&n; *  out first how to drive them...&n; *&n; *  Revision history&n; *    06.05.1998   0.1   Initial release&n; *    10.05.1998   0.2   Fixed many bugs, esp. ADC rate calculation&n; *                       First stab at a simple midi interface (no bells&amp;whistles)&n; *    13.05.1998   0.3   Fix stupid cut&amp;paste error: set_adc_rate was called instead of&n; *                       set_dac_rate in the FMODE_WRITE case in sv_open&n; *                       Fix hwptr out of bounds (now mpg123 works)&n; *    14.05.1998   0.4   Don&squot;t allow excessive interrupt rates&n; *    08.06.1998   0.5   First release using Alan Cox&squot; soundcore instead of miscdevice&n; *    03.08.1998   0.6   Do not include modversions.h&n; *                       Now mixer behaviour can basically be selected between&n; *                       &quot;OSS documented&quot; and &quot;OSS actual&quot; behaviour&n; *    31.08.1998   0.7   Fix realplayer problems - dac.count issues&n; *    10.12.1998   0.8   Fix drain_dac trying to wait on not yet initialized DMA&n; *    16.12.1998   0.9   Fix a few f_file &amp; FMODE_ bugs&n; *    06.01.1999   0.10  remove the silly SA_INTERRUPT flag.&n; *                       hopefully killed the egcs section type conflict&n; *    12.03.1999   0.11  cinfo.blocks should be reset after GETxPTR ioctl.&n; *                       reported by Johan Maes &lt;joma@telindus.be&gt;&n; *    22.03.1999   0.12  return EAGAIN instead of EBUSY when O_NONBLOCK&n; *                       read/write cannot be executed&n; *    05.04.1999   0.13  added code to sv_read and sv_write which should detect&n; *                       lockups of the sound chip and revive it. This is basically&n; *                       an ugly hack, but at least applications using this driver&n; *                       won&squot;t hang forever. I don&squot;t know why these lockups happen,&n; *                       it might well be the motherboard chipset (an early 486 PCI&n; *                       board with ALI chipset), since every busmastering 100MB&n; *                       ethernet card I&squot;ve tried (Realtek 8139 and Macronix tulip clone)&n; *                       exhibit similar behaviour (they work for a couple of packets&n; *                       and then lock up and can be revived by ifconfig down/up).&n; *    07.04.1999   0.14  implemented the following ioctl&squot;s: SOUND_PCM_READ_RATE, &n; *                       SOUND_PCM_READ_CHANNELS, SOUND_PCM_READ_BITS; &n; *                       Alpha fixes reported by Peter Jones &lt;pjones@redhat.com&gt;&n; *                       Note: dmaio hack might still be wrong on archs other than i386&n; *    15.06.1999   0.15  Fix bad allocation bug.&n; *                       Thanks to Deti Fliegl &lt;fliegl@in.tum.de&gt;&n; *    28.06.1999   0.16  Add pci_set_master&n; *    03.08.1999   0.17  adapt to Linus&squot; new __setup/__initcall&n; *                       added kernel command line options &quot;sonicvibes=reverb&quot; and &quot;sonicvibesdmaio=dmaioaddr&quot;&n; *    12.08.1999   0.18  module_init/__setup fixes&n; *    24.08.1999   0.19  get rid of the dmaio kludge, replace with allocate_resource&n; *    31.08.1999   0.20  add spin_lock_init&n; *                       use new resource allocation to allocate DDMA IO space&n; *                       replaced current-&gt;state = x with set_current_state(x)&n; *    03.09.1999   0.21  change read semantics for MIDI to match&n; *                       OSS more closely; remove possible wakeup race&n; *    28.10.1999   0.22  More waitqueue races fixed&n; *    01.12.1999   0.23  New argument to allocate_resource&n; *    07.12.1999   0.24  More allocate_resource semantics change&n; *    08.01.2000   0.25  Prevent some ioctl&squot;s from returning bad count values on underrun/overrun;&n; *                       Tim Janik&squot;s BSE (Bedevilled Sound Engine) found this&n; *                       use Martin Mares&squot; pci_assign_resource&n; *    07.02.2000   0.26  Use pci_alloc_consistent and pci_register_driver&n; *    21.11.2000   0.27  Initialize dma buffers in poll, otherwise poll may return a bogus mask&n; *    12.12.2000   0.28  More dma buffer initializations, patch from&n; *                       Tjeerd Mulder &lt;tjeerd.mulder@fujitsu-siemens.com&gt;&n; *    31.01.2001   0.29  Register/Unregister gameport&n; *                       Fix SETTRIGGER non OSS API conformity&n; *&n; */
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -21,6 +21,52 @@ macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &quot;dm.h&quot;
+macro_line|#if defined(CONFIG_INPUT_ANALOG) || defined(CONFIG_INPUT_ANALOG_MODULE)
+macro_line|#include &lt;linux/gameport.h&gt;
+macro_line|#else
+DECL|struct|gameport
+r_struct
+id|gameport
+(brace
+DECL|member|io
+r_int
+id|io
+suffix:semicolon
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|function|gameport_register_port
+r_extern
+r_inline
+r_void
+id|gameport_register_port
+c_func
+(paren
+r_struct
+id|gameport
+op_star
+id|gameport
+)paren
+(brace
+)brace
+DECL|function|gameport_unregister_port
+r_extern
+r_inline
+r_void
+id|gameport_unregister_port
+c_func
+(paren
+r_struct
+id|gameport
+op_star
+id|gameport
+)paren
+(brace
+)brace
+macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|OSS_DOCUMENTED_MIXER_SEMANTICS
 macro_line|#undef OSS_DOCUMENTED_MIXER_SEMANTICS
@@ -353,7 +399,6 @@ DECL|member|iosb
 DECL|member|ioenh
 DECL|member|iosynth
 DECL|member|iomidi
-DECL|member|iogame
 r_int
 r_int
 id|iosb
@@ -363,8 +408,6 @@ comma
 id|iosynth
 comma
 id|iomidi
-comma
-id|iogame
 suffix:semicolon
 multiline_comment|/* long for SPARC */
 DECL|member|iodmaa
@@ -515,6 +558,12 @@ id|endcleared
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|enabled
+r_int
+id|enabled
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|ossfragshift
 r_int
 id|ossfragshift
@@ -589,6 +638,11 @@ suffix:semicolon
 DECL|member|midi
 )brace
 id|midi
+suffix:semicolon
+DECL|member|gameport
+r_struct
+id|gameport
+id|gameport
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -3292,6 +3346,10 @@ id|s-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+id|db-&gt;enabled
+op_assign
+l_int|1
 suffix:semicolon
 id|db-&gt;ready
 op_assign
@@ -6796,6 +6854,11 @@ op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|s-&gt;dma_adc.enabled
+)paren
 id|start_adc
 c_func
 (paren
@@ -7035,6 +7098,11 @@ id|ret
 op_add_assign
 id|cnt
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s-&gt;dma_adc.enabled
+)paren
 id|start_adc
 c_func
 (paren
@@ -7325,6 +7393,11 @@ op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|s-&gt;dma_dac.enabled
+)paren
 id|start_dac
 c_func
 (paren
@@ -7568,6 +7641,11 @@ id|ret
 op_add_assign
 id|cnt
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s-&gt;dma_dac.enabled
+)paren
 id|start_dac
 c_func
 (paren
@@ -8980,6 +9058,10 @@ l_int|1
 r_return
 id|ret
 suffix:semicolon
+id|s-&gt;dma_adc.enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|start_adc
 c_func
 (paren
@@ -8988,12 +9070,18 @@ id|s
 suffix:semicolon
 )brace
 r_else
+(brace
+id|s-&gt;dma_adc.enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|stop_adc
 c_func
 (paren
 id|s
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -9032,6 +9120,10 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
+id|s-&gt;dma_dac.enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|start_dac
 c_func
 (paren
@@ -9040,12 +9132,18 @@ id|s
 suffix:semicolon
 )brace
 r_else
+(brace
+id|s-&gt;dma_dac.enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|stop_dac
 c_func
 (paren
 id|s
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0
@@ -9074,7 +9172,7 @@ op_logical_neg
 id|s-&gt;dma_dac.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf
 c_func
@@ -9084,9 +9182,11 @@ comma
 l_int|0
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -9196,7 +9296,7 @@ op_logical_neg
 id|s-&gt;dma_adc.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf
 c_func
@@ -9206,9 +9306,11 @@ comma
 l_int|1
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -9326,7 +9428,7 @@ op_logical_neg
 id|s-&gt;dma_dac.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf
 c_func
@@ -9336,9 +9438,11 @@ comma
 l_int|0
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -9416,7 +9520,7 @@ op_logical_neg
 id|s-&gt;dma_adc.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf
 c_func
@@ -9426,9 +9530,11 @@ comma
 l_int|1
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -9537,7 +9643,7 @@ op_logical_neg
 id|s-&gt;dma_dac.ready
 op_logical_and
 (paren
-id|ret
+id|val
 op_assign
 id|prog_dmabuf
 c_func
@@ -9547,9 +9653,11 @@ comma
 l_int|0
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 r_return
-id|ret
+id|val
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -10345,6 +10453,10 @@ id|s-&gt;dma_adc.subdivision
 op_assign
 l_int|0
 suffix:semicolon
+id|s-&gt;dma_adc.enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|set_adc_rate
 c_func
 (paren
@@ -10399,6 +10511,10 @@ op_assign
 id|s-&gt;dma_dac.subdivision
 op_assign
 l_int|0
+suffix:semicolon
+id|s-&gt;dma_dac.enabled
+op_assign
+l_int|1
 suffix:semicolon
 id|set_dac_rate
 c_func
@@ -12116,6 +12232,11 @@ id|set_current_state
 c_func
 (paren
 id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -14215,16 +14336,6 @@ comma
 id|RESOURCE_MIDI
 )paren
 suffix:semicolon
-id|s-&gt;iogame
-op_assign
-id|pci_resource_start
-c_func
-(paren
-id|pcidev
-comma
-id|RESOURCE_GAME
-)paren
-suffix:semicolon
 id|s-&gt;iodmaa
 op_assign
 id|pci_resource_start
@@ -14246,6 +14357,26 @@ id|RESOURCE_DDMA
 )paren
 op_plus
 id|SV_EXTENT_DMA
+suffix:semicolon
+id|s-&gt;gameport.io
+op_assign
+id|pci_resource_start
+c_func
+(paren
+id|pcidev
+comma
+id|RESOURCE_GAME
+)paren
+suffix:semicolon
+id|s-&gt;gameport.size
+op_assign
+id|pci_resource_len
+c_func
+(paren
+id|pcidev
+comma
+id|RESOURCE_GAME
+)paren
 suffix:semicolon
 id|pci_write_config_dword
 c_func
@@ -14277,7 +14408,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;sv: io ports: %#lx %#lx %#lx %#lx %#lx %#x %#x&bslash;n&quot;
+l_string|&quot;sv: io ports: %#lx %#lx %#lx %#lx %#x %#x %#x&bslash;n&quot;
 comma
 id|s-&gt;iosb
 comma
@@ -14287,7 +14418,7 @@ id|s-&gt;iosynth
 comma
 id|s-&gt;iomidi
 comma
-id|s-&gt;iogame
+id|s-&gt;gameport.io
 comma
 id|s-&gt;iodmaa
 comma
@@ -14480,6 +14611,47 @@ l_int|1
 suffix:semicolon
 r_goto
 id|err_region1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|s-&gt;gameport.size
+)paren
+id|s-&gt;gameport.io
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|s-&gt;gameport.io
+op_logical_and
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|s-&gt;gameport.io
+comma
+id|s-&gt;gameport.size
+comma
+l_string|&quot;ESS Solo1&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sv: gameport io ports in use&bslash;n&quot;
+)paren
+suffix:semicolon
+id|s-&gt;gameport.io
+op_assign
+id|s-&gt;gameport.size
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -14965,6 +15137,14 @@ c_func
 id|fs
 )paren
 suffix:semicolon
+multiline_comment|/* register gameport */
+id|gameport_register_port
+c_func
+(paren
+op_amp
+id|s-&gt;gameport
+)paren
+suffix:semicolon
 multiline_comment|/* store it in the driver field */
 id|pci_set_drvdata
 c_func
@@ -15044,6 +15224,19 @@ id|s
 suffix:semicolon
 id|err_irq
 suffix:colon
+r_if
+c_cond
+(paren
+id|s-&gt;gameport.io
+)paren
+id|release_region
+c_func
+(paren
+id|s-&gt;gameport.io
+comma
+id|s-&gt;gameport.size
+)paren
+suffix:semicolon
 id|release_region
 c_func
 (paren
@@ -15191,6 +15384,28 @@ comma
 id|s
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s-&gt;gameport.io
+)paren
+(brace
+id|gameport_unregister_port
+c_func
+(paren
+op_amp
+id|s-&gt;gameport
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|s-&gt;gameport.io
+comma
+id|s-&gt;gameport.size
+)paren
+suffix:semicolon
+)brace
 id|release_region
 c_func
 (paren
@@ -15360,7 +15575,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sv: version v0.27 time &quot;
+l_string|&quot;sv: version v0.29 time &quot;
 id|__TIME__
 l_string|&quot; &quot;
 id|__DATE__

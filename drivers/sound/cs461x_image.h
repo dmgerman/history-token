@@ -1,4 +1,7 @@
-multiline_comment|/****************************************************************************&n; * &quot;CWCIMAGE.H&quot;-- For CS46XX. Ver 1.04&n; *      Copyright 1998-2000 (c) Cirrus Logic Corp.&n; *      Version 1.04&n; ****************************************************************************&n; */
+multiline_comment|/****************************************************************************&n; * &quot;CWCIMAGE.H&quot;-- For CS46XX. Ver 1.04&n; *      Copyright 1998-2001 (c) Cirrus Logic Corp.&n; *      Version 1.04&n; ****************************************************************************&n; */
+macro_line|#ifndef __CS_IMAGE_H
+DECL|macro|__CS_IMAGE_H
+mdefine_line|#define __CS_IMAGE_H
 DECL|macro|CLEAR__COUNT
 mdefine_line|#define CLEAR__COUNT     3
 DECL|macro|FILL__COUNT
@@ -130,4 +133,5 @@ id|FillArray4
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif
 eof

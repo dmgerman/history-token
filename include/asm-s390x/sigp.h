@@ -3,7 +3,6 @@ macro_line|#ifndef __SIGP__
 DECL|macro|__SIGP__
 mdefine_line|#define __SIGP__
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/misc390.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/* get real cpu address from logical cpu number */
 r_extern

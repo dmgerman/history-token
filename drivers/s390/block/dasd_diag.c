@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n;&n; * History of changes&n; * 07/13/00 Added fixup sections for diagnoses ans saved some registers&n; * 07/14/00 fixed constraints in newly generated inline asm&n; * 10/05/00 adapted to &squot;new&squot; DASD driver&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n;&n; * History of changes&n; * 07/13/00 Added fixup sections for diagnoses ans saved some registers&n; * 07/14/00 fixed constraints in newly generated inline asm&n; * 10/05/00 adapted to &squot;new&squot; DASD driver&n; *          fixed return codes of dia250()&n; *          fixed partition handling and HDIO_GETGEO&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
@@ -120,14 +120,14 @@ r_int
 id|cmd
 )paren
 (brace
-r_int
-id|rc
-suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;    lr    1,%1&bslash;n&quot;
-l_string|&quot;    diag  1,%2,0x250&bslash;n&quot;
+l_string|&quot;    lr    0,%1&bslash;n&quot;
+l_string|&quot;    diag  0,%0,0x250&bslash;n&quot;
+l_string|&quot;0:  ipm   %0&bslash;n&quot;
+l_string|&quot;    srl   %0,28&bslash;n&quot;
+l_string|&quot;    or    %0,1&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
 l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;2:  lhi   %0,3&bslash;n&quot;
@@ -138,12 +138,12 @@ l_string|&quot;    br    1&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
 l_string|&quot;    .align 4&bslash;n&quot;
-l_string|&quot;    .long 1b,2b&bslash;n&quot;
+l_string|&quot;    .long 0b,2b&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
 suffix:colon
-l_string|&quot;=d&quot;
+l_string|&quot;+d&quot;
 (paren
-id|rc
+id|cmd
 )paren
 suffix:colon
 l_string|&quot;d&quot;
@@ -157,17 +157,16 @@ id|__pa
 id|iob
 )paren
 )paren
-comma
-l_string|&quot;0&quot;
-(paren
-id|cmd
-)paren
 suffix:colon
+l_string|&quot;0&quot;
+comma
 l_string|&quot;1&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
-id|rc
+id|cmd
 suffix:semicolon
 )brace
 r_static
@@ -257,6 +256,8 @@ id|INIT_BIO
 suffix:semicolon
 r_return
 id|rc
+op_amp
+l_int|3
 suffix:semicolon
 )brace
 r_static
@@ -321,6 +322,8 @@ id|TERM_BIO
 suffix:semicolon
 r_return
 id|rc
+op_amp
+l_int|3
 suffix:semicolon
 )brace
 r_int
@@ -441,6 +444,33 @@ comma
 id|CQR_STATUS_QUEUED
 comma
 id|CQR_STATUS_ERROR
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+(brace
+id|check_then_set
+c_func
+(paren
+op_amp
+id|cqr-&gt;status
+comma
+id|CQR_STATUS_QUEUED
+comma
+id|CQR_STATUS_DONE
+)paren
+suffix:semicolon
+id|dasd_schedule_bh
+c_func
+(paren
+id|device
 )paren
 suffix:semicolon
 )brace
@@ -844,10 +874,18 @@ c_cond
 id|device
 op_member_access_from_pointer
 r_private
-op_eq
+op_ne
 l_int|NULL
 )paren
 (brace
+id|kfree
+(paren
+id|device
+op_member_access_from_pointer
+r_private
+)paren
+suffix:semicolon
+)brace
 id|device
 op_member_access_from_pointer
 r_private
@@ -883,7 +921,6 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 )brace
 r_private
 op_assign
@@ -1131,6 +1168,9 @@ suffix:semicolon
 id|free_page
 c_func
 (paren
+(paren
+r_int
+)paren
 r_private
 op_member_access_from_pointer
 id|label
@@ -1224,6 +1264,9 @@ l_int|1
 suffix:semicolon
 id|iob-&gt;interrupt_params
 op_assign
+(paren
+id|u32
+)paren
 id|cqr
 suffix:semicolon
 id|iob-&gt;bio_list
@@ -1383,9 +1426,6 @@ op_star
 id|device
 )paren
 (brace
-r_int
-id|sb
-suffix:semicolon
 id|dasd_diag_private_t
 op_star
 r_private
@@ -1414,6 +1454,50 @@ id|label
 l_int|7
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+r_private
+op_member_access_from_pointer
+id|rdc_data.vdev_class
+op_eq
+id|DEV_CLASS_FBA
+)paren
+(brace
+id|device-&gt;sizes.pt_block
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+r_private
+op_member_access_from_pointer
+id|rdc_data.vdev_class
+op_eq
+id|DEV_CLASS_ECKD
+op_logical_or
+r_private
+op_member_access_from_pointer
+id|rdc_data.vdev_class
+op_eq
+id|DEV_CLASS_CKD
+)paren
+(brace
+id|device-&gt;sizes.pt_block
+op_assign
+l_int|2
+suffix:semicolon
+)brace
+r_else
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|printk
 (paren
 id|KERN_INFO
@@ -1442,6 +1526,9 @@ suffix:semicolon
 id|free_page
 c_func
 (paren
+(paren
+r_int
+)paren
 r_private
 op_member_access_from_pointer
 id|label
@@ -1583,50 +1670,6 @@ l_int|128
 op_rshift
 id|device-&gt;sizes.s2b_shift
 suffix:semicolon
-r_if
-c_cond
-(paren
-r_private
-op_member_access_from_pointer
-id|rdc_data.vdev_class
-op_eq
-id|DEV_CLASS_FBA
-)paren
-(brace
-id|geo-&gt;start
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-r_private
-op_member_access_from_pointer
-id|rdc_data.vdev_class
-op_eq
-id|DEV_CLASS_ECKD
-op_logical_or
-r_private
-op_member_access_from_pointer
-id|rdc_data.vdev_class
-op_eq
-id|DEV_CLASS_CKD
-)paren
-(brace
-id|geo-&gt;start
-op_assign
-l_int|2
-suffix:semicolon
-)brace
-r_else
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_return
 id|rc
 suffix:semicolon
@@ -1983,11 +2026,11 @@ id|device
 suffix:semicolon
 id|rw_cp-&gt;expires
 op_assign
-l_int|5
+l_int|50
 op_star
-l_int|0xf424000
+id|TOD_SEC
 suffix:semicolon
-multiline_comment|/* 5 seconds */
+multiline_comment|/* 50 seconds */
 id|rw_cp-&gt;req
 op_assign
 id|req
@@ -2081,6 +2124,15 @@ comma
 id|ebcname
 suffix:colon
 l_string|&quot;DIAG&quot;
+comma
+id|max_blocks
+suffix:colon
+id|PAGE_SIZE
+op_div
+r_sizeof
+(paren
+id|diag_bio_t
+)paren
 comma
 id|check_characteristics
 suffix:colon

@@ -866,6 +866,16 @@ id|BLIST_ISROM
 )brace
 comma
 (brace
+l_string|&quot;TOSHIBA&quot;
+comma
+l_string|&quot;CD-ROM&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_ISROM
+)brace
+comma
+(brace
 l_string|&quot;MegaRAID&quot;
 comma
 l_string|&quot;LD&quot;

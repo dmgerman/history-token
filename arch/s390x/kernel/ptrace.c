@@ -569,6 +569,7 @@ op_plus
 (paren
 r_sizeof
 (paren
+r_struct
 id|user_regs_struct
 )paren
 op_minus
@@ -709,7 +710,7 @@ OL
 (paren
 id|PT_PSWMASK
 op_plus
-id|PSW_MASK_SIZE
+l_int|8
 )paren
 )paren
 (brace
@@ -718,7 +719,7 @@ op_assign
 (paren
 id|PT_PSWMASK
 op_plus
-id|PSW_MASK_SIZE
+l_int|8
 )paren
 suffix:semicolon
 r_if
@@ -742,7 +743,7 @@ OL
 (paren
 id|PT_PSWADDR
 op_plus
-id|PSW_ADDR_SIZE
+l_int|8
 )paren
 )paren
 (brace
@@ -750,7 +751,7 @@ id|copymax
 op_assign
 id|PT_PSWADDR
 op_plus
-id|PSW_ADDR_SIZE
+l_int|8
 suffix:semicolon
 id|mask
 op_assign
@@ -821,6 +822,7 @@ id|useraddr
 OL
 r_sizeof
 (paren
+r_struct
 id|user_regs_struct
 )paren
 )paren
@@ -829,6 +831,7 @@ id|copymax
 op_assign
 r_sizeof
 (paren
+r_struct
 id|user_regs_struct
 )paren
 suffix:semicolon

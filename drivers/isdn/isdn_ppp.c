@@ -749,6 +749,9 @@ id|ippp_struct
 op_star
 id|is
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 id|save_flags
 c_func
 (paren
@@ -937,9 +940,13 @@ id|KERN_WARNING
 l_string|&quot;isdn_ppp_bind: Can&squot;t find a (free) connection to the ipppd daemon.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|retval
+op_assign
 op_minus
 l_int|1
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|unit
@@ -968,9 +975,13 @@ comma
 id|lp-&gt;name
 )paren
 suffix:semicolon
-r_return
+id|retval
+op_assign
 op_minus
 l_int|1
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|lp-&gt;ppp_slot
@@ -1000,9 +1011,8 @@ id|IPPP_ASSIGNED
 suffix:semicolon
 multiline_comment|/* assigned to a netdevice but not connected */
 macro_line|#ifdef CONFIG_ISDN_MPP
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|isdn_ppp_mp_init
 c_func
 (paren
@@ -1010,14 +1020,24 @@ id|lp
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 OL
 l_int|0
 )paren
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|out
 suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_MPP */
+id|retval
+op_assign
+id|lp-&gt;ppp_slot
+suffix:semicolon
+id|out
+suffix:colon
 id|restore_flags
 c_func
 (paren
@@ -1025,7 +1045,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|lp-&gt;ppp_slot
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * kick the ipppd on the device&n; * (wakes up daemon after B-channel connect)&n; */
@@ -10994,6 +11014,44 @@ l_int|0
 r_case
 id|CCP_CONFREQ
 suffix:colon
+r_if
+c_cond
+(paren
+id|is-&gt;debug
+op_amp
+l_int|0x10
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Disable compression here!&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|proto
+op_eq
+id|PPP_CCP
+)paren
+(brace
+id|mis-&gt;compflags
+op_and_assign
+op_complement
+id|SC_COMP_ON
+suffix:semicolon
+)brace
+r_else
+id|is-&gt;compflags
+op_and_assign
+op_complement
+id|SC_LINK_COMP_ON
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|CCP_TERMREQ
 suffix:colon
@@ -11511,6 +11569,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Daemon sends a CCP frame ...&n; */
 multiline_comment|/* TODO: Clean this up with new Reset semantics */
+multiline_comment|/* I believe the CCP handling as-is is done wrong. Compressed frames&n; * should only be sent/received after CCP reaches UP state, which means&n; * both sides have sent CONF_ACK. Currently, we handle both directions&n; * independently, which means we may accept compressed frames too early&n; * (supposedly not a problem), but may also mean we send compressed frames&n; * too early, which may turn out to be a problem.&n; * This part of state machine should actually be handled by (i)pppd, but&n; * that&squot;s too big of a change now. --kai&n; */
 DECL|function|isdn_ppp_send_ccp
 r_static
 r_void
@@ -11726,6 +11785,44 @@ l_int|2
 r_case
 id|CCP_CONFREQ
 suffix:colon
+r_if
+c_cond
+(paren
+id|is-&gt;debug
+op_amp
+l_int|0x10
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Disable decompression here!&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|proto
+op_eq
+id|PPP_CCP
+)paren
+(brace
+id|is-&gt;compflags
+op_and_assign
+op_complement
+id|SC_DECOMP_ON
+suffix:semicolon
+)brace
+r_else
+id|is-&gt;compflags
+op_and_assign
+op_complement
+id|SC_LINK_DECOMP_ON
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|CCP_TERMREQ
 suffix:colon

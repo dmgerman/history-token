@@ -2643,8 +2643,9 @@ id|busy
 op_assign
 l_int|0
 suffix:semicolon
-id|panic
+id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;wd7000: can&squot;t get enough free SCBs.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5666,12 +5667,13 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-op_logical_neg
-id|check_region
+id|request_region
 (paren
 id|iobase
 comma
 l_int|4
+comma
+l_string|&quot;wd7000&quot;
 )paren
 )paren
 (brace
@@ -5731,7 +5733,8 @@ id|printk
 l_string|&quot;failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_continue
+r_goto
+id|err_release
 suffix:semicolon
 )brace
 r_else
@@ -5741,7 +5744,8 @@ l_string|&quot;ok!&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
-r_continue
+r_goto
+id|err_release
 suffix:semicolon
 macro_line|#endif
 r_if
@@ -5778,7 +5782,8 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_continue
+r_goto
+id|err_release
 suffix:semicolon
 )brace
 id|host
@@ -5891,16 +5896,10 @@ id|wd7000_init
 id|host
 )paren
 )paren
-(brace
 multiline_comment|/* Initialization failed */
-id|scsi_unregister
-(paren
-id|sh
-)paren
+r_goto
+id|err_unregister
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; *  OK from here - we&squot;ll use this adapter/configuration.&n;&t;&t; */
 id|wd7000_revision
 (paren
@@ -5908,16 +5907,6 @@ id|host
 )paren
 suffix:semicolon
 multiline_comment|/* important for scatter/gather */
-multiline_comment|/*&n;&t;&t; * Register our ports.&n;&t;&t; */
-id|request_region
-(paren
-id|host-&gt;iobase
-comma
-l_int|4
-comma
-l_string|&quot;wd7000&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  For boards before rev 6.0, scatter/gather isn&squot;t supported.&n;&t;&t; */
 r_if
 c_cond
@@ -5993,6 +5982,25 @@ id|iobase
 )paren
 suffix:semicolon
 macro_line|#endif
+r_continue
+suffix:semicolon
+id|err_unregister
+suffix:colon
+id|scsi_unregister
+(paren
+id|sh
+)paren
+suffix:semicolon
+id|err_release
+suffix:colon
+id|release_region
+c_func
+(paren
+id|iobase
+comma
+l_int|4
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond

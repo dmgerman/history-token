@@ -2037,6 +2037,7 @@ id|sigcontext32
 op_star
 id|sc
 comma
+r_struct
 id|pt_regs
 op_star
 id|regs

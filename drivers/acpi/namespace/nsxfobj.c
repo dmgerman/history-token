@@ -1066,9 +1066,7 @@ id|status
 )paren
 (brace
 r_return
-(paren
-id|status
-)paren
+id|AE_OK
 suffix:semicolon
 )brace
 r_if

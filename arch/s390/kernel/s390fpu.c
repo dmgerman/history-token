@@ -81,13 +81,11 @@ op_star
 id|fpregs
 )paren
 (brace
-macro_line|#if CONFIG_IEEEFPU_EMULATION
+macro_line|#if CONFIG_MATHEMU
 id|s390_fp_regs
 op_star
 id|currentfprs
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CONFIG_IEEEFPU_EMULATION
 r_if
 c_cond
 (paren
@@ -285,13 +283,11 @@ op_star
 id|fpregs
 )paren
 (brace
-macro_line|#if CONFIG_IEEEFPU_EMULATION
+macro_line|#if CONFIG_MATHEMU
 id|s390_fp_regs
 op_star
 id|currentfprs
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CONFIG_IEEEFPU_EMULATION
 r_if
 c_cond
 (paren

@@ -52,9 +52,7 @@ macro_line|#endif
 DECL|macro|DCBDEBUG1
 mdefine_line|#define DCBDEBUG1(x)
 multiline_comment|/* Includes */
-macro_line|#ifdef MODULE
-macro_line|# include &lt;linux/module.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1638,7 +1636,7 @@ macro_line|#endif
 multiline_comment|/* Override defaults on cmdline:&n; * tmscsim: AdaptID, MaxSpeed (Index), DevMode (Bitmapped), AdaptMode (Bitmapped)&n; */
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,13)
 DECL|function|dc390_setup
-r_void
+r_int
 id|__init
 id|dc390_setup
 (paren
@@ -1674,7 +1672,77 @@ comma
 id|ints
 )paren
 suffix:semicolon
+id|im
+op_assign
+id|ints
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|im
+OG
+l_int|6
+)paren
+(brace
+id|printk
+(paren
+id|KERN_NOTICE
+l_string|&quot;DC390: ignore extra params!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|im
+op_assign
+l_int|6
+suffix:semicolon
+)brace
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|im
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|tmscsim
+(braket
+id|i
+)braket
+op_assign
+id|ints
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* dc390_checkparams (); */
+r_return
+l_int|1
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifndef MODULE
+id|__setup
+c_func
+(paren
+l_string|&quot;tmscsim=&quot;
+comma
+id|dc390_setup
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#else
+DECL|function|dc390_setup
 r_void
 id|__init
 id|dc390_setup
@@ -1693,7 +1761,6 @@ id|i
 comma
 id|im
 suffix:semicolon
-macro_line|#endif
 id|im
 op_assign
 id|ints
@@ -1750,17 +1817,6 @@ suffix:semicolon
 multiline_comment|/* dc390_checkparams (); */
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13)
-macro_line|#ifndef MODULE
-id|__setup
-c_func
-(paren
-l_string|&quot;tmscsim=&quot;
-comma
-id|dc390_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 DECL|function|dc390_EEpromOutDI
 r_static
@@ -2432,7 +2488,7 @@ id|pDCB
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Queueing philosphy:&n; * There are a couple of lists:&n; * - Query: Contains the Scsi Commands not yet turned into SRBs (per ACB)&n; *   (Note: For new EH, it is unecessary!)&n; * - Waiting: Contains a list of SRBs not yet sent (per DCB)&n; * - Free: List of free SRB slots&n; * &n; * If there are no waiting commands for the DCB, the new one is sent to the bus&n; * otherwise the oldest one is taken from the Waiting list and the new one is &n; * queued to the Waiting List&n; * &n; * Lists are managed using two pointers and eventually a counter&n; */
+multiline_comment|/* Queueing philosphy:&n; * There are a couple of lists:&n; * - Query: Contains the Scsi Commands not yet turned into SRBs (per ACB)&n; *   (Note: For new EH, it is unnecessary!)&n; * - Waiting: Contains a list of SRBs not yet sent (per DCB)&n; * - Free: List of free SRB slots&n; * &n; * If there are no waiting commands for the DCB, the new one is sent to the bus&n; * otherwise the oldest one is taken from the Waiting list and the new one is &n; * queued to the Waiting List&n; * &n; * Lists are managed using two pointers and eventually a counter&n; */
 macro_line|#if 0
 multiline_comment|/* Look for a SCSI cmd in a SRB queue */
 r_static
@@ -11009,6 +11065,8 @@ id|buffer
 suffix:semicolon
 id|PSH
 id|shpnt
+op_assign
+l_int|0
 suffix:semicolon
 id|PACB
 id|pACB

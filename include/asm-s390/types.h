@@ -131,14 +131,35 @@ r_typedef
 id|u32
 id|dma_addr_t
 suffix:semicolon
-macro_line|#ifndef TRUE
-DECL|macro|TRUE
-mdefine_line|#define TRUE 1
-macro_line|#endif
-macro_line|#ifndef FALSE
-DECL|macro|FALSE
-mdefine_line|#define FALSE 0
-macro_line|#endif
+r_typedef
+r_union
+(brace
+DECL|member|pair
+r_int
+r_int
+r_int
+id|pair
+suffix:semicolon
+r_struct
+(brace
+DECL|member|even
+r_int
+r_int
+id|even
+suffix:semicolon
+DECL|member|odd
+r_int
+r_int
+id|odd
+suffix:semicolon
+DECL|member|subreg
+)brace
+id|subreg
+suffix:semicolon
+DECL|typedef|register_pair
+)brace
+id|register_pair
+suffix:semicolon
 macro_line|#endif                                 /* __KERNEL__                       */
 macro_line|#endif
 eof

@@ -1188,6 +1188,8 @@ id|onoff
 (brace
 r_int
 id|flags
+comma
+id|old_tflags
 suffix:semicolon
 id|save_flags
 c_func
@@ -1229,6 +1231,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|old_tflags
+op_assign
+id|dev-&gt;tflags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1248,6 +1254,9 @@ r_if
 c_cond
 (paren
 id|dev-&gt;tflags
+op_logical_and
+op_logical_neg
+id|old_tflags
 )paren
 id|mod_timer
 c_func
@@ -4729,8 +4738,8 @@ r_if
 c_cond
 (paren
 id|minor
-OL
-id|ISDN_MINOR_CTRL
+op_le
+id|ISDN_MINOR_BMAX
 )paren
 (brace
 id|printk
@@ -5246,8 +5255,8 @@ r_if
 c_cond
 (paren
 id|minor
-OL
-id|ISDN_MINOR_CTRL
+op_le
+id|ISDN_MINOR_BMAX
 )paren
 (brace
 id|printk
@@ -6002,8 +6011,8 @@ r_if
 c_cond
 (paren
 id|minor
-OL
-id|ISDN_MINOR_CTRL
+op_le
+id|ISDN_MINOR_BMAX
 )paren
 (brace
 id|drvidx
@@ -8489,8 +8498,8 @@ r_if
 c_cond
 (paren
 id|minor
-OL
-id|ISDN_MINOR_CTRL
+op_le
+id|ISDN_MINOR_BMAX
 )paren
 (brace
 id|printk
@@ -8805,8 +8814,8 @@ r_if
 c_cond
 (paren
 id|minor
-OL
-id|ISDN_MINOR_CTRL
+op_le
+id|ISDN_MINOR_BMAX
 )paren
 r_goto
 id|out

@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tape.h&n; *    tape device driver for 3480/3490E tapes.&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *               Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&n; *  UNDER CONSTRUCTION: Work in progress...:-)&n; ****************************************************************************&n; */
+multiline_comment|/***************************************************************************&n; *&n; *  drivers/s390/char/tape.h&n; *    tape device driver for 3480/3490E tapes.&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001 IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *               Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&n; ****************************************************************************&n; */
 macro_line|#ifndef _TAPE_H
 DECL|macro|_TAPE_H
 mdefine_line|#define _TAPE_H
@@ -268,6 +268,21 @@ id|_tape_info_t
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+DECL|typedef|tape_devfs_handler_t
+r_typedef
+r_void
+(paren
+op_star
+id|tape_devfs_handler_t
+)paren
+(paren
+r_struct
+id|_tape_info_t
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|tape_event_table_t
 r_typedef
 id|tape_event_handler_t
@@ -292,6 +307,10 @@ suffix:semicolon
 DECL|member|setup_assist
 id|tape_setup_assist_t
 id|setup_assist
+suffix:semicolon
+DECL|member|error_recovery
+id|tape_event_handler_t
+id|error_recovery
 suffix:semicolon
 DECL|member|bread
 id|tape_reqgen_t
@@ -483,6 +502,16 @@ DECL|member|device_setup
 id|tape_setup_assist_t
 id|device_setup
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+DECL|member|mkdevfstree
+id|tape_devfs_handler_t
+id|mkdevfstree
+suffix:semicolon
+DECL|member|rmdevfstree
+id|tape_devfs_handler_t
+id|rmdevfstree
+suffix:semicolon
+macro_line|#endif
 DECL|member|next
 r_void
 op_star
@@ -616,6 +645,38 @@ r_struct
 id|tq_struct
 id|bh_tq
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+DECL|member|devfs_dir
+id|devfs_handle_t
+id|devfs_dir
+suffix:semicolon
+multiline_comment|/* devfs handle for tape/DEVNO directory */
+DECL|member|devfs_char_dir
+id|devfs_handle_t
+id|devfs_char_dir
+suffix:semicolon
+multiline_comment|/* devfs handle for tape/DEVNO/char directory */
+DECL|member|devfs_block_dir
+id|devfs_handle_t
+id|devfs_block_dir
+suffix:semicolon
+multiline_comment|/* devfs handle for tape/DEVNO/block directory */
+DECL|member|devfs_nonrewinding
+id|devfs_handle_t
+id|devfs_nonrewinding
+suffix:semicolon
+multiline_comment|/* devfs handle for tape/DEVNO/char/nonrewinding device */
+DECL|member|devfs_rewinding
+id|devfs_handle_t
+id|devfs_rewinding
+suffix:semicolon
+multiline_comment|/* devfs handle for tape/DEVNO/char/rewinding device */
+DECL|member|devfs_disc
+id|devfs_handle_t
+id|devfs_disc
+suffix:semicolon
+multiline_comment|/* devfs handle for tape/DEVNO/block/disc device */
+macro_line|#endif
 DECL|member|discdata
 r_void
 op_star
@@ -741,6 +802,17 @@ id|tapestate_get
 id|tape_info_t
 op_star
 id|tape
+)paren
+suffix:semicolon
+r_void
+id|tapestate_event
+(paren
+id|tape_info_t
+op_star
+id|tape
+comma
+r_int
+id|event
 )paren
 suffix:semicolon
 r_extern

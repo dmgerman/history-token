@@ -4258,13 +4258,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_NBD
-id|nbd_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_MDISK
 id|mdisk_init
 c_func
@@ -4274,6 +4267,20 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_DASD
 id|dasd_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_S390_TAPE) &amp;&amp; defined(CONFIG_S390_TAPE_BLOCK)
+id|tapeblock_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_XPRAM
+id|xpram_init
 c_func
 (paren
 )paren

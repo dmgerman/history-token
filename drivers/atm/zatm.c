@@ -10505,10 +10505,22 @@ c_cond
 op_logical_neg
 id|zatm_dev
 )paren
-r_break
+(brace
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;zatm.c: memory shortage&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
+)brace
+id|out
+suffix:colon
 r_return
 id|devs
 suffix:semicolon

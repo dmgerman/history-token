@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  arch/s390/kernel/ebcdic.c&n; *    ECBDIC -&gt; ASCII, ASCII -&gt; ECBDIC,&n; *    upper to lower case (EBCDIC) conversion tables.&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *               Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/*&n; * ASCII (IBM PC 437)  -&gt; EBCDIC 037&n; */
 DECL|variable|_ascebc
@@ -3263,5 +3264,47 @@ l_int|0xFE
 comma
 l_int|0xFF
 )brace
+suffix:semicolon
+DECL|variable|_ascebc_500
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|_ascebc_500
+)paren
+suffix:semicolon
+DECL|variable|_ebcasc_500
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|_ebcasc_500
+)paren
+suffix:semicolon
+DECL|variable|_ascebc
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|_ascebc
+)paren
+suffix:semicolon
+DECL|variable|_ebcasc
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|_ebcasc
+)paren
+suffix:semicolon
+DECL|variable|_ebc_tolower
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|_ebc_tolower
+)paren
+suffix:semicolon
+DECL|variable|_ebc_toupper
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|_ebc_toupper
+)paren
 suffix:semicolon
 eof

@@ -552,6 +552,12 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|TC_FLAGS_AAL5
 mdefine_line|#define TC_FLAGS_AAL5      (0x0 &lt;&lt; 29)
+DECL|macro|TC_FLAGS_TRANSPARENT_PAYLOAD
+mdefine_line|#define TC_FLAGS_TRANSPARENT_PAYLOAD (0x1 &lt;&lt; 29)
+DECL|macro|TC_FLAGS_TRANSPARENT_CELL
+mdefine_line|#define TC_FLAGS_TRANSPARENT_CELL    (0x2 &lt;&lt; 29)
+DECL|macro|TC_FLAGS_STREAMING
+mdefine_line|#define TC_FLAGS_STREAMING (0x1 &lt;&lt; 28)
 DECL|macro|TC_FLAGS_PACKET
 mdefine_line|#define TC_FLAGS_PACKET    (0x0) 
 DECL|macro|TC_FLAGS_TYPE_ABR
@@ -845,9 +851,9 @@ mdefine_line|#define IS_FS155(dev) (dev-&gt;flags &amp; FS_IS155)
 multiline_comment|/* Within limits this is user-configurable. */
 multiline_comment|/* Note: Currently the sum (10 -&gt; 1k channels) is hardcoded in the driver. */
 DECL|macro|FS155_VPI_BITS
-mdefine_line|#define FS155_VPI_BITS 5
+mdefine_line|#define FS155_VPI_BITS 4
 DECL|macro|FS155_VCI_BITS
-mdefine_line|#define FS155_VCI_BITS 5
+mdefine_line|#define FS155_VCI_BITS 6
 DECL|macro|FS155_CHANNEL_BITS
 mdefine_line|#define FS155_CHANNEL_BITS  (FS155_VPI_BITS + FS155_VCI_BITS)
 DECL|macro|FS155_NR_CHANNELS
