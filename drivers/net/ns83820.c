@@ -6259,6 +6259,7 @@ id|loops
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef PHY_CODE_IS_FINISHED
 DECL|function|ns83820_mii_write_bit
 r_static
 r_void
@@ -7163,6 +7164,7 @@ id|b
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|function|ns83820_init_one
 r_static
 r_int
