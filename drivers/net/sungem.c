@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -3215,7 +3216,7 @@ c_func
 id|new_skb
 comma
 (paren
-id|ETH_FRAME_LEN
+id|gp-&gt;rx_buf_sz
 op_plus
 id|RX_OFFSET
 )paren
@@ -6596,6 +6597,23 @@ c_func
 id|gp
 )paren
 suffix:semicolon
+id|gp-&gt;rx_buf_sz
+op_assign
+id|max
+c_func
+(paren
+id|dev-&gt;mtu
+op_plus
+id|ETH_HLEN
+op_plus
+id|VLAN_HLEN
+comma
+(paren
+r_int
+)paren
+id|VLAN_ETH_FRAME_LEN
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6676,7 +6694,7 @@ c_func
 id|skb
 comma
 (paren
-id|ETH_FRAME_LEN
+id|gp-&gt;rx_buf_sz
 op_plus
 id|RX_OFFSET
 )paren
@@ -7941,11 +7959,7 @@ c_func
 l_int|0x20000000
 op_or
 (paren
-id|gp-&gt;dev-&gt;mtu
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|4
+id|gp-&gt;rx_buf_sz
 op_plus
 l_int|4
 )paren
@@ -8437,11 +8451,7 @@ r_int
 id|max_frame
 op_assign
 (paren
-id|gp-&gt;dev-&gt;mtu
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|4
+id|gp-&gt;rx_buf_sz
 op_plus
 l_int|4
 op_plus
