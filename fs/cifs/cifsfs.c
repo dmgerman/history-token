@@ -758,7 +758,7 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * cifs_show_options() is for displaying mount options in /proc/mounts.&n; * It tries to avoid showing settings that were not changed from their&n; * defaults.&n; */
+multiline_comment|/*&n; * cifs_show_options() is for displaying mount options in /proc/mounts.&n; * Not all settable options are displayed but most of the important&n; * ones are.&n; */
 r_static
 r_int
 DECL|function|cifs_show_options
@@ -794,6 +794,7 @@ c_cond
 (paren
 id|cifs_sb
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -805,19 +806,9 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;, TARGET: %s &quot;
+l_string|&quot;,unc=%s&quot;
 comma
 id|cifs_sb-&gt;tcon-&gt;treeName
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;FS TYPE: %s &quot;
-comma
-id|cifs_sb-&gt;tcon-&gt;nativeFileSystem
 )paren
 suffix:semicolon
 r_if
@@ -830,9 +821,47 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot; USER: %s &quot;
+l_string|&quot;,username=%s&quot;
 comma
 id|cifs_sb-&gt;tcon-&gt;ses-&gt;userName
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;tcon-&gt;ses-&gt;domainName
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|s
+comma
+l_string|&quot;,domain=%s&quot;
+comma
+id|cifs_sb-&gt;tcon-&gt;ses-&gt;domainName
+)paren
+suffix:semicolon
+)brace
+)brace
+id|seq_printf
+c_func
+(paren
+id|s
+comma
+l_string|&quot;,rsize=%d&quot;
+comma
+id|cifs_sb-&gt;rsize
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|s
+comma
+l_string|&quot;,wsize=%d&quot;
+comma
+id|cifs_sb-&gt;wsize
 )paren
 suffix:semicolon
 )brace
