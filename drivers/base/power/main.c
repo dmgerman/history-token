@@ -168,6 +168,15 @@ comma
 id|dev-&gt;kobj.name
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|dev-&gt;power.pm_users
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|down
 c_func
 (paren
