@@ -458,7 +458,7 @@ r_int
 r_int
 id|tx_full
 suffix:semicolon
-multiline_comment|/* The Tx queue is full.    */
+multiline_comment|/* The Tx queue is full. */
 DECL|member|host_bridge_rev
 id|u8
 id|host_bridge_rev
@@ -1493,6 +1493,7 @@ r_static
 r_int
 id|__devinit
 id|sis900_probe
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -2175,6 +2176,7 @@ r_static
 r_int
 id|__init
 id|sis900_mii_probe
+c_func
 (paren
 r_struct
 id|net_device
@@ -2929,12 +2931,10 @@ id|phy-&gt;phy_types
 op_eq
 id|HOME
 )paren
-(brace
 id|phy_home
 op_assign
 id|phy
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -2943,10 +2943,12 @@ id|phy-&gt;phy_types
 op_eq
 id|LAN
 )paren
+(brace
 id|phy_lan
 op_assign
 id|phy
 suffix:semicolon
+)brace
 )brace
 )brace
 r_if
@@ -2957,12 +2959,10 @@ id|default_phy
 op_logical_and
 id|phy_home
 )paren
-(brace
 id|default_phy
 op_assign
 id|phy_home
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -2972,12 +2972,10 @@ id|default_phy
 op_logical_and
 id|phy_lan
 )paren
-(brace
 id|default_phy
 op_assign
 id|phy_lan
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -5450,9 +5448,9 @@ id|net_dev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Link ON -&gt; OFF */
 r_else
 (brace
+multiline_comment|/* Link ON -&gt; OFF */
 r_if
 c_cond
 (paren
@@ -5550,6 +5548,7 @@ DECL|function|sis900_check_mode
 r_static
 r_void
 id|sis900_check_mode
+c_func
 (paren
 r_struct
 id|net_device
@@ -6144,13 +6143,11 @@ id|MII_CONTROL
 op_amp
 id|MII_CNTL_FDX
 )paren
-(brace
 op_star
 id|duplex
 op_assign
 id|FDX_CAPABLE_FULL_SELECTED
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6166,13 +6163,11 @@ l_int|0x0019
 op_amp
 l_int|0x01
 )paren
-(brace
 op_star
 id|speed
 op_assign
 id|HW_SPEED_100_MBPS
 suffix:semicolon
-)brace
 )brace
 id|printk
 c_func
@@ -7232,7 +7227,7 @@ suffix:semicolon
 id|sis_priv-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
-multiline_comment|/* refill the Rx buffer, what if there is not enought memory for&n;&t;&t;&t;   new socket buffer ?? */
+multiline_comment|/* refill the Rx buffer, what if there is not enought&n;&t;&t;&t; * memory for new socket buffer ?? */
 r_if
 c_cond
 (paren
@@ -7249,7 +7244,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* not enough memory for skbuff, this makes a &quot;hole&quot;&n;&t;&t;&t;&t;   on the buffer ring, it is not clear how the&n;&t;&t;&t;&t;   hardware will react to this kind of degenerated&n;&t;&t;&t;&t;   buffer */
+multiline_comment|/* not enough memory for skbuff, this makes a&n;&t;&t;&t;&t; * &quot;hole&quot; on the buffer ring, it is not clear&n;&t;&t;&t;&t; * how the hardware will react to this kind&n;&t;&t;&t;&t; * of degenerated buffer */
 id|printk
 c_func
 (paren
@@ -7355,7 +7350,7 @@ id|cmdsts
 suffix:semicolon
 )brace
 singleline_comment|// while
-multiline_comment|/* refill the Rx buffer, what if the rate of refilling is slower than &n;&t;   consuming ?? */
+multiline_comment|/* refill the Rx buffer, what if the rate of refilling is slower&n;&t; * than consuming ?? */
 r_for
 c_loop
 (paren
@@ -7408,7 +7403,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* not enough memory for skbuff, this makes a &quot;hole&quot;&n;&t;&t;&t;&t;   on the buffer ring, it is not clear how the &n;&t;&t;&t;&t;   hardware will react to this kind of degenerated &n;&t;&t;&t;&t;   buffer */
+multiline_comment|/* not enough memory for skbuff, this makes a&n;&t;&t;&t;&t; * &quot;hole&quot; on the buffer ring, it is not clear&n;&t;&t;&t;&t; * how the hardware will react to this kind&n;&t;&t;&t;&t; * of degenerated buffer */
 id|printk
 c_func
 (paren
@@ -7555,7 +7550,7 @@ op_amp
 id|OWN
 )paren
 (brace
-multiline_comment|/* The packet is not transmitted yet (owned by hardware) !&n;&t;&t;&t;   Note: the interrupt is generated only when Tx Machine&n;&t;&t;&t;   is idle, so this is an almost impossible case */
+multiline_comment|/* The packet is not transmitted yet (owned by hardware) !&n;&t;&t;&t; * Note: the interrupt is generated only when Tx Machine&n;&t;&t;&t; * is idle, so this is an almost impossible case */
 r_break
 suffix:semicolon
 )brace
@@ -7737,7 +7732,7 @@ op_minus
 l_int|4
 )paren
 (brace
-multiline_comment|/* The ring is no longer full, clear tx_full and schedule more transmission&n;&t;&t;   by netif_wake_queue(net_dev) */
+multiline_comment|/* The ring is no longer full, clear tx_full and schedule&n;&t;&t; * more transmission by netif_wake_queue(net_dev) */
 id|sis_priv-&gt;tx_full
 op_assign
 l_int|0
@@ -7750,9 +7745,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; *&t;sis900_close - close sis900 device &n; *&t;@net_dev: the net device to be closed&n; *&n; *&t;Disable interrupts, stop the Tx and Rx Status Machine &n; *&t;free Tx and RX socket buffer&n; */
+DECL|function|sis900_close
 r_static
 r_int
-DECL|function|sis900_close
 id|sis900_close
 c_func
 (paren
@@ -8242,7 +8237,7 @@ id|dev-&gt;if_port
 )paren
 )paren
 (brace
-multiline_comment|/* we switch on the ifmap-&gt;port field. I couldn&squot;t find anything&n;&t;&t;   like a definition or standard for the values of that field.&n;&t;&t;   I think the meaning of those values is device specific. But&n;&t;&t;   since I would like to change the media type via the ifconfig&n;&t;&t;   command I use the definition from linux/netdevice.h &n;&t;&t;   (which seems to be different from the ifport(pcmcia) definition) &n;&t;&t;*/
+multiline_comment|/* we switch on the ifmap-&gt;port field. I couldn&squot;t find anything&n;&t;&t; * like a definition or standard for the values of that field.&n;&t;&t; * I think the meaning of those values is device specific. But&n;&t;&t; * since I would like to change the media type via the ifconfig&n;&t;&t; * command I use the definition from linux/netdevice.h &n;&t;&t; * (which seems to be different from the ifport(pcmcia) definition) */
 r_switch
 c_cond
 (paren
@@ -8257,7 +8252,7 @@ id|dev-&gt;if_port
 op_assign
 id|map-&gt;port
 suffix:semicolon
-multiline_comment|/* we are going to change the media type, so the Link will&n;&t;&t;&t;   be temporary down and we need to reflect that here. When&n;&t;&t;&t;   the Link comes up again, it will be sensed by the sis_timer&n;&t;&t;&t;   procedure, which also does all the rest for us */
+multiline_comment|/* we are going to change the media type, so the Link&n;&t;&t;&t; * will be temporary down and we need to reflect that&n;&t;&t;&t; * here. When the Link comes up again, it will be&n;&t;&t;&t; * sensed by the sis_timer procedure, which also does&n;&t;&t;&t; * all the rest for us */
 id|netif_carrier_off
 c_func
 (paren
@@ -8277,7 +8272,7 @@ comma
 id|MII_CONTROL
 )paren
 suffix:semicolon
-multiline_comment|/* enable auto negotiation and reset the negotioation&n;&t;&t;&t;   (I don&squot;t really know what the auto negatiotiation reset&n;&t;&t;&t;   really means, but it sounds for me right to do one here)*/
+multiline_comment|/* enable auto negotiation and reset the negotioation&n;&t;&t;&t; * (I don&squot;t really know what the auto negatiotiation&n;&t;&t;&t; * reset really means, but it sounds for me right to&n;&t;&t;&t; * do one here) */
 id|mdio_write
 c_func
 (paren
@@ -8304,7 +8299,7 @@ id|dev-&gt;if_port
 op_assign
 id|map-&gt;port
 suffix:semicolon
-multiline_comment|/* we are going to change the media type, so the Link will&n;&t;&t;&t;   be temporary down and we need to reflect that here. When&n;&t;&t;&t;   the Link comes up again, it will be sensed by the sis_timer&n;&t;&t;&t;   procedure, which also does all the rest for us */
+multiline_comment|/* we are going to change the media type, so the Link&n;&t;&t;&t; * will be temporary down and we need to reflect that&n;&t;&t;&t; * here. When the Link comes up again, it will be&n;&t;&t;&t; * sensed by the sis_timer procedure, which also does&n;&t;&t;&t; * all the rest for us */
 id|netif_carrier_off
 c_func
 (paren
@@ -8359,7 +8354,7 @@ id|dev-&gt;if_port
 op_assign
 id|map-&gt;port
 suffix:semicolon
-multiline_comment|/* we are going to change the media type, so the Link will&n;&t;&t;&t;   be temporary down and we need to reflect that here. When&n;&t;&t;&t;   the Link comes up again, it will be sensed by the sis_timer&n;&t;&t;&t;   procedure, which also does all the rest for us */
+multiline_comment|/* we are going to change the media type, so the Link&n;&t;&t;&t; * will be temporary down and we need to reflect that&n;&t;&t;&t; * here. When the Link comes up again, it will be&n;&t;&t;&t; * sensed by the sis_timer procedure, which also does&n;&t;&t;&t; * all the rest for us */
 id|netif_carrier_off
 c_func
 (paren
@@ -8683,7 +8678,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Accept Broadcast packet, destination address matchs our MAC address,&n;&t;&t;   use Receive Filter to reject unwanted MCAST packet */
+multiline_comment|/* Accept Broadcast packet, destination address matchs our&n;&t;&t; * MAC address, use Receive Filter to reject unwanted MCAST&n;&t;&t; * packets */
 r_struct
 id|dev_mc_list
 op_star
@@ -8811,7 +8806,7 @@ op_plus
 id|rfcr
 )paren
 suffix:semicolon
-multiline_comment|/* sis900 is capatable of looping back packet at MAC level for debugging purpose */
+multiline_comment|/* sis900 is capable of looping back packets at MAC level for&n;&t; * debugging purpose */
 r_if
 c_cond
 (paren
