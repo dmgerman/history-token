@@ -28,8 +28,7 @@ mdefine_line|#define CISCO_SLARP_REPLY     1
 DECL|macro|CISCO_SLARP_KEEPALIVE
 mdefine_line|#define CISCO_SLARP_KEEPALIVE 2
 r_extern
-r_char
-op_star
+r_int
 id|isdn_net_new
 c_func
 (paren
@@ -42,8 +41,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_char
-op_star
+r_int
 id|isdn_net_newslave
 c_func
 (paren
