@@ -112,13 +112,6 @@ id|destroy_EII_client
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_INET
-DECL|variable|ip_defrag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_defrag
-)paren
-suffix:semicolon
 DECL|variable|inet_peer_idlock
 id|EXPORT_SYMBOL
 c_func
