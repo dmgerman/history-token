@@ -170,6 +170,7 @@ op_star
 id|p
 comma
 id|u8
+id|__iomem
 op_star
 id|dst1
 comma
@@ -182,12 +183,14 @@ id|pitch_index
 (brace
 multiline_comment|/* Draw the penguin */
 id|u32
+id|__iomem
 op_star
 id|dst
 comma
 op_star
 id|dst2
-comma
+suffix:semicolon
+id|u32
 id|color
 op_assign
 l_int|0
@@ -233,6 +236,7 @@ id|dst2
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 id|dst1
@@ -257,6 +261,7 @@ id|dst
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 id|dst1
@@ -471,11 +476,13 @@ id|dst1
 op_assign
 (paren
 id|u8
+id|__iomem
 op_star
 )paren
 (paren
 (paren
 r_int
+id|__force
 )paren
 id|dst2
 op_amp
@@ -522,6 +529,7 @@ op_star
 id|p
 comma
 id|u8
+id|__iomem
 op_star
 id|dst1
 comma
@@ -550,12 +558,14 @@ op_assign
 id|p-&gt;var.bits_per_pixel
 suffix:semicolon
 id|u32
+id|__iomem
 op_star
 id|dst
 comma
 op_star
 id|dst2
-comma
+suffix:semicolon
+id|u32
 id|val
 comma
 id|pitch
@@ -601,6 +611,7 @@ id|dst2
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 id|dst1
@@ -635,6 +646,7 @@ id|dst
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 id|dst1
@@ -861,11 +873,13 @@ id|dst1
 op_assign
 (paren
 id|u8
+id|__iomem
 op_star
 )paren
 (paren
 (paren
 r_int
+id|__force
 )paren
 id|dst2
 op_amp
@@ -913,6 +927,7 @@ op_star
 id|p
 comma
 id|u8
+id|__iomem
 op_star
 id|dst1
 comma
@@ -973,6 +988,7 @@ op_star
 id|src
 suffix:semicolon
 id|u32
+id|__iomem
 op_star
 id|dst
 suffix:semicolon
@@ -1092,6 +1108,7 @@ id|dst
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 id|dst1
@@ -1245,6 +1262,7 @@ comma
 id|vyres
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|dst1
 suffix:semicolon
