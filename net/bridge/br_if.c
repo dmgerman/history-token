@@ -641,10 +641,6 @@ id|p-&gt;priority
 op_assign
 l_int|0x80
 suffix:semicolon
-id|dev-&gt;br_port
-op_assign
-id|p
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -692,6 +688,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|dev-&gt;br_port
+op_assign
+id|p
+suffix:semicolon
 id|p-&gt;port_no
 op_assign
 id|i
