@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_TIMER_H
 DECL|macro|_LINUX_TIMER_H
 mdefine_line|#define _LINUX_TIMER_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/*&n; * In Linux 2.4, static timers have been removed from the kernel.&n; * Timers may be dynamically created and destroyed, and should be initialized&n; * by a call to init_timer() upon creation.&n; *&n; * The &quot;data&quot; field enables use of a common timeout function for several&n; * timeouts. You can use this field to distinguish between the different&n; * invocations.&n; */
 DECL|struct|timer_list
