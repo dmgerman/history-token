@@ -1430,7 +1430,7 @@ r_int
 r_int
 id|words161_175
 (braket
-l_int|14
+l_int|15
 )braket
 suffix:semicolon
 multiline_comment|/* Reserved for CFA */
@@ -1439,7 +1439,7 @@ r_int
 r_int
 id|words176_205
 (braket
-l_int|31
+l_int|30
 )braket
 suffix:semicolon
 multiline_comment|/* Current Media Serial Number */
@@ -1448,7 +1448,7 @@ r_int
 r_int
 id|words206_254
 (braket
-l_int|48
+l_int|49
 )braket
 suffix:semicolon
 multiline_comment|/* reserved words 206-254 */
