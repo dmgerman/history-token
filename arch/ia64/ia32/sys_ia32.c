@@ -991,9 +991,6 @@ c_cond
 (paren
 id|old_prot
 )paren
-r_if
-c_cond
-(paren
 id|copy_from_user
 c_func
 (paren
@@ -1011,10 +1008,6 @@ id|start
 comma
 id|PAGE_SIZE
 )paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 id|down_write
 c_func
