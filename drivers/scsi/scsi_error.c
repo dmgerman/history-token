@@ -3169,12 +3169,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Device offlined - not&quot;
+l_string|&quot;scsi: Device offlined - not&quot;
 l_string|&quot; ready or command retry failed&quot;
 l_string|&quot; after error recovery: host&quot;
 l_string|&quot; %d channel %d id %d lun %d&bslash;n&quot;
-comma
-id|__FUNCTION__
 comma
 id|shost-&gt;host_no
 comma
@@ -3183,6 +3181,25 @@ comma
 id|scmd-&gt;device-&gt;id
 comma
 id|scmd-&gt;device-&gt;lun
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scsi_eh_eflags_chk
+c_func
+(paren
+id|scmd
+comma
+id|SCSI_EH_CMD_TIMEOUT
+)paren
+)paren
+id|scmd-&gt;result
+op_or_assign
+(paren
+id|DRIVER_TIMEOUT
+op_lshift
+l_int|24
 )paren
 suffix:semicolon
 id|scmd-&gt;device-&gt;online

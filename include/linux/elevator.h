@@ -222,6 +222,23 @@ suffix:semicolon
 multiline_comment|/*&n; * block elevator interface&n; */
 r_extern
 r_void
+id|elv_add_request
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__elv_add_request
 c_func
 (paren
@@ -232,9 +249,9 @@ r_struct
 id|request
 op_star
 comma
-r_struct
-id|list_head
-op_star
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -323,6 +340,8 @@ id|request
 op_star
 )paren
 suffix:semicolon
+DECL|macro|__elv_add_request_pos
+mdefine_line|#define __elv_add_request_pos(q, rq, pos)&t;&bslash;&n;&t;(q)-&gt;elevator.elevator_add_req_fn((q), (rq), (pos))
 multiline_comment|/*&n; * noop I/O scheduler. always merges, always inserts new request at tail&n; */
 r_extern
 id|elevator_t

@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/* #include &lt;scsi/scsicam.h&gt; This include file is currently busted */
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;BusLogic.h&quot;
 macro_line|#include &quot;FlashPoint.c&quot;
 multiline_comment|/*&n;  BusLogic_DriverOptionsCount is a count of the number of BusLogic Driver&n;  Options specifications provided via the Linux Kernel Command Line or via&n;  the Loadable Kernel Module Installation Facility.&n;*/
@@ -13393,14 +13392,18 @@ r_int
 id|BusLogic_BIOSDiskParameters
 c_func
 (paren
-id|SCSI_Disk_T
+r_struct
+id|scsi_device
 op_star
-id|Disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|Device
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -13415,7 +13418,7 @@ op_assign
 id|BusLogic_HostAdapter_T
 op_star
 )paren
-id|Disk-&gt;device-&gt;host-&gt;hostdata
+id|sdev-&gt;host-&gt;hostdata
 suffix:semicolon
 id|BIOS_DiskParameters_T
 op_star
@@ -13437,7 +13440,7 @@ c_cond
 (paren
 id|HostAdapter-&gt;ExtendedTranslationEnabled
 op_logical_and
-id|Disk-&gt;capacity
+id|capacity
 op_ge
 l_int|2
 op_star
@@ -13450,7 +13453,7 @@ multiline_comment|/* 1 GB in 512 byte sectors */
 r_if
 c_cond
 (paren
-id|Disk-&gt;capacity
+id|capacity
 op_ge
 l_int|4
 op_star
@@ -13498,7 +13501,7 @@ op_assign
 r_int
 r_int
 )paren
-id|Disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|DiskParameters-&gt;Heads
@@ -13691,7 +13694,7 @@ op_assign
 r_int
 r_int
 )paren
-id|Disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|DiskParameters-&gt;Heads

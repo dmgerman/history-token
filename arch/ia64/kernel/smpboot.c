@@ -2,6 +2,7 @@ multiline_comment|/*&n; * SMP boot-related support&n; *&n; * Copyright (C) 1998-
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1399,6 +1400,98 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_NUMA
+DECL|variable|__cacheline_aligned
+r_char
+id|cpu_to_node_map
+(braket
+id|NR_CPUS
+)braket
+id|__cacheline_aligned
+suffix:semicolon
+multiline_comment|/*&n; * Build cpu to node mapping.&n; */
+r_void
+id|__init
+DECL|function|build_cpu_to_node_map
+id|build_cpu_to_node_map
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cpu
+comma
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cpu
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu
+OL
+id|NR_CPUS
+suffix:semicolon
+op_increment
+id|cpu
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * All Itanium NUMA platforms I know use ACPI, so maybe we&n;&t;&t; * can drop this ifdef completely.                    [EF]&n;&t;&t; */
+macro_line|#ifdef CONFIG_ACPI_NUMA
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+op_increment
+id|i
+)paren
+r_if
+c_cond
+(paren
+id|cpu_physical_id
+c_func
+(paren
+id|cpu
+)paren
+op_eq
+id|node_cpuid
+(braket
+id|i
+)braket
+dot
+id|phys_id
+)paren
+(brace
+id|cpu_to_node_map
+(braket
+id|cpu
+)braket
+op_assign
+id|node_cpuid
+(braket
+id|i
+)braket
+dot
+id|nid
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+macro_line|#else
+macro_line|#&t;&t;error Fixme: Dunno how to build CPU-to-node map.
+macro_line|#endif
+)brace
+)brace
+macro_line|#endif /* CONFIG_NUMA */
 multiline_comment|/*&n; * Cycle through the APs sending Wakeup IPIs to boot each.&n; */
 r_void
 id|__init

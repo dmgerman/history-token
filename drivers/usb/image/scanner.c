@@ -26,6 +26,9 @@ r_char
 op_star
 id|data
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|scn
 op_assign
 id|urb-&gt;context
@@ -40,13 +43,54 @@ op_add_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Keep gcc from complaining about unused var */
-r_if
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - urb shutting down with status: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
 r_return
+suffix:semicolon
+r_default
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - nonzero urb status received: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
 suffix:semicolon
 )brace
 id|dbg
@@ -60,7 +104,28 @@ op_star
 id|data
 )paren
 suffix:semicolon
-r_return
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
+)paren
 suffix:semicolon
 )brace
 r_static

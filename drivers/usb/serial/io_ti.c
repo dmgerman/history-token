@@ -6035,6 +6035,9 @@ suffix:semicolon
 r_int
 id|function
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|__u8
 id|lsr
 suffix:semicolon
@@ -6063,16 +6066,35 @@ id|__FUNCTION__
 r_return
 suffix:semicolon
 )brace
-r_if
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - nonzero control read status received: %d&quot;
+l_string|&quot;%s - urb shutting down with status: %d&quot;
 comma
 id|__FUNCTION__
 comma
@@ -6080,6 +6102,21 @@ id|urb-&gt;status
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+r_default
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - nonzero urb status received: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_goto
+m_exit
 suffix:semicolon
 )brace
 r_if
@@ -6096,7 +6133,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
@@ -6127,7 +6165,8 @@ comma
 id|length
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|port_number
@@ -6343,6 +6382,31 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+m_exit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 DECL|function|edge_bulk_in_callback
 r_static
@@ -6597,10 +6661,6 @@ suffix:semicolon
 m_exit
 suffix:colon
 multiline_comment|/* continue always trying to read */
-id|urb-&gt;dev
-op_assign
-id|edge_port-&gt;port-&gt;serial-&gt;dev
-suffix:semicolon
 id|status
 op_assign
 id|usb_submit_urb

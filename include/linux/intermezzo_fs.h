@@ -615,11 +615,6 @@ DECL|member|cache_flags
 r_int
 id|cache_flags
 suffix:semicolon
-DECL|member|cache_dev
-id|kdev_t
-id|cache_dev
-suffix:semicolon
-multiline_comment|/* underlying block device */
 DECL|member|cache_type
 r_char
 op_star
@@ -1802,9 +1797,6 @@ r_struct
 id|presto_cache
 op_star
 id|cache
-comma
-id|kdev_t
-id|dev
 )paren
 suffix:semicolon
 r_extern
@@ -1822,8 +1814,10 @@ op_star
 id|presto_cache_find
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 DECL|macro|PRESTO_REQLOW

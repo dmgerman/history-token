@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;fas216.h&quot;
 macro_line|#include &quot;scsi.h&quot;
@@ -1566,11 +1565,6 @@ dot
 id|info
 op_assign
 id|powertecscsi_info
-comma
-dot
-id|bios_param
-op_assign
-id|scsicam_bios_param
 comma
 dot
 id|can_queue

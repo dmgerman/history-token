@@ -40,7 +40,6 @@ macro_line|#include &quot;../block/blk.h&quot;
 macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;gdth.h&quot;
 r_static
 r_void
@@ -24169,14 +24168,18 @@ r_int
 id|gdth_bios_param
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -24200,7 +24203,7 @@ op_assign
 id|NUMDATA
 c_func
 (paren
-id|disk-&gt;device-&gt;host
+id|sdev-&gt;host
 )paren
 op_member_access_from_pointer
 id|hanum
@@ -24213,16 +24216,16 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|disk-&gt;device-&gt;host
+id|sdev-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|disk-&gt;device-&gt;channel
+id|sdev-&gt;channel
 suffix:semicolon
 id|t
 op_assign
-id|disk-&gt;device-&gt;id
+id|sdev-&gt;id
 suffix:semicolon
 id|TRACE2
 c_func
@@ -24278,7 +24281,7 @@ suffix:semicolon
 id|gdth_eval_mapping
 c_func
 (paren
-id|disk-&gt;capacity
+id|capacity
 comma
 op_amp
 id|ip
@@ -24331,7 +24334,7 @@ id|ip
 l_int|2
 )braket
 op_assign
-id|disk-&gt;capacity
+id|capacity
 op_div
 id|ip
 (braket

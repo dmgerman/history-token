@@ -6,14 +6,13 @@ r_extern
 r_int
 id|scsicam_bios_param
 (paren
-id|Disk
-op_star
-id|disk
-comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star

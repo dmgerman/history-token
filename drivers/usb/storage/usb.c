@@ -1937,6 +1937,43 @@ r_return
 l_int|2
 suffix:semicolon
 )brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Allocating scatter-gather request block&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ss-&gt;current_sg
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|ss-&gt;current_sg
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ss-&gt;current_sg
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;allocation failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|5
+suffix:semicolon
+)brace
 multiline_comment|/* allocate the IRQ URB, if it is needed */
 r_if
 c_cond
@@ -2195,6 +2232,24 @@ id|ss-&gt;irq_urb_sem
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* free the scatter-gather request block */
+r_if
+c_cond
+(paren
+id|ss-&gt;current_sg
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|ss-&gt;current_sg
+)paren
+suffix:semicolon
+id|ss-&gt;current_sg
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* free up the main URB for this device */
 r_if
 c_cond

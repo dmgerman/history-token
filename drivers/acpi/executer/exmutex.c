@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmutex - ASL Mutex Acquire/Release functions&n; *              $Revision: 13 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmutex - ASL Mutex Acquire/Release functions&n; *              $Revision: 16 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -162,6 +162,29 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Sanity check -- we must have a valid thread ID */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state-&gt;thread
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Cannot acquire Mutex [%4.4s], null thread info&bslash;n&quot;
+comma
+id|obj_desc-&gt;mutex.node-&gt;name.ascii
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_INTERNAL
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Current Sync must be less than or equal to the sync level of the&n;&t; * mutex.  This mechanism provides some deadlock prevention&n;&t; */
 r_if
 c_cond
@@ -171,6 +194,15 @@ OG
 id|obj_desc-&gt;mutex.sync_level
 )paren
 (brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Cannot acquire Mutex [%4.4s], incorrect Sync_level&bslash;n&quot;
+comma
+id|obj_desc-&gt;mutex.node-&gt;name.ascii
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_MUTEX_ORDER
@@ -181,9 +213,15 @@ multiline_comment|/*&n;&t; * Support for multiple acquires by the owning thread&
 r_if
 c_cond
 (paren
+(paren
 id|obj_desc-&gt;mutex.owner_thread
+)paren
+op_logical_and
+(paren
+id|obj_desc-&gt;mutex.owner_thread-&gt;thread_id
 op_eq
-id|walk_state-&gt;thread
+id|walk_state-&gt;thread-&gt;thread_id
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * The mutex is already owned by this thread,&n;&t;&t; * just increment the acquisition depth&n;&t;&t; */
@@ -292,9 +330,41 @@ op_logical_neg
 id|obj_desc-&gt;mutex.owner_thread
 )paren
 (brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Cannot release Mutex [%4.4s], not acquired&bslash;n&quot;
+comma
+id|obj_desc-&gt;mutex.node-&gt;name.ascii
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_MUTEX_NOT_ACQUIRED
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Sanity check -- we must have a valid thread ID */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state-&gt;thread
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Cannot release Mutex [%4.4s], null thread info&bslash;n&quot;
+comma
+id|obj_desc-&gt;mutex.node-&gt;name.ascii
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_INTERNAL
 )paren
 suffix:semicolon
 )brace
@@ -302,11 +372,24 @@ multiline_comment|/* The Mutex is owned, but this thread must be the owner */
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;mutex.owner_thread
+id|obj_desc-&gt;mutex.owner_thread-&gt;thread_id
 op_ne
-id|walk_state-&gt;thread
+id|walk_state-&gt;thread-&gt;thread_id
 )paren
 (brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Thread %X cannot release Mutex [%4.4s] acquired by thread %X&bslash;n&quot;
+comma
+id|walk_state-&gt;thread-&gt;thread_id
+comma
+id|obj_desc-&gt;mutex.node-&gt;name.ascii
+comma
+id|obj_desc-&gt;mutex.owner_thread-&gt;thread_id
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_NOT_OWNER
@@ -322,6 +405,15 @@ OG
 id|walk_state-&gt;thread-&gt;current_sync_level
 )paren
 (brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Cannot release Mutex [%4.4s], incorrect Sync_level&bslash;n&quot;
+comma
+id|obj_desc-&gt;mutex.node-&gt;name.ascii
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_MUTEX_ORDER

@@ -1598,6 +1598,8 @@ id|u-&gt;context
 suffix:semicolon
 r_int
 id|act_state
+comma
+id|status
 suffix:semicolon
 multiline_comment|/* we abuse the interrupt urb for rebsubmitting under low memory saving a timer */
 r_if
@@ -1613,6 +1615,41 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|u-&gt;status
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+multiline_comment|/* unlink */
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+r_return
+suffix:semicolon
+multiline_comment|/* -EPIPE:  should clear the halt */
+r_default
+suffix:colon
+multiline_comment|/* error */
+r_goto
+id|resubmit
+suffix:semicolon
+)brace
 multiline_comment|/* we check the link state to report changes */
 r_if
 c_cond
@@ -1659,6 +1696,33 @@ op_assign
 id|act_state
 suffix:semicolon
 )brace
+id|resubmit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|u
+comma
+id|SLAB_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;can&squot;t resubmit intr, %s-%s, status %d&quot;
+comma
+id|kaweth-&gt;dev-&gt;bus-&gt;bus_name
+comma
+id|kaweth-&gt;dev-&gt;devpath
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *     kaweth_resubmit_rx_urb&n; ****************************************************************/
 DECL|function|kaweth_resubmit_rx_urb

@@ -120,16 +120,6 @@ id|dev
 suffix:semicolon
 r_extern
 r_int
-id|znet_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|express_probe
 c_func
 (paren
@@ -1134,14 +1124,6 @@ l_int|0
 )brace
 comma
 multiline_comment|/* ICL EtherTeam 16i/32 */
-macro_line|#endif
-macro_line|#ifdef CONFIG_ZNET&t;&t;/* Zenith Z-Note and some IBM Thinkpads. */
-(brace
-id|znet_probe
-comma
-l_int|0
-)brace
-comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_EEXPRESS&t;&t;/* Intel EtherExpress */
 (brace

@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
-macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;arxescsi.h&quot;
 macro_line|#include &quot;fas216.h&quot;

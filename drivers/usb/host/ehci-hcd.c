@@ -56,8 +56,6 @@ macro_line|#ifdef DEBUG
 DECL|macro|EHCI_STATS
 mdefine_line|#define EHCI_STATS
 macro_line|#endif
-DECL|macro|INTR_AUTOMAGIC
-mdefine_line|#define INTR_AUTOMAGIC&t;&t;/* to be removed later in 2.5 */
 multiline_comment|/* magic numbers that can affect system performance */
 DECL|macro|EHCI_TUNE_CERR
 mdefine_line|#define&t;EHCI_TUNE_CERR&t;&t;3&t;/* 0-3 qtd retries; 0 == don&squot;t stop */

@@ -7,7 +7,6 @@ macro_line|#ifndef&t;LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &quot;sd.h&quot;
 r_extern
 r_int
 id|i91u_detect
@@ -81,12 +80,15 @@ r_int
 id|i91u_biosparam
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 op_star

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#include &quot;sd.h&quot;
+macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 r_int
 id|ppa_release
@@ -728,6 +728,26 @@ multiline_comment|/* Never gets here */
 r_continue
 suffix:semicolon
 )brace
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|ppa_hosts
+(braket
+id|i
+)braket
+dot
+id|ppa_tq
+comma
+id|ppa_interrupt
+comma
+op_amp
+id|ppa_hosts
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 id|host-&gt;can_queue
 op_assign
 id|PPA_CAN_QUEUE
@@ -4426,14 +4446,18 @@ r_int
 id|ppa_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|ip
@@ -4465,7 +4489,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_plus
 l_int|1
 )paren
@@ -4517,7 +4541,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_plus
 l_int|1
 )paren

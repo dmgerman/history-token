@@ -212,7 +212,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|macro|DEBUG_DEFAULT
-mdefine_line|#define DEBUG_DEFAULT&t;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_IFDOWN&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_IFUP&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_TX_ERR)
+mdefine_line|#define DEBUG_DEFAULT&t;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_HW&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_TX_ERR)
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG&t;&t;&t;((debug &gt;= 0) ? (1&lt;&lt;debug)-1 : DEBUG_DEFAULT)
 id|MODULE_AUTHOR
@@ -2008,7 +2008,6 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
-macro_line|#ifndef final_version
 r_if
 c_cond
 (paren
@@ -2025,7 +2024,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|r
 suffix:semicolon
@@ -3618,6 +3616,16 @@ id|eeprom
 (braket
 l_int|6
 )braket
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|sp-&gt;mii_if.phy_id_mask
+op_assign
+l_int|0x1f
+suffix:semicolon
+id|sp-&gt;mii_if.reg_num_mask
+op_assign
+l_int|0x1f
 suffix:semicolon
 id|sp-&gt;mii_if.dev
 op_assign
@@ -5379,7 +5387,7 @@ multiline_comment|/* We haven&squot;t received a packet in a Long Time.  We migh
 r_if
 c_cond
 (paren
-id|netif_msg_rx_err
+id|netif_msg_timer
 c_func
 (paren
 id|sp
@@ -5456,7 +5464,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Print a few items for debugging. */
+r_if
+c_cond
+(paren
+id|netif_msg_pktdata
+c_func
+(paren
+id|sp
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -5619,6 +5636,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+)brace
 macro_line|#if 0
 (brace
 r_int
@@ -6446,13 +6464,13 @@ dot
 id|status
 )paren
 suffix:semicolon
+)brace
 id|speedo_show_state
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 macro_line|#if 0
 r_if
 c_cond
@@ -7414,28 +7432,6 @@ r_int
 r_int
 id|status
 suffix:semicolon
-macro_line|#ifndef final_version
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;speedo_interrupt(): irq %d for unknown device.&bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -8181,17 +8177,17 @@ comma
 id|force
 )paren
 suffix:semicolon
+id|sp-&gt;rx_ring_state
+op_or_assign
+id|RrOOMReported
+suffix:semicolon
+)brace
 id|speedo_show_state
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|sp-&gt;rx_ring_state
-op_or_assign
-id|RrOOMReported
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8582,7 +8578,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|netif_msg_intr
+id|netif_msg_rx_status
 c_func
 (paren
 id|sp
@@ -9071,16 +9067,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* Print a few items for debugging. */
-r_if
-c_cond
-(paren
-id|netif_msg_ifdown
-c_func
-(paren
-id|sp
-)paren
-)paren
 id|speedo_show_state
 c_func
 (paren

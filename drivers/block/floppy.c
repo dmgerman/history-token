@@ -9378,10 +9378,10 @@ id|current_count_sectors
 )paren
 r_return
 suffix:semicolon
-id|add_blkdev_randomness
+id|add_disk_randomness
 c_func
 (paren
-id|MAJOR_NR
+id|req-&gt;rq_disk
 )paren
 suffix:semicolon
 id|floppy_off

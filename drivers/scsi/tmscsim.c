@@ -73,7 +73,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &quot;dc390.h&quot;
@@ -4784,14 +4783,18 @@ DECL|function|DC390_bios_param
 r_int
 id|DC390_bios_param
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -4812,7 +4815,7 @@ op_assign
 (paren
 id|PACB
 )paren
-id|disk-&gt;device-&gt;host-&gt;hostdata
+id|sdev-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 id|ret_code
@@ -4823,7 +4826,7 @@ suffix:semicolon
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 r_int
 r_char
@@ -4986,14 +4989,18 @@ DECL|function|DC390_bios_param
 r_int
 id|DC390_bios_param
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -5004,9 +5011,9 @@ id|geom
 r_return
 id|scsicam_bios_param
 (paren
-id|disk
-comma
 id|bdev
+comma
+id|capacity
 comma
 id|geom
 )paren

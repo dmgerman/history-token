@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 DECL|macro|ANY2SCSI_INLINE
 mdefine_line|#define ANY2SCSI_INLINE&t;&t;/* undef this to use old macros */
@@ -6330,14 +6329,18 @@ r_int
 id|wd7000_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -6355,7 +6358,7 @@ c_func
 id|bdev
 )paren
 comma
-id|disk-&gt;capacity
+id|capacity
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * try default translation&n;&t; */
@@ -6378,7 +6381,7 @@ id|ip
 l_int|2
 )braket
 op_assign
-id|disk-&gt;capacity
+id|capacity
 op_rshift
 l_int|11
 suffix:semicolon
@@ -6408,9 +6411,9 @@ c_cond
 id|scsicam_bios_param
 c_func
 (paren
-id|disk
-comma
 id|bdev
+comma
+id|capacity
 comma
 id|info
 )paren
@@ -6492,7 +6495,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 l_int|255

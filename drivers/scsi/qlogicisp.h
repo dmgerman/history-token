@@ -78,12 +78,15 @@ r_int
 id|isp1020_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 (braket
@@ -95,6 +98,6 @@ DECL|macro|NULL
 mdefine_line|#define NULL (0)
 macro_line|#endif
 DECL|macro|QLOGICISP
-mdefine_line|#define QLOGICISP {&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;detect:&t;&t;&t;isp1020_detect,&t;&t;&t;&t;   &bslash;&n;&t;release:&t;&t;isp1020_release,&t;&t;&t;   &bslash;&n;&t;info:&t;&t;&t;isp1020_info,&t;&t;&t;&t;   &bslash;&n;&t;queuecommand:&t;&t;isp1020_queuecommand,&t;&t;&t;   &bslash;&n;&t;abort:&t;&t;&t;isp1020_abort,&t;&t;&t;&t;   &bslash;&n;&t;reset:&t;&t;&t;isp1020_reset,&t;&t;&t;&t;   &bslash;&n;&t;bios_param:&t;&t;isp1020_biosparam,&t;&t;&t;   &bslash;&n;&t;can_queue:&t;&t;QLOGICISP_REQ_QUEUE_LEN,&t;&t;   &bslash;&n;&t;this_id:&t;&t;-1,&t;&t;&t;&t;&t;   &bslash;&n;&t;sg_tablesize:&t;&t;QLOGICISP_MAX_SG(QLOGICISP_REQ_QUEUE_LEN), &bslash;&n;&t;cmd_per_lun:&t;&t;1,&t;&t;&t;&t;&t;   &bslash;&n;&t;present:&t;&t;0,&t;&t;&t;&t;&t;   &bslash;&n;&t;unchecked_isa_dma:&t;0,&t;&t;&t;&t;&t;   &bslash;&n;&t;use_clustering:&t;&t;DISABLE_CLUSTERING&t;&t;&t;   &bslash;&n;}
+mdefine_line|#define QLOGICISP {&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;detect:&t;&t;&t;isp1020_detect,&t;&t;&t;&t;   &bslash;&n;&t;release:&t;&t;isp1020_release,&t;&t;&t;   &bslash;&n;&t;info:&t;&t;&t;isp1020_info,&t;&t;&t;&t;   &bslash;&n;&t;queuecommand:&t;&t;isp1020_queuecommand,&t;&t;&t;   &bslash;&n;&t;bios_param:&t;&t;isp1020_biosparam,&t;&t;&t;   &bslash;&n;&t;can_queue:&t;&t;QLOGICISP_REQ_QUEUE_LEN,&t;&t;   &bslash;&n;&t;this_id:&t;&t;-1,&t;&t;&t;&t;&t;   &bslash;&n;&t;sg_tablesize:&t;&t;QLOGICISP_MAX_SG(QLOGICISP_REQ_QUEUE_LEN), &bslash;&n;&t;cmd_per_lun:&t;&t;1,&t;&t;&t;&t;&t;   &bslash;&n;&t;present:&t;&t;0,&t;&t;&t;&t;&t;   &bslash;&n;&t;unchecked_isa_dma:&t;0,&t;&t;&t;&t;&t;   &bslash;&n;&t;use_clustering:&t;&t;DISABLE_CLUSTERING&t;&t;&t;   &bslash;&n;}
 macro_line|#endif /* _QLOGICISP_H */
 eof

@@ -1289,9 +1289,13 @@ op_assign
 op_amp
 id|private_ioctl
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* start the transmitter to get a heartbeat */
 multiline_comment|/* TODO: send 2 dummy packets here */
@@ -1370,7 +1374,11 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_struct
 id|xircom_private

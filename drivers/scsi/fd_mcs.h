@@ -2,7 +2,7 @@ multiline_comment|/* fd_mcs.h -- Header for Future Domain MCS 600/700 (or IBM OE
 macro_line|#ifndef _FD_MCS_H
 DECL|macro|_FD_MCS_H
 mdefine_line|#define _FD_MCS_H
-r_extern
+r_static
 r_int
 id|fd_mcs_detect
 c_func
@@ -11,7 +11,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|fd_mcs_release
 c_func
@@ -21,7 +21,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|fd_mcs_command
 c_func
@@ -30,7 +30,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|fd_mcs_abort
 c_func
@@ -39,19 +39,34 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
-id|fd_mcs_reset
+id|fd_mcs_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
-r_extern
+r_static
+r_int
+id|fd_mcs_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|fd_mcs_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
 r_int
 id|fd_mcs_queue
 c_func
@@ -70,7 +85,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|fd_mcs_biosparam
 c_func
@@ -82,11 +97,13 @@ r_struct
 id|block_device
 op_star
 comma
+id|sector_t
+comma
 r_int
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|fd_mcs_proc_info
 c_func
@@ -107,7 +124,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_const
 r_char
 op_star
@@ -120,6 +137,6 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|FD_MCS
-mdefine_line|#define FD_MCS {&bslash;&n;                    proc_name:      &quot;fd_mcs&quot;,                   &bslash;&n;                    proc_info:      fd_mcs_proc_info,           &bslash;&n;&t;&t;    detect:         fd_mcs_detect,              &bslash;&n;&t;&t;    release:        fd_mcs_release,             &bslash;&n;&t;&t;    info:           fd_mcs_info,                &bslash;&n;&t;&t;    command:        fd_mcs_command,             &bslash;&n;&t;&t;    queuecommand:   fd_mcs_queue,               &bslash;&n;&t;&t;    abort:          fd_mcs_abort,               &bslash;&n;&t;&t;    reset:          fd_mcs_reset,               &bslash;&n;&t;&t;    bios_param:     fd_mcs_biosparam,           &bslash;&n;&t;&t;    can_queue:      1, &t;&t;&t;&t;&bslash;&n;&t;&t;    this_id:        7, &t;&t;&t;&t;&bslash;&n;&t;&t;    sg_tablesize:   64, &t;&t;&t;&bslash;&n;&t;&t;    cmd_per_lun:    1, &t;&t;&t;&t;&bslash;&n;&t;&t;    use_clustering: DISABLE_CLUSTERING }
-macro_line|#endif /* _FD_MCS_H */
+mdefine_line|#define FD_MCS {&bslash;&n;                    proc_name:&t;&t;&t;&quot;fd_mcs&quot;,&t;&t;&bslash;&n;                    proc_info:&t;&t;&t;fd_mcs_proc_info,&t;&bslash;&n;&t;&t;    detect:&t;&t;&t;fd_mcs_detect,&t;&t;&bslash;&n;&t;&t;    release:&t;&t;&t;fd_mcs_release,&t;&t;&bslash;&n;&t;&t;    info:&t;&t;&t;fd_mcs_info,&t;&t;&bslash;&n;&t;&t;    command:&t;&t;&t;fd_mcs_command,&t;&t;&bslash;&n;&t;&t;    queuecommand:   &t;&t;fd_mcs_queue,           &bslash;&n;&t;&t;    eh_abort_handler:&t;&t;fd_mcs_abort,           &bslash;&n;&t;&t;    eh_bus_reset_handler:&t;fd_mcs_bus_reset,       &bslash;&n;&t;&t;    eh_host_reset_handler:&t;fd_mcs_host_reset,      &bslash;&n;&t;&t;    eh_device_reset_handler:&t;fd_mcs_device_reset,    &bslash;&n;&t;&t;    bios_param:     &t;&t;fd_mcs_biosparam,       &bslash;&n;&t;&t;    can_queue:      &t;&t;1, &t;&t;&t;&bslash;&n;&t;&t;    this_id:        &t;&t;7, &t;&t;&t;&bslash;&n;&t;&t;    sg_tablesize:   &t;&t;64, &t;&t;&t;&bslash;&n;&t;&t;    cmd_per_lun:    &t;&t;1, &t;&t;&t;&bslash;&n;&t;&t;    use_clustering: &t;&t;DISABLE_CLUSTERING&t;&bslash;&n;&t;&t;}
+macro_line|#endif&t;&t;&t;&t;/* _FD_MCS_H */
 eof

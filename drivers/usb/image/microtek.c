@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;microtek.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
@@ -3239,8 +3238,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* I don&squot;t understand the following fully (it&squot;s from usb-storage) -- John */
-multiline_comment|/* set the interface -- STALL is an acceptable response here */
 id|result
 op_assign
 id|usb_set_interface
@@ -3271,32 +3268,6 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* no error */
-r_break
-suffix:semicolon
-r_case
-op_minus
-id|EPIPE
-suffix:colon
-id|usb_clear_halt
-c_func
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-id|MTS_DEBUG
-c_func
-(paren
-l_string|&quot;clearing clearing stall on control interface&bslash;n&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbgetall - Get all required ACPI tables&n; *              $Revision: 2 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbgetall - Get all required ACPI tables&n; *              $Revision: 3 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -389,6 +389,8 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Get the tables needed by this subsystem (FADT and any SSDTs).&n;&t;&t; * NOTE: All other tables are completely ignored at this time.&n;&t;&t; */
+id|status
+op_assign
 id|acpi_tb_get_primary_table
 (paren
 op_amp
@@ -398,6 +400,45 @@ op_amp
 id|table_info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|status
+op_ne
+id|AE_OK
+)paren
+op_logical_and
+(paren
+id|status
+op_ne
+id|AE_TABLE_NOT_SUPPORTED
+)paren
+)paren
+(brace
+id|ACPI_REPORT_WARNING
+(paren
+(paren
+l_string|&quot;%s, while getting table at %8.8X%8.8X&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+comma
+id|ACPI_HIDWORD
+(paren
+id|address.pointer.value
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|address.pointer.value
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* We must have a FADT to continue */
 r_if

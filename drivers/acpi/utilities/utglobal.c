@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 171 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 172 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -343,7 +343,7 @@ op_assign
 (brace
 l_string|&quot;_GPE&quot;
 comma
-id|INTERNAL_TYPE_SCOPE
+id|ACPI_TYPE_LOCAL_SCOPE
 comma
 l_int|NULL
 )brace
@@ -351,7 +351,7 @@ comma
 (brace
 l_string|&quot;_PR_&quot;
 comma
-id|INTERNAL_TYPE_SCOPE
+id|ACPI_TYPE_LOCAL_SCOPE
 comma
 l_int|NULL
 )brace
@@ -367,7 +367,7 @@ comma
 (brace
 l_string|&quot;_SI_&quot;
 comma
-id|INTERNAL_TYPE_SCOPE
+id|ACPI_TYPE_LOCAL_SCOPE
 comma
 l_int|NULL
 )brace
@@ -375,7 +375,7 @@ comma
 (brace
 l_string|&quot;_TZ_&quot;
 comma
-id|INTERNAL_TYPE_SCOPE
+id|ACPI_TYPE_LOCAL_SCOPE
 comma
 l_int|NULL
 )brace
@@ -515,38 +515,17 @@ op_or
 id|ACPI_NS_LOCAL
 comma
 multiline_comment|/* 25 Resource Field   */
-id|ACPI_NS_NORMAL
-comma
-multiline_comment|/* 26 Def_field_defn   */
-id|ACPI_NS_NORMAL
-comma
-multiline_comment|/* 27 Bank_field_defn  */
-id|ACPI_NS_NORMAL
-comma
-multiline_comment|/* 28 Index_field_defn */
-id|ACPI_NS_NORMAL
-comma
-multiline_comment|/* 29 If               */
-id|ACPI_NS_NORMAL
-comma
-multiline_comment|/* 30 Else             */
-id|ACPI_NS_NORMAL
-comma
-multiline_comment|/* 31 While            */
 id|ACPI_NS_NEWSCOPE
 comma
-multiline_comment|/* 32 Scope            */
-id|ACPI_NS_LOCAL
-comma
-multiline_comment|/* 33 Def_any          */
+multiline_comment|/* 26 Scope            */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 34 Extra            */
+multiline_comment|/* 27 Extra            */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 35 Data             */
+multiline_comment|/* 28 Data             */
 id|ACPI_NS_NORMAL
-multiline_comment|/* 36 Invalid          */
+multiline_comment|/* 29 Invalid          */
 )brace
 suffix:semicolon
 multiline_comment|/* Hex to ASCII conversion table */
@@ -1304,36 +1283,15 @@ multiline_comment|/* 25 */
 l_string|&quot;Resource_fld&quot;
 comma
 multiline_comment|/* 26 */
-l_string|&quot;Region_fld_dfn&quot;
-comma
-multiline_comment|/* 27 */
-l_string|&quot;Bank_fld_dfn&quot;
-comma
-multiline_comment|/* 28 */
-l_string|&quot;Index_fld_dfn&quot;
-comma
-multiline_comment|/* 29 */
-l_string|&quot;If&quot;
-comma
-multiline_comment|/* 30 */
-l_string|&quot;Else&quot;
-comma
-multiline_comment|/* 31 */
-l_string|&quot;While&quot;
-comma
-multiline_comment|/* 32 */
 l_string|&quot;Scope&quot;
 comma
-multiline_comment|/* 33 */
-l_string|&quot;Def_any&quot;
-comma
-multiline_comment|/* 34 */
+multiline_comment|/* 27 */
 l_string|&quot;Extra&quot;
 comma
-multiline_comment|/* 35 */
+multiline_comment|/* 28 */
 l_string|&quot;Data&quot;
 comma
-multiline_comment|/* 36 */
+multiline_comment|/* 39 */
 l_string|&quot;Invalid&quot;
 )brace
 suffix:semicolon
@@ -1351,7 +1309,7 @@ c_cond
 (paren
 id|type
 OG
-id|INTERNAL_TYPE_INVALID
+id|ACPI_TYPE_INVALID
 )paren
 (brace
 r_return
@@ -1448,7 +1406,7 @@ id|mutex_id
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_valid_object_type&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      TRUE if valid object type&n; *&n; * DESCRIPTION: Validate an object type&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_valid_object_type&n; *&n; * PARAMETERS:  Type            - Object type to be validated&n; *&n; * RETURN:      TRUE if valid object type&n; *&n; * DESCRIPTION: Validate an object type&n; *&n; ****************************************************************************/
 id|u8
 DECL|function|acpi_ut_valid_object_type
 id|acpi_ut_valid_object_type
@@ -1462,31 +1420,15 @@ c_cond
 (paren
 id|type
 OG
-id|ACPI_TYPE_MAX
+id|ACPI_TYPE_LOCAL_MAX
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|type
-OL
-id|INTERNAL_TYPE_BEGIN
-)paren
-op_logical_or
-(paren
-id|type
-OG
-id|INTERNAL_TYPE_MAX
-)paren
-)paren
-(brace
+multiline_comment|/* Note: Assumes all TYPEs are contiguous (external/local) */
 r_return
 (paren
 id|FALSE
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 (paren
@@ -2225,7 +2167,7 @@ id|ACPI_DESC_TYPE_NAMED
 suffix:semicolon
 id|acpi_gbl_root_node_struct.type
 op_assign
-id|ACPI_TYPE_ANY
+id|ACPI_TYPE_DEVICE
 suffix:semicolon
 id|acpi_gbl_root_node_struct.child
 op_assign

@@ -2809,20 +2809,23 @@ r_return
 id|SCSI_RESET_PUNT
 suffix:semicolon
 )brace
-macro_line|#include &quot;sd.h&quot;
 multiline_comment|/****************************************************************&n; *&t;Name:&t;Psi240i_BiosParam&n; *&n; *&t;Description:&t;Process the biosparam request from the SCSI manager to&n; *&t;&t;&t;&t;&t;return C/H/S data.&n; *&n; *&t;Parameters:&t;&t;disk - Pointer to SCSI disk structure.&n; *&t;&t;&t;&t;&t;dev&t; - Major/minor number from kernel.&n; *&t;&t;&t;&t;&t;geom - Pointer to integer array to place geometry data.&n; *&n; *&t;Returns:&t;&t;zero.&n; *&n; ****************************************************************/
 DECL|function|Psi240i_BiosParam
 r_int
 id|Psi240i_BiosParam
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -2840,12 +2843,12 @@ op_amp
 id|HOSTDATA
 c_func
 (paren
-id|disk-&gt;device-&gt;host
+id|sdev-&gt;host
 )paren
 op_member_access_from_pointer
 id|device
 (braket
-id|disk-&gt;device-&gt;id
+id|sdev-&gt;id
 )braket
 )paren
 suffix:semicolon

@@ -3292,6 +3292,9 @@ id|__u8
 op_star
 id|d
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3313,7 +3316,16 @@ r_break
 suffix:semicolon
 r_case
 op_minus
+id|ECONNRESET
+suffix:colon
+multiline_comment|/* unlink */
+r_case
+op_minus
 id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
 suffix:colon
 r_return
 suffix:semicolon
@@ -3428,6 +3440,29 @@ id|net
 suffix:semicolon
 )brace
 )brace
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|SLAB_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;%s: can&squot;t resubmit interrupt urb, %d&quot;
+comma
+id|net-&gt;name
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 DECL|function|pegasus_tx_timeout
 r_static

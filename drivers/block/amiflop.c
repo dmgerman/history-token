@@ -22,12 +22,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;floppy_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG /* print _LOTS_ of infos */
@@ -97,6 +91,14 @@ r_struct
 id|request_queue
 id|floppy_queue
 suffix:semicolon
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;floppy_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;floppy_queue)
 multiline_comment|/*&n; *  Macros&n; */
 DECL|macro|MOTOR_ON
 mdefine_line|#define MOTOR_ON&t;(ciab.prb &amp;= ~DSKMOTOR)

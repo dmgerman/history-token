@@ -850,7 +850,11 @@ c_func
 (paren
 l_string|&quot;GSCD: bad cmd %d&bslash;n&quot;
 comma
-id|req-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|req
+)paren
 )paren
 suffix:semicolon
 id|end_request

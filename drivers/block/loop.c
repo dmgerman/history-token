@@ -2671,15 +2671,6 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 r_struct
 id|block_device
 op_star
@@ -2879,7 +2870,7 @@ suffix:semicolon
 id|set_device_ro
 c_func
 (paren
-id|dev
+id|bdev
 comma
 (paren
 id|lo_flags

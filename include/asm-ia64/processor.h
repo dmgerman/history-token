@@ -73,6 +73,9 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#ifdef CONFIG_NUMA
+macro_line|#include &lt;asm/nodedata.h&gt;
+macro_line|#endif
 multiline_comment|/* like above but expressed as bitfields for more efficient access: */
 DECL|struct|ia64_psr
 r_struct
@@ -461,6 +464,18 @@ id|__u64
 id|prof_multiplier
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_NUMA
+DECL|member|node_data
+r_struct
+id|ia64_node_data
+op_star
+id|node_data
+suffix:semicolon
+DECL|member|nodeid
+r_int
+id|nodeid
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 id|DECLARE_PER_CPU
@@ -477,6 +492,10 @@ DECL|macro|local_cpu_data
 mdefine_line|#define local_cpu_data&t;&t;(&amp;__get_cpu_var(cpu_info))
 DECL|macro|cpu_data
 mdefine_line|#define cpu_data(cpu)&t;&t;(&amp;per_cpu(cpu_info, cpu))
+macro_line|#ifdef CONFIG_NUMA
+DECL|macro|numa_node_id
+mdefine_line|#define numa_node_id()&t;&t;(local_cpu_data-&gt;nodeid)
+macro_line|#endif
 r_extern
 r_void
 id|identify_cpu

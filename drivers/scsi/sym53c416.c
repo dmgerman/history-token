@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;sym53c416.h&quot;
 DECL|macro|VERSION_STRING
 mdefine_line|#define VERSION_STRING        &quot;Version 1.0.0-ac&quot;
@@ -3247,7 +3246,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Request_irq with CLI is not safe */
 multiline_comment|/* Request for specified IRQ */
 r_if
 c_cond
@@ -3718,25 +3716,49 @@ op_star
 id|SCpnt
 )paren
 (brace
-multiline_comment|/* printk(&quot;sym53c416_abort&bslash;n&quot;); */
-multiline_comment|/* We don&squot;t know how to abort for the moment */
 r_return
-id|SCSI_ABORT_SNOOZE
+id|FAILED
 suffix:semicolon
 )brace
-DECL|function|sym53c416_reset
+DECL|function|sym53c416_bus_reset
 r_static
 r_int
-id|sym53c416_reset
+id|sym53c416_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+DECL|function|sym53c416_device_reset
+r_static
 r_int
+id|sym53c416_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+DECL|function|sym53c416_host_reset
+r_static
 r_int
-id|reset_flags
+id|sym53c416_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
 )paren
 (brace
 r_int
@@ -3756,7 +3778,7 @@ id|base
 op_assign
 id|SCpnt-&gt;host-&gt;io_port
 suffix:semicolon
-multiline_comment|/* search scsi_id */
+multiline_comment|/* search scsi_id - fixme, we shouldnt need to iterate for this! */
 r_for
 c_loop
 (paren
@@ -3840,7 +3862,51 @@ id|scsi_id
 )paren
 suffix:semicolon
 r_return
-id|SCSI_RESET_PENDING
+id|SUCCESS
+suffix:semicolon
+)brace
+DECL|function|sym53c416_release
+r_static
+r_int
+id|sym53c416_release
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|shost-&gt;irq
+)paren
+id|free_irq
+c_func
+(paren
+id|shost-&gt;irq
+comma
+id|shost
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|shost-&gt;io_port
+op_logical_and
+id|shost-&gt;n_io_port
+)paren
+id|release_region
+c_func
+(paren
+id|shost-&gt;io_port
+comma
+id|shost-&gt;n_io_port
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sym53c416_bios_param
@@ -3849,14 +3915,18 @@ r_int
 id|sym53c416_bios_param
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -3868,7 +3938,7 @@ id|size
 suffix:semicolon
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|ip
 (braket
