@@ -4658,7 +4658,7 @@ id|scb-&gt;scp-&gt;use_sg
 )paren
 (brace
 singleline_comment|// sg list not used
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev
@@ -7335,7 +7335,7 @@ op_eq
 id|PCI_DMA_FROMDEVICE
 )paren
 (brace
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev

@@ -6054,7 +6054,7 @@ c_func
 id|SAR_REG_RAWCT
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|card-&gt;pcidev
@@ -6610,7 +6610,7 @@ id|queue
 op_assign
 id|card-&gt;raw_cell_head
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|card-&gt;pcidev
