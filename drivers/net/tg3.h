@@ -870,6 +870,8 @@ DECL|macro|MAC_RCV_RULE_CFG
 mdefine_line|#define MAC_RCV_RULE_CFG&t;&t;0x00000500
 DECL|macro|RCV_RULE_CFG_DEFAULT_CLASS
 mdefine_line|#define  RCV_RULE_CFG_DEFAULT_CLASS&t;0x00000008
+DECL|macro|MAC_LOW_WMARK_MAX_RX_FRAME
+mdefine_line|#define MAC_LOW_WMARK_MAX_RX_FRAME&t;0x00000504
 multiline_comment|/* 0x504 --&gt; 0x590 unused */
 DECL|macro|MAC_SERDES_CFG
 mdefine_line|#define MAC_SERDES_CFG&t;&t;&t;0x00000590

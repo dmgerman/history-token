@@ -21352,6 +21352,21 @@ comma
 l_int|0x616000
 )paren
 suffix:semicolon
+multiline_comment|/* Prevent chip from dropping frames when flow control&n;&t; * is enabled.&n;&t; */
+id|tw32
+c_func
+(paren
+id|MAC_LOW_WMARK_MAX_RX_FRAME
+comma
+l_int|2
+)paren
+suffix:semicolon
+id|tr32
+c_func
+(paren
+id|MAC_LOW_WMARK_MAX_RX_FRAME
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|tg3_setup_phy
