@@ -558,6 +558,8 @@ id|get_byname
 (paren
 r_char
 op_star
+comma
+r_int
 )paren
 comma
 r_struct
@@ -609,6 +611,8 @@ id|get_byname
 c_func
 (paren
 id|ualg-&gt;alg_name
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1180,11 +1184,6 @@ id|err
 )paren
 r_return
 id|err
-suffix:semicolon
-id|xfrm_probe_algs
-c_func
-(paren
-)paren
 suffix:semicolon
 id|x
 op_assign

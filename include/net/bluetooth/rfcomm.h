@@ -8,6 +8,8 @@ DECL|macro|RFCOMM_CONN_TIMEOUT
 mdefine_line|#define RFCOMM_CONN_TIMEOUT (HZ * 30)
 DECL|macro|RFCOMM_DISC_TIMEOUT
 mdefine_line|#define RFCOMM_DISC_TIMEOUT (HZ * 20)
+DECL|macro|RFCOMM_AUTH_TIMEOUT
+mdefine_line|#define RFCOMM_AUTH_TIMEOUT (HZ * 25)
 DECL|macro|RFCOMM_DEFAULT_MTU
 mdefine_line|#define RFCOMM_DEFAULT_MTU&t;127
 DECL|macro|RFCOMM_DEFAULT_CREDITS
@@ -510,10 +512,16 @@ DECL|macro|RFCOMM_RX_THROTTLED
 mdefine_line|#define RFCOMM_RX_THROTTLED 0
 DECL|macro|RFCOMM_TX_THROTTLED
 mdefine_line|#define RFCOMM_TX_THROTTLED 1
-DECL|macro|RFCOMM_MSC_PENDING
-mdefine_line|#define RFCOMM_MSC_PENDING  2
 DECL|macro|RFCOMM_TIMED_OUT
-mdefine_line|#define RFCOMM_TIMED_OUT    3
+mdefine_line|#define RFCOMM_TIMED_OUT    2
+DECL|macro|RFCOMM_MSC_PENDING
+mdefine_line|#define RFCOMM_MSC_PENDING  3 
+DECL|macro|RFCOMM_AUTH_PENDING
+mdefine_line|#define RFCOMM_AUTH_PENDING 4
+DECL|macro|RFCOMM_AUTH_ACCEPT
+mdefine_line|#define RFCOMM_AUTH_ACCEPT  5
+DECL|macro|RFCOMM_AUTH_REJECT
+mdefine_line|#define RFCOMM_AUTH_REJECT  6
 multiline_comment|/* Scheduling flags and events */
 DECL|macro|RFCOMM_SCHED_STATE
 mdefine_line|#define RFCOMM_SCHED_STATE  0
@@ -523,6 +531,8 @@ DECL|macro|RFCOMM_SCHED_TX
 mdefine_line|#define RFCOMM_SCHED_TX     2
 DECL|macro|RFCOMM_SCHED_TIMEO
 mdefine_line|#define RFCOMM_SCHED_TIMEO  3
+DECL|macro|RFCOMM_SCHED_AUTH
+mdefine_line|#define RFCOMM_SCHED_AUTH   4
 DECL|macro|RFCOMM_SCHED_WAKEUP
 mdefine_line|#define RFCOMM_SCHED_WAKEUP 31
 multiline_comment|/* MSC exchange flags */

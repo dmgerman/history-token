@@ -73,6 +73,11 @@ id|IPT_MULTI_PORTS
 )braket
 suffix:semicolon
 multiline_comment|/* Port flags */
+DECL|member|invert
+id|u_int8_t
+id|invert
+suffix:semicolon
+multiline_comment|/* Invert flag */
 )brace
 suffix:semicolon
 macro_line|#endif /*_IPT_MULTIPORT_H*/

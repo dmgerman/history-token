@@ -3123,6 +3123,8 @@ id|xfrm_aalg_get_byname
 c_func
 (paren
 id|x-&gt;aalg-&gt;alg_name
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|sa-&gt;sadb_sa_auth
@@ -3162,6 +3164,8 @@ id|xfrm_ealg_get_byname
 c_func
 (paren
 id|x-&gt;ealg-&gt;alg_name
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|sa-&gt;sadb_sa_encrypt
@@ -3190,6 +3194,8 @@ id|xfrm_calg_get_byname
 c_func
 (paren
 id|x-&gt;calg-&gt;alg_name
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|sa-&gt;sadb_sa_encrypt

@@ -309,12 +309,27 @@ id|parent
 op_logical_and
 id|sk-&gt;sk_zapped
 )paren
+(brace
+multiline_comment|/* We have to drop DLC lock here, otherwise&n;&t;&t; * rfcomm_sock_destruct() will dead lock. */
+id|rfcomm_dlc_unlock
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
 id|rfcomm_sock_kill
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
+id|rfcomm_dlc_lock
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* ---- Socket functions ---- */
 DECL|function|__rfcomm_get_sock_by_addr
