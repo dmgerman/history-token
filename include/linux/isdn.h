@@ -441,13 +441,6 @@ DECL|macro|USG_OUTGOING
 mdefine_line|#define USG_OUTGOING(x)     ((x &amp; ISDN_USAGE_OUTGOING)==ISDN_USAGE_OUTGOING)
 DECL|macro|USG_MODEMORVOICE
 mdefine_line|#define USG_MODEMORVOICE(x) (((x &amp; ISDN_USAGE_MASK)==ISDN_USAGE_MODEM) || &bslash;&n;                             ((x &amp; ISDN_USAGE_MASK)==ISDN_USAGE_VOICE)     )
-multiline_comment|/* Timer-delays and scheduling-flags */
-DECL|macro|ISDN_TIMER_RES
-mdefine_line|#define ISDN_TIMER_RES         4                         /* Main Timer-Resolution   */
-DECL|macro|ISDN_TIMER_MODEMREAD
-mdefine_line|#define ISDN_TIMER_MODEMREAD   1
-DECL|macro|ISDN_TIMER_FAST
-mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD)
 multiline_comment|/* GLOBAL_FLAGS */
 DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
@@ -897,6 +890,12 @@ id|timer_list
 id|connect_timer
 suffix:semicolon
 multiline_comment|/* waiting for CONNECT            */
+DECL|member|read_timer
+r_struct
+id|timer_list
+id|read_timer
+suffix:semicolon
+multiline_comment|/* read incoming data             */
 DECL|member|normal_termios
 r_struct
 id|termios
@@ -1100,12 +1099,6 @@ id|wait_queue_head_t
 id|info_waitq
 suffix:semicolon
 multiline_comment|/* Wait-Queue for isdninfo    */
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
-suffix:semicolon
-multiline_comment|/* Misc.-function Timer       */
 DECL|member|profd
 r_struct
 id|task_struct

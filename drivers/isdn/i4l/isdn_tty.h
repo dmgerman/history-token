@@ -153,14 +153,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|isdn_tty_readmodem
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|isdn_tty_find_icall
 c_func
