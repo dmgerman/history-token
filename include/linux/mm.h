@@ -10,7 +10,9 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/mempolicy.h&gt;
+r_struct
+id|mempolicy
+suffix:semicolon
 macro_line|#ifndef CONFIG_DISCONTIGMEM          /* Don&squot;t use mapnrs, do it properly */
 r_extern
 r_int

@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
+macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -3051,12 +3052,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
 id|mpol_free
 c_func
 (paren
 id|tsk-&gt;mempolicy
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

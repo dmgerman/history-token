@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
@@ -3830,6 +3831,7 @@ id|p-&gt;audit_context
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
 id|p-&gt;mempolicy
 op_assign
 id|mpol_copy
@@ -3864,6 +3866,7 @@ r_goto
 id|bad_fork_cleanup
 suffix:semicolon
 )brace
+macro_line|#endif
 id|retval
 op_assign
 op_minus
@@ -4514,12 +4517,14 @@ id|p
 suffix:semicolon
 id|bad_fork_cleanup_policy
 suffix:colon
+macro_line|#ifdef CONFIG_NUMA
 id|mpol_free
 c_func
 (paren
 id|p-&gt;mempolicy
 )paren
 suffix:semicolon
+macro_line|#endif
 id|bad_fork_cleanup
 suffix:colon
 r_if

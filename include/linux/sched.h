@@ -26,7 +26,6 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/pid.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
-macro_line|#include &lt;linux/mempolicy.h&gt;
 r_struct
 id|exec_domain
 suffix:semicolon
@@ -941,6 +940,9 @@ r_struct
 id|audit_context
 suffix:semicolon
 multiline_comment|/* See audit.c */
+r_struct
+id|mempolicy
+suffix:semicolon
 DECL|struct|task_struct
 r_struct
 id|task_struct
@@ -1493,6 +1495,7 @@ op_star
 id|last_siginfo
 suffix:semicolon
 multiline_comment|/* For ptrace use.  */
+macro_line|#ifdef CONFIG_NUMA
 DECL|member|mempolicy
 r_struct
 id|mempolicy
@@ -1504,6 +1507,7 @@ r_int
 id|il_next
 suffix:semicolon
 multiline_comment|/* could be shared with used_math */
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|process_group
