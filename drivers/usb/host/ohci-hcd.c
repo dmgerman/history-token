@@ -35,9 +35,6 @@ mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber &lt;weissg@vienna.at
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB 1.1 &squot;Open&squot; Host Controller (OHCI) Driver&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|macro|OHCI_USE_NPS
-mdefine_line|#define OHCI_USE_NPS&t;&t;
-singleline_comment|// force NoPowerSwitching mode
 singleline_comment|// #define OHCI_VERBOSE_DEBUG&t;/* not always helpful */
 multiline_comment|/* For initializing controller (mask in an HCFS mode too) */
 DECL|macro|OHCI_CONTROL_INIT
@@ -928,17 +925,10 @@ op_star
 id|ohci
 )paren
 (brace
-r_int
-id|timeout
-op_assign
-l_int|30
+id|u32
+id|temp
 suffix:semicolon
-r_int
-id|smm_timeout
-op_assign
-l_int|50
-suffix:semicolon
-multiline_comment|/* 0,5 sec */
+multiline_comment|/* SMM owns the HC?  not for long! */
 r_if
 c_cond
 (paren
@@ -951,7 +941,11 @@ op_amp
 id|OHCI_CTRL_IR
 )paren
 (brace
-multiline_comment|/* SMM owns the HC */
+id|temp
+op_assign
+l_int|50
+suffix:semicolon
+multiline_comment|/* arbitrary: half second */
 id|writel
 (paren
 id|OHCI_INTR_OC
@@ -994,7 +988,7 @@ r_if
 c_cond
 (paren
 op_decrement
-id|smm_timeout
+id|temp
 op_eq
 l_int|0
 )paren
@@ -1033,16 +1027,34 @@ id|ohci-&gt;regs-&gt;control
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Reset USB (needed by some controllers) */
+multiline_comment|/* Reset USB (needed by some controllers); RemoteWakeupConnected&n;&t; * saved if boot firmware (BIOS/SMM/...) told us it&squot;s connected&n;&t; */
+id|ohci-&gt;hc_control
+op_assign
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+id|ohci-&gt;hc_control
+op_and_assign
+id|OHCI_CTRL_RWC
+suffix:semicolon
+multiline_comment|/* hcfs 0 = RESET */
 id|writel
 (paren
-l_int|0
+id|ohci-&gt;hc_control
 comma
 op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-multiline_comment|/* HC Reset requires max 10 ms delay */
+id|wait_ms
+(paren
+l_int|50
+)paren
+suffix:semicolon
+multiline_comment|/* HC Reset requires max 10 us delay */
 id|writel
 (paren
 id|OHCI_HCR
@@ -1051,6 +1063,11 @@ op_amp
 id|ohci-&gt;regs-&gt;cmdstatus
 )paren
 suffix:semicolon
+id|temp
+op_assign
+l_int|30
+suffix:semicolon
+multiline_comment|/* ... allow extra time */
 r_while
 c_loop
 (paren
@@ -1071,7 +1088,7 @@ r_if
 c_cond
 (paren
 op_decrement
-id|timeout
+id|temp
 op_eq
 l_int|0
 )paren
@@ -1092,11 +1109,24 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* now we&squot;re in the SUSPEND state ... must go OPERATIONAL&n;&t; * within 2msec else HC enters RESUME&n;&t; *&n;&t; * ... but some hardware won&squot;t init fmInterval &quot;by the book&quot;&n;&t; * (SiS, OPTi ...), so reset again instead.  SiS doesn&squot;t need&n;&t; * this if we write fmInterval after we&squot;re OPERATIONAL.&n;&t; */
+id|writel
+(paren
+id|ohci-&gt;hc_control
+comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|macro|FI
+mdefine_line|#define&t;FI&t;&t;0x2edf&t;&t;/* 12000 bits per frame (-1) */
+DECL|macro|LSTHRESH
+mdefine_line|#define LSTHRESH&t;0x628&t;&t;/* lowspeed bit threshold */
 multiline_comment|/* Start an OHCI controller, set the BUS operational&n; * enable interrupts &n; * connect the virtual root hub&n; */
 DECL|function|hc_start
 r_static
@@ -1109,12 +1139,8 @@ op_star
 id|ohci
 )paren
 (brace
-id|__u32
+id|u32
 id|mask
-suffix:semicolon
-r_int
-r_int
-id|fminterval
 suffix:semicolon
 r_struct
 id|usb_device
@@ -1164,36 +1190,19 @@ op_amp
 id|ohci-&gt;regs-&gt;hcca
 )paren
 suffix:semicolon
-id|fminterval
-op_assign
-l_int|0x2edf
-suffix:semicolon
+multiline_comment|/* force default fmInterval (we won&squot;t adjust it); init thresholds&n;&t; * for last FS and LS packets, reserve 90% for periodic.&n;&t; */
 id|writel
 (paren
 (paren
-id|fminterval
+(paren
+(paren
+l_int|6
 op_star
-l_int|9
-)paren
-op_div
-l_int|10
-comma
-op_amp
-id|ohci-&gt;regs-&gt;periodicstart
-)paren
-suffix:semicolon
-id|fminterval
-op_or_assign
 (paren
-(paren
-(paren
-(paren
-id|fminterval
+id|FI
 op_minus
 l_int|210
 )paren
-op_star
-l_int|6
 )paren
 op_div
 l_int|7
@@ -1201,10 +1210,8 @@ l_int|7
 op_lshift
 l_int|16
 )paren
-suffix:semicolon
-id|writel
-(paren
-id|fminterval
+op_or
+id|FI
 comma
 op_amp
 id|ohci-&gt;regs-&gt;fminterval
@@ -1212,15 +1219,73 @@ id|ohci-&gt;regs-&gt;fminterval
 suffix:semicolon
 id|writel
 (paren
-l_int|0x628
+(paren
+(paren
+l_int|9
+op_star
+id|FI
+)paren
+op_div
+l_int|10
+)paren
+op_amp
+l_int|0x3fff
+comma
+op_amp
+id|ohci-&gt;regs-&gt;periodicstart
+)paren
+suffix:semicolon
+id|writel
+(paren
+id|LSTHRESH
 comma
 op_amp
 id|ohci-&gt;regs-&gt;lsthresh
 )paren
 suffix:semicolon
+multiline_comment|/* some OHCI implementations are finicky about how they init.&n;&t; * bogus values here mean not even enumeration could work.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;fminterval
+)paren
+op_amp
+l_int|0x3fff0000
+)paren
+op_eq
+l_int|0
+op_logical_or
+op_logical_neg
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;periodicstart
+)paren
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;%s init err&quot;
+comma
+id|ohci-&gt;hcd.self.bus_name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EOVERFLOW
+suffix:semicolon
+)brace
 multiline_comment|/* start controller operations */
 id|ohci-&gt;hc_control
-op_assign
+op_and_assign
+id|OHCI_CTRL_RWC
+suffix:semicolon
+id|ohci-&gt;hc_control
+op_or_assign
 id|OHCI_CONTROL_INIT
 op_or
 id|OHCI_USB_OPER
@@ -1262,8 +1327,7 @@ op_amp
 id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;OHCI_USE_NPS
-multiline_comment|/* required for AMD-756 and some Mac platforms */
+multiline_comment|/* hub power always on: required for AMD-756 and some Mac platforms */
 id|writel
 (paren
 (paren
@@ -1276,7 +1340,11 @@ id|RH_A_NPS
 )paren
 op_amp
 op_complement
+(paren
 id|RH_A_PSM
+op_or
+id|RH_A_OCPM
+)paren
 comma
 op_amp
 id|ohci-&gt;regs-&gt;roothub.a
@@ -1290,7 +1358,14 @@ op_amp
 id|ohci-&gt;regs-&gt;roothub.status
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* OHCI_USE_NPS */
+id|writel
+(paren
+l_int|0
+comma
+op_amp
+id|ohci-&gt;regs-&gt;roothub.b
+)paren
+suffix:semicolon
 singleline_comment|// POTPGT delay is bits 24-31, in 2 ms units.
 id|mdelay
 (paren
@@ -1334,7 +1409,19 @@ id|ohci-&gt;disabled
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// FIXME cleanup
+id|ohci-&gt;hc_control
+op_and_assign
+op_complement
+id|OHCI_CTRL_HCFS
+suffix:semicolon
+id|writel
+(paren
+id|ohci-&gt;hc_control
+comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -1371,7 +1458,19 @@ id|ohci-&gt;disabled
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// FIXME cleanup
+id|ohci-&gt;hc_control
+op_and_assign
+op_complement
+id|OHCI_CTRL_HCFS
+suffix:semicolon
+id|writel
+(paren
+id|ohci-&gt;hc_control
+comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
