@@ -343,7 +343,7 @@ id|sndrv_hwdep_dsp_image
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                                                                           *&n; *             Digital Audio (PCM) interface - /dev/snd/pcm??                *&n; *                                                                           *&n; *****************************************************************************/
 DECL|macro|SNDRV_PCM_VERSION
-mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 6)
+mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 7)
 DECL|typedef|sndrv_pcm_uframes_t
 r_typedef
 r_int
@@ -1427,6 +1427,57 @@ suffix:semicolon
 multiline_comment|/* RW: min available frames for wakeup */
 )brace
 suffix:semicolon
+DECL|macro|SNDRV_PCM_SYNC_PTR_HWSYNC
+mdefine_line|#define SNDRV_PCM_SYNC_PTR_HWSYNC&t;(1&lt;&lt;0)&t;/* execute hwsync */
+DECL|struct|sndrv_pcm_sync_ptr
+r_struct
+id|sndrv_pcm_sync_ptr
+(brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_union
+(brace
+DECL|member|status
+r_struct
+id|sndrv_pcm_mmap_status
+id|status
+suffix:semicolon
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|64
+)braket
+suffix:semicolon
+DECL|member|s
+)brace
+id|s
+suffix:semicolon
+r_union
+(brace
+DECL|member|control
+r_struct
+id|sndrv_pcm_mmap_control
+id|control
+suffix:semicolon
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|64
+)braket
+suffix:semicolon
+DECL|member|c
+)brace
+id|c
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|sndrv_xferi
 r_struct
 id|sndrv_xferi
@@ -1597,6 +1648,20 @@ c_func
 l_char|&squot;A&squot;
 comma
 l_int|0x22
+)paren
+comma
+DECL|enumerator|SNDRV_PCM_IOCTL_SYNC_PTR
+id|SNDRV_PCM_IOCTL_SYNC_PTR
+op_assign
+id|_IOWR
+c_func
+(paren
+l_char|&squot;A&squot;
+comma
+l_int|0x23
+comma
+r_struct
+id|sndrv_pcm_sync_ptr
 )paren
 comma
 DECL|enumerator|SNDRV_PCM_IOCTL_CHANNEL_INFO
