@@ -862,6 +862,11 @@ DECL|member|bd_block_size
 r_int
 id|bd_block_size
 suffix:semicolon
+DECL|member|bd_offset
+r_int
+r_int
+id|bd_offset
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|inode
