@@ -175,6 +175,7 @@ comma
 id|num_entries
 suffix:semicolon
 r_int
+r_int
 id|tmp
 suffix:semicolon
 id|u32
