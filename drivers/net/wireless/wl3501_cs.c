@@ -6800,7 +6800,15 @@ id|dev_link_t
 op_star
 id|link
 suffix:semicolon
-singleline_comment|//spin_lock_irqsave(&amp;this-&gt;lock, flags);
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|this-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Check if the device is in wl3501_dev_list */
 r_for
 c_loop
@@ -6901,7 +6909,15 @@ id|dev-&gt;name
 suffix:semicolon
 id|out
 suffix:colon
-singleline_comment|//spin_unlock_irqrestore(&amp;this-&gt;lock, flags);
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|this-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -6941,7 +6957,15 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-singleline_comment|//spin_lock_irqsave(&amp;this-&gt;lock, flags);
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|this-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Stop processing interrupt from the card */
 id|wl3501_block_interrupt
 c_func
@@ -7047,7 +7071,15 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
-singleline_comment|//spin_unlock_irqrestore(&amp;this-&gt;lock, flags);
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|this-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -7320,7 +7352,15 @@ id|dev_link_t
 op_star
 id|link
 suffix:semicolon
-singleline_comment|//spin_lock_irqsave(&amp;this-&gt;lock, flags);
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|this-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Check if the device is in wl3501_dev_list */
 r_for
 c_loop
@@ -7444,7 +7484,15 @@ id|dev-&gt;name
 suffix:semicolon
 id|out
 suffix:colon
-singleline_comment|//spin_unlock_irqrestore(&amp;this-&gt;lock, flags);
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|this-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -7644,7 +7692,15 @@ id|filter
 op_or_assign
 id|RMR_ALL_MULTICAST
 suffix:semicolon
-singleline_comment|//spin_lock_irqsave(&amp;this-&gt;lock, flags);
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|this-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Must not be interrupted */
 id|wl3501_set_mib_value
 c_func
@@ -7664,7 +7720,15 @@ id|filter
 )paren
 )paren
 suffix:semicolon
-singleline_comment|//spin_unlock_irqrestore(&amp;this-&gt;lock, flags);
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|this-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/**&n; * wl3501_ioctl - Perform IOCTL call functions&n; * @dev - network device&n; * @ifreq - request&n; * @cmd - command&n; *&n; * Perform IOCTL call functions here. Some are privileged operations and the&n; * effective uid is checked in those cases.&n; *&n; * This part is optional. Needed only if you want to run wlu (unix version).&n; *&n; * CAUTION: To prevent interrupted by wl3501_interrupt() and timer-based&n; * wl3501_hard_start_xmit() from other interrupts, this should be run&n; * single-threaded. This function is expected to be a rare operation, and it&squot;s&n; * simpler to just use cli() to disable ALL interrupts.&n; */
@@ -9118,7 +9182,13 @@ l_int|4
 op_assign
 l_char|&squot;Y&squot;
 suffix:semicolon
-singleline_comment|//spin_lock_init(&amp;this-&gt;lock);
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|this-&gt;lock
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
