@@ -198,6 +198,8 @@ suffix:semicolon
 r_return
 id|len
 suffix:semicolon
+)brace
+DECL|function|aha1740_makecode
 r_static
 r_int
 id|aha1740_makecode
@@ -506,6 +508,7 @@ op_lshift
 l_int|16
 suffix:semicolon
 )brace
+DECL|function|aha1740_test_port
 r_static
 r_int
 id|aha1740_test_port
@@ -726,6 +729,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* A &quot;high&quot; level interrupt handler */
+DECL|function|aha1740_intr_handle
 r_static
 id|irqreturn_t
 id|aha1740_intr_handle
@@ -1237,6 +1241,7 @@ id|handled
 )paren
 suffix:semicolon
 )brace
+DECL|function|aha1740_queuecommand
 r_static
 r_int
 id|aha1740_queuecommand
