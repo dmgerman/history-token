@@ -45,9 +45,9 @@ id|sc
 op_assign
 id|sp
 op_minus
-id|signal_frame_si.sp_index
+id|signal_frame_si.common.sp_index
 op_plus
-id|signal_frame_si.len
+id|signal_frame_si.common.len
 op_minus
 l_int|4
 suffix:semicolon
@@ -80,9 +80,9 @@ id|mask
 op_assign
 id|sp
 op_minus
-id|signal_frame_sc.sp_index
+id|signal_frame_sc.common.sp_index
 op_plus
-id|signal_frame_sc.len
+id|signal_frame_sc.common.len
 op_minus
 l_int|8
 suffix:semicolon
@@ -125,9 +125,9 @@ id|mask
 op_assign
 id|sp
 op_minus
-id|signal_frame_si.sp_index
+id|signal_frame_si.common.sp_index
 op_plus
-id|signal_frame_si.len
+id|signal_frame_si.common.len
 op_plus
 id|sc_size
 c_func
