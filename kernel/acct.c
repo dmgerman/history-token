@@ -1132,7 +1132,7 @@ c_func
 (paren
 id|exitcode
 comma
-id|acct_file
+id|file
 )paren
 suffix:semicolon
 id|fput
