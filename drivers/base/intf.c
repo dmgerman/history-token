@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * intf.c - class-specific interface management&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG 1
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
