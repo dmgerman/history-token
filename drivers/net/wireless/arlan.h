@@ -1416,29 +1416,6 @@ id|arlan_shmem
 op_star
 id|conf
 suffix:semicolon
-DECL|member|txParam
-r_struct
-id|TxParam
-id|txParam
-suffix:semicolon
-DECL|member|multicastLength
-r_int
-id|multicastLength
-suffix:semicolon
-DECL|member|multicastList
-r_char
-id|multicastList
-(braket
-id|ARLAN_MAX_MULTICAST_ADDRS
-)braket
-(braket
-l_int|6
-)braket
-suffix:semicolon
-DECL|member|promiscModeEnabled
-r_int
-id|promiscModeEnabled
-suffix:semicolon
 DECL|member|Conf
 r_struct
 id|arlan_conf_stru
@@ -1490,10 +1467,6 @@ DECL|member|irq_test_done
 r_int
 id|irq_test_done
 suffix:semicolon
-DECL|member|last_command_was_rx
-r_int
-id|last_command_was_rx
-suffix:semicolon
 DECL|member|txRing
 r_struct
 id|TxParam
@@ -1514,11 +1487,6 @@ r_volatile
 r_int
 id|txLast
 suffix:semicolon
-DECL|member|txNew
-r_volatile
-r_int
-id|txNew
-suffix:semicolon
 DECL|member|ReTransmitRequested
 r_volatile
 r_char
@@ -1535,16 +1503,6 @@ r_volatile
 r_int
 r_int
 id|registrationLastSeen
-suffix:semicolon
-DECL|member|under_command
-r_volatile
-r_char
-id|under_command
-suffix:semicolon
-DECL|member|under_toggle
-r_volatile
-r_char
-id|under_toggle
 suffix:semicolon
 DECL|member|tx_last_sent
 r_volatile
@@ -1749,7 +1707,7 @@ mdefine_line|#define readControlRegister(dev)&bslash;&n; &t;READSHMB(((struct ar
 DECL|macro|writeControlRegister
 mdefine_line|#define writeControlRegister(dev, v){&bslash;&n;   WRITESHMB(((struct arlan_private *)dev-&gt;priv)-&gt;card-&gt;cntrlRegImage&t;,((v) &amp;0xF) );&bslash;&n;   WRITESHMB(((struct arlan_private *)dev-&gt;priv)-&gt;card-&gt;controlRegister&t;,(v) &t;);}
 DECL|macro|arlan_interrupt_lancpu
-mdefine_line|#define arlan_interrupt_lancpu(dev) {&bslash;&n;   int cr;   &bslash;&n;   &bslash;&n;   priv-&gt;under_toggle++;   &bslash;&n;   cr = readControlRegister(dev);&bslash;&n;   if (cr &amp; ARLAN_CHANNEL_ATTENTION){ &bslash;&n;      writeControlRegister(dev, (cr &amp; ~ARLAN_CHANNEL_ATTENTION));&bslash;&n;   }else  &bslash;&n;      writeControlRegister(dev, (cr | ARLAN_CHANNEL_ATTENTION));&bslash;&n;   priv-&gt;under_toggle=0;     &bslash;&n;}
+mdefine_line|#define arlan_interrupt_lancpu(dev) {&bslash;&n;   int cr;   &bslash;&n;   &bslash;&n;   cr = readControlRegister(dev);&bslash;&n;   if (cr &amp; ARLAN_CHANNEL_ATTENTION){ &bslash;&n;      writeControlRegister(dev, (cr &amp; ~ARLAN_CHANNEL_ATTENTION));&bslash;&n;   }else  &bslash;&n;      writeControlRegister(dev, (cr | ARLAN_CHANNEL_ATTENTION));&bslash;&n;}
 DECL|macro|clearChannelAttention
 mdefine_line|#define clearChannelAttention(dev){ &bslash;&n;   writeControlRegister(dev,readControlRegister(dev) &amp; ~ARLAN_CHANNEL_ATTENTION);}
 DECL|macro|setHardwareReset

@@ -1967,10 +1967,6 @@ l_int|14
 )paren
 suffix:semicolon
 singleline_comment|//&t;&t;&t;&t;for ( i=1 ; i &lt; 15 ; i++) printk(&quot;%02x:&quot;,READSHMB(arlan-&gt;commandParameter[i]));
-id|priv-&gt;last_command_was_rx
-op_assign
-l_int|0
-suffix:semicolon
 id|priv-&gt;tx_last_sent
 op_assign
 id|jiffies
@@ -4011,10 +4007,6 @@ id|dev
 comma
 id|ARLAN_COMMAND_TX
 )paren
-suffix:semicolon
-id|priv-&gt;last_command_was_rx
-op_assign
-l_int|0
 suffix:semicolon
 id|priv-&gt;tx_last_sent
 op_assign
@@ -6289,10 +6281,6 @@ id|priv-&gt;reRegisterExp
 op_assign
 l_int|1
 suffix:semicolon
-id|priv-&gt;last_command_was_rx
-op_assign
-l_int|0
-suffix:semicolon
 id|priv-&gt;tx_last_sent
 op_assign
 id|jiffies
@@ -8353,10 +8341,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|priv-&gt;last_command_was_rx
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8488,10 +8472,6 @@ OL
 l_int|0xff
 )paren
 (brace
-id|priv-&gt;last_command_was_rx
-op_assign
-l_int|0
-suffix:semicolon
 id|WRITESHMB
 c_func
 (paren
@@ -8525,10 +8505,6 @@ op_eq
 l_int|0xff
 )paren
 (brace
-id|priv-&gt;last_command_was_rx
-op_assign
-l_int|0
-suffix:semicolon
 id|WRITESHMB
 c_func
 (paren
