@@ -98,6 +98,6 @@ r_int
 id|physaddr
 )paren
 suffix:semicolon
-macro_line|#endif _PPC_CACHEFLUSH_H
-macro_line|#endif __KERNEL__
+macro_line|#endif /* _PPC_CACHEFLUSH_H */
+macro_line|#endif /* __KERNEL__ */
 eof
