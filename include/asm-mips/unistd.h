@@ -1608,6 +1608,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|# ifndef __mips64
 DECL|macro|__ARCH_WANT_STAT64
 macro_line|#  define __ARCH_WANT_STAT64

@@ -2267,6 +2267,10 @@ DECL|typedef|CREATE_DIRECTORY_RSP
 )brace
 id|CREATE_DIRECTORY_RSP
 suffix:semicolon
+multiline_comment|/***************************************************/
+multiline_comment|/* NT Transact structure defintions follow         */
+multiline_comment|/* Currently only ioctl and notify are implemented */
+multiline_comment|/***************************************************/
 DECL|struct|smb_com_transaction_ioctl_req
 r_typedef
 r_struct
@@ -2519,29 +2523,85 @@ id|__u8
 id|WatchTree
 suffix:semicolon
 multiline_comment|/* 1 = Monitor subdirectories */
+DECL|member|Reserved2
+id|__u8
+id|Reserved2
+suffix:semicolon
 DECL|member|ByteCount
 id|__u16
 id|ByteCount
 suffix:semicolon
-DECL|member|Pad
-id|__u8
-id|Pad
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|Data
-id|__u8
-id|Data
-(braket
-l_int|1
-)braket
-suffix:semicolon
+multiline_comment|/* __u8 Pad[3];*/
+multiline_comment|/*&t;__u8 Data[1];*/
 DECL|typedef|TRANSACT_CHANGE_NOTIFY_REQ
 )brace
 id|TRANSACT_CHANGE_NOTIFY_REQ
 suffix:semicolon
-multiline_comment|/* Completion Filter flags */
+DECL|struct|smb_com_transaction_change_notify_rsp
+r_typedef
+r_struct
+id|smb_com_transaction_change_notify_rsp
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+multiline_comment|/* wct = 18 */
+DECL|member|Reserved
+id|__u8
+id|Reserved
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|TotalParameterCount
+id|__u32
+id|TotalParameterCount
+suffix:semicolon
+DECL|member|TotalDataCount
+id|__u32
+id|TotalDataCount
+suffix:semicolon
+DECL|member|ParameterCount
+id|__u32
+id|ParameterCount
+suffix:semicolon
+DECL|member|ParameterOffset
+id|__u32
+id|ParameterOffset
+suffix:semicolon
+DECL|member|ParameterDisplacement
+id|__u32
+id|ParameterDisplacement
+suffix:semicolon
+DECL|member|DataCount
+id|__u32
+id|DataCount
+suffix:semicolon
+DECL|member|DataOffset
+id|__u32
+id|DataOffset
+suffix:semicolon
+DECL|member|DataDisplacement
+id|__u32
+id|DataDisplacement
+suffix:semicolon
+DECL|member|SetupCount
+id|__u8
+id|SetupCount
+suffix:semicolon
+multiline_comment|/* 0 */
+DECL|member|ByteCount
+id|__u16
+id|ByteCount
+suffix:semicolon
+multiline_comment|/* __u8 Pad[3]; */
+DECL|typedef|TRANSACT_CHANGE_NOTIFY_RSP
+)brace
+id|TRANSACT_CHANGE_NOTIFY_RSP
+suffix:semicolon
+multiline_comment|/* Completion Filter flags for Notify */
 DECL|macro|FILE_NOTIFY_CHANGE_FILE_NAME
 mdefine_line|#define FILE_NOTIFY_CHANGE_FILE_NAME    0x00000001
 DECL|macro|FILE_NOTIFY_CHANGE_DIR_NAME

@@ -2149,7 +2149,7 @@ comma
 l_string|&quot;write&quot;
 )paren
 suffix:semicolon
-id|set_buffer_uptodate
+id|set_buffer_dirty
 c_func
 (paren
 id|bh

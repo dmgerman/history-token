@@ -11,7 +11,7 @@ mdefine_line|#define UDFFS_DATE&t;&t;&t;&quot;2004/29/09&quot;
 DECL|macro|UDFFS_VERSION
 mdefine_line|#define UDFFS_VERSION&t;&t;&t;&quot;0.9.8.1&quot;
 DECL|macro|UDFFS_DEBUG
-mdefine_line|#define UDFFS_DEBUG
+macro_line|#undef UDFFS_DEBUG
 macro_line|#ifdef UDFFS_DEBUG
 DECL|macro|udf_debug
 mdefine_line|#define udf_debug(f, a...) &bslash;&n;&t;{ &bslash;&n;&t;&t;printk (KERN_DEBUG &quot;UDF-fs DEBUG %s:%d:%s: &quot;, &bslash;&n;&t;&t;&t;__FILE__, __LINE__, __FUNCTION__); &bslash;&n;&t;&t;printk (f, ##a); &bslash;&n;&t;}

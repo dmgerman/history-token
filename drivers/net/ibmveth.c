@@ -4227,7 +4227,7 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
-id|dev-&gt;driver_data
+id|dev-&gt;dev.driver_data
 op_assign
 id|netdev
 suffix:semicolon
@@ -4514,7 +4514,7 @@ id|net_device
 op_star
 id|netdev
 op_assign
-id|dev-&gt;driver_data
+id|dev-&gt;dev.driver_data
 suffix:semicolon
 r_struct
 id|ibmveth_adapter

@@ -1847,6 +1847,7 @@ id|TachFCHDR_GCMND
 op_star
 id|fchs
 suffix:semicolon
+macro_line|#error This is too much stack
 id|ULONG
 id|ulFibreFrame
 (braket
@@ -2172,6 +2173,7 @@ id|TachFCHDR_GCMND
 op_star
 id|fchs
 suffix:semicolon
+macro_line|#error This is too much stack
 id|ULONG
 id|ulFibreFrame
 (braket

@@ -2139,7 +2139,6 @@ op_star
 id|tsk
 )paren
 (brace
-r_return
 id|wake_up_forked_process
 c_func
 (paren

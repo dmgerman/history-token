@@ -1168,6 +1168,7 @@ id|sb-&gt;s_io
 )paren
 )paren
 (brace
+multiline_comment|/* we&squot;re making our own get_super here */
 id|sb-&gt;s_count
 op_increment
 suffix:semicolon
@@ -1178,6 +1179,23 @@ op_amp
 id|sb_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * If we can&squot;t get the readlock, there&squot;s no sense in&n;&t;&t;&t; * waiting around, most of the time the FS is going to&n;&t;&t;&t; * be unmounted by the time it is released.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|down_read_trylock
+c_func
+(paren
+op_amp
+id|sb-&gt;s_umount
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sb-&gt;s_root
+)paren
 id|sync_sb_inodes
 c_func
 (paren
@@ -1186,6 +1204,14 @@ comma
 id|wbc
 )paren
 suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|sb-&gt;s_umount
+)paren
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren

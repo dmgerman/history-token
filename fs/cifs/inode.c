@@ -511,17 +511,21 @@ id|findData.EndOfFile
 suffix:semicolon
 multiline_comment|/* blksize needs to be multiple of two. So safer to default to blksize&n;&t;and blkbits set in superblock so 2**blkbits and blksize will match */
 multiline_comment|/*&t;&t;inode-&gt;i_blksize =&n;&t;&t;    (pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
+multiline_comment|/* This seems incredibly stupid but it turns out that&n;&t;&t;i_blocks is not related to (i_size / i_blksize), instead a&n;&t;&t;size of 512 is required to be used for calculating num blocks */
+multiline_comment|/*&t;&t;inode-&gt;i_blocks = &n;&t;                (inode-&gt;i_blksize - 1 + findData.NumOfBytes) &gt;&gt; inode-&gt;i_blkbits;*/
+multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
+multiline_comment|/* for this calculation */
 id|inode-&gt;i_blocks
 op_assign
 (paren
-id|inode-&gt;i_blksize
+l_int|512
 op_minus
 l_int|1
 op_plus
 id|findData.NumOfBytes
 )paren
 op_rshift
-id|inode-&gt;i_blkbits
+l_int|9
 suffix:semicolon
 r_if
 c_cond
@@ -1255,17 +1259,19 @@ c_func
 id|pfindData-&gt;AllocationSize
 )paren
 suffix:semicolon
+multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
+multiline_comment|/* for this calculation */
 id|inode-&gt;i_blocks
 op_assign
 (paren
-id|inode-&gt;i_blksize
+l_int|512
 op_minus
 l_int|1
 op_plus
 id|pfindData-&gt;AllocationSize
 )paren
 op_rshift
-id|inode-&gt;i_blkbits
+l_int|9
 suffix:semicolon
 id|inode-&gt;i_nlink
 op_assign

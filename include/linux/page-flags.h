@@ -269,9 +269,7 @@ r_int
 id|pgrotated
 suffix:semicolon
 multiline_comment|/* pages rotated to tail of the LRU */
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 id|DECLARE_PER_CPU
 c_func
