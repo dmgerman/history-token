@@ -375,12 +375,23 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 id|printk
 c_func
 (paren
 l_string|&quot;blkmtd: writepage called!!!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|unlock_page
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 r_return

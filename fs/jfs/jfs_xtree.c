@@ -11945,6 +11945,31 @@ c_func
 id|xad
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * The &quot;data&quot; for a directory is indexed by the block&n;&t;&t; * device&squot;s address space.  This metadata must be invalidated&n;&t;&t; * here&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|S_ISDIR
+c_func
+(paren
+id|ip-&gt;i_mode
+)paren
+op_logical_and
+(paren
+id|teof
+op_eq
+l_int|0
+)paren
+)paren
+id|invalidate_xad_metapages
+c_func
+(paren
+id|ip
+comma
+op_star
+id|xad
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * entry beyond eof: continue scan of current page&n;&t;&t; *          xad&n;&t;&t; * ---|---=======-------&gt;&n;&t;&t; *   eof&n;&t;&t; */
 r_if
 c_cond

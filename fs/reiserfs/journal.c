@@ -9126,10 +9126,10 @@ id|reiserfs_journal_list
 op_star
 id|jl
 suffix:semicolon
-multiline_comment|/* FIXMEL: is this needed? */
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|ct-&gt;p_s_sb
 )paren
 suffix:semicolon
 id|jl
@@ -9211,9 +9211,10 @@ comma
 id|ct-&gt;p_s_sb
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|ct-&gt;p_s_sb
 )paren
 suffix:semicolon
 )brace

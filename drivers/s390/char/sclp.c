@@ -49,6 +49,7 @@ id|sclp_reg_list
 suffix:semicolon
 multiline_comment|/* sccb queue */
 DECL|variable|sclp_req_queue
+r_static
 r_struct
 id|list_head
 id|sclp_req_queue
@@ -1617,6 +1618,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|variable|sclp_state_change_event
+r_static
 r_struct
 id|sclp_register
 id|sclp_state_change_event
@@ -1823,6 +1825,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|sclp_quiesce_event
+r_static
 r_struct
 id|sclp_register
 id|sclp_quiesce_event

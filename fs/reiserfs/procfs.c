@@ -245,7 +245,7 @@ id|procinfo_prologue
 c_func
 (paren
 (paren
-id|dev_t
+r_int
 )paren
 id|data
 )paren
@@ -495,7 +495,7 @@ id|procinfo_prologue
 c_func
 (paren
 (paren
-id|dev_t
+r_int
 )paren
 id|data
 )paren
@@ -946,7 +946,7 @@ id|procinfo_prologue
 c_func
 (paren
 (paren
-id|dev_t
+r_int
 )paren
 id|data
 )paren
@@ -1241,7 +1241,7 @@ id|procinfo_prologue
 c_func
 (paren
 (paren
-id|dev_t
+r_int
 )paren
 id|data
 )paren
@@ -1427,7 +1427,7 @@ id|procinfo_prologue
 c_func
 (paren
 (paren
-id|dev_t
+r_int
 )paren
 id|data
 )paren
@@ -1698,7 +1698,7 @@ id|procinfo_prologue
 c_func
 (paren
 (paren
-id|dev_t
+r_int
 )paren
 id|data
 )paren
@@ -2043,7 +2043,7 @@ id|procinfo_prologue
 c_func
 (paren
 (paren
-id|dev_t
+r_int
 )paren
 id|data
 )paren
@@ -2663,6 +2663,9 @@ comma
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
 )paren
 id|sb-&gt;s_bdev-&gt;bd_dev
 )paren

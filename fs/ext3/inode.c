@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &quot;xattr.h&quot;
@@ -4515,6 +4516,11 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_struct
@@ -4586,9 +4592,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;flags
-op_amp
-id|PF_MEMALLOC
+id|wbc-&gt;for_reclaim
 )paren
 id|handle
 op_assign
@@ -4744,6 +4748,8 @@ c_func
 id|page
 comma
 id|ext3_get_block
+comma
+id|wbc
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The page can become unlocked at any point now, and&n;&t; * truncate can then come in and change things.  So we&n;&t; * can&squot;t touch *page from now on.  But *page_bufs is&n;&t; * safe due to elevated refcount.&n;&t; */
@@ -4830,11 +4836,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have to fail this writepage to avoid cross-fs transactions.&n;&t; * Return EAGAIN so the caller will the page back on&n;&t; * mapping-&gt;dirty_pages.  The page&squot;s buffers&squot; dirty state will be left&n;&t; * as-is.&n;&t; */
-id|ret
-op_assign
-op_minus
-id|EAGAIN
+multiline_comment|/*&n;&t; * We have to fail this writepage to avoid cross-fs transactions.&n;&t; * Put the page back on mapping-&gt;dirty_pages.  The page&squot;s buffers&squot;&n;&t; * dirty state will be left as-is.&n;&t; */
+id|__set_page_dirty_nobuffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|unlock_page
 c_func
@@ -9799,7 +9806,7 @@ c_func
 (paren
 id|inode
 comma
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 r_if

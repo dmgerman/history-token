@@ -34,8 +34,8 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#ifdef PRESTO_DEBUG
 DECL|variable|presto_vmemory
 r_int

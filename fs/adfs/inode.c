@@ -129,6 +129,11 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_return
@@ -138,6 +143,8 @@ c_func
 id|page
 comma
 id|adfs_get_block
+comma
+id|wbc
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsnames - Name manipulation and search&n; *              $Revision: 80 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsnames - Name manipulation and search&n; *              $Revision: 81 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -21,7 +21,7 @@ comma
 id|ACPI_SIZE
 id|size
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|name_buffer
 )paren
@@ -181,7 +181,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_external_pathname&n; *&n; * PARAMETERS:  Node            - NS node whose pathname is needed&n; *&n; * RETURN:      Pointer to storage containing the fully qualified name of&n; *              the node, In external format (name segments separated by path&n; *              separators.)&n; *&n; * DESCRIPTION: Used for debug printing in Acpi_ns_search_table().&n; *&n; ******************************************************************************/
-id|NATIVE_CHAR
+r_char
 op_star
 DECL|function|acpi_ns_get_external_pathname
 id|acpi_ns_get_external_pathname
@@ -191,7 +191,7 @@ op_star
 id|node
 )paren
 (brace
-id|NATIVE_CHAR
+r_char
 op_star
 id|name_buffer
 suffix:semicolon

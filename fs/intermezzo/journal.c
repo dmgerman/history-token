@@ -13,8 +13,8 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 DECL|struct|presto_reservation_data
 r_struct
 id|presto_reservation_data
@@ -1271,20 +1271,36 @@ comma
 id|dentry-&gt;d_inode
 )paren
 suffix:semicolon
-id|version.pv_mtime
+id|version.pv_mtime_sec
 op_assign
-id|HTON__u64
+id|HTON__u32
 c_func
 (paren
-id|version.pv_mtime
+id|version.pv_mtime_sec
 )paren
 suffix:semicolon
-id|version.pv_ctime
+id|version.pv_ctime_sec
 op_assign
-id|HTON__u64
+id|HTON__u32
 c_func
 (paren
-id|version.pv_ctime
+id|version.pv_ctime_sec
+)paren
+suffix:semicolon
+id|version.pv_mtime_nsec
+op_assign
+id|HTON__u32
+c_func
+(paren
+id|version.pv_mtime_nsec
+)paren
+suffix:semicolon
+id|version.pv_ctime_nsec
+op_assign
+id|HTON__u32
+c_func
+(paren
+id|version.pv_ctime_nsec
 )paren
 suffix:semicolon
 id|version.pv_size
@@ -1347,20 +1363,36 @@ id|version
 )paren
 )paren
 suffix:semicolon
-id|version.pv_mtime
+id|version.pv_mtime_sec
 op_assign
-id|HTON__u64
+id|HTON__u32
 c_func
 (paren
-id|version.pv_mtime
+id|version.pv_mtime_sec
 )paren
 suffix:semicolon
-id|version.pv_ctime
+id|version.pv_mtime_nsec
 op_assign
-id|HTON__u64
+id|HTON__u32
 c_func
 (paren
-id|version.pv_ctime
+id|version.pv_mtime_nsec
+)paren
+suffix:semicolon
+id|version.pv_ctime_sec
+op_assign
+id|HTON__u32
+c_func
+(paren
+id|version.pv_ctime_sec
+)paren
+suffix:semicolon
+id|version.pv_ctime_nsec
+op_assign
+id|HTON__u32
+c_func
+(paren
+id|version.pv_ctime_nsec
 )paren
 suffix:semicolon
 id|version.pv_size

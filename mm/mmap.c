@@ -2322,10 +2322,6 @@ id|vma-&gt;vm_private_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|vma-&gt;vm_raend
-op_assign
-l_int|0
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -4558,12 +4554,6 @@ id|PAGE_SHIFT
 )paren
 suffix:semicolon
 )brace
-r_new
-op_member_access_from_pointer
-id|vm_raend
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren

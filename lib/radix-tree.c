@@ -665,10 +665,6 @@ r_int
 r_int
 op_star
 id|next_index
-comma
-r_int
-r_int
-id|max_index
 )paren
 (brace
 r_int
@@ -769,6 +765,17 @@ l_int|1
 op_lshift
 id|shift
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|index
+op_eq
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/* 32-bit wraparound */
 )brace
 r_if
 c_cond
@@ -783,10 +790,6 @@ suffix:semicolon
 id|height
 op_decrement
 suffix:semicolon
-id|shift
-op_sub_assign
-id|RADIX_TREE_MAP_SHIFT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -798,20 +801,6 @@ l_int|0
 multiline_comment|/* Bottom level: grab some items */
 r_int
 r_int
-id|j
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-(paren
-id|shift
-op_plus
-id|RADIX_TREE_MAP_SHIFT
-)paren
-op_ne
-l_int|0
-)paren
-suffix:semicolon
 id|j
 op_assign
 id|index
@@ -866,6 +855,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|shift
+op_sub_assign
+id|RADIX_TREE_MAP_SHIFT
+suffix:semicolon
 id|slot
 op_assign
 id|slot-&gt;slots
@@ -1029,8 +1022,6 @@ id|ret
 comma
 op_amp
 id|next_index
-comma
-id|max_index
 )paren
 suffix:semicolon
 id|ret
@@ -1042,7 +1033,7 @@ c_cond
 (paren
 id|next_index
 op_eq
-id|max_index
+l_int|0
 )paren
 r_break
 suffix:semicolon

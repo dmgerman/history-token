@@ -45,7 +45,30 @@ DECL|macro|CPUFREQ_POLICY_POWERSAVE
 mdefine_line|#define CPUFREQ_POLICY_POWERSAVE        (1)
 DECL|macro|CPUFREQ_POLICY_PERFORMANCE
 mdefine_line|#define CPUFREQ_POLICY_PERFORMANCE      (2)
-multiline_comment|/* values here are CPU kHz so that hardware which doesn&squot;t run with some&n; * frequencies can complain without having to guess what per cent / per&n; * mille means. */
+multiline_comment|/* Frequency values here are CPU kHz so that hardware which doesn&squot;t run &n; * with some frequencies can complain without having to guess what per &n; * cent / per mille means. &n; * Maximum transition latency is in nanoseconds - if it&squot;s unknown,&n; * CPUFREQ_ETERNAL shall be used.&n; */
+DECL|macro|CPUFREQ_ETERNAL
+mdefine_line|#define CPUFREQ_ETERNAL (-1)
+DECL|struct|cpufreq_cpuinfo
+r_struct
+id|cpufreq_cpuinfo
+(brace
+DECL|member|max_freq
+r_int
+r_int
+id|max_freq
+suffix:semicolon
+DECL|member|min_freq
+r_int
+r_int
+id|min_freq
+suffix:semicolon
+DECL|member|transition_latency
+r_int
+r_int
+id|transition_latency
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|cpufreq_policy
 r_struct
 id|cpufreq_policy
@@ -74,12 +97,12 @@ r_int
 id|policy
 suffix:semicolon
 multiline_comment|/* see above */
-DECL|member|max_cpu_freq
-r_int
-r_int
-id|max_cpu_freq
+DECL|member|cpuinfo
+r_struct
+id|cpufreq_cpuinfo
+id|cpuinfo
 suffix:semicolon
-multiline_comment|/* for information */
+multiline_comment|/* see above */
 )brace
 suffix:semicolon
 DECL|macro|CPUFREQ_ADJUST
@@ -223,14 +246,6 @@ multiline_comment|/* TBD */
 macro_line|#endif
 multiline_comment|/* 2.4. compatible API */
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-DECL|member|cpu_min_freq
-r_int
-r_int
-id|cpu_min_freq
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 DECL|member|cpu_cur_freq
 r_int
 r_int

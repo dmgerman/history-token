@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actbl.h - Table data structures defined in ACPI specification&n; *       $Revision: 53 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actbl.h - Table data structures defined in ACPI specification&n; *       $Revision: 54 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL_H__
 DECL|macro|__ACTBL_H__
@@ -58,7 +58,7 @@ r_struct
 multiline_comment|/* Root System Descriptor Pointer */
 (brace
 DECL|member|signature
-id|NATIVE_CHAR
+r_char
 id|signature
 (braket
 l_int|8
@@ -71,7 +71,7 @@ id|checksum
 suffix:semicolon
 multiline_comment|/* To make sum of struct == 0 */
 DECL|member|oem_id
-id|NATIVE_CHAR
+r_char
 id|oem_id
 (braket
 l_int|6
@@ -104,7 +104,7 @@ id|extended_checksum
 suffix:semicolon
 multiline_comment|/* Checksum of entire table */
 DECL|member|reserved
-id|NATIVE_CHAR
+r_char
 id|reserved
 (braket
 l_int|3
@@ -120,7 +120,7 @@ r_struct
 multiline_comment|/* ACPI common table header */
 (brace
 DECL|member|signature
-id|NATIVE_CHAR
+r_char
 id|signature
 (braket
 l_int|4
@@ -143,7 +143,7 @@ id|checksum
 suffix:semicolon
 multiline_comment|/* To make sum of entire table == 0 */
 DECL|member|oem_id
-id|NATIVE_CHAR
+r_char
 id|oem_id
 (braket
 l_int|6
@@ -151,7 +151,7 @@ l_int|6
 suffix:semicolon
 multiline_comment|/* OEM identification */
 DECL|member|oem_table_id
-id|NATIVE_CHAR
+r_char
 id|oem_table_id
 (braket
 l_int|8
@@ -164,7 +164,7 @@ id|oem_revision
 suffix:semicolon
 multiline_comment|/* OEM revision number */
 DECL|member|asl_compiler_id
-id|NATIVE_CHAR
+r_char
 id|asl_compiler_id
 (braket
 l_int|4
@@ -376,12 +376,12 @@ r_struct
 id|_acpi_table_support
 (brace
 DECL|member|name
-id|NATIVE_CHAR
+r_char
 op_star
 id|name
 suffix:semicolon
 DECL|member|signature
-id|NATIVE_CHAR
+r_char
 op_star
 id|signature
 suffix:semicolon

@@ -2331,10 +2331,6 @@ id|vma-&gt;vm_file
 op_assign
 l_int|NULL
 suffix:semicolon
-id|vma-&gt;vm_raend
-op_assign
-l_int|0
-suffix:semicolon
 id|vma-&gt;vm_private_data
 op_assign
 id|psb

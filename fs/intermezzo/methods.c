@@ -18,7 +18,7 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fsfilter.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
 DECL|variable|filter_print_entry
 r_int
 id|filter_print_entry

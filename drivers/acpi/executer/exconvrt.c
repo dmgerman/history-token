@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 45 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -517,7 +517,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_ascii&n; *&n; * PARAMETERS:  Integer         - Value to be converted&n; *              Base            - 10 or 16&n; *              String          - Where the string is returned&n; *&n; * RETURN:      Actual string length&n; *&n; * DESCRIPTION: Convert an ACPI Integer to a hex or decimal string&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_ascii&n; *&n; * PARAMETERS:  Integer         - Value to be converted&n; *              Base            - 10 or 16&n; *              String          - Where the string is returned&n; *              Data_width      - Size of data item to be converted&n; *&n; * RETURN:      Actual string length&n; *&n; * DESCRIPTION: Convert an ACPI Integer to a hex or decimal string&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ex_convert_to_ascii
 id|acpi_ex_convert_to_ascii
@@ -531,6 +531,9 @@ comma
 id|u8
 op_star
 id|string
+comma
+id|u8
+id|data_width
 )paren
 (brace
 id|u32
@@ -555,21 +558,48 @@ id|remainder
 suffix:semicolon
 id|u32
 id|length
+suffix:semicolon
+id|u8
+id|leading_zero
+suffix:semicolon
+id|ACPI_FUNCTION_ENTRY
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data_width
+OL
+r_sizeof
+(paren
+id|acpi_integer
+)paren
+)paren
+(brace
+id|leading_zero
+op_assign
+id|FALSE
+suffix:semicolon
+id|length
+op_assign
+id|data_width
+suffix:semicolon
+)brace
+r_else
+(brace
+id|leading_zero
+op_assign
+id|TRUE
+suffix:semicolon
+id|length
 op_assign
 r_sizeof
 (paren
 id|acpi_integer
 )paren
 suffix:semicolon
-id|u8
-id|leading_zero
-op_assign
-id|TRUE
-suffix:semicolon
-id|ACPI_FUNCTION_ENTRY
-(paren
-)paren
-suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -988,6 +1018,11 @@ comma
 id|base
 comma
 id|new_buf
+comma
+r_sizeof
+(paren
+id|acpi_integer
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Null terminate at the correct place */
@@ -1179,7 +1214,7 @@ op_increment
 )paren
 (brace
 id|index
-op_assign
+op_add_assign
 id|acpi_ex_convert_to_ascii
 (paren
 (paren
@@ -1197,6 +1232,8 @@ id|new_buf
 (braket
 id|index
 )braket
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|new_buf

@@ -658,11 +658,11 @@ l_int|0x0010
 comma
 l_int|0x0106
 comma
-l_int|0x0422
+l_int|0x0440
 comma
 l_string|&quot;Sony&quot;
 comma
-l_string|&quot;DSC-S30/S70/S75/505V/F505/F707&quot;
+l_string|&quot;DSC-S30/S70/S75/505V/F505/F707/F717&quot;
 comma
 id|US_SC_SCSI
 comma
@@ -1682,6 +1682,31 @@ id|US_FL_FIX_INQUIRY
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Datafab KECF-USB / Sagatek DCS-CF / Simpletech Flashlink UCF-100&n; * Only revision 1.13 tested (same for all of the above devices,&n; * based on the Datafab DF-UG-07 chip).  Needed for US_FL_FIX_INQUIRY.&n; * Submitted by Marek Michalkiewicz &lt;marekm@amelek.gda.pl&gt;.&n; * See also http://martin.wilck.bei.t-online.de/#kecf .&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x07c4
+comma
+l_int|0xa400
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Datafab&quot;
+comma
+l_string|&quot;KECF-USB&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Casio QV 2x00/3x00/4000/8000 digital still cameras are not conformant&n; * to the USB storage specification in two ways:&n; * - They tell us they are using transport protocol CBI. In reality they&n; *   are using transport protocol CB.&n; * - They don&squot;t like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; */
 id|UNUSUAL_DEV
 c_func

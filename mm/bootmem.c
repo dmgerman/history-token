@@ -847,7 +847,7 @@ r_if
 c_cond
 (paren
 id|align
-op_le
+OL
 id|PAGE_SIZE
 op_logical_and
 id|bdata-&gt;last_offset

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 137 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 138 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -42,10 +42,7 @@ comma
 (paren
 id|u16
 )paren
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm1a_evt_blk.address
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -99,10 +96,7 @@ multiline_comment|/* Clear the fixed events */
 r_if
 c_cond
 (paren
-id|ACPI_VALID_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk.address
-)paren
 )paren
 (brace
 id|status
@@ -278,7 +272,7 @@ op_assign
 id|acpi_ns_evaluate_by_name
 (paren
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 )paren
 id|acpi_gbl_db_sleep_states
@@ -1017,18 +1011,12 @@ id|register_value
 comma
 id|ACPI_HIDWORD
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
-)paren
 )paren
 comma
 id|ACPI_LODWORD
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
-)paren
 )paren
 )paren
 )paren
@@ -1055,18 +1043,12 @@ id|register_value
 comma
 id|ACPI_HIDWORD
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
-)paren
 )paren
 comma
 id|ACPI_LODWORD
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
-)paren
 )paren
 )paren
 )paren
@@ -1903,10 +1885,7 @@ id|reg
 op_logical_or
 (paren
 op_logical_neg
-id|ACPI_VALID_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 )paren
 )paren
 (brace
@@ -1934,10 +1913,7 @@ suffix:colon
 id|mem_address
 op_assign
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 op_plus
 (paren
 id|ACPI_PHYSICAL_ADDRESS
@@ -1967,10 +1943,7 @@ op_assign
 id|ACPI_IO_ADDRESS
 )paren
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 op_plus
 (paren
 id|ACPI_PHYSICAL_ADDRESS
@@ -2006,20 +1979,14 @@ id|pci_id.device
 op_assign
 id|ACPI_PCI_DEVICE
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 )paren
 suffix:semicolon
 id|pci_id.function
 op_assign
 id|ACPI_PCI_FUNCTION
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 )paren
 suffix:semicolon
 id|pci_register
@@ -2030,10 +1997,7 @@ id|u16
 (paren
 id|ACPI_PCI_REGISTER
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 )paren
 op_plus
 id|offset
@@ -2131,10 +2095,7 @@ id|reg
 op_logical_or
 (paren
 op_logical_neg
-id|ACPI_VALID_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 )paren
 )paren
 (brace
@@ -2157,10 +2118,7 @@ suffix:colon
 id|mem_address
 op_assign
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 op_plus
 (paren
 id|ACPI_PHYSICAL_ADDRESS
@@ -2193,10 +2151,7 @@ op_assign
 id|ACPI_IO_ADDRESS
 )paren
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 op_plus
 (paren
 id|ACPI_PHYSICAL_ADDRESS
@@ -2235,20 +2190,14 @@ id|pci_id.device
 op_assign
 id|ACPI_PCI_DEVICE
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 )paren
 suffix:semicolon
 id|pci_id.function
 op_assign
 id|ACPI_PCI_FUNCTION
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 )paren
 suffix:semicolon
 id|pci_register
@@ -2259,10 +2208,7 @@ id|u16
 (paren
 id|ACPI_PCI_REGISTER
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|reg-&gt;address
-)paren
 )paren
 op_plus
 id|offset

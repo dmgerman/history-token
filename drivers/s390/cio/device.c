@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.44 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.45 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1645,7 +1645,8 @@ id|kfree
 id|cdev
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|ret
@@ -1672,6 +1673,15 @@ comma
 id|sch-&gt;irq
 )paren
 suffix:semicolon
+id|out
+suffix:colon
+id|put_device
+c_func
+(paren
+op_amp
+id|sch-&gt;dev
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -1690,6 +1700,38 @@ op_star
 id|sch
 )paren
 (brace
+r_int
+id|rc
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|get_device
+c_func
+(paren
+op_amp
+id|sch-&gt;dev
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cdev-&gt;dev.release
+)paren
+id|cdev-&gt;dev
+dot
+id|release
+c_func
+(paren
+op_amp
+id|cdev-&gt;dev
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|sch-&gt;dev.driver_data
 op_assign
 id|cdev
@@ -1782,14 +1824,6 @@ op_amp
 id|cdev-&gt;dev
 )paren
 suffix:semicolon
-id|get_device
-c_func
-(paren
-op_amp
-id|sch-&gt;dev
-)paren
-suffix:semicolon
-multiline_comment|/* keep parent refcount in sync. */
 multiline_comment|/* Start async. device sensing. */
 id|spin_lock_irq
 c_func
@@ -1797,6 +1831,8 @@ c_func
 id|cdev-&gt;ccwlock
 )paren
 suffix:semicolon
+id|rc
+op_assign
 id|ccw_device_recognition
 c_func
 (paren
@@ -1809,6 +1845,38 @@ c_func
 id|cdev-&gt;ccwlock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|sch-&gt;dev.driver_data
+op_assign
+l_int|0
+suffix:semicolon
+id|put_device
+c_func
+(paren
+op_amp
+id|sch-&gt;dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cdev-&gt;dev.release
+)paren
+id|cdev-&gt;dev
+dot
+id|release
+c_func
+(paren
+op_amp
+id|cdev-&gt;dev
+)paren
+suffix:semicolon
+)brace
 )brace
 r_static
 r_int

@@ -426,16 +426,22 @@ multiline_comment|/* Found nothing?!?! Either we hang forever, or we panic. */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|p
-op_eq
-l_int|NULL
 )paren
+(brace
+id|show_free_areas
+c_func
+(paren
+)paren
+suffix:semicolon
 id|panic
 c_func
 (paren
 l_string|&quot;Out of memory and no killable processes...&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 id|oom_kill_task
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 133 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 135 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
@@ -279,7 +279,7 @@ DECL|macro|INCREMENT_ARG_LIST
 mdefine_line|#define INCREMENT_ARG_LIST(list)        (list &gt;&gt;= ((u32) ARG_TYPE_WIDTH))
 multiline_comment|/*&n; * Build a GAS structure from earlier ACPI table entries (V1.0 and 0.71 extensions)&n; *&n; * 1) Address space&n; * 2) Length in bytes -- convert to length in bits&n; * 3) Bit offset is zero&n; * 4) Reserved field is zero&n; * 5) Expand address to 64 bits&n; */
 DECL|macro|ASL_BUILD_GAS_FROM_ENTRY
-mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; a.register_bit_width = (u8) ACPI_MUL_8 (b);&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; a.reserved = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ACPI_STORE_ADDRESS (a.address,(ACPI_PHYSICAL_ADDRESS) c);}
+mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   do {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; a.register_bit_width = (u8) ACPI_MUL_8 (b);&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; a.reserved = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ACPI_STORE_ADDRESS (a.address,(ACPI_PHYSICAL_ADDRESS) c);} while (0)
 multiline_comment|/* ACPI V1.0 entries -- address space is always I/O */
 DECL|macro|ASL_BUILD_GAS_FROM_V1_ENTRY
 mdefine_line|#define ASL_BUILD_GAS_FROM_V1_ENTRY(a,b,c)  ASL_BUILD_GAS_FROM_ENTRY(a,b,c,ACPI_ADR_SPACE_SYSTEM_IO)
@@ -331,7 +331,7 @@ mdefine_line|#define ACPI_FUNCTION_TRACE_PTR(a,b)    ACPI_FUNCTION_NAME(a)&bslas
 DECL|macro|ACPI_FUNCTION_TRACE_U32
 mdefine_line|#define ACPI_FUNCTION_TRACE_U32(a,b)    ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_u32(__LINE__,&amp;_dbg,(u32)b)
 DECL|macro|ACPI_FUNCTION_TRACE_STR
-mdefine_line|#define ACPI_FUNCTION_TRACE_STR(a,b)    ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_str(__LINE__,&amp;_dbg,(NATIVE_CHAR *)b)
+mdefine_line|#define ACPI_FUNCTION_TRACE_STR(a,b)    ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_str(__LINE__,&amp;_dbg,(char *)b)
 DECL|macro|ACPI_FUNCTION_ENTRY
 mdefine_line|#define ACPI_FUNCTION_ENTRY()           acpi_ut_track_stack_ptr()
 multiline_comment|/*&n; * Function exit tracing.&n; * WARNING: These macros include a return statement.  This is usually considered&n; * bad form, but having a separate exit macro is very ugly and difficult to maintain.&n; * One of the FUNCTION_TRACE macros above must be used in conjunction with these macros&n; * so that &quot;_Proc_name&quot; is defined.&n; */

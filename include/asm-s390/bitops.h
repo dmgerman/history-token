@@ -57,7 +57,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -182,7 +183,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -310,7 +312,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -424,10 +427,10 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * SMP save test_and_set_bit routine based on compare and swap (CS)&n; */
-DECL|function|test_and_set_bit_cs
 r_static
 r_inline
 r_int
+DECL|function|test_and_set_bit_cs
 id|test_and_set_bit_cs
 c_func
 (paren
@@ -435,7 +438,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -558,10 +562,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * SMP save test_and_clear_bit routine based on compare and swap (CS)&n; */
-DECL|function|test_and_clear_bit_cs
 r_static
 r_inline
 r_int
+DECL|function|test_and_clear_bit_cs
 id|test_and_clear_bit_cs
 c_func
 (paren
@@ -569,7 +573,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -695,10 +700,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * SMP save test_and_change_bit routine based on compare and swap (CS) &n; */
-DECL|function|test_and_change_bit_cs
 r_static
 r_inline
 r_int
+DECL|function|test_and_change_bit_cs
 id|test_and_change_bit_cs
 c_func
 (paren
@@ -706,7 +711,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -841,7 +847,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -915,7 +922,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1192,7 +1200,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1266,7 +1275,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1543,7 +1553,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1617,7 +1628,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1883,10 +1895,10 @@ suffix:semicolon
 DECL|macro|change_bit_simple
 mdefine_line|#define change_bit_simple(nr,addr) &bslash;&n;(__builtin_constant_p((nr)) ? &bslash;&n; __constant_change_bit((nr),(addr)) : &bslash;&n; __change_bit((nr),(addr)) )
 multiline_comment|/*&n; * fast, non-SMP test_and_set_bit routine&n; */
-DECL|function|test_and_set_bit_simple
 r_static
 r_inline
 r_int
+DECL|function|test_and_set_bit_simple
 id|test_and_set_bit_simple
 c_func
 (paren
@@ -1894,7 +1906,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -1986,10 +1999,10 @@ suffix:semicolon
 DECL|macro|__test_and_set_bit
 mdefine_line|#define __test_and_set_bit(X,Y)&t;&t;test_and_set_bit_simple(X,Y)
 multiline_comment|/*&n; * fast, non-SMP test_and_clear_bit routine&n; */
-DECL|function|test_and_clear_bit_simple
 r_static
 r_inline
 r_int
+DECL|function|test_and_clear_bit_simple
 id|test_and_clear_bit_simple
 c_func
 (paren
@@ -1997,7 +2010,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -2089,10 +2103,10 @@ suffix:semicolon
 DECL|macro|__test_and_clear_bit
 mdefine_line|#define __test_and_clear_bit(X,Y)&t;test_and_clear_bit_simple(X,Y)
 multiline_comment|/*&n; * fast, non-SMP test_and_change_bit routine&n; */
-DECL|function|test_and_change_bit_simple
 r_static
 r_inline
 r_int
+DECL|function|test_and_change_bit_simple
 id|test_and_change_bit_simple
 c_func
 (paren
@@ -2100,7 +2114,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -2230,7 +2245,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|ptr
 )paren
@@ -2285,10 +2301,10 @@ op_amp
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|__constant_test_bit
 r_static
 r_inline
 r_int
+DECL|function|__constant_test_bit
 id|__constant_test_bit
 c_func
 (paren
@@ -2296,7 +2312,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -2338,14 +2355,15 @@ suffix:semicolon
 DECL|macro|test_bit
 mdefine_line|#define test_bit(nr,addr) &bslash;&n;(__builtin_constant_p((nr)) ? &bslash;&n; __constant_test_bit((nr),(addr)) : &bslash;&n; __test_bit((nr),(addr)) )
 multiline_comment|/*&n; * Find-bit routines..&n; */
-DECL|function|find_first_zero_bit
 r_static
 r_inline
 r_int
+DECL|function|find_first_zero_bit
 id|find_first_zero_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -2448,14 +2466,15 @@ suffix:colon
 id|size
 suffix:semicolon
 )brace
-DECL|function|find_first_bit
 r_static
 r_inline
 r_int
+DECL|function|find_first_bit
 id|find_first_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -2558,13 +2577,14 @@ suffix:colon
 id|size
 suffix:semicolon
 )brace
-DECL|function|find_next_zero_bit
 r_static
 r_inline
 r_int
+DECL|function|find_next_zero_bit
 id|find_next_zero_bit
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -2726,13 +2746,14 @@ id|res
 )paren
 suffix:semicolon
 )brace
-DECL|function|find_next_bit
 r_static
 r_inline
 r_int
+DECL|function|find_next_bit
 id|find_next_bit
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -2967,7 +2988,6 @@ r_inline
 r_int
 r_int
 id|__ffs
-c_func
 (paren
 r_int
 r_int
@@ -3052,8 +3072,8 @@ suffix:semicolon
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|function|ffs
 r_extern
-r_int
 r_inline
+r_int
 id|ffs
 (paren
 r_int
@@ -3196,15 +3216,15 @@ mdefine_line|#define hweight8(x) generic_hweight8(x)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * ATTENTION: intel byte ordering convention for ext2 and minix !!&n; * bit 0 is the LSB of addr; bit 31 is the MSB of addr;&n; * bit 32 is the LSB of (addr+4).&n; * That combined with the little endian byte order of Intel gives the&n; * following bit order in memory:&n; *    07 06 05 04 03 02 01 00 15 14 13 12 11 10 09 08 &bslash;&n; *    23 22 21 20 19 18 17 16 31 30 29 28 27 26 25 24&n; */
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit(nr, addr)       test_and_set_bit((nr)^24, addr)
+mdefine_line|#define ext2_set_bit(nr, addr)       &bslash;&n;&t;test_and_set_bit((nr)^24, (unsigned long *)addr)
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit(nr, addr)     test_and_clear_bit((nr)^24, addr)
+mdefine_line|#define ext2_clear_bit(nr, addr)     &bslash;&n;&t;test_and_clear_bit((nr)^24, (unsigned long *)addr)
 DECL|macro|ext2_test_bit
-mdefine_line|#define ext2_test_bit(nr, addr)      test_bit((nr)^24, addr)
-DECL|function|ext2_find_first_zero_bit
+mdefine_line|#define ext2_test_bit(nr, addr)      &bslash;&n;&t;test_bit((nr)^24, (unsigned long *)addr)
 r_static
 r_inline
 r_int
+DECL|function|ext2_find_first_zero_bit
 id|ext2_find_first_zero_bit
 c_func
 (paren

@@ -223,4 +223,11 @@ c_func
 id|do_call_softirq
 )paren
 suffix:semicolon
+DECL|variable|sys_wait4
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sys_wait4
+)paren
+suffix:semicolon
 eof

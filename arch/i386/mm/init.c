@@ -422,10 +422,6 @@ suffix:semicolon
 id|pgd_ofs
 OL
 id|PTRS_PER_PGD
-op_logical_and
-id|pfn
-OL
-id|max_low_pfn
 suffix:semicolon
 id|pgd
 op_increment
@@ -441,6 +437,15 @@ c_func
 (paren
 id|pgd
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pfn
+op_ge
+id|max_low_pfn
+)paren
+r_continue
 suffix:semicolon
 r_for
 c_loop

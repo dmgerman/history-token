@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
@@ -385,6 +386,11 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_return
@@ -394,6 +400,8 @@ c_func
 id|page
 comma
 id|udf_get_block
+comma
+id|wbc
 )paren
 suffix:semicolon
 )brace
@@ -552,6 +560,23 @@ suffix:semicolon
 r_char
 op_star
 id|kaddr
+suffix:semicolon
+r_struct
+id|writeback_control
+id|udf_wbc
+op_assign
+(brace
+dot
+id|sync_mode
+op_assign
+id|WB_SYNC_NONE
+comma
+dot
+id|nr_to_write
+op_assign
+l_int|1
+comma
+)brace
 suffix:semicolon
 multiline_comment|/* from now on we have normal address_space methods */
 id|inode-&gt;i_data.a_ops
@@ -777,24 +802,15 @@ id|inode
 op_assign
 id|ICBTAG_FLAG_AD_LONG
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|inode-&gt;i_data.a_ops
 op_member_access_from_pointer
 id|writepage
 c_func
 (paren
 id|page
-)paren
-op_eq
-op_minus
-id|EAGAIN
-)paren
-id|__set_page_dirty_nobuffers
-c_func
-(paren
-id|page
+comma
+op_amp
+id|udf_wbc
 )paren
 suffix:semicolon
 id|page_cache_release

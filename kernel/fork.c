@@ -1369,9 +1369,15 @@ id|mm
 )paren
 )paren
 )paren
+(brace
+id|mm-&gt;def_flags
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 id|mm
 suffix:semicolon
+)brace
 id|free_mm
 c_func
 (paren

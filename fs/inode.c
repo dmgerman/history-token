@@ -748,8 +748,6 @@ c_cond
 (paren
 id|inode-&gt;i_sb
 op_logical_and
-id|inode-&gt;i_sb-&gt;s_op
-op_logical_and
 id|inode-&gt;i_sb-&gt;s_op-&gt;clear_inode
 )paren
 id|inode-&gt;i_sb-&gt;s_op
@@ -3205,8 +3203,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|op
-op_logical_and
 id|op-&gt;delete_inode
 )paren
 (brace

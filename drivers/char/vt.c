@@ -679,7 +679,7 @@ id|nr
 )paren
 )paren
 suffix:semicolon
-id|scr_memcpyw
+id|scr_memmovew
 c_func
 (paren
 id|d

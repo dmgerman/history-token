@@ -911,11 +911,11 @@ r_return
 id|ccode
 suffix:semicolon
 )brace
-DECL|function|do_chsc
+DECL|function|chsc
 r_extern
 id|__inline__
 r_int
-id|do_chsc
+id|chsc
 c_func
 (paren
 r_void

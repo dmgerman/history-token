@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 118 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 120 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -15,7 +15,7 @@ r_void
 DECL|function|acpi_ns_report_error
 id|acpi_ns_report_error
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|module_name
 comma
@@ -118,7 +118,7 @@ r_void
 DECL|function|acpi_ns_report_method_error
 id|acpi_ns_report_method_error
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|module_name
 comma
@@ -227,7 +227,7 @@ id|acpi_namespace_node
 op_star
 id|node
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|msg
 )paren
@@ -289,7 +289,7 @@ id|u8
 DECL|function|acpi_ns_valid_root_prefix
 id|acpi_ns_valid_root_prefix
 (paren
-id|NATIVE_CHAR
+r_char
 id|prefix
 )paren
 (brace
@@ -311,7 +311,7 @@ id|u8
 DECL|function|acpi_ns_valid_path_separator
 id|acpi_ns_valid_path_separator
 (paren
-id|NATIVE_CHAR
+r_char
 id|sep
 )paren
 (brace
@@ -434,7 +434,7 @@ op_star
 id|info
 )paren
 (brace
-id|NATIVE_CHAR
+r_char
 op_star
 id|next_external_char
 suffix:semicolon
@@ -580,19 +580,19 @@ id|num_segments
 op_assign
 id|info-&gt;num_segments
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 id|internal_name
 op_assign
 id|info-&gt;internal_name
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 id|external_name
 op_assign
 id|info-&gt;next_external_char
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 id|result
 op_assign
@@ -969,17 +969,17 @@ id|acpi_status
 DECL|function|acpi_ns_internalize_name
 id|acpi_ns_internalize_name
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|external_name
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 op_star
 id|converted_name
 )paren
 (brace
-id|NATIVE_CHAR
+r_char
 op_star
 id|internal_name
 suffix:semicolon
@@ -1823,7 +1823,7 @@ id|acpi_status
 DECL|function|acpi_ns_get_node_by_path
 id|acpi_ns_get_node_by_path
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|pathname
 comma
@@ -1846,7 +1846,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 id|internal_path
 op_assign

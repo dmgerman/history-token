@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbgetall - Get all required ACPI tables&n; *              $Revision: 3 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbgetall - Get all required ACPI tables&n; *              $Revision: 4 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -380,13 +380,10 @@ op_increment
 multiline_comment|/* Get the table addresss from the common internal XSDT */
 id|address.pointer.value
 op_assign
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_XSDT-&gt;table_offset_entry
 (braket
 id|i
 )braket
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Get the tables needed by this subsystem (FADT and any SSDTs).&n;&t;&t; * NOTE: All other tables are completely ignored at this time.&n;&t;&t; */
 id|status
@@ -493,10 +490,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the FACS (Pointed to by the FADT)&n;&t; */
 id|address.pointer.value
 op_assign
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xfirmware_ctrl
-)paren
 suffix:semicolon
 id|status
 op_assign
@@ -565,10 +559,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get/install the DSDT (Pointed to by the FADT)&n;&t; */
 id|address.pointer.value
 op_assign
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xdsdt
-)paren
 suffix:semicolon
 id|status
 op_assign

@@ -15,8 +15,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#ifdef CONFIG_OBDFS_FS
 macro_line|#include /usr/src/obd/include/linux/obdfs.h
 macro_line|#endif
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#ifdef CONFIG_OBDFS_FS
 DECL|function|presto_obdfs_freespace
 r_static

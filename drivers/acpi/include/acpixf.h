@@ -216,7 +216,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_get_devices
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|HID
 comma

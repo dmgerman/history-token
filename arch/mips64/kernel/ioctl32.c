@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; * Written by Ulf Carlsson (ulfc@engr.sgi.com)&n; * Copyright (C) 2000 Ralf Baechle&n; *&n; * Mostly stolen from the sparc64 ioctl32 implementation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -239,20 +240,6 @@ suffix:semicolon
 )brace
 DECL|macro|A
 mdefine_line|#define A(__x) ((unsigned long)(__x))
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-r_int
-id|tv_sec
-suffix:semicolon
-DECL|member|tv_usec
-r_int
-id|tv_usec
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|function|do_siocgstamp
 r_static
 r_int
@@ -273,13 +260,13 @@ id|arg
 )paren
 (brace
 r_struct
-id|timeval32
+id|compat_timeval
 op_star
 id|up
 op_assign
 (paren
 r_struct
-id|timeval32
+id|compat_timeval
 op_star
 )paren
 id|arg

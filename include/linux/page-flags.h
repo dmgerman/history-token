@@ -54,36 +54,43 @@ r_int
 r_int
 id|nr_dirty
 suffix:semicolon
+multiline_comment|/* Dirty writeable pages */
 DECL|member|nr_writeback
 r_int
 r_int
 id|nr_writeback
 suffix:semicolon
+multiline_comment|/* Pages under writeback */
 DECL|member|nr_pagecache
 r_int
 r_int
 id|nr_pagecache
 suffix:semicolon
+multiline_comment|/* Pages in pagecache */
 DECL|member|nr_page_table_pages
 r_int
 r_int
 id|nr_page_table_pages
 suffix:semicolon
+multiline_comment|/* Pages used for pagetables */
 DECL|member|nr_reverse_maps
 r_int
 r_int
 id|nr_reverse_maps
 suffix:semicolon
+multiline_comment|/* includes PageDirect */
 DECL|member|nr_mapped
 r_int
 r_int
 id|nr_mapped
 suffix:semicolon
+multiline_comment|/* mapped into pagetables */
 DECL|member|nr_slab
 r_int
 r_int
 id|nr_slab
 suffix:semicolon
+multiline_comment|/* In slab */
 DECL|macro|GET_PAGE_STATE_LAST
 mdefine_line|#define GET_PAGE_STATE_LAST nr_slab
 multiline_comment|/*&n;&t; * The below are zeroed by get_page_state().  Use get_full_page_state()&n;&t; * to add up all these.&n;&t; */
@@ -92,81 +99,103 @@ r_int
 r_int
 id|pgpgin
 suffix:semicolon
+multiline_comment|/* Disk reads */
 DECL|member|pgpgout
 r_int
 r_int
 id|pgpgout
 suffix:semicolon
+multiline_comment|/* Disk writes */
 DECL|member|pswpin
 r_int
 r_int
 id|pswpin
 suffix:semicolon
+multiline_comment|/* swap reads */
 DECL|member|pswpout
 r_int
 r_int
 id|pswpout
 suffix:semicolon
+multiline_comment|/* swap writes */
 DECL|member|pgalloc
 r_int
 r_int
 id|pgalloc
 suffix:semicolon
+multiline_comment|/* page allocations */
 DECL|member|pgfree
 r_int
 r_int
 id|pgfree
 suffix:semicolon
+multiline_comment|/* page freeings */
 DECL|member|pgactivate
 r_int
 r_int
 id|pgactivate
 suffix:semicolon
+multiline_comment|/* pages moved inactive-&gt;active */
 DECL|member|pgdeactivate
 r_int
 r_int
 id|pgdeactivate
 suffix:semicolon
+multiline_comment|/* pages moved active-&gt;inactive */
 DECL|member|pgfault
 r_int
 r_int
 id|pgfault
 suffix:semicolon
+multiline_comment|/* faults (major+minor) */
 DECL|member|pgmajfault
 r_int
 r_int
 id|pgmajfault
 suffix:semicolon
+multiline_comment|/* faults (major only) */
 DECL|member|pgscan
 r_int
 r_int
 id|pgscan
 suffix:semicolon
+multiline_comment|/* pages scanned by page reclaim */
 DECL|member|pgrefill
 r_int
 r_int
 id|pgrefill
 suffix:semicolon
+multiline_comment|/* inspected in refill_inactive_zone */
 DECL|member|pgsteal
 r_int
 r_int
 id|pgsteal
 suffix:semicolon
+multiline_comment|/* total pages reclaimed */
 DECL|member|kswapd_steal
 r_int
 r_int
 id|kswapd_steal
 suffix:semicolon
+multiline_comment|/* pages reclaimed by kswapd */
 DECL|member|pageoutrun
 r_int
 r_int
 id|pageoutrun
 suffix:semicolon
+multiline_comment|/* kswapd&squot;s calls to page reclaim */
 DECL|member|allocstall
 r_int
 r_int
 id|allocstall
 suffix:semicolon
+multiline_comment|/* direct reclaim calls */
+DECL|member|pgrotated
+r_int
+r_int
+id|pgrotated
+suffix:semicolon
+multiline_comment|/* pages rotated to tail of the LRU */
 DECL|variable|____cacheline_aligned
 )brace
 id|____cacheline_aligned

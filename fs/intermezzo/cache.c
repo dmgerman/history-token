@@ -17,8 +17,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 multiline_comment|/*&n;   This file contains the routines associated with managing a&n;   cache of files for InterMezzo.  These caches have two reqs:&n;   - need to be found fast so they are hashed by the device, &n;     with an attempt to have collision chains of length 1.&n;   The methods for the cache are set up in methods.&n;*/
 r_extern
 id|kmem_cache_t
