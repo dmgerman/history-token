@@ -2754,19 +2754,11 @@ DECL|macro|QUOTA_LIST_START
 mdefine_line|#define QUOTA_LIST_START&t;0x100
 DECL|macro|QUOTA_FOR_SID
 mdefine_line|#define QUOTA_FOR_SID&t;&t;0x101
-DECL|union|smb_com_transaction2
-r_typedef
-r_union
-id|smb_com_transaction2
-(brace
+DECL|struct|trans2_req
 r_struct
+id|trans2_req
 (brace
-DECL|member|hdr
-r_struct
-id|smb_hdr
-id|hdr
-suffix:semicolon
-multiline_comment|/* wct = 14+ */
+multiline_comment|/* struct smb_hdr hdr precedes. Set wct = 14+ */
 DECL|member|TotalParameterCount
 id|__u16
 id|TotalParameterCount
@@ -2831,24 +2823,34 @@ DECL|member|SubCommand
 id|__u16
 id|SubCommand
 suffix:semicolon
-multiline_comment|/* 1st setup word - can be followed by SetupCount words */
+multiline_comment|/* 1st setup word - SetupCount words follow */
 DECL|member|ByteCount
 id|__u16
 id|ByteCount
 suffix:semicolon
-multiline_comment|/* careful - setupcount is not always one */
-DECL|member|req
 )brace
-id|req
 suffix:semicolon
+DECL|struct|smb_t2_req
 r_struct
+id|smb_t2_req
 (brace
 DECL|member|hdr
 r_struct
 id|smb_hdr
 id|hdr
 suffix:semicolon
-multiline_comment|/* wct = 0 */
+DECL|member|t2_req
+r_struct
+id|trans2_req
+id|t2_req
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|trans2_resp
+r_struct
+id|trans2_resp
+(brace
+multiline_comment|/* struct smb_hdr hdr precedes. Not wct = 10 + setup count */
 DECL|member|TotalParameterCount
 id|__u16
 id|TotalParameterCount
@@ -2865,9 +2867,9 @@ DECL|member|ParameterCount
 id|__u16
 id|ParameterCount
 suffix:semicolon
-DECL|member|ParamterOffset
+DECL|member|ParameterOffset
 id|__u16
-id|ParamterOffset
+id|ParameterOffset
 suffix:semicolon
 DECL|member|ParameterDisplacement
 id|__u16
@@ -2893,24 +2895,25 @@ DECL|member|Reserved1
 id|__u8
 id|Reserved1
 suffix:semicolon
-multiline_comment|/* should be zero setup words following */
-DECL|member|ByteCount
-id|__u16
-id|ByteCount
-suffix:semicolon
-DECL|member|Reserved2
-id|__u16
-id|Reserved2
-suffix:semicolon
-multiline_comment|/* parameter word reserved - present for infolevels &gt; 100 */
+multiline_comment|/* SetupWords[SetupCount];&n;&t;__u16 ByteCount;&n;&t;__u16 Reserved2;*/
 multiline_comment|/* data area follows */
-DECL|member|resp
 )brace
-id|resp
 suffix:semicolon
-DECL|typedef|TRANSACTION2
+DECL|struct|smb_t2_rsp
+r_struct
+id|smb_t2_rsp
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+DECL|member|t2_rsp
+r_struct
+id|trans2_resp
+id|t2_rsp
+suffix:semicolon
 )brace
-id|TRANSACTION2
 suffix:semicolon
 multiline_comment|/* PathInfo/FileInfo infolevels */
 DECL|macro|SMB_INFO_STANDARD
@@ -2949,6 +2952,18 @@ DECL|macro|SMB_QUERY_FILE_UNIX_BASIC
 mdefine_line|#define SMB_QUERY_FILE_UNIX_BASIC       0x200
 DECL|macro|SMB_QUERY_FILE_UNIX_LINK
 mdefine_line|#define SMB_QUERY_FILE_UNIX_LINK        0x201
+DECL|macro|SMB_QUERY_FILE_INTERNAL_INFO
+mdefine_line|#define SMB_QUERY_FILE_INTERNAL_INFO    0x3ee
+DECL|macro|SMB_QUERY_FILE_ACCESS_INFO
+mdefine_line|#define SMB_QUERY_FILE_ACCESS_INFO      0x3f0
+DECL|macro|SMB_QUERY_FILE_NAME_INFO2
+mdefine_line|#define SMB_QUERY_FILE_NAME_INFO2       0x3f1 /* 0x30 bytes */
+DECL|macro|SMB_QUERY_FILE_POSITION_INFO
+mdefine_line|#define SMB_QUERY_FILE_POSITION_INFO    0x3f6 
+DECL|macro|SMB_QUERY_FILE_MODE_INFO
+mdefine_line|#define SMB_QUERY_FILE_MODE_INFO        0x3f8
+DECL|macro|SMB_QUERY_FILE_ALGN_INFO
+mdefine_line|#define SMB_QUERY_FILE_ALGN_INFO        0x3f9 
 DECL|macro|SMB_SET_FILE_BASIC_INFO
 mdefine_line|#define SMB_SET_FILE_BASIC_INFO&t;        0x101
 DECL|macro|SMB_SET_FILE_DISPOSITION_INFO
@@ -2966,7 +2981,7 @@ mdefine_line|#define SMB_SET_FILE_UNIX_HLINK         0x203
 DECL|macro|SMB_SET_FILE_BASIC_INFO2
 mdefine_line|#define SMB_SET_FILE_BASIC_INFO2        0x3ec
 DECL|macro|SMB_SET_FILE_RENAME_INFORMATION
-mdefine_line|#define SMB_SET_FILE_RENAME_INFORMATION 0x3f2
+mdefine_line|#define SMB_SET_FILE_RENAME_INFORMATION 0x3f2 /* BB check if qpathinfo level too */
 DECL|macro|SMB_FILE_ALL_INFO2
 mdefine_line|#define SMB_FILE_ALL_INFO2              0x3fa
 DECL|macro|SMB_SET_FILE_ALLOCATION_INFO2
@@ -3680,51 +3695,11 @@ id|smb_hdr
 id|hdr
 suffix:semicolon
 multiline_comment|/* wct = 10 */
-DECL|member|TotalParameterCount
-id|__le16
-id|TotalParameterCount
+DECL|member|t2
+r_struct
+id|trans2_req
+id|t2
 suffix:semicolon
-DECL|member|TotalDataCount
-id|__le16
-id|TotalDataCount
-suffix:semicolon
-DECL|member|Reserved
-id|__u16
-id|Reserved
-suffix:semicolon
-DECL|member|ParameterCount
-id|__le16
-id|ParameterCount
-suffix:semicolon
-DECL|member|ParameterOffset
-id|__le16
-id|ParameterOffset
-suffix:semicolon
-DECL|member|ParameterDisplacement
-id|__le16
-id|ParameterDisplacement
-suffix:semicolon
-DECL|member|DataCount
-id|__le16
-id|DataCount
-suffix:semicolon
-DECL|member|DataOffset
-id|__le16
-id|DataOffset
-suffix:semicolon
-DECL|member|DataDisplacement
-id|__le16
-id|DataDisplacement
-suffix:semicolon
-DECL|member|SetupCount
-id|__u8
-id|SetupCount
-suffix:semicolon
-DECL|member|Reserved1
-id|__u8
-id|Reserved1
-suffix:semicolon
-multiline_comment|/* should be zero setup words following */
 DECL|member|ByteCount
 id|__u16
 id|ByteCount
@@ -4692,6 +4667,9 @@ DECL|typedef|FILE_SYSTEM_ATTRIBUTE_INFO
 )brace
 id|FILE_SYSTEM_ATTRIBUTE_INFO
 suffix:semicolon
+multiline_comment|/******************************************************************************/
+multiline_comment|/* QueryFileInfo/QueryPathinfo (also for SetPath/SetFile) data buffer formats */
+multiline_comment|/******************************************************************************/
 r_typedef
 r_struct
 (brace
@@ -4789,7 +4767,22 @@ DECL|typedef|FILE_ALL_INFO
 )brace
 id|FILE_ALL_INFO
 suffix:semicolon
-multiline_comment|/* level 263 QPathInfo */
+multiline_comment|/* level 0x107 QPathInfo */
+multiline_comment|/* defines for enumerating possible values of the Unix type field below */
+DECL|macro|UNIX_FILE
+mdefine_line|#define UNIX_FILE      0
+DECL|macro|UNIX_DIR
+mdefine_line|#define UNIX_DIR       1
+DECL|macro|UNIX_SYMLINK
+mdefine_line|#define UNIX_SYMLINK   2
+DECL|macro|UNIX_CHARDEV
+mdefine_line|#define UNIX_CHARDEV   3
+DECL|macro|UNIX_BLOCKDEV
+mdefine_line|#define UNIX_BLOCKDEV  4
+DECL|macro|UNIX_FIFO
+mdefine_line|#define UNIX_FIFO      5
+DECL|macro|UNIX_SOCKET
+mdefine_line|#define UNIX_SOCKET    6
 r_typedef
 r_struct
 (brace
@@ -4805,7 +4798,7 @@ DECL|member|LastStatusChange
 id|__le64
 id|LastStatusChange
 suffix:semicolon
-multiline_comment|/*SNIA spec says DCE time for the three time fields */
+multiline_comment|/*SNIA specs DCE time for the 3 time fields */
 DECL|member|LastAccessTime
 id|__le64
 id|LastAccessTime
@@ -4850,7 +4843,7 @@ DECL|typedef|FILE_UNIX_BASIC_INFO
 )brace
 id|FILE_UNIX_BASIC_INFO
 suffix:semicolon
-multiline_comment|/* level 512 QPathInfo */
+multiline_comment|/* level 0x200 QPathInfo */
 r_typedef
 r_struct
 (brace
@@ -4865,7 +4858,7 @@ DECL|typedef|FILE_UNIX_LINK_INFO
 )brace
 id|FILE_UNIX_LINK_INFO
 suffix:semicolon
-multiline_comment|/* level 513 QPathInfo */
+multiline_comment|/* level 0x201 QPathInfo */
 r_typedef
 r_struct
 (brace
@@ -4916,96 +4909,6 @@ DECL|typedef|FILE_INFO_STANDARD
 id|FILE_INFO_STANDARD
 suffix:semicolon
 multiline_comment|/* level 1 SetPath/FileInfo */
-multiline_comment|/* defines for enumerating possible values of the Unix type field below */
-DECL|macro|UNIX_FILE
-mdefine_line|#define UNIX_FILE      0
-DECL|macro|UNIX_DIR
-mdefine_line|#define UNIX_DIR       1
-DECL|macro|UNIX_SYMLINK
-mdefine_line|#define UNIX_SYMLINK   2
-DECL|macro|UNIX_CHARDEV
-mdefine_line|#define UNIX_CHARDEV   3
-DECL|macro|UNIX_BLOCKDEV
-mdefine_line|#define UNIX_BLOCKDEV  4
-DECL|macro|UNIX_FIFO
-mdefine_line|#define UNIX_FIFO      5
-DECL|macro|UNIX_SOCKET
-mdefine_line|#define UNIX_SOCKET    6
-r_typedef
-r_struct
-(brace
-DECL|member|NextEntryOffset
-id|__le32
-id|NextEntryOffset
-suffix:semicolon
-DECL|member|ResumeKey
-id|__le32
-id|ResumeKey
-suffix:semicolon
-DECL|member|EndOfFile
-id|__le64
-id|EndOfFile
-suffix:semicolon
-DECL|member|NumOfBytes
-id|__le64
-id|NumOfBytes
-suffix:semicolon
-DECL|member|LastStatusChange
-id|__le64
-id|LastStatusChange
-suffix:semicolon
-multiline_comment|/*SNIA spec says DCE time for the three time fields */
-DECL|member|LastAccessTime
-id|__le64
-id|LastAccessTime
-suffix:semicolon
-DECL|member|LastModificationTime
-id|__le64
-id|LastModificationTime
-suffix:semicolon
-DECL|member|Uid
-id|__le64
-id|Uid
-suffix:semicolon
-DECL|member|Gid
-id|__le64
-id|Gid
-suffix:semicolon
-DECL|member|Type
-id|__le32
-id|Type
-suffix:semicolon
-DECL|member|DevMajor
-id|__le64
-id|DevMajor
-suffix:semicolon
-DECL|member|DevMinor
-id|__le64
-id|DevMinor
-suffix:semicolon
-DECL|member|UniqueId
-id|__le64
-id|UniqueId
-suffix:semicolon
-DECL|member|Permissions
-id|__le64
-id|Permissions
-suffix:semicolon
-DECL|member|Nlinks
-id|__le64
-id|Nlinks
-suffix:semicolon
-DECL|member|FileName
-r_char
-id|FileName
-(braket
-l_int|1
-)braket
-suffix:semicolon
-DECL|typedef|FILE_UNIX_INFO
-)brace
-id|FILE_UNIX_INFO
-suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -5046,9 +4949,10 @@ DECL|member|AllocationSize
 id|__le64
 id|AllocationSize
 suffix:semicolon
+multiline_comment|/* Note old Samba srvr rounds this up too much */
 )brace
 suffix:semicolon
-multiline_comment|/* size info, level 0x103 */
+multiline_comment|/* size used on disk, level 0x103 for set, 0x105 for query */
 DECL|struct|file_end_of_file_info
 r_struct
 id|file_end_of_file_info
@@ -5060,7 +4964,185 @@ suffix:semicolon
 multiline_comment|/* offset to end of file */
 )brace
 suffix:semicolon
-multiline_comment|/* size info, level 0x104 */
+multiline_comment|/* size info, level 0x104 for set, 0x106 for query */
+DECL|struct|file_alt_name_info
+r_struct
+id|file_alt_name_info
+(brace
+DECL|member|alt_name
+id|__u8
+id|alt_name
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* level 0x0108 */
+DECL|struct|file_stream_info
+r_struct
+id|file_stream_info
+(brace
+DECL|member|number_of_streams
+id|__le32
+id|number_of_streams
+suffix:semicolon
+multiline_comment|/* BB check sizes and verify location */
+multiline_comment|/* followed by info on streams themselves &n;&t;&t;u64 size;&n;&t;&t;u64 allocation_size &n;&t;&t;stream info */
+)brace
+suffix:semicolon
+multiline_comment|/* level 0x109 */
+DECL|struct|file_compression_info
+r_struct
+id|file_compression_info
+(brace
+DECL|member|compressed_size
+id|__le64
+id|compressed_size
+suffix:semicolon
+DECL|member|format
+id|__le16
+id|format
+suffix:semicolon
+DECL|member|unit_shift
+id|__u8
+id|unit_shift
+suffix:semicolon
+DECL|member|ch_shift
+id|__u8
+id|ch_shift
+suffix:semicolon
+DECL|member|cl_shift
+id|__u8
+id|cl_shift
+suffix:semicolon
+DECL|member|pad
+id|__u8
+id|pad
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* level 0x10b */
+DECL|struct|file_internal_info
+r_struct
+id|file_internal_info
+(brace
+DECL|member|UniqueId
+id|__u64
+id|UniqueId
+suffix:semicolon
+multiline_comment|/* inode number */
+)brace
+suffix:semicolon
+multiline_comment|/* level 0x3ee */
+DECL|struct|file_mode_info
+r_struct
+id|file_mode_info
+(brace
+DECL|member|Mode
+id|__le32
+id|Mode
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* level 0x3f8 */
+DECL|struct|file_attrib_tag
+r_struct
+id|file_attrib_tag
+(brace
+DECL|member|Attribute
+id|__le32
+id|Attribute
+suffix:semicolon
+DECL|member|ReparseTag
+id|__le32
+id|ReparseTag
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* level 0x40b */
+multiline_comment|/********************************************************/
+multiline_comment|/*  FindFirst/FindNext transact2 data buffer formats    */
+multiline_comment|/********************************************************/
+r_typedef
+r_struct
+(brace
+DECL|member|NextEntryOffset
+id|__le32
+id|NextEntryOffset
+suffix:semicolon
+DECL|member|ResumeKey
+id|__le32
+id|ResumeKey
+suffix:semicolon
+DECL|member|EndOfFile
+id|__le64
+id|EndOfFile
+suffix:semicolon
+DECL|member|NumOfBytes
+id|__le64
+id|NumOfBytes
+suffix:semicolon
+DECL|member|LastStatusChange
+id|__le64
+id|LastStatusChange
+suffix:semicolon
+multiline_comment|/*SNIA specs DCE time for the 3 time fields */
+DECL|member|LastAccessTime
+id|__le64
+id|LastAccessTime
+suffix:semicolon
+DECL|member|LastModificationTime
+id|__le64
+id|LastModificationTime
+suffix:semicolon
+DECL|member|Uid
+id|__le64
+id|Uid
+suffix:semicolon
+DECL|member|Gid
+id|__le64
+id|Gid
+suffix:semicolon
+DECL|member|Type
+id|__le32
+id|Type
+suffix:semicolon
+DECL|member|DevMajor
+id|__le64
+id|DevMajor
+suffix:semicolon
+DECL|member|DevMinor
+id|__le64
+id|DevMinor
+suffix:semicolon
+DECL|member|UniqueId
+id|__u64
+id|UniqueId
+suffix:semicolon
+DECL|member|Permissions
+id|__le64
+id|Permissions
+suffix:semicolon
+DECL|member|Nlinks
+id|__le64
+id|Nlinks
+suffix:semicolon
+DECL|member|FileName
+r_char
+id|FileName
+(braket
+l_int|1
+)braket
+suffix:semicolon
+DECL|typedef|FILE_UNIX_INFO
+)brace
+id|FILE_UNIX_INFO
+suffix:semicolon
+multiline_comment|/* level 0x202 */
 r_typedef
 r_struct
 (brace
@@ -5115,7 +5197,7 @@ DECL|typedef|FILE_DIRECTORY_INFO
 )brace
 id|FILE_DIRECTORY_INFO
 suffix:semicolon
-multiline_comment|/* level 257 FF response data area */
+multiline_comment|/* level 0x101 FF response data area */
 r_typedef
 r_struct
 (brace
@@ -5175,7 +5257,7 @@ DECL|typedef|FILE_FULL_DIRECTORY_INFO
 )brace
 id|FILE_FULL_DIRECTORY_INFO
 suffix:semicolon
-multiline_comment|/* level 258 FF response data area */
+multiline_comment|/* level 0x102 FF response data area */
 r_typedef
 r_struct
 (brace
@@ -5229,7 +5311,7 @@ id|__le32
 id|Reserved
 suffix:semicolon
 DECL|member|UniqueId
-id|__le64
+id|__u64
 id|UniqueId
 suffix:semicolon
 multiline_comment|/* inode num - le since Samba puts ino in low 32 bit*/
@@ -5244,7 +5326,7 @@ DECL|typedef|SEARCH_ID_FULL_DIR_INFO
 )brace
 id|SEARCH_ID_FULL_DIR_INFO
 suffix:semicolon
-multiline_comment|/* level 261 FF response data area */
+multiline_comment|/* level 0x105 FF response data area */
 r_typedef
 r_struct
 (brace
@@ -5319,7 +5401,7 @@ DECL|typedef|FILE_BOTH_DIRECTORY_INFO
 )brace
 id|FILE_BOTH_DIRECTORY_INFO
 suffix:semicolon
-multiline_comment|/* level 260 FF response data area */
+multiline_comment|/* level 0x104 FF response data area */
 DECL|struct|gea
 r_struct
 id|gea
