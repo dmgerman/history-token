@@ -652,7 +652,6 @@ r_int
 id|high_memory
 )paren
 (brace
-r_return
 id|vfree
 c_func
 (paren
