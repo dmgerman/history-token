@@ -1024,7 +1024,7 @@ suffix:semicolon
 multiline_comment|/* sysfs file for resources */
 macro_line|#ifdef CONFIG_PCI_NAMES
 DECL|macro|PCI_NAME_SIZE
-mdefine_line|#define PCI_NAME_SIZE&t;96
+mdefine_line|#define PCI_NAME_SIZE&t;255
 DECL|macro|PCI_NAME_HALF
 mdefine_line|#define PCI_NAME_HALF&t;__stringify(43)&t;/* less than half to handle slop */
 DECL|member|pretty_name

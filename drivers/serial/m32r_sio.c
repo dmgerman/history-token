@@ -26,14 +26,6 @@ mdefine_line|#define BAUD_RATE&t;115200
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &quot;m32r_sio.h&quot;
 macro_line|#include &quot;m32r_sio_reg.h&quot;
-multiline_comment|/*&n; * Configuration:&n; *   share_irqs - whether we pass SA_SHIRQ to request_irq().  This option&n; *                is unsafe when used on edge-triggered interrupts.&n; */
-DECL|variable|share_irqs_sio
-r_int
-r_int
-id|share_irqs_sio
-op_assign
-id|M32R_SIO_SHARE_IRQS
-suffix:semicolon
 multiline_comment|/*&n; * Debugging.&n; */
 macro_line|#if 0
 mdefine_line|#define DEBUG_AUTOCONF(fmt...)&t;printk(fmt)
@@ -53,11 +45,24 @@ multiline_comment|/*&n; * We default to IRQ0 for the &quot;no irq&quot; hack.   
 DECL|macro|is_real_interrupt
 mdefine_line|#define is_real_interrupt(irq)&t;((irq) != 0)
 macro_line|#include &lt;asm/serial.h&gt;
+multiline_comment|/* Standard COM flags */
+DECL|macro|STD_COM_FLAGS
+mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
 multiline_comment|/*&n; * SERIAL_PORT_DFNS tells us about built-in ports that have no&n; * standard enumeration mechanism.   Platforms that can find all&n; * serial ports via mechanisms like ACPI or PCI need not supply it.&n; */
-macro_line|#ifndef SERIAL_PORT_DFNS
 DECL|macro|SERIAL_PORT_DFNS
-mdefine_line|#define SERIAL_PORT_DFNS
+macro_line|#undef SERIAL_PORT_DFNS
+macro_line|#if defined(CONFIG_PLAT_USRV)
+DECL|macro|SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&t;&t;&t;&t;&bslash;&n;       /* UART  CLK     PORT   IRQ            FLAGS */&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3F8, PLD_IRQ_UART0, STD_COM_FLAGS }, /* ttyS0 */ &bslash;&n;&t;{ 0, BASE_BAUD, 0x2F8, PLD_IRQ_UART1, STD_COM_FLAGS }, /* ttyS1 */
+macro_line|#else /* !CONFIG_PLAT_USRV */
+macro_line|#if defined(CONFIG_SERIAL_M32R_PLDSIO)
+DECL|macro|SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, ((unsigned long)PLD_ESIO0CR), PLD_IRQ_SIO0_RCV,&t;&bslash;&n;&t;  STD_COM_FLAGS }, /* ttyS0 */
+macro_line|#else
+DECL|macro|SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, M32R_SIO_OFFSET, M32R_IRQ_SIO0_R,&t;&t;&bslash;&n;&t;  STD_COM_FLAGS }, /* ttyS0 */
 macro_line|#endif
+macro_line|#endif /* !CONFIG_PLAT_USRV */
 DECL|variable|old_serial_port
 r_static
 r_struct
@@ -2243,7 +2248,7 @@ id|up
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is used to handle ports that do not have an&n; * interrupt.  This doesn&squot;t work very well for 16450&squot;s, but gives&n; * barely passable results for a 16550A.  (Although at the expense&n; * of much CPU overhead).&n; */
+multiline_comment|/*&n; * This function is used to handle ports that do not have an interrupt.&n; */
 DECL|function|m32r_sio_timeout
 r_static
 r_void
@@ -3774,11 +3779,11 @@ id|m32r_sio_ports
 id|UART_NR
 )braket
 suffix:semicolon
-DECL|function|m32r_sio_isa_init_ports
+DECL|function|m32r_sio_init_ports
 r_static
 r_void
 id|__init
-id|m32r_sio_isa_init_ports
+id|m32r_sio_init_ports
 c_func
 (paren
 r_void
@@ -3910,15 +3915,6 @@ op_assign
 op_amp
 id|m32r_sio_pops
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|share_irqs_sio
-)paren
-id|up-&gt;port.flags
-op_or_assign
-id|UPF_SHARE_IRQ
-suffix:semicolon
 )brace
 )brace
 DECL|function|m32r_sio_register_ports
@@ -3937,7 +3933,7 @@ id|drv
 r_int
 id|i
 suffix:semicolon
-id|m32r_sio_isa_init_ports
+id|m32r_sio_init_ports
 c_func
 (paren
 )paren
@@ -4428,7 +4424,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|m32r_sio_isa_init_ports
+id|m32r_sio_init_ports
 c_func
 (paren
 )paren
@@ -4506,203 +4502,6 @@ id|M32R_SIO_CONSOLE
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * register_serial and unregister_serial allows for 16x50 serial ports to be&n; * configured at run-time, to support PCMCIA modems.&n; */
-DECL|function|__register_m32r_sio
-r_static
-r_int
-id|__register_m32r_sio
-c_func
-(paren
-r_struct
-id|serial_struct
-op_star
-id|req
-comma
-r_int
-id|line
-)paren
-(brace
-r_struct
-id|uart_port
-id|port
-suffix:semicolon
-id|port.iobase
-op_assign
-id|req-&gt;port
-suffix:semicolon
-id|port.membase
-op_assign
-id|req-&gt;iomem_base
-suffix:semicolon
-id|port.irq
-op_assign
-id|req-&gt;irq
-suffix:semicolon
-id|port.uartclk
-op_assign
-id|req-&gt;baud_base
-op_star
-l_int|16
-suffix:semicolon
-id|port.fifosize
-op_assign
-id|req-&gt;xmit_fifo_size
-suffix:semicolon
-id|port.regshift
-op_assign
-id|req-&gt;iomem_reg_shift
-suffix:semicolon
-id|port.iotype
-op_assign
-id|req-&gt;io_type
-suffix:semicolon
-id|port.flags
-op_assign
-id|req-&gt;flags
-op_or
-id|UPF_BOOT_AUTOCONF
-suffix:semicolon
-id|port.mapbase
-op_assign
-id|req-&gt;iomap_base
-suffix:semicolon
-id|port.line
-op_assign
-id|line
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|share_irqs_sio
-)paren
-id|port.flags
-op_or_assign
-id|UPF_SHARE_IRQ
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|HIGH_BITS_OFFSET
-)paren
-id|port.iobase
-op_or_assign
-(paren
-r_int
-)paren
-id|req-&gt;port_high
-op_lshift
-id|HIGH_BITS_OFFSET
-suffix:semicolon
-multiline_comment|/*&n;&t; * If a clock rate wasn&squot;t specified by the low level&n;&t; * driver, then default to the standard clock rate.&n;&t; */
-r_if
-c_cond
-(paren
-id|port.uartclk
-op_eq
-l_int|0
-)paren
-id|port.uartclk
-op_assign
-id|BASE_BAUD
-op_star
-l_int|16
-suffix:semicolon
-r_return
-id|uart_register_port
-c_func
-(paren
-op_amp
-id|m32r_sio_reg
-comma
-op_amp
-id|port
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;register_m32r_sio - configure a 16x50 serial port at runtime&n; *&t;@req: request structure&n; *&n; *&t;Configure the serial port specified by the request. If the&n; *&t;port exists and is in use an error is returned. If the port&n; *&t;is not currently in the table it is added.&n; *&n; *&t;The port is then probed and if necessary the IRQ is autodetected&n; *&t;If this fails an error is returned.&n; *&n; *&t;On success the port is ready to use and the line number is returned.&n; */
-DECL|function|register_m32r_sio
-r_int
-id|register_m32r_sio
-c_func
-(paren
-r_struct
-id|serial_struct
-op_star
-id|req
-)paren
-(brace
-r_return
-id|__register_m32r_sio
-c_func
-(paren
-id|req
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-DECL|function|early_serial_setup
-r_int
-id|__init
-id|early_serial_setup
-c_func
-(paren
-r_struct
-id|uart_port
-op_star
-id|port
-)paren
-(brace
-id|m32r_sio_isa_init_ports
-c_func
-(paren
-)paren
-suffix:semicolon
-id|m32r_sio_ports
-(braket
-id|port-&gt;line
-)braket
-dot
-id|port
-op_assign
-op_star
-id|port
-suffix:semicolon
-id|m32r_sio_ports
-(braket
-id|port-&gt;line
-)braket
-dot
-id|port.ops
-op_assign
-op_amp
-id|m32r_sio_pops
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;unregister_m32r_sio - remove a 16x50 serial port at runtime&n; *&t;@line: serial line number&n; *&n; *&t;Remove one serial port.  This may be called from interrupt&n; *&t;context.&n; */
-DECL|function|unregister_m32r_sio
-r_void
-id|unregister_m32r_sio
-c_func
-(paren
-r_int
-id|line
-)paren
-(brace
-id|uart_unregister_port
-c_func
-(paren
-op_amp
-id|m32r_sio_reg
-comma
-id|line
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;m32r_sio_suspend_port - suspend one serial port&n; *&t;@line: serial line number&n; *&n; *&t;Suspend one serial port.&n; */
 DECL|function|m32r_sio_suspend_port
 r_void
@@ -4774,15 +4573,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Serial: M32R SIO driver $Revision: 1.9 $ &quot;
-l_string|&quot;IRQ sharing %sabled&bslash;n&quot;
-comma
-id|share_irqs_sio
-ques
-c_cond
-l_string|&quot;en&quot;
-suffix:colon
-l_string|&quot;dis&quot;
+l_string|&quot;Serial: M32R SIO driver $Revision: 1.11 $ &quot;
 )paren
 suffix:semicolon
 r_for
@@ -4902,20 +4693,6 @@ c_func
 id|m32r_sio_exit
 )paren
 suffix:semicolon
-DECL|variable|register_m32r_sio
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_m32r_sio
-)paren
-suffix:semicolon
-DECL|variable|unregister_m32r_sio
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_m32r_sio
-)paren
-suffix:semicolon
 DECL|variable|m32r_sio_suspend_port
 id|EXPORT_SYMBOL
 c_func
@@ -4939,26 +4716,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Generic M32R SIO serial driver $Revision: 1.9 $&quot;
-)paren
-suffix:semicolon
-id|module_param
-c_func
-(paren
-id|share_irqs_sio
-comma
-r_bool
-comma
-l_int|0400
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|share_irqs_sio
-comma
-l_string|&quot;Share IRQs with other non-M32R SIO devices&quot;
-l_string|&quot; (unsafe)&quot;
+l_string|&quot;Generic M32R SIO serial driver $Revision: 1.11 $&quot;
 )paren
 suffix:semicolon
 eof

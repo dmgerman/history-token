@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/arch/poodle.h&gt;
 macro_line|#include &lt;asm/arch/pxafb.h&gt;
 macro_line|#include &lt;asm/hardware/scoop.h&gt;
 macro_line|#include &lt;asm/hardware/locomo.h&gt;
+macro_line|#include &lt;asm/mach/sharpsl_param.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|variable|poodle_scoop_resources
 r_static
@@ -450,6 +451,40 @@ l_string|&quot;poodle: Unable to register LoCoMo device&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+DECL|function|fixup_poodle
+r_static
+r_void
+id|__init
+id|fixup_poodle
+c_func
+(paren
+r_struct
+id|machine_desc
+op_star
+id|desc
+comma
+r_struct
+id|tag
+op_star
+id|tags
+comma
+r_char
+op_star
+op_star
+id|cmdline
+comma
+r_struct
+id|meminfo
+op_star
+id|mi
+)paren
+(brace
+id|sharpsl_save_param
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|variable|__initdata
 r_static
 r_struct
@@ -550,6 +585,11 @@ c_func
 (paren
 l_int|0x40000000
 )paren
+)paren
+id|FIXUP
+c_func
+(paren
+id|fixup_poodle
 )paren
 id|MAPIO
 c_func

@@ -2197,12 +2197,6 @@ id|status
 id|u8
 id|hp_slot
 suffix:semicolon
-id|hp_slot
-op_assign
-id|func-&gt;device
-op_minus
-id|ctrl-&gt;slot_device_offset
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2212,6 +2206,12 @@ l_int|NULL
 )paren
 r_return
 l_int|1
+suffix:semicolon
+id|hp_slot
+op_assign
+id|func-&gt;device
+op_minus
+id|ctrl-&gt;slot_device_offset
 suffix:semicolon
 singleline_comment|// Wait for exclusive access to hardware
 id|down

@@ -1,19 +1,11 @@
 multiline_comment|/*&n; * probe.c - PCI detection and setup code&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-mdefine_line|#define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)
-macro_line|#endif
 DECL|macro|CARDBUS_LATENCY_TIMER
 mdefine_line|#define CARDBUS_LATENCY_TIMER&t;176&t;/* secondary latency timer */
 DECL|macro|CARDBUS_RESERVE_BUSNR
@@ -272,15 +264,11 @@ op_assign
 id|pcibus_to_cpumask
 c_func
 (paren
-(paren
 id|to_pci_bus
 c_func
 (paren
 id|class_dev
 )paren
-)paren
-op_member_access_from_pointer
-id|number
 )paren
 suffix:semicolon
 r_int
@@ -2083,10 +2071,10 @@ op_amp
 id|buses
 )paren
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;Scanning behind PCI bridge %s, config %06x, pass %d&bslash;n&quot;
+l_string|&quot;PCI: Scanning behind PCI bridge %s, config %06x, pass %d&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -2593,14 +2581,16 @@ r_class
 op_rshift_assign
 l_int|8
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;Found %02x:%02x [%04x/%04x] %06x %02x&bslash;n&quot;
+l_string|&quot;PCI: Found %s [%04x/%04x] %06x %02x&bslash;n&quot;
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;vendor
 comma
@@ -3589,10 +3579,16 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;Scanning bus %02x&bslash;n&quot;
+l_string|&quot;PCI: Scanning bus %04x:%02x&bslash;n&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 comma
 id|bus-&gt;number
 )paren
@@ -3622,10 +3618,16 @@ id|devfn
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * After performing arch-dependent fixup of the bus, look behind&n;&t; * all PCI-to-PCI bridges on this bus.&n;&t; */
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;Fixups for bus %02x&bslash;n&quot;
+l_string|&quot;PCI: Fixups for bus %04x:%02x&bslash;n&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 comma
 id|bus-&gt;number
 )paren
@@ -3688,10 +3690,16 @@ id|pass
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * We&squot;ve scanned the bus and so we know all about what&squot;s on&n;&t; * the other side of any bridges that may be on this bus plus&n;&t; * any devices.&n;&t; *&n;&t; * Return how far we&squot;ve got finding sub-buses.&n;&t; */
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;Bus scan for %02x returning with max=%02x&bslash;n&quot;
+l_string|&quot;PCI: Bus scan for %04x:%02x returning with max=%02x&bslash;n&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 comma
 id|bus-&gt;number
 comma
@@ -3849,7 +3857,7 @@ id|bus
 )paren
 (brace
 multiline_comment|/* If we already got to this bus through a different bridge, ignore it */
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;PCI: Bus %04x:%02x already known&bslash;n&quot;

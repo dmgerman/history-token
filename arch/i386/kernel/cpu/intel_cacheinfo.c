@@ -1461,6 +1461,7 @@ comma
 id|this_leaf-&gt;shared_cpu_map
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_HT
 r_else
 r_if
 c_cond
@@ -1476,6 +1477,7 @@ id|cpu_sibling_map
 id|cpu
 )braket
 suffix:semicolon
+macro_line|#endif
 r_else
 id|printk
 c_func

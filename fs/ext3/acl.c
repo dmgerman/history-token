@@ -987,11 +987,6 @@ c_func
 id|retval
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|value
-)paren
 id|kfree
 c_func
 (paren
@@ -1283,11 +1278,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|value
-)paren
 id|kfree
 c_func
 (paren

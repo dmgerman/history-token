@@ -4,16 +4,15 @@ macro_line|#ifndef _PPC_PROM_H
 DECL|macro|_PPC_PROM_H
 mdefine_line|#define _PPC_PROM_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 DECL|typedef|phandle
 r_typedef
-r_void
-op_star
+id|u32
 id|phandle
 suffix:semicolon
 DECL|typedef|ihandle
 r_typedef
-r_void
-op_star
+id|u32
 id|ihandle
 suffix:semicolon
 r_extern

@@ -1608,7 +1608,7 @@ id|PCI_ROM_RESOURCE
 (brace
 id|res-&gt;flags
 op_or_assign
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 suffix:semicolon
 id|reg
 op_assign

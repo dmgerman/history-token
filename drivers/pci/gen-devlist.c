@@ -2,7 +2,7 @@ multiline_comment|/*&n; *&t;Generate devlist.h and classlist.h from the PCI ID f
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;string.h&gt;
 DECL|macro|MAX_NAME_SIZE
-mdefine_line|#define MAX_NAME_SIZE 89
+mdefine_line|#define MAX_NAME_SIZE 200
 r_static
 r_void
 DECL|function|pq

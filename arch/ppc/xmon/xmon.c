@@ -5347,6 +5347,8 @@ comma
 id|va
 comma
 id|last_va
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|found
@@ -5362,8 +5364,12 @@ comma
 id|w1
 comma
 id|last_w2
+op_assign
+l_int|0
 comma
 id|last_va0
+op_assign
+l_int|0
 suffix:semicolon
 id|last_found
 op_assign
@@ -7949,6 +7955,8 @@ r_int
 id|inst
 comma
 id|last_inst
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_char
@@ -10543,6 +10551,8 @@ suffix:semicolon
 r_char
 op_star
 id|match
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|goodness

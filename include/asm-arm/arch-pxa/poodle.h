@@ -90,55 +90,5 @@ DECL|macro|POODLE_SCOOP_IO_DIR
 mdefine_line|#define POODLE_SCOOP_IO_DIR&t;( POODLE_SCOOP_VPEN | POODLE_SCOOP_HS_OUT )
 DECL|macro|POODLE_SCOOP_IO_OUT
 mdefine_line|#define POODLE_SCOOP_IO_OUT&t;( 0 )
-multiline_comment|/*&n; * Flash Memory mappings&n; *&n; * We have the following mapping:&n; *                      phys            virt&n; *      boot ROM        00000000        ef800000&n; */
-DECL|macro|FLASH_MEM_BASE
-mdefine_line|#define FLASH_MEM_BASE&t;0xa0000a00
-DECL|macro|FLASH_DATA
-mdefine_line|#define&t;FLASH_DATA(adr) (*(volatile unsigned int*)(FLASH_MEM_BASE+(adr)))
-DECL|macro|FLASH_DATA_F
-mdefine_line|#define&t;FLASH_DATA_F(adr) (*(volatile float32 *)(FLASH_MEM_BASE+(adr)))
-DECL|macro|FLASH_MAGIC_CHG
-mdefine_line|#define FLASH_MAGIC_CHG(a,b,c,d) ( ( d &lt;&lt; 24 ) | ( c &lt;&lt; 16 )  | ( b &lt;&lt; 8 ) | a )
-multiline_comment|/* COMADJ */
-DECL|macro|FLASH_COMADJ_MAJIC
-mdefine_line|#define FLASH_COMADJ_MAJIC&t;FLASH_MAGIC_CHG(&squot;C&squot;,&squot;M&squot;,&squot;A&squot;,&squot;D&squot;)
-DECL|macro|FLASH_COMADJ_MAGIC_ADR
-mdefine_line|#define&t;FLASH_COMADJ_MAGIC_ADR&t;0x00
-DECL|macro|FLASH_COMADJ_DATA_ADR
-mdefine_line|#define&t;FLASH_COMADJ_DATA_ADR&t;0x04
-multiline_comment|/* UUID */
-DECL|macro|FLASH_UUID_MAJIC
-mdefine_line|#define FLASH_UUID_MAJIC&t;FLASH_MAGIC_CHG(&squot;U&squot;,&squot;U&squot;,&squot;I&squot;,&squot;D&squot;)
-DECL|macro|FLASH_UUID_MAGIC_ADR
-mdefine_line|#define&t;FLASH_UUID_MAGIC_ADR&t;0x08
-DECL|macro|FLASH_UUID_DATA_ADR
-mdefine_line|#define&t;FLASH_UUID_DATA_ADR&t;0x0C
-multiline_comment|/* TOUCH PANEL */
-DECL|macro|FLASH_TOUCH_MAJIC
-mdefine_line|#define FLASH_TOUCH_MAJIC&t;FLASH_MAGIC_CHG(&squot;T&squot;,&squot;U&squot;,&squot;C&squot;,&squot;H&squot;)
-DECL|macro|FLASH_TOUCH_MAGIC_ADR
-mdefine_line|#define&t;FLASH_TOUCH_MAGIC_ADR&t;0x1C
-DECL|macro|FLASH_TOUCH_XP_DATA_ADR
-mdefine_line|#define&t;FLASH_TOUCH_XP_DATA_ADR&t;0x20
-DECL|macro|FLASH_TOUCH_YP_DATA_ADR
-mdefine_line|#define&t;FLASH_TOUCH_YP_DATA_ADR&t;0x24
-DECL|macro|FLASH_TOUCH_XD_DATA_ADR
-mdefine_line|#define&t;FLASH_TOUCH_XD_DATA_ADR&t;0x28
-DECL|macro|FLASH_TOUCH_YD_DATA_ADR
-mdefine_line|#define&t;FLASH_TOUCH_YD_DATA_ADR&t;0x2C
-multiline_comment|/* AD */
-DECL|macro|FLASH_AD_MAJIC
-mdefine_line|#define FLASH_AD_MAJIC&t;FLASH_MAGIC_CHG(&squot;B&squot;,&squot;V&squot;,&squot;A&squot;,&squot;D&squot;)
-DECL|macro|FLASH_AD_MAGIC_ADR
-mdefine_line|#define&t;FLASH_AD_MAGIC_ADR&t;0x30
-DECL|macro|FLASH_AD_DATA_ADR
-mdefine_line|#define&t;FLASH_AD_DATA_ADR&t;0x34
-multiline_comment|/* PHAD */
-DECL|macro|FLASH_PHAD_MAJIC
-mdefine_line|#define FLASH_PHAD_MAJIC&t;FLASH_MAGIC_CHG(&squot;P&squot;,&squot;H&squot;,&squot;A&squot;,&squot;D&squot;)
-DECL|macro|FLASH_PHAD_MAGIC_ADR
-mdefine_line|#define&t;FLASH_PHAD_MAGIC_ADR&t;0x38
-DECL|macro|FLASH_PHAD_DATA_ADR
-mdefine_line|#define&t;FLASH_PHAD_DATA_ADR&t;0x3C
 macro_line|#endif /* __ASM_ARCH_POODLE_H  */
 eof

@@ -2377,6 +2377,26 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|slot-&gt;release
+op_eq
+l_int|NULL
+)paren
+(brace
+id|dbg
+c_func
+(paren
+l_string|&quot;Why are you trying to register a hotplug slot&quot;
+l_string|&quot;without a proper release function?&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|kobject_set_name
 c_func
 (paren

@@ -1541,6 +1541,16 @@ id|retries
 suffix:semicolon
 r_extern
 r_void
+id|ext3_init_block_alloc_info
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|ext3_rsv_window_add
 c_func
 (paren
