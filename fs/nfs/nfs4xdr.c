@@ -223,7 +223,7 @@ mdefine_line|#define WRITE64(n)               do {&t;&t;&t;&t;&bslash;&n;&t;*p++
 DECL|macro|WRITEMEM
 mdefine_line|#define WRITEMEM(ptr,nbytes)     do {&t;&t;&t;&t;&bslash;&n;&t;p = xdr_writemem(p, ptr, nbytes);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RESERVE_SPACE
-mdefine_line|#define RESERVE_SPACE(nbytes)&t;do {&t;&t;&t;&t;&bslash;&n;&t;p = xdr_reserve_space(xdr, nbytes);&t;&t;&t;&bslash;&n;&t;if (!p) printk(&quot;RESERVE_SPACE(%d) failed in function %s&bslash;n&quot;, nbytes, __FUNCTION__); &bslash;&n;&t;BUG_ON(!p);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define RESERVE_SPACE(nbytes)&t;do {&t;&t;&t;&t;&bslash;&n;&t;p = xdr_reserve_space(xdr, nbytes);&t;&t;&t;&bslash;&n;&t;if (!p) printk(&quot;RESERVE_SPACE(%d) failed in function %s&bslash;n&quot;, (int) (nbytes), __FUNCTION__); &bslash;&n;&t;BUG_ON(!p);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 r_static
 r_inline
 DECL|function|xdr_writemem
