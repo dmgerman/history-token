@@ -416,6 +416,11 @@ op_amp
 id|MS_SYNCHRONOUS
 )paren
 (brace
+id|ubh_wait_on_buffer
+(paren
+id|UCPI_UBH
+)paren
+suffix:semicolon
 id|ubh_ll_rw_block
 (paren
 id|WRITE
@@ -1034,6 +1039,11 @@ op_amp
 id|MS_SYNCHRONOUS
 )paren
 (brace
+id|ubh_wait_on_buffer
+(paren
+id|UCPI_UBH
+)paren
+suffix:semicolon
 id|ubh_ll_rw_block
 (paren
 id|WRITE

@@ -7589,25 +7589,7 @@ c_cond
 (paren
 id|sync
 )paren
-(brace
-id|ll_rw_block
-c_func
-(paren
-id|WRITE
-comma
-l_int|1
-comma
-op_amp
-id|EXT3_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|s_sbh
-)paren
-suffix:semicolon
-id|wait_on_buffer
+id|sync_dirty_buffer
 c_func
 (paren
 id|EXT3_SB
@@ -7619,7 +7601,6 @@ op_member_access_from_pointer
 id|s_sbh
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Have we just finished recovery?  If so, and if we are mounting (or&n; * remounting) the filesystem readonly, then we will end up with a&n; * consistent fs on disk.  Record that fact.&n; */
 DECL|function|ext3_mark_recovery_complete
