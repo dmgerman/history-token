@@ -2965,6 +2965,13 @@ c_func
 id|ethtool_op_get_tx_csum
 )paren
 suffix:semicolon
+DECL|variable|ethtool_op_set_tx_csum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_set_tx_csum
+)paren
+suffix:semicolon
 DECL|variable|ethtool_op_get_sg
 id|EXPORT_SYMBOL
 c_func

@@ -122,6 +122,16 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|net_device
+op_star
+id|alloc_ei_netdev
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* You have one of these per-board */
 DECL|struct|ei_device
 r_struct

@@ -47,7 +47,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1020 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1043 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -5918,8 +5918,15 @@ id|tx_len
 )paren
 )paren
 (brace
-r_goto
-id|fail
+id|free_hpsb_packet
+c_func
+(paren
+id|packet
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|ptask-&gt;packet
@@ -5939,22 +5946,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|hpsb_send_packet
 c_func
 (paren
 id|packet
 )paren
 )paren
-r_return
-l_int|0
-suffix:semicolon
-id|fail
-suffix:colon
-r_if
-c_cond
-(paren
-id|packet
-)paren
+(brace
 id|ether1394_free_packet
 c_func
 (paren
@@ -5964,6 +5963,10 @@ suffix:semicolon
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Task function to be run when a datagram transmission is completed */
@@ -7004,7 +7007,7 @@ id|strcpy
 (paren
 id|info.version
 comma
-l_string|&quot;$Rev: 1020 $&quot;
+l_string|&quot;$Rev: 1043 $&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME XXX provide sane businfo */
