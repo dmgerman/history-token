@@ -222,20 +222,6 @@ id|irda_param_unpack
 )paren
 suffix:semicolon
 multiline_comment|/* IrLAP */
-DECL|variable|irlap_open
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irlap_open
-)paren
-suffix:semicolon
-DECL|variable|irlap_close
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irlap_close
-)paren
-suffix:semicolon
 DECL|variable|irda_init_max_qos_capabilies
 id|EXPORT_SYMBOL
 c_func
