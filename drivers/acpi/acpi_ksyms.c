@@ -231,6 +231,13 @@ c_func
 id|acpi_get_possible_resources
 )paren
 suffix:semicolon
+DECL|variable|acpi_walk_resources
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_walk_resources
+)paren
+suffix:semicolon
 DECL|variable|acpi_set_current_resources
 id|EXPORT_SYMBOL
 c_func
@@ -299,6 +306,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|acpi_enter_sleep_state
+)paren
+suffix:semicolon
+DECL|variable|acpi_enter_sleep_state_s4bios
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_enter_sleep_state_s4bios
 )paren
 suffix:semicolon
 DECL|variable|acpi_get_system_info
