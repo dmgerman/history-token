@@ -5364,6 +5364,22 @@ op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
 multiline_comment|/*&n;&t; * Read the swap header.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mapping-&gt;a_ops-&gt;readpage
+)paren
+(brace
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|bad_swap
+suffix:semicolon
+)brace
 id|page
 op_assign
 id|read_cache_page
