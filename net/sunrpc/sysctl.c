@@ -449,7 +449,7 @@ id|len
 op_assign
 id|left
 suffix:semicolon
-id|copy_to_user
+id|__copy_to_user
 c_func
 (paren
 id|buffer
