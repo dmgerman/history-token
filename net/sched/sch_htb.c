@@ -127,6 +127,11 @@ id|tc_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* generic stats */
+DECL|member|stats_lock
+id|spinlock_t
+op_star
+id|stats_lock
+suffix:semicolon
 DECL|member|xstats
 r_struct
 id|tc_htb_xstats

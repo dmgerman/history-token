@@ -41,6 +41,11 @@ id|tc_stats
 op_star
 id|stats
 suffix:semicolon
+DECL|member|stats_lock
+id|spinlock_t
+op_star
+id|stats_lock
+suffix:semicolon
 DECL|member|interval
 r_int
 id|interval
@@ -172,7 +177,7 @@ suffix:semicolon
 id|spin_lock
 c_func
 (paren
-id|st-&gt;lock
+id|e-&gt;stats_lock
 )paren
 suffix:semicolon
 id|nbytes
@@ -274,7 +279,7 @@ suffix:semicolon
 id|spin_unlock
 c_func
 (paren
-id|st-&gt;lock
+id|e-&gt;stats_lock
 )paren
 suffix:semicolon
 )brace
@@ -319,6 +324,10 @@ r_struct
 id|tc_stats
 op_star
 id|stats
+comma
+id|spinlock_t
+op_star
+id|stats_lock
 comma
 r_struct
 id|rtattr
@@ -420,6 +429,10 @@ suffix:semicolon
 id|est-&gt;stats
 op_assign
 id|stats
+suffix:semicolon
+id|est-&gt;stats_lock
+op_assign
+id|stats_lock
 suffix:semicolon
 id|est-&gt;ewma_log
 op_assign

@@ -244,6 +244,11 @@ r_struct
 id|tc_stats
 id|stats
 suffix:semicolon
+DECL|member|stats_lock
+id|spinlock_t
+op_star
+id|stats_lock
+suffix:semicolon
 DECL|member|xstats
 r_struct
 id|tc_cbq_xstats
@@ -5708,7 +5713,7 @@ op_assign
 op_minus
 l_int|0x7FFFFFFF
 suffix:semicolon
-id|q-&gt;link.stats.lock
+id|q-&gt;link.stats_lock
 op_assign
 op_amp
 id|sch-&gt;dev-&gt;queue_lock
@@ -6764,6 +6769,8 @@ id|skb
 comma
 op_amp
 id|cl-&gt;stats
+comma
+id|cl-&gt;stats_lock
 )paren
 )paren
 r_goto
@@ -8040,6 +8047,8 @@ c_func
 op_amp
 id|cl-&gt;stats
 comma
+id|cl-&gt;stats_lock
+comma
 id|tca
 (braket
 id|TCA_RATE
@@ -8388,7 +8397,7 @@ id|cl-&gt;weight
 op_assign
 id|cl-&gt;R_tab-&gt;rate.rate
 suffix:semicolon
-id|cl-&gt;stats.lock
+id|cl-&gt;stats_lock
 op_assign
 op_amp
 id|sch-&gt;dev-&gt;queue_lock
@@ -8608,6 +8617,8 @@ c_func
 (paren
 op_amp
 id|cl-&gt;stats
+comma
+id|cl-&gt;stats_lock
 comma
 id|tca
 (braket

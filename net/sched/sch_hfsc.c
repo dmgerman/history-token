@@ -149,6 +149,11 @@ id|tc_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* generic statistics */
+DECL|member|stats_lock
+id|spinlock_t
+op_star
+id|stats_lock
+suffix:semicolon
 DECL|member|level
 r_int
 r_int
@@ -4017,6 +4022,8 @@ c_func
 op_amp
 id|cl-&gt;stats
 comma
+id|cl-&gt;stats_lock
+comma
 id|tca
 (braket
 id|TCA_RATE
@@ -4253,7 +4260,7 @@ op_assign
 op_amp
 id|noop_qdisc
 suffix:semicolon
-id|cl-&gt;stats.lock
+id|cl-&gt;stats_lock
 op_assign
 op_amp
 id|sch-&gt;dev-&gt;queue_lock
@@ -4348,6 +4355,8 @@ c_func
 (paren
 op_amp
 id|cl-&gt;stats
+comma
+id|cl-&gt;stats_lock
 comma
 id|tca
 (braket
@@ -5550,6 +5559,8 @@ id|skb
 comma
 op_amp
 id|cl-&gt;stats
+comma
+id|cl-&gt;stats_lock
 )paren
 OL
 l_int|0
@@ -6159,7 +6170,7 @@ id|hfsc_sched
 )paren
 )paren
 suffix:semicolon
-id|sch-&gt;stats.lock
+id|sch-&gt;stats_lock
 op_assign
 op_amp
 id|sch-&gt;dev-&gt;queue_lock
@@ -6248,7 +6259,7 @@ op_assign
 op_amp
 id|noop_qdisc
 suffix:semicolon
-id|q-&gt;root.stats.lock
+id|q-&gt;root.stats_lock
 op_assign
 op_amp
 id|sch-&gt;dev-&gt;queue_lock
@@ -6815,6 +6826,8 @@ id|skb
 comma
 op_amp
 id|sch-&gt;stats
+comma
+id|sch-&gt;stats_lock
 )paren
 OL
 l_int|0
