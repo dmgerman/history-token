@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+macro_line|#include &quot;hp.h&quot;
 macro_line|#ifndef log2
 DECL|macro|log2
 mdefine_line|#define log2(x)&t;&t;ffz(~(x))
