@@ -1178,26 +1178,6 @@ op_star
 id|pvoice
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-r_void
-id|snd_ymfpci_suspend
-c_func
-(paren
-id|ymfpci_t
-op_star
-id|chip
-)paren
-suffix:semicolon
-r_void
-id|snd_ymfpci_resume
-c_func
-(paren
-id|ymfpci_t
-op_star
-id|chip
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|macro|SUPPORT_JOYSTICK
 mdefine_line|#define SUPPORT_JOYSTICK

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU Library General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/*&n; * Vortex PCM ALSA driver.&n; *&n; * Supports ADB and WT DMA. Unfortunately, WT channels do not run yet.&n; * It remains stuck,and DMA transfers do not happen.&n; *&n; */
+multiline_comment|/*&n; * Vortex PCM ALSA driver.&n; *&n; * Supports ADB and WT DMA. Unfortunately, WT channels do not run yet.&n; * It remains stuck,and DMA transfers do not happen. &n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -819,7 +819,7 @@ suffix:semicolon
 macro_line|#ifndef CHIP_AU8810
 r_else
 (brace
-multiline_comment|/*if (stream != NULL)&n;&t;&t;   vortex_wt_allocroute(chip, substream-&gt;number, 0); */
+multiline_comment|/* if (stream != NULL)&n;&t;&t;   vortex_wt_allocroute(chip, substream-&gt;number, 0); */
 id|vortex_wt_allocroute
 c_func
 (paren
@@ -843,6 +843,10 @@ id|chip-&gt;dma_wt
 (braket
 id|substream-&gt;number
 )braket
+suffix:semicolon
+id|stream-&gt;dma
+op_assign
+id|substream-&gt;number
 suffix:semicolon
 id|stream-&gt;substream
 op_assign
@@ -1254,7 +1258,7 @@ r_case
 id|SNDRV_PCM_TRIGGER_STOP
 suffix:colon
 singleline_comment|// do something to stop the PCM engine
-singleline_comment|//printk(KERN_INFO &quot;vortex: stop %d&bslash;n&quot;, dma)
+singleline_comment|//printk(KERN_INFO &quot;vortex: stop %d&bslash;n&quot;, dma);
 id|stream-&gt;fifo_enabled
 op_assign
 l_int|0
@@ -2038,8 +2042,6 @@ comma
 l_int|0x10000
 )paren
 suffix:semicolon
-singleline_comment|// The above should be used, as soon as ALSA gets updated.
-multiline_comment|/*&n;&t;snd_pcm_lib_preallocate_sg_pages_for_all(chip-&gt;pci_dev, pcm,&n;&t;&t;&t;&t;&t;&t; 0x10000, 0x10000);&n;&t;*/
 r_if
 c_cond
 (paren

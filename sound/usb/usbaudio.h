@@ -220,6 +220,8 @@ DECL|macro|QUIRK_AUDIO_STANDARD_INTERFACE
 mdefine_line|#define QUIRK_AUDIO_STANDARD_INTERFACE&t;5
 DECL|macro|QUIRK_MIDI_STANDARD_INTERFACE
 mdefine_line|#define QUIRK_MIDI_STANDARD_INTERFACE&t;6
+DECL|macro|QUIRK_AUDIO_EDIROL_UA700
+mdefine_line|#define QUIRK_AUDIO_EDIROL_UA700&t;7
 DECL|typedef|snd_usb_audio_quirk_t
 r_typedef
 r_struct
@@ -294,6 +296,7 @@ multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data points to a snd_usb_midi_endpo
 multiline_comment|/* for QUIRK_COMPOSITE, data points to an array of snd_usb_audio_quirk&n; * structures, terminated with .ifnum = -1 */
 multiline_comment|/* for QUIRK_AUDIO_FIXED_ENDPOINT, data points to an audioformat structure */
 multiline_comment|/* for QUIRK_AUDIO/MIDI_STANDARD_INTERFACE, data is NULL */
+multiline_comment|/* for QUIRK_AUDIO_EDIROL_UA700, data is NULL */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
 mdefine_line|#define combine_word(s)    ((*s) | ((unsigned int)(s)[1] &lt;&lt; 8))
@@ -353,6 +356,42 @@ id|after
 comma
 id|u8
 id|dsubtype
+)paren
+suffix:semicolon
+r_int
+id|snd_usb_ctl_msg
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|pipe
+comma
+id|__u8
+id|request
+comma
+id|__u8
+id|requesttype
+comma
+id|__u16
+id|value
+comma
+id|__u16
+id|index
+comma
+r_void
+op_star
+id|data
+comma
+id|__u16
+id|size
+comma
+r_int
+id|timeout
 )paren
 suffix:semicolon
 r_int

@@ -61,7 +61,7 @@ DECL|macro|VORTEX_ADBDMA_START
 mdefine_line|#define VORTEX_ADBDMA_START 0x27c00&t;/* Which subbuffer starts */
 DECL|macro|VORTEX_ADBDMA_STATUS
 mdefine_line|#define VORTEX_ADBDMA_STATUS 0x27A90&t;/* stored at AdbDma-&gt;this_10 / 2 DWORD in size. */
-multiline_comment|/* Starting at MSB, each pair seem to be the current DMA page. */
+multiline_comment|/* Starting at the MSB, each pair of bits seem to be the current DMA page. */
 multiline_comment|/* This current page bits are consistent (same value) with VORTEX_ADBDMA_STAT) */
 multiline_comment|/* DMA */
 DECL|macro|VORTEX_ENGINE_CTRL
@@ -90,12 +90,12 @@ DECL|macro|VORTEX_ADB_SR
 mdefine_line|#define VORTEX_ADB_SR 0x28400&t;/* Samplerates enable/disable */
 DECL|macro|VORTEX_ADB_RTBASE
 mdefine_line|#define VORTEX_ADB_RTBASE 0x28000
-DECL|macro|VORTEX_ADB_RTBASE_SIZE
-mdefine_line|#define VORTEX_ADB_RTBASE_SIZE (VORTEX_ADB_CHNBASE - VORTEX_ADB_RTBASE)
+DECL|macro|VORTEX_ADB_RTBASE_COUNT
+mdefine_line|#define VORTEX_ADB_RTBASE_COUNT 173
 DECL|macro|VORTEX_ADB_CHNBASE
 mdefine_line|#define VORTEX_ADB_CHNBASE 0x282b4
-DECL|macro|VORTEX_ADB_CHNBASE_SIZE
-mdefine_line|#define VORTEX_ADB_CHNBASE_SIZE (ADB_MASK - VORTEX_ADB_RTBASE_SIZE)
+DECL|macro|VORTEX_ADB_CHNBASE_COUNT
+mdefine_line|#define VORTEX_ADB_CHNBASE_COUNT 24
 DECL|macro|ROUTE_MASK
 mdefine_line|#define &t;ROUTE_MASK&t;0xffff
 DECL|macro|SOURCE_MASK
@@ -235,7 +235,7 @@ mdefine_line|#define VORTEX_SRCBLOCK_SR&t;&t;0x26cc0
 DECL|macro|VORTEX_SRC_SOURCE
 mdefine_line|#define VORTEX_SRC_SOURCE&t;&t;0x26cc4
 DECL|macro|VORTEX_SRC_SOURCESIZE
-mdefine_line|#define VORTEX_SRC_SOURCESIZE&t;0x26cc4
+mdefine_line|#define VORTEX_SRC_SOURCESIZE&t;0x26cc8
 multiline_comment|/* Params&n;&t;0x26e00&t;: 1 U0&n;&t;0x26e40&t;: 2 CR&n;&t;0x26e80&t;: 3 U3&n;&t;0x26ec0&t;: 4 DRIFT1&n;&t;0x26f00 : 5 U1&n;&t;0x26f40&t;: 6 DRIFT2&n;&t;0x26f80&t;: 7 U2 : Target rate, direction&n;*/
 DECL|macro|VORTEX_SRC_CONVRATIO
 mdefine_line|#define VORTEX_SRC_CONVRATIO&t;0x26e40

@@ -5066,7 +5066,8 @@ id|substream-&gt;ffile
 op_ge
 l_int|0
 )paren
-r_return
+id|res
+op_assign
 id|snd_pcm_action_lock_irq
 c_func
 (paren

@@ -7,12 +7,11 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
-DECL|macro|SNDRV_GET_ID
-mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -135,6 +134,95 @@ id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_ENABLE
+suffix:semicolon
+DECL|variable|boot_devs
+r_static
+r_int
+id|boot_devs
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|index
+comma
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|index
+comma
+l_string|&quot;Index value for Sun CS4231 soundcard.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|index
+comma
+id|SNDRV_INDEX_DESC
+)paren
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|id
+comma
+id|charp
+comma
+id|boot_devs
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|id
+comma
+l_string|&quot;ID string for Sun CS4231 soundcard.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|id
+comma
+id|SNDRV_ID_DESC
+)paren
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|enable
+comma
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|enable
+comma
+l_string|&quot;Enable Sun CS4231 soundcard.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|enable
+comma
+id|SNDRV_ENABLE_DESC
+)paren
 suffix:semicolon
 multiline_comment|/* Register offset (from base hpa) */
 DECL|macro|REG_ID
@@ -3062,7 +3150,7 @@ suffix:semicolon
 multiline_comment|/* initialize graveyard buffer */
 id|harmony-&gt;dma_dev.type
 op_assign
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
 id|harmony-&gt;dma_dev.dev
 op_assign

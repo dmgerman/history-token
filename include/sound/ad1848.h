@@ -243,14 +243,6 @@ r_int
 id|thinkpad_flag
 suffix:semicolon
 multiline_comment|/* Thinkpad CS4248 needs some extra help */
-macro_line|#ifdef CONFIG_PM
-DECL|member|thinkpad_pmstate
-r_struct
-id|pm_dev
-op_star
-id|thinkpad_pmstate
-suffix:semicolon
-macro_line|#endif
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock

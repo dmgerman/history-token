@@ -3708,6 +3708,7 @@ l_int|0
 )paren
 )paren
 (brace
+multiline_comment|/* EQ enabled */
 id|vortex_Eqlzr_SetAllBandsFromActiveCoeffSet
 c_func
 (paren
@@ -3727,6 +3728,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* EQ disabled. */
 id|vortex_EqHw_SetLeftGainsTarget
 c_func
 (paren

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * ALSA sequencer MIDI-through client&n; * Copyright (c) 
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;seq_clientmgr.h&quot;
 macro_line|#include &lt;sound/initval.h&gt;
@@ -37,12 +38,28 @@ c_func
 l_string|&quot;sound&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|ports
+r_static
+r_int
+id|ports
+op_assign
+l_int|1
+suffix:semicolon
+DECL|variable|duplex
+r_static
+r_int
+id|duplex
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|ports
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -53,12 +70,14 @@ comma
 l_string|&quot;number of ports to be created&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|duplex
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -68,18 +87,6 @@ id|duplex
 comma
 l_string|&quot;create DUPLEX ports&quot;
 )paren
-suffix:semicolon
-DECL|variable|ports
-r_int
-id|ports
-op_assign
-l_int|1
-suffix:semicolon
-DECL|variable|duplex
-r_int
-id|duplex
-op_assign
-l_int|0
 suffix:semicolon
 DECL|struct|snd_seq_dummy_port
 r_typedef
