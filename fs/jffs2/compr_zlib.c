@@ -177,9 +177,9 @@ id|inflate_workspace
 )paren
 suffix:semicolon
 )brace
-DECL|function|zlib_compress
+DECL|function|jffs2_zlib_compress
 r_int
-id|zlib_compress
+id|jffs2_zlib_compress
 c_func
 (paren
 r_int
@@ -510,9 +510,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|zlib_decompress
+DECL|function|jffs2_zlib_decompress
 r_void
-id|zlib_decompress
+id|jffs2_zlib_decompress
 c_func
 (paren
 r_int

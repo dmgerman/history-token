@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: comprtest.c,v 1.4 2001/02/21 14:03:20 dwmw2 Exp $ */
+multiline_comment|/* $Id: comprtest.c,v 1.5 2002/01/03 15:20:44 dwmw2 Exp $ */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -8052,10 +8052,10 @@ r_char
 op_star
 id|data_out
 comma
-id|__u32
+r_uint32
 id|cdatalen
 comma
-id|__u32
+r_uint32
 id|datalen
 )paren
 suffix:semicolon
@@ -8074,11 +8074,11 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 op_star
 id|datalen
 comma
-id|__u32
+r_uint32
 op_star
 id|cdatalen
 )paren
@@ -8095,7 +8095,7 @@ r_int
 r_char
 id|comprtype
 suffix:semicolon
-id|__u32
+r_uint32
 id|c
 comma
 id|d
