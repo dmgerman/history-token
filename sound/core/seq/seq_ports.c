@@ -1398,8 +1398,7 @@ id|info-&gt;name
 l_int|0
 )braket
 )paren
-(brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|port-&gt;name
@@ -1410,23 +1409,8 @@ r_sizeof
 (paren
 id|port-&gt;name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-id|port-&gt;name
-(braket
-r_sizeof
-(paren
-id|port-&gt;name
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-)brace
 multiline_comment|/* set capabilities */
 id|port-&gt;capability
 op_assign
@@ -1482,7 +1466,7 @@ id|EINVAL
 )paren
 suffix:semicolon
 multiline_comment|/* get port name */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info-&gt;name
@@ -2646,31 +2630,22 @@ id|portinfo.addr.client
 op_assign
 id|client
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|portname
-)paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|portinfo.name
 comma
 id|portname
+ques
+c_cond
+id|portname
+suffix:colon
+l_string|&quot;Unamed port&quot;
 comma
 r_sizeof
 (paren
 id|portinfo.name
 )paren
-)paren
-suffix:semicolon
-r_else
-id|sprintf
-c_func
-(paren
-id|portinfo.name
-comma
-l_string|&quot;Unamed port&quot;
 )paren
 suffix:semicolon
 id|portinfo.capability

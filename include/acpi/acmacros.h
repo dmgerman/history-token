@@ -360,12 +360,6 @@ DECL|macro|GET_CURRENT_ARG_TYPE
 mdefine_line|#define GET_CURRENT_ARG_TYPE(list)      (list &amp; ((u32) 0x1F))
 DECL|macro|INCREMENT_ARG_LIST
 mdefine_line|#define INCREMENT_ARG_LIST(list)        (list &gt;&gt;= ((u32) ARG_TYPE_WIDTH))
-multiline_comment|/*&n; * Build a GAS structure from earlier ACPI table entries (V1.0 and 0.71 extensions)&n; *&n; * 1) Address space&n; * 2) Length in bytes -- convert to length in bits&n; * 3) Bit offset is zero&n; * 4) Reserved field is zero&n; * 5) Expand address to 64 bits&n; */
-DECL|macro|ASL_BUILD_GAS_FROM_ENTRY
-mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   do {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;a.register_bit_width = (u8) ACPI_MUL_8 (b);&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;a.reserved = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;ACPI_STORE_ADDRESS (a.address,(acpi_physical_address) c);} while (0)
-multiline_comment|/* ACPI V1.0 entries -- address space is always I/O */
-DECL|macro|ASL_BUILD_GAS_FROM_V1_ENTRY
-mdefine_line|#define ASL_BUILD_GAS_FROM_V1_ENTRY(a,b,c)  ASL_BUILD_GAS_FROM_ENTRY(a,b,c,ACPI_ADR_SPACE_SYSTEM_IO)
 multiline_comment|/*&n; * Reporting macros that are never compiled out&n; */
 DECL|macro|ACPI_PARAM_LIST
 mdefine_line|#define ACPI_PARAM_LIST(pl)                 pl

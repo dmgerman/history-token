@@ -5,6 +5,7 @@ multiline_comment|/*&n; *  Main header file for the ALSA driver&n; *  Copyright 
 macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* wake_up() */
 macro_line|#include &lt;asm/semaphore.h&gt;&t;&t;/* struct semaphore */
 macro_line|#include &lt;linux/rwsem.h&gt;&t;&t;/* struct rw_semaphore */
+macro_line|#include &lt;linux/workqueue.h&gt;&t;&t;/* struct workqueue_struct */
 multiline_comment|/* Typedef&squot;s */
 DECL|typedef|snd_timestamp_t
 r_typedef
@@ -544,6 +545,12 @@ DECL|member|shutdown_sleep
 id|wait_queue_head_t
 id|shutdown_sleep
 suffix:semicolon
+DECL|member|free_workq
+r_struct
+id|work_struct
+id|free_workq
+suffix:semicolon
+multiline_comment|/* for free in workqueue */
 macro_line|#ifdef CONFIG_PM
 DECL|member|set_power_state
 r_int
@@ -637,13 +644,22 @@ id|card-&gt;power_lock
 )paren
 suffix:semicolon
 )brace
-r_void
+r_int
 id|snd_power_wait
 c_func
 (paren
 id|snd_card_t
 op_star
 id|card
+comma
+r_int
+r_int
+id|power_state
+comma
+r_struct
+id|file
+op_star
+id|file
 )paren
 suffix:semicolon
 DECL|function|snd_power_get_state
@@ -696,8 +712,31 @@ DECL|macro|snd_power_lock
 mdefine_line|#define snd_power_lock(card)&t;&t;do { (void)(card); } while (0)
 DECL|macro|snd_power_unlock
 mdefine_line|#define snd_power_unlock(card)&t;&t;do { (void)(card); } while (0)
-DECL|macro|snd_power_wait
-mdefine_line|#define snd_power_wait(card)&t;&t;do { (void)(card); } while (0)
+DECL|function|snd_power_wait
+r_static
+r_inline
+r_int
+id|snd_power_wait
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+comma
+r_int
+r_int
+id|state
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|macro|snd_power_get_state
 mdefine_line|#define snd_power_get_state(card)&t;SNDRV_CTL_POWER_D0
 DECL|macro|snd_power_change_state
@@ -731,12 +770,6 @@ op_star
 id|comment
 suffix:semicolon
 multiline_comment|/* for /proc/asound/devices */
-DECL|member|dev
-id|snd_info_entry_t
-op_star
-id|dev
-suffix:semicolon
-multiline_comment|/* for /proc/asound/dev */
 DECL|member|f_ops
 r_struct
 id|file_operations
@@ -744,6 +777,14 @@ op_star
 id|f_ops
 suffix:semicolon
 multiline_comment|/* file operations */
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* device name (keep at the end of structure) */
 )brace
 suffix:semicolon
 DECL|typedef|snd_minor_t
@@ -894,6 +935,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|snd_minor_info_oss_init
+mdefine_line|#define snd_minor_info_oss_init() /*NOP*/
+DECL|macro|snd_minor_info_oss_done
+mdefine_line|#define snd_minor_info_oss_done() /*NOP*/
+DECL|macro|snd_oss_init_module
+mdefine_line|#define snd_oss_init_module() /*NOP*/
 macro_line|#endif
 multiline_comment|/* memory.c */
 macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
@@ -983,6 +1031,14 @@ mdefine_line|#define kfree_nocheck(obj) snd_wrapper_kfree(obj)
 DECL|macro|vfree_nocheck
 mdefine_line|#define vfree_nocheck(obj) snd_wrapper_vfree(obj)
 macro_line|#else
+DECL|macro|snd_memory_init
+mdefine_line|#define snd_memory_init() /*NOP*/
+DECL|macro|snd_memory_done
+mdefine_line|#define snd_memory_done() /*NOP*/
+DECL|macro|snd_memory_info_init
+mdefine_line|#define snd_memory_info_init() /*NOP*/
+DECL|macro|snd_memory_info_done
+mdefine_line|#define snd_memory_info_done() /*NOP*/
 DECL|macro|kmalloc_nocheck
 mdefine_line|#define kmalloc_nocheck(size, flags) kmalloc(size, flags)
 DECL|macro|vmalloc_nocheck

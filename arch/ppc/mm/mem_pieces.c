@@ -538,7 +538,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_APUS) || defined(CONFIG_ALL_PPC)
+macro_line|#if defined(CONFIG_APUS) || defined(CONFIG_PPC_OF)
 multiline_comment|/*&n; * Add some memory to an array of pieces&n; */
 r_void
 id|__init
@@ -592,7 +592,7 @@ op_assign
 id|size
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_APUS || CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_APUS || CONFIG_PPC_OF */
 r_void
 id|__init
 DECL|function|mem_pieces_sort

@@ -181,27 +181,26 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|ax25-&gt;sk-&gt;state
+id|ax25-&gt;sk-&gt;sk_state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
-multiline_comment|/* For WAIT_SABM connections we will produce an accept ready socket here */
+multiline_comment|/*&n;&t;&t;&t; * For WAIT_SABM connections we will produce an accept&n;&t;&t;&t; * ready socket here&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|ax25-&gt;sk
 comma
-op_amp
-id|ax25-&gt;sk-&gt;flags
+id|SOCK_DEAD
 )paren
 )paren
 id|ax25-&gt;sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|ax25-&gt;sk

@@ -913,7 +913,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|dev-&gt;name

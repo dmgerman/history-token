@@ -425,7 +425,7 @@ l_string|&quot;SiS740&quot;
 comma
 id|PCI_DEVICE_ID_SI_740
 comma
-id|ATA_100
+id|ATA_133
 comma
 l_int|0
 )brace
@@ -448,6 +448,16 @@ comma
 id|ATA_100a
 comma
 id|SIS5513_LATENCY
+)brace
+comma
+(brace
+l_string|&quot;SiS655&quot;
+comma
+id|PCI_DEVICE_ID_SI_655
+comma
+id|ATA_133
+comma
+l_int|0
 )brace
 comma
 (brace
@@ -1491,13 +1501,13 @@ l_string|&quot;ATA 33&quot;
 comma
 l_string|&quot;ATA 66&quot;
 comma
-l_string|&quot;ATA 100&quot;
+l_string|&quot;ATA 100 (1st gen)&quot;
 comma
-l_string|&quot;ATA 100&quot;
+l_string|&quot;ATA 100 (2nd gen)&quot;
 comma
-l_string|&quot;ATA 133&quot;
+l_string|&quot;ATA 133 (1st gen)&quot;
 comma
-l_string|&quot;ATA 133&quot;
+l_string|&quot;ATA 133 (2nd gen)&quot;
 )brace
 suffix:semicolon
 macro_line|#if defined(DISPLAY_SIS_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
@@ -1854,7 +1864,7 @@ r_int
 )paren
 id|drive_pci
 op_plus
-l_int|8
+l_int|4
 op_star
 id|pos
 comma
@@ -1873,11 +1883,11 @@ r_int
 )paren
 id|drive_pci
 op_plus
-l_int|8
+l_int|4
 op_star
 id|pos
 op_plus
-l_int|4
+l_int|8
 comma
 op_amp
 id|regdw1
@@ -2101,9 +2111,6 @@ l_int|0x0F
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|ATA_133
-suffix:colon
 r_default
 suffix:colon
 id|p
@@ -2113,7 +2120,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;133+ ?&quot;
+l_string|&quot;?&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2209,9 +2216,6 @@ l_int|0x0F
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|ATA_133
-suffix:colon
 r_default
 suffix:colon
 id|p
@@ -2221,7 +2225,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;133+ ?&quot;
+l_string|&quot;?&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2238,6 +2242,15 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|chipset_family
+OL
+id|ATA_133
+)paren
+(brace
+multiline_comment|/* else case TODO */
 multiline_comment|/* Data Active */
 id|p
 op_add_assign
@@ -2315,9 +2328,6 @@ l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|ATA_133
-suffix:colon
 r_default
 suffix:colon
 id|p
@@ -2327,7 +2337,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;133+ ?&quot;
+l_string|&quot;?&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2408,9 +2418,6 @@ l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|ATA_133
-suffix:colon
 r_default
 suffix:colon
 id|p
@@ -2420,7 +2427,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;133+ ?&quot;
+l_string|&quot;?&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2438,14 +2445,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* Data Recovery */
 multiline_comment|/* warning: may need (reg&amp;0x07) for pre ATA66 chips */
-r_if
-c_cond
-(paren
-id|chipset_family
-OL
-id|ATA_133
-)paren
-(brace
 id|p
 op_add_assign
 id|sprintf
@@ -2574,21 +2573,6 @@ c_cond
 id|chipset_family
 )paren
 (brace
-r_case
-id|ATA_00
-suffix:colon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Unknown???&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|ATA_16
 suffix:colon
@@ -5088,6 +5072,59 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Helper function used at init time&n; * returns a PCI device revision ID&n; * (used to detect different IDE controller versions)&n; */
+DECL|function|devfn_rev
+r_static
+id|u8
+id|__init
+id|devfn_rev
+c_func
+(paren
+r_int
+id|device
+comma
+r_int
+id|function
+)paren
+(brace
+id|u8
+id|revision
+suffix:semicolon
+multiline_comment|/* Find device */
+r_struct
+id|pci_dev
+op_star
+id|dev
+op_assign
+id|pci_find_slot
+c_func
+(paren
+l_int|0
+comma
+id|PCI_DEVFN
+c_func
+(paren
+id|device
+comma
+id|function
+)paren
+)paren
+suffix:semicolon
+id|pci_read_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_REVISION_ID
+comma
+op_amp
+id|revision
+)paren
+suffix:semicolon
+r_return
+id|revision
+suffix:semicolon
+)brace
 multiline_comment|/* Chip detection and general config */
 DECL|function|init_chipset_sis5513
 r_static
@@ -5190,7 +5227,7 @@ id|u32
 id|reg54h
 suffix:semicolon
 id|u16
-id|reg02h
+id|devid
 suffix:semicolon
 id|pci_read_config_dword
 c_func
@@ -5203,6 +5240,7 @@ op_amp
 id|reg54h
 )paren
 suffix:semicolon
+multiline_comment|/* SiS962 and above report 0x5518 dev id if high bit is cleared */
 id|pci_write_config_dword
 c_func
 (paren
@@ -5225,9 +5263,10 @@ comma
 l_int|0x02
 comma
 op_amp
-id|reg02h
+id|devid
 )paren
 suffix:semicolon
+multiline_comment|/* restore register 0x54 */
 id|pci_write_config_dword
 c_func
 (paren
@@ -5238,11 +5277,11 @@ comma
 id|reg54h
 )paren
 suffix:semicolon
-multiline_comment|/* devid 5518 here means SiS962 or later&n;&t;&t;&t;   which supports ATA133 */
+multiline_comment|/* devid 5518 here means SiS962 or later&n;&t;&t;&t;   which supports ATA133.&n;&t;&t;&t;   These are refered by chipset_family = ATA133&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
-id|reg02h
+id|devid
 op_ne
 l_int|0x5518
 )paren
@@ -5250,28 +5289,7 @@ l_int|0x5518
 id|u8
 id|reg49h
 suffix:semicolon
-r_int
-r_int
-id|sbrev
-suffix:semicolon
 multiline_comment|/* SiS961 family */
-multiline_comment|/*&n;&t;&t; * FIXME !!! GAK!!!!!!!!!! PCI DIRECT POKING &n;&t;&t; */
-id|outl
-c_func
-(paren
-l_int|0x80001008
-comma
-l_int|0x0cf8
-)paren
-suffix:semicolon
-id|sbrev
-op_assign
-id|inl
-c_func
-(paren
-l_int|0x0cfc
-)paren
-suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
@@ -5283,12 +5301,19 @@ op_amp
 id|reg49h
 )paren
 suffix:semicolon
+multiline_comment|/* check isa bridge device rev id */
 r_if
 c_cond
 (paren
 (paren
 (paren
-id|sbrev
+id|devfn_rev
+c_func
+(paren
+l_int|2
+comma
+l_int|0
+)paren
 op_amp
 l_int|0xff
 )paren
@@ -5389,6 +5414,41 @@ comma
 id|latency
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Special case for SiS630 : 630S/ET is ATA_100a */
+r_if
+c_cond
+(paren
+id|SiSHostChipInfo
+(braket
+id|i
+)braket
+dot
+id|host_id
+op_eq
+id|PCI_DEVICE_ID_SI_630
+)paren
+(brace
+multiline_comment|/* check host device rev id */
+r_if
+c_cond
+(paren
+id|devfn_rev
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+)paren
+op_ge
+l_int|0x30
+)paren
+(brace
+id|chipset_family
+op_assign
+id|ATA_100a
+suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* Make general config ops here&n;&t;   1/ tell IDE channels to operate in Compatibility mode only&n;&t;   2/ tell old chips to allow per drive IDE timings */

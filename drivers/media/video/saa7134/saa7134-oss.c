@@ -2919,7 +2919,7 @@ id|info
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.id
@@ -2930,11 +2930,9 @@ r_sizeof
 (paren
 id|info.id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.name
@@ -2945,8 +2943,6 @@ r_sizeof
 (paren
 id|info.name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|info.modify_counter
@@ -3003,7 +2999,7 @@ id|info
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.id
@@ -3014,11 +3010,9 @@ r_sizeof
 (paren
 id|info.id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.name
@@ -3029,8 +3023,6 @@ r_sizeof
 (paren
 id|info.name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if

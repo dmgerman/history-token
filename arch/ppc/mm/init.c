@@ -32,13 +32,14 @@ macro_line|#endif
 macro_line|#endif
 DECL|macro|MAX_LOW_MEM
 mdefine_line|#define MAX_LOW_MEM&t;CONFIG_LOWMEM_SIZE
-DECL|variable|mmu_gathers
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 DECL|variable|total_memory
 r_int
@@ -74,7 +75,7 @@ DECL|variable|boot_mapsize
 r_int
 id|boot_mapsize
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 DECL|variable|agp_special_page
 r_int
 r_int
@@ -1528,7 +1529,7 @@ id|addr
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
-macro_line|#if defined(CONFIG_ALL_PPC)
+macro_line|#ifdef CONFIG_PPC_OF
 multiline_comment|/* mark the RTAS pages as reserved */
 r_if
 c_cond
@@ -1580,6 +1581,8 @@ id|addr
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
 c_cond
 (paren
@@ -1595,7 +1598,7 @@ id|agp_special_page
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* defined(CONFIG_ALL_PPC) */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1877,7 +1880,7 @@ comma
 id|sysmap_size
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_ALL_PPC)
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
 c_cond
 (paren
@@ -1892,7 +1895,7 @@ comma
 id|agp_special_page
 )paren
 suffix:semicolon
-macro_line|#endif /* defined(CONFIG_ALL_PPC) */
+macro_line|#endif
 multiline_comment|/* Make sure all our pagetable pages have page-&gt;mapping&n;&t;   and page-&gt;index set correctly. */
 r_for
 c_loop
@@ -2087,7 +2090,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 multiline_comment|/* remove the RTAS pages from the available memory */
 r_if
 c_cond
@@ -2107,6 +2110,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* remove the sysmap pages from the available memory */
 r_if
 c_cond
@@ -2130,6 +2134,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* Because of some uninorth weirdness, we need a page of&n;&t; * memory as high as possible (it must be outside of the&n;&t; * bus address seen as the AGP aperture). It will be used&n;&t; * by the r128 DRM driver&n;&t; * &n;&t; * FIXME: We need to make sure that page doesn&squot;t overlap any of the&bslash;&n;&t; * above. This could be done by improving mem_pieces_find to be able&n;&t; * to do a backward search from the end of the list.&n;&t; */
 r_if
 c_cond
@@ -2179,7 +2184,7 @@ id|agp_special_page
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 )brace
 multiline_comment|/* Mark some memory as reserved by removing it from phys_avail. */
 DECL|function|reserve_phys_mem

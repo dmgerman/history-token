@@ -24,26 +24,6 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
-r_extern
-r_void
-id|die
-c_func
-(paren
-r_const
-r_char
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|console_lock
-suffix:semicolon
 DECL|function|bust_spinlocks
 r_void
 id|bust_spinlocks
@@ -859,15 +839,6 @@ id|mm-&gt;mmap_sem
 suffix:semicolon
 id|bad_area_nosemaphore
 suffix:colon
-multiline_comment|/* User mode accesses just cause a SIGSEGV */
-r_if
-c_cond
-(paren
-id|error_code
-op_amp
-l_int|4
-)paren
-(brace
 macro_line|#ifdef CONFIG_IA32_EMULATION
 multiline_comment|/* 32bit vsyscall. map on demand. */
 r_if
@@ -885,9 +856,9 @@ l_int|0xffffe000
 op_logical_and
 id|address
 OL
-l_int|0xffffefff
-op_minus
-l_int|7
+l_int|0xffffe000
+op_plus
+id|PAGE_SIZE
 )paren
 (brace
 r_if
@@ -910,21 +881,68 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* User mode accesses just cause a SIGSEGV */
+r_if
+c_cond
+(paren
+id|error_code
+op_amp
+l_int|4
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|exception_trace
+op_logical_and
+op_logical_neg
+(paren
+id|tsk-&gt;ptrace
+op_amp
+id|PT_PTRACED
+)paren
+op_logical_and
+(paren
+id|tsk-&gt;sighand-&gt;action
+(braket
+id|SIGSEGV
+op_minus
+l_int|1
+)braket
+dot
+id|sa.sa_handler
+op_eq
+id|SIG_IGN
+op_logical_or
+(paren
+id|tsk-&gt;sighand-&gt;action
+(braket
+id|SIGSEGV
+op_minus
+l_int|1
+)braket
+dot
+id|sa.sa_handler
+op_eq
+id|SIG_DFL
+)paren
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s[%d] segfault at rip:%lx rsp:%lx adr:%lx err:%lx&bslash;n&quot;
+l_string|&quot;%s[%d]: segfault at %016lx rip %016lx rsp %016lx error %lx&bslash;n&quot;
 comma
 id|tsk-&gt;comm
 comma
 id|tsk-&gt;pid
 comma
+id|address
+comma
 id|regs-&gt;rip
 comma
 id|regs-&gt;rsp
-comma
-id|address
 comma
 id|error_code
 )paren
@@ -993,36 +1011,13 @@ id|regs-&gt;rip
 op_assign
 id|fixup-&gt;fixup
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_logical_and
-id|exception_trace
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: fixed kernel exception at %lx address %lx err:%ld&bslash;n&quot;
-comma
-id|current-&gt;comm
-comma
-id|regs-&gt;rip
-comma
-id|address
-comma
-id|error_code
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Oops. The kernel tried to access some bad page. We&squot;ll have to&n; * terminate things with extreme prejudice.&n; */
-id|bust_spinlocks
+id|oops_begin
 c_func
 (paren
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1075,7 +1070,7 @@ c_func
 id|address
 )paren
 suffix:semicolon
-id|die
+id|__die
 c_func
 (paren
 l_string|&quot;Oops&quot;
@@ -1085,12 +1080,7 @@ comma
 id|error_code
 )paren
 suffix:semicolon
-id|bust_spinlocks
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
+multiline_comment|/* never reached */
 id|do_exit
 c_func
 (paren

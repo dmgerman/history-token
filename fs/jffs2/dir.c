@@ -1,15 +1,29 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: dir.c,v 1.73 2002/08/26 15:00:51 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: dir.c,v 1.76 2003/05/26 09:50:38 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
-macro_line|#include &lt;linux/mtd/compatmac.h&gt; /* For completion */
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
+multiline_comment|/* Urgh. Please tell me there&squot;s a nicer way of doing this. */
+macro_line|#include &lt;linux/version.h&gt;
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,48)
+DECL|typedef|mknod_arg_t
+r_typedef
+r_int
+id|mknod_arg_t
+suffix:semicolon
+macro_line|#else
+DECL|typedef|mknod_arg_t
+r_typedef
+id|dev_t
+id|mknod_arg_t
+suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|jffs2_readdir
@@ -143,7 +157,7 @@ op_star
 comma
 r_int
 comma
-id|dev_t
+id|mknod_arg_t
 )paren
 suffix:semicolon
 r_static
@@ -1032,21 +1046,19 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|dir_i-&gt;i_mtime.tv_sec
+id|dir_i-&gt;i_mtime
 op_assign
-id|dir_i-&gt;i_ctime.tv_sec
+id|dir_i-&gt;i_ctime
 op_assign
+id|ITIME
+c_func
+(paren
 id|je32_to_cpu
 c_func
 (paren
 id|ri-&gt;ctime
 )paren
-suffix:semicolon
-id|dir_i-&gt;i_mtime.tv_nsec
-op_assign
-id|dir_i-&gt;i_ctime.tv_nsec
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|jffs2_free_raw_inode
 c_func
@@ -2073,21 +2085,19 @@ id|fd
 )paren
 suffix:semicolon
 )brace
-id|dir_i-&gt;i_mtime.tv_sec
+id|dir_i-&gt;i_mtime
 op_assign
-id|dir_i-&gt;i_ctime.tv_sec
+id|dir_i-&gt;i_ctime
 op_assign
+id|ITIME
+c_func
+(paren
 id|je32_to_cpu
 c_func
 (paren
 id|rd-&gt;mctime
 )paren
-suffix:semicolon
-id|dir_i-&gt;i_mtime.tv_nsec
-op_assign
-id|dir_i-&gt;i_ctime.tv_nsec
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|jffs2_free_raw_dirent
 c_func
@@ -2773,21 +2783,19 @@ id|fd
 )paren
 suffix:semicolon
 )brace
-id|dir_i-&gt;i_mtime.tv_sec
+id|dir_i-&gt;i_mtime
 op_assign
-id|dir_i-&gt;i_ctime.tv_sec
+id|dir_i-&gt;i_ctime
 op_assign
+id|ITIME
+c_func
+(paren
 id|je32_to_cpu
 c_func
 (paren
 id|rd-&gt;mctime
 )paren
-suffix:semicolon
-id|dir_i-&gt;i_mtime.tv_nsec
-op_assign
-id|dir_i-&gt;i_ctime.tv_nsec
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|dir_i-&gt;i_nlink
 op_increment
@@ -2935,7 +2943,7 @@ comma
 r_int
 id|mode
 comma
-id|dev_t
+id|mknod_arg_t
 id|rdev
 )paren
 (brace
@@ -2980,8 +2988,7 @@ suffix:semicolon
 r_int
 id|namelen
 suffix:semicolon
-r_int
-r_int
+id|jint16_t
 id|dev
 suffix:semicolon
 r_int
@@ -3043,6 +3050,9 @@ id|mode
 (brace
 id|dev
 op_assign
+id|cpu_to_je16
+c_func
+(paren
 (paren
 id|MAJOR
 c_func
@@ -3057,6 +3067,7 @@ id|MINOR
 c_func
 (paren
 id|rdev
+)paren
 )paren
 suffix:semicolon
 id|devlen
@@ -3684,21 +3695,19 @@ id|fd
 )paren
 suffix:semicolon
 )brace
-id|dir_i-&gt;i_mtime.tv_sec
+id|dir_i-&gt;i_mtime
 op_assign
-id|dir_i-&gt;i_ctime.tv_sec
+id|dir_i-&gt;i_ctime
 op_assign
+id|ITIME
+c_func
+(paren
 id|je32_to_cpu
 c_func
 (paren
 id|rd-&gt;mctime
 )paren
-suffix:semicolon
-id|dir_i-&gt;i_mtime.tv_nsec
-op_assign
-id|dir_i-&gt;i_ctime.tv_nsec
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|jffs2_free_raw_dirent
 c_func

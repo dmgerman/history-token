@@ -435,7 +435,7 @@ op_assign
 id|llc_sk_alloc
 c_func
 (paren
-id|parent-&gt;family
+id|parent-&gt;sk_family
 comma
 id|GFP_ATOMIC
 )paren

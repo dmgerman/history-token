@@ -1,13 +1,11 @@
-multiline_comment|/*&n; * $Id: ctctty.c,v 1.10 2003/03/21 18:47:31 aberg Exp $&n; *&n; * CTC / ESCON network driver, tty interface.&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * $Id: ctctty.c,v 1.11 2003/05/06 09:40:55 mschwide Exp $&n; *&n; * CTC / ESCON network driver, tty interface.&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_DEVFS_FS
-macro_line|#  include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &quot;ctctty.h&quot;
 DECL|macro|CTC_TTY_MAJOR
 mdefine_line|#define CTC_TTY_MAJOR       43
@@ -37,8 +35,6 @@ DECL|macro|CTC_TTY_XMIT_SIZE
 mdefine_line|#define CTC_TTY_XMIT_SIZE              1024 /* Default bufsize for write    */
 DECL|macro|CTC_SERIAL_XMIT_MAX
 mdefine_line|#define CTC_SERIAL_XMIT_MAX            4000 /* Maximum bufsize for write    */
-DECL|macro|CTC_SERIAL_TYPE_NORMAL
-mdefine_line|#define CTC_SERIAL_TYPE_NORMAL            1
 multiline_comment|/* Private data (similar to async_struct in &lt;linux/serial.h&gt;) */
 r_typedef
 r_struct
@@ -206,27 +202,6 @@ DECL|macro|MODEM_DO_RESTART
 mdefine_line|#define MODEM_DO_RESTART
 DECL|macro|CTC_TTY_NAME
 mdefine_line|#define CTC_TTY_NAME &quot;ctctty&quot;
-macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|variable|ctc_ttyname
-r_static
-r_char
-op_star
-id|ctc_ttyname
-op_assign
-l_string|&quot;ctc/&quot;
-id|CTC_TTY_NAME
-l_string|&quot;%d&quot;
-suffix:semicolon
-macro_line|#else
-DECL|variable|ctc_ttyname
-r_static
-r_char
-op_star
-id|ctc_ttyname
-op_assign
-id|CTC_TTY_NAME
-suffix:semicolon
-macro_line|#endif
 DECL|variable|ctc_tty_magic
 r_static
 id|__u32
@@ -5028,9 +5003,14 @@ id|device-&gt;magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|device-&gt;devfs_name
+op_assign
+l_string|&quot;ctc/&quot;
+id|CTC_TTY_NAME
+suffix:semicolon
 id|device-&gt;name
 op_assign
-id|ctc_ttyname
+id|CTC_TTY_NAME
 suffix:semicolon
 id|device-&gt;major
 op_assign
@@ -5050,7 +5030,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|device-&gt;subtype
 op_assign
-id|CTC_SERIAL_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|device-&gt;init_termios
 op_assign

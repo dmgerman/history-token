@@ -2344,7 +2344,7 @@ id|fp
 suffix:semicolon
 )brace
 DECL|function|bbc_envctrl_init
-r_void
+r_int
 id|bbc_envctrl_init
 c_func
 (paren
@@ -2368,6 +2368,11 @@ l_int|0
 suffix:semicolon
 r_int
 id|devidx
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|err
 op_assign
 l_int|0
 suffix:semicolon
@@ -2442,6 +2447,8 @@ id|fan_index
 op_ne
 l_int|0
 )paren
+id|err
+op_assign
 id|kernel_thread
 c_func
 (paren
@@ -2453,6 +2460,9 @@ id|CLONE_FS
 op_or
 id|CLONE_FILES
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|destroy_one_temp

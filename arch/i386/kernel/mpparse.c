@@ -157,14 +157,6 @@ r_int
 r_int
 id|phys_cpu_present_map
 suffix:semicolon
-macro_line|#ifndef CONFIG_X86_GENERICARCH
-DECL|variable|x86_summit
-r_int
-id|x86_summit
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 DECL|variable|bios_cpu_apicid
 id|u8
 id|bios_cpu_apicid
@@ -690,9 +682,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|m-&gt;mpc_apicid
-OG
 id|MAX_APICS
+op_minus
+id|m-&gt;mpc_apicid
+op_le
+l_int|0
 )paren
 (brace
 id|printk
@@ -3270,9 +3264,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|id
-op_ge
 id|MAX_APICS
+op_minus
+id|id
+op_le
+l_int|0
 )paren
 (brace
 id|printk
@@ -4396,7 +4392,7 @@ id|bit
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Parsing through the PCI Interrupt Routing Table (PRT) and program&n;&t; * routing for all static (IOAPIC-direct) entries.&n;&t; */
+multiline_comment|/*&n;&t; * Parsing through the PCI Interrupt Routing Table (PRT) and program&n;&t; * routing for all entries.&n;&t; */
 id|list_for_each
 c_func
 (paren
@@ -4449,6 +4445,16 @@ r_else
 id|irq
 op_assign
 id|entry-&gt;link.index
+suffix:semicolon
+multiline_comment|/* Don&squot;t set up the ACPI SCI because it&squot;s already set up */
+r_if
+c_cond
+(paren
+id|acpi_fadt.sci_int
+op_eq
+id|irq
+)paren
+r_continue
 suffix:semicolon
 id|ioapic
 op_assign

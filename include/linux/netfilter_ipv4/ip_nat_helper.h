@@ -3,6 +3,7 @@ DECL|macro|_IP_NAT_HELPER_H
 mdefine_line|#define _IP_NAT_HELPER_H
 multiline_comment|/* NAT protocol helper routines. */
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 r_struct
 id|sk_buff
 suffix:semicolon
@@ -10,9 +11,6 @@ multiline_comment|/* Flags */
 multiline_comment|/* NAT helper must be called on every packet (for TCP) */
 DECL|macro|IP_NAT_HELPER_F_ALWAYS
 mdefine_line|#define IP_NAT_HELPER_F_ALWAYS&t;&t;0x01
-multiline_comment|/* Standalone NAT helper, without a conntrack part */
-DECL|macro|IP_NAT_HELPER_F_STANDALONE
-mdefine_line|#define IP_NAT_HELPER_F_STANDALONE&t;0x02
 DECL|struct|ip_nat_helper
 r_struct
 id|ip_nat_helper

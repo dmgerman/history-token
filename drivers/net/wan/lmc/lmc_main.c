@@ -1,6 +1,5 @@
-multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n;  * All rights reserved.  www.lanmedia.com&n;  *&n;  * This code is written by:&n;  * Andrew Stanley-Jones (asj@cban.com)&n;  * Rob Braun (bbraun@vix.com),&n;  * Michael Graff (explorer@vix.com) and&n;  * Matt Thomas (matt@3am-software.com).&n;  *&n;  * With Help By:&n;  * David Boggs&n;  * Ron Crane&n;  * Allan Cox&n;  *&n;  * This software may be used and distributed according to the terms&n;  * of the GNU General Public License version 2, incorporated herein by reference.&n;  *&n;  * Driver for the LanMedia LMC5200, LMC5245, LMC1000, LMC1200 cards.&n;  *&n;  * To control link specific options lmcctl is required.&n;  * It can be obtained from ftp.lanmedia.com.&n;  *&n;  * Linux driver notes:&n;  * Linux uses the device struct lmc_private to pass private information&n;  * arround.&n;  *&n;  * The initialization portion of this driver (the lmc_reset() and the&n;  * lmc_dec_reset() functions, as well as the led controls and the&n;  * lmc_initcsrs() functions.&n;  *&n;  * The watchdog function runs every second and checks to see if&n;  * we still have link, and that the timing source is what we expected&n;  * it to be.  If link is lost, the interface is marked down, and&n;  * we no longer can transmit.&n;  *&n;  */
+multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n;  * All rights reserved.  www.lanmedia.com&n;  *&n;  * This code is written by:&n;  * Andrew Stanley-Jones (asj@cban.com)&n;  * Rob Braun (bbraun@vix.com),&n;  * Michael Graff (explorer@vix.com) and&n;  * Matt Thomas (matt@3am-software.com).&n;  *&n;  * With Help By:&n;  * David Boggs&n;  * Ron Crane&n;  * Alan Cox&n;  *&n;  * This software may be used and distributed according to the terms&n;  * of the GNU General Public License version 2, incorporated herein by reference.&n;  *&n;  * Driver for the LanMedia LMC5200, LMC5245, LMC1000, LMC1200 cards.&n;  *&n;  * To control link specific options lmcctl is required.&n;  * It can be obtained from ftp.lanmedia.com.&n;  *&n;  * Linux driver notes:&n;  * Linux uses the device struct lmc_private to pass private information&n;  * arround.&n;  *&n;  * The initialization portion of this driver (the lmc_reset() and the&n;  * lmc_dec_reset() functions, as well as the led controls and the&n;  * lmc_initcsrs() functions.&n;  *&n;  * The watchdog function runs every second and checks to see if&n;  * we still have link, and that the timing source is what we expected&n;  * it to be.  If link is lost, the interface is marked down, and&n;  * we no longer can transmit.&n;  *&n;  */
 multiline_comment|/* $Id: lmc_main.c,v 1.36 2000/04/11 05:25:25 asj Exp $ */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -13,9 +12,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20155
-macro_line|#include &lt;linux/bios32.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -27,13 +23,8 @@ macro_line|#include &lt;asm/processor.h&gt;             /* Processor type for ca
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20200
 macro_line|#include &lt;asm/uaccess.h&gt;
 singleline_comment|//#include &lt;asm/spinlock.h&gt;
-macro_line|#else&t;&t;&t;&t;/* 2.0 kernel */
-DECL|macro|ARPHRD_HDLC
-mdefine_line|#define ARPHRD_HDLC 513
-macro_line|#endif
 DECL|macro|DRIVER_MAJOR_VERSION
 mdefine_line|#define DRIVER_MAJOR_VERSION     1
 DECL|macro|DRIVER_MINOR_VERSION
@@ -42,7 +33,6 @@ DECL|macro|DRIVER_SUB_VERSION
 mdefine_line|#define DRIVER_SUB_VERSION       0
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION  ((DRIVER_MAJOR_VERSION &lt;&lt; 8) + DRIVER_MINOR_VERSION)
-macro_line|#include &quot;lmc_ver.h&quot;
 macro_line|#include &quot;lmc.h&quot;
 macro_line|#include &quot;lmc_var.h&quot;
 macro_line|#include &quot;lmc_ioctl.h&quot;
@@ -250,7 +240,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|lmc_interrupt
 c_func
 (paren
@@ -375,7 +365,6 @@ r_const
 id|sc
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20363
 r_static
 r_void
 id|lmc_driver_timeout
@@ -394,7 +383,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * linux reserves 16 device specific IOCTLs.  We call them&n; * LMCIOC* to control various bits of our world.&n; */
 DECL|function|lmc_ioctl
 r_int
@@ -475,7 +463,10 @@ r_case
 id|LMCIOCGINFO
 suffix:colon
 multiline_comment|/*fold01*/
-id|LMC_COPY_TO_USER
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 id|ifr-&gt;ifr_data
@@ -488,6 +479,10 @@ r_sizeof
 id|lmc_ctl_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|ret
 op_assign
@@ -548,7 +543,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|LMC_COPY_FROM_USER
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -561,6 +559,10 @@ r_sizeof
 id|lmc_ctl_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|sc-&gt;lmc_media-&gt;set_status
 (paren
@@ -663,7 +665,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|LMC_COPY_FROM_USER
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -676,6 +681,10 @@ r_sizeof
 id|u_int16_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -796,7 +805,10 @@ id|sc-&gt;lmc_xinfo.Magic1
 op_assign
 l_int|0xDEADBEEF
 suffix:semicolon
-id|LMC_COPY_TO_USER
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 id|ifr-&gt;ifr_data
@@ -810,6 +822,10 @@ r_struct
 id|lmc_xinfo
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|ret
 op_assign
@@ -984,7 +1000,10 @@ op_amp
 id|T1FRAMER_SEF_MASK
 suffix:semicolon
 )brace
-id|LMC_COPY_TO_USER
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 id|ifr-&gt;ifr_data
@@ -998,6 +1017,10 @@ r_struct
 id|lmc_statistics
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|ret
 op_assign
@@ -1109,7 +1132,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|LMC_COPY_FROM_USER
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -1122,6 +1148,10 @@ r_sizeof
 id|lmc_ctl_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|sc-&gt;lmc_media
 op_member_access_from_pointer
@@ -1232,7 +1262,10 @@ macro_line|#ifdef DEBUG
 r_case
 id|LMCIOCDUMPEVENTLOG
 suffix:colon
-id|LMC_COPY_TO_USER
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 id|ifr-&gt;ifr_data
@@ -1245,8 +1278,15 @@ r_sizeof
 id|u32
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
-id|LMC_COPY_TO_USER
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 id|ifr-&gt;ifr_data
@@ -1263,6 +1303,10 @@ r_sizeof
 id|lmcEventLogBuf
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|ret
 op_assign
@@ -1323,13 +1367,16 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;             * Stop the xwitter whlie we restart the hardware&n;             */
-id|LMC_XMITTER_BUSY
+id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|LMC_COPY_FROM_USER
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -1343,6 +1390,10 @@ r_struct
 id|lmc_xilinx_control
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_switch
 c_cond
@@ -2211,7 +2262,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|LMC_XMITTER_FREE
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -2298,7 +2349,9 @@ suffix:semicolon
 id|u_int32_t
 id|ticks
 suffix:semicolon
-id|LMC_SPIN_FLAGS
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|sc
 op_assign
@@ -2827,23 +2880,6 @@ id|u_int16_t
 id|AdapModelNum
 suffix:semicolon
 multiline_comment|/*&n;     * Allocate our own device structure&n;     */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20363
-id|dev
-op_assign
-id|kmalloc
-(paren
-r_sizeof
-(paren
-r_struct
-id|ppp_device
-)paren
-op_plus
-l_int|8
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-macro_line|#else
 id|dev
 op_assign
 id|kmalloc
@@ -2859,7 +2895,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3072,7 +3107,6 @@ id|dev-&gt;set_config
 op_assign
 id|lmc_set_config
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20363
 id|dev-&gt;tx_timeout
 op_assign
 id|lmc_driver_timeout
@@ -3084,7 +3118,6 @@ id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/* 1 second */
-macro_line|#endif
 multiline_comment|/*&n;     * Why were we changing this???&n;     dev-&gt;tx_queue_len = 100;&n;     */
 multiline_comment|/* Init the spin lock so can call it latter */
 id|spin_lock_init
@@ -3093,8 +3126,6 @@ c_func
 op_amp
 id|sc-&gt;lmc_lock
 )paren
-suffix:semicolon
-id|LMC_SETUP_20_DEV
 suffix:semicolon
 id|printk
 (paren
@@ -3527,23 +3558,6 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* The card is only available on PCI, so if we don&squot;t have a&n;     * PCI bus, we are in trouble.&n;     */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|LMC_PCI_PRESENT
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/*        printk (&quot;%s: We really want a pci bios!&bslash;n&quot;, dev-&gt;name);*/
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* Loop basically until we don&squot;t find anymore. */
 r_while
 c_loop
@@ -3806,15 +3820,9 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20200
 r_return
 id|foundaddr
 suffix:semicolon
-macro_line|#else
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* After this is called, packets can be sent.&n; * Does not initialize the addresses&n; */
 DECL|function|lmc_open
@@ -4043,18 +4051,12 @@ id|dev-&gt;do_ioctl
 op_assign
 id|lmc_ioctl
 suffix:semicolon
-id|LMC_XMITTER_INIT
+id|netif_start_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20363
-id|dev-&gt;start
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|sc-&gt;stats.tx_tbusy0
 op_increment
 suffix:semicolon
@@ -4243,7 +4245,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 singleline_comment|//dev-&gt;flags |= IFF_RUNNING;
-id|LMC_XMITTER_FREE
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -4401,7 +4403,7 @@ l_string|&quot;lmc_ifdown in&quot;
 suffix:semicolon
 multiline_comment|/* Don&squot;t let anything else go on right now */
 singleline_comment|//    dev-&gt;start = 0;
-id|LMC_XMITTER_BUSY
+id|netif_stop_queue
 c_func
 (paren
 id|dev
@@ -4556,21 +4558,12 @@ id|skb
 op_ne
 l_int|NULL
 )paren
-(brace
-id|LMC_SKB_FREE
+id|dev_kfree_skb
 c_func
 (paren
 id|skb
-comma
-l_int|1
 )paren
 suffix:semicolon
-id|LMC_DEV_KFREE_SKB
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
 id|sc-&gt;lmc_rxq
 (braket
 id|i
@@ -4604,7 +4597,8 @@ id|i
 op_ne
 l_int|NULL
 )paren
-id|LMC_DEV_KFREE_SKB
+id|dev_kfree_skb
+c_func
 (paren
 id|sc-&gt;lmc_txq
 (braket
@@ -4627,7 +4621,7 @@ comma
 id|LMC_MII16_LED_ALL
 )paren
 suffix:semicolon
-id|LMC_XMITTER_FREE
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -4653,7 +4647,7 @@ suffix:semicolon
 multiline_comment|/* Interrupt handling routine.  This will take an incoming packet, or clean&n; * up after a trasmit.&n; */
 DECL|function|lmc_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|lmc_interrupt
 (paren
 r_int
@@ -4706,6 +4700,11 @@ r_int
 id|max_work
 op_assign
 id|LMC_RXDESCS
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|lmc_trace
 c_func
@@ -4765,6 +4764,10 @@ op_amp
 id|sc-&gt;lmc_intrmask
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;         * Clear interrupt bits, we handle all case below&n;         */
 id|LMC_CSR_WRITE
 (paren
@@ -4963,7 +4966,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20200
 id|sc-&gt;stats.tx_bytes
 op_add_assign
 id|sc-&gt;lmc_txring
@@ -4975,12 +4977,11 @@ id|length
 op_amp
 l_int|0x7ff
 suffix:semicolon
-macro_line|#endif
 id|sc-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|//                LMC_DEV_KFREE_SKB (sc-&gt;lmc_txq[i]);
+singleline_comment|//                dev_kfree_skb(sc-&gt;lmc_txq[i]);
 id|dev_kfree_skb_irq
 c_func
 (paren
@@ -5043,7 +5044,7 @@ id|sc-&gt;lmc_txfull
 op_assign
 l_int|0
 suffix:semicolon
-id|LMC_XMITTER_FREE
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -5052,14 +5053,6 @@ suffix:semicolon
 id|sc-&gt;stats.tx_tbusy0
 op_increment
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20363
-id|mark_bh
-(paren
-id|NET_BH
-)paren
-suffix:semicolon
-multiline_comment|/* Tell Linux to give me more packets */
-macro_line|#endif
 macro_line|#ifdef DEBUG
 id|sc-&gt;stats.dirtyTx
 op_assign
@@ -5073,12 +5066,6 @@ id|sc-&gt;stats.lmc_txfull
 op_assign
 id|sc-&gt;lmc_txfull
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20363
-id|sc-&gt;stats.tbusy
-op_assign
-id|dev-&gt;tbusy
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 id|sc-&gt;lmc_taint_tx
 op_assign
@@ -5277,6 +5264,13 @@ comma
 l_string|&quot;lmc_interrupt out&quot;
 )paren
 suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 DECL|function|lmc_start_xmit
 r_static
@@ -5310,7 +5304,9 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|LMC_SPIN_FLAGS
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|lmc_trace
 c_func
@@ -5333,170 +5329,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * If the transmitter is busy&n;     * this must be the 5 second polling&n;     * from the kernel which called us.&n;     * Poke the chip and try to get it running&n;     *&n;     */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20363
-r_if
-c_cond
-(paren
-id|dev-&gt;tbusy
-op_ne
-l_int|0
-)paren
-(brace
-id|u32
-id|csr6
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Xmitter busy|&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|sc-&gt;stats.tx_tbusy_calls
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|jiffies
-op_minus
-id|dev-&gt;trans_start
-OL
-id|TX_TIMEOUT
-)paren
-(brace
-id|ret
-op_assign
-l_int|1
-suffix:semicolon
-r_goto
-id|lmc_start_xmit_bug_out
-suffix:semicolon
-)brace
-multiline_comment|/*&n;         * Chip seems to have locked up&n;         * Reset it&n;         * This whips out all our decriptor&n;         * table and starts from scartch&n;         */
-id|LMC_EVENT_LOG
-c_func
-(paren
-id|LMC_EVENT_XMTPRCTMO
-comma
-id|LMC_CSR_READ
-(paren
-id|sc
-comma
-id|csr_status
-)paren
-comma
-id|sc-&gt;stats.tx_ProcTimeout
-)paren
-suffix:semicolon
-id|lmc_running_reset
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|LMC_EVENT_LOG
-c_func
-(paren
-id|LMC_EVENT_RESET1
-comma
-id|LMC_CSR_READ
-(paren
-id|sc
-comma
-id|csr_status
-)paren
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|LMC_EVENT_LOG
-c_func
-(paren
-id|LMC_EVENT_RESET2
-comma
-id|lmc_mii_readreg
-(paren
-id|sc
-comma
-l_int|0
-comma
-l_int|16
-)paren
-comma
-id|lmc_mii_readreg
-(paren
-id|sc
-comma
-l_int|0
-comma
-l_int|17
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* restart the tx processes */
-id|csr6
-op_assign
-id|LMC_CSR_READ
-(paren
-id|sc
-comma
-id|csr_command
-)paren
-suffix:semicolon
-id|LMC_CSR_WRITE
-(paren
-id|sc
-comma
-id|csr_command
-comma
-id|csr6
-op_or
-l_int|0x0002
-)paren
-suffix:semicolon
-id|LMC_CSR_WRITE
-(paren
-id|sc
-comma
-id|csr_command
-comma
-id|csr6
-op_or
-l_int|0x2002
-)paren
-suffix:semicolon
-multiline_comment|/* immediate transmit */
-id|LMC_CSR_WRITE
-(paren
-id|sc
-comma
-id|csr_txpoll
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|sc-&gt;stats.tx_errors
-op_increment
-suffix:semicolon
-id|sc-&gt;stats.tx_ProcTimeout
-op_increment
-suffix:semicolon
-multiline_comment|/* -baz */
-id|dev-&gt;trans_start
-op_assign
-id|jiffies
-suffix:semicolon
-id|ret
-op_assign
-l_int|1
-suffix:semicolon
-r_goto
-id|lmc_start_xmit_bug_out
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* normal path, tbusy known to be zero */
 id|entry
 op_assign
@@ -5552,7 +5384,7 @@ id|flag
 op_assign
 l_int|0x60000000
 suffix:semicolon
-id|LMC_XMITTER_FREE
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -5577,7 +5409,7 @@ id|flag
 op_assign
 l_int|0xe0000000
 suffix:semicolon
-id|LMC_XMITTER_FREE
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -5602,7 +5434,7 @@ id|flag
 op_assign
 l_int|0x60000000
 suffix:semicolon
-id|LMC_XMITTER_FREE
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -5620,7 +5452,7 @@ id|sc-&gt;lmc_txfull
 op_assign
 l_int|1
 suffix:semicolon
-id|LMC_XMITTER_BUSY
+id|netif_stop_queue
 c_func
 (paren
 id|dev
@@ -5649,7 +5481,7 @@ id|sc-&gt;lmc_txfull
 op_assign
 l_int|1
 suffix:semicolon
-id|LMC_XMITTER_BUSY
+id|netif_stop_queue
 c_func
 (paren
 id|dev
@@ -5744,10 +5576,6 @@ id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20363
-id|lmc_start_xmit_bug_out
-suffix:colon
-macro_line|#endif
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -6058,14 +5886,6 @@ c_cond
 id|nsb
 )paren
 (brace
-id|LMC_SKB_FREE
-c_func
-(paren
-id|nsb
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|sc-&gt;lmc_rxq
 (braket
 id|i
@@ -6214,14 +6034,6 @@ c_cond
 id|nsb
 )paren
 (brace
-id|LMC_SKB_FREE
-c_func
-(paren
-id|nsb
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|sc-&gt;lmc_rxq
 (braket
 id|i
@@ -6494,7 +6306,9 @@ id|lmc_softc_t
 op_star
 id|sc
 suffix:semicolon
-id|LMC_SPIN_FLAGS
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|lmc_trace
 c_func
@@ -6555,14 +6369,15 @@ op_amp
 id|sc-&gt;stats
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
+DECL|function|init_lmc
+r_static
 r_int
-id|init_module
+id|__init
+id|init_lmc
+c_func
 (paren
 r_void
 )paren
-multiline_comment|/*fold00*/
 (brace
 id|printk
 (paren
@@ -6588,13 +6403,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|exit_lmc
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|exit_lmc
+c_func
 (paren
 r_void
 )paren
-multiline_comment|/*fold00*/
 (brace
 r_struct
 id|net_device
@@ -6718,7 +6535,20 @@ l_string|&quot;lmc module unloaded&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|init_lmc
+id|module_init
+c_func
+(paren
+id|init_lmc
+)paren
+suffix:semicolon
+DECL|variable|exit_lmc
+id|module_exit
+c_func
+(paren
+id|exit_lmc
+)paren
+suffix:semicolon
 DECL|function|lmc_mii_readreg
 r_int
 id|lmc_mii_readreg
@@ -7262,14 +7092,6 @@ suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|sc-&gt;lmc_device
-suffix:semicolon
-id|LMC_SKB_FREE
-c_func
-(paren
-id|skb
-comma
-l_int|1
-)paren
 suffix:semicolon
 multiline_comment|/* owned by 21140 */
 id|sc-&gt;lmc_rxring
@@ -8227,7 +8049,6 @@ l_string|&quot;lmc_initcsrs out&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20363
 DECL|function|lmc_driver_timeout
 r_static
 r_void
@@ -8248,7 +8069,9 @@ suffix:semicolon
 id|u32
 id|csr6
 suffix:semicolon
-id|LMC_SPIN_FLAGS
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|lmc_trace
 c_func
@@ -8446,5 +8269,4 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

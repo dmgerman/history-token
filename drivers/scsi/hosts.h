@@ -46,6 +46,10 @@ op_star
 id|proc_info
 )paren
 (paren
+r_struct
+id|Scsi_Host
+op_star
+comma
 r_char
 op_star
 comma
@@ -54,8 +58,6 @@ op_star
 op_star
 comma
 id|off_t
-comma
-r_int
 comma
 r_int
 comma
@@ -387,6 +389,22 @@ suffix:semicolon
 multiline_comment|/*&n;     * Default value for the blocking.  If the queue is empty, host_blocked&n;     * counts down in the request_fn until it restarts host operations as&n;     * zero is reached.  &n;     *&n;     * FIXME: This should probably be a value in the template */
 DECL|macro|SCSI_DEFAULT_HOST_BLOCKED
 mdefine_line|#define SCSI_DEFAULT_HOST_BLOCKED&t;7
+multiline_comment|/*&n;     * pointer to the sysfs class properties for this host&n;     */
+DECL|member|shost_attrs
+r_struct
+id|class_device_attribute
+op_star
+op_star
+id|shost_attrs
+suffix:semicolon
+multiline_comment|/*&n;     * Pointer to the SCSI device properties for this host&n;     */
+DECL|member|sdev_attrs
+r_struct
+id|device_attribute
+op_star
+op_star
+id|sdev_attrs
+suffix:semicolon
 DECL|typedef|Scsi_Host_Template
 )brace
 id|Scsi_Host_Template
@@ -833,55 +851,20 @@ r_return
 id|shost-&gt;host_gendev.parent
 suffix:semicolon
 )brace
-DECL|struct|Scsi_Device_Template
+DECL|struct|scsi_driver
 r_struct
-id|Scsi_Device_Template
+id|scsi_driver
 (brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|module
+DECL|member|owner
 r_struct
 id|module
 op_star
-id|module
+id|owner
 suffix:semicolon
-multiline_comment|/* Used for loadable modules */
-DECL|member|scsi_type
-r_int
-r_char
-id|scsi_type
-suffix:semicolon
-DECL|member|attach
-r_int
-(paren
-op_star
-id|attach
-)paren
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Attach devices to arrays */
-DECL|member|detach
-r_void
-(paren
-op_star
-id|detach
-)paren
-(paren
-id|Scsi_Device
-op_star
-)paren
+DECL|member|gendrv
+r_struct
+id|device_driver
+id|gendrv
 suffix:semicolon
 DECL|member|init_command
 r_int
@@ -890,11 +873,11 @@ op_star
 id|init_command
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Used by new queueing code. &n;                                           Selects command for blkdevs */
 DECL|member|rescan
 r_void
 (paren
@@ -902,38 +885,39 @@ op_star
 id|rescan
 )paren
 (paren
-id|Scsi_Device
+r_struct
+id|device
 op_star
 )paren
-suffix:semicolon
-DECL|member|scsi_driverfs_driver
-r_struct
-id|device_driver
-id|scsi_driverfs_driver
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Highlevel driver registration/unregistration.&n; */
+DECL|macro|to_scsi_driver
+mdefine_line|#define to_scsi_driver(drv) &bslash;&n;&t;container_of((drv), struct scsi_driver, gendrv)
 r_extern
 r_int
-id|scsi_register_device
+id|scsi_register_driver
 c_func
 (paren
 r_struct
-id|Scsi_Device_Template
+id|device_driver
 op_star
 )paren
 suffix:semicolon
+DECL|macro|scsi_unregister_driver
+mdefine_line|#define scsi_unregister_driver(drv) &bslash;&n;&t;driver_unregister(drv);
 r_extern
 r_int
-id|scsi_unregister_device
+id|scsi_register_interface
 c_func
 (paren
 r_struct
-id|Scsi_Device_Template
+id|class_interface
 op_star
 )paren
 suffix:semicolon
+DECL|macro|scsi_unregister_interface
+mdefine_line|#define scsi_unregister_interface(intf) &bslash;&n;&t;class_interface_unregister(intf)
 multiline_comment|/*&n; * HBA allocation/freeing.&n; */
 r_extern
 r_struct
@@ -1002,27 +986,6 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|Scsi_Host
-op_star
-id|scsi_host_hn_get
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_host_put
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * scsi_find_device - find a device given the host&n; * @shost:&t;SCSI host pointer&n; * @channel:&t;SCSI channel (zero if only one channel)&n; * @pun:&t;SCSI target number (physical unit number)&n; * @lun:&t;SCSI Logical Unit Number&n; **/
 DECL|function|scsi_find_device
 r_static
@@ -1082,5 +1045,16 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|scsi_sysfs_release_attributes
+c_func
+(paren
+r_struct
+id|SHT
+op_star
+id|hostt
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

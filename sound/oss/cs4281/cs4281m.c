@@ -9590,7 +9590,7 @@ id|SOUND_MIXER_INFO
 id|mixer_info
 id|info
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.id
@@ -9603,7 +9603,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.name
@@ -9660,7 +9660,7 @@ id|SOUND_OLD_MIXER_INFO
 id|_old_mixer_info
 id|info
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.id
@@ -9673,7 +9673,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.name
@@ -21174,39 +21174,6 @@ l_string|&quot;cs4281: cs4281_init_module()+ &bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* No PCI bus in this machine! */
-id|CS_DBGOUT
-c_func
-(paren
-id|CS_INIT
-op_or
-id|CS_FUNCTION
-comma
-l_int|2
-comma
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;cs4281: cs4281_init_module()- no pci bus found&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren

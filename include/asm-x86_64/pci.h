@@ -225,7 +225,7 @@ macro_line|#ifdef CONFIG_GART_IOMMU
 multiline_comment|/* Map a single buffer of the indicated size for DMA in streaming mode.&n; * The 32-bit bus address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory&n; * until either pci_unmap_single or pci_dma_sync_single is performed.&n; */
 r_extern
 id|dma_addr_t
-id|__pci_map_single
+id|pci_map_single
 c_func
 (paren
 r_struct
@@ -242,9 +242,6 @@ id|size
 comma
 r_int
 id|direction
-comma
-r_int
-id|flush
 )paren
 suffix:semicolon
 r_void
@@ -349,11 +346,11 @@ multiline_comment|/* The PCI address space does equal the physical memory&n; * a
 DECL|macro|PCI_DMA_BUS_IS_PHYS
 mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(0)
 macro_line|#else
-DECL|function|__pci_map_single
+DECL|function|pci_map_single
 r_static
 r_inline
 id|dma_addr_t
-id|__pci_map_single
+id|pci_map_single
 c_func
 (paren
 r_struct
@@ -370,9 +367,6 @@ id|size
 comma
 r_int
 id|direction
-comma
-r_int
-id|flush
 )paren
 (brace
 id|dma_addr_t
@@ -676,45 +670,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-DECL|function|pci_map_single
-r_static
-r_inline
-id|dma_addr_t
-id|pci_map_single
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_void
-op_star
-id|ptr
-comma
-r_int
-id|size
-comma
-r_int
-id|direction
-)paren
-(brace
-r_return
-id|__pci_map_single
-c_func
-(paren
-id|hwdev
-comma
-id|ptr
-comma
-id|size
-comma
-id|direction
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
 DECL|macro|pci_unmap_page
 mdefine_line|#define pci_unmap_page pci_unmap_single
 multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
@@ -886,24 +841,6 @@ DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;dma_address)
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
-multiline_comment|/* Return the index of the PCI controller for device. */
-DECL|function|pci_controller_num
-r_static
-r_inline
-r_int
-id|pci_controller_num
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|macro|HAVE_PCI_MMAP
 mdefine_line|#define HAVE_PCI_MMAP
 r_extern

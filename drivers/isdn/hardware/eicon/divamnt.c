@@ -1743,7 +1743,7 @@ id|S_IRUSR
 op_or
 id|S_IWUSR
 comma
-id|DivasMAINT
+l_string|&quot;DivasMAINT&quot;
 )paren
 suffix:semicolon
 r_return

@@ -1360,6 +1360,7 @@ comma
 id|ACPI_TYPE_DEVICE
 )paren
 suffix:semicolon
+multiline_comment|/* Remove local reference to the object */
 id|acpi_ut_remove_reference
 (paren
 id|obj_desc

@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
@@ -335,7 +336,7 @@ c_func
 id|DMA_MODE_WRITE
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_ALL_PPC)
+macro_line|#if defined(CONFIG_PPC_PREP)
 DECL|variable|_prep_type
 id|EXPORT_SYMBOL
 c_func
@@ -351,7 +352,7 @@ id|ucSystemType
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if !__INLINE_BITOPS
+macro_line|#if !defined(__INLINE_BITOPS)
 DECL|variable|set_bit
 id|EXPORT_SYMBOL
 c_func
@@ -649,6 +650,14 @@ c_func
 id|iounmap
 )paren
 suffix:semicolon
+DECL|variable|ioremap_bot
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioremap_bot
+)paren
+suffix:semicolon
+multiline_comment|/* aka VMALLOC_END */
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 DECL|variable|ppc_ide_md
 id|EXPORT_SYMBOL
@@ -865,6 +874,13 @@ c_func
 id|flush_dcache_page
 )paren
 suffix:semicolon
+DECL|variable|flush_tlb_kernel_range
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_tlb_kernel_range
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC
 DECL|variable|last_task_used_altivec
 id|EXPORT_SYMBOL
@@ -1045,7 +1061,7 @@ id|register_backlight_controller
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
-macro_line|#if defined(CONFIG_ALL_PPC)
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|variable|_machine
 id|EXPORT_SYMBOL
 c_func
@@ -1053,6 +1069,8 @@ c_func
 id|_machine
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_PMAC
 DECL|variable|sys_ctrler
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -1060,6 +1078,15 @@ c_func
 id|sys_ctrler
 )paren
 suffix:semicolon
+DECL|variable|pmac_newworld
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmac_newworld
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_OF
 DECL|variable|find_devices
 id|EXPORT_SYMBOL
 c_func
@@ -1151,14 +1178,7 @@ c_func
 id|pci_device_from_OF_node
 )paren
 suffix:semicolon
-DECL|variable|pmac_newworld
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmac_newworld
-)paren
-suffix:semicolon
-macro_line|#endif /* defined(CONFIG_ALL_PPC) */
+macro_line|#endif /* CONFIG_PPC_OF */
 macro_line|#if defined(CONFIG_BOOTX_TEXT)
 DECL|variable|btext_update_display
 id|EXPORT_SYMBOL
@@ -1168,7 +1188,7 @@ id|btext_update_display
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_SCSI) &amp;&amp; defined(CONFIG_ALL_PPC)
+macro_line|#if defined(CONFIG_SCSI) &amp;&amp; defined(CONFIG_PPC_PMAC)
 DECL|variable|note_scsi_host
 id|EXPORT_SYMBOL
 c_func
@@ -1602,7 +1622,7 @@ id|cpm_free_handler
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_8xx */
-macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_40x)
 DECL|variable|__res
 id|EXPORT_SYMBOL
 c_func
@@ -1678,7 +1698,7 @@ c_func
 id|cur_cpu_spec
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_ALL_PPC)
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_extern
 r_int
 r_int
@@ -1691,5 +1711,5 @@ c_func
 id|agp_special_page
 )paren
 suffix:semicolon
-macro_line|#endif /* defined(CONFIG_ALL_PPC) */
+macro_line|#endif
 eof

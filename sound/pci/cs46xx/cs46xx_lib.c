@@ -10869,6 +10869,46 @@ id|id
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+r_if
+c_cond
+(paren
+id|chip-&gt;nr_ac97_codecs
+op_eq
+l_int|1
+op_logical_and
+id|snd_cs46xx_codec_read
+c_func
+(paren
+id|chip
+comma
+id|AC97_VENDOR_ID2
+comma
+id|CS46XX_PRIMARY_CODEC_INDEX
+)paren
+op_eq
+l_int|0x592d
+)paren
+(brace
+multiline_comment|/* set primary cs4294 codec into Extended Audio Mode */
+id|snd_printdd
+c_func
+(paren
+l_string|&quot;setting EAM bit on cs4294 CODEC&bslash;n&quot;
+)paren
+suffix:semicolon
+id|snd_cs46xx_codec_write
+c_func
+(paren
+id|chip
+comma
+id|AC97_CSR_ACMODE
+comma
+l_int|0x200
+comma
+id|CS46XX_PRIMARY_CODEC_INDEX
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* do soundcard specific mixer setup */
 r_if
 c_cond

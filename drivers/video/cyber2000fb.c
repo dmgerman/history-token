@@ -4659,7 +4659,7 @@ id|info-&gt;info
 op_assign
 id|int_cfb_info
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info-&gt;dev_name
@@ -5388,7 +5388,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|default_font_storage

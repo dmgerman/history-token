@@ -22,13 +22,14 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/vaddrs.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;&t;/* bug in asm-generic/tlb.h: check_pgt_cache */
 macro_line|#include &lt;asm/tlb.h&gt;
-DECL|variable|mmu_gathers
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 DECL|variable|sparc_valid_addr_bitmap
 r_int

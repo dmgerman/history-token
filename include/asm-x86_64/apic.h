@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|macro|APIC_DEBUG
-mdefine_line|#define APIC_DEBUG 1
+mdefine_line|#define APIC_DEBUG 0
 macro_line|#if APIC_DEBUG
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...) printk(x)
@@ -279,6 +279,23 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|disable_lapic_nmi_watchdog
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|enable_lapic_nmi_watchdog
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_inline
+r_void
 id|nmi_watchdog_tick
 (paren
 r_struct
@@ -313,31 +330,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
 r_extern
 r_struct
-id|pm_dev
-op_star
-id|apic_pm_register
-c_func
-(paren
-id|pm_dev_t
-comma
-r_int
-r_int
-comma
-id|pm_callback
-)paren
+id|sys_device
+id|device_lapic
 suffix:semicolon
-r_extern
-r_void
-id|apic_pm_unregister
-c_func
-(paren
-r_struct
-id|pm_dev
-op_star
-)paren
-suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|check_nmi_watchdog

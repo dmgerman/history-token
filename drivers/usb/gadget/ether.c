@@ -81,6 +81,8 @@ DECL|macro|MIN_PACKET
 mdefine_line|#define MIN_PACKET&t;sizeof(struct ethhdr)
 DECL|macro|MAX_PACKET
 mdefine_line|#define&t;MAX_PACKET&t;ETH_DATA_LEN&t;/* biggest packet we&squot;ll rx/tx */
+DECL|macro|RX_EXTRA
+mdefine_line|#define RX_EXTRA&t;20&t;&t;/* guard against rx overflows */
 multiline_comment|/* FIXME allow high speed jumbograms */
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|struct|eth_dev
@@ -3374,7 +3376,7 @@ r_if
 c_cond
 (paren
 id|value
-OG
+op_ge
 l_int|0
 )paren
 (brace
@@ -3941,6 +3943,8 @@ id|ethhdr
 )paren
 op_plus
 id|dev-&gt;net.mtu
+op_plus
+id|RX_EXTRA
 )paren
 suffix:semicolon
 r_if

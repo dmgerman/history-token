@@ -320,7 +320,7 @@ id|error
 OL
 l_int|0
 )paren
-id|chunk-&gt;skb-&gt;sk-&gt;err
+id|chunk-&gt;skb-&gt;sk-&gt;sk_err
 op_assign
 op_minus
 id|error
@@ -1176,7 +1176,7 @@ id|nskb-&gt;sk
 )paren
 suffix:semicolon
 multiline_comment|/* Set up the IP options.  */
-multiline_comment|/* BUG: not implemented&n;&t; * For v4 this all lives somewhere in sk-&gt;opt...&n;&t; */
+multiline_comment|/* BUG: not implemented&n;&t; * For v4 this all lives somewhere in sk-&gt;sk_opt...&n;&t; */
 multiline_comment|/* Dump that on IP!  */
 r_if
 c_cond

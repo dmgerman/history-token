@@ -1027,10 +1027,10 @@ l_string|&quot;prepare to die: unrecognized cache type for Filter&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|FEXIT
+suffix:semicolon
 r_return
 id|ops
-suffix:semicolon
-id|FEXIT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Frobnicate the InterMezzo operations&n; *    this establishes the link between the InterMezzo file system&n; *    and the underlying file system used for the cache.&n; */

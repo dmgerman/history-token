@@ -20,6 +20,7 @@ macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/seq_file.h&gt;
 multiline_comment|/* This is for all connections with a full identity, no wildcards.&n; * New scheme, half the table is for TIME_WAIT, the other half is&n; * for the rest.  I&squot;ll experiment with dynamic table growth later.&n; */
 DECL|struct|tcp_ehash_bucket
 r_struct
@@ -51,7 +52,7 @@ suffix:semicolon
 multiline_comment|/* This is for listening sockets, thus all sockets which possess wildcards. */
 DECL|macro|TCP_LHTABLE_SIZE
 mdefine_line|#define TCP_LHTABLE_SIZE&t;32&t;/* Yes, really, this is all you need. */
-multiline_comment|/* There are a few simple rules, which allow for local port reuse by&n; * an application.  In essence:&n; *&n; *&t;1) Sockets bound to different interfaces may share a local port.&n; *&t;   Failing that, goto test 2.&n; *&t;2) If all sockets have sk-&gt;reuse set, and none of them are in&n; *&t;   TCP_LISTEN state, the port may be shared.&n; *&t;   Failing that, goto test 3.&n; *&t;3) If all sockets are bound to a specific inet_sk(sk)-&gt;rcv_saddr local&n; *&t;   address, and none of them are the same, the port may be&n; *&t;   shared.&n; *&t;   Failing this, the port cannot be shared.&n; *&n; * The interesting point, is test #2.  This is what an FTP server does&n; * all day.  To optimize this case we use a specific flag bit defined&n; * below.  As we add sockets to a bind bucket list, we perform a&n; * check of: (newsk-&gt;reuse &amp;&amp; (newsk-&gt;state != TCP_LISTEN))&n; * As long as all sockets added to a bind bucket pass this test,&n; * the flag bit will be set.&n; * The resulting situation is that tcp_v[46]_verify_bind() can just check&n; * for this flag bit, if it is set and the socket trying to bind has&n; * sk-&gt;reuse set, we don&squot;t even have to walk the owners list at all,&n; * we return that it is ok to bind this socket to the requested local port.&n; *&n; * Sounds like a lot of work, but it is worth it.  In a more naive&n; * implementation (ie. current FreeBSD etc.) the entire list of ports&n; * must be walked for each data port opened by an ftp server.  Needless&n; * to say, this does not scale at all.  With a couple thousand FTP&n; * users logged onto your box, isn&squot;t it nice to know that new data&n; * ports are created in O(1) time?  I thought so. ;-)&t;-DaveM&n; */
+multiline_comment|/* There are a few simple rules, which allow for local port reuse by&n; * an application.  In essence:&n; *&n; *&t;1) Sockets bound to different interfaces may share a local port.&n; *&t;   Failing that, goto test 2.&n; *&t;2) If all sockets have sk-&gt;sk_reuse set, and none of them are in&n; *&t;   TCP_LISTEN state, the port may be shared.&n; *&t;   Failing that, goto test 3.&n; *&t;3) If all sockets are bound to a specific inet_sk(sk)-&gt;rcv_saddr local&n; *&t;   address, and none of them are the same, the port may be&n; *&t;   shared.&n; *&t;   Failing this, the port cannot be shared.&n; *&n; * The interesting point, is test #2.  This is what an FTP server does&n; * all day.  To optimize this case we use a specific flag bit defined&n; * below.  As we add sockets to a bind bucket list, we perform a&n; * check of: (newsk-&gt;sk_reuse &amp;&amp; (newsk-&gt;sk_state != TCP_LISTEN))&n; * As long as all sockets added to a bind bucket pass this test,&n; * the flag bit will be set.&n; * The resulting situation is that tcp_v[46]_verify_bind() can just check&n; * for this flag bit, if it is set and the socket trying to bind has&n; * sk-&gt;sk_reuse set, we don&squot;t even have to walk the owners list at all,&n; * we return that it is ok to bind this socket to the requested local port.&n; *&n; * Sounds like a lot of work, but it is worth it.  In a more naive&n; * implementation (ie. current FreeBSD etc.) the entire list of ports&n; * must be walked for each data port opened by an ftp server.  Needless&n; * to say, this does not scale at all.  With a couple thousand FTP&n; * users logged onto your box, isn&squot;t it nice to know that new data&n; * ports are created in O(1) time?  I thought so. ;-)&t;-DaveM&n; */
 DECL|struct|tcp_bind_bucket
 r_struct
 id|tcp_bind_bucket
@@ -108,7 +109,7 @@ r_extern
 r_struct
 id|tcp_hashinfo
 (brace
-multiline_comment|/* This is for sockets with full identity only.  Sockets here will&n;&t; * always be without wildcards and will have the following invariant:&n;&t; *&n;&t; *          TCP_ESTABLISHED &lt;= sk-&gt;state &lt; TCP_CLOSE&n;&t; *&n;&t; * First half of the table is for sockets not in TIME_WAIT, second half&n;&t; * is for TIME_WAIT sockets only.&n;&t; */
+multiline_comment|/* This is for sockets with full identity only.  Sockets here will&n;&t; * always be without wildcards and will have the following invariant:&n;&t; *&n;&t; *          TCP_ESTABLISHED &lt;= sk-&gt;sk_state &lt; TCP_CLOSE&n;&t; *&n;&t; * First half of the table is for sockets not in TIME_WAIT, second half&n;&t; * is for TIME_WAIT sockets only.&n;&t; */
 DECL|member|__tcp_ehash
 r_struct
 id|tcp_ehash_bucket
@@ -300,160 +301,132 @@ DECL|struct|tcp_tw_bucket
 r_struct
 id|tcp_tw_bucket
 (brace
-multiline_comment|/* These _must_ match the beginning of struct sock precisely.&n;&t; * XXX Yes I know this is gross, but I&squot;d have to edit every single&n;&t; * XXX networking file if I created a &quot;struct sock_header&quot;. -DaveM&n;&t; */
-DECL|member|state
+multiline_comment|/*&n;&t; * Now struct sock also uses sock_common, so please just&n;&t; * don&squot;t add nothing before this first member (__tw_common) --acme&n;&t; */
+DECL|member|__tw_common
+r_struct
+id|sock_common
+id|__tw_common
+suffix:semicolon
+DECL|macro|tw_family
+mdefine_line|#define tw_family&t;&t;__tw_common.skc_family
+DECL|macro|tw_state
+mdefine_line|#define tw_state&t;&t;__tw_common.skc_state
+DECL|macro|tw_reuse
+mdefine_line|#define tw_reuse&t;&t;__tw_common.skc_reuse
+DECL|macro|tw_bound_dev_if
+mdefine_line|#define tw_bound_dev_if&t;&t;__tw_common.skc_bound_dev_if
+DECL|macro|tw_next
+mdefine_line|#define tw_next&t;&t;&t;__tw_common.skc_next
+DECL|macro|tw_pprev
+mdefine_line|#define tw_pprev&t;&t;__tw_common.skc_pprev
+DECL|macro|tw_bind_next
+mdefine_line|#define tw_bind_next&t;&t;__tw_common.skc_bind_next
+DECL|macro|tw_bind_pprev
+mdefine_line|#define tw_bind_pprev&t;&t;__tw_common.skc_bind_pprev
+DECL|macro|tw_refcnt
+mdefine_line|#define tw_refcnt&t;&t;__tw_common.skc_refcnt
+DECL|member|tw_substate
 r_volatile
 r_int
 r_char
-id|state
-comma
-multiline_comment|/* Connection state&t;      */
-DECL|member|substate
-id|substate
+id|tw_substate
 suffix:semicolon
-multiline_comment|/* &quot;zapped&quot; -&gt; &quot;substate&quot;     */
-DECL|member|reuse
+DECL|member|tw_rcv_wscale
 r_int
 r_char
-id|reuse
+id|tw_rcv_wscale
 suffix:semicolon
-multiline_comment|/* SO_REUSEADDR setting       */
-DECL|member|rcv_wscale
-r_int
-r_char
-id|rcv_wscale
-suffix:semicolon
-multiline_comment|/* also TW bucket specific    */
-DECL|member|bound_dev_if
-r_int
-id|bound_dev_if
-suffix:semicolon
-multiline_comment|/* Main hash linkage for various protocol lookup tables. */
-DECL|member|next
-r_struct
-id|sock
-op_star
-id|next
-suffix:semicolon
-DECL|member|pprev
-r_struct
-id|sock
-op_star
-op_star
-id|pprev
-suffix:semicolon
-DECL|member|bind_next
-r_struct
-id|sock
-op_star
-id|bind_next
-suffix:semicolon
-DECL|member|bind_pprev
-r_struct
-id|sock
-op_star
-op_star
-id|bind_pprev
-suffix:semicolon
-DECL|member|refcnt
-id|atomic_t
-id|refcnt
-suffix:semicolon
-DECL|member|family
-r_int
-r_int
-id|family
-suffix:semicolon
-multiline_comment|/* End of struct sock/struct tcp_tw_bucket shared layout */
-DECL|member|sport
+DECL|member|tw_sport
 id|__u16
-id|sport
+id|tw_sport
 suffix:semicolon
 multiline_comment|/* Socket demultiplex comparisons on incoming packets. */
 multiline_comment|/* these five are in inet_opt */
-DECL|member|daddr
+DECL|member|tw_daddr
 id|__u32
-id|daddr
+id|tw_daddr
 suffix:semicolon
-DECL|member|rcv_saddr
+DECL|member|tw_rcv_saddr
 id|__u32
-id|rcv_saddr
+id|tw_rcv_saddr
 suffix:semicolon
-DECL|member|dport
+DECL|member|tw_dport
 id|__u16
-id|dport
+id|tw_dport
 suffix:semicolon
-DECL|member|num
+DECL|member|tw_num
 id|__u16
-id|num
+id|tw_num
 suffix:semicolon
 multiline_comment|/* And these are ours. */
-DECL|member|hashent
+DECL|member|tw_hashent
 r_int
-id|hashent
+id|tw_hashent
 suffix:semicolon
-DECL|member|timeout
+DECL|member|tw_timeout
 r_int
-id|timeout
+id|tw_timeout
 suffix:semicolon
-DECL|member|rcv_nxt
+DECL|member|tw_rcv_nxt
 id|__u32
-id|rcv_nxt
+id|tw_rcv_nxt
 suffix:semicolon
-DECL|member|snd_nxt
+DECL|member|tw_snd_nxt
 id|__u32
-id|snd_nxt
+id|tw_snd_nxt
 suffix:semicolon
-DECL|member|rcv_wnd
+DECL|member|tw_rcv_wnd
 id|__u32
-id|rcv_wnd
+id|tw_rcv_wnd
 suffix:semicolon
-DECL|member|ts_recent
+DECL|member|tw_ts_recent
 id|__u32
-id|ts_recent
+id|tw_ts_recent
 suffix:semicolon
-DECL|member|ts_recent_stamp
+DECL|member|tw_ts_recent_stamp
 r_int
-id|ts_recent_stamp
+id|tw_ts_recent_stamp
 suffix:semicolon
-DECL|member|ttd
+DECL|member|tw_ttd
 r_int
 r_int
-id|ttd
+id|tw_ttd
 suffix:semicolon
-DECL|member|tb
+DECL|member|tw_tb
 r_struct
 id|tcp_bind_bucket
 op_star
-id|tb
+id|tw_tb
 suffix:semicolon
-DECL|member|next_death
+DECL|member|tw_next_death
 r_struct
 id|tcp_tw_bucket
 op_star
-id|next_death
+id|tw_next_death
 suffix:semicolon
-DECL|member|pprev_death
+DECL|member|tw_pprev_death
 r_struct
 id|tcp_tw_bucket
 op_star
 op_star
-id|pprev_death
+id|tw_pprev_death
 suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
-DECL|member|v6_daddr
+DECL|member|tw_v6_daddr
 r_struct
 id|in6_addr
-id|v6_daddr
+id|tw_v6_daddr
 suffix:semicolon
-DECL|member|v6_rcv_saddr
+DECL|member|tw_v6_rcv_saddr
 r_struct
 id|in6_addr
-id|v6_rcv_saddr
+id|tw_v6_rcv_saddr
 suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
+DECL|macro|tcptw_sk
+mdefine_line|#define tcptw_sk(__sk)&t;((struct tcp_tw_bucket *)(__sk))
 r_extern
 id|kmem_cache_t
 op_star
@@ -479,7 +452,7 @@ id|atomic_dec_and_test
 c_func
 (paren
 op_amp
-id|tw-&gt;refcnt
+id|tw-&gt;tw_refcnt
 )paren
 )paren
 (brace
@@ -571,15 +544,19 @@ DECL|macro|TCP_V4_ADDR_COOKIE
 mdefine_line|#define TCP_V4_ADDR_COOKIE(__name, __saddr, __daddr) &bslash;&n;&t;__u64 __name = (((__u64)(__daddr))&lt;&lt;32)|((__u64)(__saddr));
 macro_line|#endif /* __BIG_ENDIAN */
 DECL|macro|TCP_IPV4_MATCH
-mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(inet_sk(__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(inet_sk(__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;sk_bound_dev_if) || ((__sk)-&gt;sk_bound_dev_if == (__dif))))
+DECL|macro|TCP_IPV4_TW_MATCH
+mdefine_line|#define TCP_IPV4_TW_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(tcptw_sk(__sk)-&gt;tw_daddr))) == (__cookie)) &amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(tcptw_sk(__sk)-&gt;tw_dport))) == (__ports)) &amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;sk_bound_dev_if) || ((__sk)-&gt;sk_bound_dev_if == (__dif))))
 macro_line|#else /* 32-bit arch */
 DECL|macro|TCP_V4_ADDR_COOKIE
 mdefine_line|#define TCP_V4_ADDR_COOKIE(__name, __saddr, __daddr)
 DECL|macro|TCP_IPV4_MATCH
-mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;((inet_sk(__sk)-&gt;daddr&t;&t;&t;== (__saddr))&t;&amp;&amp;&t;&bslash;&n;&t; (inet_sk(__sk)-&gt;rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;((inet_sk(__sk)-&gt;daddr&t;&t;&t;== (__saddr))&t;&amp;&amp;&t;&bslash;&n;&t; (inet_sk(__sk)-&gt;rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;sk_bound_dev_if) || ((__sk)-&gt;sk_bound_dev_if == (__dif))))
+DECL|macro|TCP_IPV4_TW_MATCH
+mdefine_line|#define TCP_IPV4_TW_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;((tcptw_sk(__sk)-&gt;tw_daddr&t;&t;== (__saddr))&t;&amp;&amp;&t;&bslash;&n;&t; (tcptw_sk(__sk)-&gt;tw_rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(tcptw_sk(__sk)-&gt;tw_dport))) == (__ports)) &amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;sk_bound_dev_if) || ((__sk)-&gt;sk_bound_dev_if == (__dif))))
 macro_line|#endif /* 64-bit arch */
 DECL|macro|TCP_IPV6_MATCH
-mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;   &bslash;&n;&t;(((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;family&t;&t;== AF_INET6)&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;daddr, (__saddr))&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;   &bslash;&n;&t;(((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;sk_family&t;&t;== AF_INET6)&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;daddr, (__saddr))&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;sk_bound_dev_if) || ((__sk)-&gt;sk_bound_dev_if == (__dif))))
 multiline_comment|/* These can have wildcards, don&squot;t try too hard. */
 DECL|function|tcp_lhashfn
 r_static
@@ -707,11 +684,6 @@ DECL|macro|MAX_TCP_KEEPCNT
 mdefine_line|#define MAX_TCP_KEEPCNT&t;&t;127
 DECL|macro|MAX_TCP_SYNCNT
 mdefine_line|#define MAX_TCP_SYNCNT&t;&t;127
-multiline_comment|/* TIME_WAIT reaping mechanism. */
-DECL|macro|TCP_TWKILL_SLOTS
-mdefine_line|#define TCP_TWKILL_SLOTS&t;8&t;/* Please keep this a power of 2. */
-DECL|macro|TCP_TWKILL_PERIOD
-mdefine_line|#define TCP_TWKILL_PERIOD&t;(TCP_TIMEWAIT_LEN/TCP_TWKILL_SLOTS)
 DECL|macro|TCP_SYNQ_INTERVAL
 mdefine_line|#define TCP_SYNQ_INTERVAL&t;(HZ/5)&t;/* Period of SYNACK timer */
 DECL|macro|TCP_SYNQ_HSIZE
@@ -799,6 +771,13 @@ DECL|macro|TCP_TIME_PROBE0
 mdefine_line|#define TCP_TIME_PROBE0&t;&t;3&t;/* Zero window probe timer */
 DECL|macro|TCP_TIME_KEEPOPEN
 mdefine_line|#define TCP_TIME_KEEPOPEN&t;4&t;/* Keepalive timer */
+multiline_comment|/* Flags in tp-&gt;nonagle */
+DECL|macro|TCP_NAGLE_OFF
+mdefine_line|#define TCP_NAGLE_OFF&t;&t;1&t;/* Nagle&squot;s algo is disabled */
+DECL|macro|TCP_NAGLE_CORK
+mdefine_line|#define TCP_NAGLE_CORK&t;&t;2&t;/* Socket is corked&t;    */
+DECL|macro|TCP_NAGLE_PUSH
+mdefine_line|#define TCP_NAGLE_PUSH&t;&t;4&t;/* Cork is overriden for already queued data */
 multiline_comment|/* sysctl variables for tcp */
 r_extern
 r_int
@@ -3129,7 +3108,7 @@ op_assign
 id|large
 op_logical_and
 (paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_amp
 id|NETIF_F_TSO
 )paren
@@ -3371,10 +3350,10 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 OL
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 op_logical_and
 op_logical_neg
 id|tp-&gt;urg_data
@@ -3539,7 +3518,7 @@ suffix:semicolon
 DECL|macro|TCP_SKB_CB
 mdefine_line|#define TCP_SKB_CB(__skb)&t;((struct tcp_skb_cb *)&amp;((__skb)-&gt;cb[0]))
 DECL|macro|for_retrans_queue
-mdefine_line|#define for_retrans_queue(skb, sk, tp) &bslash;&n;&t;&t;for (skb = (sk)-&gt;write_queue.next;&t;&t;&t;&bslash;&n;&t;&t;     (skb != (tp)-&gt;send_head) &amp;&amp;&t;&t;&t;&bslash;&n;&t;&t;     (skb != (struct sk_buff *)&amp;(sk)-&gt;write_queue);&t;&bslash;&n;&t;&t;     skb=skb-&gt;next)
+mdefine_line|#define for_retrans_queue(skb, sk, tp) &bslash;&n;&t;&t;for (skb = (sk)-&gt;sk_write_queue.next;&t;&t;&t;&bslash;&n;&t;&t;     (skb != (tp)-&gt;send_head) &amp;&amp;&t;&t;&t;&bslash;&n;&t;&t;     (skb != (struct sk_buff *)&amp;(sk)-&gt;sk_write_queue);&t;&bslash;&n;&t;&t;     skb=skb-&gt;next)
 macro_line|#include &lt;net/tcp_ecn.h&gt;
 multiline_comment|/*&n; *&t;Compute minimal free write space needed to queue new packets. &n; */
 DECL|function|tcp_min_write_space
@@ -3556,7 +3535,7 @@ id|sk
 )paren
 (brace
 r_return
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 op_div
 l_int|2
 suffix:semicolon
@@ -3575,9 +3554,9 @@ id|sk
 )paren
 (brace
 r_return
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_minus
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 suffix:semicolon
 )brace
 multiline_comment|/* This determines how many packets are &quot;in the network&quot; to the best&n; * of our knowledge.  In many cases it is conservative, but where&n; * detailed information is available from the receiver (via SACK&n; * blocks etc.) we can make more aggressive calculations.&n; *&n; * Use this for decisions involving congestion control, use just&n; * tp-&gt;packets_out to determine if the send queue is empty or not.&n; *&n; * Read this equation as:&n; *&n; *&t;&quot;Packets sent once on transmission queue&quot; MINUS&n; *&t;&quot;Packets left network, but not honestly ACKed yet&quot; PLUS&n; *&t;&quot;Packets fast retransmitted&quot;&n; */
@@ -4048,9 +4027,11 @@ id|TCPCB_FLAG_FIN
 )paren
 op_logical_and
 (paren
+(paren
 id|nonagle
-op_eq
-l_int|2
+op_amp
+id|TCP_NAGLE_CORK
+)paren
 op_logical_or
 (paren
 op_logical_neg
@@ -4098,9 +4079,11 @@ multiline_comment|/* Don&squot;t be strict about the congestion window for the&n
 r_return
 (paren
 (paren
+(paren
 id|nonagle
-op_eq
-l_int|1
+op_amp
+id|TCP_NAGLE_PUSH
+)paren
 op_logical_or
 id|tp-&gt;urg_mode
 op_logical_or
@@ -4218,7 +4201,6 @@ id|skb
 )paren
 (brace
 r_return
-(paren
 id|skb-&gt;next
 op_eq
 (paren
@@ -4227,8 +4209,7 @@ id|sk_buff
 op_star
 )paren
 op_amp
-id|sk-&gt;write_queue
-)paren
+id|sk-&gt;sk_write_queue
 suffix:semicolon
 )brace
 multiline_comment|/* Push out any pending frames which were held back due to&n; * TCP_CORK or attempt at coalescing tiny packets.&n; * The socket must be locked by the caller.&n; */
@@ -4283,7 +4264,7 @@ id|skb
 )paren
 id|nonagle
 op_assign
-l_int|1
+id|TCP_NAGLE_PUSH
 suffix:semicolon
 r_if
 c_cond
@@ -4417,7 +4398,7 @@ id|skb
 )paren
 ques
 c_cond
-l_int|1
+id|TCP_NAGLE_PUSH
 suffix:colon
 id|tp-&gt;nonagle
 )paren
@@ -4679,7 +4660,7 @@ c_cond
 (paren
 id|tp-&gt;ucopy.memory
 OG
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 )paren
 (brace
 r_struct
@@ -4720,7 +4701,7 @@ l_int|NULL
 (brace
 id|sk
 op_member_access_from_pointer
-id|backlog_rcv
+id|sk_backlog_rcv
 c_func
 (paren
 id|sk
@@ -4757,7 +4738,7 @@ l_int|1
 id|wake_up_interruptible
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 r_if
@@ -4828,7 +4809,7 @@ id|state
 r_int
 id|oldstate
 op_assign
-id|sk-&gt;state
+id|sk-&gt;sk_state
 suffix:semicolon
 r_switch
 c_cond
@@ -4874,7 +4855,7 @@ c_func
 id|TcpEstabResets
 )paren
 suffix:semicolon
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|unhash
 c_func
@@ -4885,11 +4866,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;prev
+id|sk-&gt;sk_prev
 op_logical_and
 op_logical_neg
 (paren
-id|sk-&gt;userlocks
+id|sk-&gt;sk_userlocks
 op_amp
 id|SOCK_BINDPORT_LOCK
 )paren
@@ -4920,7 +4901,7 @@ id|TcpCurrEstab
 suffix:semicolon
 )brace
 multiline_comment|/* Change state AFTER socket is unhashed to avoid closed&n;&t; * socket sitting in hash tables.&n;&t; */
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|state
 suffix:semicolon
@@ -4974,7 +4955,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_assign
 id|SHUTDOWN_MASK
 suffix:semicolon
@@ -4982,18 +4963,17 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 )paren
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -5773,13 +5753,13 @@ r_return
 id|tcp_win_from_space
 c_func
 (paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 op_minus
 id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 )paren
 suffix:semicolon
@@ -5801,7 +5781,7 @@ r_return
 id|tcp_win_from_space
 c_func
 (paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 )paren
 suffix:semicolon
 )brace
@@ -5818,7 +5798,7 @@ op_star
 id|sk
 )paren
 (brace
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_decrement
 suffix:semicolon
 )brace
@@ -5835,7 +5815,7 @@ op_star
 id|sk
 )paren
 (brace
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_increment
 suffix:semicolon
 )brace
@@ -5853,9 +5833,9 @@ id|sk
 )paren
 (brace
 r_return
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 OG
-id|sk-&gt;max_ack_backlog
+id|sk-&gt;sk_max_ack_backlog
 suffix:semicolon
 )brace
 DECL|function|tcp_acceptq_queue
@@ -6350,11 +6330,11 @@ id|queue_shrunk
 op_assign
 l_int|1
 suffix:semicolon
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 op_sub_assign
 id|skb-&gt;truesize
 suffix:semicolon
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_add_assign
 id|skb-&gt;truesize
 suffix:semicolon
@@ -6383,11 +6363,11 @@ op_star
 id|skb
 )paren
 (brace
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 op_add_assign
 id|skb-&gt;truesize
 suffix:semicolon
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_sub_assign
 id|skb-&gt;truesize
 suffix:semicolon
@@ -6436,7 +6416,7 @@ id|sk
 r_if
 c_cond
 (paren
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_ge
 id|TCP_MEM_QUANTUM
 )paren
@@ -6494,30 +6474,30 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;userlocks
+id|sk-&gt;sk_userlocks
 op_amp
 id|SOCK_SNDBUF_LOCK
 )paren
 )paren
 (brace
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_assign
 id|min
 c_func
 (paren
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 comma
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 op_div
 l_int|2
 )paren
 suffix:semicolon
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_assign
 id|max
 c_func
 (paren
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 comma
 id|SOCK_MIN_SNDBUF
 )paren
@@ -6576,7 +6556,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_ge
 (paren
 r_int
@@ -6684,7 +6664,7 @@ id|sk
 r_if
 c_cond
 (paren
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_ge
 (paren
 r_int
@@ -6710,7 +6690,7 @@ op_assign
 id|alloc_pages
 c_func
 (paren
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 comma
 l_int|0
 )paren
@@ -6767,7 +6747,7 @@ id|__skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne
@@ -6831,10 +6811,10 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 suffix:semicolon
-id|sk-&gt;forward_alloc
+id|sk-&gt;sk_forward_alloc
 op_sub_assign
 id|skb-&gt;truesize
 suffix:semicolon
@@ -7090,14 +7070,14 @@ op_star
 id|dst
 )paren
 (brace
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_assign
 id|dst-&gt;dev-&gt;features
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_amp
 id|NETIF_F_TSO
 )paren
@@ -7105,11 +7085,11 @@ id|NETIF_F_TSO
 r_if
 c_cond
 (paren
-id|sk-&gt;no_largesend
+id|sk-&gt;sk_no_largesend
 op_logical_or
 id|dst-&gt;header_len
 )paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_and_assign
 op_complement
 id|NETIF_F_TSO
@@ -7223,5 +7203,129 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* /proc */
+DECL|enum|tcp_seq_states
+r_enum
+id|tcp_seq_states
+(brace
+DECL|enumerator|TCP_SEQ_STATE_LISTENING
+id|TCP_SEQ_STATE_LISTENING
+comma
+DECL|enumerator|TCP_SEQ_STATE_OPENREQ
+id|TCP_SEQ_STATE_OPENREQ
+comma
+DECL|enumerator|TCP_SEQ_STATE_ESTABLISHED
+id|TCP_SEQ_STATE_ESTABLISHED
+comma
+DECL|enumerator|TCP_SEQ_STATE_TIME_WAIT
+id|TCP_SEQ_STATE_TIME_WAIT
+comma
+)brace
+suffix:semicolon
+DECL|struct|tcp_seq_afinfo
+r_struct
+id|tcp_seq_afinfo
+(brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|family
+id|sa_family_t
+id|family
+suffix:semicolon
+DECL|member|seq_show
+r_int
+(paren
+op_star
+id|seq_show
+)paren
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+)paren
+suffix:semicolon
+DECL|member|seq_fops
+r_struct
+id|file_operations
+op_star
+id|seq_fops
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|tcp_iter_state
+r_struct
+id|tcp_iter_state
+(brace
+DECL|member|family
+id|sa_family_t
+id|family
+suffix:semicolon
+DECL|member|state
+r_enum
+id|tcp_seq_states
+id|state
+suffix:semicolon
+DECL|member|syn_wait_sk
+r_struct
+id|sock
+op_star
+id|syn_wait_sk
+suffix:semicolon
+DECL|member|bucket
+DECL|member|sbucket
+DECL|member|num
+DECL|member|uid
+r_int
+id|bucket
+comma
+id|sbucket
+comma
+id|num
+comma
+id|uid
+suffix:semicolon
+DECL|member|seq_ops
+r_struct
+id|seq_operations
+id|seq_ops
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_int
+id|tcp_proc_register
+c_func
+(paren
+r_struct
+id|tcp_seq_afinfo
+op_star
+id|afinfo
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tcp_proc_unregister
+c_func
+(paren
+r_struct
+id|tcp_seq_afinfo
+op_star
+id|afinfo
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* _TCP_H */
 eof

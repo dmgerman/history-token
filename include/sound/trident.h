@@ -41,18 +41,9 @@ multiline_comment|/* Trident chipsets have 1GB memory limit */
 macro_line|#ifdef __alpha__
 DECL|macro|TRIDENT_DMA_TYPE
 mdefine_line|#define TRIDENT_DMA_TYPE        SNDRV_DMA_TYPE_PCI_16MB
-DECL|macro|TRIDENT_GFP_FLAGS
-mdefine_line|#define TRIDENT_GFP_FLAGS&t;GFP_DMA
 macro_line|#else
 DECL|macro|TRIDENT_DMA_TYPE
 mdefine_line|#define TRIDENT_DMA_TYPE        SNDRV_DMA_TYPE_PCI
-macro_line|#if defined(__i386__) &amp;&amp; !defined(CONFIG_1GB)
-DECL|macro|TRIDENT_GFP_FLAGS
-mdefine_line|#define TRIDENT_GFP_FLAGS&t;GFP_DMA
-macro_line|#else
-DECL|macro|TRIDENT_GFP_FLAGS
-mdefine_line|#define TRIDENT_GFP_FLAGS&t;0
-macro_line|#endif
 macro_line|#endif
 DECL|macro|SNDRV_SEQ_DEV_ID_TRIDENT
 mdefine_line|#define SNDRV_SEQ_DEV_ID_TRIDENT&t;&t;&t;&quot;trident-synth&quot;

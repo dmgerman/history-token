@@ -2011,6 +2011,7 @@ id|i
 comma
 id|b
 suffix:semicolon
+multiline_comment|/* NOTE:  affects all endpoints _except_ ep0 */
 r_for
 c_loop
 (paren
@@ -2619,6 +2620,15 @@ id|i
 dot
 id|desc.wMaxPacketSize
 suffix:semicolon
+id|usb_endpoint_running
+(paren
+id|dev
+comma
+id|ep
+comma
+id|out
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -2756,7 +2766,8 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+l_int|1
+multiline_comment|/* skip ep0 */
 suffix:semicolon
 id|i
 OL

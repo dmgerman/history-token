@@ -150,7 +150,7 @@ id|spin_trylock
 c_func
 (paren
 op_amp
-id|icmpv6_socket-&gt;sk-&gt;lock.slock
+id|icmpv6_socket-&gt;sk-&gt;sk_lock.slock
 )paren
 )paren
 )paren
@@ -174,7 +174,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|icmpv6_socket-&gt;sk-&gt;lock.slock
+id|icmpv6_socket-&gt;sk-&gt;sk_lock.slock
 )paren
 suffix:semicolon
 )brace
@@ -611,7 +611,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_eq
@@ -654,7 +654,7 @@ id|skb_queue_len
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 op_eq
 l_int|1
@@ -710,7 +710,7 @@ id|skb_queue_walk
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -901,6 +901,8 @@ r_struct
 id|inet6_dev
 op_star
 id|idev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|ipv6hdr
@@ -1470,7 +1472,7 @@ id|sk
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_put
 suffix:semicolon
 )brace
 id|err
@@ -1534,6 +1536,8 @@ comma
 id|Icmp6OutMsgs
 )paren
 suffix:semicolon
+id|out_put
+suffix:colon
 r_if
 c_cond
 (paren
@@ -1885,7 +1889,7 @@ id|sk
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_put
 suffix:semicolon
 )brace
 id|err
@@ -1926,6 +1930,8 @@ comma
 id|Icmp6OutMsgs
 )paren
 suffix:semicolon
+id|out_put
+suffix:colon
 r_if
 c_cond
 (paren
@@ -2234,7 +2240,7 @@ id|info
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 suffix:semicolon
 )brace
 )brace
@@ -2941,17 +2947,17 @@ id|i
 op_member_access_from_pointer
 id|sk
 suffix:semicolon
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_assign
 id|SK_WMEM_MAX
 op_star
 l_int|2
 suffix:semicolon
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|unhash
 c_func

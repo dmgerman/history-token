@@ -70,6 +70,11 @@ id|usb_serial_driver
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
 l_string|&quot;usbserial&quot;
@@ -4514,19 +4519,16 @@ id|driver_name
 op_assign
 l_string|&quot;usbserial&quot;
 comma
-macro_line|#ifndef CONFIG_DEVFS_FS
+dot
+id|devfs_name
+op_assign
+l_string|&quot;usb/tts/&quot;
+comma
 dot
 id|name
 op_assign
 l_string|&quot;ttyUSB&quot;
 comma
-macro_line|#else
-dot
-id|name
-op_assign
-l_string|&quot;usb/tts/&quot;
-comma
-macro_line|#endif
 dot
 id|major
 op_assign

@@ -118,7 +118,7 @@ id|NUM_IOPS
 id|NUM_IOP_CHAN
 )braket
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|iop_ism_irq
 c_func
 (paren
@@ -2071,7 +2071,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handle an ISM IOP interrupt&n; */
 DECL|function|iop_ism_irq
-r_void
+id|irqreturn_t
 id|iop_ism_irq
 c_func
 (paren
@@ -2317,6 +2317,9 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|iop_chan_state

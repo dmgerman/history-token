@@ -597,11 +597,6 @@ id|kmem_cache_t
 op_star
 id|kmem_cachep
 suffix:semicolon
-DECL|member|gc_task
-r_struct
-id|tasklet_struct
-id|gc_task
-suffix:semicolon
 DECL|member|stats
 r_struct
 id|neigh_statistics

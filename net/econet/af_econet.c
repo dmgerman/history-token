@@ -244,7 +244,7 @@ id|sk
 op_star
 id|list
 op_assign
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -252,7 +252,7 @@ suffix:semicolon
 id|list
 op_assign
 op_amp
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
 )brace
 id|write_unlock_bh
@@ -299,7 +299,7 @@ op_amp
 id|econet_lock
 )paren
 suffix:semicolon
-id|sk-&gt;next
+id|sk-&gt;sk_next
 op_assign
 op_star
 id|list
@@ -446,7 +446,7 @@ id|err
 r_goto
 id|out_free
 suffix:semicolon
-id|sk-&gt;stamp
+id|sk-&gt;sk_stamp
 op_assign
 id|skb-&gt;stamp
 suffix:semicolon
@@ -1194,7 +1194,7 @@ id|dev
 suffix:semicolon
 id|skb-&gt;priority
 op_assign
-id|sk-&gt;priority
+id|sk-&gt;sk_priority
 suffix:semicolon
 r_if
 c_cond
@@ -1810,7 +1810,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 op_logical_and
 op_logical_neg
@@ -1818,7 +1818,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 )paren
 (brace
@@ -1831,7 +1831,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
@@ -1843,7 +1843,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 id|printk
@@ -1895,7 +1895,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Now the socket is dead. No more input will appear.&n;&t; */
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -1906,17 +1906,16 @@ id|sock-&gt;sk
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 op_assign
 l_int|NULL
 suffix:semicolon
-id|__set_bit
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
 multiline_comment|/* Purge queues */
@@ -1924,7 +1923,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_if
@@ -1934,18 +1933,18 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 op_logical_or
 id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 )paren
 (brace
-id|sk-&gt;timer.data
+id|sk-&gt;sk_timer.data
 op_assign
 (paren
 r_int
@@ -1953,13 +1952,13 @@ r_int
 )paren
 id|sk
 suffix:semicolon
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
 id|HZ
 suffix:semicolon
-id|sk-&gt;timer.function
+id|sk-&gt;sk_timer.function
 op_assign
 id|econet_destroy_timer
 suffix:semicolon
@@ -1967,7 +1966,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 r_return
@@ -2058,7 +2057,7 @@ l_int|NULL
 r_goto
 id|out
 suffix:semicolon
-id|sk-&gt;reuse
+id|sk-&gt;sk_reuse
 op_assign
 l_int|1
 suffix:semicolon
@@ -2118,11 +2117,11 @@ id|eo
 )paren
 )paren
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;family
+id|sk-&gt;sk_family
 op_assign
 id|PF_ECONET
 suffix:semicolon
@@ -2511,16 +2510,13 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;stamp.tv_sec
-op_eq
-l_int|0
+op_logical_neg
+id|sk-&gt;sk_stamp.tv_sec
 )paren
-(brace
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
-)brace
 r_return
 id|copy_to_user
 c_func
@@ -2532,7 +2528,7 @@ op_star
 id|arg
 comma
 op_amp
-id|sk-&gt;stamp
+id|sk-&gt;sk_stamp
 comma
 r_sizeof
 (paren
@@ -2811,7 +2807,7 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 suffix:semicolon
 )brace
 r_return
@@ -3963,15 +3959,15 @@ r_return
 id|error
 suffix:semicolon
 )brace
-id|udpsock-&gt;sk-&gt;reuse
+id|udpsock-&gt;sk-&gt;sk_reuse
 op_assign
 l_int|1
 suffix:semicolon
-id|udpsock-&gt;sk-&gt;allocation
+id|udpsock-&gt;sk-&gt;sk_allocation
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
-multiline_comment|/* we&squot;re going to call it&n;&t;&t;&t;&t;&t;&t;   from interrupts */
+multiline_comment|/* we&squot;re going to call it&n;&t;&t;&t;&t;&t;&t;    from interrupts */
 id|error
 op_assign
 id|udpsock-&gt;ops
@@ -4016,7 +4012,7 @@ r_goto
 id|release
 suffix:semicolon
 )brace
-id|udpsock-&gt;sk-&gt;data_ready
+id|udpsock-&gt;sk-&gt;sk_data_ready
 op_assign
 id|aun_data_available
 suffix:semicolon

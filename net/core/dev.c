@@ -3911,10 +3911,16 @@ c_cond
 (paren
 id|dev-&gt;master
 )paren
+(brace
+id|skb-&gt;real_dev
+op_assign
+id|skb-&gt;dev
+suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|dev-&gt;master
 suffix:semicolon
+)brace
 )brace
 DECL|function|net_tx_action
 r_static
@@ -9034,6 +9040,12 @@ id|dev-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
+id|netdev_unregister_sysfs
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|netdev_wait_allrefs
 c_func
 (paren
@@ -9293,12 +9305,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|netdev_unregister_sysfs
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -9332,22 +9338,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Initialize the DEV module. At boot time this walks the device list and&n; *&t;unhooks any devices that fail to initialise (normally hardware not&n; *&t;present) and leaves us with a valid list of present and active devices.&n; *&n; */
-r_extern
-r_void
-id|net_device_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ip_auto_config
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *       This is called single threaded during boot, so no need&n; *       to take the rtnl semaphore.&n; */
 DECL|function|net_dev_init
 r_static
@@ -9830,12 +9820,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *&t;Initialise network devices&n;&t; */
-id|net_device_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|rc
 op_assign
 l_int|0

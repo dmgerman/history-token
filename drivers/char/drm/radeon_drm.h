@@ -892,6 +892,9 @@ DECL|macro|DRM_IOCTL_RADEON_IRQ_EMIT
 mdefine_line|#define DRM_IOCTL_RADEON_IRQ_EMIT   DRM_IOWR( 0x56, drm_radeon_irq_emit_t)
 DECL|macro|DRM_IOCTL_RADEON_IRQ_WAIT
 mdefine_line|#define DRM_IOCTL_RADEON_IRQ_WAIT   DRM_IOW( 0x57, drm_radeon_irq_wait_t)
+multiline_comment|/* added by Charl P. Botha - see radeon_cp.c for details */
+DECL|macro|DRM_IOCTL_RADEON_CP_RESUME
+mdefine_line|#define DRM_IOCTL_RADEON_CP_RESUME  DRM_IO(0x58)
 DECL|struct|drm_radeon_init
 r_typedef
 r_struct

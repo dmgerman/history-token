@@ -1764,7 +1764,7 @@ r_return
 id|err
 suffix:semicolon
 multiline_comment|/* fill in codec header */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|p-&gt;codec_name
@@ -1775,21 +1775,7 @@ r_sizeof
 (paren
 id|p-&gt;codec_name
 )paren
-op_minus
-l_int|1
 )paren
-suffix:semicolon
-id|p-&gt;codec_name
-(braket
-r_sizeof
-(paren
-id|p-&gt;codec_name
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|p-&gt;func_nr
 op_assign

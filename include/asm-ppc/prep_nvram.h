@@ -316,9 +316,9 @@ id|Normal
 op_assign
 l_int|0x00
 multiline_comment|/* No power management in effect */
-DECL|typedef|PMMode
+DECL|typedef|PMMODE
 )brace
-id|PMMode
+id|PMMODE
 suffix:semicolon
 DECL|struct|_HEADER
 r_typedef

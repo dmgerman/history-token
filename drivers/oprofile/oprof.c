@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;oprof.h&quot;
 macro_line|#include &quot;event_buffer.h&quot;
@@ -32,6 +33,14 @@ c_func
 (paren
 id|start_sem
 )paren
+suffix:semicolon
+multiline_comment|/* timer&n;   0 - use performance monitoring hardware if available&n;   1 - use the timer int mechanism regardless&n; */
+DECL|variable|timer
+r_static
+r_int
+id|timer
+op_assign
+l_int|0
 suffix:semicolon
 DECL|function|oprofile_setup
 r_int
@@ -381,10 +390,8 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 multiline_comment|/* Architecture must fill in the interrupt ops and the&n;&t; * logical CPU type, or we can fall back to the timer&n;&t; * interrupt profiler.&n;&t; */
+r_int
 id|err
 op_assign
 id|oprofile_arch_init
@@ -401,6 +408,8 @@ id|err
 op_eq
 op_minus
 id|ENODEV
+op_logical_or
+id|timer
 )paren
 (brace
 id|timer_init
@@ -415,14 +424,17 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren
 id|err
 )paren
+(brace
 r_goto
 id|out
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -442,10 +454,9 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
 )brace
+r_else
+(brace
 id|err
 op_assign
 id|oprofilefs_register
@@ -453,18 +464,29 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|err
 )paren
 r_goto
-id|out
+id|out_exit
 suffix:semicolon
 id|out
 suffix:colon
 r_return
 id|err
+suffix:semicolon
+id|out_exit
+suffix:colon
+id|oprofile_arch_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|oprofile_exit
@@ -500,6 +522,26 @@ id|module_exit
 c_func
 (paren
 id|oprofile_exit
+)paren
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|timer
+comma
+id|timer
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|timer
+comma
+l_string|&quot;force use of timer interrupt&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

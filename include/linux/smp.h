@@ -180,41 +180,6 @@ DECL|macro|MSG_RESCHEDULE
 mdefine_line|#define MSG_RESCHEDULE&t;&t;0x0003&t;/* Reschedule request from master CPU*/
 DECL|macro|MSG_CALL_FUNCTION
 mdefine_line|#define MSG_CALL_FUNCTION       0x0004  /* Call function on all other CPUs */
-r_struct
-id|notifier_block
-suffix:semicolon
-multiline_comment|/* Need to know about CPUs going up/down? */
-r_extern
-r_int
-id|register_cpu_notifier
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-id|nb
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|unregister_cpu_notifier
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-id|nb
-)paren
-suffix:semicolon
-r_int
-id|cpu_up
-c_func
-(paren
-r_int
-r_int
-id|cpu
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Mark the boot cpu &quot;online&quot; so that it can call console drivers in&n; * printk() and can access its per-cpu storage.&n; */
 r_void
 id|smp_prepare_boot_cpu
@@ -247,17 +212,6 @@ id|cpu
 )paren
 (brace
 )brace
-DECL|function|smp_send_reschedule_all
-r_static
-r_inline
-r_void
-id|smp_send_reschedule_all
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 DECL|macro|cpu_online_map
 mdefine_line|#define cpu_online_map&t;&t;&t;&t;1
 DECL|macro|cpu_online
@@ -270,41 +224,6 @@ DECL|macro|cpu_possible
 mdefine_line|#define cpu_possible(cpu)&t;&t;&t;({ BUG_ON((cpu) != 0); 1; })
 DECL|macro|smp_prepare_boot_cpu
 mdefine_line|#define smp_prepare_boot_cpu()&t;&t;&t;do {} while (0)
-r_struct
-id|notifier_block
-suffix:semicolon
-multiline_comment|/* Need to know about CPUs going up/down? */
-DECL|function|register_cpu_notifier
-r_static
-r_inline
-r_int
-id|register_cpu_notifier
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-id|nb
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|unregister_cpu_notifier
-r_static
-r_inline
-r_void
-id|unregister_cpu_notifier
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-id|nb
-)paren
-(brace
-)brace
 macro_line|#endif /* !SMP */
 DECL|macro|get_cpu
 mdefine_line|#define get_cpu()&t;&t;({ preempt_disable(); smp_processor_id(); })

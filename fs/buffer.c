@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 r_static
 r_void
@@ -2505,21 +2506,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageUptodate
-c_func
-(paren
-id|page
-)paren
-)paren
-id|buffer_error
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren

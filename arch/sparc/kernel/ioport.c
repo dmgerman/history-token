@@ -655,7 +655,7 @@ id|resource
 )paren
 suffix:semicolon
 )brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|tack
@@ -663,14 +663,9 @@ comma
 id|name
 comma
 id|XNMLN
+op_plus
+l_int|1
 )paren
-suffix:semicolon
-id|tack
-(braket
-id|XNMLN
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|res-&gt;name
 op_assign

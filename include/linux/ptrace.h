@@ -311,6 +311,11 @@ id|child
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef force_successful_syscall_return
+multiline_comment|/*&n; * System call handlers that, upon successful completion, need to return a&n; * negative value should call force_successful_syscall_return() right before&n; * returning.  On architectures where the syscall convention provides for a&n; * separate error flag (e.g., alpha, ia64, ppc{,64}, sparc{,64}, possibly&n; * others), this macro can be used to ensure that the error flag will not get&n; * set.  On architectures which do not support a separate error flag, the macro&n; * is a no-op and the spurious error condition needs to be filtered out by some&n; * other means (e.g., in user-level, by passing an extra argument to the&n; * syscall handler, or something along those lines).&n; */
+DECL|macro|force_successful_syscall_return
+mdefine_line|#define force_successful_syscall_return() do { } while (0)
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

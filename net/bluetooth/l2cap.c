@@ -212,7 +212,7 @@ l_string|&quot;sock %p state %d&quot;
 comma
 id|sk
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 suffix:semicolon
 id|bh_lock_sock
@@ -270,7 +270,7 @@ l_string|&quot;sk %p state %d timeout %ld&quot;
 comma
 id|sk
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 comma
 id|timeout
 )paren
@@ -283,7 +283,7 @@ id|mod_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 comma
 id|jiffies
 op_plus
@@ -316,7 +316,7 @@ l_string|&quot;sock %p state %d&quot;
 comma
 id|sk
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 suffix:semicolon
 r_if
@@ -326,14 +326,14 @@ id|timer_pending
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 op_logical_and
 id|del_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 )paren
 id|__sock_put
@@ -359,14 +359,14 @@ id|init_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
-id|sk-&gt;timer.function
+id|sk-&gt;sk_timer.function
 op_assign
 id|l2cap_sock_timeout
 suffix:semicolon
-id|sk-&gt;timer.data
+id|sk-&gt;sk_timer.data
 op_assign
 (paren
 r_int
@@ -704,7 +704,7 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
 (brace
 r_if
@@ -784,7 +784,7 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
 (brace
 r_if
@@ -792,7 +792,7 @@ c_cond
 (paren
 id|state
 op_logical_and
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|state
 )paren
@@ -960,25 +960,25 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo
+id|sk-&gt;sk_protinfo
 )paren
 id|kfree
 c_func
 (paren
-id|sk-&gt;protinfo
+id|sk-&gt;sk_protinfo
 )paren
 suffix:semicolon
 )brace
@@ -1029,11 +1029,11 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|parent-&gt;state
+id|parent-&gt;sk_state
 op_assign
 id|BT_CLOSED
 suffix:semicolon
-id|parent-&gt;zapped
+id|parent-&gt;sk_zapped
 op_assign
 l_int|1
 suffix:semicolon
@@ -1055,9 +1055,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_logical_or
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 )paren
 r_return
 suffix:semicolon
@@ -1068,7 +1068,7 @@ l_string|&quot;sk %p state %d&quot;
 comma
 id|sk
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 suffix:semicolon
 multiline_comment|/* Kill poor orphan */
@@ -1081,13 +1081,12 @@ comma
 id|sk
 )paren
 suffix:semicolon
-id|__set_bit
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
 id|sock_put
@@ -1119,15 +1118,15 @@ l_string|&quot;sk %p state %d socket %p&quot;
 comma
 id|sk
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 comma
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 )paren
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 (brace
 r_case
@@ -1153,7 +1152,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_SEQPACKET
 )paren
@@ -1175,7 +1174,7 @@ r_struct
 id|l2cap_disconn_req
 id|req
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_DISCONN
 suffix:semicolon
@@ -1265,7 +1264,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|1
 suffix:semicolon
@@ -1361,9 +1360,9 @@ c_cond
 id|parent
 )paren
 (brace
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_assign
-id|parent-&gt;type
+id|parent-&gt;sk_type
 suffix:semicolon
 id|pi-&gt;imtu
 op_assign
@@ -1481,19 +1480,19 @@ comma
 id|THIS_MODULE
 )paren
 suffix:semicolon
-id|sk-&gt;destruct
+id|sk-&gt;sk_destruct
 op_assign
 id|l2cap_sock_destruct
 suffix:semicolon
-id|sk-&gt;sndtimeo
+id|sk-&gt;sk_sndtimeo
 op_assign
 id|L2CAP_CONN_TIMEOUT
 suffix:semicolon
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_assign
 id|proto
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_OPEN
 suffix:semicolon
@@ -1708,7 +1707,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_OPEN
 )paren
@@ -1789,7 +1788,7 @@ id|sport
 op_assign
 id|la-&gt;l2_psm
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_BOUND
 suffix:semicolon
@@ -1999,7 +1998,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONNECT
 suffix:semicolon
@@ -2008,7 +2007,7 @@ c_func
 (paren
 id|sk
 comma
-id|sk-&gt;sndtimeo
+id|sk-&gt;sk_sndtimeo
 )paren
 suffix:semicolon
 r_if
@@ -2022,7 +2021,7 @@ id|BT_CONNECTED
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_SEQPACKET
 )paren
@@ -2080,7 +2079,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONNECTED
 suffix:semicolon
@@ -2193,7 +2192,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_SEQPACKET
 op_logical_and
@@ -2213,7 +2212,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 (brace
 r_case
@@ -2368,7 +2367,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_BOUND
 op_logical_or
@@ -2408,15 +2407,15 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-id|sk-&gt;max_ack_backlog
+id|sk-&gt;sk_max_ack_backlog
 op_assign
 id|backlog
 suffix:semicolon
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_LISTEN
 suffix:semicolon
@@ -2486,7 +2485,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_LISTEN
 )paren
@@ -2526,7 +2525,7 @@ multiline_comment|/* Wait for an incoming connection. (wake-one). */
 id|add_wait_queue_exclusive
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2593,7 +2592,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_LISTEN
 )paren
@@ -2637,7 +2636,7 @@ suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2866,7 +2865,7 @@ multiline_comment|/* First fragment (with L2CAP header) */
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_DGRAM
 )paren
@@ -2973,7 +2972,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_DGRAM
 )paren
@@ -3233,7 +3232,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 )paren
 r_return
 id|sock_error
@@ -3280,7 +3279,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|BT_CONNECTED
 )paren
@@ -3691,7 +3690,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_CONNECTED
 )paren
@@ -3828,7 +3827,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_assign
 id|SHUTDOWN_MASK
 suffix:semicolon
@@ -4378,7 +4377,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_SEQPACKET
 )paren
@@ -4403,7 +4402,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_DGRAM
 )paren
@@ -4589,15 +4588,15 @@ id|conn-&gt;hcon
 )paren
 suffix:semicolon
 )brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CLOSED
 suffix:semicolon
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|err
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|1
 suffix:semicolon
@@ -4608,7 +4607,7 @@ id|parent
 )paren
 id|parent
 op_member_access_from_pointer
-id|data_ready
+id|sk_data_ready
 c_func
 (paren
 id|parent
@@ -4619,7 +4618,7 @@ suffix:semicolon
 r_else
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -4695,7 +4694,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_SEQPACKET
 )paren
@@ -4706,13 +4705,13 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONNECTED
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -4723,7 +4722,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|BT_CONNECT
 )paren
@@ -4847,13 +4846,13 @@ id|parent
 )paren
 (brace
 multiline_comment|/* Outgoing channel.&n;&t;&t; * Wake up socket sleeping on connect.&n;&t;&t; */
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONNECTED
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -4865,7 +4864,7 @@ r_else
 multiline_comment|/* Incoming channel.&n;&t;&t; * Wake up socket sleeping on accept.&n;&t;&t; */
 id|parent
 op_member_access_from_pointer
-id|data_ready
+id|sk_data_ready
 c_func
 (paren
 id|parent
@@ -4948,7 +4947,7 @@ id|next_c
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_RAW
 )paren
@@ -6376,9 +6375,9 @@ multiline_comment|/* Check for backlog size */
 r_if
 c_cond
 (paren
-id|parent-&gt;ack_backlog
+id|parent-&gt;sk_ack_backlog
 OG
-id|parent-&gt;max_ack_backlog
+id|parent-&gt;sk_max_ack_backlog
 )paren
 (brace
 id|BT_DBG
@@ -6386,7 +6385,7 @@ c_func
 (paren
 l_string|&quot;backlog full %d&quot;
 comma
-id|parent-&gt;ack_backlog
+id|parent-&gt;sk_ack_backlog
 )paren
 suffix:semicolon
 r_goto
@@ -6441,7 +6440,7 @@ op_amp
 id|list-&gt;lock
 )paren
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|1
 suffix:semicolon
@@ -6544,7 +6543,7 @@ c_func
 (paren
 id|sk
 comma
-id|sk-&gt;sndtimeo
+id|sk-&gt;sk_sndtimeo
 )paren
 suffix:semicolon
 multiline_comment|/* Service level security */
@@ -6556,7 +6555,7 @@ id|status
 op_assign
 id|L2CAP_CS_AUTHEN_PEND
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONNECT2
 suffix:semicolon
@@ -6627,7 +6626,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONFIG
 suffix:semicolon
@@ -6840,7 +6839,7 @@ id|result
 r_case
 id|L2CAP_CR_SUCCESS
 suffix:colon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONFIG
 suffix:semicolon
@@ -7120,7 +7119,7 @@ op_amp
 id|L2CAP_CONF_INPUT_DONE
 )paren
 (brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONNECTED
 suffix:semicolon
@@ -7305,7 +7304,7 @@ id|l2cap_disconn_req
 id|req
 suffix:semicolon
 multiline_comment|/* They didn&squot;t like our options. Well... we do not negotiate.&n;&t;&t; * Close channel.&n;&t;&t; */
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_DISCONN
 suffix:semicolon
@@ -7402,7 +7401,7 @@ op_amp
 id|L2CAP_CONF_OUTPUT_DONE
 )paren
 (brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONNECTED
 suffix:semicolon
@@ -7565,7 +7564,7 @@ op_amp
 id|rsp
 )paren
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_assign
 id|SHUTDOWN_MASK
 suffix:semicolon
@@ -8127,7 +8126,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_CONNECTED
 )paren
@@ -8251,11 +8250,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_BOUND
 op_logical_and
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_CONNECTED
 )paren
@@ -8539,13 +8538,13 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_LISTEN
 )paren
@@ -8884,7 +8883,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_CONNECT2
 op_logical_or
@@ -8917,7 +8916,7 @@ op_logical_neg
 id|status
 )paren
 (brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONFIG
 suffix:semicolon
@@ -8928,7 +8927,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_DISCONN
 suffix:semicolon
@@ -9132,7 +9131,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_CONNECT2
 )paren
@@ -9153,7 +9152,7 @@ op_logical_neg
 id|status
 )paren
 (brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CONFIG
 suffix:semicolon
@@ -9164,7 +9163,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_DISCONN
 suffix:semicolon
@@ -9679,7 +9678,7 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
 r_if
 c_cond
@@ -9730,7 +9729,7 @@ id|pos
 op_increment
 suffix:semicolon
 r_return
-id|sk-&gt;next
+id|sk-&gt;sk_next
 suffix:semicolon
 )brace
 DECL|function|l2cap_seq_stop
@@ -9824,7 +9823,7 @@ op_member_access_from_pointer
 id|dst
 )paren
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 comma
 id|pi-&gt;psm
 comma

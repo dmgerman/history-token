@@ -98,14 +98,6 @@ id|cpu
 suffix:semicolon
 r_extern
 r_void
-id|smp_send_reschedule_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|smp_invalidate_rcv
 c_func
 (paren
@@ -246,7 +238,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#else
-macro_line|#include &lt;mach_apic.h&gt;
+macro_line|#include &lt;mach_apicdef.h&gt;
 DECL|function|hard_smp_processor_id
 r_static
 r_inline

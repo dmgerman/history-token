@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/i2c-dev.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -101,10 +102,10 @@ DECL|typedef|pmac_gpio_t
 )brace
 id|pmac_gpio_t
 suffix:semicolon
-DECL|struct|pmac_tumber_t
+DECL|struct|pmac_tumbler_t
 r_typedef
 r_struct
-id|pmac_tumber_t
+id|pmac_tumbler_t
 (brace
 DECL|member|i2c
 id|pmac_keywest_t
@@ -174,12 +175,17 @@ DECL|member|drc_enable
 r_int
 id|drc_enable
 suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_PBOOK
+DECL|member|resume_workq
+r_struct
+id|work_struct
+id|resume_workq
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|pmac_tumbler_t
 )brace
 id|pmac_tumbler_t
 suffix:semicolon
-DECL|macro|number_of
-mdefine_line|#define number_of(ary) (sizeof(ary) / sizeof(ary[0]))
 multiline_comment|/*&n; */
 DECL|function|tumbler_init_client
 r_static
@@ -458,7 +464,7 @@ c_cond
 (paren
 id|left_vol
 op_ge
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|master_volume_table
@@ -466,7 +472,7 @@ id|master_volume_table
 )paren
 id|left_vol
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|master_volume_table
@@ -509,7 +515,7 @@ c_cond
 (paren
 id|right_vol
 op_ge
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|master_volume_table
@@ -517,7 +523,7 @@ id|master_volume_table
 )paren
 id|right_vol
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|master_volume_table
@@ -675,7 +681,7 @@ l_int|0
 suffix:semicolon
 id|uinfo-&gt;value.integer.max
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|master_volume_table
@@ -1877,6 +1883,8 @@ suffix:semicolon
 id|uinfo-&gt;value.integer.max
 op_assign
 id|info-&gt;max
+op_minus
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
@@ -2076,7 +2084,7 @@ comma
 dot
 id|max
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|mixer_volume_table
@@ -2114,7 +2122,7 @@ comma
 dot
 id|max
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|bass_volume_table
@@ -2152,7 +2160,7 @@ comma
 dot
 id|max
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|treble_volume_table
@@ -2191,7 +2199,7 @@ comma
 dot
 id|max
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|snapper_bass_volume_table
@@ -2229,7 +2237,7 @@ comma
 dot
 id|max
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|snapper_treble_volume_table
@@ -2296,7 +2304,7 @@ c_cond
 (paren
 id|vol
 op_ge
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|mixer_volume_table
@@ -2305,7 +2313,7 @@ id|mixer_volume_table
 (brace
 id|vol
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|mixer_volume_table
@@ -2524,7 +2532,7 @@ l_int|0
 suffix:semicolon
 id|uinfo-&gt;value.integer.max
 op_assign
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|mixer_volume_table
@@ -3979,6 +3987,21 @@ c_func
 op_amp
 id|mix-&gt;audio_reset
 comma
+l_int|0
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|200
+)paren
+suffix:semicolon
+id|write_audio_gpio
+c_func
+(paren
+op_amp
+id|mix-&gt;audio_reset
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -4006,30 +4029,33 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 multiline_comment|/* resume mixer */
-DECL|function|tumbler_resume
+multiline_comment|/* we call the i2c transfer in a workqueue because it may need either schedule()&n; * or completion from timer interrupts.&n; */
+DECL|function|tumbler_resume_work
 r_static
 r_void
-id|tumbler_resume
+id|tumbler_resume_work
 c_func
 (paren
+r_void
+op_star
+id|arg
+)paren
+(brace
 id|pmac_t
 op_star
 id|chip
+op_assign
+(paren
+id|pmac_t
+op_star
 )paren
-(brace
+id|arg
+suffix:semicolon
 id|pmac_tumbler_t
 op_star
 id|mix
 op_assign
 id|chip-&gt;mixer_data
-suffix:semicolon
-id|snd_assert
-c_func
-(paren
-id|mix
-comma
-r_return
-)paren
 suffix:semicolon
 id|tumbler_reset_audio
 c_func
@@ -4042,11 +4068,33 @@ c_cond
 (paren
 id|mix-&gt;i2c.client
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|tumbler_init_client
 c_func
 (paren
 op_amp
 id|mix-&gt;i2c
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;tumbler_init_client error&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;tumbler: i2c is not initialized&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4082,6 +4130,12 @@ id|mix
 comma
 op_amp
 id|tumbler_treble_vol_info
+)paren
+suffix:semicolon
+id|tumbler_set_drc
+c_func
+(paren
+id|mix
 )paren
 suffix:semicolon
 )brace
@@ -4129,13 +4183,13 @@ op_amp
 id|tumbler_treble_vol_info
 )paren
 suffix:semicolon
-)brace
-id|tumbler_set_drc
+id|snapper_set_drc
 c_func
 (paren
 id|mix
 )paren
 suffix:semicolon
+)brace
 id|tumbler_set_master_volume
 c_func
 (paren
@@ -4155,6 +4209,62 @@ c_func
 id|chip
 comma
 l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|tumbler_resume
+r_static
+r_void
+id|tumbler_resume
+c_func
+(paren
+id|pmac_t
+op_star
+id|chip
+)paren
+(brace
+id|pmac_tumbler_t
+op_star
+id|mix
+op_assign
+id|chip-&gt;mixer_data
+suffix:semicolon
+id|snd_assert
+c_func
+(paren
+id|mix
+comma
+r_return
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|mix-&gt;resume_workq
+comma
+id|tumbler_resume_work
+comma
+id|chip
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|schedule_work
+c_func
+(paren
+op_amp
+id|mix-&gt;resume_workq
+)paren
+)paren
+r_return
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ALSA tumbler: cannot schedule resume-workqueue.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4513,24 +4623,6 @@ id|chip-&gt;mixer_free
 op_assign
 id|tumbler_cleanup
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
-id|tumbler_init
-c_func
-(paren
-id|chip
-)paren
-)paren
-OL
-l_int|0
-)paren
-r_return
-id|err
-suffix:semicolon
 multiline_comment|/* set up TAS */
 id|tas_node
 op_assign
@@ -4665,7 +4757,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|tumbler_mixers
@@ -4718,7 +4810,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|snapper_mixers
@@ -4814,6 +4906,24 @@ c_func
 id|chip-&gt;card
 comma
 id|chip-&gt;speaker_sw_ctl
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|tumbler_init
+c_func
+(paren
+id|chip
 )paren
 )paren
 OL

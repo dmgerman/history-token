@@ -172,7 +172,7 @@ r_int
 id|saved_context_eflags
 suffix:semicolon
 DECL|macro|loaddebug
-mdefine_line|#define loaddebug(thread,register) &bslash;&n;               __asm__(&quot;movq %0,%%db&quot; #register  &bslash;&n;                       : /* no output */ &bslash;&n;                       :&quot;r&quot; ((thread)-&gt;debugreg[register]))
+mdefine_line|#define loaddebug(thread,register) &bslash;&n;               __asm__(&quot;movq %0,%%db&quot; #register  &bslash;&n;                       : /* no output */ &bslash;&n;                       :&quot;r&quot; ((thread)-&gt;debugreg##register))
 r_extern
 r_void
 id|fix_processor_context
@@ -221,22 +221,6 @@ r_int
 r_int
 id|saved_edi
 suffix:semicolon
-DECL|function|acpi_save_register_state
-r_static
-r_inline
-r_void
-id|acpi_save_register_state
-c_func
-(paren
-r_int
-r_int
-id|return_point
-)paren
-(brace
-multiline_comment|/* FIXME: This is probably no longer correct: we need to save all caller-saved registers */
-)brace
-DECL|macro|acpi_restore_register_state
-mdefine_line|#define acpi_restore_register_state()  do {} while (0)
 multiline_comment|/* routines for saving/restoring kernel state */
 r_extern
 r_int

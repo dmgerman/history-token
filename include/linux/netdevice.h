@@ -240,14 +240,6 @@ id|IF_PORT_100BASEFX
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-r_extern
-r_const
-r_char
-op_star
-id|if_port_text
-(braket
-)braket
-suffix:semicolon
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 r_struct
@@ -739,6 +731,12 @@ op_star
 id|ec_ptr
 suffix:semicolon
 multiline_comment|/* Econet specific data&t;*/
+DECL|member|ax25_ptr
+r_void
+op_star
+id|ax25_ptr
+suffix:semicolon
+multiline_comment|/* AX.25 specific data */
 DECL|member|poll_list
 r_struct
 id|list_head
@@ -1265,13 +1263,6 @@ op_star
 id|divert
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
-multiline_comment|/* generic device structure used in constructing class */
-DECL|member|dev
-r_struct
-id|device
-op_star
-id|dev
-suffix:semicolon
 multiline_comment|/* class/net/name entry */
 DECL|member|class_dev
 r_struct
@@ -1290,7 +1281,7 @@ DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(dev) do { } while (0)
 multiline_comment|/* Set the sysfs physical device reference for the network logical device&n; * if set prior to registration will cause a symlink during initialization.&n; */
 DECL|macro|SET_NETDEV_DEV
-mdefine_line|#define SET_NETDEV_DEV(net, pdev)&t;((net)-&gt;dev = (pdev))
+mdefine_line|#define SET_NETDEV_DEV(net, pdev)&t;((net)-&gt;class_dev.dev = (pdev))
 DECL|struct|packet_type
 r_struct
 id|packet_type

@@ -240,6 +240,8 @@ DECL|macro|HID_QUIRK_HIDDEV
 mdefine_line|#define HID_QUIRK_HIDDEV&t;0x10
 DECL|macro|HID_QUIRK_BADPAD
 mdefine_line|#define HID_QUIRK_BADPAD        0x20
+DECL|macro|HID_QUIRK_MULTI_INPUT
+mdefine_line|#define HID_QUIRK_MULTI_INPUT&t;0x40
 multiline_comment|/*&n; * This is the global environment of the parser. This information is&n; * persistent for main-items. The global environment can be saved and&n; * restored with PUSH/POP statements.&n; */
 DECL|struct|hid_global
 r_struct
@@ -594,6 +596,28 @@ DECL|macro|HID_CTRL_RUNNING
 mdefine_line|#define HID_CTRL_RUNNING&t;1
 DECL|macro|HID_OUT_RUNNING
 mdefine_line|#define HID_OUT_RUNNING&t;&t;2
+DECL|struct|hid_input
+r_struct
+id|hid_input
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|report
+r_struct
+id|hid_report
+op_star
+id|report
+suffix:semicolon
+DECL|member|input
+r_struct
+id|input_dev
+id|input
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|hid_device
 r_struct
 id|hid_device
@@ -789,12 +813,12 @@ r_int
 id|quirks
 suffix:semicolon
 multiline_comment|/* Various quirks the device can pull on us */
-DECL|member|input
+DECL|member|inputs
 r_struct
-id|input_dev
-id|input
+id|list_head
+id|inputs
 suffix:semicolon
-multiline_comment|/* The input structure */
+multiline_comment|/* The list of inputs */
 DECL|member|hiddev
 r_void
 op_star

@@ -40,10 +40,8 @@ id|mddev
 suffix:semicolon
 DECL|member|mirrors
 id|mirror_info_t
+op_star
 id|mirrors
-(braket
-id|MD_SB_DISKS
-)braket
 suffix:semicolon
 DECL|member|raid_disks
 r_int
@@ -157,16 +155,6 @@ DECL|member|read_disk
 r_int
 id|read_disk
 suffix:semicolon
-multiline_comment|/*&n;&t; * if the IO is in WRITE direction, then multiple bios are used:&n;&t; */
-DECL|member|write_bios
-r_struct
-id|bio
-op_star
-id|write_bios
-(braket
-id|MD_SB_DISKS
-)braket
-suffix:semicolon
 DECL|member|next_r1
 id|r1bio_t
 op_star
@@ -177,6 +165,16 @@ DECL|member|retry_list
 r_struct
 id|list_head
 id|retry_list
+suffix:semicolon
+multiline_comment|/*&n;&t; * if the IO is in WRITE direction, then multiple bios are used.&n;&t; * We choose the number when they are allocated.&n;&t; */
+DECL|member|write_bios
+r_struct
+id|bio
+op_star
+id|write_bios
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon

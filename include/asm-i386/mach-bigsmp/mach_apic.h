@@ -1,6 +1,7 @@
 macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
+macro_line|#include &lt;asm/smp.h&gt;
 DECL|macro|SEQUENTIAL_APICID
 mdefine_line|#define SEQUENTIAL_APICID
 macro_line|#ifdef SEQUENTIAL_APICID
@@ -44,18 +45,7 @@ r_void
 )paren
 (brace
 r_return
-(paren
-(paren
 id|cpu_online_map
-OL
-l_int|0xf
-)paren
-ques
-c_cond
-id|cpu_online_map
-suffix:colon
-l_int|0xf
-)paren
 suffix:semicolon
 )brace
 DECL|macro|TARGET_CPUS
@@ -112,34 +102,6 @@ suffix:semicolon
 )brace
 DECL|macro|apicid_cluster
 mdefine_line|#define apicid_cluster(apicid) (apicid &amp; 0xF0)
-DECL|function|get_apic_id
-r_static
-r_inline
-r_int
-id|get_apic_id
-c_func
-(paren
-r_int
-r_int
-id|x
-)paren
-(brace
-r_return
-(paren
-(paren
-(paren
-id|x
-)paren
-op_rshift
-l_int|24
-)paren
-op_amp
-l_int|0x0F
-)paren
-suffix:semicolon
-)brace
-DECL|macro|GET_APIC_ID
-mdefine_line|#define&t;&t;GET_APIC_ID(x)&t;get_apic_id(x)
 DECL|function|calculate_ldr
 r_static
 r_inline
@@ -162,20 +124,9 @@ op_assign
 id|xapic_phys_to_log_apicid
 c_func
 (paren
-id|GET_APIC_LOGICAL_ID
+id|hard_smp_processor_id
 c_func
 (paren
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|APIC_BASE
-op_plus
-id|APIC_LDR
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -475,8 +426,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|macro|APIC_ID_MASK
-mdefine_line|#define&t;&t;APIC_ID_MASK&t;&t;(0x0F&lt;&lt;24)
 DECL|function|cpu_mask_to_apicid
 r_static
 r_inline
@@ -597,7 +546,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-id|TARGET_CPUS
+l_int|0xFF
 suffix:semicolon
 )brace
 id|apicid

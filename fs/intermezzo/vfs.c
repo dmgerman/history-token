@@ -10529,7 +10529,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* We first &quot;truncate&quot; name to the maximum allowable in presto */
 multiline_comment|/* This simulates the strncpy_from_use code in fs/ext_attr.c */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|temp

@@ -1,14 +1,19 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.87 2002/11/12 13:36:18 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.93 2003/02/24 21:47:28 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/mtd/compatmac.h&gt; /* For min/max in older kernels */
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
+macro_line|#ifdef __ECOS
+macro_line|#include &quot;os-ecos.h&quot;
+macro_line|#else
+macro_line|#include &lt;linux/mtd/compatmac.h&gt; /* For min/max in older kernels */
 macro_line|#include &quot;os-linux.h&quot;
+macro_line|#endif
 macro_line|#ifndef CONFIG_JFFS2_FS_DEBUG
 DECL|macro|CONFIG_JFFS2_FS_DEBUG
 mdefine_line|#define CONFIG_JFFS2_FS_DEBUG 2
@@ -127,18 +132,21 @@ DECL|member|state
 r_int
 id|state
 suffix:semicolon
-DECL|macro|INO_STATE_UNCHECKED
-mdefine_line|#define INO_STATE_UNCHECKED 0
-DECL|macro|INO_STATE_CHECKING
-mdefine_line|#define INO_STATE_CHECKING 1
-DECL|macro|INO_STATE_CHECKEDABSENT
-mdefine_line|#define INO_STATE_CHECKEDABSENT 2
-DECL|macro|INO_STATE_READINGINODE
-mdefine_line|#define INO_STATE_READINGINODE 3
-DECL|macro|INO_STATE_PRESENT
-mdefine_line|#define INO_STATE_PRESENT 5
 )brace
 suffix:semicolon
+multiline_comment|/* Inode states for &squot;state&squot; above. We need the &squot;GC&squot; state to prevent&n;   someone from doing a read_inode() while we&squot;re moving a &squot;REF_PRISTINE&squot;&n;   node without going through all the iget() nonsense */
+DECL|macro|INO_STATE_UNCHECKED
+mdefine_line|#define INO_STATE_UNCHECKED&t;0&t;/* CRC checks not yet done */
+DECL|macro|INO_STATE_CHECKING
+mdefine_line|#define INO_STATE_CHECKING&t;1&t;/* CRC checks in progress */
+DECL|macro|INO_STATE_PRESENT
+mdefine_line|#define INO_STATE_PRESENT&t;2&t;/* In core */
+DECL|macro|INO_STATE_CHECKEDABSENT
+mdefine_line|#define INO_STATE_CHECKEDABSENT&t;3&t;/* Checked, cleared again */
+DECL|macro|INO_STATE_GC
+mdefine_line|#define INO_STATE_GC&t;&t;4&t;/* GCing a &squot;pristine&squot; node */
+DECL|macro|INO_STATE_READING
+mdefine_line|#define INO_STATE_READING&t;5&t;/* In read_inode() */
 DECL|macro|INOCACHE_HASHSIZE
 mdefine_line|#define INOCACHE_HASHSIZE 128
 DECL|struct|jffs2_scan_info
@@ -583,6 +591,24 @@ op_star
 id|mctime_ver
 )paren
 suffix:semicolon
+r_void
+id|jffs2_set_inocache_state
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_struct
+id|jffs2_inode_cache
+op_star
+id|ic
+comma
+r_int
+id|state
+)paren
+suffix:semicolon
 r_struct
 id|jffs2_inode_cache
 op_star
@@ -594,7 +620,7 @@ id|jffs2_sb_info
 op_star
 id|c
 comma
-r_int
+r_uint32
 id|ino
 )paren
 suffix:semicolon
@@ -1073,26 +1099,6 @@ id|size
 )paren
 suffix:semicolon
 r_int
-id|jffs2_add_full_dnode_to_fraglist
-c_func
-(paren
-r_struct
-id|jffs2_sb_info
-op_star
-id|c
-comma
-r_struct
-id|rb_root
-op_star
-id|list
-comma
-r_struct
-id|jffs2_full_dnode
-op_star
-id|fn
-)paren
-suffix:semicolon
-r_int
 id|jffs2_add_full_dnode_to_inode
 c_func
 (paren
@@ -1133,6 +1139,21 @@ r_struct
 id|jffs2_raw_inode
 op_star
 id|latest_node
+)paren
+suffix:semicolon
+r_int
+id|jffs2_do_crccheck_inode
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_struct
+id|jffs2_inode_cache
+op_star
+id|ic
 )paren
 suffix:semicolon
 r_void

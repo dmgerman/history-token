@@ -753,6 +753,8 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 r_char
@@ -831,10 +833,24 @@ id|MIPS_GT_BASE
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MIPS_MALTA
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|pdev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|pdev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if

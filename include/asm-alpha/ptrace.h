@@ -226,6 +226,10 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+DECL|macro|alpha_task_regs
+mdefine_line|#define alpha_task_regs(task) &bslash;&n;  ((struct pt_regs *) ((long) (task)-&gt;thread_info + 2*PAGE_SIZE) - 1)
+DECL|macro|force_successful_syscall_return
+mdefine_line|#define force_successful_syscall_return() (alpha_task_regs(current)-&gt;r0 = 0)
 macro_line|#endif
 macro_line|#endif
 eof

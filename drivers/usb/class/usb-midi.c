@@ -48,8 +48,6 @@ DECL|macro|HAVE_SUPPORT_USB_MIDI_CLASS
 mdefine_line|#define HAVE_SUPPORT_USB_MIDI_CLASS
 DECL|macro|HAVE_SUPPORT_ALSA
 macro_line|#undef HAVE_SUPPORT_ALSA
-DECL|macro|MOD_INC_EACH_PROBE
-macro_line|#undef MOD_INC_EACH_PROBE
 multiline_comment|/* ------------------------------------------------------------------------- */
 DECL|variable|singlebyte
 r_static
@@ -3505,11 +3503,6 @@ id|minor
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/** Side-effect: module cannot be removed until USE_COUNT is 0. **/
-macro_line|#ifndef MOD_INC_EACH_PROBE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3684,11 +3677,6 @@ id|file-&gt;private_data
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/** Sideeffect: Module cannot be removed until usecount is 0. */
-macro_line|#ifndef MOD_INC_EACH_PROBE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3700,6 +3688,11 @@ id|file_operations
 id|usb_midi_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|llseek
 op_assign
@@ -9207,10 +9200,6 @@ op_amp
 id|open_sem
 )paren
 suffix:semicolon
-macro_line|#ifdef MOD_INC_EACH_PROBE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|usb_set_intfdata
 (paren
 id|intf
@@ -9403,12 +9392,6 @@ op_amp
 id|open_wait
 )paren
 suffix:semicolon
-macro_line|#ifdef MOD_INC_EACH_PROBE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/* we want to look at all devices by hand */
 DECL|variable|id_table
@@ -9438,6 +9421,11 @@ id|usb_driver
 id|usb_midi_driver
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|name
 op_assign

@@ -5165,7 +5165,7 @@ suffix:semicolon
 DECL|function|floppy_find
 r_static
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|floppy_find
 c_func

@@ -15,6 +15,13 @@ r_int
 r_int
 id|dmi_broken
 suffix:semicolon
+DECL|variable|dmi_broken
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dmi_broken
+)paren
+suffix:semicolon
 DECL|variable|is_sony_vaio_laptop
 r_int
 id|is_sony_vaio_laptop

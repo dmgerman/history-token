@@ -56,6 +56,21 @@ DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
+DECL|function|pte_file
+r_static
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr)&t;(virt_to_page(0))
@@ -86,5 +101,10 @@ DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range&t;remap_page_range
+multiline_comment|/*&n; * All 32bit addresses are effectively valid for vmalloc...&n; * Sort of meaningless for non-VM targets.&n; */
+DECL|macro|VMALLOC_START
+mdefine_line|#define&t;VMALLOC_START&t;0
+DECL|macro|VMALLOC_END
+mdefine_line|#define&t;VMALLOC_END&t;0xffffffff
 macro_line|#endif /* _M68KNOMMU_PGTABLE_H */
 eof

@@ -6103,6 +6103,11 @@ c_func
 id|substream
 )paren
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|pos
+suffix:semicolon
 id|snd_pcm_substream_t
 op_star
 id|s
@@ -6183,10 +6188,6 @@ id|spdif_flag
 op_assign
 l_int|0
 suffix:semicolon
-id|s
-op_assign
-id|substream
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -6210,8 +6211,22 @@ id|T4D_STIMER
 op_amp
 l_int|0x00ffffff
 suffix:semicolon
-r_do
+id|snd_pcm_group_for_each
+c_func
+(paren
+id|pos
+comma
+id|substream
+)paren
 (brace
+id|s
+op_assign
+id|snd_pcm_group_substream_entry
+c_func
+(paren
+id|pos
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6350,19 +6365,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|s
-op_assign
-id|s-&gt;link_next
-suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-id|s
-op_ne
-id|substream
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -16510,7 +16513,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_interrupt&n;  &n;   Description: ISR for Trident 4DWave device&n;                &n;   Paramters:   trident  - device specific private data for 4DWave card&n;&n;   Problems:    It seems that Trident chips generates interrupts more than&n;                one time in special cases. The spurious interrupts are&n;                detected via sample timer (T4D_STIMER) and computing&n;                corresponding delta value. The limits are detected with&n;                the method try &amp; fail so it is possible that it won&squot;t&n;                work on all computers. [jaroslav]&n;&n;   Returns:     Whether IRQ was handled or not.&n;  &n;  ---------------------------------------------------------------------------*/
+multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_interrupt&n;  &n;   Description: ISR for Trident 4DWave device&n;                &n;   Paramters:   trident  - device specific private data for 4DWave card&n;&n;   Problems:    It seems that Trident chips generates interrupts more than&n;                one time in special cases. The spurious interrupts are&n;                detected via sample timer (T4D_STIMER) and computing&n;                corresponding delta value. The limits are detected with&n;                the method try &amp; fail so it is possible that it won&squot;t&n;                work on all computers. [jaroslav]&n;&n;   Returns:     None.&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_interrupt
 r_static
 id|irqreturn_t

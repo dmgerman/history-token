@@ -296,6 +296,15 @@ op_star
 id|name2
 )paren
 suffix:semicolon
+r_void
+id|acpi_ns_remove_reference
+(paren
+r_struct
+id|acpi_namespace_node
+op_star
+id|node
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Namespace modification - nsmodify&n; */
 id|acpi_status
 id|acpi_ns_unload_namespace

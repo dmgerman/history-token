@@ -260,6 +260,11 @@ r_int
 id|ncr53c8xx_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -274,9 +279,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|func
@@ -9383,7 +9385,7 @@ r_goto
 id|attach_error
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Store input informations in the host data structure.&n;&t;*/
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|np-&gt;chip_name
@@ -9394,8 +9396,6 @@ r_sizeof
 (paren
 id|np-&gt;chip_name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|np-&gt;unit
@@ -13835,7 +13835,7 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* Local copy so we don&squot;t access np after freeing it! */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|inst_name
@@ -13846,7 +13846,10 @@ c_func
 id|np
 )paren
 comma
-l_int|16
+r_sizeof
+(paren
+id|inst_name
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -28935,6 +28938,11 @@ r_int
 id|ncr53c8xx_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -28951,17 +28959,9 @@ r_int
 id|length
 comma
 r_int
-id|hostno
-comma
-r_int
 id|func
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
 r_struct
 id|host_data
 op_star
@@ -28981,33 +28981,12 @@ c_func
 (paren
 l_string|&quot;ncr53c8xx_proc_info: hostno=%d, func=%d&bslash;n&quot;
 comma
-id|hostno
+id|host-&gt;host_no
 comma
 id|func
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
-id|host
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostno
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|host_data
 op_assign
 (paren

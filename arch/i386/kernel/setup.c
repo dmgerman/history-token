@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;video/edid.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
@@ -100,6 +101,13 @@ DECL|variable|mmu_cr4_features
 r_int
 r_int
 id|mmu_cr4_features
+suffix:semicolon
+DECL|variable|mmu_cr4_features
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|mmu_cr4_features
+)paren
 suffix:semicolon
 DECL|variable|__initdata
 r_int
@@ -4111,6 +4119,13 @@ c_cond
 id|smp_found_config
 )paren
 id|get_smp_config
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_X86_SUMMIT
+id|setup_summit
 c_func
 (paren
 )paren

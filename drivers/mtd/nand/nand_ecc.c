@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand_ecc.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *                     Toshiba America Electronics Components, Inc.&n; *&n; * $Id: nand_ecc.c,v 1.6 2001/06/28 10:52:26 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This file contains an ECC algorithm from Toshiba that detects and&n; * corrects 1 bit errors in a 256 byte block of data.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand_ecc.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *                     Toshiba America Electronics Components, Inc.&n; *&n; * $Id: nand_ecc.c,v 1.9 2003/02/20 13:34:19 sjhill Exp $&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * version 2.1 as published by the Free Software Foundation.&n; *&n; * This file contains an ECC algorithm from Toshiba that detects and&n; * corrects 1 bit errors in a 256 byte block of data.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1334,7 +1334,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Steven J. Hill &lt;sjhill@cotw.com&gt;&quot;
+l_string|&quot;Steven J. Hill &lt;sjhill@realitydiluted.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

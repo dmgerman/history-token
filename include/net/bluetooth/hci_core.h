@@ -2340,7 +2340,7 @@ id|skb
 suffix:semicolon
 multiline_comment|/* HCI info for socket */
 DECL|macro|hci_pi
-mdefine_line|#define hci_pi(sk)&t;((struct hci_pinfo *) sk-&gt;protinfo)
+mdefine_line|#define hci_pi(sk)&t;((struct hci_pinfo *)sk-&gt;sk_protinfo)
 DECL|struct|hci_pinfo
 r_struct
 id|hci_pinfo

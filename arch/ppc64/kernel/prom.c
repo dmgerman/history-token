@@ -5422,19 +5422,10 @@ id|r7
 )paren
 (brace
 r_int
-id|chrp
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 r_int
 id|mem
 suffix:semicolon
 id|ihandle
-id|prom_mmu
-comma
-id|prom_op
-comma
 id|prom_root
 comma
 id|prom_cpu
@@ -5453,8 +5444,6 @@ c_func
 suffix:semicolon
 r_int
 id|l
-comma
-id|sz
 suffix:semicolon
 r_char
 op_star
@@ -5974,7 +5963,7 @@ c_func
 id|cpu_online_map
 )paren
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 id|_prom-&gt;cpu
 suffix:semicolon

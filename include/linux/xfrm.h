@@ -93,7 +93,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|XFRM_INF
-mdefine_line|#define XFRM_INF (~(u64)0)
+mdefine_line|#define XFRM_INF (~(__u64)0)
 DECL|struct|xfrm_lifetime_cfg
 r_struct
 id|xfrm_lifetime_cfg
@@ -261,25 +261,27 @@ multiline_comment|/* Netlink configuration messages.  */
 DECL|macro|XFRM_MSG_BASE
 mdefine_line|#define XFRM_MSG_BASE&t;&t;0x10
 DECL|macro|XFRM_MSG_NEWSA
-mdefine_line|#define XFRM_MSG_NEWSA&t;&t;(RTM_BASE + 0)
+mdefine_line|#define XFRM_MSG_NEWSA&t;&t;(XFRM_MSG_BASE + 0)
 DECL|macro|XFRM_MSG_DELSA
-mdefine_line|#define XFRM_MSG_DELSA&t;&t;(RTM_BASE + 1)
+mdefine_line|#define XFRM_MSG_DELSA&t;&t;(XFRM_MSG_BASE + 1)
 DECL|macro|XFRM_MSG_GETSA
-mdefine_line|#define XFRM_MSG_GETSA&t;&t;(RTM_BASE + 2)
+mdefine_line|#define XFRM_MSG_GETSA&t;&t;(XFRM_MSG_BASE + 2)
 DECL|macro|XFRM_MSG_NEWPOLICY
-mdefine_line|#define XFRM_MSG_NEWPOLICY&t;(RTM_BASE + 3)
+mdefine_line|#define XFRM_MSG_NEWPOLICY&t;(XFRM_MSG_BASE + 3)
 DECL|macro|XFRM_MSG_DELPOLICY
-mdefine_line|#define XFRM_MSG_DELPOLICY&t;(RTM_BASE + 4)
+mdefine_line|#define XFRM_MSG_DELPOLICY&t;(XFRM_MSG_BASE + 4)
 DECL|macro|XFRM_MSG_GETPOLICY
-mdefine_line|#define XFRM_MSG_GETPOLICY&t;(RTM_BASE + 5)
+mdefine_line|#define XFRM_MSG_GETPOLICY&t;(XFRM_MSG_BASE + 5)
 DECL|macro|XFRM_MSG_ALLOCSPI
-mdefine_line|#define XFRM_MSG_ALLOCSPI&t;(RTM_BASE + 6)
+mdefine_line|#define XFRM_MSG_ALLOCSPI&t;(XFRM_MSG_BASE + 6)
 DECL|macro|XFRM_MSG_ACQUIRE
-mdefine_line|#define XFRM_MSG_ACQUIRE&t;(RTM_BASE + 7)
+mdefine_line|#define XFRM_MSG_ACQUIRE&t;(XFRM_MSG_BASE + 7)
 DECL|macro|XFRM_MSG_EXPIRE
-mdefine_line|#define XFRM_MSG_EXPIRE&t;&t;(RTM_BASE + 8)
+mdefine_line|#define XFRM_MSG_EXPIRE&t;&t;(XFRM_MSG_BASE + 8)
+DECL|macro|XFRM_MSG_UPDPOLICY
+mdefine_line|#define XFRM_MSG_UPDPOLICY&t;(XFRM_MSG_BASE + 9)
 DECL|macro|XFRM_MSG_MAX
-mdefine_line|#define XFRM_MSG_MAX&t;&t;(XFRM_MSG_EXPIRE+1)
+mdefine_line|#define XFRM_MSG_MAX&t;&t;(XFRM_MSG_UPDPOLICY+1)
 DECL|struct|xfrm_user_tmpl
 r_struct
 id|xfrm_user_tmpl
@@ -429,9 +431,9 @@ DECL|struct|xfrm_usersa_id
 r_struct
 id|xfrm_usersa_id
 (brace
-DECL|member|saddr
+DECL|member|daddr
 id|xfrm_address_t
-id|saddr
+id|daddr
 suffix:semicolon
 DECL|member|spi
 id|__u32

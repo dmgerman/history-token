@@ -656,8 +656,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|ap
 op_assign
 id|kmalloc
@@ -814,8 +812,6 @@ id|ap
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -926,8 +922,6 @@ c_func
 (paren
 id|ap
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read does nothing - no data is ever available this way.&n; * Pppd reads and writes packets via /dev/ppp instead.&n; */
@@ -1477,6 +1471,11 @@ id|tty_ldisc
 id|ppp_sync_ldisc
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|magic
 op_assign

@@ -3096,7 +3096,6 @@ c_func
 id|bus
 )paren
 suffix:semicolon
-multiline_comment|/* NOTE: there should never be a window declared on a bus when&n;&t;&t; * child devices also have a window.  If this should ever be&n;&t;&t; * architected, we probably want children to have priority.&n;&t;&t; * In reality, the PHB containing ISA has the property, but otherwise&n;&t;&t; * it is the pci-bridges that have the property.&n;&t;&t; */
 id|dma_window
 op_assign
 (paren
@@ -3135,6 +3134,7 @@ id|busdn
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* look for a window on a bridge even if the PHB had one */
 id|create_tce_tables_for_busesLP
 c_func
 (paren
@@ -3156,6 +3156,8 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|device_node
@@ -3192,10 +3194,24 @@ id|pci_root_buses
 suffix:semicolon
 )brace
 multiline_comment|/* Now copy the tce_table ptr from the bus devices down to every&n;&t; * pci device_node.  This means get_tce_table() won&squot;t need to search&n;&t; * up the device tree to find it.&n;&t; */
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|mydn

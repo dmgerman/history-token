@@ -168,5 +168,49 @@ DECL|macro|USB_DEVICE_ID_MATCH_INT_SUBCLASS
 mdefine_line|#define USB_DEVICE_ID_MATCH_INT_SUBCLASS&t;0x0100
 DECL|macro|USB_DEVICE_ID_MATCH_INT_PROTOCOL
 mdefine_line|#define USB_DEVICE_ID_MATCH_INT_PROTOCOL&t;0x0200
+multiline_comment|/* s390 CCW devices */
+DECL|struct|ccw_device_id
+r_struct
+id|ccw_device_id
+(brace
+DECL|member|match_flags
+id|__u16
+id|match_flags
+suffix:semicolon
+multiline_comment|/* which fields to match against */
+DECL|member|cu_type
+id|__u16
+id|cu_type
+suffix:semicolon
+multiline_comment|/* control unit type     */
+DECL|member|dev_type
+id|__u16
+id|dev_type
+suffix:semicolon
+multiline_comment|/* device type           */
+DECL|member|cu_model
+id|__u8
+id|cu_model
+suffix:semicolon
+multiline_comment|/* control unit model    */
+DECL|member|dev_model
+id|__u8
+id|dev_model
+suffix:semicolon
+multiline_comment|/* device model          */
+DECL|member|driver_info
+id|kernel_ulong_t
+id|driver_info
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|CCW_DEVICE_ID_MATCH_CU_TYPE
+mdefine_line|#define CCW_DEVICE_ID_MATCH_CU_TYPE&t;&t;0x01
+DECL|macro|CCW_DEVICE_ID_MATCH_CU_MODEL
+mdefine_line|#define CCW_DEVICE_ID_MATCH_CU_MODEL&t;&t;0x02
+DECL|macro|CCW_DEVICE_ID_MATCH_DEVICE_TYPE
+mdefine_line|#define CCW_DEVICE_ID_MATCH_DEVICE_TYPE&t;&t;0x04
+DECL|macro|CCW_DEVICE_ID_MATCH_DEVICE_MODEL
+mdefine_line|#define CCW_DEVICE_ID_MATCH_DEVICE_MODEL&t;0x08
 macro_line|#endif /* LINUX_MOD_DEVICETABLE_H */
 eof

@@ -4,6 +4,7 @@ DECL|macro|__LINUX_BIO_H
 mdefine_line|#define __LINUX_BIO_H
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
 multiline_comment|/* Platforms may set this to teach the BIO layer about IOMMU hardware. */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef BIO_VMERGE_BOUNDARY
@@ -265,6 +266,73 @@ mdefine_line|#define bio_for_each_segment(bvl, bio, i)&t;&t;&t;&t;&bslash;&n;&t;
 multiline_comment|/*&n; * get a reference to a bio, so it won&squot;t disappear. the intended use is&n; * something like:&n; *&n; * bio_get(bio);&n; * submit_bio(rw, bio);&n; * if (bio-&gt;bi_flags ...)&n; *&t;do_something&n; * bio_put(bio);&n; *&n; * without the bio_get(), it could potentially complete I/O before submit_bio&n; * returns. and then bio would be freed memory when if (bio-&gt;bi_flags ...)&n; * runs&n; */
 DECL|macro|bio_get
 mdefine_line|#define bio_get(bio)&t;atomic_inc(&amp;(bio)-&gt;bi_cnt)
+multiline_comment|/*&n; * A bio_pair is used when we need to split a bio.&n; * This can only happen for a bio that refers to just one&n; * page of data, and in the unusual situation when the&n; * page crosses a chunk/device boundary&n; *&n; * The address of the master bio is stored in bio1.bi_private&n; * The address of the pool the pair was allocated from is stored&n; *   in bio2.bi_private&n; */
+DECL|struct|bio_pair
+r_struct
+id|bio_pair
+(brace
+DECL|member|bio1
+DECL|member|bio2
+r_struct
+id|bio
+id|bio1
+comma
+id|bio2
+suffix:semicolon
+DECL|member|bv1
+DECL|member|bv2
+r_struct
+id|bio_vec
+id|bv1
+comma
+id|bv2
+suffix:semicolon
+DECL|member|cnt
+id|atomic_t
+id|cnt
+suffix:semicolon
+DECL|member|error
+r_int
+id|error
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|bio_pair
+op_star
+id|bio_split
+c_func
+(paren
+r_struct
+id|bio
+op_star
+id|bi
+comma
+id|mempool_t
+op_star
+id|pool
+comma
+r_int
+id|first_sectors
+)paren
+suffix:semicolon
+r_extern
+id|mempool_t
+op_star
+id|bio_split_pool
+suffix:semicolon
+r_extern
+r_void
+id|bio_pair_release
+c_func
+(paren
+r_struct
+id|bio_pair
+op_star
+id|dbio
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|bio

@@ -3919,7 +3919,7 @@ id|SOUND_MIXER_INFO
 id|mixer_info
 id|info
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.id
@@ -3932,7 +3932,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.name
@@ -3989,7 +3989,7 @@ id|SOUND_OLD_MIXER_INFO
 id|_old_mixer_info
 id|info
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.id
@@ -4002,7 +4002,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.name
@@ -15180,20 +15180,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-multiline_comment|/* No PCI bus in this machine! */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|printk
 c_func
 (paren

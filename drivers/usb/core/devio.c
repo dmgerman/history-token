@@ -46,11 +46,13 @@ id|intf
 suffix:semicolon
 DECL|member|userbuffer
 r_void
+id|__user
 op_star
 id|userbuffer
 suffix:semicolon
 DECL|member|userurb
 r_void
+id|__user
 op_star
 id|userurb
 suffix:semicolon
@@ -152,6 +154,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -912,6 +915,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|userurb
 )paren
@@ -1076,6 +1080,10 @@ id|SI_ASYNCIO
 suffix:semicolon
 id|sinfo.si_addr
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|as-&gt;userurb
 suffix:semicolon
 id|send_sig_info
@@ -1430,6 +1438,11 @@ id|usb_driver
 id|usbdevfs_driver
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|name
 op_assign
@@ -2463,6 +2476,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -2501,10 +2515,6 @@ c_func
 op_amp
 id|ctrl
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -2787,7 +2797,10 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;usbfs: USBDEVFS_CONTROL failed dev %d rqt %u rq %u len %u ret %d&bslash;n&quot;
+l_string|&quot;usbfs: USBDEVFS_CONTROL failed &quot;
+l_string|&quot;cmd %s dev %d rqt %u rq %u len %u ret %d&bslash;n&quot;
+comma
+id|current-&gt;comm
 comma
 id|dev-&gt;devnum
 comma
@@ -2817,6 +2830,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -2862,10 +2876,6 @@ c_func
 op_amp
 id|bulk
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -3201,6 +3211,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -3223,6 +3234,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -3305,6 +3317,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -3330,6 +3343,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -3431,6 +3445,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -3563,6 +3578,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -3721,6 +3737,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -3856,6 +3873,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -3875,6 +3893,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -3917,6 +3936,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -4198,11 +4218,6 @@ c_func
 (paren
 id|dr
 comma
-(paren
-r_int
-r_char
-op_star
-)paren
 id|uurb.buffer
 comma
 l_int|8
@@ -4985,6 +5000,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5261,6 +5277,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5281,6 +5298,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|addr
 suffix:semicolon
@@ -5457,6 +5475,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5467,6 +5486,7 @@ op_star
 id|as
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|addr
 suffix:semicolon
@@ -5553,6 +5573,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5623,6 +5644,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5645,6 +5667,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5696,6 +5719,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5718,6 +5742,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5789,6 +5814,7 @@ op_star
 id|ps
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5835,10 +5861,6 @@ c_func
 op_amp
 id|ctrl
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -6305,6 +6327,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6335,6 +6358,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6365,6 +6389,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6408,6 +6433,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6438,6 +6464,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6457,6 +6484,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6476,6 +6504,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6495,6 +6524,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6514,6 +6544,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6544,6 +6575,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6563,6 +6595,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6582,6 +6615,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6601,6 +6635,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6620,6 +6655,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6639,6 +6675,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -6658,6 +6695,7 @@ id|ps
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

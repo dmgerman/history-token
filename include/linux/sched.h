@@ -612,11 +612,16 @@ DECL|member|group_exit_code
 r_int
 id|group_exit_code
 suffix:semicolon
+multiline_comment|/* overloaded:&n;&t; * - notify group_exit_task when -&gt;count is equal to notify_count&n;&t; * - everyone except group_exit_task is stopped during signal delivery&n;&t; *   of fatal signals, group_exit_task processes the signal.&n;&t; */
 DECL|member|group_exit_task
 r_struct
 id|task_struct
 op_star
 id|group_exit_task
+suffix:semicolon
+DECL|member|notify_count
+r_int
+id|notify_count
 suffix:semicolon
 multiline_comment|/* thread group stop support, overloads group_exit_code too */
 DECL|member|group_stop_count
@@ -664,8 +669,6 @@ id|uid
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|get_current_user
-mdefine_line|#define get_current_user() ({ &t;&t;&t;&t;&bslash;&n;&t;struct user_struct *__user = current-&gt;user;&t;&bslash;&n;&t;atomic_inc(&amp;__user-&gt;__count);&t;&t;&t;&bslash;&n;&t;__user; })
 r_extern
 r_struct
 id|user_struct
@@ -768,6 +771,13 @@ r_struct
 id|timer_list
 id|it_timer
 suffix:semicolon
+DECL|member|sigq
+r_struct
+id|sigqueue
+op_star
+id|sigq
+suffix:semicolon
+multiline_comment|/* signal queue entry. */
 )brace
 suffix:semicolon
 DECL|struct|task_struct
@@ -1287,6 +1297,11 @@ DECL|member|alloc_lock
 id|spinlock_t
 id|alloc_lock
 suffix:semicolon
+multiline_comment|/* Protection of proc_dentry: nesting proc_lock, dcache_lock, write_lock_irq(&amp;tasklist_lock); */
+DECL|member|proc_lock
+id|spinlock_t
+id|proc_lock
+suffix:semicolon
 multiline_comment|/* context-switch lock */
 DECL|member|switch_lock
 id|spinlock_t
@@ -1379,6 +1394,8 @@ DECL|macro|PF_KSWAPD
 mdefine_line|#define PF_KSWAPD&t;0x00040000&t;/* I am kswapd */
 DECL|macro|PF_SWAPOFF
 mdefine_line|#define PF_SWAPOFF&t;0x00080000&t;/* I am in swapoff */
+DECL|macro|PF_LESS_THROTTLE
+mdefine_line|#define PF_LESS_THROTTLE 0x01000000&t;/* Throttle me less: I clena memory */
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -2040,6 +2057,58 @@ comma
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|sigqueue
+op_star
+id|sigqueue_alloc
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sigqueue_free
+c_func
+(paren
+r_struct
+id|sigqueue
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|send_sigqueue
+c_func
+(paren
+r_int
+comma
+r_struct
+id|sigqueue
+op_star
+comma
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|send_group_sigqueue
+c_func
+(paren
+r_int
+comma
+r_struct
+id|sigqueue
+op_star
+comma
+r_struct
+id|task_struct
+op_star
 )paren
 suffix:semicolon
 r_extern

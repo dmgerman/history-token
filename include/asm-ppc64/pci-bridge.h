@@ -239,7 +239,11 @@ id|dev-&gt;devfn
 op_logical_and
 id|dn-&gt;busno
 op_eq
+(paren
 id|dev-&gt;bus-&gt;number
+op_amp
+l_int|0xff
+)paren
 )paren
 r_return
 id|dn

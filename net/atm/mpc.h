@@ -225,24 +225,36 @@ id|arg
 )paren
 suffix:semicolon
 multiline_comment|/* attach shortcut vcc */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Boot/module initialization function */
-r_void
-id|atm_mpoa_init
+r_extern
+r_struct
+id|atm_mpoa_ops
+op_star
+id|atm_mpoa_ops
+suffix:semicolon
+r_int
+id|try_atm_mpoa_ops
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 r_void
-id|atm_mpoa_init_ops
+id|atm_mpoa_ops_set
 c_func
 (paren
 r_struct
 id|atm_mpoa_ops
 op_star
-id|ops
+id|hook
 )paren
 suffix:semicolon
 multiline_comment|/* MPOA QoS operations */

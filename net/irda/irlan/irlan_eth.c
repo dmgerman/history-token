@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irmod.h&gt;
@@ -80,6 +81,12 @@ suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 id|irlan_eth_set_multicast_list
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|ether_setup
 c_func
@@ -239,11 +246,6 @@ comma
 id|self-&gt;daddr
 )paren
 suffix:semicolon
-id|irlan_mod_inc_use_count
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Make sure we have a hardware address before we return, so DHCP clients gets happy */
 id|interruptible_sleep_on
 c_func
@@ -300,11 +302,6 @@ id|netif_stop_queue
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|irlan_mod_dec_use_count
-c_func
-(paren
 )paren
 suffix:semicolon
 id|irlan_close_data_channel
@@ -526,12 +523,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*   &n;&t;&t; * IrTTPs tx queue is full, so we just have to&n;&t;&t; * drop the frame! You might think that we should&n;&t;&t; * just return -1 and don&squot;t deallocate the frame,&n;&t;&t; * but that is dangerous since it&squot;s possible that&n;&t;&t; * we have replaced the original skb with a new&n;&t;&t; * one with larger headroom, and that would really&n;&t;&t; * confuse do_dev_queue_xmit() in dev.c! I have&n;&t;&t; * tried :-) DB &n;&t;&t; */
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* irttp_data_request already free the packet */
 id|self-&gt;stats.tx_dropped
 op_increment
 suffix:semicolon

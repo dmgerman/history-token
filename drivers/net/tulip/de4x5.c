@@ -7701,8 +7701,6 @@ id|jiffies
 suffix:semicolon
 )brace
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*&n;** Calculate the hash code and update the logical address filter&n;** from a list of ethernet multicast addresses.&n;** Little endian crc one liner from Matt Thomas, DEC.&n;*/
 r_static
@@ -8432,24 +8430,6 @@ id|NO_MORE_PCI
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|lastPCI
-op_assign
-id|NO_MORE_PCI
-suffix:semicolon
-r_return
-suffix:semicolon
-multiline_comment|/* No PCI bus in this machine! */
-)brace
 id|lp-&gt;bus
 op_assign
 id|PCI
@@ -27885,18 +27865,6 @@ op_increment
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-id|j
-suffix:semicolon
 r_for
 c_loop
 (paren

@@ -21,14 +21,11 @@ DECL|macro|exop
 mdefine_line|#define exop word.what.Exop
 DECL|macro|bits
 mdefine_line|#define bits word.what.Bits
-id|local
+r_static
 r_int
 id|huft_build
-id|OF
-c_func
 (paren
-(paren
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* code lengths in bits */
@@ -39,22 +36,21 @@ id|uInt
 comma
 multiline_comment|/* number of &quot;simple&quot; codes */
 r_const
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* list of base values for non-simple codes */
 r_const
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* list of extra bits for non-simple codes */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 comma
 multiline_comment|/* result: starting table */
-id|uIntf
+id|uInt
 op_star
 comma
 multiline_comment|/* maximum lookup bits (returns actual) */
@@ -66,15 +62,14 @@ id|uInt
 op_star
 comma
 multiline_comment|/* hufts used in space */
-id|uIntf
+id|uInt
 op_star
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* space for values */
 multiline_comment|/* Tables for deflate from PKZIP&squot;s appnote.txt. */
 DECL|variable|cplens
-id|local
+r_static
 r_const
 id|uInt
 id|cplens
@@ -149,7 +144,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* see note #13 above about 258 */
 DECL|variable|cplext
-id|local
+r_static
 r_const
 id|uInt
 id|cplext
@@ -224,7 +219,7 @@ l_int|112
 suffix:semicolon
 multiline_comment|/* 112==invalid */
 DECL|variable|cpdist
-id|local
+r_static
 r_const
 id|uInt
 id|cpdist
@@ -296,7 +291,7 @@ l_int|24577
 )brace
 suffix:semicolon
 DECL|variable|cpdext
-id|local
+r_static
 r_const
 id|uInt
 id|cpdext
@@ -372,83 +367,62 @@ multiline_comment|/* If BMAX needs to be larger than 16, then h and x[] should b
 DECL|macro|BMAX
 mdefine_line|#define BMAX 15         /* maximum bit length of any code */
 DECL|function|huft_build
-id|local
+r_static
 r_int
 id|huft_build
 c_func
 (paren
-id|b
-comma
-id|n
-comma
-id|s
-comma
-id|d
-comma
-id|e
-comma
-id|t
-comma
-id|m
-comma
-id|hp
-comma
-id|hn
-comma
-id|v
-)paren
-id|uIntf
+id|uInt
 op_star
 id|b
-suffix:semicolon
+comma
 multiline_comment|/* code lengths in bits (all assumed &lt;= BMAX) */
 id|uInt
 id|n
-suffix:semicolon
+comma
 multiline_comment|/* number of codes (assumed &lt;= 288) */
 id|uInt
 id|s
-suffix:semicolon
+comma
 multiline_comment|/* number of simple-valued codes (0..s-1) */
 r_const
-id|uIntf
+id|uInt
 op_star
 id|d
-suffix:semicolon
+comma
 multiline_comment|/* list of base values for non-simple codes */
 r_const
-id|uIntf
+id|uInt
 op_star
 id|e
-suffix:semicolon
+comma
 multiline_comment|/* list of extra bits for non-simple codes */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|t
-suffix:semicolon
+comma
 multiline_comment|/* result: starting table */
-id|uIntf
+id|uInt
 op_star
 id|m
-suffix:semicolon
+comma
 multiline_comment|/* maximum lookup bits, returns actual */
 id|inflate_huft
 op_star
 id|hp
-suffix:semicolon
+comma
 multiline_comment|/* space for trees */
 id|uInt
 op_star
 id|hn
-suffix:semicolon
+comma
 multiline_comment|/* hufts used in space */
-id|uIntf
+id|uInt
 op_star
 id|v
-suffix:semicolon
 multiline_comment|/* working area: values in order of bit length */
+)paren
 multiline_comment|/* Given a list of code lengths and a maximum table size, make a set of&n;   tables to decode that set of codes.  Return Z_OK on success, Z_BUF_ERROR&n;   if the given code set is incomplete (the tables are still built in this&n;   case), Z_DATA_ERROR if the input is invalid (an over-subscribed set of&n;   lengths), or Z_MEM_ERROR if not enough memory. */
 (brace
 id|uInt
@@ -500,7 +474,7 @@ id|mask
 suffix:semicolon
 multiline_comment|/* (1 &lt;&lt; w) - 1, to avoid cc -O bug on HP */
 r_register
-id|uIntf
+id|uInt
 op_star
 id|p
 suffix:semicolon
@@ -537,7 +511,7 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* bit offsets, then code stack */
-id|uIntf
+id|uInt
 op_star
 id|xp
 suffix:semicolon
@@ -605,11 +579,7 @@ multiline_comment|/* null input--all zero length codes */
 op_star
 id|t
 op_assign
-(paren
-id|inflate_huft
-op_star
-)paren
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 op_star
 id|m
@@ -906,20 +876,12 @@ id|u
 l_int|0
 )braket
 op_assign
-(paren
-id|inflate_huft
-op_star
-)paren
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* just to keep compilers happy */
 id|q
 op_assign
-(paren
-id|inflate_huft
-op_star
-)paren
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* ditto */
 id|z
@@ -1094,9 +1056,9 @@ id|MANY
 )paren
 multiline_comment|/* (note: doesn&squot;t matter for fixed) */
 r_return
-id|Z_MEM_ERROR
+id|Z_DATA_ERROR
 suffix:semicolon
-multiline_comment|/* not enough memory */
+multiline_comment|/* overflow of MANY */
 id|u
 (braket
 id|h
@@ -1430,42 +1392,31 @@ r_int
 id|zlib_inflate_trees_bits
 c_func
 (paren
-id|c
-comma
-id|bb
-comma
-id|tb
-comma
-id|hp
-comma
-id|z
-)paren
-id|uIntf
+id|uInt
 op_star
 id|c
-suffix:semicolon
+comma
 multiline_comment|/* 19 code lengths */
-id|uIntf
+id|uInt
 op_star
 id|bb
-suffix:semicolon
+comma
 multiline_comment|/* bits tree desired/actual depth */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|tb
-suffix:semicolon
+comma
 multiline_comment|/* bits tree result */
 id|inflate_huft
 op_star
 id|hp
-suffix:semicolon
+comma
 multiline_comment|/* space for trees */
 id|z_streamp
 id|z
-suffix:semicolon
 multiline_comment|/* for messages */
+)paren
 (brace
 r_int
 id|r
@@ -1476,7 +1427,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* hufts used in space */
-id|uIntf
+id|uInt
 op_star
 id|v
 suffix:semicolon
@@ -1502,17 +1453,9 @@ l_int|19
 comma
 l_int|19
 comma
-(paren
-id|uIntf
-op_star
-)paren
-id|Z_NULL
+l_int|NULL
 comma
-(paren
-id|uIntf
-op_star
-)paren
-id|Z_NULL
+l_int|NULL
 comma
 id|tb
 comma
@@ -1577,70 +1520,50 @@ r_int
 id|zlib_inflate_trees_dynamic
 c_func
 (paren
-id|nl
-comma
-id|nd
-comma
-id|c
-comma
-id|bl
-comma
-id|bd
-comma
-id|tl
-comma
-id|td
-comma
-id|hp
-comma
-id|z
-)paren
 id|uInt
 id|nl
-suffix:semicolon
+comma
 multiline_comment|/* number of literal/length codes */
 id|uInt
 id|nd
-suffix:semicolon
+comma
 multiline_comment|/* number of distance codes */
-id|uIntf
+id|uInt
 op_star
 id|c
-suffix:semicolon
+comma
 multiline_comment|/* that many (total) code lengths */
-id|uIntf
+id|uInt
 op_star
 id|bl
-suffix:semicolon
+comma
 multiline_comment|/* literal desired/actual bit depth */
-id|uIntf
+id|uInt
 op_star
 id|bd
-suffix:semicolon
+comma
 multiline_comment|/* distance desired/actual bit depth */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|tl
-suffix:semicolon
+comma
 multiline_comment|/* literal/length tree result */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|td
-suffix:semicolon
+comma
 multiline_comment|/* distance tree result */
 id|inflate_huft
 op_star
 id|hp
-suffix:semicolon
+comma
 multiline_comment|/* space for trees */
 id|z_streamp
 id|z
-suffix:semicolon
 multiline_comment|/* for messages */
+)paren
 (brace
 r_int
 id|r
@@ -1651,7 +1574,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* hufts used in space */
-id|uIntf
+id|uInt
 op_star
 id|v
 suffix:semicolon
@@ -1881,44 +1804,32 @@ r_int
 id|zlib_inflate_trees_fixed
 c_func
 (paren
-id|bl
-comma
-id|bd
-comma
-id|tl
-comma
-id|td
-comma
-id|z
-)paren
-id|uIntf
+id|uInt
 op_star
 id|bl
-suffix:semicolon
+comma
 multiline_comment|/* literal desired/actual bit depth */
-id|uIntf
+id|uInt
 op_star
 id|bd
-suffix:semicolon
+comma
 multiline_comment|/* distance desired/actual bit depth */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|tl
-suffix:semicolon
+comma
 multiline_comment|/* literal/length tree result */
 id|inflate_huft
 op_star
-id|FAR
 op_star
 id|td
-suffix:semicolon
+comma
 multiline_comment|/* distance tree result */
 id|z_streamp
 id|z
-suffix:semicolon
 multiline_comment|/* for memory allocation */
+)paren
 (brace
 op_star
 id|bl

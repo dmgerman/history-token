@@ -1853,6 +1853,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_setup_device - fill in class and map information of a device&n; * @dev: the device structure to fill&n; *&n; * Initialize the device structure with information about the device&squot;s &n; * vendor,class,memory and IO-space addresses,IRQ lines etc.&n; * Called at initialisation of the PCI subsystem and by CardBus services.&n; * Returns 0 on success and -1 if unknown type of device (not normal, bridge&n; * or CardBus).&n; */
 DECL|function|pci_setup_device
+r_static
 r_int
 id|pci_setup_device
 c_func
@@ -2376,6 +2377,10 @@ id|dev-&gt;dma_mask
 op_assign
 l_int|0xffffffff
 suffix:semicolon
+id|dev-&gt;consistent_dma_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2422,10 +2427,18 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* now put in global tree */
-id|strcpy
+id|sprintf
 c_func
 (paren
 id|dev-&gt;dev.bus_id
+comma
+l_string|&quot;%04x:%s&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 comma
 id|dev-&gt;slot_name
 )paren
@@ -2806,6 +2819,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pci_alloc_primary_bus_parented
+r_static
 r_struct
 id|pci_bus
 op_star
@@ -3061,13 +3075,6 @@ c_func
 id|pci_scan_bus_parented
 )paren
 suffix:semicolon
-DECL|variable|pci_devices
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_devices
-)paren
-suffix:semicolon
 DECL|variable|pci_root_buses
 id|EXPORT_SYMBOL
 c_func
@@ -3076,13 +3083,6 @@ id|pci_root_buses
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HOTPLUG
-DECL|variable|pci_setup_device
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_setup_device
-)paren
-suffix:semicolon
 DECL|variable|pci_add_new_bus
 id|EXPORT_SYMBOL
 c_func

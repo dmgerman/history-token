@@ -1394,6 +1394,10 @@ id|ent-&gt;timeout
 op_assign
 id|ent-&gt;orig_timeout
 suffix:semicolon
+id|rv
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
 c_func

@@ -6110,9 +6110,8 @@ c_cond
 op_logical_neg
 id|cd
 )paren
-r_return
-op_minus
-id|EIO
+r_goto
+id|out_base
 suffix:semicolon
 multiline_comment|/* Now we have found the adaptor card, try to reset it. As we have&n;&t; * found out earlier, this process generates an interrupt as well,&n;&t; * so we might just exploit that fact for irq probing! */
 macro_line|#if !defined(MODULE) || defined(AUTO_PROBE_MODULE)
@@ -6145,10 +6144,6 @@ l_string|&quot;can&squot;t find IRQ!&bslash;n&quot;
 suffix:semicolon
 r_goto
 id|out_probe
-suffix:semicolon
-r_return
-op_minus
-id|EIO
 suffix:semicolon
 )brace
 r_else
@@ -6542,6 +6537,8 @@ c_func
 id|cd
 )paren
 suffix:semicolon
+id|out_base
+suffix:colon
 id|release_region
 c_func
 (paren

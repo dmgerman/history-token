@@ -146,8 +146,6 @@ DECL|macro|FEPTIMEOUT
 mdefine_line|#define FEPTIMEOUT 200000  
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL&t;1
-DECL|macro|SERIAL_TYPE_CALLOUT
-mdefine_line|#define SERIAL_TYPE_CALLOUT&t;2
 DECL|macro|PCXE_EVENT_HANGUP
 mdefine_line|#define PCXE_EVENT_HANGUP   1
 DECL|macro|PCXX_MAGIC
@@ -172,14 +170,6 @@ suffix:semicolon
 DECL|member|dev
 id|uint
 id|dev
-suffix:semicolon
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-DECL|member|pgrp
-r_int
-id|pgrp
 suffix:semicolon
 DECL|member|tty
 r_struct
@@ -380,11 +370,6 @@ DECL|member|normal_termios
 r_struct
 id|termios
 id|normal_termios
-suffix:semicolon
-DECL|member|callout_termios
-r_struct
-id|termios
-id|callout_termios
 suffix:semicolon
 DECL|member|digiext
 r_struct

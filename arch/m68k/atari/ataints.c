@@ -30,7 +30,7 @@ r_struct
 id|irqhandler
 (brace
 DECL|member|handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -746,7 +746,7 @@ suffix:semicolon
 )brace
 DECL|function|atari_call_irq_list
 r_static
-r_void
+id|irqreturn_t
 id|atari_call_irq_list
 c_func
 (paren
@@ -796,6 +796,9 @@ comma
 id|fp
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * atari_request_irq : add an interrupt service routine for a particular&n; *                     machine specific interrupt source.&n; *                     If the addition was successful, it returns 0.&n; */
 DECL|function|atari_request_irq
@@ -807,7 +810,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

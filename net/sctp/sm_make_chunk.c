@@ -5925,12 +5925,10 @@ c_cond
 (paren
 id|PF_INET6
 op_ne
-id|asoc-&gt;base.sk-&gt;family
+id|asoc-&gt;base.sk-&gt;sk_family
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* Fall through. */
 r_case
 id|SCTP_PARAM_IPV4_ADDRESS

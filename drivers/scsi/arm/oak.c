@@ -26,32 +26,6 @@ DECL|macro|NCR5380_queue_command
 mdefine_line|#define NCR5380_queue_command&t;&t;oakscsi_queue_command
 DECL|macro|NCR5380_proc_info
 mdefine_line|#define NCR5380_proc_info&t;&t;oakscsi_proc_info
-r_int
-id|NCR5380_proc_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-comma
-r_int
-id|hostno
-comma
-r_int
-id|inout
-)paren
-suffix:semicolon
 DECL|macro|NCR5380_implementation_fields
 mdefine_line|#define NCR5380_implementation_fields&t;int port, ctrl
 DECL|macro|NCR5380_local_declare

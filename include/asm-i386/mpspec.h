@@ -678,6 +678,15 @@ r_extern
 r_int
 id|using_apic_timer
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_SUMMIT
+r_extern
+r_void
+id|setup_summit
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_BOOT
 r_extern
 r_void

@@ -508,7 +508,6 @@ DECL|struct|snd_card_azt2320
 r_struct
 id|snd_card_azt2320
 (brace
-macro_line|#ifdef CONFIG_PNP
 DECL|member|dev_no
 r_int
 id|dev_no
@@ -525,7 +524,6 @@ id|pnp_dev
 op_star
 id|devmpu
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_PNP */
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata
@@ -2195,6 +2193,14 @@ c_cond
 op_logical_neg
 id|cards
 )paren
+(brace
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|azt2320_pnpc_driver
+)paren
+suffix:semicolon
 id|snd_printk
 c_func
 (paren
@@ -2202,6 +2208,7 @@ id|KERN_ERR
 l_string|&quot;no AZT2320 based soundcards found&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 id|cards

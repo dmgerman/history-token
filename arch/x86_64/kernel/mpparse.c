@@ -3440,14 +3440,33 @@ comma
 id|node
 )paren
 suffix:semicolon
-multiline_comment|/* We&squot;re only interested in static (non-link) entries. */
+multiline_comment|/* Need to get irq for dynamic entry */
 r_if
 c_cond
 (paren
 id|entry-&gt;link.handle
 )paren
+(brace
+id|irq
+op_assign
+id|acpi_pci_link_get_irq
+c_func
+(paren
+id|entry-&gt;link.handle
+comma
+id|entry-&gt;link.index
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|irq
+)paren
 r_continue
 suffix:semicolon
+)brace
+r_else
 id|irq
 op_assign
 id|entry-&gt;link.index

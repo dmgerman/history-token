@@ -157,11 +157,6 @@ r_struct
 id|termios
 id|normal_termios
 suffix:semicolon
-DECL|member|callout_termios
-r_struct
-id|termios
-id|callout_termios
-suffix:semicolon
 DECL|member|open_wait
 id|wait_queue_head_t
 id|open_wait
@@ -191,16 +186,6 @@ r_int
 id|closing_wait
 suffix:semicolon
 multiline_comment|/* time to wait before closing */
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-multiline_comment|/* Session of opening process */
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
-multiline_comment|/* pgrp of opening process */
 DECL|member|open_count
 r_int
 id|open_count

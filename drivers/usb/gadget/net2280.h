@@ -925,6 +925,7 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#ifdef&t;__KERNEL__
 multiline_comment|/* indexed registers [11.10] are accessed indirectly&n; * caller must own the device lock.&n; */
 r_static
 r_inline
@@ -994,6 +995,7 @@ id|regs-&gt;idxdata
 suffix:semicolon
 multiline_comment|/* posted, may not be visible yet */
 )brace
+macro_line|#endif&t;/* __KERNEL__ */
 DECL|macro|REG_DIAG
 mdefine_line|#define REG_DIAG&t;&t;0x0
 DECL|macro|RETRY_COUNTER
@@ -1020,6 +1022,7 @@ DECL|macro|REG_CHIPREV
 mdefine_line|#define REG_CHIPREV&t;&t;0x03&t;/* in bcd */
 DECL|macro|REG_HS_NAK_RATE
 mdefine_line|#define&t;REG_HS_NAK_RATE&t;&t;0x0a&t;/* NAK per N uframes */
+macro_line|#ifdef&t;__KERNEL__
 multiline_comment|/* ep a-f highspeed and fullspeed maxpacket, addresses&n; * computed from ep-&gt;num&n; */
 DECL|macro|REG_EP_MAXPKT
 mdefine_line|#define REG_EP_MAXPKT(dev,num) (((num) + 1) * 0x10 + &bslash;&n;&t;&t;(((dev)-&gt;gadget.speed == USB_SPEED_HIGH) ? 0 : 1))
@@ -1179,6 +1182,10 @@ comma
 op_amp
 id|ep-&gt;regs-&gt;ep_rsp
 )paren
+suffix:semicolon
+id|ep-&gt;stopped
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|set_halt
@@ -1869,4 +1876,5 @@ id|ep-&gt;regs-&gt;ep_rsp
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* __KERNEL__ */
 eof

@@ -681,8 +681,6 @@ DECL|macro|PciDeviceFn
 mdefine_line|#define PciDeviceFn(d)&t;&t;((d)&amp;0xff)
 DECL|macro|__PciDev
 mdefine_line|#define __PciDev(busn, devfn)&t;(((busn)&lt;&lt;8)+(devfn))
-DECL|macro|pci_present
-mdefine_line|#define pci_present pcibios_present
 DECL|macro|pci_read_config_byte
 mdefine_line|#define pci_read_config_byte(d, w, v) &bslash;&n;&t;pcibios_read_config_byte(PciBusNumber(d), PciDeviceFn(d), w, v)
 DECL|macro|pci_read_config_word
@@ -3520,6 +3518,11 @@ r_int
 id|sym53c8xx_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -3534,9 +3537,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|func
@@ -15383,7 +15383,7 @@ op_assign
 id|np
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Store input informations in the host data structure.&n;&t;*/
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|np-&gt;chip_name
@@ -15394,8 +15394,6 @@ r_sizeof
 (paren
 id|np-&gt;chip_name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|np-&gt;unit
@@ -39874,19 +39872,6 @@ op_star
 id|nvp
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;**    PCI is required.&n;&t;*/
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t;**    Initialize driver general stuff.&n;&t;*/
 macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
@@ -45161,6 +45146,11 @@ r_int
 id|sym53c8xx_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -45177,17 +45167,9 @@ r_int
 id|length
 comma
 r_int
-id|hostno
-comma
-r_int
 id|func
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
 r_struct
 id|host_data
 op_star
@@ -45207,30 +45189,12 @@ c_func
 (paren
 l_string|&quot;sym53c8xx_proc_info: hostno=%d, func=%d&bslash;n&quot;
 comma
-id|hostno
+id|host-&gt;host_no
 comma
 id|func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|host
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostno
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|host
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 id|host_data
 op_assign
 (paren
@@ -45310,12 +45274,6 @@ macro_line|#endif
 )brace
 id|out
 suffix:colon
-id|scsi_host_put
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
 r_return
 id|retv
 suffix:semicolon

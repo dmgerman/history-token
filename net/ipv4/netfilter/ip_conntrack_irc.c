@@ -1264,6 +1264,13 @@ id|i
 suffix:semicolon
 )brace
 )brace
+DECL|variable|irc
+id|PROVIDES_CONNTRACK
+c_func
+(paren
+id|irc
+)paren
+suffix:semicolon
 DECL|variable|ip_irc_lock
 id|EXPORT_SYMBOL
 c_func

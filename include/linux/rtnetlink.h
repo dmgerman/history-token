@@ -60,7 +60,7 @@ DECL|macro|RTM_GETTFILTER
 mdefine_line|#define&t;RTM_GETTFILTER&t;(RTM_BASE+30)
 DECL|macro|RTM_MAX
 mdefine_line|#define&t;RTM_MAX&t;&t;(RTM_BASE+31)
-multiline_comment|/* &n;   Generic structure for encapsulation optional route information.&n;   It is reminiscent of sockaddr, but with sa_family replaced&n;   with attribute type.&n; */
+multiline_comment|/* &n;   Generic structure for encapsulation of optional route information.&n;   It is reminiscent of sockaddr, but with sa_family replaced&n;   with attribute type.&n; */
 DECL|struct|rtattr
 r_struct
 id|rtattr
@@ -1194,7 +1194,7 @@ mdefine_line|#define rtnl_shlock()&t;&t;down(&amp;rtnl_sem)
 DECL|macro|rtnl_shlock_nowait
 mdefine_line|#define rtnl_shlock_nowait()&t;down_trylock(&amp;rtnl_sem)
 DECL|macro|rtnl_shunlock
-mdefine_line|#define rtnl_shunlock()&t;do { up(&amp;rtnl_sem); &bslash;&n;&t;&t;             if (rtnl &amp;&amp; rtnl-&gt;receive_queue.qlen) &bslash;&n;&t;&t;&t;&t;     rtnl-&gt;data_ready(rtnl, 0); &bslash;&n;&t;&t;        } while(0)
+mdefine_line|#define rtnl_shunlock()&t;do { up(&amp;rtnl_sem); &bslash;&n;&t;&t;             if (rtnl &amp;&amp; rtnl-&gt;sk_receive_queue.qlen) &bslash;&n;&t;&t;&t;&t;     rtnl-&gt;sk_data_ready(rtnl, 0); &bslash;&n;&t;&t;        } while(0)
 r_extern
 r_void
 id|rtnl_lock

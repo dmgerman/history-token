@@ -12020,22 +12020,18 @@ id|oemstr-&gt;text.oem_company_name
 )paren
 suffix:semicolon
 multiline_comment|/* Save the Host Drive inquiry data */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|ha-&gt;oem_name
 comma
 id|oemstr-&gt;text.scsi_host_drive_inquiry_vendor_id
 comma
-l_int|7
-)paren
-suffix:semicolon
+r_sizeof
+(paren
 id|ha-&gt;oem_name
-(braket
-l_int|7
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
+)paren
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -12056,21 +12052,31 @@ id|ha-&gt;oem_id
 op_eq
 id|OEM_ID_INTEL
 )paren
-id|strcpy
+id|strlcpy
 c_func
 (paren
 id|ha-&gt;oem_name
 comma
 l_string|&quot;Intel  &quot;
+comma
+r_sizeof
+(paren
+id|ha-&gt;oem_name
+)paren
 )paren
 suffix:semicolon
 r_else
-id|strcpy
+id|strlcpy
 c_func
 (paren
 id|ha-&gt;oem_name
 comma
 l_string|&quot;ICP    &quot;
+comma
+r_sizeof
+(paren
+id|ha-&gt;oem_name
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -23807,16 +23813,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* scanning for PCI controllers */
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x2015C
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-macro_line|#else
+macro_line|#if LINUX_VERSION_CODE &lt; 0x2015C
 r_if
 c_cond
 (paren

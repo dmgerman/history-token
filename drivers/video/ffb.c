@@ -3490,7 +3490,7 @@ id|ffb_type_name
 op_assign
 l_string|&quot;Elite 3D&quot;
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info-&gt;fix.id
@@ -3501,21 +3501,7 @@ r_sizeof
 (paren
 id|info-&gt;fix.id
 )paren
-op_minus
-l_int|1
 )paren
-suffix:semicolon
-id|info-&gt;fix.id
-(braket
-r_sizeof
-(paren
-id|info-&gt;fix.id
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|info-&gt;fix.type
 op_assign

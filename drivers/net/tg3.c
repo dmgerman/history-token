@@ -31341,10 +31341,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* pci_alloc_consistent gives only non-DAC addresses */
 id|test_desc.addr_hi
 op_assign
-l_int|0
+(paren
+(paren
+id|u64
+)paren
+id|buf_dma
+)paren
+op_rshift
+l_int|32
 suffix:semicolon
 id|test_desc.addr_lo
 op_assign
@@ -32784,7 +32790,7 @@ comma
 (paren
 id|u64
 )paren
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 )paren
 )paren
 (brace
@@ -32792,6 +32798,34 @@ id|pci_using_dac
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_set_consistent_dma_mask
+c_func
+(paren
+id|pdev
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffffffffffff
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Unable to obtain 64 bit DMA &quot;
+l_string|&quot;for consistent allocations&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err_out_free_res
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace

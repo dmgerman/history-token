@@ -15,15 +15,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX_MODULE
-DECL|macro|_IDE_C
-macro_line|# define _IDE_C
-macro_line|# include &quot;ide_modes.h&quot;
-DECL|macro|_IDE_C
-macro_line|# undef _IDE_C
-macro_line|#else
-macro_line|# include &quot;ide_modes.h&quot;
-macro_line|#endif /* CONFIG_BLK_DEV_ALI14XX_MODULE */
+macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/* port addresses for auto-detection */
 DECL|macro|ALI_NUM_PORTS
 mdefine_line|#define ALI_NUM_PORTS 4

@@ -41,6 +41,8 @@ DECL|macro|KERNEL_EXIT_SWITCH_CODE
 mdefine_line|#define KERNEL_EXIT_SWITCH_CODE&t;&t;5
 DECL|macro|MODULE_LOADED_CODE
 mdefine_line|#define MODULE_LOADED_CODE&t;&t;6
+DECL|macro|CTX_TGID_CODE
+mdefine_line|#define CTX_TGID_CODE&t;&t;&t;7
 multiline_comment|/* add data to the event buffer */
 r_void
 id|add_event_entry

@@ -1,5 +1,4 @@
 multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n;  * All rights reserved.  www.lanmedia.com&n;  *&n;  * This code is written by:&n;  * Andrew Stanley-Jones (asj@cban.com)&n;  * Rob Braun (bbraun@vix.com),&n;  * Michael Graff (explorer@vix.com) and&n;  * Matt Thomas (matt@3am-software.com).&n;  *&n;  * With Help By:&n;  * David Boggs&n;  * Ron Crane&n;  * Allan Cox&n;  *&n;  * This software may be used and distributed according to the terms&n;  * of the GNU General Public License version 2, incorporated herein by reference.&n;  *&n;  * Driver for the LanMedia LMC5200, LMC5245, LMC1000, LMC1200 cards.&n;  */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -23,7 +22,6 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &quot;lmc_ver.h&quot;
 macro_line|#include &quot;lmc.h&quot;
 macro_line|#include &quot;lmc_var.h&quot;
 macro_line|#include &quot;lmc_debug.h&quot;
@@ -45,20 +43,6 @@ mdefine_line|#define SPPP_attach(d)&t;(void)0
 DECL|macro|SPPP_do_ioctl
 mdefine_line|#define SPPP_do_ioctl(d,i,c)&t;-EOPNOTSUPP
 macro_line|#else
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20363
-DECL|macro|SPPP_attach
-mdefine_line|#define SPPP_attach(x)&t;sppp_attach((struct ppp_device *)(x)-&gt;lmc_device)
-DECL|macro|SPPP_detach
-mdefine_line|#define SPPP_detach(x)&t;sppp_detach((x)-&gt;lmc_device)
-DECL|macro|SPPP_open
-mdefine_line|#define SPPP_open(x)&t;sppp_open((x)-&gt;lmc_device)
-DECL|macro|SPPP_reopen
-mdefine_line|#define SPPP_reopen(x)&t;sppp_reopen((x)-&gt;lmc_device)
-DECL|macro|SPPP_close
-mdefine_line|#define SPPP_close(x)&t;sppp_close((x)-&gt;lmc_device)
-DECL|macro|SPPP_do_ioctl
-mdefine_line|#define SPPP_do_ioctl(x, y, z)&t;sppp_do_ioctl((x)-&gt;lmc_device, (y), (z))
-macro_line|#else
 DECL|macro|SPPP_attach
 mdefine_line|#define SPPP_attach(x)&t;sppp_attach((x)-&gt;pd)
 DECL|macro|SPPP_detach
@@ -71,7 +55,6 @@ DECL|macro|SPPP_close
 mdefine_line|#define SPPP_close(x)&t;sppp_close((x)-&gt;pd-&gt;dev)
 DECL|macro|SPPP_do_ioctl
 mdefine_line|#define SPPP_do_ioctl(x, y, z)&t;sppp_do_ioctl((x)-&gt;pd-&gt;dev, (y), (z))
-macro_line|#endif
 macro_line|#endif
 singleline_comment|// init
 DECL|function|lmc_proto_init
@@ -102,7 +85,6 @@ id|sc-&gt;if_type
 r_case
 id|LMC_PPP
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20363
 id|sc-&gt;pd
 op_assign
 id|kmalloc
@@ -137,7 +119,6 @@ id|sc-&gt;pd-&gt;dev
 op_assign
 id|sc-&gt;lmc_device
 suffix:semicolon
-macro_line|#endif
 id|sc-&gt;if_ptr
 op_assign
 id|sc-&gt;pd

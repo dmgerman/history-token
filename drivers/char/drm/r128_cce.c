@@ -2104,8 +2104,12 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;ring rptr: offset=0x%08x handle=0x%08lx&bslash;n&quot;
+l_string|&quot;ring rptr: offset=0x%08lx handle=0x%08lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|entry-&gt;busaddr
 (braket
 id|page_ofs
@@ -2962,6 +2966,7 @@ op_plus
 id|init-&gt;sarea_priv_offset
 )paren
 suffix:semicolon
+macro_line|#if __REALLY_HAVE_AGP
 r_if
 c_cond
 (paren
@@ -2973,18 +2978,24 @@ id|DRM_IOREMAP
 c_func
 (paren
 id|dev_priv-&gt;cce_ring
+comma
+id|dev
 )paren
 suffix:semicolon
 id|DRM_IOREMAP
 c_func
 (paren
 id|dev_priv-&gt;ring_rptr
+comma
+id|dev
 )paren
 suffix:semicolon
 id|DRM_IOREMAP
 c_func
 (paren
 id|dev_priv-&gt;buffers
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -3030,6 +3041,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
+macro_line|#endif
 (brace
 id|dev_priv-&gt;cce_ring-&gt;handle
 op_assign
@@ -3307,7 +3319,7 @@ id|dev_priv
 op_assign
 id|dev-&gt;dev_private
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_SG
+macro_line|#if __REALLY_HAVE_AGP
 r_if
 c_cond
 (paren
@@ -3315,7 +3327,6 @@ op_logical_neg
 id|dev_priv-&gt;is_pci
 )paren
 (brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3327,6 +3338,8 @@ id|DRM_IOREMAPFREE
 c_func
 (paren
 id|dev_priv-&gt;cce_ring
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -3340,6 +3353,8 @@ id|DRM_IOREMAPFREE
 c_func
 (paren
 id|dev_priv-&gt;ring_rptr
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -3353,11 +3368,13 @@ id|DRM_IOREMAPFREE
 c_func
 (paren
 id|dev_priv-&gt;buffers
+comma
+id|dev
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_SG
 )brace
 r_else
+macro_line|#endif
 (brace
 r_if
 c_cond
@@ -3383,7 +3400,6 @@ l_string|&quot;failed to cleanup PCI GART!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|DRM
 c_func
 (paren

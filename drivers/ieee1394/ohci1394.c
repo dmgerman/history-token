@@ -24,7 +24,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -85,7 +85,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 931 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 938 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -14405,11 +14405,7 @@ id|ohci-&gt;csr_config_rom_cpu
 comma
 l_int|0
 comma
-r_sizeof
-(paren
-op_star
-id|ohci-&gt;csr_config_rom_cpu
-)paren
+id|OHCI_CONFIG_ROM_LEN
 )paren
 suffix:semicolon
 id|cr.data
@@ -15826,7 +15822,7 @@ id|OHCI1394_REGISTER_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* On UniNorth, power down the cable and turn off the chip&n;&t; * clock when the module is removed to save power on&n;&t; * laptops. Turning it back ON is done by the arch code when&n;&t; * pci_enable_device() is called */
 (brace
 r_struct
@@ -15874,7 +15870,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 r_case
 id|OHCI_INIT_ALLOC_HOST
 suffix:colon
@@ -15894,6 +15890,29 @@ id|ohci-&gt;host
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef  CONFIG_PM
+DECL|function|ohci1394_pci_resume
+r_static
+r_int
+id|ohci1394_pci_resume
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|pci_enable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|macro|PCI_CLASS_FIREWIRE_OHCI
 mdefine_line|#define PCI_CLASS_FIREWIRE_OHCI     ((PCI_CLASS_SERIAL_FIREWIRE &lt;&lt; 8) | 0x10)
 DECL|variable|__devinitdata
@@ -15981,6 +16000,13 @@ id|remove
 op_assign
 id|ohci1394_pci_remove
 comma
+macro_line|#ifdef  CONFIG_PM
+dot
+id|resume
+op_assign
+id|ohci1394_pci_resume
+comma
+macro_line|#endif  /* PM */
 )brace
 suffix:semicolon
 "&f;"

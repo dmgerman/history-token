@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 DECL|macro|UDP_HTABLE_SIZE
 mdefine_line|#define UDP_HTABLE_SIZE&t;&t;128
 multiline_comment|/* udp.c: This needs to be shared by v4 and v6 because the lookup&n; *        and hashing code needs to work with different AF&squot;s yet&n; *        the port space is shared.&n; */
@@ -58,14 +59,11 @@ c_loop
 (paren
 suffix:semicolon
 id|sk
-op_ne
-l_int|NULL
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -82,7 +80,6 @@ id|num
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -214,5 +211,91 @@ DECL|macro|UDP_INC_STATS_BH
 mdefine_line|#define UDP_INC_STATS_BH(field)&t;&t;SNMP_INC_STATS_BH(udp_statistics, field)
 DECL|macro|UDP_INC_STATS_USER
 mdefine_line|#define UDP_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(udp_statistics, field)
+multiline_comment|/* /proc */
+DECL|struct|udp_seq_afinfo
+r_struct
+id|udp_seq_afinfo
+(brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|family
+id|sa_family_t
+id|family
+suffix:semicolon
+DECL|member|seq_show
+r_int
+(paren
+op_star
+id|seq_show
+)paren
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+)paren
+suffix:semicolon
+DECL|member|seq_fops
+r_struct
+id|file_operations
+op_star
+id|seq_fops
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|udp_iter_state
+r_struct
+id|udp_iter_state
+(brace
+DECL|member|family
+id|sa_family_t
+id|family
+suffix:semicolon
+DECL|member|bucket
+r_int
+id|bucket
+suffix:semicolon
+DECL|member|seq_ops
+r_struct
+id|seq_operations
+id|seq_ops
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_int
+id|udp_proc_register
+c_func
+(paren
+r_struct
+id|udp_seq_afinfo
+op_star
+id|afinfo
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|udp_proc_unregister
+c_func
+(paren
+r_struct
+id|udp_seq_afinfo
+op_star
+id|afinfo
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* _UDP_H */
 eof

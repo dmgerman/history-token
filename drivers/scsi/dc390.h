@@ -25,7 +25,6 @@ macro_line|# define NEW_EH use_new_eh_code: 1,
 DECL|macro|USE_NEW_EH
 macro_line|# define USE_NEW_EH
 macro_line|#endif
-macro_line|#if defined(HOSTS_C) || defined(MODULE) || LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,99)
 r_extern
 r_int
 id|DC390_detect
@@ -119,32 +118,5 @@ macro_line|#else
 DECL|macro|DC390_release
 macro_line|# define DC390_release NULL
 macro_line|#endif
-r_extern
-r_int
-id|DC390_proc_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-comma
-r_int
-id|hostno
-comma
-r_int
-id|inout
-)paren
-suffix:semicolon
 macro_line|#endif /* DC390_H */
 eof

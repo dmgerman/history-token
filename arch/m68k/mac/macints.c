@@ -272,7 +272,7 @@ r_int
 suffix:semicolon
 multiline_comment|/*&n; * console_loglevel determines NMI handler function&n; */
 r_extern
-r_void
+id|irqreturn_t
 id|mac_bang
 c_func
 (paren
@@ -286,7 +286,7 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|mac_nmi_handler
 c_func
 (paren
@@ -300,7 +300,7 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|mac_debug_handler
 c_func
 (paren
@@ -1424,7 +1424,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -2036,7 +2036,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|function|mac_debug_handler
-r_void
+id|irqreturn_t
 id|mac_debug_handler
 c_func
 (paren
@@ -2079,6 +2079,9 @@ id|irq
 op_increment
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|variable|in_nmi
 r_static
@@ -2096,7 +2099,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|mac_nmi_handler
-r_void
+id|irqreturn_t
 id|mac_nmi_handler
 c_func
 (paren
@@ -2299,6 +2302,9 @@ macro_line|#endif
 )brace
 id|in_nmi
 op_decrement
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Simple routines for masking and unmasking&n; * SCC interrupts in cases where this can&squot;t be&n; * done in hardware (only the PSC can do that.)&n; */

@@ -11,6 +11,14 @@ DECL|macro|MCF_MBAR
 mdefine_line|#define&t;MCF_MBAR&t;0x10000000
 DECL|macro|MCF_MBAR2
 mdefine_line|#define&t;MCF_MBAR2&t;0x80000000
+DECL|macro|MCF_IPSBAR
+mdefine_line|#define&t;MCF_IPSBAR&t;0x40000000
+macro_line|#ifdef CONFIG_M5282
+DECL|macro|MCF_MBAR
+macro_line|#undef MCF_MBAR
+DECL|macro|MCF_MBAR
+mdefine_line|#define&t;MCF_MBAR&t;MCF_IPSBAR
+macro_line|#endif
 multiline_comment|/*&n; *&t;Define master clock frequency.&n; */
 macro_line|#if defined(CONFIG_CLOCK_11MHz)
 DECL|macro|MCF_CLK

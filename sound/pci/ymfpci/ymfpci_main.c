@@ -4100,7 +4100,7 @@ suffix:semicolon
 )brace
 id|status
 op_assign
-id|snd_ymfpci_readl
+id|snd_ymfpci_readw
 c_func
 (paren
 id|chip
@@ -4117,18 +4117,17 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* timer handler */
-id|snd_ymfpci_writel
+)brace
+id|snd_ymfpci_writew
 c_func
 (paren
 id|chip
 comma
 id|YDSXGR_INTFLAG
 comma
-op_complement
-l_int|0
+id|status
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -12043,9 +12042,17 @@ id|chip
 OL
 l_int|0
 )paren
+(brace
+id|snd_ymfpci_free
+c_func
+(paren
+id|chip
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_PM
 id|chip-&gt;saved_regs
 op_assign

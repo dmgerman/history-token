@@ -126,7 +126,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Name %4.4s Type [%s] found at %p&bslash;n&quot;
+l_string|&quot;Name %4.4s Type [%s] found in scope [%4.4s] %p&bslash;n&quot;
 comma
 (paren
 r_char
@@ -139,6 +139,8 @@ id|acpi_ut_get_type_name
 (paren
 id|next_node-&gt;type
 )paren
+comma
+id|next_node-&gt;name.ascii
 comma
 id|next_node
 )paren
@@ -180,7 +182,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Name %4.4s Type [%s] not found at %p&bslash;n&quot;
+l_string|&quot;Name %4.4s Type [%s] not found in search in scope [%4.4s] %p first child %p&bslash;n&quot;
 comma
 (paren
 r_char
@@ -194,7 +196,11 @@ id|acpi_ut_get_type_name
 id|type
 )paren
 comma
-id|next_node
+id|node-&gt;name.ascii
+comma
+id|node
+comma
+id|node-&gt;child
 )paren
 )paren
 suffix:semicolon

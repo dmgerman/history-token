@@ -401,9 +401,11 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_INIT
 comma
-l_string|&quot;&bslash;nTable [%4.4s] - %hd Objects with %hd Devices %hd Methods %hd Regions&bslash;n&quot;
+l_string|&quot;&bslash;nTable [%4.4s](id %4.4X) - %hd Objects with %hd Devices %hd Methods %hd Regions&bslash;n&quot;
 comma
 id|table_desc-&gt;pointer-&gt;signature
+comma
+id|table_desc-&gt;table_id
 comma
 id|info.object_count
 comma

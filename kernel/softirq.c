@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 multiline_comment|/*&n;   - No shared variables, all the data are CPU local.&n;   - If a softirq needs serialization, let it serialize itself&n;     by its own spinlocks.&n;   - Even if softirq is serialized, only local cpu is marked for&n;     execution. Hence, we get something sort of weak cpu binding.&n;     Though it is still not clear, will it result in better locality&n;     or will not.&n;&n;   Examples:&n;   - NET RX softirq. It is multithreaded and does not require&n;     any global serialization.&n;   - NET TX softirq. It kicks software netdevice queues, hence&n;     it is logically serialized per device, but this serialization&n;     is invisible to common code.&n;   - Tasklets: serialized wrt itself.&n; */
 DECL|variable|____cacheline_aligned
 id|irq_cpustat_t

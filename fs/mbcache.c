@@ -942,8 +942,7 @@ id|entry_size
 comma
 l_int|0
 comma
-l_int|0
-multiline_comment|/*SLAB_POISON | SLAB_RED_ZONE*/
+id|SLAB_RECLAIM_ACCOUNT
 comma
 l_int|NULL
 comma

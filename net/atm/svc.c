@@ -199,7 +199,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 )paren
 )paren
@@ -1249,7 +1249,7 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
-id|vcc-&gt;sk-&gt;max_ack_backlog
+id|vcc-&gt;sk-&gt;sk_max_ack_backlog
 op_assign
 id|backlog
 OG
@@ -1384,7 +1384,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|old_vcc-&gt;sk-&gt;receive_queue
+id|old_vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 )paren
 op_logical_and
@@ -1553,7 +1553,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|old_vcc-&gt;sk-&gt;ack_backlog
+id|old_vcc-&gt;sk-&gt;sk_ack_backlog
 op_decrement
 suffix:semicolon
 r_if

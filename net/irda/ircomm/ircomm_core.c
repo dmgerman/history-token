@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_core.c&n; * Version:       1.0&n; * Description:   IrCOMM service interface&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Jun  6 20:37:34 1999&n; * Modified at:   Tue Dec 21 13:26:41 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999 Dag Brattli, All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_core.c&n; * Version:       1.0&n; * Description:   IrCOMM service interface&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Jun  6 20:37:34 1999&n; * Modified at:   Tue Dec 21 13:26:41 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -757,12 +757,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Function ircomm_connect_response (self, userdata, max_sdu_size)&n; *&n; *    User accepts connection&n; *&n; */
@@ -911,12 +905,6 @@ comma
 l_string|&quot;%s(), missing handler&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -1082,12 +1070,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Function ircomm_process_data (self, skb)&n; *&n; *    Data arrived which may contain control channel data&n; *&n; */
@@ -1180,12 +1162,6 @@ comma
 l_string|&quot;%s(), data was control info only!&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -1305,11 +1281,6 @@ r_int
 id|clen
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|ctrl_skb
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -1320,6 +1291,19 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* Use udata for delivering data on the control channel */
+r_if
+c_cond
+(paren
+id|self-&gt;notify.udata_indication
+)paren
+(brace
+r_struct
+id|sk_buff
+op_star
+id|ctrl_skb
+suffix:semicolon
+multiline_comment|/* We don&squot;t own the skb, so clone it */
 id|ctrl_skb
 op_assign
 id|skb_clone
@@ -1349,12 +1333,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Use udata for delivering data on the control channel */
-r_if
-c_cond
-(paren
-id|self-&gt;notify.udata_indication
-)paren
 id|self-&gt;notify
 dot
 id|udata_indication
@@ -1367,6 +1345,14 @@ comma
 id|ctrl_skb
 )paren
 suffix:semicolon
+multiline_comment|/* Drop reference count -&n;&t;&t; * see ircomm_tty_control_indication(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|ctrl_skb
+)paren
+suffix:semicolon
+)brace
 r_else
 (brace
 id|IRDA_DEBUG
@@ -1377,12 +1363,6 @@ comma
 l_string|&quot;%s(), missing handler&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -1547,12 +1527,6 @@ comma
 l_string|&quot;%s(), missing handler&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace

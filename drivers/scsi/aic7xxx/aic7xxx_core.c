@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx.c#128 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx.c#131 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifdef __linux__
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
@@ -830,7 +830,7 @@ r_int
 id|verbose_level
 )paren
 suffix:semicolon
-macro_line|#if AHC_TARGET_MODE
+macro_line|#ifdef AHC_TARGET_MODE
 r_static
 r_void
 id|ahc_setup_target_msgin
@@ -1341,7 +1341,7 @@ id|ahc
 comma
 id|SEQCTL
 comma
-id|FASTMODE
+id|ahc-&gt;seqctl
 )paren
 suffix:semicolon
 id|ahc_outb
@@ -2984,7 +2984,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if AHC_TARGET_MODE
+macro_line|#ifdef AHC_TARGET_MODE
 r_else
 (brace
 r_if
@@ -6342,13 +6342,7 @@ id|ahc
 comma
 id|SEQCTL
 comma
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SEQCTL
-)paren
+id|ahc-&gt;seqctl
 op_or
 id|STEP
 )paren
@@ -6451,16 +6445,7 @@ id|ahc
 comma
 id|SEQCTL
 comma
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SEQCTL
-)paren
-op_amp
-op_complement
-id|STEP
+id|ahc-&gt;seqctl
 )paren
 suffix:semicolon
 )brace
@@ -14629,15 +14614,19 @@ id|SG_LIST_NULL
 op_ne
 l_int|0
 op_logical_and
+(paren
 id|ahc_inb
 c_func
 (paren
 id|ahc
 comma
-id|DATA_COUNT_ODD
+id|SCB_LUN
 )paren
-op_eq
-l_int|1
+op_amp
+id|SCB_XFERLEN_ODD
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * If the residual occurred on the last&n;&t;&t;&t; * transfer and the transfer request was&n;&t;&t;&t; * expected to end on an odd count, do&n;&t;&t;&t; * nothing.&n;&t;&t;&t; */
@@ -14658,161 +14647,54 @@ suffix:semicolon
 r_uint32
 id|sglen
 suffix:semicolon
-multiline_comment|/* Pull in the rest of the sgptr */
+multiline_comment|/* Pull in all of the sgptr */
 id|sgptr
-op_or_assign
-(paren
-id|ahc_inb
+op_assign
+id|ahc_inl
 c_func
 (paren
 id|ahc
 comma
 id|SCB_RESIDUAL_SGPTR
-op_plus
-l_int|3
 )paren
-op_lshift
-l_int|24
-)paren
-op_or
-(paren
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_SGPTR
-op_plus
-l_int|2
-)paren
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_SGPTR
-op_plus
-l_int|1
-)paren
-op_lshift
-l_int|8
-)paren
-suffix:semicolon
-id|sgptr
-op_and_assign
-id|SG_PTR_MASK
 suffix:semicolon
 id|data_cnt
 op_assign
-(paren
-id|ahc_inb
+id|ahc_inl
 c_func
 (paren
 id|ahc
 comma
 id|SCB_RESIDUAL_DATACNT
-op_plus
-l_int|3
-)paren
-op_lshift
-l_int|24
-)paren
-op_or
-(paren
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_DATACNT
-op_plus
-l_int|2
-)paren
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_DATACNT
-op_plus
-l_int|1
-)paren
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_DATACNT
-)paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sgptr
+op_amp
+id|SG_LIST_NULL
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * The residual data count is not updated&n;&t;&t;&t;&t; * for the command run to completion case.&n;&t;&t;&t;&t; * Explicitly zero the count.&n;&t;&t;&t;&t; */
+id|data_cnt
+op_and_assign
+op_complement
+id|AHC_SG_LEN_MASK
+suffix:semicolon
+)brace
 id|data_addr
 op_assign
-(paren
-id|ahc_inb
+id|ahc_inl
 c_func
 (paren
 id|ahc
 comma
 id|SHADDR
-op_plus
-l_int|3
-)paren
-op_lshift
-l_int|24
-)paren
-op_or
-(paren
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SHADDR
-op_plus
-l_int|2
-)paren
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SHADDR
-op_plus
-l_int|1
-)paren
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
-id|ahc_inb
-c_func
-(paren
-id|ahc
-comma
-id|SHADDR
-)paren
 )paren
 suffix:semicolon
 id|data_cnt
@@ -14822,6 +14704,10 @@ suffix:semicolon
 id|data_addr
 op_sub_assign
 l_int|1
+suffix:semicolon
+id|sgptr
+op_and_assign
+id|SG_PTR_MASK
 suffix:semicolon
 id|sg
 op_assign
@@ -14918,109 +14804,44 @@ comma
 id|sg
 )paren
 suffix:semicolon
-id|ahc_outb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_SGPTR
-op_plus
-l_int|3
-comma
-id|sgptr
-op_rshift
-l_int|24
-)paren
-suffix:semicolon
-id|ahc_outb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_SGPTR
-op_plus
-l_int|2
-comma
-id|sgptr
-op_rshift
-l_int|16
-)paren
-suffix:semicolon
-id|ahc_outb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_SGPTR
-op_plus
-l_int|1
-comma
-id|sgptr
-op_rshift
-l_int|8
-)paren
-suffix:semicolon
-id|ahc_outb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_SGPTR
-comma
-id|sgptr
-)paren
-suffix:semicolon
 )brace
-id|ahc_outb
+id|ahc_outl
 c_func
 (paren
 id|ahc
 comma
-id|SCB_RESIDUAL_DATACNT
-op_plus
-l_int|3
+id|SCB_RESIDUAL_SGPTR
 comma
-id|data_cnt
-op_rshift
-l_int|24
+id|sgptr
 )paren
 suffix:semicolon
-id|ahc_outb
+id|ahc_outl
 c_func
 (paren
 id|ahc
 comma
 id|SCB_RESIDUAL_DATACNT
-op_plus
-l_int|2
 comma
 id|data_cnt
-op_rshift
-l_int|16
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Toggle the &quot;oddness&quot; of the transfer length&n;&t;&t;&t; * to handle this mid-transfer ignore wide&n;&t;&t;&t; * residue.  This ensures that the oddness is&n;&t;&t;&t; * correct for subsequent data transfers.&n;&t;&t;&t; */
 id|ahc_outb
 c_func
 (paren
 id|ahc
 comma
-id|SCB_RESIDUAL_DATACNT
-op_plus
-l_int|1
+id|SCB_LUN
 comma
-id|data_cnt
-op_rshift
-l_int|8
+id|ahc_inb
+c_func
+(paren
+id|ahc
+comma
+id|SCB_LUN
 )paren
-suffix:semicolon
-id|ahc_outb
-c_func
-(paren
-id|ahc
-comma
-id|SCB_RESIDUAL_DATACNT
-comma
-id|data_cnt
+op_xor
+id|SCB_XFERLEN_ODD
 )paren
 suffix:semicolon
 )brace
@@ -15910,6 +15731,11 @@ id|ahc-&gt;flags
 op_assign
 id|AHC_FNONE
 suffix:semicolon
+multiline_comment|/*&n;&t; * Default to all error reporting enabled with the&n;&t; * sequencer operating at its fastest speed.&n;&t; * The bus attach code may modify this.&n;&t; */
+id|ahc-&gt;seqctl
+op_assign
+id|FASTMODE
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -16575,7 +16401,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-macro_line|#if AHC_TARGET_MODE
+macro_line|#ifdef AHC_TARGET_MODE
 r_int
 id|j
 suffix:semicolon
@@ -16641,7 +16467,7 @@ id|M_DEVBUF
 suffix:semicolon
 )brace
 )brace
-macro_line|#if AHC_TARGET_MODE
+macro_line|#ifdef AHC_TARGET_MODE
 r_if
 c_cond
 (paren
@@ -21802,7 +21628,7 @@ id|EBUSY
 )paren
 suffix:semicolon
 )brace
-macro_line|#if AHC_TARGET_MODE
+macro_line|#ifdef AHC_TARGET_MODE
 multiline_comment|/*&n;&t; * XXX What about ATIOs that have not yet been serviced?&n;&t; * Perhaps we should just refuse to be suspended if we&n;&t; * are acting in a target role.&n;&t; */
 r_if
 c_cond
@@ -22330,7 +22156,7 @@ op_ne
 l_int|0
 )paren
 (brace
-macro_line|#if AHC_TARGET_MODE
+macro_line|#ifdef AHC_TARGET_MODE
 r_int
 id|group
 suffix:semicolon
@@ -25436,7 +25262,7 @@ c_func
 id|ahc
 )paren
 suffix:semicolon
-macro_line|#if AHC_TARGET_MODE
+macro_line|#ifdef AHC_TARGET_MODE
 multiline_comment|/*&n;&t; * XXX - In Twin mode, the tqinfifo may have commands&n;&t; *&t; for an unaffected channel in it.  However, if&n;&t; *&t; we have run out of ATIO resources to drain that&n;&t; *&t; queue, we may not get them all out here.  Further,&n;&t; *&t; the blocked transactions for the reset channel&n;&t; *&t; should just be killed off, irrespecitve of whether&n;&t; *&t; we are blocked on ATIO resources.  Write a routine&n;&t; *&t; to compact the tqinfifo appropriately.&n;&t; */
 r_if
 c_cond
@@ -25549,7 +25375,7 @@ op_or
 id|ENSCSIRST
 )paren
 suffix:semicolon
-macro_line|#if AHC_TARGET_MODE
+macro_line|#ifdef AHC_TARGET_MODE
 multiline_comment|/*&n;&t;&t; * Bus resets clear ENSELI, so we cannot&n;&t;&t; * defer re-enabling bus reset interrupts&n;&t;&t; * if we are in target mode.&n;&t;&t; */
 r_if
 c_cond
@@ -25647,7 +25473,7 @@ op_or
 id|ENSCSIRST
 )paren
 suffix:semicolon
-macro_line|#if AHC_TARGET_MODE
+macro_line|#ifdef AHC_TARGET_MODE
 multiline_comment|/*&n;&t;&t; * Bus resets clear ENSELI, so we cannot&n;&t;&t; * defer re-enabling bus reset interrupts&n;&t;&t; * if we are in target mode.&n;&t;&t; */
 r_if
 c_cond

@@ -278,5 +278,7 @@ id|st_ino
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|STAT_HAVE_NSEC
+mdefine_line|#define STAT_HAVE_NSEC 1
 macro_line|#endif
 eof

@@ -322,7 +322,7 @@ macro_line|# define PCI_READ_CONFIG_WORD(pd, rv, bv) pci_read_config_word (pd, r
 DECL|macro|PCI_BUS_DEV
 macro_line|# define PCI_BUS_DEV pdev-&gt;bus-&gt;number, pdev-&gt;devfn
 DECL|macro|PCI_PRESENT
-macro_line|# define PCI_PRESENT pci_present ()
+macro_line|# define PCI_PRESENT (1)
 DECL|macro|PCI_SET_MASTER
 macro_line|# define PCI_SET_MASTER pci_set_master (pdev)
 DECL|macro|PCI_FIND_DEVICE
@@ -11159,6 +11159,11 @@ DECL|function|DC390_proc_info
 r_int
 id|DC390_proc_info
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shpnt
+comma
 r_char
 op_star
 id|buffer
@@ -11173,9 +11178,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -11193,11 +11195,6 @@ op_star
 id|pos
 op_assign
 id|buffer
-suffix:semicolon
-id|PSH
-id|shpnt
-op_assign
-l_int|0
 suffix:semicolon
 id|PACB
 id|pACB
@@ -11225,16 +11222,12 @@ op_minus
 l_int|1
 )paren
 (brace
-id|shpnt
-op_assign
-id|pACB-&gt;pScsiHost
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|shpnt-&gt;host_no
+id|shpnt
 op_eq
-id|hostno
+id|pACB-&gt;pScsiHost
 )paren
 r_break
 suffix:semicolon
@@ -11258,18 +11251,6 @@ r_return
 op_minus
 id|ESRCH
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|shpnt
-)paren
-(brace
-r_return
-op_minus
-id|ESRCH
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

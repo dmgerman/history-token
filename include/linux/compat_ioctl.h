@@ -1,4 +1,4 @@
-multiline_comment|/* List here explicitly which ioctl&squot;s are known to have&n; * compatible types passed or none at all...&n; */
+multiline_comment|/* List here explicitly which ioctl&squot;s are known to have&n; * compatible types passed or none at all... Please include&n; * only stuff that is compatible on *all architectures*.&n; */
 multiline_comment|/* Big T */
 id|COMPATIBLE_IOCTL
 c_func
@@ -176,6 +176,7 @@ c_func
 (paren
 id|TIOCSERGETLSR
 )paren
+macro_line|#ifdef CONFIG_FB
 multiline_comment|/* Big F */
 id|COMPATIBLE_IOCTL
 c_func
@@ -202,6 +203,7 @@ c_func
 (paren
 id|FBIOPUT_CON2FBMAP
 )paren
+macro_line|#endif
 multiline_comment|/* Little f */
 id|COMPATIBLE_IOCTL
 c_func
@@ -286,6 +288,7 @@ c_func
 (paren
 id|HDIO_SET_NICE
 )paren
+macro_line|#ifndef CONFIG_ARCH_S390
 multiline_comment|/* 0x02 -- Floppy ioctls */
 id|COMPATIBLE_IOCTL
 c_func
@@ -367,6 +370,7 @@ c_func
 (paren
 id|FDRAWCMD
 )paren
+macro_line|#endif
 multiline_comment|/* 0x12 */
 id|COMPATIBLE_IOCTL
 c_func
@@ -851,6 +855,7 @@ c_func
 (paren
 id|VT_UNLOCKSWITCH
 )paren
+macro_line|#if defined(CONFIG_VIDEO_DEV) || defined(CONFIG_VIDEO_DEV_MODULE)
 multiline_comment|/* Little v */
 multiline_comment|/* Little v, the video4linux ioctls (conflict?) */
 id|COMPATIBLE_IOCTL
@@ -1060,6 +1065,8 @@ comma
 r_int
 )paren
 )paren
+macro_line|#endif
+macro_line|#if defined(CONFIG_RTC) || defined (CONFIG_RTC_MODULE)
 multiline_comment|/* Little p (/dev/rtc, /dev/envctrl, etc.) */
 id|COMPATIBLE_IOCTL
 c_func
@@ -1131,6 +1138,7 @@ c_func
 (paren
 id|RTC_WKALM_RD
 )paren
+macro_line|#endif
 multiline_comment|/* Little m */
 id|COMPATIBLE_IOCTL
 c_func
@@ -1374,6 +1382,7 @@ c_func
 (paren
 id|SG_GET_KEEP_ORPHAN
 )paren
+macro_line|#if defined(CONFIG_PPP) || defined(CONFIG_PPP_MODULE)
 multiline_comment|/* PPP stuff */
 id|COMPATIBLE_IOCTL
 c_func
@@ -1515,6 +1524,7 @@ c_func
 (paren
 id|PPPOEIOCDFWD
 )paren
+macro_line|#endif
 multiline_comment|/* LP */
 id|COMPATIBLE_IOCTL
 c_func
@@ -1672,6 +1682,32 @@ c_func
 (paren
 id|CDROM_GET_CAPABILITY
 )paren
+multiline_comment|/* Ignore cdrom.h about these next 5 ioctls, they absolutely do&n; * not take a struct cdrom_read, instead they take a struct cdrom_msf&n; * which is compatible.&n; */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADMODE2
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADMODE1
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADRAW
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADCOOKED
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADALL
+)paren
 multiline_comment|/* DVD ioctls */
 id|COMPATIBLE_IOCTL
 c_func
@@ -1701,6 +1737,7 @@ id|LOOP_CLR_FD
 )paren
 multiline_comment|/* Big A */
 multiline_comment|/* sparc only */
+macro_line|#if defined(CONFIG_SOUND) || defined (CONFIG_SOUND_MODULE)
 multiline_comment|/* Big Q for sound/OSS */
 id|COMPATIBLE_IOCTL
 c_func
@@ -2487,6 +2524,7 @@ c_func
 (paren
 id|OSS_GETVERSION
 )paren
+macro_line|#endif
 multiline_comment|/* AUTOFS */
 id|COMPATIBLE_IOCTL
 c_func
@@ -2551,6 +2589,7 @@ c_func
 (paren
 id|SMB_IOC_NEWCONN
 )paren
+macro_line|#if defined(CONFIG_ATM) || defined(CONFIG_ATM_MODULE)
 multiline_comment|/* Little a */
 id|COMPATIBLE_IOCTL
 c_func
@@ -2627,193 +2666,7 @@ c_func
 (paren
 id|ATMMPC_DATA
 )paren
-macro_line|#if defined(CONFIG_BLK_DEV_LVM) || defined(CONFIG_BLK_DEV_LVM_MODULE)
-multiline_comment|/* 0xfe - lvm */
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|VG_SET_EXTENDABLE
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|VG_STATUS_GET_COUNT
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|VG_STATUS_GET_NAMELIST
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|VG_REMOVE
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|VG_RENAME
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|VG_REDUCE
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|PE_LOCK_UNLOCK
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|PV_FLUSH
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|LVM_LOCK_LVM
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|LVM_GET_IOP_VERSION
-)paren
-macro_line|#ifdef LVM_TOTAL_RESET
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|LVM_RESET
-)paren
 macro_line|#endif
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|LV_SET_ACCESS
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|LV_SET_STATUS
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|LV_SET_ALLOCATION
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|LE_REMAP
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|LV_BMAP
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|LV_SNAPSHOT_USE_RATE
-)paren
-macro_line|#endif /* LVM */
-macro_line|#if defined(CONFIG_DRM) || defined(CONFIG_DRM_MODULE)
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_GET_MAGIC
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_IRQ_BUSID
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_AUTH_MAGIC
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_BLOCK
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_UNBLOCK
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_CONTROL
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_ADD_BUFS
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_MARK_BUFS
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_ADD_CTX
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_RM_CTX
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_MOD_CTX
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_GET_CTX
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_SWITCH_CTX
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_NEW_CTX
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_ADD_DRAW
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_RM_DRAW
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_LOCK
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_UNLOCK
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|DRM_IOCTL_FINISH
-)paren
-macro_line|#endif /* DRM */
 multiline_comment|/* Big W */
 multiline_comment|/* WIOC_GETSUPPORT not yet implemented -E */
 id|COMPATIBLE_IOCTL
@@ -2872,6 +2725,7 @@ c_func
 (paren
 id|RNDCLEARPOOL
 )paren
+macro_line|#if defined(CONFIG_BT) || defined(CONFIG_BT_MODULE)
 multiline_comment|/* Bluetooth ioctls */
 id|COMPATIBLE_IOCTL
 c_func
@@ -2963,6 +2817,8 @@ c_func
 (paren
 id|HCIINQUIRY
 )paren
+macro_line|#endif
+macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* Misc. */
 id|COMPATIBLE_IOCTL
 c_func
@@ -2996,6 +2852,8 @@ c_func
 (paren
 id|PCIIOC_WRITE_COMBINE
 )paren
+macro_line|#endif
+macro_line|#if defined(CONFIG_USB) || defined(CONFIG_USB_MODULE)
 multiline_comment|/* USB */
 id|COMPATIBLE_IOCTL
 c_func
@@ -3052,6 +2910,8 @@ c_func
 (paren
 id|USBDEVFS_CLEAR_HALT
 )paren
+macro_line|#endif
+macro_line|#if defined(CONFIG_MTD) || defined(CONFIG_MTD_MODULE)
 multiline_comment|/* MTD */
 id|COMPATIBLE_IOCTL
 c_func
@@ -3083,6 +2943,7 @@ c_func
 (paren
 id|MEMGETREGIONINFO
 )paren
+macro_line|#endif
 multiline_comment|/* NBD */
 id|COMPATIBLE_IOCTL
 c_func

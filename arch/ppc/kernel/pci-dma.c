@@ -98,6 +98,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_NOT_COHERENT_CACHE
 op_star
 id|dma_handle
 op_assign
@@ -107,6 +108,7 @@ c_func
 id|ret
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 id|ret

@@ -10,29 +10,6 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * open a file on nfsd fs&n; */
-r_struct
-id|vfsmount
-op_star
-id|do_kern_mount
-c_func
-(paren
-r_const
-r_char
-op_star
-id|type
-comma
-r_int
-id|flags
-comma
-r_char
-op_star
-id|name
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
 DECL|function|do_open
 r_static
 r_struct

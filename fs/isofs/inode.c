@@ -433,6 +433,8 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once
 comma
@@ -5577,13 +5579,9 @@ id|high_sierra
 suffix:semicolon
 id|inode-&gt;i_mtime.tv_nsec
 op_assign
-l_int|0
-suffix:semicolon
 id|inode-&gt;i_atime.tv_nsec
 op_assign
-l_int|0
-suffix:semicolon
-id|inode-&gt;i_mtime.tv_nsec
+id|inode-&gt;i_ctime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
@@ -5954,6 +5952,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name

@@ -836,6 +836,7 @@ id|up-&gt;irqflags
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0 /* bde@nwlink.com says this check causes problems */
 r_if
 c_cond
 (paren
@@ -848,6 +849,7 @@ id|SAB82532_ISR1_XPR
 )paren
 r_return
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -902,6 +904,13 @@ id|up-&gt;interrupt_mask1
 comma
 op_amp
 id|up-&gt;regs-&gt;w.imr1
+)paren
+suffix:semicolon
+id|uart_write_wakeup
+c_func
+(paren
+op_amp
+id|up-&gt;port
 )paren
 suffix:semicolon
 r_return
@@ -3699,19 +3708,16 @@ id|driver_name
 op_assign
 l_string|&quot;serial&quot;
 comma
-macro_line|#ifdef CONFIG_DEVFS_FS
 dot
-id|dev_name
+id|devfs_name
 op_assign
 l_string|&quot;tts/&quot;
 comma
-macro_line|#else
 dot
 id|dev_name
 op_assign
 l_string|&quot;ttyS&quot;
 comma
-macro_line|#endif
 dot
 id|major
 op_assign

@@ -366,7 +366,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_PACAS
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i
@@ -429,7 +429,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_PACAS
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i
@@ -498,7 +498,7 @@ op_logical_or
 (paren
 id|nr
 op_ge
-id|MAX_PACAS
+id|NR_CPUS
 )paren
 )paren
 r_return
@@ -781,7 +781,7 @@ op_logical_or
 (paren
 id|nr
 op_ge
-id|MAX_PACAS
+id|NR_CPUS
 )paren
 )paren
 r_return
@@ -1442,28 +1442,6 @@ id|smp_message_pass
 c_func
 (paren
 id|cpu
-comma
-id|PPC_MSG_RESCHEDULE
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * this function sends a reschedule IPI to all (other) CPUs.&n; * This should only be used if some &squot;global&squot; task became runnable,&n; * such as a RT task, that must be handled now. The first CPU&n; * that manages to grab the task will run it.&n; */
-DECL|function|smp_send_reschedule_all
-r_void
-id|smp_send_reschedule_all
-c_func
-(paren
-r_void
-)paren
-(brace
-id|smp_message_pass
-c_func
-(paren
-id|MSG_ALL_BUT_SELF
 comma
 id|PPC_MSG_RESCHEDULE
 comma

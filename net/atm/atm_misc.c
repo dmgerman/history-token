@@ -37,10 +37,10 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;rmem_alloc
+id|vcc-&gt;sk-&gt;sk_rmem_alloc
 )paren
 op_le
-id|vcc-&gt;sk-&gt;rcvbuf
+id|vcc-&gt;sk-&gt;sk_rcvbuf
 )paren
 r_return
 l_int|1
@@ -107,10 +107,10 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;rmem_alloc
+id|vcc-&gt;sk-&gt;sk_rmem_alloc
 )paren
 op_le
-id|vcc-&gt;sk-&gt;rcvbuf
+id|vcc-&gt;sk-&gt;sk_rcvbuf
 )paren
 (brace
 r_struct
@@ -140,7 +140,7 @@ op_minus
 id|guess
 comma
 op_amp
-id|vcc-&gt;sk-&gt;rmem_alloc
+id|vcc-&gt;sk-&gt;sk_rmem_alloc
 )paren
 suffix:semicolon
 r_return

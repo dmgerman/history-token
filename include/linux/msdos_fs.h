@@ -31,8 +31,6 @@ DECL|macro|FAT_MAX_DIR_SIZE
 mdefine_line|#define FAT_MAX_DIR_SIZE&t;(FAT_MAX_DIR_ENTRIES &lt;&lt; MSDOS_DIR_BITS)
 DECL|macro|MSDOS_SUPER_MAGIC
 mdefine_line|#define MSDOS_SUPER_MAGIC 0x4d44 /* MD */
-DECL|macro|FAT_CACHE
-mdefine_line|#define FAT_CACHE    8 /* FAT cache size */
 DECL|macro|ATTR_NONE
 mdefine_line|#define ATTR_NONE    0 /* no attribute bits */
 DECL|macro|ATTR_RO
@@ -451,11 +449,11 @@ id|loff_t
 id|longname_offset
 suffix:semicolon
 multiline_comment|/* dir offset for longname start */
-DECL|member|ino
-r_int
-id|ino
+DECL|member|i_pos
+id|loff_t
+id|i_pos
 suffix:semicolon
-multiline_comment|/* ino for the file */
+multiline_comment|/* on-disk position of directory entry */
 )brace
 suffix:semicolon
 multiline_comment|/* Convert attribute bits and a mask to the UNIX mode. */
@@ -515,41 +513,6 @@ id|vfs_inode
 )paren
 suffix:semicolon
 )brace
-DECL|struct|fat_cache
-r_struct
-id|fat_cache
-(brace
-DECL|member|sb
-r_struct
-id|super_block
-op_star
-id|sb
-suffix:semicolon
-multiline_comment|/* fs in question.  NULL means unused */
-DECL|member|start_cluster
-r_int
-id|start_cluster
-suffix:semicolon
-multiline_comment|/* first cluster of the chain. */
-DECL|member|file_cluster
-r_int
-id|file_cluster
-suffix:semicolon
-multiline_comment|/* cluster number in the file. */
-DECL|member|disk_cluster
-r_int
-id|disk_cluster
-suffix:semicolon
-multiline_comment|/* cluster number on disk. */
-DECL|member|next
-r_struct
-id|fat_cache
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* next cache entry */
-)brace
-suffix:semicolon
 DECL|function|fat16_towchar
 r_static
 r_inline
@@ -736,8 +699,12 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|sector_t
 id|sector
+comma
+id|sector_t
+op_star
+id|phys
 )paren
 suffix:semicolon
 r_extern
@@ -745,7 +712,10 @@ r_void
 id|fat_cache_init
 c_func
 (paren
-r_void
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 r_extern
@@ -796,17 +766,6 @@ r_struct
 id|inode
 op_star
 id|inode
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|fat_cache_inval_dev
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
 )paren
 suffix:semicolon
 r_extern
@@ -937,9 +896,9 @@ op_star
 op_star
 id|de
 comma
-r_int
+id|loff_t
 op_star
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 r_extern
@@ -1024,7 +983,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|loff_t
 id|i_pos
 )paren
 suffix:semicolon
@@ -1051,7 +1010,7 @@ id|super_block
 op_star
 id|sb
 comma
-r_int
+id|loff_t
 id|i_pos
 )paren
 suffix:semicolon
@@ -1072,8 +1031,8 @@ id|msdos_dir_entry
 op_star
 id|de
 comma
-r_int
-id|ino
+id|loff_t
+id|i_pos
 comma
 r_int
 op_star
@@ -1321,9 +1280,9 @@ op_star
 op_star
 id|de
 comma
-r_int
+id|loff_t
 op_star
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 DECL|function|fat_get_entry
@@ -1354,9 +1313,9 @@ op_star
 op_star
 id|de
 comma
-r_int
+id|loff_t
 op_star
-id|ino
+id|i_pos
 )paren
 (brace
 multiline_comment|/* Fast stuff first */
@@ -1414,7 +1373,7 @@ op_increment
 suffix:semicolon
 (paren
 op_star
-id|ino
+id|i_pos
 )paren
 op_increment
 suffix:semicolon
@@ -1434,7 +1393,7 @@ id|bh
 comma
 id|de
 comma
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 )brace
@@ -1476,9 +1435,9 @@ op_star
 op_star
 id|res_de
 comma
-r_int
+id|loff_t
 op_star
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 multiline_comment|/* msdos/namei.c  - these are for Umsdos */

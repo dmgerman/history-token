@@ -1,5 +1,6 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.92 2002/09/09 16:29:08 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.99 2003/04/28 10:17:17 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -142,28 +143,10 @@ id|buf_size
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifndef __ECOS
 r_int
 id|pointlen
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|c-&gt;blocks
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;EEEK! c-&gt;blocks is NULL!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -206,7 +189,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;MTD point returned len too short: 0x%x&bslash;n&quot;
+l_string|&quot;MTD point returned len too short: 0x%zx&bslash;n&quot;
 comma
 id|pointlen
 )paren
@@ -220,6 +203,10 @@ c_func
 id|c-&gt;mtd
 comma
 id|flashbuf
+comma
+l_int|0
+comma
+id|c-&gt;mtd-&gt;size
 )paren
 suffix:semicolon
 id|flashbuf
@@ -246,6 +233,7 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -907,6 +895,7 @@ c_func
 id|flashbuf
 )paren
 suffix:semicolon
+macro_line|#ifndef __ECOS
 r_else
 id|c-&gt;mtd
 op_member_access_from_pointer
@@ -916,8 +905,13 @@ c_func
 id|c-&gt;mtd
 comma
 id|flashbuf
+comma
+l_int|0
+comma
+id|c-&gt;mtd-&gt;size
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1009,7 +1003,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Read at 0x%x gave only 0x%x bytes&bslash;n&quot;
+l_string|&quot;Read at 0x%x gave only 0x%zx bytes&bslash;n&quot;
 comma
 id|ofs
 comma
@@ -1642,7 +1636,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Fewer than %d bytes left to end of block. (%x+%x&lt;%x+%x) Not reading&bslash;n&quot;
+l_string|&quot;Fewer than %zd bytes left to end of block. (%x+%x&lt;%x+%zx) Not reading&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -1718,7 +1712,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Fewer than %d bytes (node header) left to end of buf. Reading 0x%x at 0x%08x&bslash;n&quot;
+l_string|&quot;Fewer than %zd bytes (node header) left to end of buf. Reading 0x%x at 0x%08x&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -1930,6 +1924,8 @@ c_func
 id|c-&gt;cleanmarker_size
 )paren
 op_logical_and
+id|c-&gt;cleanmarker_size
+op_logical_and
 op_logical_neg
 id|jeb-&gt;first_node-&gt;next_in_ino
 op_logical_and
@@ -2038,7 +2034,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Empty bitmask at 0x%08x&bslash;n&quot;
+l_string|&quot;Dirty bitmask at 0x%08x&bslash;n&quot;
 comma
 id|ofs
 )paren
@@ -2408,7 +2404,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Fewer than %d bytes (inode node) left to end of buf. Reading 0x%x at 0x%08x&bslash;n&quot;
+l_string|&quot;Fewer than %zd bytes (inode node) left to end of buf. Reading 0x%x at 0x%08x&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -3066,13 +3062,15 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Block at 0x%08x: free 0x%08x, dirty 0x%08x, used 0x%08x&bslash;n&quot;
+l_string|&quot;Block at 0x%08x: free 0x%08x, dirty 0x%08x, unchecked 0x%08x, used 0x%08x&bslash;n&quot;
 comma
 id|jeb-&gt;offset
 comma
 id|jeb-&gt;free_size
 comma
 id|jeb-&gt;dirty_size
+comma
+id|jeb-&gt;unchecked_size
 comma
 id|jeb-&gt;used_size
 )paren
@@ -3118,10 +3116,14 @@ id|c-&gt;cleanmarker_size
 )paren
 op_logical_and
 op_logical_neg
-id|jeb-&gt;first_node-&gt;next_in_ino
-op_logical_and
-op_logical_neg
 id|jeb-&gt;dirty_size
+op_logical_and
+(paren
+op_logical_neg
+id|jeb-&gt;first_node
+op_logical_or
+id|jeb-&gt;first_node-&gt;next_in_ino
+)paren
 )paren
 r_return
 id|BLK_STATE_CLEANMARKER

@@ -1376,8 +1376,6 @@ l_int|0x00
 comma
 op_amp
 id|this_register-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1403,8 +1401,6 @@ l_int|0xFF
 comma
 op_amp
 id|this_register-&gt;status_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1630,32 +1626,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INIT
 comma
-l_string|&quot;GPE Block: [%4.4s] %X registers at %8.8X%8.8X on interrupt %d&bslash;n&quot;
-comma
-id|gpe_device-&gt;name.ascii
-comma
-id|gpe_block-&gt;register_count
-comma
-id|ACPI_HIDWORD
-(paren
-id|gpe_block-&gt;block_address.address
-)paren
-comma
-id|ACPI_LODWORD
-(paren
-id|gpe_block-&gt;block_address.address
-)paren
-comma
-id|interrupt_level
-)paren
-)paren
-suffix:semicolon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INIT
-comma
-l_string|&quot;GPE Block defined as GPE 0x%.2X to GPE 0x%.2X&bslash;n&quot;
+l_string|&quot;GPE %02d to %02d [%4.4s] %d regs at %8.8X%8.8X on int %d&bslash;n&quot;
 comma
 id|gpe_block-&gt;block_base_number
 comma
@@ -1675,6 +1646,22 @@ op_minus
 l_int|1
 )paren
 )paren
+comma
+id|gpe_device-&gt;name.ascii
+comma
+id|gpe_block-&gt;register_count
+comma
+id|ACPI_HIDWORD
+(paren
+id|gpe_block-&gt;block_address.address
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|gpe_block-&gt;block_address.address
+)paren
+comma
+id|interrupt_level
 )paren
 )paren
 suffix:semicolon

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|cpu_to_node_mask
 mdefine_line|#define cpu_to_node_mask(cpu) node_to_cpumask(cpu_to_node(cpu))
@@ -1324,6 +1325,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
 r_else
 r_if
 c_cond
@@ -1341,13 +1343,23 @@ id|rq
 comma
 id|p
 )paren
-)paren
-id|resched_task
+op_logical_and
+(paren
+id|p-&gt;thread_info-&gt;cpu
+op_ne
+id|smp_processor_id
 c_func
 (paren
-id|rq-&gt;curr
+)paren
+)paren
+)paren
+id|smp_send_reschedule
+c_func
+(paren
+id|p-&gt;thread_info-&gt;cpu
 )paren
 suffix:semicolon
+macro_line|#endif
 id|p-&gt;state
 op_assign
 id|TASK_RUNNING
@@ -2346,19 +2358,10 @@ id|minload
 op_assign
 l_int|10000000
 suffix:semicolon
-r_for
-c_loop
+id|for_each_node_with_cpus
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 id|load
@@ -3612,7 +3615,7 @@ c_func
 (paren
 id|this_rq
 comma
-l_int|0
+id|idle
 comma
 id|cpu_to_node_mask
 c_func

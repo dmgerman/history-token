@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
@@ -18,6 +20,14 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
+r_static
+r_void
+id|apic_pm_activate
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|apic_intr_init
 r_void
 id|__init
@@ -942,6 +952,7 @@ id|value
 op_or_assign
 id|APIC_SPIV_APIC_ENABLED
 suffix:semicolon
+multiline_comment|/* This bit is reserved on P4/Xeon and should be cleared */
 r_if
 c_cond
 (paren
@@ -1445,10 +1456,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|apic_pm_activate
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 r_static
 r_struct
 (brace
@@ -1534,15 +1548,12 @@ id|lapic_suspend
 c_func
 (paren
 r_struct
-id|device
+id|sys_device
 op_star
 id|dev
 comma
 id|u32
 id|state
-comma
-id|u32
-id|level
 )paren
 (brace
 r_int
@@ -1554,16 +1565,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|level
-op_ne
-id|SUSPEND_POWER_DOWN
-)paren
-r_return
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1731,12 +1732,9 @@ id|lapic_resume
 c_func
 (paren
 r_struct
-id|device
+id|sys_device
 op_star
 id|dev
-comma
-id|u32
-id|level
 )paren
 (brace
 r_int
@@ -1748,16 +1746,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|level
-op_ne
-id|RESUME_POWER_ON
-)paren
-r_return
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1966,23 +1954,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|lapic_driver
+DECL|variable|lapic_sysclass
 r_static
 r_struct
-id|device_driver
-id|lapic_driver
+id|sysdev_class
+id|lapic_sysclass
 op_assign
 (brace
-dot
-id|name
-op_assign
+id|set_kset_name
+c_func
+(paren
 l_string|&quot;lapic&quot;
-comma
-dot
-id|bus
-op_assign
-op_amp
-id|system_bus_type
+)paren
 comma
 dot
 id|resume
@@ -1996,48 +1979,25 @@ id|lapic_suspend
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* not static, needed by child devices */
 DECL|variable|device_lapic
+r_static
 r_struct
 id|sys_device
 id|device_lapic
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;lapic&quot;
-comma
-dot
 id|id
 op_assign
 l_int|0
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;lapic&quot;
-comma
-dot
-id|driver
+id|cls
 op_assign
 op_amp
-id|lapic_driver
+id|lapic_sysclass
 comma
 )brace
-comma
-)brace
-suffix:semicolon
-DECL|variable|device_lapic
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|device_lapic
-)paren
 suffix:semicolon
 DECL|function|apic_pm_activate
 r_static
@@ -2054,16 +2014,19 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|init_lapic_devicefs
+DECL|function|init_lapic_sysfs
 r_static
 r_int
 id|__init
-id|init_lapic_devicefs
+id|init_lapic_sysfs
 c_func
 (paren
 r_void
 )paren
 (brace
+r_int
+id|error
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2074,14 +2037,23 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* XXX: remove suspend/resume procs if !apic_pm_state.active? */
-id|driver_register
+id|error
+op_assign
+id|sysdev_class_register
 c_func
 (paren
 op_amp
-id|lapic_driver
+id|lapic_sysclass
 )paren
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+id|error
+op_assign
 id|sys_device_register
 c_func
 (paren
@@ -2089,18 +2061,20 @@ op_amp
 id|device_lapic
 )paren
 suffix:semicolon
+r_return
+id|error
+suffix:semicolon
 )brace
-DECL|variable|init_lapic_devicefs
+DECL|variable|init_lapic_sysfs
 id|device_initcall
 c_func
 (paren
-id|init_lapic_devicefs
+id|init_lapic_sysfs
 )paren
 suffix:semicolon
 macro_line|#else&t;/* CONFIG_PM */
 DECL|function|apic_pm_activate
 r_static
-r_inline
 r_void
 id|apic_pm_activate
 c_func

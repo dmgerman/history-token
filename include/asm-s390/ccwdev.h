@@ -3,76 +3,13 @@ macro_line|#ifndef _S390_CCWDEV_H_
 DECL|macro|_S390_CCWDEV_H_
 mdefine_line|#define _S390_CCWDEV_H_
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/mod_devicetable.h&gt;
 multiline_comment|/* structs from asm/cio.h */
 r_struct
 id|irb
 suffix:semicolon
 r_struct
 id|ccw1
-suffix:semicolon
-multiline_comment|/* the id is used to identify what hardware a device driver supports. It &n; * is used both by the ccw subsystem driver for probing and from&n; * user space for automatic module loading.&n; *&n; * References:&n; *   - struct usb_device_id (include/linux/usb.h)&n; *   - devreg_hc_t (include/linux/s390dyn.h)&n; *   - chandev_model_info (drivers/s390/misc/chandev.c)&n; */
-DECL|struct|ccw_device_id
-r_struct
-id|ccw_device_id
-(brace
-DECL|member|match_flags
-id|__u16
-id|match_flags
-suffix:semicolon
-multiline_comment|/* which fields to match against */
-DECL|member|cu_type
-id|__u16
-id|cu_type
-suffix:semicolon
-multiline_comment|/* control unit type     */
-DECL|member|dev_type
-id|__u16
-id|dev_type
-suffix:semicolon
-multiline_comment|/* device type           */
-DECL|member|cu_model
-id|__u8
-id|cu_model
-suffix:semicolon
-multiline_comment|/* control unit model    */
-DECL|member|dev_model
-id|__u8
-id|dev_model
-suffix:semicolon
-multiline_comment|/* device model          */
-DECL|member|driver_info
-r_int
-r_int
-id|driver_info
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|enum|match_flag
-r_enum
-id|match_flag
-(brace
-DECL|enumerator|CCW_DEVICE_ID_MATCH_CU_TYPE
-id|CCW_DEVICE_ID_MATCH_CU_TYPE
-op_assign
-l_int|0x01
-comma
-DECL|enumerator|CCW_DEVICE_ID_MATCH_CU_MODEL
-id|CCW_DEVICE_ID_MATCH_CU_MODEL
-op_assign
-l_int|0x02
-comma
-DECL|enumerator|CCW_DEVICE_ID_MATCH_DEVICE_TYPE
-id|CCW_DEVICE_ID_MATCH_DEVICE_TYPE
-op_assign
-l_int|0x04
-comma
-DECL|enumerator|CCW_DEVICE_ID_MATCH_DEVICE_MODEL
-id|CCW_DEVICE_ID_MATCH_DEVICE_MODEL
-op_assign
-l_int|0x08
-comma
-multiline_comment|/* CCW_DEVICE_ID_MATCH_ANY&t;     = 0x10, */
-)brace
 suffix:semicolon
 multiline_comment|/* simplified initializers for struct ccw_device:&n; * CCW_DEVICE and CCW_DEVICE_DEVTYPE initialize one&n; * entry in your MODULE_DEVICE_TABLE and set the match_flag correctly */
 DECL|macro|CCW_DEVICE

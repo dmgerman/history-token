@@ -271,13 +271,13 @@ id|table_info
 suffix:semicolon
 multiline_comment|/*&n; * tbremove - Table removal and deletion&n; */
 r_void
-id|acpi_tb_delete_acpi_tables
+id|acpi_tb_delete_all_tables
 (paren
 r_void
 )paren
 suffix:semicolon
 r_void
-id|acpi_tb_delete_acpi_table
+id|acpi_tb_delete_tables_by_type
 (paren
 id|acpi_table_type
 id|type
@@ -301,15 +301,6 @@ r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
-)paren
-suffix:semicolon
-r_void
-id|acpi_tb_free_acpi_tables_of_type
-(paren
-r_struct
-id|acpi_table_desc
-op_star
-id|table_info
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * tbrsd - RSDP, RSDT utilities&n; */

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/include/linux/l3/uda1341.h&n; *&n; * Philips UDA1341 mixer device driver for ALSA&n; *&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13 Tomas Kasparek Initial release - based on uda1341.h from OSS&n; * 2002-03-30 Tomas Kasparek Proc filesystem support, complete mixer and DSP&n; *                           features support&n; */
-multiline_comment|/* $Id: uda1341.h,v 1.4 2003/02/25 12:48:16 perex Exp $ */
+multiline_comment|/* $Id: uda1341.h,v 1.5 2003/04/19 13:34:32 perex Exp $ */
 DECL|macro|UDA1341_ALSA_NAME
 mdefine_line|#define UDA1341_ALSA_NAME &quot;snd-uda1341&quot;
 multiline_comment|/*&n; * Default rate set after inicialization&n; */
@@ -779,6 +779,14 @@ comma
 DECL|enumerator|CMD_AGC_LEVEL
 id|CMD_AGC_LEVEL
 comma
+macro_line|#ifdef CONFIG_PM
+DECL|enumerator|CMD_SUSPEND
+id|CMD_SUSPEND
+comma
+DECL|enumerator|CMD_RESUME
+id|CMD_RESUME
+comma
+macro_line|#endif
 DECL|enumerator|CMD_LAST
 id|CMD_LAST
 comma
@@ -816,29 +824,5 @@ op_star
 id|clnt
 )paren
 suffix:semicolon
-r_void
-id|__init
-id|snd_chip_uda1341_mixer_del
-c_func
-(paren
-id|snd_card_t
-op_star
-id|card
-)paren
-suffix:semicolon
-macro_line|#ifdef DEBUG_MODE
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(format, args...)      do{printk(format, ##args);}while(0)
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(format, args...)      /* nothing */
-macro_line|#endif
-macro_line|#ifdef DEBUG_FUNCTION_NAMES
-DECL|macro|DEBUG_NAME
-mdefine_line|#define DEBUG_NAME(format, args...)     do{printk(format, ##args);}while(0)
-macro_line|#else
-DECL|macro|DEBUG_NAME
-mdefine_line|#define DEBUG_NAME(format, args...)     /* nothing */
-macro_line|#endif
 multiline_comment|/*&n; * Local variables:&n; * indent-tabs-mode: t&n; * End:&n; */
 eof

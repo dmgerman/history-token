@@ -1,9 +1,8 @@
-multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * $Id: jedec.h,v 1.2 2001/11/06 14:37:36 dwmw2 Exp $&n; */
+multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * $Id: jedec.h,v 1.3 2003/05/21 11:51:01 dwmw2 Exp $&n; */
 macro_line|#ifndef __LINUX_MTD_JEDEC_H__
 DECL|macro|__LINUX_MTD_JEDEC_H__
 mdefine_line|#define __LINUX_MTD_JEDEC_H__
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mtd/map.h&gt;
 DECL|macro|MAX_JEDEC_CHIPS
 mdefine_line|#define MAX_JEDEC_CHIPS 16
 singleline_comment|// Listing of all supported chips and their information

@@ -3552,11 +3552,6 @@ c_cond
 (paren
 op_logical_neg
 id|BusLogic_ProbeOptions.NoProbePCI
-op_logical_and
-id|pci_present
-c_func
-(paren
-)paren
 )paren
 (brace
 r_if
@@ -13804,6 +13799,11 @@ r_int
 id|BusLogic_ProcDirectoryInfo
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
 r_char
 op_star
 id|ProcBuffer
@@ -13818,9 +13818,6 @@ id|Offset
 comma
 r_int
 id|BytesAvailable
-comma
-r_int
-id|HostNumber
 comma
 r_int
 id|WriteFlag
@@ -13863,7 +13860,7 @@ c_cond
 (paren
 id|HostAdapter-&gt;HostNumber
 op_eq
-id|HostNumber
+id|shost-&gt;host_no
 )paren
 r_break
 suffix:semicolon
@@ -13882,7 +13879,7 @@ l_string|&quot;Cannot find Host Adapter for SCSI Host %d&bslash;n&quot;
 comma
 l_int|NULL
 comma
-id|HostNumber
+id|shost-&gt;host_no
 )paren
 suffix:semicolon
 r_return

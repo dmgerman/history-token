@@ -10,7 +10,26 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evregion&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_init_address_spaces&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Installs the core subsystem address space handlers.&n; *&n; ******************************************************************************/
+DECL|macro|ACPI_NUM_DEFAULT_SPACES
+mdefine_line|#define ACPI_NUM_DEFAULT_SPACES     4
+DECL|variable|acpi_gbl_default_address_spaces
+id|u8
+id|acpi_gbl_default_address_spaces
+(braket
+id|ACPI_NUM_DEFAULT_SPACES
+)braket
+op_assign
+(brace
+id|ACPI_ADR_SPACE_SYSTEM_MEMORY
+comma
+id|ACPI_ADR_SPACE_SYSTEM_IO
+comma
+id|ACPI_ADR_SPACE_PCI_CONFIG
+comma
+id|ACPI_ADR_SPACE_DATA_TABLE
+)brace
+suffix:semicolon
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_init_address_spaces&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Installs the core subsystem default address space handlers.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_init_address_spaces
 id|acpi_ev_init_address_spaces
@@ -21,12 +40,30 @@ r_void
 id|acpi_status
 id|status
 suffix:semicolon
+id|acpi_native_uint
+id|i
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ev_init_address_spaces&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * All address spaces (PCI Config, EC, SMBus) are scope dependent&n;&t; * and registration must occur for a specific device.  In the case&n;&t; * system memory and IO address spaces there is currently no device&n;&t; * associated with the address space.  For these we use the root.&n;&t; * We install the default PCI config space handler at the root so&n;&t; * that this space is immediately available even though the we have&n;&t; * not enumerated all the PCI Root Buses yet.  This is to conform&n;&t; * to the ACPI specification which states that the PCI config&n;&t; * space must be always available -- even though we are nowhere&n;&t; * near ready to find the PCI root buses at this point.&n;&t; *&n;&t; * NOTE: We ignore AE_ALREADY_EXISTS because this means that a handler&n;&t; * has already been installed (via acpi_install_address_space_handler)&n;&t; */
+multiline_comment|/*&n;&t; * All address spaces (PCI Config, EC, SMBus) are scope dependent&n;&t; * and registration must occur for a specific device.&n;&t; *&n;&t; * In the case of the system memory and IO address spaces there is currently&n;&t; * no device associated with the address space.  For these we use the root.&n;&t; *&n;&t; * We install the default PCI config space handler at the root so&n;&t; * that this space is immediately available even though the we have&n;&t; * not enumerated all the PCI Root Buses yet.  This is to conform&n;&t; * to the ACPI specification which states that the PCI config&n;&t; * space must be always available -- even though we are nowhere&n;&t; * near ready to find the PCI root buses at this point.&n;&t; *&n;&t; * NOTE: We ignore AE_ALREADY_EXISTS because this means that a handler&n;&t; * has already been installed (via acpi_install_address_space_handler).&n;&t; * Similar for AE_SAME_HANDLER.&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ACPI_NUM_DEFAULT_SPACES
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|status
 op_assign
 id|acpi_install_address_space_handler
@@ -36,7 +73,10 @@ id|acpi_handle
 )paren
 id|acpi_gbl_root_node
 comma
-id|ACPI_ADR_SPACE_SYSTEM_MEMORY
+id|acpi_gbl_default_address_spaces
+(braket
+id|i
+)braket
 comma
 id|ACPI_DEFAULT_HANDLER
 comma
@@ -45,151 +85,32 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
-(paren
-id|ACPI_FAILURE
-(paren
 id|status
-)paren
-)paren
-op_logical_and
-(paren
-id|status
-op_ne
-id|AE_ALREADY_EXISTS
-)paren
 )paren
 (brace
+r_case
+id|AE_OK
+suffix:colon
+r_case
+id|AE_SAME_HANDLER
+suffix:colon
+r_case
+id|AE_ALREADY_EXISTS
+suffix:colon
+multiline_comment|/* These exceptions are all OK */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-id|status
-op_assign
-id|acpi_install_address_space_handler
-(paren
-(paren
-id|acpi_handle
-)paren
-id|acpi_gbl_root_node
-comma
-id|ACPI_ADR_SPACE_SYSTEM_IO
-comma
-id|ACPI_DEFAULT_HANDLER
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-op_logical_and
-(paren
-id|status
-op_ne
-id|AE_ALREADY_EXISTS
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-id|status
-op_assign
-id|acpi_install_address_space_handler
-(paren
-(paren
-id|acpi_handle
-)paren
-id|acpi_gbl_root_node
-comma
-id|ACPI_ADR_SPACE_PCI_CONFIG
-comma
-id|ACPI_DEFAULT_HANDLER
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-op_logical_and
-(paren
-id|status
-op_ne
-id|AE_ALREADY_EXISTS
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-id|status
-op_assign
-id|acpi_install_address_space_handler
-(paren
-(paren
-id|acpi_handle
-)paren
-id|acpi_gbl_root_node
-comma
-id|ACPI_ADR_SPACE_DATA_TABLE
-comma
-id|ACPI_DEFAULT_HANDLER
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-op_logical_and
-(paren
-id|status
-op_ne
-id|AE_ALREADY_EXISTS
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
 )brace
 id|return_ACPI_STATUS
 (paren
@@ -267,7 +188,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  _REG method has two arguments&n;&t; *  Arg0:   Integer: Operation region space ID&n;&t; *          Same value as region_obj-&gt;Region.space_id&n;&t; *  Arg1:   Integer: connection status&n;&t; *          1 for connecting the handler,&n;&t; *          0 for disconnecting the handler&n;&t; *          Passed as a parameter&n;&t; */
+multiline_comment|/*&n;&t; * _REG method has two arguments&n;&t; * Arg0:   Integer: Operation region space ID&n;&t; *          Same value as region_obj-&gt;Region.space_id&n;&t; * Arg1:   Integer: connection status&n;&t; *          1 for connecting the handler,&n;&t; *          0 for disconnecting the handler&n;&t; *          Passed as a parameter&n;&t; */
 id|params
 (braket
 l_int|0
@@ -322,7 +243,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Set up the parameter objects&n;&t; */
+multiline_comment|/* Set up the parameter objects */
 id|params
 (braket
 l_int|0
@@ -348,7 +269,7 @@ l_int|2
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Execute the method, no return value&n;&t; */
+multiline_comment|/* Execute the method, no return value */
 id|ACPI_DEBUG_EXEC
 c_func
 (paren
@@ -474,10 +395,10 @@ id|AE_NOT_EXIST
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Ensure that there is a handler associated with this region&n;&t; */
+multiline_comment|/* Ensure that there is a handler associated with this region */
 id|handler_desc
 op_assign
-id|region_obj-&gt;region.addr_handler
+id|region_obj-&gt;region.address_space
 suffix:semicolon
 r_if
 c_cond
@@ -523,7 +444,7 @@ id|AOPOBJ_SETUP_COMPLETE
 multiline_comment|/*&n;&t;&t; * This region has not been initialized yet, do it&n;&t;&t; */
 id|region_setup
 op_assign
-id|handler_desc-&gt;addr_handler.setup
+id|handler_desc-&gt;address_space.setup
 suffix:semicolon
 r_if
 c_cond
@@ -532,7 +453,7 @@ op_logical_neg
 id|region_setup
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; *  Bad news, no init routine and not init&squot;d&n;&t;&t;&t; */
+multiline_comment|/* No initialization routine, exit with error */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -551,11 +472,11 @@ id|region_obj-&gt;region.space_id
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_UNKNOWN_STATUS
+id|AE_NOT_EXIST
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * We must exit the interpreter because the region setup will potentially&n;&t;&t; * execute control methods&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We must exit the interpreter because the region setup will potentially&n;&t;&t; * execute control methods (e.g., _REG method for this region)&n;&t;&t; */
 id|acpi_ex_exit_interpreter
 (paren
 )paren
@@ -568,7 +489,7 @@ id|region_obj
 comma
 id|ACPI_REGION_ACTIVATE
 comma
-id|handler_desc-&gt;addr_handler.context
+id|handler_desc-&gt;address_space.context
 comma
 op_amp
 id|region_context
@@ -596,7 +517,7 @@ id|status2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; *  Init routine may fail&n;&t;&t; */
+multiline_comment|/* Check for failure of the Region Setup */
 r_if
 c_cond
 (paren
@@ -631,20 +552,49 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * Region initialization may have been completed by region_setup&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|region_obj-&gt;region.flags
+op_amp
+id|AOPOBJ_SETUP_COMPLETE
+)paren
+)paren
+(brace
 id|region_obj-&gt;region.flags
 op_or_assign
 id|AOPOBJ_SETUP_COMPLETE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  Save the returned context for use in all accesses to&n;&t;&t; *  this particular region.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|region_obj2-&gt;extra.region_context
+)paren
+(brace
+multiline_comment|/* The handler for this region was already installed */
+id|ACPI_MEM_FREE
+(paren
+id|region_context
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Save the returned context for use in all accesses to&n;&t;&t;&t;&t; * this particular region&n;&t;&t;&t;&t; */
 id|region_obj2-&gt;extra.region_context
 op_assign
 id|region_context
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  We have everything we need, begin the process&n;&t; */
+)brace
+)brace
+multiline_comment|/* We have everything we need, we can invoke the address space handler */
 id|handler
 op_assign
-id|handler_desc-&gt;addr_handler.handler
+id|handler_desc-&gt;address_space.handler
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -654,7 +604,7 @@ comma
 l_string|&quot;Handler %p (@%p) Address %8.8X%8.8X [%s]&bslash;n&quot;
 comma
 op_amp
-id|region_obj-&gt;region.addr_handler-&gt;addr_handler
+id|region_obj-&gt;region.address_space-&gt;address_space
 comma
 id|handler
 comma
@@ -680,20 +630,20 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|handler_desc-&gt;addr_handler.flags
+id|handler_desc-&gt;address_space.flags
 op_amp
 id|ACPI_ADDR_HANDLER_DEFAULT_INSTALLED
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  For handlers other than the default (supplied) handlers, we must&n;&t;&t; *  exit the interpreter because the handler *might* block -- we don&squot;t&n;&t;&t; *  know what it will do, so we can&squot;t hold the lock on the intepreter.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * For handlers other than the default (supplied) handlers, we must&n;&t;&t; * exit the interpreter because the handler *might* block -- we don&squot;t&n;&t;&t; * know what it will do, so we can&squot;t hold the lock on the intepreter.&n;&t;&t; */
 id|acpi_ex_exit_interpreter
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Invoke the handler.&n;&t; */
+multiline_comment|/* Call the handler */
 id|status
 op_assign
 id|handler
@@ -706,7 +656,7 @@ id|bit_width
 comma
 id|value
 comma
-id|handler_desc-&gt;addr_handler.context
+id|handler_desc-&gt;address_space.context
 comma
 id|region_obj2-&gt;extra.region_context
 )paren
@@ -743,7 +693,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|handler_desc-&gt;addr_handler.flags
+id|handler_desc-&gt;address_space.flags
 op_amp
 id|ACPI_ADDR_HANDLER_DEFAULT_INSTALLED
 )paren
@@ -850,10 +800,10 @@ id|region_context
 op_assign
 id|region_obj2-&gt;extra.region_context
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Get the address handler from the region object&n;&t; */
+multiline_comment|/* Get the address handler from the region object */
 id|handler_obj
 op_assign
-id|region_obj-&gt;region.addr_handler
+id|region_obj-&gt;region.address_space
 suffix:semicolon
 r_if
 c_cond
@@ -862,19 +812,19 @@ op_logical_neg
 id|handler_obj
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  This region has no handler, all done&n;&t;&t; */
+multiline_comment|/* This region has no handler, all done */
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Find this region in the handler&squot;s list&n;&t; */
+multiline_comment|/* Find this region in the handler&squot;s list */
 id|obj_desc
 op_assign
-id|handler_obj-&gt;addr_handler.region_list
+id|handler_obj-&gt;address_space.region_list
 suffix:semicolon
 id|last_obj_ptr
 op_assign
 op_amp
-id|handler_obj-&gt;addr_handler.region_list
+id|handler_obj-&gt;address_space.region_list
 suffix:semicolon
 r_while
 c_loop
@@ -882,7 +832,7 @@ c_loop
 id|obj_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  See if this is the one&n;&t;&t; */
+multiline_comment|/* Is this the correct Region? */
 r_if
 c_cond
 (paren
@@ -904,7 +854,7 @@ id|handler_obj
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *  This is it, remove it from the handler&squot;s list&n;&t;&t;&t; */
+multiline_comment|/* This is it, remove it from the handler&squot;s list */
 op_star
 id|last_obj_ptr
 op_assign
@@ -941,7 +891,7 @@ id|return_VOID
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t;&t; *  Now stop region accesses by executing the _REG method&n;&t;&t;&t; */
+multiline_comment|/* Now stop region accesses by executing the _REG method */
 id|status
 op_assign
 id|acpi_ev_execute_reg_method
@@ -1006,10 +956,10 @@ id|return_VOID
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t;&t; *  Call the setup handler with the deactivate notification&n;&t;&t;&t; */
+multiline_comment|/* Call the setup handler with the deactivate notification */
 id|region_setup
 op_assign
-id|handler_obj-&gt;addr_handler.setup
+id|handler_obj-&gt;address_space.setup
 suffix:semicolon
 id|status
 op_assign
@@ -1019,13 +969,13 @@ id|region_obj
 comma
 id|ACPI_REGION_DEACTIVATE
 comma
-id|handler_obj-&gt;addr_handler.context
+id|handler_obj-&gt;address_space.context
 comma
 op_amp
 id|region_context
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *  Init routine may fail, Just ignore errors&n;&t;&t;&t; */
+multiline_comment|/* Init routine may fail, Just ignore errors */
 r_if
 c_cond
 (paren
@@ -1062,16 +1012,20 @@ op_complement
 id|AOPOBJ_SETUP_COMPLETE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *  Remove handler reference in the region&n;&t;&t;&t; *&n;&t;&t;&t; *  NOTE: this doesn&squot;t mean that the region goes away&n;&t;&t;&t; *  The region is just inaccessible as indicated to&n;&t;&t;&t; *  the _REG method&n;&t;&t;&t; *&n;&t;&t;&t; *  If the region is on the handler&squot;s list&n;&t;&t;&t; *  this better be the region&squot;s handler&n;&t;&t;&t; */
-id|region_obj-&gt;region.addr_handler
+multiline_comment|/*&n;&t;&t;&t; * Remove handler reference in the region&n;&t;&t;&t; *&n;&t;&t;&t; * NOTE: this doesn&squot;t mean that the region goes away&n;&t;&t;&t; * The region is just inaccessible as indicated to&n;&t;&t;&t; * the _REG method&n;&t;&t;&t; *&n;&t;&t;&t; * If the region is on the handler&squot;s list&n;&t;&t;&t; * this better be the region&squot;s handler&n;&t;&t;&t; */
+id|region_obj-&gt;region.address_space
 op_assign
 l_int|NULL
+suffix:semicolon
+id|acpi_ut_remove_reference
+(paren
+id|handler_obj
+)paren
 suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/* found the right handler */
-multiline_comment|/*&n;&t;&t; *  Move through the linked list of handlers&n;&t;&t; */
+multiline_comment|/* Walk the linked list of handlers */
 id|last_obj_ptr
 op_assign
 op_amp
@@ -1082,7 +1036,7 @@ op_assign
 id|obj_desc-&gt;region.next
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  If we get here, the region was not in the handler&squot;s region list&n;&t; */
+multiline_comment|/* If we get here, the region was not in the handler&squot;s region list */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1147,19 +1101,36 @@ id|region_obj-&gt;region.space_id
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Link this region to the front of the handler&squot;s list&n;&t; */
+multiline_comment|/* Link this region to the front of the handler&squot;s list */
 id|region_obj-&gt;region.next
 op_assign
-id|handler_obj-&gt;addr_handler.region_list
+id|handler_obj-&gt;address_space.region_list
 suffix:semicolon
-id|handler_obj-&gt;addr_handler.region_list
+id|handler_obj-&gt;address_space.region_list
 op_assign
 id|region_obj
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set the region&squot;s handler&n;&t; */
-id|region_obj-&gt;region.addr_handler
+multiline_comment|/* Install the region&squot;s handler */
+r_if
+c_cond
+(paren
+id|region_obj-&gt;region.address_space
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_ALREADY_EXISTS
+)paren
+suffix:semicolon
+)brace
+id|region_obj-&gt;region.address_space
 op_assign
 id|handler_obj
+suffix:semicolon
+id|acpi_ut_add_reference
+(paren
+id|handler_obj
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Tell all users that this region is usable by running the _REG&n;&t; * method&n;&t; */
 r_if
@@ -1235,10 +1206,10 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_addr_handler_helper&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Level               - Nesting level of the handle&n; *              Context             - Passed into acpi_ns_walk_namespace&n; *&n; * DESCRIPTION: This routine installs an address handler into objects that are&n; *              of type Region.&n; *&n; *              If the Object is a Device, and the device has a handler of&n; *              the same type then the search is terminated in that branch.&n; *&n; *              This is because the existing handler is closer in proximity&n; *              to any more regions than the one we are trying to install.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_install_handler&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Level               - Nesting level of the handle&n; *              Context             - Passed into acpi_ns_walk_namespace&n; *&n; * DESCRIPTION: This routine installs an address handler into objects that are&n; *              of type Region or Device.&n; *&n; *              If the Object is a Device, and the device has a handler of&n; *              the same type then the search is terminated in that branch.&n; *&n; *              This is because the existing handler is closer in proximity&n; *              to any more regions than the one we are trying to install.&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_ev_addr_handler_helper
-id|acpi_ev_addr_handler_helper
+DECL|function|acpi_ev_install_handler
+id|acpi_ev_install_handler
 (paren
 id|acpi_handle
 id|obj_handle
@@ -1264,7 +1235,7 @@ suffix:semicolon
 r_union
 id|acpi_operand_object
 op_star
-id|tmp_obj
+id|next_handler_obj
 suffix:semicolon
 r_union
 id|acpi_operand_object
@@ -1281,7 +1252,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;ev_addr_handler_helper&quot;
+l_string|&quot;ev_install_handler&quot;
 )paren
 suffix:semicolon
 id|handler_obj
@@ -1328,7 +1299,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  We only care about regions.and objects&n;&t; *  that can have address handlers&n;&t; */
+multiline_comment|/*&n;&t; * We only care about regions.and objects&n;&t; * that are allowed to have address space handlers&n;&t; */
 r_if
 c_cond
 (paren
@@ -1372,14 +1343,14 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  The object DNE, we don&squot;t care about it&n;&t;&t; */
+multiline_comment|/* No object, just exit */
 r_return
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Devices are handled different than regions&n;&t; */
+multiline_comment|/* Devices are handled different than regions */
 r_if
 c_cond
 (paren
@@ -1391,27 +1362,26 @@ op_eq
 id|ACPI_TYPE_DEVICE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  See if this guy has any handlers&n;&t;&t; */
-id|tmp_obj
+multiline_comment|/* Check if this Device already has a handler for this address space */
+id|next_handler_obj
 op_assign
-id|obj_desc-&gt;device.addr_handler
+id|obj_desc-&gt;device.address_space
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|tmp_obj
+id|next_handler_obj
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; *  Now let&squot;s see if it&squot;s for the same address space.&n;&t;&t;&t; */
+multiline_comment|/* Found a handler, is it for the same address space? */
 r_if
 c_cond
 (paren
-id|tmp_obj-&gt;addr_handler.space_id
+id|next_handler_obj-&gt;address_space.space_id
 op_eq
-id|handler_obj-&gt;addr_handler.space_id
+id|handler_obj-&gt;address_space.space_id
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; *  It&squot;s for the same address space&n;&t;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1421,54 +1391,54 @@ l_string|&quot;Found handler for region [%s] in device %p(%p) handler %p&bslash;
 comma
 id|acpi_ut_get_region_name
 (paren
-id|handler_obj-&gt;addr_handler.space_id
+id|handler_obj-&gt;address_space.space_id
 )paren
 comma
 id|obj_desc
 comma
-id|tmp_obj
+id|next_handler_obj
 comma
 id|handler_obj
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; *  Since the object we found it on was a device, then it&n;&t;&t;&t;&t; *  means that someone has already installed a handler for&n;&t;&t;&t;&t; *  the branch of the namespace from this device on.  Just&n;&t;&t;&t;&t; *  bail out telling the walk routine to not traverse this&n;&t;&t;&t;&t; *  branch.  This preserves the scoping rule for handlers.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Since the object we found it on was a device, then it&n;&t;&t;&t;&t; * means that someone has already installed a handler for&n;&t;&t;&t;&t; * the branch of the namespace from this device on.  Just&n;&t;&t;&t;&t; * bail out telling the walk routine to not traverse this&n;&t;&t;&t;&t; * branch.  This preserves the scoping rule for handlers.&n;&t;&t;&t;&t; */
 r_return
 (paren
 id|AE_CTRL_DEPTH
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; *  Move through the linked list of handlers&n;&t;&t;&t; */
-id|tmp_obj
+multiline_comment|/* Walk the linked list of handlers attached to this device */
+id|next_handler_obj
 op_assign
-id|tmp_obj-&gt;addr_handler.next
+id|next_handler_obj-&gt;address_space.next
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; *  As long as the device didn&squot;t have a handler for this&n;&t;&t; *  space we don&squot;t care about it.  We just ignore it and&n;&t;&t; *  proceed.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * As long as the device didn&squot;t have a handler for this&n;&t;&t; * space we don&squot;t care about it.  We just ignore it and&n;&t;&t; * proceed.&n;&t;&t; */
 r_return
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Only here if it was a region&n;&t; */
+multiline_comment|/* Object is a Region */
 r_if
 c_cond
 (paren
 id|obj_desc-&gt;region.space_id
 op_ne
-id|handler_obj-&gt;addr_handler.space_id
+id|handler_obj-&gt;address_space.space_id
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  This region is for a different address space&n;&t;&t; *  ignore it&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This region is for a different address space&n;&t;&t; * -- just ignore it&n;&t;&t; */
 r_return
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Now we have a region and it is for the handler&squot;s address&n;&t; *  space type.&n;&t; *&n;&t; *  First disconnect region for any previous handler (if any)&n;&t; */
+multiline_comment|/*&n;&t; * Now we have a region and it is for the handler&squot;s address&n;&t; * space type.&n;&t; *&n;&t; * First disconnect region for any previous handler (if any)&n;&t; */
 id|acpi_ev_detach_region
 (paren
 id|obj_desc
@@ -1476,7 +1446,7 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Then connect the region to the new handler&n;&t; */
+multiline_comment|/* Connect the region to the new handler */
 id|status
 op_assign
 id|acpi_ev_attach_region

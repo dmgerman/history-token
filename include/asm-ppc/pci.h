@@ -208,6 +208,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|consistent_sync
+c_func
+(paren
+id|ptr
+comma
+id|size
+comma
+id|direction
+)paren
+suffix:semicolon
 r_return
 id|virt_to_bus
 c_func
@@ -532,7 +542,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* nothing to do */
+id|consistent_sync
+c_func
+(paren
+id|bus_to_virt
+c_func
+(paren
+id|dma_handle
+)paren
+comma
+id|size
+comma
+id|direction
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single but for a scatter-gather list,&n; * same rules and usage.&n; */
 DECL|function|pci_dma_sync_sg
@@ -718,17 +741,8 @@ id|direction
 multiline_comment|/* Nothing to do. */
 )brace
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
-r_extern
-r_int
-id|pci_controller_num
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-suffix:semicolon
+DECL|macro|pci_domain_nr
+mdefine_line|#define pci_domain_nr(bus) ((struct pci_controller *)(bus)-&gt;sysdata)-&gt;index
 multiline_comment|/* Map a range of PCI memory or I/O space for a device into user space */
 r_int
 id|pci_mmap_page_range

@@ -407,7 +407,7 @@ id|pci_id
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Miscellaneous&n; */
-id|u8
+id|BOOLEAN
 id|acpi_os_readable
 (paren
 r_void
@@ -418,7 +418,7 @@ id|u32
 id|length
 )paren
 suffix:semicolon
-id|u8
+id|BOOLEAN
 id|acpi_os_writable
 (paren
 r_void

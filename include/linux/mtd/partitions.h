@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * MTD partitioning layer definitions&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: partitions.h,v 1.6 2001/03/17 17:10:21 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * MTD partitioning layer definitions&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: partitions.h,v 1.14 2003/05/20 21:56:29 dwmw2 Exp $&n; */
 macro_line|#ifndef MTD_PARTITIONS_H
 DECL|macro|MTD_PARTITIONS_H
 mdefine_line|#define MTD_PARTITIONS_H
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/*&n; * Partition definition structure:&n; * &n; * An array of struct partition is passed along with a MTD object to&n; * add_mtd_partitions() to create them.&n; *&n; * For each partition, these fields are available:&n; * name: string that will be used to label the partition&squot;s MTD device.&n; * size: the partition size; if defined as MTDPART_SIZ_FULL, the partition &n; * &t;will extend to the end of the master MTD device.&n; * offset: absolute starting position within the master MTD device; if &n; * &t;defined as MTDPART_OFS_APPEND, the partition will start where the &n; * &t;previous one ended.&n; * mask_flags: contains flags that have to be masked (removed) from the &n; * &t;master MTD flag set for the corresponding MTD partition.&n; * &t;For example, to force a read-only partition, simply adding &n; * &t;MTD_WRITEABLE to the mask_flags will do the trick.&n; *&n; * Note: writeable partitions require their size and offset be &n; * erasesize aligned.&n; */
+multiline_comment|/*&n; * Partition definition structure:&n; * &n; * An array of struct partition is passed along with a MTD object to&n; * add_mtd_partitions() to create them.&n; *&n; * For each partition, these fields are available:&n; * name: string that will be used to label the partition&squot;s MTD device.&n; * size: the partition size; if defined as MTDPART_SIZ_FULL, the partition &n; * &t;will extend to the end of the master MTD device.&n; * offset: absolute starting position within the master MTD device; if &n; * &t;defined as MTDPART_OFS_APPEND, the partition will start where the &n; * &t;previous one ended; if MTDPART_OFS_NXTBLK, at the next erase block.&n; * mask_flags: contains flags that have to be masked (removed) from the &n; * &t;master MTD flag set for the corresponding MTD partition.&n; * &t;For example, to force a read-only partition, simply adding &n; * &t;MTD_WRITEABLE to the mask_flags will do the trick.&n; *&n; * Note: writeable partitions require their size and offset be &n; * erasesize aligned (e.g. use MTDPART_OFS_NEXTBLK).&n; */
 DECL|struct|mtd_partition
 r_struct
 id|mtd_partition
@@ -29,8 +29,25 @@ id|u_int32_t
 id|mask_flags
 suffix:semicolon
 multiline_comment|/* master MTD flags to mask out for this partition */
+DECL|member|oobsel
+r_struct
+id|nand_oobinfo
+op_star
+id|oobsel
+suffix:semicolon
+multiline_comment|/* out of band layout for this partition (NAND only)*/
+DECL|member|mtdp
+r_struct
+id|mtd_info
+op_star
+op_star
+id|mtdp
+suffix:semicolon
+multiline_comment|/* pointer to store the MTD object */
 )brace
 suffix:semicolon
+DECL|macro|MTDPART_OFS_NXTBLK
+mdefine_line|#define MTDPART_OFS_NXTBLK&t;(-2)
 DECL|macro|MTDPART_OFS_APPEND
 mdefine_line|#define MTDPART_OFS_APPEND&t;(-1)
 DECL|macro|MTDPART_SIZ_FULL
@@ -59,5 +76,113 @@ id|mtd_info
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Functions dealing with the various ways of partitioning the space&n; */
+DECL|struct|mtd_part_parser
+r_struct
+id|mtd_part_parser
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|parse_fn
+r_int
+(paren
+op_star
+id|parse_fn
+)paren
+(paren
+r_struct
+id|mtd_info
+op_star
+comma
+r_struct
+id|mtd_partition
+op_star
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|mtd_part_parser
+op_star
+id|get_partition_parser
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|register_mtd_parser
+c_func
+(paren
+r_struct
+id|mtd_part_parser
+op_star
+id|parser
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|deregister_mtd_parser
+c_func
+(paren
+r_struct
+id|mtd_part_parser
+op_star
+id|parser
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|parse_mtd_partitions
+c_func
+(paren
+r_struct
+id|mtd_info
+op_star
+id|master
+comma
+r_const
+r_char
+op_star
+op_star
+id|types
+comma
+r_struct
+id|mtd_partition
+op_star
+op_star
+id|pparts
+comma
+r_int
+r_int
+id|origin
+)paren
+suffix:semicolon
+DECL|macro|put_partition_parser
+mdefine_line|#define put_partition_parser(p) do { module_put((p)-&gt;owner); } while(0)
 macro_line|#endif
 eof

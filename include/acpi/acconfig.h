@@ -7,7 +7,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * ACPI_DEBUG_OUTPUT    - This switch enables all the debug facilities of the&n; *                        ACPI subsystem.  This includes the DEBUG_PRINT output&n; *                        statements.  When disabled, all DEBUG_PRINT&n; *                        statements are compiled out.&n; *&n; * ACPI_APPLICATION     - Use this switch if the subsystem is going to be run&n; *                        at the application level.&n; *&n; */
 multiline_comment|/* Version string */
 DECL|macro|ACPI_CA_VERSION
-mdefine_line|#define ACPI_CA_VERSION                 0x20030418
+mdefine_line|#define ACPI_CA_VERSION                 0x20030522
 multiline_comment|/* Maximum objects in the various object caches */
 DECL|macro|ACPI_MAX_STATE_CACHE_DEPTH
 mdefine_line|#define ACPI_MAX_STATE_CACHE_DEPTH      64          /* State objects for stacks */
@@ -58,6 +58,11 @@ mdefine_line|#define ACPI_METHOD_MAX_ARG             6
 multiline_comment|/* Maximum length of resulting string when converting from a buffer */
 DECL|macro|ACPI_MAX_STRING_CONVERSION
 mdefine_line|#define ACPI_MAX_STRING_CONVERSION      200
+multiline_comment|/* Length of _HID, _UID, and _CID values */
+DECL|macro|ACPI_DEVICE_ID_LENGTH
+mdefine_line|#define ACPI_DEVICE_ID_LENGTH           0x09
+DECL|macro|ACPI_MAX_CID_LENGTH
+mdefine_line|#define ACPI_MAX_CID_LENGTH             48
 multiline_comment|/*&n; * Operand Stack (in WALK_STATE), Must be large enough to contain METHOD_MAX_ARG&n; */
 DECL|macro|ACPI_OBJ_NUM_OPERANDS
 mdefine_line|#define ACPI_OBJ_NUM_OPERANDS           8

@@ -1,5 +1,11 @@
-multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.12 2001/11/06 14:37:35 dwmw2 Exp $&n; */
+multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.19 2003/05/29 09:25:23 dwmw2 Exp $&n; */
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mtd/jedec.h&gt;
+macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 r_static
 r_struct
 id|mtd_info
@@ -848,7 +854,7 @@ id|count
 op_assign
 l_int|1
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|Part
@@ -862,18 +868,6 @@ id|Part
 op_minus
 l_int|10
 )paren
-suffix:semicolon
-id|Part
-(braket
-r_sizeof
-(paren
-id|Part
-)paren
-op_minus
-l_int|11
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|strcat
 c_func
@@ -1256,8 +1250,7 @@ id|MTD
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// strncpy(MTD-&gt;name,Part,sizeof(MTD-&gt;name));
-singleline_comment|// MTD-&gt;name[sizeof(MTD-&gt;name)-1] = 0;
+singleline_comment|// strlcpy(MTD-&gt;name,Part,sizeof(MTD-&gt;name));
 id|MTD-&gt;name
 op_assign
 id|map-&gt;name
@@ -1326,7 +1319,11 @@ op_assign
 op_amp
 id|jedec_chipdrv
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 id|MTD
@@ -1993,9 +1990,9 @@ id|priv
 )paren
 (brace
 DECL|macro|flread
-mdefine_line|#define flread(x) map-&gt;read8(map,base+x)
+mdefine_line|#define flread(x) map_read8(map,base+x)
 DECL|macro|flwrite
-mdefine_line|#define flwrite(v,x) map-&gt;write8(map,v,base+x)
+mdefine_line|#define flwrite(v,x) map_write8(map,v,base+x)
 r_const
 r_int
 r_int
@@ -2248,9 +2245,9 @@ id|priv
 )paren
 (brace
 DECL|macro|flread
-mdefine_line|#define flread(x) map-&gt;read32(map,base+((x)&lt;&lt;2))
+mdefine_line|#define flread(x) map_read32(map,base+((x)&lt;&lt;2))
 DECL|macro|flwrite
-mdefine_line|#define flwrite(v,x) map-&gt;write32(map,v,base+((x)&lt;&lt;2))
+mdefine_line|#define flwrite(v,x) map_write32(map,v,base+((x)&lt;&lt;2))
 r_const
 r_int
 r_int
@@ -2534,7 +2531,11 @@ c_cond
 (paren
 id|base
 op_plus
+(paren
 id|Size
+op_lshift
+l_int|2
+)paren
 op_plus
 l_int|0x555
 OL
@@ -2542,7 +2543,11 @@ id|map-&gt;size
 op_logical_and
 id|base
 op_plus
+(paren
 id|Size
+op_lshift
+l_int|2
+)paren
 op_plus
 l_int|0x555
 OL
@@ -2674,9 +2679,7 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|copy_from
+id|map_copy_from
 c_func
 (paren
 id|map
@@ -2829,9 +2832,7 @@ id|priv-&gt;bank_fill
 l_int|0
 )braket
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|copy_from
+id|map_copy_from
 c_func
 (paren
 id|map
@@ -2933,9 +2934,9 @@ id|instr
 (brace
 singleline_comment|// Does IO to the currently selected chip
 DECL|macro|flread
-mdefine_line|#define flread(x) map-&gt;read8(map,chip-&gt;base+((x)&lt;&lt;chip-&gt;addrshift))
+mdefine_line|#define flread(x) map_read8(map,chip-&gt;base+((x)&lt;&lt;chip-&gt;addrshift))
 DECL|macro|flwrite
-mdefine_line|#define flwrite(v,x) map-&gt;write8(map,v,chip-&gt;base+((x)&lt;&lt;chip-&gt;addrshift))
+mdefine_line|#define flwrite(v,x) map_write8(map,v,chip-&gt;base+((x)&lt;&lt;chip-&gt;addrshift))
 r_int
 r_int
 id|Time
@@ -3446,9 +3447,7 @@ id|Last
 l_int|0
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -3469,9 +3468,7 @@ id|Last
 l_int|1
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -3492,9 +3489,7 @@ id|Last
 l_int|2
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -3520,9 +3515,7 @@ id|Last
 l_int|0
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read16
+id|map_read16
 c_func
 (paren
 id|map
@@ -3543,9 +3536,7 @@ id|Last
 l_int|1
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read16
+id|map_read16
 c_func
 (paren
 id|map
@@ -3566,9 +3557,7 @@ id|Last
 l_int|2
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read16
+id|map_read16
 c_func
 (paren
 id|map
@@ -3594,9 +3583,7 @@ id|Last
 l_int|0
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -3617,9 +3604,7 @@ id|Last
 l_int|1
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -3640,9 +3625,7 @@ id|Last
 l_int|2
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -3847,9 +3830,7 @@ op_mod
 l_int|4
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -3877,9 +3858,7 @@ op_mod
 l_int|4
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read16
+id|map_read16
 c_func
 (paren
 id|map
@@ -3907,9 +3886,7 @@ op_mod
 l_int|4
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -4042,6 +4019,10 @@ suffix:semicolon
 )brace
 )brace
 singleline_comment|//printk(&quot;done&bslash;n&quot;);
+id|instr-&gt;state
+op_assign
+id|MTD_ERASE_DONE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4091,11 +4072,11 @@ op_star
 id|buf
 )paren
 (brace
-multiline_comment|/* Does IO to the currently selected chip. It takes the bank addressing&n;      base (which is divisible by the chip size) adds the necessary lower bits&n;      of addrshift (interleve index) and then adds the control register index. */
+multiline_comment|/* Does IO to the currently selected chip. It takes the bank addressing&n;      base (which is divisible by the chip size) adds the necessary lower bits&n;      of addrshift (interleave index) and then adds the control register index. */
 DECL|macro|flread
-mdefine_line|#define flread(x) map-&gt;read8(map,base+(off&amp;((1&lt;&lt;chip-&gt;addrshift)-1))+((x)&lt;&lt;chip-&gt;addrshift))
+mdefine_line|#define flread(x) map_read8(map,base+(off&amp;((1&lt;&lt;chip-&gt;addrshift)-1))+((x)&lt;&lt;chip-&gt;addrshift))
 DECL|macro|flwrite
-mdefine_line|#define flwrite(v,x) map-&gt;write8(map,v,base+(off&amp;((1&lt;&lt;chip-&gt;addrshift)-1))+((x)&lt;&lt;chip-&gt;addrshift))
+mdefine_line|#define flwrite(v,x) map_write8(map,v,base+(off&amp;((1&lt;&lt;chip-&gt;addrshift)-1))+((x)&lt;&lt;chip-&gt;addrshift))
 r_struct
 id|map_info
 op_star
@@ -4279,9 +4260,7 @@ r_int
 r_char
 id|oldbyte
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -4363,9 +4342,7 @@ comma
 l_int|0x555
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write8
+id|map_write8
 c_func
 (paren
 id|map
@@ -4383,9 +4360,7 @@ id|Last
 l_int|0
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -4400,9 +4375,7 @@ id|Last
 l_int|1
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -4417,9 +4390,7 @@ id|Last
 l_int|2
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -4473,9 +4444,7 @@ op_mod
 l_int|4
 )braket
 op_assign
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map

@@ -36,74 +36,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|patch_wolfson00
-r_int
-id|patch_wolfson00
-c_func
-(paren
-id|ac97_t
-op_star
-id|ac97
-)paren
-(brace
-multiline_comment|/* This sequence is suspect because it was designed for&n;&t;   the WM9704, and is known to fail when applied to the&n;&t;   WM9707.  If you&squot;re having trouble initializing a&n;&t;   WM9700, this is the place to start looking.&n;&t;   Randolph Bentson &lt;bentson@holmsjoen.com&gt; */
-singleline_comment|// WM9701A
-id|snd_ac97_write_cache
-c_func
-(paren
-id|ac97
-comma
-l_int|0x72
-comma
-l_int|0x0808
-)paren
-suffix:semicolon
-id|snd_ac97_write_cache
-c_func
-(paren
-id|ac97
-comma
-l_int|0x74
-comma
-l_int|0x0808
-)paren
-suffix:semicolon
-singleline_comment|// patch for DVD noise
-id|snd_ac97_write_cache
-c_func
-(paren
-id|ac97
-comma
-l_int|0x5a
-comma
-l_int|0x0200
-)paren
-suffix:semicolon
-singleline_comment|// init vol
-id|snd_ac97_write_cache
-c_func
-(paren
-id|ac97
-comma
-l_int|0x70
-comma
-l_int|0x0808
-)paren
-suffix:semicolon
-id|snd_ac97_write_cache
-c_func
-(paren
-id|ac97
-comma
-id|AC97_SURROUND_MASTER
-comma
-l_int|0x0000
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * May 2, 2003 Liam Girdwood &lt;liam.girdwood@wolfsonmicro.com&gt;&n; *  removed broken wolfson00 patch.&n; *  added support for WM9705,WM9708,WM9709,WM9710,WM9711,WM9712 and WM9717.&n; */
+DECL|macro|AC97_WM97XX_FMIXER_VOL
+mdefine_line|#define AC97_WM97XX_FMIXER_VOL&t;0x72
+DECL|macro|AC97_WM9704_RMIXER_VOL
+mdefine_line|#define AC97_WM9704_RMIXER_VOL&t;0x74
+DECL|macro|AC97_WM9704_TEST
+mdefine_line|#define AC97_WM9704_TEST&t;0x5a
+DECL|macro|AC97_WM9704_RPCM_VOL
+mdefine_line|#define AC97_WM9704_RPCM_VOL&t;0x70
+DECL|macro|AC97_WM9711_OUT3VOL
+mdefine_line|#define AC97_WM9711_OUT3VOL&t;0x16
 DECL|function|patch_wolfson03
 r_int
 id|patch_wolfson03
@@ -115,13 +58,13 @@ id|ac97
 )paren
 (brace
 multiline_comment|/* This is known to work for the ViewSonic ViewPad 1000&n;&t;   Randolph Bentson &lt;bentson@holmsjoen.com&gt; */
-singleline_comment|// WM9703/9707
+singleline_comment|// WM9703/9707/9708/9717
 id|snd_ac97_write_cache
 c_func
 (paren
 id|ac97
 comma
-l_int|0x72
+id|AC97_WM97XX_FMIXER_VOL
 comma
 l_int|0x0808
 )paren
@@ -131,7 +74,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x20
+id|AC97_GENERAL_PURPOSE
 comma
 l_int|0x8000
 )paren
@@ -150,13 +93,14 @@ op_star
 id|ac97
 )paren
 (brace
-singleline_comment|// WM9704
+singleline_comment|// WM9704M/9704Q
+singleline_comment|// set front and rear mixer volume
 id|snd_ac97_write_cache
 c_func
 (paren
 id|ac97
 comma
-l_int|0x72
+id|AC97_WM97XX_FMIXER_VOL
 comma
 l_int|0x0808
 )paren
@@ -166,7 +110,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x74
+id|AC97_WM9704_RMIXER_VOL
 comma
 l_int|0x0808
 )paren
@@ -177,7 +121,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x5a
+id|AC97_WM9704_TEST
 comma
 l_int|0x0200
 )paren
@@ -188,11 +132,12 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x70
+id|AC97_WM9704_RPCM_VOL
 comma
 l_int|0x0808
 )paren
 suffix:semicolon
+singleline_comment|// set rear surround volume
 id|snd_ac97_write_cache
 c_func
 (paren
@@ -201,6 +146,58 @@ comma
 id|AC97_SURROUND_MASTER
 comma
 l_int|0x0000
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|patch_wolfson05
+r_int
+id|patch_wolfson05
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+singleline_comment|// WM9705, WM9710
+singleline_comment|// set front mixer volume
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_WM97XX_FMIXER_VOL
+comma
+l_int|0x0808
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|patch_wolfson11
+r_int
+id|patch_wolfson11
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+singleline_comment|// WM9711, WM9712
+singleline_comment|// set out3 volume
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_WM9711_OUT3VOL
+comma
+l_int|0x0808
 )paren
 suffix:semicolon
 r_return
@@ -1656,7 +1653,17 @@ r_int
 r_int
 id|val
 suffix:semicolon
-multiline_comment|/* check spdif */
+r_int
+id|spdif
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* FIXME: set the below 1 if we can detect the chip rev.E correctly.&n;&t; *        this is used for switching mic and center/lfe, which needs&n;&t; *        resetting GPIO0 level on the older revision.&n;&t; */
+id|ac97-&gt;spec.dev_flags
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* check spdif (should be only on rev.E) */
 id|val
 op_assign
 id|snd_ac97_read
@@ -1673,6 +1680,15 @@ c_cond
 id|val
 op_amp
 id|AC97_EA_SPCV
+)paren
+id|spdif
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|spdif
 )paren
 (brace
 multiline_comment|/* enable spdif in */
@@ -1728,6 +1744,107 @@ comma
 id|val
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ac97-&gt;spec.dev_flags
+)paren
+(brace
+multiline_comment|/* set GPIO */
+r_int
+id|mic_off
+suffix:semicolon
+id|mic_off
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_ALC650_MULTICH
+)paren
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|10
+)paren
+suffix:semicolon
+multiline_comment|/* GPIO0 direction */
+id|val
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+l_int|0x76
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mic_off
+)paren
+id|val
+op_and_assign
+op_complement
+l_int|0x01
+suffix:semicolon
+r_else
+id|val
+op_or_assign
+l_int|0x01
+suffix:semicolon
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+l_int|0x76
+comma
+id|val
+)paren
+suffix:semicolon
+id|val
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+l_int|0x78
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mic_off
+)paren
+id|val
+op_and_assign
+op_complement
+l_int|0x100
+suffix:semicolon
+r_else
+id|val
+op_assign
+id|val
+op_or
+l_int|0x100
+suffix:semicolon
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+l_int|0x78
+comma
+id|val
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* full DAC volume */
 id|snd_ac97_write_cache
 c_func

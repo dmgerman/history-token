@@ -2,7 +2,6 @@ macro_line|#ifndef __YENTA_H
 DECL|macro|__YENTA_H
 mdefine_line|#define __YENTA_H
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;pci_socket.h&quot;
 DECL|macro|CB_SOCKET_EVENT
 mdefine_line|#define CB_SOCKET_EVENT&t;&t;0x00
 DECL|macro|CB_CSTSEVENT
@@ -161,5 +160,85 @@ mdefine_line|#define CB_LEGACY_MODE_BASE&t;0x44
 multiline_comment|/*&n; * ExCA area extensions in Yenta&n; */
 DECL|macro|CB_MEM_PAGE
 mdefine_line|#define CB_MEM_PAGE(map)&t;(0x40 + (map))
+DECL|struct|yenta_socket
+r_struct
+id|yenta_socket
+(brace
+DECL|member|dev
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
+DECL|member|cb_irq
+DECL|member|io_irq
+r_int
+id|cb_irq
+comma
+id|io_irq
+suffix:semicolon
+DECL|member|base
+r_void
+op_star
+id|base
+suffix:semicolon
+DECL|member|handler
+r_void
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_void
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|info
+r_void
+op_star
+id|info
+suffix:semicolon
+DECL|member|cap
+id|socket_cap_t
+id|cap
+suffix:semicolon
+DECL|member|event_lock
+id|spinlock_t
+id|event_lock
+suffix:semicolon
+DECL|member|events
+r_int
+r_int
+id|events
+suffix:semicolon
+DECL|member|tq_task
+r_struct
+id|work_struct
+id|tq_task
+suffix:semicolon
+DECL|member|poll_timer
+r_struct
+id|timer_list
+id|poll_timer
+suffix:semicolon
+DECL|member|socket
+r_struct
+id|pcmcia_socket
+id|socket
+suffix:semicolon
+multiline_comment|/* A few words of private data for special stuff of overrides... */
+DECL|member|private
+r_int
+r_int
+r_private
+(braket
+l_int|8
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif
 eof

@@ -287,7 +287,7 @@ op_assign
 r_char
 op_star
 )paren
-id|__get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -350,6 +350,7 @@ op_star
 id|buffer
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -432,6 +433,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -525,6 +527,7 @@ id|buffer
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -547,7 +550,7 @@ op_assign
 r_char
 op_star
 )paren
-id|__get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -670,6 +673,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

@@ -611,7 +611,7 @@ suffix:colon
 id|mixer_info
 id|info
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.id
@@ -624,7 +624,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.name
@@ -636,18 +636,6 @@ r_sizeof
 id|info.name
 )paren
 )paren
-suffix:semicolon
-id|info.name
-(braket
-r_sizeof
-(paren
-id|info.name
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|info.modify_counter
 op_assign
@@ -2626,7 +2614,7 @@ suffix:semicolon
 multiline_comment|/* CHECK whether this is sensible - in the case that dsp0 could be opened&n;&t;  O_RDONLY and dsp1 could be opened O_WRONLY&n;&t;*/
 id|dmasound.minDev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

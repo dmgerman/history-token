@@ -1,5 +1,5 @@
 multiline_comment|/* -*- linux-c -*- */
-multiline_comment|/* &n; * Driver for USB Rio 500&n; *&n; * Cesar Miquel (miquel@df.uba.ar)&n; * &n; * based on hp_scanner.c by David E. Nelson (dnelson@jump.net)&n; * &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Based upon mouse.c (Brad Keryan) and printer.c (Michael Gee).&n; *&n; * */
+multiline_comment|/* &n; * Driver for USB Rio 500&n; *&n; * Cesar Miquel (miquel@df.uba.ar)&n; * &n; * based on hp_scanner.c by David E. Nelson (dnelson@jump.net)&n; * &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Based upon mouse.c (Brad Keryan) and printer.c (Michael Gee).&n; *&n; * Changelog:&n; * 30/05/2003  replaced lock/unlock kernel with up/down&n; *             Daniele Bellucci  bellucda@tiscali.it&n; * */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -120,9 +120,13 @@ op_assign
 op_amp
 id|rio_instance
 suffix:semicolon
-id|lock_kernel
+id|down
 c_func
 (paren
+op_amp
+(paren
+id|rio-&gt;lock
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -134,9 +138,13 @@ op_logical_neg
 id|rio-&gt;present
 )paren
 (brace
-id|unlock_kernel
+id|up
 c_func
 (paren
+op_amp
+(paren
+id|rio-&gt;lock
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -155,9 +163,13 @@ op_amp
 id|rio-&gt;wait_q
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|up
 c_func
 (paren
+op_amp
+(paren
+id|rio-&gt;lock
+)paren
 )paren
 suffix:semicolon
 id|info
@@ -1849,10 +1861,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|rio-&gt;present
-op_assign
-l_int|1
-suffix:semicolon
 id|rio-&gt;rio_dev
 op_assign
 id|dev
@@ -1976,6 +1984,10 @@ id|intf
 comma
 id|rio
 )paren
+suffix:semicolon
+id|rio-&gt;present
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
@@ -2134,6 +2146,11 @@ id|rio_driver
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
 l_string|&quot;rio500&quot;
@@ -2156,7 +2173,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|usb_rio_init
+r_static
 r_int
+id|__init
 id|usb_rio_init
 c_func
 (paren
@@ -2192,7 +2211,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|usb_rio_cleanup
+r_static
 r_void
+id|__exit
 id|usb_rio_cleanup
 c_func
 (paren

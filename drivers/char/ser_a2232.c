@@ -87,7 +87,7 @@ id|err
 suffix:semicolon
 multiline_comment|/* The interrupt service routine */
 r_static
-r_void
+id|irqreturn_t
 id|a2232_vbl_inter
 c_func
 (paren
@@ -359,12 +359,6 @@ r_static
 r_struct
 id|tty_driver
 id|a2232_driver
-suffix:semicolon
-DECL|variable|a2232_callout_driver
-r_static
-r_struct
-id|tty_driver
-id|a2232_callout_driver
 suffix:semicolon
 multiline_comment|/* Variables used by the TTY driver */
 DECL|variable|a2232_refcount
@@ -1520,23 +1514,10 @@ id|ASYNC_SPLIT_TERMIOS
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|tty-&gt;driver-&gt;subtype
-op_eq
-id|A2232_TTY_SUBTYPE_NORMAL
-)paren
 op_star
 id|tty-&gt;termios
 op_assign
 id|port-&gt;gs.normal_termios
-suffix:semicolon
-r_else
-op_star
-id|tty-&gt;termios
-op_assign
-id|port-&gt;gs.callout_termios
 suffix:semicolon
 id|a2232_set_real_termios
 (paren
@@ -1544,14 +1525,6 @@ id|port
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;gs.session
-op_assign
-id|current-&gt;session
-suffix:semicolon
-id|port-&gt;gs.pgrp
-op_assign
-id|current-&gt;pgrp
-suffix:semicolon
 id|a2232_enable_rx_interrupts
 c_func
 (paren
@@ -1726,7 +1699,7 @@ suffix:semicolon
 )brace
 DECL|function|a2232_vbl_inter
 r_static
-r_void
+id|irqreturn_t
 id|a2232_vbl_inter
 c_func
 (paren
@@ -2312,24 +2285,6 @@ id|port-&gt;cd_status
 )paren
 (brace
 singleline_comment|// if DCD on: DCD went UP!
-r_if
-c_cond
-(paren
-op_complement
-(paren
-id|port-&gt;gs.flags
-op_amp
-id|ASYNC_NORMAL_ACTIVE
-)paren
-op_logical_or
-op_complement
-(paren
-id|port-&gt;gs.flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-)paren
-(brace
 multiline_comment|/* Are we blocking in open?*/
 id|wake_up_interruptible
 c_func
@@ -2339,29 +2294,9 @@ id|port-&gt;gs.open_wait
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
 (brace
 singleline_comment|// if DCD off: DCD went DOWN!
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-(paren
-id|port-&gt;gs.flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
-(paren
-id|port-&gt;gs.flags
-op_amp
-id|ASYNC_CALLOUT_NOHUP
-)paren
-)paren
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -2372,7 +2307,6 @@ id|tty_hangup
 id|port-&gt;gs.tty
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 singleline_comment|// if CD changed for this port
@@ -2403,6 +2337,9 @@ multiline_comment|/* remove events */
 singleline_comment|// if events in CD queue
 )brace
 singleline_comment|// for every completely initialized A2232 board
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|a2232_init_portstructs
 r_static
@@ -2463,10 +2400,6 @@ op_assign
 id|port-&gt;cd_status
 op_assign
 l_int|0
-suffix:semicolon
-id|port-&gt;gs.callout_termios
-op_assign
-id|tty_std_termios
 suffix:semicolon
 id|port-&gt;gs.normal_termios
 op_assign
@@ -2578,7 +2511,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|a2232_driver.subtype
 op_assign
-id|A2232_TTY_SUBTYPE_NORMAL
+id|SERIAL_TTY_NORMAL
 suffix:semicolon
 id|a2232_driver.init_termios
 op_assign
@@ -2677,22 +2610,6 @@ id|a2232_driver.hangup
 op_assign
 id|gs_hangup
 suffix:semicolon
-id|a2232_callout_driver
-op_assign
-id|a2232_driver
-suffix:semicolon
-id|a2232_callout_driver.name
-op_assign
-l_string|&quot;cuy&quot;
-suffix:semicolon
-id|a2232_callout_driver.major
-op_assign
-id|A2232_CALLOUT_MAJOR
-suffix:semicolon
-id|a2232_callout_driver.subtype
-op_assign
-id|A2232_TTY_SUBTYPE_CALLOUT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2713,41 +2630,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;A2232: Couldn&squot;t register A2232 driver, error = %d&bslash;n&quot;
-comma
-id|error
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|error
-op_assign
-id|tty_register_driver
-c_func
-(paren
-op_amp
-id|a2232_callout_driver
-)paren
-)paren
-)paren
-(brace
-id|tty_unregister_driver
-c_func
-(paren
-op_amp
-id|a2232_driver
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;A2232: Couldn&squot;t register A2232 callout driver, error = %d&bslash;n&quot;
 comma
 id|error
 )paren
@@ -3222,13 +3104,6 @@ c_func
 (paren
 op_amp
 id|a2232_driver
-)paren
-suffix:semicolon
-id|tty_unregister_driver
-c_func
-(paren
-op_amp
-id|a2232_callout_driver
 )paren
 suffix:semicolon
 id|free_irq

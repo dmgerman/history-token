@@ -116,6 +116,7 @@ comma
 r_char
 op_star
 comma
+r_const
 r_char
 op_star
 )paren
@@ -163,6 +164,7 @@ r_void
 op_star
 id|data
 comma
+r_const
 r_char
 op_star
 id|devname
@@ -323,9 +325,16 @@ c_cond
 op_logical_neg
 id|inode
 )paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|out_no_root
 suffix:semicolon
+)brace
 id|sb-&gt;s_root
 op_assign
 id|d_alloc_root
@@ -340,9 +349,16 @@ c_cond
 op_logical_neg
 id|sb-&gt;s_root
 )paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|out_no_root
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -398,8 +414,7 @@ id|cifs_sb
 suffix:semicolon
 )brace
 r_return
-op_minus
-id|EINVAL
+id|rc
 suffix:semicolon
 )brace
 r_void
@@ -927,6 +942,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -1399,6 +1415,8 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 id|cifs_init_once
 comma

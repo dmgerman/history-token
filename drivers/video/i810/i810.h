@@ -311,11 +311,13 @@ r_struct
 id|gtt_data
 (brace
 DECL|member|i810_fb_memory
+r_struct
 id|agp_memory
 op_star
 id|i810_fb_memory
 suffix:semicolon
 DECL|member|i810_cursor_memory
+r_struct
 id|agp_memory
 op_star
 id|i810_cursor_memory

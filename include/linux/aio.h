@@ -45,11 +45,11 @@ mdefine_line|#define kiocbClearKicked(iocb)&t;clear_bit(KIF_KICKED, &amp;(iocb)-
 DECL|macro|kiocbClearCancelled
 mdefine_line|#define kiocbClearCancelled(iocb)&t;clear_bit(KIF_CANCELLED, &amp;(iocb)-&gt;ki_flags)
 DECL|macro|kiocbIsLocked
-mdefine_line|#define kiocbIsLocked(iocb)&t;test_bit(0, &amp;(iocb)-&gt;ki_flags)
+mdefine_line|#define kiocbIsLocked(iocb)&t;test_bit(KIF_LOCKED, &amp;(iocb)-&gt;ki_flags)
 DECL|macro|kiocbIsKicked
-mdefine_line|#define kiocbIsKicked(iocb)&t;test_bit(1, &amp;(iocb)-&gt;ki_flags)
+mdefine_line|#define kiocbIsKicked(iocb)&t;test_bit(KIF_KICKED, &amp;(iocb)-&gt;ki_flags)
 DECL|macro|kiocbIsCancelled
-mdefine_line|#define kiocbIsCancelled(iocb)&t;test_bit(2, &amp;(iocb)-&gt;ki_flags)
+mdefine_line|#define kiocbIsCancelled(iocb)&t;test_bit(KIF_CANCELLED, &amp;(iocb)-&gt;ki_flags)
 DECL|struct|kiocb
 r_struct
 id|kiocb
@@ -425,6 +425,43 @@ r_struct
 id|mm_struct
 op_star
 id|mm
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|kioctx
+op_star
+id|lookup_ioctx
+c_func
+(paren
+r_int
+r_int
+id|ctx_id
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|FASTCALL
+c_func
+(paren
+id|io_submit_one
+c_func
+(paren
+r_struct
+id|kioctx
+op_star
+id|ctx
+comma
+r_struct
+id|iocb
+op_star
+id|user_iocb
+comma
+r_struct
+id|iocb
+op_star
+id|iocb
 )paren
 )paren
 suffix:semicolon

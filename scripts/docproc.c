@@ -234,7 +234,7 @@ id|ret
 )paren
 )paren
 id|exitstatus
-op_assign
+op_or_assign
 id|WEXITSTATUS
 c_func
 (paren

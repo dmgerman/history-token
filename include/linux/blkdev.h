@@ -534,6 +534,12 @@ DECL|member|max_depth
 r_int
 id|max_depth
 suffix:semicolon
+multiline_comment|/* what we will send to device */
+DECL|member|real_max_depth
+r_int
+id|real_max_depth
+suffix:semicolon
+multiline_comment|/* what the array can hold */
 )brace
 suffix:semicolon
 DECL|struct|request_queue
@@ -1414,18 +1420,6 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|blk_queue_assign_lock
-c_func
-(paren
-id|request_queue_t
-op_star
-comma
-id|spinlock_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|blk_queue_prep_rq
 c_func
 (paren
@@ -1587,6 +1581,17 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|blk_queue_resize_tags
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|blk_queue_invalidate_tags
 c_func
@@ -1621,6 +1626,16 @@ op_star
 comma
 r_struct
 id|bio
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_rq_prep_restart
+c_func
+(paren
+r_struct
+id|request
 op_star
 )paren
 suffix:semicolon

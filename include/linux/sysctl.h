@@ -550,6 +550,12 @@ op_assign
 l_int|20
 comma
 multiline_comment|/* Amount of protection of lower zones */
+DECL|enumerator|VM_MIN_FREE_KBYTES
+id|VM_MIN_FREE_KBYTES
+op_assign
+l_int|21
+comma
+multiline_comment|/* Minimum free kilobytes to maintain */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */
@@ -1140,6 +1146,12 @@ DECL|enumerator|NET_TCP_LOW_LATENCY
 id|NET_TCP_LOW_LATENCY
 op_assign
 l_int|93
+comma
+DECL|enumerator|NET_IPV4_IPFRAG_SECRET_INTERVAL
+id|NET_IPV4_IPFRAG_SECRET_INTERVAL
+op_assign
+l_int|94
+comma
 )brace
 suffix:semicolon
 r_enum
@@ -1363,6 +1375,26 @@ DECL|enumerator|NET_IPV6_BINDV6ONLY
 id|NET_IPV6_BINDV6ONLY
 op_assign
 l_int|20
+comma
+DECL|enumerator|NET_IPV6_IP6FRAG_HIGH_THRESH
+id|NET_IPV6_IP6FRAG_HIGH_THRESH
+op_assign
+l_int|21
+comma
+DECL|enumerator|NET_IPV6_IP6FRAG_LOW_THRESH
+id|NET_IPV6_IP6FRAG_LOW_THRESH
+op_assign
+l_int|22
+comma
+DECL|enumerator|NET_IPV6_IP6FRAG_TIME
+id|NET_IPV6_IP6FRAG_TIME
+op_assign
+l_int|23
+comma
+DECL|enumerator|NET_IPV6_IP6FRAG_SECRET_INTERVAL
+id|NET_IPV6_IP6FRAG_SECRET_INTERVAL
+op_assign
+l_int|24
 )brace
 suffix:semicolon
 r_enum

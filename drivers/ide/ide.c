@@ -676,10 +676,17 @@ r_else
 r_if
 c_cond
 (paren
-id|pci_present
+id|pci_find_device
 c_func
 (paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|NULL
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* safe default value for PCI */
@@ -1459,13 +1466,6 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-r_static
-id|LIST_HEAD
-c_func
-(paren
-id|ata_unused
-)paren
-suffix:semicolon
 DECL|variable|drives_lock
 r_static
 id|spinlock_t
@@ -3124,6 +3124,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|hwif-&gt;hold
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 op_logical_neg
 id|hwif-&gt;present
@@ -3189,6 +3196,19 @@ c_cond
 id|hwif-&gt;present
 )paren
 id|ide_unregister
+c_func
+(paren
+id|index
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hwif-&gt;hold
+)paren
+id|init_hwif_data
 c_func
 (paren
 id|index
@@ -5284,14 +5304,17 @@ id|drive
 r_goto
 m_abort
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|drive-&gt;driver_req
 comma
 id|driver
 comma
-l_int|9
+r_sizeof
+(paren
+id|drive-&gt;driver_req
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -5532,30 +5555,6 @@ l_string|&quot;ide: default attach failed&quot;
 )paren
 suffix:semicolon
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|drives_lock
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|drive-&gt;list
-comma
-op_amp
-id|ata_unused
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|drives_lock
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -6990,7 +6989,112 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* zero = nothing matched */
 )brace
-multiline_comment|/*&n; * ide_setup() gets called VERY EARLY during initialization,&n; * to handle kernel &quot;command line&quot; strings beginning with &quot;hdx=&quot;&n; * or &quot;ide&quot;.  Here is the complete set currently supported:&n; *&n; * &quot;hdx=&quot;  is recognized for all &quot;x&quot; from &quot;a&quot; to &quot;h&quot;, such as &quot;hdc&quot;.&n; * &quot;idex=&quot; is recognized for all &quot;x&quot; from &quot;0&quot; to &quot;3&quot;, such as &quot;ide1&quot;.&n; *&n; * &quot;hdx=noprobe&quot;&t;: drive may be present, but do not probe for it&n; * &quot;hdx=none&quot;&t;&t;: drive is NOT present, ignore cmos and do not probe&n; * &quot;hdx=nowerr&quot;&t;&t;: ignore the WRERR_STAT bit on this drive&n; * &quot;hdx=cdrom&quot;&t;&t;: drive is present, and is a cdrom drive&n; * &quot;hdx=cyl,head,sect&quot;&t;: disk drive is present, with specified geometry&n; * &quot;hdx=noremap&quot;&t;: do not remap 0-&gt;1 even though EZD was detected&n; * &quot;hdx=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;if possible for this drive only.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; * &quot;hdx=biostimings&quot;&t;: driver will NOT attempt to tune interface speed &n; * &t;&t;&t;&t;(DMA/PIO) but always honour BIOS timings.&n; * &quot;hdx=slow&quot;&t;&t;: insert a huge pause after each access to the data&n; *&t;&t;&t;&t;port. Should be used only as a last resort.&n; *&n; * &quot;hdx=swapdata&quot;&t;: when the drive is a disk, byte swap all data&n; * &quot;hdx=bswap&quot;&t;&t;: same as above..........&n; * &quot;hdxlun=xx&quot;          : set the drive last logical unit.&n; * &quot;hdx=flash&quot;&t;&t;: allows for more than one ata_flash disk to be&n; *&t;&t;&t;&t;registered. In most cases, only one device&n; *&t;&t;&t;&t;will be present.&n; * &quot;hdx=scsi&quot;&t;&t;: the return of the ide-scsi flag, this is useful for&n; *&t;&t;&t;&t;allowwing ide-floppy, ide-tape, and ide-cdrom|writers&n; *&t;&t;&t;&t;to use ide-scsi emulation on a device specific option.&n; * &quot;idebus=xx&quot;&t;&t;: inform IDE driver of VESA/PCI bus speed in MHz,&n; *&t;&t;&t;&t;where &quot;xx&quot; is between 20 and 66 inclusive,&n; *&t;&t;&t;&t;used when tuning chipset PIO modes.&n; *&t;&t;&t;&t;For PCI bus, 25 is correct for a P75 system,&n; *&t;&t;&t;&t;30 is correct for P90,P120,P180 systems,&n; *&t;&t;&t;&t;and 33 is used for P100,P133,P166 systems.&n; *&t;&t;&t;&t;If in doubt, use idebus=33 for PCI.&n; *&t;&t;&t;&t;As for VLB, it is safest to not specify it.&n; *&n; * &quot;idex=noprobe&quot;&t;: do not attempt to access/use this interface&n; * &quot;idex=base&quot;&t;&t;: probe for an interface at the addr specified,&n; *&t;&t;&t;&t;where &quot;base&quot; is usually 0x1f0 or 0x170&n; *&t;&t;&t;&t;and &quot;ctl&quot; is assumed to be &quot;base&quot;+0x206&n; * &quot;idex=base,ctl&quot;&t;: specify both base and ctl&n; * &quot;idex=base,ctl,irq&quot;&t;: specify base, ctl, and irq number&n; * &quot;idex=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;for all drives on this interface.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; * &quot;idex=noautotune&quot;&t;: driver will NOT attempt to tune interface speed&n; *&t;&t;&t;&t;This is the default for most chipsets,&n; *&t;&t;&t;&t;except the cmd640.&n; * &quot;idex=biostimings&quot;&t;: driver will NOT attempt to tune interface speed &n; * &t;&t;&t;&t;(DMA/PIO) but always honour BIOS timings.&n; * &quot;idex=serialize&quot;&t;: do not overlap operations on idex and ide(x^1)&n; * &quot;idex=four&quot;&t;&t;: four drives on idex and ide(x^1) share same ports&n; * &quot;idex=reset&quot;&t;&t;: reset interface before first use&n; * &quot;idex=dma&quot;&t;&t;: enable DMA by default on both drives if possible&n; * &quot;idex=ata66&quot;&t;&t;: informs the interface that it has an 80c cable&n; *&t;&t;&t;&t;for chipsets that are ATA-66 capable, but&n; *&t;&t;&t;&t;the ablity to bit test for detection is&n; *&t;&t;&t;&t;currently unknown.&n; * &quot;ide=reverse&quot;&t;: Formerly called to pci sub-system, but now local.&n; *&n; * The following are valid ONLY on ide0, (except dc4030)&n; * and the defaults for the base,ctl ports must not be altered.&n; *&n; * &quot;ide0=dtc2278&quot;&t;: probe/support DTC2278 interface&n; * &quot;ide0=ht6560b&quot;&t;: probe/support HT6560B interface&n; * &quot;ide0=cmd640_vlb&quot;&t;: *REQUIRED* for VLB cards with the CMD640 chip&n; *&t;&t;&t;  (not for PCI -- automatically detected)&n; * &quot;ide0=qd65xx&quot;&t;: probe/support qd65xx interface&n; * &quot;ide0=ali14xx&quot;&t;: probe/support ali14xx chipsets (ALI M1439, M1443, M1445)&n; * &quot;ide0=umc8672&quot;&t;: probe/support umc8672 chipsets&n; * &quot;idex=dc4030&quot;&t;: probe/support Promise DC4030VL interface&n; * &quot;ide=doubler&quot;&t;: probe/support IDE doublers on Amiga&n; */
+macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
+DECL|variable|probe_pdc4030
+r_static
+r_int
+id|__initdata
+id|probe_pdc4030
+suffix:semicolon
+r_extern
+r_void
+id|init_pdc4030
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
+DECL|variable|probe_ali14xx
+r_static
+r_int
+id|__initdata
+id|probe_ali14xx
+suffix:semicolon
+r_extern
+r_void
+id|init_ali14xx
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_UMC8672
+DECL|variable|probe_umc8672
+r_static
+r_int
+id|__initdata
+id|probe_umc8672
+suffix:semicolon
+r_extern
+r_void
+id|init_umc8672
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_DTC2278
+DECL|variable|probe_dtc2278
+r_static
+r_int
+id|__initdata
+id|probe_dtc2278
+suffix:semicolon
+r_extern
+r_void
+id|init_dtc2278
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_HT6560B
+DECL|variable|probe_ht6560b
+r_static
+r_int
+id|__initdata
+id|probe_ht6560b
+suffix:semicolon
+r_extern
+r_void
+id|init_ht6560b
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_QD65XX
+DECL|variable|probe_qd65xx
+r_static
+r_int
+id|__initdata
+id|probe_qd65xx
+suffix:semicolon
+r_extern
+r_void
+id|init_qd65xx
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+DECL|variable|is_chipset_set
+r_static
+r_int
+id|__initdata
+id|is_chipset_set
+(braket
+id|MAX_HWIFS
+)braket
+suffix:semicolon
+multiline_comment|/*&n; * ide_setup() gets called VERY EARLY during initialization,&n; * to handle kernel &quot;command line&quot; strings beginning with &quot;hdx=&quot;&n; * or &quot;ide&quot;.  Here is the complete set currently supported:&n; *&n; * &quot;hdx=&quot;  is recognized for all &quot;x&quot; from &quot;a&quot; to &quot;h&quot;, such as &quot;hdc&quot;.&n; * &quot;idex=&quot; is recognized for all &quot;x&quot; from &quot;0&quot; to &quot;3&quot;, such as &quot;ide1&quot;.&n; *&n; * &quot;hdx=noprobe&quot;&t;: drive may be present, but do not probe for it&n; * &quot;hdx=none&quot;&t;&t;: drive is NOT present, ignore cmos and do not probe&n; * &quot;hdx=nowerr&quot;&t;&t;: ignore the WRERR_STAT bit on this drive&n; * &quot;hdx=cdrom&quot;&t;&t;: drive is present, and is a cdrom drive&n; * &quot;hdx=cyl,head,sect&quot;&t;: disk drive is present, with specified geometry&n; * &quot;hdx=remap63&quot;&t;: add 63 to all sector numbers (for OnTrack DM)&n; * &quot;hdx=remap&quot;&t;&t;: remap 0-&gt;1 (for EZDrive)&n; * &quot;hdx=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;if possible for this drive only.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; * &quot;hdx=biostimings&quot;&t;: driver will NOT attempt to tune interface speed &n; * &t;&t;&t;&t;(DMA/PIO) but always honour BIOS timings.&n; * &quot;hdx=slow&quot;&t;&t;: insert a huge pause after each access to the data&n; *&t;&t;&t;&t;port. Should be used only as a last resort.&n; *&n; * &quot;hdx=swapdata&quot;&t;: when the drive is a disk, byte swap all data&n; * &quot;hdx=bswap&quot;&t;&t;: same as above..........&n; * &quot;hdxlun=xx&quot;          : set the drive last logical unit.&n; * &quot;hdx=flash&quot;&t;&t;: allows for more than one ata_flash disk to be&n; *&t;&t;&t;&t;registered. In most cases, only one device&n; *&t;&t;&t;&t;will be present.&n; * &quot;hdx=scsi&quot;&t;&t;: the return of the ide-scsi flag, this is useful for&n; *&t;&t;&t;&t;allowwing ide-floppy, ide-tape, and ide-cdrom|writers&n; *&t;&t;&t;&t;to use ide-scsi emulation on a device specific option.&n; * &quot;idebus=xx&quot;&t;&t;: inform IDE driver of VESA/PCI bus speed in MHz,&n; *&t;&t;&t;&t;where &quot;xx&quot; is between 20 and 66 inclusive,&n; *&t;&t;&t;&t;used when tuning chipset PIO modes.&n; *&t;&t;&t;&t;For PCI bus, 25 is correct for a P75 system,&n; *&t;&t;&t;&t;30 is correct for P90,P120,P180 systems,&n; *&t;&t;&t;&t;and 33 is used for P100,P133,P166 systems.&n; *&t;&t;&t;&t;If in doubt, use idebus=33 for PCI.&n; *&t;&t;&t;&t;As for VLB, it is safest to not specify it.&n; *&n; * &quot;idex=noprobe&quot;&t;: do not attempt to access/use this interface&n; * &quot;idex=base&quot;&t;&t;: probe for an interface at the addr specified,&n; *&t;&t;&t;&t;where &quot;base&quot; is usually 0x1f0 or 0x170&n; *&t;&t;&t;&t;and &quot;ctl&quot; is assumed to be &quot;base&quot;+0x206&n; * &quot;idex=base,ctl&quot;&t;: specify both base and ctl&n; * &quot;idex=base,ctl,irq&quot;&t;: specify base, ctl, and irq number&n; * &quot;idex=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;for all drives on this interface.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; * &quot;idex=noautotune&quot;&t;: driver will NOT attempt to tune interface speed&n; *&t;&t;&t;&t;This is the default for most chipsets,&n; *&t;&t;&t;&t;except the cmd640.&n; * &quot;idex=biostimings&quot;&t;: driver will NOT attempt to tune interface speed &n; * &t;&t;&t;&t;(DMA/PIO) but always honour BIOS timings.&n; * &quot;idex=serialize&quot;&t;: do not overlap operations on idex and ide(x^1)&n; * &quot;idex=four&quot;&t;&t;: four drives on idex and ide(x^1) share same ports&n; * &quot;idex=reset&quot;&t;&t;: reset interface before first use&n; * &quot;idex=dma&quot;&t;&t;: enable DMA by default on both drives if possible&n; * &quot;idex=ata66&quot;&t;&t;: informs the interface that it has an 80c cable&n; *&t;&t;&t;&t;for chipsets that are ATA-66 capable, but&n; *&t;&t;&t;&t;the ablity to bit test for detection is&n; *&t;&t;&t;&t;currently unknown.&n; * &quot;ide=reverse&quot;&t;: Formerly called to pci sub-system, but now local.&n; *&n; * The following are valid ONLY on ide0, (except dc4030)&n; * and the defaults for the base,ctl ports must not be altered.&n; *&n; * &quot;ide0=dtc2278&quot;&t;: probe/support DTC2278 interface&n; * &quot;ide0=ht6560b&quot;&t;: probe/support HT6560B interface&n; * &quot;ide0=cmd640_vlb&quot;&t;: *REQUIRED* for VLB cards with the CMD640 chip&n; *&t;&t;&t;  (not for PCI -- automatically detected)&n; * &quot;ide0=qd65xx&quot;&t;: probe/support qd65xx interface&n; * &quot;ide0=ali14xx&quot;&t;: probe/support ali14xx chipsets (ALI M1439, M1443, M1445)&n; * &quot;ide0=umc8672&quot;&t;: probe/support umc8672 chipsets&n; * &quot;idex=dc4030&quot;&t;: probe/support Promise DC4030VL interface&n; * &quot;ide=doubler&quot;&t;: probe/support IDE doublers on Amiga&n; */
 DECL|function|ide_setup
 r_int
 id|__init
@@ -7282,7 +7386,7 @@ l_string|&quot;flash&quot;
 comma
 l_string|&quot;remap&quot;
 comma
-l_string|&quot;noremap&quot;
+l_string|&quot;remap63&quot;
 comma
 l_string|&quot;scsi&quot;
 comma
@@ -7346,7 +7450,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|drive-&gt;driver_req
@@ -7355,7 +7459,10 @@ id|s
 op_plus
 l_int|4
 comma
-l_int|9
+r_sizeof
+(paren
+id|drive-&gt;driver_req
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -7587,11 +7694,12 @@ r_case
 op_minus
 l_int|9
 suffix:colon
-multiline_comment|/* &quot;swapdata&quot; or &quot;bswap&quot; */
+multiline_comment|/* &quot;swapdata&quot; */
 r_case
 op_minus
 l_int|10
 suffix:colon
+multiline_comment|/* &quot;bswap&quot; */
 id|drive-&gt;bswap
 op_assign
 l_int|1
@@ -7627,10 +7735,10 @@ r_case
 op_minus
 l_int|13
 suffix:colon
-multiline_comment|/* &quot;noremap&quot; */
-id|drive-&gt;remap_0_to_1
+multiline_comment|/* &quot;remap63&quot; */
+id|drive-&gt;sect0
 op_assign
-l_int|2
+l_int|63
 suffix:semicolon
 r_goto
 id|done
@@ -7640,7 +7748,6 @@ op_minus
 l_int|14
 suffix:colon
 multiline_comment|/* &quot;scsi&quot; */
-macro_line|#if defined(CONFIG_BLK_DEV_IDESCSI) &amp;&amp; defined(CONFIG_SCSI)
 id|drive-&gt;scsi
 op_assign
 l_int|1
@@ -7648,15 +7755,6 @@ suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-macro_line|#else
-id|drive-&gt;scsi
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|bad_option
-suffix:semicolon
-macro_line|#endif /* defined(CONFIG_BLK_DEV_IDESCSI) &amp;&amp; defined(CONFIG_SCSI) */
 r_case
 op_minus
 l_int|15
@@ -7859,7 +7957,7 @@ op_le
 id|max_hwif
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Be VERY CAREFUL changing this: note hardcoded indexes below&n;&t;&t; * -8,-9,-10 : are reserved for future idex calls to ease the hardcoding.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Be VERY CAREFUL changing this: note hardcoded indexes below&n;&t;&t; * -9,-10 : are reserved for future idex calls to ease the hardcoding.&n;&t;&t; */
 r_const
 r_char
 op_star
@@ -7882,7 +7980,7 @@ l_string|&quot;dma&quot;
 comma
 l_string|&quot;ata66&quot;
 comma
-l_string|&quot;minus8&quot;
+l_string|&quot;biostimings&quot;
 comma
 l_string|&quot;minus9&quot;
 comma
@@ -7903,8 +8001,6 @@ comma
 l_string|&quot;ali14xx&quot;
 comma
 l_string|&quot;dc4030&quot;
-comma
-l_string|&quot;biostimings&quot;
 comma
 l_int|NULL
 )brace
@@ -7944,45 +8040,63 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Cryptic check to ensure chipset not already set for hwif:&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Cryptic check to ensure chipset not already set for hwif.&n;&t;&t; * Note: we can&squot;t depend on hwif-&gt;chipset here.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|i
+op_ge
+op_minus
+l_int|18
+op_logical_and
+id|i
+op_le
+op_minus
+l_int|11
+)paren
+op_logical_or
+(paren
+id|i
+OG
+l_int|0
+op_logical_and
+id|i
+op_le
+l_int|3
+)paren
+)paren
+(brace
+multiline_comment|/* chipset already specified */
+r_if
+c_cond
+(paren
+id|is_chipset_set
+(braket
+id|hw
+)braket
+)paren
+r_goto
+id|bad_option
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|i
 OG
-l_int|0
-op_logical_or
+op_minus
+l_int|18
+op_logical_and
 id|i
 op_le
 op_minus
 l_int|11
 )paren
 (brace
-multiline_comment|/* is parameter a chipset name? */
+multiline_comment|/* these drivers are for &quot;ide0=&quot; only */
 r_if
 c_cond
 (paren
-id|hwif-&gt;chipset
-op_ne
-id|ide_unknown
-)paren
-r_goto
-id|bad_option
-suffix:semicolon
-multiline_comment|/* chipset already specified */
-r_if
-c_cond
-(paren
-id|i
-op_le
-op_minus
-l_int|11
-op_logical_and
-id|i
-op_ne
-op_minus
-l_int|18
-op_logical_and
 id|hw
 op_ne
 l_int|0
@@ -7990,35 +8104,28 @@ l_int|0
 r_goto
 id|bad_hwif
 suffix:semicolon
-multiline_comment|/* chipset drivers are for &quot;ide0=&quot; only */
+multiline_comment|/* chipset already specified for 2nd port */
 r_if
 c_cond
 (paren
-id|i
-op_le
-op_minus
-l_int|11
-op_logical_and
-id|i
-op_ne
-op_minus
-l_int|18
-op_logical_and
-id|ide_hwifs
+id|is_chipset_set
 (braket
 id|hw
 op_plus
 l_int|1
 )braket
-dot
-id|chipset
-op_ne
-id|ide_unknown
 )paren
 r_goto
 id|bad_option
 suffix:semicolon
-multiline_comment|/* chipset for 2nd port already specified */
+)brace
+id|is_chipset_set
+(braket
+id|hw
+)braket
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8032,129 +8139,62 @@ c_cond
 id|i
 )paren
 (brace
-r_case
-op_minus
-l_int|19
-suffix:colon
-multiline_comment|/* &quot;biostimings&quot; */
-id|hwif-&gt;drives
-(braket
-l_int|0
-)braket
-dot
-id|autotune
-op_assign
-id|IDE_TUNE_BIOS
-suffix:semicolon
-id|hwif-&gt;drives
-(braket
-l_int|1
-)braket
-dot
-id|autotune
-op_assign
-id|IDE_TUNE_BIOS
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 r_case
 op_minus
 l_int|18
 suffix:colon
 multiline_comment|/* &quot;dc4030&quot; */
-(brace
-r_extern
-r_void
-id|init_pdc4030
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|init_pdc4030
-c_func
-(paren
-)paren
+id|probe_pdc4030
+op_assign
+l_int|1
 suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
 r_case
 op_minus
 l_int|17
 suffix:colon
 multiline_comment|/* &quot;ali14xx&quot; */
-(brace
-r_extern
-r_void
-id|init_ali14xx
-(paren
-r_void
-)paren
-suffix:semicolon
-id|init_ali14xx
-c_func
-(paren
-)paren
+id|probe_ali14xx
+op_assign
+l_int|1
 suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_ALI14XX */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_UMC8672
 r_case
 op_minus
 l_int|16
 suffix:colon
 multiline_comment|/* &quot;umc8672&quot; */
-(brace
-r_extern
-r_void
-id|init_umc8672
-(paren
-r_void
-)paren
-suffix:semicolon
-id|init_umc8672
-c_func
-(paren
-)paren
+id|probe_umc8672
+op_assign
+l_int|1
 suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_UMC8672 */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_DTC2278
 r_case
 op_minus
 l_int|15
 suffix:colon
 multiline_comment|/* &quot;dtc2278&quot; */
-(brace
-r_extern
-r_void
-id|init_dtc2278
-(paren
-r_void
-)paren
-suffix:semicolon
-id|init_dtc2278
-c_func
-(paren
-)paren
+id|probe_dtc2278
+op_assign
+l_int|1
 suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_DTC2278 */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640
 r_case
 op_minus
@@ -8175,55 +8215,35 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640 */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_HT6560B
 r_case
 op_minus
 l_int|13
 suffix:colon
 multiline_comment|/* &quot;ht6560b&quot; */
-(brace
-r_extern
-r_void
-id|init_ht6560b
-(paren
-r_void
-)paren
-suffix:semicolon
-id|init_ht6560b
-c_func
-(paren
-)paren
+id|probe_ht6560b
+op_assign
+l_int|1
 suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_HT6560B */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_QD65XX
 r_case
 op_minus
 l_int|12
 suffix:colon
 multiline_comment|/* &quot;qd65xx&quot; */
-(brace
-r_extern
-r_void
-id|init_qd65xx
-(paren
-r_void
-)paren
-suffix:semicolon
-id|init_qd65xx
-c_func
-(paren
-)paren
+id|probe_qd65xx
+op_assign
+l_int|1
 suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_QD65XX */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_4DRIVES
 r_case
 op_minus
@@ -8299,13 +8319,34 @@ op_minus
 l_int|9
 suffix:colon
 multiline_comment|/* minus9 */
+r_goto
+id|bad_option
+suffix:semicolon
 r_case
 op_minus
 l_int|8
 suffix:colon
-multiline_comment|/* minus8 */
+multiline_comment|/* &quot;biostimings&quot; */
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+dot
+id|autotune
+op_assign
+id|IDE_TUNE_BIOS
+suffix:semicolon
+id|hwif-&gt;drives
+(braket
+l_int|1
+)braket
+dot
+id|autotune
+op_assign
+id|IDE_TUNE_BIOS
+suffix:semicolon
 r_goto
-id|bad_option
+id|done
 suffix:semicolon
 r_case
 op_minus
@@ -8609,22 +8650,12 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
 id|ide_scan_pcibus
 c_func
 (paren
 id|ide_scan_direction
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 macro_line|#ifdef CONFIG_ETRAX_IDE
 (brace
@@ -9435,7 +9466,7 @@ op_amp
 id|drives_lock
 )paren
 suffix:semicolon
-id|list_add
+id|list_add_tail
 c_func
 (paren
 op_amp
@@ -9517,6 +9548,15 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+r_if
+c_cond
+(paren
+id|drive-&gt;driver
+op_ne
+op_amp
+id|idedefault_driver
+)paren
+(brace
 id|ide_add_proc_entries
 c_func
 (paren
@@ -9537,6 +9577,7 @@ comma
 id|drive
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 l_int|0
@@ -9675,16 +9716,6 @@ op_amp
 id|drive-&gt;list
 )paren
 suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|drive-&gt;list
-comma
-op_amp
-id|drive-&gt;driver-&gt;drives
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -9692,6 +9723,7 @@ op_amp
 id|drives_lock
 )paren
 suffix:semicolon
+multiline_comment|/* drive will be added to &amp;idedefault_driver-&gt;drives in ata_attach() */
 r_return
 l_int|0
 suffix:semicolon
@@ -9793,13 +9825,6 @@ op_amp
 id|drivers_lock
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|drives_lock
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -9807,11 +9832,18 @@ op_amp
 id|list
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|drives_lock
+)paren
+suffix:semicolon
 id|list_splice_init
 c_func
 (paren
 op_amp
-id|ata_unused
+id|idedefault_driver.drives
 comma
 op_amp
 id|list
@@ -10141,6 +10173,78 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
+r_if
+c_cond
+(paren
+id|probe_pdc4030
+)paren
+id|init_pdc4030
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
+r_if
+c_cond
+(paren
+id|probe_ali14xx
+)paren
+id|init_ali14xx
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_UMC8672
+r_if
+c_cond
+(paren
+id|probe_umc8672
+)paren
+id|init_umc8672
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_DTC2278
+r_if
+c_cond
+(paren
+id|probe_dtc2278
+)paren
+id|init_dtc2278
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_HT6560B
+r_if
+c_cond
+(paren
+id|probe_ht6560b
+)paren
+id|init_ht6560b
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_QD65XX
+r_if
+c_cond
+(paren
+id|probe_qd65xx
+)paren
+id|init_qd65xx
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|initializing
 op_assign
 l_int|1

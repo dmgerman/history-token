@@ -1759,13 +1759,13 @@ id|smp_flags
 )paren
 suffix:semicolon
 multiline_comment|/* Public Data */
+multiline_comment|/* list of registered devices */
 r_extern
 r_struct
 id|wan_device
 op_star
-id|router_devlist
+id|wanrouter_router_devlist
 suffix:semicolon
-multiline_comment|/* list of registered devices */
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* _ROUTER_H */
 eof

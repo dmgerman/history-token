@@ -84,6 +84,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Check that a process has enough memory to allocate a new virtual&n; * mapping. 1 means there is enough memory for the allocation to&n; * succeed and 0 implies there is not.&n; *&n; * We currently support three overcommit policies, which are set via the&n; * vm.overcommit_memory sysctl.  See Documentation/vm/overcommit-acounting&n; *&n; * Strict overcommit modes added 2002 Feb 26 by Alan Cox.&n; * Additional code 2002 Jul 20 by Robert Love.&n; */
+r_extern
+id|atomic_t
+id|slab_reclaim_pages
+suffix:semicolon
 DECL|function|vm_enough_memory
 r_int
 id|vm_enough_memory
@@ -142,34 +146,32 @@ id|free
 op_add_assign
 id|nr_swap_pages
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The code below doesn&squot;t account for free space in the&n;&t;&t; * inode and dentry slab cache, slab cache fragmentation,&n;&t;&t; * inodes and dentries which will become freeable under&n;&t;&t; * VM load, etc. Lets just hope all these (complex)&n;&t;&t; * factors balance out...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Any slabs which are created with the&n;&t;&t; * SLAB_RECLAIM_ACCOUNT flag claim to have contents&n;&t;&t; * which are reclaimable, under pressure.  The dentry&n;&t;&t; * cache and most inode caches should fall into this&n;&t;&t; */
 id|free
 op_add_assign
+id|atomic_read
+c_func
 (paren
-id|dentry_stat.nr_unused
-op_star
-r_sizeof
-(paren
-r_struct
-id|dentry
+op_amp
+id|slab_reclaim_pages
 )paren
-)paren
-op_rshift
-id|PAGE_SHIFT
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Leave the last 3% for root&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
 id|free
-op_add_assign
-(paren
-id|inodes_stat.nr_unused
-op_star
-r_sizeof
-(paren
-r_struct
-id|inode
-)paren
-)paren
-op_rshift
-id|PAGE_SHIFT
+op_sub_assign
+id|free
+op_div
+l_int|32
 suffix:semicolon
 r_if
 c_cond
@@ -2672,6 +2674,10 @@ id|vma-&gt;vm_private_data
 op_assign
 l_int|NULL
 suffix:semicolon
+id|vma-&gt;vm_next
+op_assign
+l_int|NULL
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -3366,7 +3372,7 @@ r_else
 multiline_comment|/*&n;&t;&t;&t; * Ensure that a normal request is not falling in a&n;&t;&t;&t; * reserved hugepage range.  For some archs like IA-64,&n;&t;&t;&t; * there is a separate region for hugepages.&n;&t;&t;&t; */
 id|ret
 op_assign
-id|check_valid_hugepage_range
+id|is_hugepage_only_range
 c_func
 (paren
 id|addr

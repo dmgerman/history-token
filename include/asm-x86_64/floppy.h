@@ -124,6 +124,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef TRACE_FLPY_INT
@@ -261,6 +262,7 @@ l_int|0x20
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if

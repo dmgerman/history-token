@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  drivers/s390/char/tape_core.c&n; *    basic function of the tape device driver&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001,2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&t;&t; Michael Holzheu &lt;holzheu@de.ibm.com&gt;&n; *&t;&t; Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&t;&t; Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;&t;     
 singleline_comment|// for kernel parameters
@@ -3862,7 +3861,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;tape init: ($Revision: 1.23 $)&bslash;n&quot;
+l_string|&quot;tape init: ($Revision: 1.25 $)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tape_proc_init
@@ -3933,7 +3932,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached &quot;
-l_string|&quot;tape device driver ($Revision: 1.23 $)&quot;
+l_string|&quot;tape device driver ($Revision: 1.25 $)&quot;
 )paren
 suffix:semicolon
 DECL|variable|tape_init
@@ -3955,6 +3954,41 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|tape_dbf_area
+)paren
+suffix:semicolon
+DECL|variable|tape_generic_remove
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tape_generic_remove
+)paren
+suffix:semicolon
+DECL|variable|tape_disable_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tape_disable_device
+)paren
+suffix:semicolon
+DECL|variable|tape_generic_probe
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tape_generic_probe
+)paren
+suffix:semicolon
+DECL|variable|tape_enable_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tape_enable_device
+)paren
+suffix:semicolon
+DECL|variable|tape_put_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tape_put_device
 )paren
 suffix:semicolon
 DECL|variable|tape_state_verbose

@@ -827,12 +827,6 @@ c_func
 id|bvec-&gt;bv_page
 )paren
 suffix:semicolon
-id|balance_dirty_pages_ratelimited
-c_func
-(paren
-id|mapping
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -3628,7 +3622,7 @@ id|err
 r_return
 id|err
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|lo-&gt;lo_name
@@ -3811,7 +3805,7 @@ id|info-&gt;lo_flags
 op_assign
 id|lo-&gt;lo_flags
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info-&gt;lo_name

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  drivers/s390/char/tape_34xx.c&n; *    tape device discipline for 3480/3490 tapes.&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001,2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&t;&t; Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&t;&t; Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
@@ -4168,7 +4167,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;34xx init: $Revision: 1.7 $&bslash;n&quot;
+l_string|&quot;34xx init: $Revision: 1.8 $&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register driver for 3480/3490 tapes. */
@@ -4242,7 +4241,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached 3480 tape &quot;
-l_string|&quot;device driver ($Revision: 1.7 $)&quot;
+l_string|&quot;device driver ($Revision: 1.8 $)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

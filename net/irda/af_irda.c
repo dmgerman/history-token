@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; * Filename:      af_irda.c&n; * Version:       0.9&n; * Description:   IrDA sockets implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun May 31 10:12:43 1998&n; * Modified at:   Sat Dec 25 21:10:23 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * Sources:       af_netroom.c, af_ax25.c, af_rose.c, af_x25.c etc.&n; *&n; *     Copyright (c) 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     Copyright (c) 1999-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; *     Linux-IrDA now supports four different types of IrDA sockets:&n; *&n; *     o SOCK_STREAM:    TinyTP connections with SAR disabled. The&n; *                       max SDU size is 0 for conn. of this type&n; *     o SOCK_SEQPACKET: TinyTP connections with SAR enabled. TTP may&n; *                       fragment the messages, but will preserve&n; *                       the message boundaries&n; *     o SOCK_DGRAM:     IRDAPROTO_UNITDATA: TinyTP connections with Unitdata&n; *                       (unreliable) transfers&n; *                       IRDAPROTO_ULTRA: Connectionless and unreliable data&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      af_irda.c&n; * Version:       0.9&n; * Description:   IrDA sockets implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun May 31 10:12:43 1998&n; * Modified at:   Sat Dec 25 21:10:23 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * Sources:       af_netroom.c, af_ax25.c, af_rose.c, af_x25.c etc.&n; *&n; *     Copyright (c) 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     Copyright (c) 1999-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; *     Linux-IrDA now supports four different types of IrDA sockets:&n; *&n; *     o SOCK_STREAM:    TinyTP connections with SAR disabled. The&n; *                       max SDU size is 0 for conn. of this type&n; *     o SOCK_SEQPACKET: TinyTP connections with SAR enabled. TTP may&n; *                       fragment the messages, but will preserve&n; *                       the message boundaries&n; *     o SOCK_DGRAM:     IRDAPROTO_UNITDATA: TinyTP connections with Unitdata&n; *                       (unreliable) transfers&n; *                       IRDAPROTO_ULTRA: Connectionless and unreliable data&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -279,56 +279,50 @@ multiline_comment|/* Prevent race conditions with irda_release() and irda_shutdo
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
-)paren
+id|SOCK_DEAD
 )paren
 op_logical_and
-(paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_CLOSE
 )paren
-)paren
 (brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_CLOSE
 suffix:semicolon
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|ECONNRESET
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_or_assign
 id|SEND_SHUTDOWN
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
-id|__set_bit
+multiline_comment|/* Uh-oh... Should use sock_orphan ? */
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
-multiline_comment|/* Uh-oh... Should use sock_orphan ? */
-multiline_comment|/* Close our TSAP.&n;&t;&t; * If we leave it open, IrLMP put it back into the list of&n;&t;&t; * unconnected LSAPs. The problem is that any incoming request&n;&t;&t; * can then be matched to this socket (and it will be, because&n;&t;&t; * it is at the head of the list). This would prevent any&n;&t;&t; * listening socket waiting on the same TSAP to get those&n;&t;&t; * requests. Some apps forget to close sockets, or hang to it&n;&t;&t; * a bit too long, so we may stay in this dead state long&n;&t;&t; * enough to be noticed...&n;&t;&t; * Note : all socket function do check sk-&gt;state, so we are&n;&t;&t; * safe...&n;&t;&t; * Jean II&n;&t;&t; */
+multiline_comment|/* Close our TSAP.&n;&t;&t; * If we leave it open, IrLMP put it back into the list of&n;&t;&t; * unconnected LSAPs. The problem is that any incoming request&n;&t;&t; * can then be matched to this socket (and it will be, because&n;&t;&t; * it is at the head of the list). This would prevent any&n;&t;&t; * listening socket waiting on the same TSAP to get those&n;&t;&t; * requests. Some apps forget to close sockets, or hang to it&n;&t;&t; * a bit too long, so we may stay in this dead state long&n;&t;&t; * enough to be noticed...&n;&t;&t; * Note : all socket function do check sk-&gt;sk_state, so we are&n;&t;&t; * safe...&n;&t;&t; * Jean II&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -347,7 +341,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Note : once we are there, there is not much you want to do&n;&t; * with the socket anymore, apart from closing it.&n;&t; * For example, bind() and connect() won&squot;t reset sk-&gt;err,&n;&t; * sk-&gt;shutdown and sk-&gt;flags to valid values...&n;&t; * Jean II&n;&t; */
+multiline_comment|/* Note : once we are there, there is not much you want to do&n;&t; * with the socket anymore, apart from closing it.&n;&t; * For example, bind() and connect() won&squot;t reset sk-&gt;sk_err,&n;&t; * sk-&gt;sk_shutdown and sk-&gt;sk_flags to valid values...&n;&t; * Jean II&n;&t; */
 )brace
 multiline_comment|/*&n; * Function irda_connect_confirm (instance, sap, qos, max_sdu_size, skb)&n; *&n; *    Connections has been confirmed by the remote device&n; *&n; */
 DECL|function|irda_connect_confirm
@@ -425,6 +419,13 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+singleline_comment|// Should be ??? skb_queue_tail(&amp;sk-&gt;sk_receive_queue, skb);
 multiline_comment|/* How much header space do we need to reserve */
 id|self-&gt;max_header_size
 op_assign
@@ -439,7 +440,7 @@ multiline_comment|/* Find out what the largest chunk of data that we can transmi
 r_switch
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 )paren
 (brace
 r_case
@@ -541,21 +542,14 @@ id|qos_info
 )paren
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-singleline_comment|// Should be ??? skb_queue_tail(&amp;sk-&gt;receive_queue, skb);
 multiline_comment|/* We are now connected! */
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -652,7 +646,7 @@ multiline_comment|/* Find out what the largest chunk of data that we can transmi
 r_switch
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 )paren
 (brace
 r_case
@@ -672,6 +666,12 @@ c_func
 l_string|&quot;%s: max_sdu_size must be 0&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return
@@ -704,6 +704,12 @@ c_func
 l_string|&quot;%s: max_sdu_size cannot be 0&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return
@@ -758,14 +764,14 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -978,7 +984,7 @@ suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 r_break
@@ -2145,7 +2151,7 @@ id|peer
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -2268,19 +2274,19 @@ r_if
 c_cond
 (paren
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_STREAM
 )paren
 op_logical_and
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_SEQPACKET
 )paren
 op_logical_and
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_DGRAM
 )paren
@@ -2292,16 +2298,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_LISTEN
 )paren
 (brace
-id|sk-&gt;max_ack_backlog
+id|sk-&gt;sk_max_ack_backlog
 op_assign
 id|backlog
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_LISTEN
 suffix:semicolon
@@ -2414,13 +2420,13 @@ r_if
 c_cond
 (paren
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_DGRAM
 )paren
 op_logical_and
 (paren
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_eq
 id|IRDAPROTO_ULTRA
 )paren
@@ -2490,7 +2496,7 @@ id|sock-&gt;state
 op_assign
 id|SS_CONNECTED
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
@@ -2639,7 +2645,7 @@ c_func
 (paren
 id|newsock
 comma
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 )paren
 suffix:semicolon
 r_if
@@ -2680,19 +2686,19 @@ r_if
 c_cond
 (paren
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_STREAM
 )paren
 op_logical_and
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_SEQPACKET
 )paren
 op_logical_and
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_DGRAM
 )paren
@@ -2704,7 +2710,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_LISTEN
 )paren
@@ -2720,7 +2726,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_if
@@ -2760,7 +2766,7 @@ multiline_comment|/* The following code is a cut&squot;n&squot;paste of the&n;&t
 id|add_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|waitq
@@ -2785,7 +2791,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_if
@@ -2831,7 +2837,7 @@ suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|waitq
@@ -2853,7 +2859,7 @@ id|newsk
 op_assign
 id|newsock-&gt;sk
 suffix:semicolon
-id|newsk-&gt;state
+id|newsk-&gt;sk_state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
@@ -2908,6 +2914,12 @@ comma
 l_string|&quot;%s(), dup failed!&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return
@@ -3004,6 +3016,7 @@ c_func
 id|self-&gt;tsap
 )paren
 suffix:semicolon
+multiline_comment|/* Wow ! What is that ? Jean II */
 id|skb-&gt;sk
 op_assign
 l_int|NULL
@@ -3018,7 +3031,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_decrement
 suffix:semicolon
 id|newsock-&gt;state
@@ -3109,13 +3122,13 @@ r_if
 c_cond
 (paren
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_eq
 id|SOCK_DGRAM
 )paren
 op_logical_and
 (paren
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_eq
 id|IRDAPROTO_ULTRA
 )paren
@@ -3127,7 +3140,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_ESTABLISHED
 op_logical_and
@@ -3148,7 +3161,7 @@ multiline_comment|/* Connect completed during a ERESTARTSYS event */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 op_logical_and
@@ -3169,7 +3182,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_ESTABLISHED
 )paren
@@ -3178,7 +3191,7 @@ op_minus
 id|EISCONN
 suffix:semicolon
 multiline_comment|/* No reconnect on a seqpacket socket */
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_CLOSE
 suffix:semicolon
@@ -3322,7 +3335,7 @@ id|sock-&gt;state
 op_assign
 id|SS_CONNECTING
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_SYN_SENT
 suffix:semicolon
@@ -3371,7 +3384,7 @@ multiline_comment|/* Now the loop */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 op_logical_and
@@ -3393,11 +3406,11 @@ c_func
 (paren
 op_star
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 comma
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_SYN_SENT
 )paren
@@ -3410,7 +3423,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -3617,12 +3630,12 @@ comma
 id|sk
 )paren
 suffix:semicolon
-multiline_comment|/* Note : set sk-&gt;refcnt to 1 */
-id|sk-&gt;family
+multiline_comment|/* Note : set sk-&gt;sk_refcnt to 1 */
+id|sk-&gt;sk_family
 op_assign
 id|PF_IRDA
 suffix:semicolon
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_assign
 id|protocol
 suffix:semicolon
@@ -3944,17 +3957,17 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_CLOSE
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_or_assign
 id|SEND_SHUTDOWN
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -3995,10 +4008,10 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
-multiline_comment|/* Destroy networking socket if we are the last reference on it,&n;&t; * i.e. if(sk-&gt;refcnt == 0) -&gt; sk_free(sk) */
+multiline_comment|/* Destroy networking socket if we are the last reference on it,&n;&t; * i.e. if(sk-&gt;sk_refcnt == 0) -&gt; sk_free(sk) */
 id|sock_put
 c_func
 (paren
@@ -4093,7 +4106,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|SEND_SHUTDOWN
 )paren
@@ -4116,7 +4129,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -4154,7 +4167,7 @@ c_func
 (paren
 op_star
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 comma
 (paren
@@ -4162,7 +4175,7 @@ id|self-&gt;tx_flow
 op_ne
 id|FLOW_STOP
 op_logical_or
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -4176,7 +4189,7 @@ multiline_comment|/* Check if we are still connected */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -4498,13 +4511,13 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 op_lshift
 l_int|2
 )paren
 op_le
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 )paren
 (brace
 id|IRDA_DEBUG
@@ -4676,14 +4689,12 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-suffix:semicolon
-id|skb
 op_assign
 id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_if
@@ -4715,13 +4726,13 @@ c_func
 id|SOCK_ASYNC_WAITDATA
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|waitq
@@ -4737,7 +4748,7 @@ multiline_comment|/*&n;&t;&t;&t; *&t;POSIX 1003.1g mandates this order.&n;&t;&t;
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 )paren
 id|ret
 op_assign
@@ -4751,7 +4762,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -4790,7 +4801,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 op_eq
 l_int|NULL
@@ -4808,7 +4819,7 @@ suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|waitq
@@ -4820,7 +4831,7 @@ c_func
 id|SOCK_ASYNC_WAITDATA
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 r_if
@@ -4836,7 +4847,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -4876,7 +4887,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -4945,7 +4956,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -4977,7 +4988,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -5009,13 +5020,13 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 op_lshift
 l_int|2
 )paren
 op_le
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 )paren
 (brace
 id|IRDA_DEBUG
@@ -5124,7 +5135,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|SEND_SHUTDOWN
 )paren
@@ -5147,7 +5158,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -5390,7 +5401,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|SEND_SHUTDOWN
 )paren
@@ -5625,17 +5636,17 @@ comma
 id|self
 )paren
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_CLOSE
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_or_assign
 id|SEND_SHUTDOWN
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -5767,7 +5778,7 @@ c_func
 (paren
 id|file
 comma
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 id|wait
 )paren
@@ -5780,7 +5791,7 @@ multiline_comment|/* Exceptional events? */
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 )paren
 id|mask
 op_or_assign
@@ -5789,7 +5800,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -5818,7 +5829,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 (brace
@@ -5841,7 +5852,7 @@ multiline_comment|/* Connection-based need to check for termination and startup 
 r_switch
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 )paren
 (brace
 r_case
@@ -5850,7 +5861,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_CLOSE
 )paren
@@ -5873,7 +5884,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_ESTABLISHED
 )paren
@@ -6022,13 +6033,13 @@ id|amount
 suffix:semicolon
 id|amount
 op_assign
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_minus
 id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 r_if
@@ -6091,7 +6102,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 op_ne
@@ -6139,9 +6150,8 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|sk-&gt;stamp.tv_sec
-op_eq
-l_int|0
+op_logical_neg
+id|sk-&gt;sk_stamp.tv_sec
 )paren
 r_return
 op_minus
@@ -6160,7 +6170,7 @@ op_star
 id|arg
 comma
 op_amp
-id|sk-&gt;stamp
+id|sk-&gt;sk_stamp
 comma
 r_sizeof
 (paren
@@ -6983,7 +6993,7 @@ multiline_comment|/* Only possible for a seqpacket service (TTP with SAR) */
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_SEQPACKET
 )paren

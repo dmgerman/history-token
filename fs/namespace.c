@@ -14,30 +14,6 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
-r_struct
-id|vfsmount
-op_star
-id|do_kern_mount
-c_func
-(paren
-r_const
-r_char
-op_star
-id|type
-comma
-r_int
-id|flags
-comma
-r_char
-op_star
-id|name
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|__init
 id|init_rootfs
@@ -49,7 +25,7 @@ suffix:semicolon
 r_extern
 r_int
 id|__init
-id|fs_subsys_init
+id|sysfs_init
 c_func
 (paren
 r_void
@@ -144,6 +120,7 @@ op_star
 id|alloc_vfsmnt
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
@@ -286,11 +263,6 @@ op_star
 id|mnt
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|mnt-&gt;mnt_devname
-)paren
 id|kfree
 c_func
 (paren
@@ -2381,6 +2353,11 @@ id|err
 )paren
 r_goto
 id|out_unlock
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOENT
 suffix:semicolon
 id|spin_lock
 c_func
@@ -5740,7 +5717,7 @@ c_loop
 id|i
 )paren
 suffix:semicolon
-id|fs_subsys_init
+id|sysfs_init
 c_func
 (paren
 )paren

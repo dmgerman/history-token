@@ -810,6 +810,7 @@ id|adapter-&gt;tx_pcb
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: start receive command failed &bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -861,6 +862,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: DMA %s timed out, %d bytes left&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1426,6 +1428,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: timeout waiting for PCB acknowledge (status %02x)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1637,6 +1640,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: status %02x&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1826,6 +1830,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: mangled PCB received&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1891,6 +1896,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: PCB rejected, transfer in progress and backlog full&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1961,6 +1967,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: restarting receiver&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2173,6 +2180,7 @@ id|adapter-&gt;dmaing
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: rx blocked, DMA in progress, dir %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2285,6 +2293,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: rx DMA transfer started&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2403,6 +2412,7 @@ id|adapter-&gt;dmaing
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: phantom DMA completed&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2420,6 +2430,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: %s DMA complete, status %02x&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2566,6 +2577,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: receiving backlogged packet (%d)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2718,6 +2730,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: interrupt - packet received of length %i (%i)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2746,6 +2759,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: adding packet to backlog (len = %d)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2790,6 +2804,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: packet received&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2819,6 +2834,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: interrupt - configure response received&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2847,6 +2863,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Adapter memory configuration %s.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2882,6 +2899,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Multicast address list loading %s.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2917,6 +2935,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Ethernet address setting %s.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2976,6 +2995,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: interrupt - statistics response received&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2997,6 +3017,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: interrupt - packet sent&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3086,6 +3107,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: failed to read PCB on interrupt&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3175,6 +3197,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: request to open device&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3467,6 +3490,7 @@ id|adapter-&gt;tx_pcb
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: couldn&squot;t send memory configuration command&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3530,6 +3554,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: sending 82586 configure command&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3572,6 +3597,7 @@ id|adapter-&gt;tx_pcb
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: couldn&squot;t send 82586 configure command&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3643,6 +3669,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: %d receive PCBs active&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3747,6 +3774,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: transmit blocked&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3826,6 +3854,7 @@ id|adapter-&gt;dmaing
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: tx: DMA %d in progress&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3987,6 +4016,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: DMA transfer started&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4056,6 +4086,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: status %#02x&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4130,6 +4161,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: request to send packet of length %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4171,6 +4203,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: failed to transmit packet&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4200,6 +4233,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: packet of length %d sent&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4275,6 +4309,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: request for stats&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4327,6 +4362,7 @@ id|adapter-&gt;tx_pcb
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: couldn&squot;t send get statistics command&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4681,6 +4717,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: request to close device&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4793,6 +4830,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: request to set multicast list&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4890,6 +4928,7 @@ id|adapter-&gt;tx_pcb
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: couldn&squot;t send set_multicast command&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4984,6 +5023,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: sending 82586 configure command&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5030,6 +5070,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: couldn&squot;t send 82586 configure command&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5656,6 +5697,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: out of memory&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5821,6 +5863,7 @@ multiline_comment|/* Nope, it&squot;s ignoring the command register.  This means
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: command register wouldn&squot;t drain, &quot;
 comma
 id|dev-&gt;name
@@ -5894,6 +5937,7 @@ l_int|7
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: 3c505 failed to start&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5970,6 +6014,7 @@ id|adapter-&gt;tx_pcb
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: could not send first PCB&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6001,6 +6046,7 @@ id|adapter-&gt;rx_pcb
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: could not read first PCB&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6034,6 +6080,7 @@ l_int|6
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: first PCB wrong (%d, %d)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6097,6 +6144,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: failed to initialise 3c505&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6143,6 +6191,7 @@ id|rpt
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: warning, irq %d configured but %d detected&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6178,6 +6227,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: IRQ probe failed: check 3c505 jumpers.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6202,6 +6252,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Impossible IRQ %d reported by probe_irq_off().&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6293,6 +6344,7 @@ multiline_comment|/*&n;&t; * print remainder of startup message&n;&t; */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: 3c505 at %#lx, irq %d, dma %d, &quot;
 comma
 id|dev-&gt;name
@@ -6476,6 +6528,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: could not configure adapter memory&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6491,6 +6544,7 @@ id|adapter-&gt;rx_pcb.data.configure
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: adapter configuration failed&bslash;n&quot;
 comma
 id|dev-&gt;name

@@ -7,53 +7,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/pc9800.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-multiline_comment|/* XXX - For now, we assume the first (i.e. having the least host_no)&n;   real (i.e. non-emulated) host adapter shall be BIOS-controlled one.&n;   We *SHOULD* invent another way.  */
-DECL|function|first_real_host
-r_static
-r_inline
-r_struct
-id|Scsi_Host
-op_star
-id|first_real_host
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|Scsi_Host
-op_star
-id|shost
-op_assign
-l_int|NULL
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|shost
-op_assign
-id|scsi_host_get_next
-c_func
-(paren
-id|shost
-)paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|shost-&gt;hostt-&gt;emulated
-)paren
-r_break
-suffix:semicolon
-)brace
-r_return
-id|shost
-suffix:semicolon
-)brace
 DECL|function|pc98_first_bios_param
 r_static
 r_int
@@ -208,9 +161,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * XXX&n;&t; * XXX This needs to become a sysfs attribute that&squot;s set&n;&t; * XXX by code that knows which host is the first one.&n;&t; * XXX&n;&t; * XXX Currently we support only one host on with a&n;&t; * XXX PC98ish HBA.&n;&t; * XXX&n;&t; */
 r_if
 c_cond
 (paren
+l_int|1
+op_logical_or
 id|sdev-&gt;host
 op_eq
 id|first_real

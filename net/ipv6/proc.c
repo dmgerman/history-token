@@ -1035,6 +1035,13 @@ r_sizeof
 r_struct
 id|icmpv6_mib
 )paren
+comma
+id|__alignof__
+c_func
+(paren
+r_struct
+id|ipv6_mib
+)paren
 )paren
 OL
 l_int|0
@@ -1302,7 +1309,7 @@ id|out
 suffix:semicolon
 )brace
 DECL|function|ipv6_misc_proc_exit
-r_int
+r_void
 id|ipv6_misc_proc_exit
 c_func
 (paren
@@ -1326,9 +1333,6 @@ c_func
 (paren
 l_string|&quot;snmp6&quot;
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof

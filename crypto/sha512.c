@@ -155,165 +155,165 @@ l_int|80
 )braket
 op_assign
 (brace
-l_int|0x428a2f98d728ae22
+l_int|0x428a2f98d728ae22ULL
 comma
-l_int|0x7137449123ef65cd
+l_int|0x7137449123ef65cdULL
 comma
-l_int|0xb5c0fbcfec4d3b2f
+l_int|0xb5c0fbcfec4d3b2fULL
 comma
-l_int|0xe9b5dba58189dbbc
+l_int|0xe9b5dba58189dbbcULL
 comma
-l_int|0x3956c25bf348b538
+l_int|0x3956c25bf348b538ULL
 comma
-l_int|0x59f111f1b605d019
+l_int|0x59f111f1b605d019ULL
 comma
-l_int|0x923f82a4af194f9b
+l_int|0x923f82a4af194f9bULL
 comma
-l_int|0xab1c5ed5da6d8118
+l_int|0xab1c5ed5da6d8118ULL
 comma
-l_int|0xd807aa98a3030242
+l_int|0xd807aa98a3030242ULL
 comma
-l_int|0x12835b0145706fbe
+l_int|0x12835b0145706fbeULL
 comma
-l_int|0x243185be4ee4b28c
+l_int|0x243185be4ee4b28cULL
 comma
-l_int|0x550c7dc3d5ffb4e2
+l_int|0x550c7dc3d5ffb4e2ULL
 comma
-l_int|0x72be5d74f27b896f
+l_int|0x72be5d74f27b896fULL
 comma
-l_int|0x80deb1fe3b1696b1
+l_int|0x80deb1fe3b1696b1ULL
 comma
-l_int|0x9bdc06a725c71235
+l_int|0x9bdc06a725c71235ULL
 comma
-l_int|0xc19bf174cf692694
+l_int|0xc19bf174cf692694ULL
 comma
-l_int|0xe49b69c19ef14ad2
+l_int|0xe49b69c19ef14ad2ULL
 comma
-l_int|0xefbe4786384f25e3
+l_int|0xefbe4786384f25e3ULL
 comma
-l_int|0x0fc19dc68b8cd5b5
+l_int|0x0fc19dc68b8cd5b5ULL
 comma
-l_int|0x240ca1cc77ac9c65
+l_int|0x240ca1cc77ac9c65ULL
 comma
-l_int|0x2de92c6f592b0275
+l_int|0x2de92c6f592b0275ULL
 comma
-l_int|0x4a7484aa6ea6e483
+l_int|0x4a7484aa6ea6e483ULL
 comma
-l_int|0x5cb0a9dcbd41fbd4
+l_int|0x5cb0a9dcbd41fbd4ULL
 comma
-l_int|0x76f988da831153b5
+l_int|0x76f988da831153b5ULL
 comma
-l_int|0x983e5152ee66dfab
+l_int|0x983e5152ee66dfabULL
 comma
-l_int|0xa831c66d2db43210
+l_int|0xa831c66d2db43210ULL
 comma
-l_int|0xb00327c898fb213f
+l_int|0xb00327c898fb213fULL
 comma
-l_int|0xbf597fc7beef0ee4
+l_int|0xbf597fc7beef0ee4ULL
 comma
-l_int|0xc6e00bf33da88fc2
+l_int|0xc6e00bf33da88fc2ULL
 comma
-l_int|0xd5a79147930aa725
+l_int|0xd5a79147930aa725ULL
 comma
-l_int|0x06ca6351e003826f
+l_int|0x06ca6351e003826fULL
 comma
-l_int|0x142929670a0e6e70
+l_int|0x142929670a0e6e70ULL
 comma
-l_int|0x27b70a8546d22ffc
+l_int|0x27b70a8546d22ffcULL
 comma
-l_int|0x2e1b21385c26c926
+l_int|0x2e1b21385c26c926ULL
 comma
-l_int|0x4d2c6dfc5ac42aed
+l_int|0x4d2c6dfc5ac42aedULL
 comma
-l_int|0x53380d139d95b3df
+l_int|0x53380d139d95b3dfULL
 comma
-l_int|0x650a73548baf63de
+l_int|0x650a73548baf63deULL
 comma
-l_int|0x766a0abb3c77b2a8
+l_int|0x766a0abb3c77b2a8ULL
 comma
-l_int|0x81c2c92e47edaee6
+l_int|0x81c2c92e47edaee6ULL
 comma
-l_int|0x92722c851482353b
+l_int|0x92722c851482353bULL
 comma
-l_int|0xa2bfe8a14cf10364
+l_int|0xa2bfe8a14cf10364ULL
 comma
-l_int|0xa81a664bbc423001
+l_int|0xa81a664bbc423001ULL
 comma
-l_int|0xc24b8b70d0f89791
+l_int|0xc24b8b70d0f89791ULL
 comma
-l_int|0xc76c51a30654be30
+l_int|0xc76c51a30654be30ULL
 comma
-l_int|0xd192e819d6ef5218
+l_int|0xd192e819d6ef5218ULL
 comma
-l_int|0xd69906245565a910
+l_int|0xd69906245565a910ULL
 comma
-l_int|0xf40e35855771202a
+l_int|0xf40e35855771202aULL
 comma
-l_int|0x106aa07032bbd1b8
+l_int|0x106aa07032bbd1b8ULL
 comma
-l_int|0x19a4c116b8d2d0c8
+l_int|0x19a4c116b8d2d0c8ULL
 comma
-l_int|0x1e376c085141ab53
+l_int|0x1e376c085141ab53ULL
 comma
-l_int|0x2748774cdf8eeb99
+l_int|0x2748774cdf8eeb99ULL
 comma
-l_int|0x34b0bcb5e19b48a8
+l_int|0x34b0bcb5e19b48a8ULL
 comma
-l_int|0x391c0cb3c5c95a63
+l_int|0x391c0cb3c5c95a63ULL
 comma
-l_int|0x4ed8aa4ae3418acb
+l_int|0x4ed8aa4ae3418acbULL
 comma
-l_int|0x5b9cca4f7763e373
+l_int|0x5b9cca4f7763e373ULL
 comma
-l_int|0x682e6ff3d6b2b8a3
+l_int|0x682e6ff3d6b2b8a3ULL
 comma
-l_int|0x748f82ee5defb2fc
+l_int|0x748f82ee5defb2fcULL
 comma
-l_int|0x78a5636f43172f60
+l_int|0x78a5636f43172f60ULL
 comma
-l_int|0x84c87814a1f0ab72
+l_int|0x84c87814a1f0ab72ULL
 comma
-l_int|0x8cc702081a6439ec
+l_int|0x8cc702081a6439ecULL
 comma
-l_int|0x90befffa23631e28
+l_int|0x90befffa23631e28ULL
 comma
-l_int|0xa4506cebde82bde9
+l_int|0xa4506cebde82bde9ULL
 comma
-l_int|0xbef9a3f7b2c67915
+l_int|0xbef9a3f7b2c67915ULL
 comma
-l_int|0xc67178f2e372532b
+l_int|0xc67178f2e372532bULL
 comma
-l_int|0xca273eceea26619c
+l_int|0xca273eceea26619cULL
 comma
-l_int|0xd186b8c721c0c207
+l_int|0xd186b8c721c0c207ULL
 comma
-l_int|0xeada7dd6cde0eb1e
+l_int|0xeada7dd6cde0eb1eULL
 comma
-l_int|0xf57d4f7fee6ed178
+l_int|0xf57d4f7fee6ed178ULL
 comma
-l_int|0x06f067aa72176fba
+l_int|0x06f067aa72176fbaULL
 comma
-l_int|0x0a637dc5a2c898a6
+l_int|0x0a637dc5a2c898a6ULL
 comma
-l_int|0x113f9804bef90dae
+l_int|0x113f9804bef90daeULL
 comma
-l_int|0x1b710b35131c471b
+l_int|0x1b710b35131c471bULL
 comma
-l_int|0x28db77f523047d84
+l_int|0x28db77f523047d84ULL
 comma
-l_int|0x32caab7b40c72493
+l_int|0x32caab7b40c72493ULL
 comma
-l_int|0x3c9ebe0a15c9bebc
+l_int|0x3c9ebe0a15c9bebcULL
 comma
-l_int|0x431d67c49c100d4c
+l_int|0x431d67c49c100d4cULL
 comma
-l_int|0x4cc5d4becb3e42b6
+l_int|0x4cc5d4becb3e42b6ULL
 comma
-l_int|0x597f299cfc657e2a
+l_int|0x597f299cfc657e2aULL
 comma
-l_int|0x5fcb6fab3ad6faec
+l_int|0x5fcb6fab3ad6faecULL
 comma
-l_int|0x6c44198c4a475817
+l_int|0x6c44198c4a475817ULL
 comma
 )brace
 suffix:semicolon
@@ -327,38 +327,38 @@ DECL|macro|s1
 mdefine_line|#define s1(x)       (RORu64(x,19) ^ RORu64(x,61) ^ (x &gt;&gt; 6))
 multiline_comment|/* H* initial state for SHA-512 */
 DECL|macro|H0
-mdefine_line|#define H0         0x6a09e667f3bcc908
+mdefine_line|#define H0         0x6a09e667f3bcc908ULL
 DECL|macro|H1
-mdefine_line|#define H1         0xbb67ae8584caa73b
+mdefine_line|#define H1         0xbb67ae8584caa73bULL
 DECL|macro|H2
-mdefine_line|#define H2         0x3c6ef372fe94f82b
+mdefine_line|#define H2         0x3c6ef372fe94f82bULL
 DECL|macro|H3
-mdefine_line|#define H3         0xa54ff53a5f1d36f1
+mdefine_line|#define H3         0xa54ff53a5f1d36f1ULL
 DECL|macro|H4
-mdefine_line|#define H4         0x510e527fade682d1
+mdefine_line|#define H4         0x510e527fade682d1ULL
 DECL|macro|H5
-mdefine_line|#define H5         0x9b05688c2b3e6c1f
+mdefine_line|#define H5         0x9b05688c2b3e6c1fULL
 DECL|macro|H6
-mdefine_line|#define H6         0x1f83d9abfb41bd6b
+mdefine_line|#define H6         0x1f83d9abfb41bd6bULL
 DECL|macro|H7
-mdefine_line|#define H7         0x5be0cd19137e2179
+mdefine_line|#define H7         0x5be0cd19137e2179ULL
 multiline_comment|/* H&squot;* initial state for SHA-384 */
 DECL|macro|HP0
-mdefine_line|#define HP0 0xcbbb9d5dc1059ed8
+mdefine_line|#define HP0 0xcbbb9d5dc1059ed8ULL
 DECL|macro|HP1
-mdefine_line|#define HP1 0x629a292a367cd507
+mdefine_line|#define HP1 0x629a292a367cd507ULL
 DECL|macro|HP2
-mdefine_line|#define HP2 0x9159015a3070dd17
+mdefine_line|#define HP2 0x9159015a3070dd17ULL
 DECL|macro|HP3
-mdefine_line|#define HP3 0x152fecd8f70e5939
+mdefine_line|#define HP3 0x152fecd8f70e5939ULL
 DECL|macro|HP4
-mdefine_line|#define HP4 0x67332667ffc00b31
+mdefine_line|#define HP4 0x67332667ffc00b31ULL
 DECL|macro|HP5
-mdefine_line|#define HP5 0x8eb44a8768581511
+mdefine_line|#define HP5 0x8eb44a8768581511ULL
 DECL|macro|HP6
-mdefine_line|#define HP6 0xdb0c2e0d64f98fa7
+mdefine_line|#define HP6 0xdb0c2e0d64f98fa7ULL
 DECL|macro|HP7
-mdefine_line|#define HP7 0x47b5481dbefa4fa4
+mdefine_line|#define HP7 0x47b5481dbefa4fa4ULL
 DECL|function|LOAD_OP
 r_static
 r_inline

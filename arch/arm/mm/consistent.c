@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/consistent.c&n; *&n; *  Copyright (C) 2000-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  DMA uncached mapping support.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -375,6 +375,9 @@ id|ret
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|res
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -491,6 +494,7 @@ id|c
 r_goto
 id|no_remap
 suffix:semicolon
+multiline_comment|/*&n;&t; * Attempt to allocate a virtual address in the&n;&t; * consistent mapping region.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -509,11 +513,8 @@ comma
 l_string|&quot;before alloc&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Attempt to allocate a virtual address in the&n;&t; * consistent mapping region.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
+id|res
+op_assign
 id|vm_region_alloc
 c_func
 (paren
@@ -524,6 +525,30 @@ id|c
 comma
 id|size
 )paren
+suffix:semicolon
+id|vm_region_dump
+c_func
+(paren
+op_amp
+id|consistent_head
+comma
+l_string|&quot;after alloc&quot;
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|consistent_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|res
 )paren
 (brace
 id|pte_t
@@ -671,24 +696,6 @@ op_star
 id|c-&gt;vm_start
 suffix:semicolon
 )brace
-id|vm_region_dump
-c_func
-(paren
-op_amp
-id|consistent_head
-comma
-l_string|&quot;after alloc&quot;
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|consistent_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|no_remap
 suffix:colon
 r_if
@@ -720,6 +727,66 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Since we have the DMA mask available to us here, we could try to do&n; * a normal allocation, and only fall back to a &quot;DMA&quot; allocation if the&n; * resulting bus address does not satisfy the dma_mask requirements.&n; */
+r_void
+op_star
+DECL|function|dma_alloc_coherent
+id|dma_alloc_coherent
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|handle
+comma
+r_int
+id|gfp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dev
+op_eq
+l_int|NULL
+op_logical_or
+op_star
+id|dev-&gt;dma_mask
+op_ne
+l_int|0xffffffff
+)paren
+id|gfp
+op_or_assign
+id|GFP_DMA
+suffix:semicolon
+r_return
+id|consistent_alloc
+c_func
+(paren
+id|gfp
+comma
+id|size
+comma
+id|handle
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|variable|dma_alloc_coherent
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dma_alloc_coherent
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * free a page as defined by the above mapping.&n; */
 DECL|function|consistent_free
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * bus.c - bus driver management&n; * &n; * Copyright (c) 2002 Patrick Mochel&n; *&t;&t; 2002 Open Source Development Lab&n; * &n; * &n; */
+multiline_comment|/*&n; * bus.c - bus driver management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
@@ -1445,7 +1445,7 @@ comma
 id|drv-&gt;name
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|drv-&gt;kobj.name
@@ -1779,7 +1779,7 @@ op_star
 id|bus
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|bus-&gt;subsys.kset.kobj.name
@@ -1804,14 +1804,14 @@ op_amp
 id|bus-&gt;subsys
 )paren
 suffix:semicolon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|bus-&gt;devices.kobj.name
 comma
-id|KOBJ_NAME_LEN
-comma
 l_string|&quot;devices&quot;
+comma
+id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
 id|bus-&gt;devices.subsys
@@ -1826,14 +1826,14 @@ op_amp
 id|bus-&gt;devices
 )paren
 suffix:semicolon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|bus-&gt;drivers.kobj.name
 comma
-id|KOBJ_NAME_LEN
-comma
 l_string|&quot;drivers&quot;
+comma
+id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
 id|bus-&gt;drivers.subsys

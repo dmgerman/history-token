@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/process.c -- Arch-dependent process handling&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/process.c -- Arch-dependent process handling&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -617,59 +617,6 @@ suffix:semicolon
 )brace
 r_return
 id|error
-suffix:semicolon
-)brace
-multiline_comment|/* This is the common part of the various fork-like system calls (which&n;   are in entry.S).  */
-DECL|function|fork_common
-r_int
-id|fork_common
-(paren
-r_int
-id|flags
-comma
-r_int
-r_int
-id|new_sp
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_struct
-id|task_struct
-op_star
-id|p
-op_assign
-id|do_fork
-(paren
-id|flags
-comma
-id|new_sp
-comma
-id|regs
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_return
-id|IS_ERR
-(paren
-id|p
-)paren
-ques
-c_cond
-id|PTR_ERR
-(paren
-id|p
-)paren
-suffix:colon
-id|p-&gt;pid
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These bracket the sleeping functions..&n; */

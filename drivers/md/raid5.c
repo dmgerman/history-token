@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/raid/raid5.h&gt;
-macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -2247,6 +2246,12 @@ op_star
 id|rdev
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|raid5_conf_t
 op_star
 id|conf
@@ -2316,10 +2321,12 @@ id|KERN_ALERT
 l_string|&quot;raid5: Disk failure on %s, disabling device.&quot;
 l_string|&quot; Operation continuing on %d devices&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|conf-&gt;working_disks
@@ -4620,6 +4627,8 @@ op_logical_and
 id|to_read
 op_plus
 id|to_write
+op_plus
+id|written
 )paren
 (brace
 id|spin_lock_irq
@@ -4728,6 +4737,87 @@ suffix:semicolon
 id|bi
 op_assign
 id|nextbi
+suffix:semicolon
+)brace
+multiline_comment|/* and fail all &squot;written&squot; */
+id|bi
+op_assign
+id|sh-&gt;dev
+(braket
+id|i
+)braket
+dot
+id|written
+suffix:semicolon
+id|sh-&gt;dev
+(braket
+id|i
+)braket
+dot
+id|written
+op_assign
+l_int|NULL
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|bi
+op_logical_and
+id|bi-&gt;bi_sector
+OL
+id|sh-&gt;dev
+(braket
+id|i
+)braket
+dot
+id|sector
+op_plus
+id|STRIPE_SECTORS
+)paren
+(brace
+r_struct
+id|bio
+op_star
+id|bi2
+op_assign
+id|bi-&gt;bi_next
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|BIO_UPTODATE
+comma
+op_amp
+id|bi-&gt;bi_flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_decrement
+id|bi-&gt;bi_phys_segments
+op_eq
+l_int|0
+)paren
+(brace
+id|md_write_end
+c_func
+(paren
+id|conf-&gt;mddev
+)paren
+suffix:semicolon
+id|bi-&gt;bi_next
+op_assign
+id|return_bi
+suffix:semicolon
+id|return_bi
+op_assign
+id|bi
+suffix:semicolon
+)brace
+id|bi
+op_assign
+id|bi2
 suffix:semicolon
 )brace
 multiline_comment|/* fail any reads if this device is non-operational */
@@ -7680,6 +7770,14 @@ r_sizeof
 (paren
 id|raid5_conf_t
 )paren
+op_plus
+id|mddev-&gt;raid_disks
+op_star
+r_sizeof
+(paren
+r_struct
+id|disk_info
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -7710,6 +7808,14 @@ r_sizeof
 (paren
 op_star
 id|conf
+)paren
+op_plus
+id|mddev-&gt;raid_disks
+op_star
+r_sizeof
+(paren
+r_struct
+id|disk_info
 )paren
 )paren
 suffix:semicolon
@@ -7839,7 +7945,7 @@ r_if
 c_cond
 (paren
 id|raid_disk
-OG
+op_ge
 id|mddev-&gt;raid_disks
 op_logical_or
 id|raid_disk
@@ -7864,6 +7970,12 @@ c_cond
 id|rdev-&gt;in_sync
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -7871,10 +7983,12 @@ id|KERN_INFO
 l_string|&quot;raid5: device %s operational as raid&quot;
 l_string|&quot; disk %d&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|raid_disk
@@ -8731,6 +8845,12 @@ id|i
 op_increment
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|tmp
 op_assign
 id|conf-&gt;disks
@@ -8752,10 +8872,12 @@ comma
 op_logical_neg
 id|tmp-&gt;rdev-&gt;faulty
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|tmp-&gt;rdev-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlap_event.c&n; * Version:       0.9&n; * Description:   IrLAP state machine implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Sat Dec 25 21:07:57 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dag@brattli.net&gt;,&n; *     Copyright (c) 1998      Thomas Davis &lt;ratbert@radiks.net&gt;&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlap_event.c&n; * Version:       0.9&n; * Description:   IrLAP state machine implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Sat Dec 25 21:07:57 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dag@brattli.net&gt;,&n; *     Copyright (c) 1998      Thomas Davis &lt;ratbert@radiks.net&gt;&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -948,6 +948,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* Drop reference count.&n;&t;&t;&t;&t; * It will be increase as needed in&n;&t;&t;&t;&t; * irlap_send_data_xxx() */
 id|kfree_skb
 c_func
 (paren
@@ -1624,6 +1625,7 @@ suffix:semicolon
 r_else
 r_break
 suffix:semicolon
+multiline_comment|/* irlap_send_ui_frame() won&squot;t increase skb reference&n;&t;&t;&t; * count, so no dev_kfree_skb() - Jean II */
 )brace
 r_if
 c_cond

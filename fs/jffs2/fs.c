@@ -1,10 +1,9 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: fs.c,v 1.19 2002/11/12 09:53:40 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: fs.c,v 1.24 2003/04/29 09:52:58 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -69,7 +68,7 @@ id|buf-&gt;f_namelen
 op_assign
 id|JFFS2_MAX_NAME_LEN
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -120,7 +119,7 @@ id|c
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -289,7 +288,7 @@ suffix:semicolon
 )brace
 id|inode-&gt;i_mode
 op_assign
-id|je32_to_cpu
+id|jemode_to_cpu
 c_func
 (paren
 id|latest_node.mode
@@ -319,37 +318,41 @@ c_func
 id|latest_node.isize
 )paren
 suffix:semicolon
-id|inode-&gt;i_atime.tv_sec
+id|inode-&gt;i_atime
 op_assign
+id|ITIME
+c_func
+(paren
 id|je32_to_cpu
 c_func
 (paren
 id|latest_node.atime
 )paren
+)paren
 suffix:semicolon
-id|inode-&gt;i_mtime.tv_sec
+id|inode-&gt;i_mtime
 op_assign
+id|ITIME
+c_func
+(paren
 id|je32_to_cpu
 c_func
 (paren
 id|latest_node.mtime
 )paren
+)paren
 suffix:semicolon
-id|inode-&gt;i_ctime.tv_sec
+id|inode-&gt;i_ctime
 op_assign
+id|ITIME
+c_func
+(paren
 id|je32_to_cpu
 c_func
 (paren
 id|latest_node.ctime
 )paren
-suffix:semicolon
-id|inode-&gt;i_atime.tv_nsec
-op_assign
-id|inode-&gt;i_mtime.tv_nsec
-op_assign
-id|inode-&gt;i_ctime.tv_nsec
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|inode-&gt;i_nlink
 op_assign
@@ -377,8 +380,7 @@ op_amp
 id|S_IFMT
 )paren
 (brace
-r_int
-r_int
+id|jint16_t
 id|rdev
 suffix:semicolon
 r_case
@@ -587,11 +589,19 @@ c_func
 id|mk_kdev
 c_func
 (paren
+id|je16_to_cpu
+c_func
+(paren
 id|rdev
+)paren
 op_rshift
 l_int|8
 comma
+id|je16_to_cpu
+c_func
+(paren
 id|rdev
+)paren
 op_amp
 l_int|0xff
 )paren
@@ -967,7 +977,7 @@ suffix:semicolon
 )brace
 id|ri-&gt;mode
 op_assign
-id|cpu_to_je32
+id|cpu_to_jemode
 c_func
 (paren
 id|mode
@@ -1026,7 +1036,7 @@ id|ri-&gt;ino
 suffix:semicolon
 id|inode-&gt;i_mode
 op_assign
-id|je32_to_cpu
+id|jemode_to_cpu
 c_func
 (paren
 id|ri-&gt;mode
@@ -1048,24 +1058,13 @@ c_func
 id|ri-&gt;uid
 )paren
 suffix:semicolon
-id|inode-&gt;i_atime.tv_nsec
+id|inode-&gt;i_atime
 op_assign
-id|inode-&gt;i_ctime.tv_nsec
+id|inode-&gt;i_ctime
 op_assign
-id|inode-&gt;i_mtime.tv_nsec
+id|inode-&gt;i_mtime
 op_assign
-l_int|0
-suffix:semicolon
-id|inode-&gt;i_atime.tv_sec
-op_assign
-id|inode-&gt;i_ctime.tv_sec
-op_assign
-id|inode-&gt;i_mtime.tv_sec
-op_assign
-id|get_seconds
-c_func
-(paren
-)paren
+id|CURRENT_TIME
 suffix:semicolon
 id|ri-&gt;atime
 op_assign
@@ -1076,7 +1075,11 @@ op_assign
 id|cpu_to_je32
 c_func
 (paren
-id|inode-&gt;i_mtime.tv_sec
+id|I_SEC
+c_func
+(paren
+id|inode-&gt;i_mtime
+)paren
 )paren
 suffix:semicolon
 id|inode-&gt;i_blksize
@@ -1132,6 +1135,9 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+r_int
+id|blocks
+suffix:semicolon
 id|c
 op_assign
 id|JFFS2_SB_INFO
@@ -1140,40 +1146,68 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|c-&gt;sector_size
-op_assign
-id|c-&gt;mtd-&gt;erasesize
-suffix:semicolon
 id|c-&gt;flash_size
 op_assign
 id|c-&gt;mtd-&gt;size
 suffix:semicolon
-macro_line|#if 0
+multiline_comment|/* &n;&t; * Check, if we have to concatenate physical blocks to larger virtual blocks&n;&t; * to reduce the memorysize for c-&gt;blocks. (kmalloc allows max. 128K allocation)&n;&t; */
+id|blocks
+op_assign
+id|c-&gt;flash_size
+op_div
+id|c-&gt;mtd-&gt;erasesize
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|blocks
+op_star
+r_sizeof
+(paren
+r_struct
+id|jffs2_eraseblock
+)paren
+)paren
+OG
+(paren
+l_int|128
+op_star
+l_int|1024
+)paren
+)paren
+id|blocks
+op_rshift_assign
+l_int|1
+suffix:semicolon
+id|c-&gt;sector_size
+op_assign
+id|c-&gt;flash_size
+op_div
+id|blocks
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|c-&gt;sector_size
-OL
-l_int|0x10000
+op_ne
+id|c-&gt;mtd-&gt;erasesize
 )paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;jffs2: Erase block size too small (%dKiB). Using 64KiB instead&bslash;n&quot;
+l_string|&quot;jffs2: Erase block size too small (%dKiB). Using virtual blocks size (%dKiB) instead&bslash;n&quot;
+comma
+id|c-&gt;mtd-&gt;erasesize
+op_div
+l_int|1024
 comma
 id|c-&gt;sector_size
 op_div
 l_int|1024
 )paren
 suffix:semicolon
-id|c-&gt;sector_size
-op_assign
-l_int|0x10000
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1208,7 +1242,7 @@ r_struct
 id|jffs2_unknown_node
 )paren
 suffix:semicolon
-multiline_comment|/* J&#xfffd;rn -- stick alignment for weird 8-byte-page flash here */
+multiline_comment|/* Joern -- stick alignment for weird 8-byte-page flash here */
 r_if
 c_cond
 (paren

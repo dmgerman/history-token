@@ -632,7 +632,7 @@ id|existing
 r_if
 c_cond
 (paren
-id|existing-&gt;state
+id|existing-&gt;sk_state
 op_eq
 id|TCP_ESTABLISHED
 )paren
@@ -762,11 +762,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_STREAM
 op_logical_or
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 op_logical_or
@@ -813,7 +813,7 @@ id|skb
 r_goto
 id|out
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_CLOSING
 suffix:semicolon

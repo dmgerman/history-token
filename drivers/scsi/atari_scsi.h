@@ -31,25 +31,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_int
-id|atari_scsi_proc_info
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 macro_line|#ifdef MODULE
 r_int
 id|atari_scsi_release

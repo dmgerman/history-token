@@ -215,8 +215,8 @@ op_star
 id|data
 )paren
 (brace
-r_return
 id|dev_set_drvdata
+c_func
 (paren
 op_amp
 id|intf-&gt;dev
@@ -660,6 +660,20 @@ r_struct
 id|usb_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|usb_device
+op_star
+id|usb_find_device
+c_func
+(paren
+id|u16
+id|vendor_id
+comma
+id|u16
+id|product_id
 )paren
 suffix:semicolon
 multiline_comment|/* for drivers using iso endpoints */

@@ -724,7 +724,7 @@ l_int|0
 suffix:semicolon
 DECL|function|mfc3_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mfc3_interrupt
 c_func
 (paren
@@ -814,6 +814,9 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|mfc3_enable_irq
 r_static

@@ -1278,6 +1278,11 @@ DECL|function|ahd_linux_proc_info
 id|ahd_linux_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
 r_char
 op_star
 id|buffer
@@ -1292,9 +1297,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -1353,9 +1355,9 @@ id|links
 r_if
 c_cond
 (paren
-id|ahd-&gt;platform_data-&gt;host-&gt;host_no
+id|ahd-&gt;platform_data-&gt;host
 op_eq
-id|hostno
+id|shost
 )paren
 r_break
 suffix:semicolon

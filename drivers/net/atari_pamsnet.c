@@ -380,7 +380,7 @@ r_int
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pamsnet_intr
 c_func
 (paren
@@ -1593,7 +1593,7 @@ id|ret
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|pamsnet_intr
 id|pamsnet_intr
 c_func
@@ -1618,6 +1618,7 @@ id|fp
 suffix:semicolon
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* receivepkt() loads a packet to a given buffer and returns its length */

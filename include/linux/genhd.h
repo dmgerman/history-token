@@ -289,11 +289,6 @@ DECL|member|minors
 r_int
 id|minors
 suffix:semicolon
-DECL|member|minor_shift
-r_int
-id|minor_shift
-suffix:semicolon
-multiline_comment|/* number of times minor is shifted to&n;&t;&t;&t;&t;&t;   get real minor */
 DECL|member|disk_name
 r_char
 id|disk_name
@@ -532,16 +527,11 @@ id|disk
 (brace
 id|disk-&gt;dkstats
 op_assign
-id|kmalloc_percpu
+id|alloc_percpu
 c_func
-(paren
-r_sizeof
 (paren
 r_struct
 id|disk_stats
-)paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -552,14 +542,6 @@ id|disk-&gt;dkstats
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|disk_stat_set_all
-c_func
-(paren
-id|disk
-comma
-l_int|0
-)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -578,7 +560,7 @@ op_star
 id|disk
 )paren
 (brace
-id|kfree_percpu
+id|free_percpu
 c_func
 (paren
 id|disk-&gt;dkstats
@@ -1398,7 +1380,7 @@ id|minors
 suffix:semicolon
 r_extern
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|get_disk
 c_func
@@ -1438,7 +1420,7 @@ op_star
 id|module
 comma
 r_struct
-id|gendisk
+id|kobject
 op_star
 (paren
 op_star

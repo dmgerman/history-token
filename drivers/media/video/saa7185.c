@@ -752,7 +752,7 @@ id|encoder
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|client-&gt;dev.name

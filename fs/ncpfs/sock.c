@@ -270,7 +270,7 @@ id|ncp_server
 op_star
 id|server
 op_assign
-id|sk-&gt;user_data
+id|sk-&gt;sk_user_data
 suffix:semicolon
 id|server
 op_member_access_from_pointer
@@ -306,7 +306,7 @@ id|ncp_server
 op_star
 id|server
 op_assign
-id|sk-&gt;user_data
+id|sk-&gt;sk_user_data
 suffix:semicolon
 id|server
 op_member_access_from_pointer
@@ -340,7 +340,7 @@ id|ncp_server
 op_star
 id|server
 op_assign
-id|sk-&gt;user_data
+id|sk-&gt;sk_user_data
 suffix:semicolon
 multiline_comment|/* We do not need any locking: we first set tx.creq, and then we do sendmsg,&n;&t;   not vice versa... */
 id|server
@@ -2202,7 +2202,7 @@ l_int|8
 suffix:semicolon
 id|hdrl
 op_assign
-id|sock-&gt;sk-&gt;family
+id|sock-&gt;sk-&gt;sk_family
 op_eq
 id|AF_INET
 ques

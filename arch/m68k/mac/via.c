@@ -86,7 +86,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|via1_irq
 c_func
 (paren
@@ -100,7 +100,7 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|via2_irq
 c_func
 (paren
@@ -114,7 +114,7 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|via_nubus_irq
 c_func
 (paren
@@ -153,7 +153,7 @@ id|irq
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|mac_bang
 c_func
 (paren
@@ -168,7 +168,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|mac_scc_dispatch
 c_func
 (paren
@@ -699,7 +699,7 @@ id|__init
 id|via_init_clock
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|func
@@ -1459,7 +1459,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The generic VIA interrupt routines (shamelessly stolen from Alan Cox&squot;s&n; * via6522.c :-), disable/pending masks added.&n; *&n; * The new interrupt architecture in macints.c takes care of a lot of the&n; * gruntwork for us, including tallying the interrupts and calling the&n; * handlers on the linked list. All we need to do here is basically generate&n; * the machspec interrupt number after clearing the interrupt.&n; */
 DECL|function|via1_irq
-r_void
+id|irqreturn_t
 id|via1_irq
 c_func
 (paren
@@ -1512,6 +1512,7 @@ id|mask
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_for
 c_loop
@@ -1616,9 +1617,12 @@ id|IRQ_MAC_NUBUS
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|via2_irq
-r_void
+id|irqreturn_t
 id|via2_irq
 c_func
 (paren
@@ -1671,6 +1675,7 @@ id|mask
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_for
 c_loop
@@ -1738,10 +1743,13 @@ op_or
 l_int|0x80
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Dispatch Nubus interrupts. We are called as a secondary dispatch by the&n; * VIA2 dispatcher as a fast interrupt handler.&n; */
 DECL|function|via_nubus_irq
-r_void
+id|irqreturn_t
 id|via_nubus_irq
 c_func
 (paren
@@ -1784,6 +1792,7 @@ id|nubus_active
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_for
 c_loop
@@ -1844,6 +1853,9 @@ id|i
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|via_irq_enable
 r_void

@@ -1908,6 +1908,29 @@ DECL|macro|sd_v1_first_direct_byte
 mdefine_line|#define sd_v1_first_direct_byte(sdp) &bslash;&n;                                (le32_to_cpu((sdp)-&gt;sd_first_direct_byte))
 DECL|macro|set_sd_v1_first_direct_byte
 mdefine_line|#define set_sd_v1_first_direct_byte(sdp,v) &bslash;&n;                                ((sdp)-&gt;sd_first_direct_byte = cpu_to_le32(v))
+macro_line|#include &lt;linux/ext2_fs.h&gt;
+multiline_comment|/* inode flags stored in sd_attrs (nee sd_reserved) */
+multiline_comment|/* we want common flags to have the same values as in ext2,&n;   so chattr(1) will work without problems */
+DECL|macro|REISERFS_IMMUTABLE_FL
+mdefine_line|#define REISERFS_IMMUTABLE_FL EXT2_IMMUTABLE_FL
+DECL|macro|REISERFS_SYNC_FL
+mdefine_line|#define REISERFS_SYNC_FL      EXT2_SYNC_FL
+DECL|macro|REISERFS_NOATIME_FL
+mdefine_line|#define REISERFS_NOATIME_FL   EXT2_NOATIME_FL
+DECL|macro|REISERFS_NODUMP_FL
+mdefine_line|#define REISERFS_NODUMP_FL    EXT2_NODUMP_FL
+DECL|macro|REISERFS_SECRM_FL
+mdefine_line|#define REISERFS_SECRM_FL     EXT2_SECRM_FL
+DECL|macro|REISERFS_UNRM_FL
+mdefine_line|#define REISERFS_UNRM_FL      EXT2_UNRM_FL
+DECL|macro|REISERFS_COMPR_FL
+mdefine_line|#define REISERFS_COMPR_FL     EXT2_COMPR_FL
+multiline_comment|/* persistent flag to disable tails on per-file basic.&n;   Note, that is inheritable: mark directory with this and&n;   all new files inside will not have tails. &n;&n;   Teodore Tso allocated EXT2_NODUMP_FL (0x00008000) for this. Change&n;   numeric constant to ext2 macro when available. */
+DECL|macro|REISERFS_NOTAIL_FL
+mdefine_line|#define REISERFS_NOTAIL_FL    (0x00008000) /* EXT2_NOTAIL_FL */
+multiline_comment|/* persistent flags that file inherits from the parent directory */
+DECL|macro|REISERFS_INHERIT_MASK
+mdefine_line|#define REISERFS_INHERIT_MASK ( REISERFS_IMMUTABLE_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_SYNC_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_NOATIME_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_NODUMP_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_SECRM_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_COMPR_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_NOTAIL_FL )
 multiline_comment|/* Stat Data on disk (reiserfs version of UFS disk inode minus the&n;   address blocks) */
 DECL|struct|stat_data
 r_struct
@@ -1918,10 +1941,11 @@ id|__u16
 id|sd_mode
 suffix:semicolon
 multiline_comment|/* file type, permissions */
-DECL|member|sd_reserved
+DECL|member|sd_attrs
 id|__u16
-id|sd_reserved
+id|sd_attrs
 suffix:semicolon
+multiline_comment|/* persistent inode flags */
 DECL|member|sd_nlink
 id|__u32
 id|sd_nlink
@@ -2046,6 +2070,10 @@ DECL|macro|sd_v2_generation
 mdefine_line|#define sd_v2_generation(sdp)   (le32_to_cpu((sdp)-&gt;u.sd_generation))
 DECL|macro|set_sd_v2_generation
 mdefine_line|#define set_sd_v2_generation(sdp,v) ((sdp)-&gt;u.sd_generation = cpu_to_le32(v))
+DECL|macro|sd_v2_attrs
+mdefine_line|#define sd_v2_attrs(sdp)         (le16_to_cpu((sdp)-&gt;sd_attrs))
+DECL|macro|set_sd_v2_attrs
+mdefine_line|#define set_sd_v2_attrs(sdp,v)   ((sdp)-&gt;sd_attrs = cpu_to_le16(v))
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                      DIRECTORY STRUCTURE                                */
 multiline_comment|/***************************************************************************/
@@ -3391,9 +3419,11 @@ multiline_comment|/*************************************************************
 multiline_comment|/*                    FUNCTION DECLARATIONS                                */
 multiline_comment|/***************************************************************************/
 multiline_comment|/*#ifdef __KERNEL__*/
+DECL|macro|get_journal_desc_magic
+mdefine_line|#define get_journal_desc_magic(bh) (bh-&gt;b_data + bh-&gt;b_size - 12)
+DECL|macro|journal_trans_half
+mdefine_line|#define journal_trans_half(blocksize) &bslash;&n;&t;((blocksize - sizeof (struct reiserfs_journal_desc) + sizeof (__u32) - 12) / sizeof (__u32))
 multiline_comment|/* journal.c see journal.c for all the comments here */
-DECL|macro|JOURNAL_TRANS_HALF
-mdefine_line|#define JOURNAL_TRANS_HALF 1018   /* must be correct to keep the desc and commit structs at 4k */
 multiline_comment|/* first block written in a commit.  */
 DECL|struct|reiserfs_journal_desc
 r_struct
@@ -3418,19 +3448,24 @@ DECL|member|j_realblock
 id|__u32
 id|j_realblock
 (braket
-id|JOURNAL_TRANS_HALF
+l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* real locations for each block */
-DECL|member|j_magic
-r_char
-id|j_magic
-(braket
-l_int|12
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|get_desc_trans_id
+mdefine_line|#define get_desc_trans_id(d)   le32_to_cpu((d)-&gt;j_trans_id)
+DECL|macro|get_desc_trans_len
+mdefine_line|#define get_desc_trans_len(d)  le32_to_cpu((d)-&gt;j_len)
+DECL|macro|get_desc_mount_id
+mdefine_line|#define get_desc_mount_id(d)   le32_to_cpu((d)-&gt;j_mount_id)
+DECL|macro|set_desc_trans_id
+mdefine_line|#define set_desc_trans_id(d,val)       do { (d)-&gt;j_trans_id = cpu_to_le32 (val); } while (0)
+DECL|macro|set_desc_trans_len
+mdefine_line|#define set_desc_trans_len(d,val)      do { (d)-&gt;j_len = cpu_to_le32 (val); } while (0)
+DECL|macro|set_desc_mount_id
+mdefine_line|#define set_desc_mount_id(d,val)       do { (d)-&gt;j_mount_id = cpu_to_le32 (val); } while (0)
 multiline_comment|/* last block written in a commit */
 DECL|struct|reiserfs_journal_commit
 r_struct
@@ -3450,20 +3485,22 @@ DECL|member|j_realblock
 id|__u32
 id|j_realblock
 (braket
-id|JOURNAL_TRANS_HALF
+l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* real locations for each block */
-DECL|member|j_digest
-r_char
-id|j_digest
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* md5 sum of all the blocks involved, including desc and commit. not used, kill it */
 )brace
 suffix:semicolon
+DECL|macro|get_commit_trans_id
+mdefine_line|#define get_commit_trans_id(c) le32_to_cpu((c)-&gt;j_trans_id)
+DECL|macro|get_commit_trans_len
+mdefine_line|#define get_commit_trans_len(c)        le32_to_cpu((c)-&gt;j_len)
+DECL|macro|get_commit_mount_id
+mdefine_line|#define get_commit_mount_id(c) le32_to_cpu((c)-&gt;j_mount_id)
+DECL|macro|set_commit_trans_id
+mdefine_line|#define set_commit_trans_id(c,val)     do { (c)-&gt;j_trans_id = cpu_to_le32 (val); } while (0)
+DECL|macro|set_commit_trans_len
+mdefine_line|#define set_commit_trans_len(c,val)    do { (c)-&gt;j_len = cpu_to_le32 (val); } while (0)
 multiline_comment|/* this header block gets written whenever a transaction is considered fully flushed, and is more recent than the&n;** last fully flushed transaction.  fully flushed means all the log blocks and all the real blocks are on disk,&n;** and this transaction does not need to be replayed.&n;*/
 DECL|struct|reiserfs_journal_header
 r_struct
@@ -4996,6 +5033,33 @@ r_struct
 id|inode
 op_star
 id|inode
+)paren
+suffix:semicolon
+r_void
+id|sd_attrs_to_i_attrs
+c_func
+(paren
+id|__u16
+id|sd_attrs
+comma
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
+r_void
+id|i_attrs_to_sd_attrs
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+id|__u16
+op_star
+id|sd_attrs
 )paren
 suffix:semicolon
 multiline_comment|/* namei.c */
@@ -6681,6 +6745,15 @@ suffix:semicolon
 multiline_comment|/* ioctl&squot;s command */
 DECL|macro|REISERFS_IOC_UNPACK
 mdefine_line|#define REISERFS_IOC_UNPACK&t;&t;_IOW(0xCD,1,long)
+multiline_comment|/* define following flags to be the same as in ext2, so that chattr(1),&n;   lsattr(1) will work with us. */
+DECL|macro|REISERFS_IOC_GETFLAGS
+mdefine_line|#define REISERFS_IOC_GETFLAGS&t;&t;EXT2_IOC_GETFLAGS
+DECL|macro|REISERFS_IOC_SETFLAGS
+mdefine_line|#define REISERFS_IOC_SETFLAGS&t;&t;EXT2_IOC_SETFLAGS
+DECL|macro|REISERFS_IOC_GETVERSION
+mdefine_line|#define REISERFS_IOC_GETVERSION&t;&t;EXT2_IOC_GETVERSION
+DECL|macro|REISERFS_IOC_SETVERSION
+mdefine_line|#define REISERFS_IOC_SETVERSION&t;&t;EXT2_IOC_SETVERSION
 multiline_comment|/* Locking primitives */
 multiline_comment|/* Right now we are still falling back to (un)lock_kernel, but eventually that&n;   would evolve into real per-fs locks */
 DECL|macro|reiserfs_write_lock

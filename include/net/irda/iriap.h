@@ -92,11 +92,11 @@ DECL|member|operation
 id|__u8
 id|operation
 suffix:semicolon
-DECL|member|skb
+DECL|member|request_skb
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|request_skb
 suffix:semicolon
 DECL|member|lsap
 r_struct

@@ -10977,28 +10977,6 @@ comma
 id|tw_driver_version
 )paren
 suffix:semicolon
-multiline_comment|/* Check if the kernel has PCI interface compiled in */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;3w-xxxx: tw_scsi_detect(): No pci interface present.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|ret
 op_assign
 id|tw_findcards
@@ -11574,6 +11552,11 @@ r_int
 id|tw_scsi_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
 r_char
 op_star
 id|buffer
@@ -11588,9 +11571,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -11643,7 +11623,7 @@ id|i
 op_member_access_from_pointer
 id|host-&gt;host_no
 op_eq
-id|hostno
+id|shost-&gt;host_no
 )paren
 id|tw_dev
 op_assign
@@ -11867,7 +11847,7 @@ id|info
 comma
 l_string|&quot;scsi%d: 3ware Storage Controller&bslash;n&quot;
 comma
-id|hostno
+id|shost-&gt;host_no
 )paren
 suffix:semicolon
 id|tw_copy_info

@@ -4274,15 +4274,6 @@ id|dev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
 r_struct
 id|pci_dev
 op_star
@@ -4378,7 +4369,6 @@ c_func
 l_string|&quot;Lan init failed.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 op_minus

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/mtd/maps/pci.c&n; *&n; *  Copyright (C) 2001 Russell King, All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  $Id: pci.c,v 1.1 2001/09/27 20:28:45 rmk Exp $&n; * &n; * Generic PCI memory map driver.  We support the following boards:&n; *  - Intel IQ80310 ATU.&n; *  - Intel EBSA285 (blank rom programming mode). Tested working 27/09/2001&n; */
+multiline_comment|/*&n; *  linux/drivers/mtd/maps/pci.c&n; *&n; *  Copyright (C) 2001 Russell King, All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  $Id: pci.c,v 1.5 2003/05/20 20:59:31 dwmw2 Exp $&n; * &n; * Generic PCI memory map driver.  We support the following boards:&n; *  - Intel IQ80310 ATU.&n; *  - Intel EBSA285 (blank rom programming mode). Tested working 27/09/2001&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -801,9 +801,6 @@ comma
 )brace
 comma
 (brace
-dot
-id|vendor
-op_assign
 l_int|0
 comma
 )brace
@@ -1240,6 +1237,11 @@ id|mtd_pci_map
 op_assign
 (brace
 dot
+id|phys
+op_assign
+id|NO_XIP
+comma
+dot
 id|read8
 op_assign
 id|mtd_pci_read8
@@ -1465,7 +1467,7 @@ id|mtd
 r_goto
 id|release
 suffix:semicolon
-id|mtd-&gt;module
+id|mtd-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
@@ -1626,7 +1628,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|mtd_pci_remove
+)paren
 comma
 dot
 id|id_table

@@ -226,6 +226,8 @@ DECL|macro|snd_card_dummy_pcm_t_magic
 mdefine_line|#define snd_card_dummy_pcm_t_magic&t;&t;0xa15a2502
 DECL|macro|opl3_t_magic
 mdefine_line|#define opl3_t_magic&t;&t;&t;&t;0xa15a2601
+DECL|macro|opl4_t_magic
+mdefine_line|#define opl4_t_magic&t;&t;&t;&t;0xa15a2602
 DECL|macro|snd_seq_dummy_port_t_magic
 mdefine_line|#define snd_seq_dummy_port_t_magic&t;&t;0xa15a2701
 DECL|macro|ice1712_t_magic
@@ -302,6 +304,12 @@ DECL|macro|ak4117_t_magic
 mdefine_line|#define ak4117_t_magic&t;&t;&t;&t;0xa15a4000
 DECL|macro|psic_t_magic
 mdefine_line|#define psic_t_magic&t;&t;&t;&t;0xa15a4100
+DECL|macro|vx_core_t_magic
+mdefine_line|#define vx_core_t_magic&t;&t;&t;&t;0xa15a4110
+DECL|macro|vx_pipe_t_magic
+mdefine_line|#define vx_pipe_t_magic&t;&t;&t;&t;0xa15a4112
+DECL|macro|azf3328_t_magic
+mdefine_line|#define azf3328_t_magic&t;&t;&t;&t;0xa15a4200
 macro_line|#else
 DECL|macro|snd_magic_kcalloc
 mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) snd_kcalloc(sizeof(type) + extra, flags)

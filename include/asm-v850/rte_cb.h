@@ -49,8 +49,6 @@ DECL|macro|pci_dma_supported
 mdefine_line|#define pci_dma_supported(dev, mask)&t;&t;1
 DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(dev, mask)&t;0
-DECL|macro|pci_controller_num
-mdefine_line|#define pci_controller_num(dev)&t;&t;&t;0
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;&t;1
 multiline_comment|/* For &lt;asm/param.h&gt; */

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
@@ -242,7 +243,6 @@ r_int
 r_int
 id|delta
 suffix:semicolon
-r_int
 r_int
 id|one_usec
 suffix:semicolon
@@ -1001,14 +1001,12 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * Activate a secondary processor.&n; */
 DECL|function|start_secondary
-r_int
+r_void
 id|__init
 id|start_secondary
 c_func
 (paren
 r_void
-op_star
-id|unused
 )paren
 (brace
 multiline_comment|/*&n;&t; * Dont put anything before smp_callin(), SMP&n;&t; * booting is too fragile that we want to limit the&n;&t; * things done here to the most necessary things.&n;&t; */
@@ -1153,50 +1151,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
 id|cpu_idle
 c_func
 (paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Everything has been set up for the secondary&n; * CPUs - they just need to reload everything&n; * from the task structure&n; * This function must not return.&n; */
-DECL|function|initialize_secondary
-r_void
-id|__init
-id|initialize_secondary
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|task_struct
-op_star
-id|me
-op_assign
-id|stack_current
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We don&squot;t actually need to load the full TSS,&n;&t; * basically just the stack pointer and the eip.&n;&t; */
-id|asm
-r_volatile
-(paren
-l_string|&quot;movq %0,%%rsp&bslash;n&bslash;t&quot;
-l_string|&quot;jmp *%1&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|me-&gt;thread.rsp
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|me-&gt;thread.rip
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1232,9 +1189,9 @@ r_struct
 id|pt_regs
 id|regs
 suffix:semicolon
-multiline_comment|/*&n;&t; * don&squot;t care about the rip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
+multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
 r_return
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM
@@ -1999,6 +1956,12 @@ comma
 id|cpu
 )paren
 suffix:semicolon
+id|wake_up_forked_process
+c_func
+(paren
+id|idle
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue&n;&t; * once we got the process:&n;&t; */
 id|init_idle
 c_func
@@ -2008,15 +1971,6 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|idle-&gt;thread.rip
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|start_secondary
-suffix:semicolon
-singleline_comment|//&t;idle-&gt;thread.rsp = (unsigned long)idle-&gt;thread_info + THREAD_SIZE - 512;
 id|unhash_process
 c_func
 (paren
@@ -2032,7 +1986,6 @@ id|pcurrent
 op_assign
 id|idle
 suffix:semicolon
-multiline_comment|/* start_eip had better be page-aligned! */
 id|start_rip
 op_assign
 id|setup_trampoline
@@ -2042,15 +1995,7 @@ c_func
 suffix:semicolon
 id|init_rsp
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|idle-&gt;thread_info
-op_plus
-id|PAGE_SIZE
-op_plus
-l_int|1024
+id|idle-&gt;thread.rsp
 suffix:semicolon
 id|init_tss
 (braket
@@ -2063,21 +2008,27 @@ id|init_rsp
 suffix:semicolon
 id|initial_code
 op_assign
-id|initialize_secondary
+id|start_secondary
+suffix:semicolon
+id|clear_ti_thread_flag
+c_func
+(paren
+id|idle-&gt;thread_info
+comma
+id|TIF_FORK
+)paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Booting processor %d/%d rip %lx rsp %lx rsp2 %lx&bslash;n&quot;
+l_string|&quot;Booting processor %d/%d rip %lx rsp %lx&bslash;n&quot;
 comma
 id|cpu
 comma
 id|apicid
 comma
 id|start_rip
-comma
-id|idle-&gt;thread.rsp
 comma
 id|init_rsp
 )paren
@@ -2312,7 +2263,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;KERN_INFO CPU%d: &quot;
+id|KERN_INFO
+l_string|&quot;CPU%d: &quot;
 comma
 id|cpu
 )paren
@@ -2450,7 +2402,6 @@ id|smp_tune_scheduling
 r_void
 )paren
 (brace
-r_int
 r_int
 id|cachesize
 suffix:semicolon

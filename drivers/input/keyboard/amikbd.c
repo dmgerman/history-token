@@ -306,7 +306,7 @@ l_string|&quot;amikbd/input0&quot;
 suffix:semicolon
 DECL|function|amikbd_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|amikbd_interrupt
 c_func
 (paren
@@ -430,9 +430,9 @@ op_amp
 id|amikbd_dev
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
+r_else
+(brace
 id|input_report_key
 c_func
 (paren
@@ -451,9 +451,10 @@ op_amp
 id|amikbd_dev
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
+)brace
+r_else
+multiline_comment|/* scancodes &gt;= 0x78 are error codes */
 id|printk
 c_func
 (paren
@@ -465,7 +466,9 @@ l_int|0x78
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* scancodes &gt;= 0x78 are error codes */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|amikbd_init
 r_static

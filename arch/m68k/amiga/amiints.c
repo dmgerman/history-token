@@ -25,7 +25,7 @@ comma
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -200,7 +200,7 @@ id|AMI_IRQS
 suffix:semicolon
 DECL|function|ami_badint
 r_static
-r_void
+id|irqreturn_t
 id|ami_badint
 c_func
 (paren
@@ -220,6 +220,9 @@ id|fp
 id|num_spurious
 op_add_assign
 l_int|1
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * void amiga_init_IRQ(void)&n; *&n; * Parameters:&t;None&n; *&n; * Returns:&t;Nothing&n; *&n; * This function should be called during kernel startup to initialize&n; * the amiga IRQ handling routines.&n; */
@@ -627,7 +630,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -1534,7 +1537,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The builtin Amiga hardware interrupt handlers.&n; */
 DECL|function|ami_int1
 r_static
-r_void
+id|irqreturn_t
 id|ami_int1
 c_func
 (paren
@@ -1625,10 +1628,13 @@ id|fp
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ami_int3
 r_static
-r_void
+id|irqreturn_t
 id|ami_int3
 c_func
 (paren
@@ -1713,10 +1719,13 @@ comma
 id|fp
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ami_int4
 r_static
-r_void
+id|irqreturn_t
 id|ami_int4
 c_func
 (paren
@@ -1829,10 +1838,13 @@ id|fp
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ami_int5
 r_static
-r_void
+id|irqreturn_t
 id|ami_int5
 c_func
 (paren
@@ -1898,10 +1910,13 @@ id|fp
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ami_int7
 r_static
-r_void
+id|irqreturn_t
 id|ami_int7
 c_func
 (paren
@@ -1925,7 +1940,7 @@ l_string|&quot;level 7 interrupt received&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|variable|amiga_default_handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|amiga_default_handler

@@ -1,8 +1,11 @@
-multiline_comment|/*&n; * Routines common to all CFI-type probes.&n; * (C) 2001, 2001 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.c,v 1.5 2001/10/02 15:05:12 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Routines common to all CFI-type probes.&n; * (C) 2001, 2001 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.c,v 1.11 2003/05/21 15:15:05 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/gen_probe.h&gt;
 r_static
 r_struct
@@ -152,7 +155,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;cfi_probe: No supported Vendor Command Set found&bslash;n&quot;
+l_string|&quot;gen_probe: No supported Vendor Command Set found&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -236,6 +239,23 @@ comma
 r_sizeof
 (paren
 id|cfi
+)paren
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|chip
+(braket
+l_int|0
+)braket
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|chip
 )paren
 )paren
 suffix:semicolon
@@ -367,7 +387,7 @@ id|cfi.numchips
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now probe for other chips, checking sensibly for aliases while&n;&t; * we&squot;re at it. The new_chip probe above should have let the first&n;&t; * chip in read mode.&n;&t; */
+multiline_comment|/*&n;&t; * Now probe for other chips, checking sensibly for aliases while&n;&t; * we&squot;re at it. The new_chip probe above should have let the first&n;&t; * chip in read mode.&n;&t; *&n;&t; * NOTE: Here, we&squot;re checking if there is room for another chip&n;&t; *       the same size within the mapping. Therefore, &n;&t; *       base + chipsize &lt;= map-&gt;size is the correct thing to do, &n;&t; *       because, base + chipsize would be the  _first_ byte of the&n;&t; *       next chip, not the one we&squot;re currently pondering.&n;&t; */
 r_for
 c_loop
 (paren
@@ -934,6 +954,153 @@ macro_line|#endif /* CFIDEV_INTERLEAVE_4 */
 r_break
 suffix:semicolon
 macro_line|#endif /* CFIDEV_BUSWIDTH_4 */
+macro_line|#ifdef CFIDEV_BUSWIDTH_8
+r_case
+id|CFIDEV_BUSWIDTH_8
+suffix:colon
+macro_line|#if defined(CFIDEV_INTERLEAVE_2) &amp;&amp; defined(SOMEONE_ACTUALLY_MAKES_THESE)
+id|cfi-&gt;interleave
+op_assign
+id|CFIDEV_INTERLEAVE_2
+suffix:semicolon
+id|cfi-&gt;device_type
+op_assign
+id|CFI_DEVICETYPE_X32
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cp
+op_member_access_from_pointer
+id|probe_chip
+c_func
+(paren
+id|map
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+id|cfi
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif /* CFIDEV_INTERLEAVE_2 */
+macro_line|#ifdef CFIDEV_INTERLEAVE_4
+id|cfi-&gt;interleave
+op_assign
+id|CFIDEV_INTERLEAVE_4
+suffix:semicolon
+macro_line|#ifdef SOMEONE_ACTUALLY_MAKES_THESE
+id|cfi-&gt;device_type
+op_assign
+id|CFI_DEVICETYPE_X32
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cp
+op_member_access_from_pointer
+id|probe_chip
+c_func
+(paren
+id|map
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+id|cfi
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif
+id|cfi-&gt;device_type
+op_assign
+id|CFI_DEVICETYPE_X16
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cp
+op_member_access_from_pointer
+id|probe_chip
+c_func
+(paren
+id|map
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+id|cfi
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif /* CFIDEV_INTERLEAVE_4 */
+macro_line|#ifdef CFIDEV_INTERLEAVE_8
+id|cfi-&gt;interleave
+op_assign
+id|CFIDEV_INTERLEAVE_8
+suffix:semicolon
+id|cfi-&gt;device_type
+op_assign
+id|CFI_DEVICETYPE_X16
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cp
+op_member_access_from_pointer
+id|probe_chip
+c_func
+(paren
+id|map
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+id|cfi
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+id|cfi-&gt;device_type
+op_assign
+id|CFI_DEVICETYPE_X8
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cp
+op_member_access_from_pointer
+id|probe_chip
+c_func
+(paren
+id|map
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+id|cfi
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif /* CFIDEV_INTERLEAVE_8 */
+r_break
+suffix:semicolon
+macro_line|#endif /* CFIDEV_BUSWIDTH_8 */
 r_default
 suffix:colon
 id|printk
@@ -1168,6 +1335,20 @@ l_int|0x0002
 suffix:colon
 r_return
 id|cfi_cmdset_0002
+c_func
+(paren
+id|map
+comma
+id|primary
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_CFI_STAA
+r_case
+l_int|0x0020
+suffix:colon
+r_return
+id|cfi_cmdset_0020
 c_func
 (paren
 id|map

@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 DECL|macro|Dprintk
-mdefine_line|#define Dprintk(x...) printk(x)
+mdefine_line|#define Dprintk(x...)
 DECL|variable|node_data
 r_struct
 id|pglist_data
@@ -576,12 +576,23 @@ l_int|1
 OG
 id|numnodes
 )paren
+(brace
 id|numnodes
 op_assign
 id|nodeid
 op_plus
 l_int|1
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;setup_node_bootmem: enlarging numnodes to %d&bslash;n&quot;
+comma
+id|numnodes
+)paren
+suffix:semicolon
+)brace
 id|nodes_present
 op_or_assign
 (paren
@@ -654,6 +665,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;setting up node %d %lx-%lx&bslash;n&quot;
 comma
 id|nodeid

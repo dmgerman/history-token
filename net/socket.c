@@ -880,6 +880,8 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once
 comma
@@ -941,6 +943,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -3340,7 +3343,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Update the socket async list&n; *&n; *&t;Fasync_list locking strategy.&n; *&n; *&t;1. fasync_list is modified only under process context socket lock&n; *&t;   i.e. under semaphore.&n; *&t;2. fasync_list is used under read_lock(&amp;sk-&gt;callback_lock)&n; *&t;   or under socket lock.&n; *&t;3. fasync_list can be used from softirq context, so that&n; *&t;   modification under socket lock have to be enhanced with&n; *&t;   write_lock_bh(&amp;sk-&gt;callback_lock).&n; *&t;&t;&t;&t;&t;&t;&t;--ANK (990710)&n; */
+multiline_comment|/*&n; *&t;Update the socket async list&n; *&n; *&t;Fasync_list locking strategy.&n; *&n; *&t;1. fasync_list is modified only under process context socket lock&n; *&t;   i.e. under semaphore.&n; *&t;2. fasync_list is used under read_lock(&amp;sk-&gt;sk_callback_lock)&n; *&t;   or under socket lock.&n; *&t;3. fasync_list can be used from softirq context, so that&n; *&t;   modification under socket lock have to be enhanced with&n; *&t;   write_lock_bh(&amp;sk-&gt;sk_callback_lock).&n; *&t;&t;&t;&t;&t;&t;&t;--ANK (990710)&n; */
 DECL|function|sock_fasync
 r_static
 r_int
@@ -3520,7 +3523,7 @@ id|write_lock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;callback_lock
+id|sk-&gt;sk_callback_lock
 )paren
 suffix:semicolon
 id|fa-&gt;fa_fd
@@ -3531,7 +3534,7 @@ id|write_unlock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;callback_lock
+id|sk-&gt;sk_callback_lock
 )paren
 suffix:semicolon
 id|kfree
@@ -3564,7 +3567,7 @@ id|write_lock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;callback_lock
+id|sk-&gt;sk_callback_lock
 )paren
 suffix:semicolon
 id|sock-&gt;fasync_list
@@ -3575,7 +3578,7 @@ id|write_unlock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;callback_lock
+id|sk-&gt;sk_callback_lock
 )paren
 suffix:semicolon
 )brace
@@ -3593,7 +3596,7 @@ id|write_lock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;callback_lock
+id|sk-&gt;sk_callback_lock
 )paren
 suffix:semicolon
 op_star
@@ -3605,7 +3608,7 @@ id|write_unlock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;callback_lock
+id|sk-&gt;sk_callback_lock
 )paren
 suffix:semicolon
 id|kfree

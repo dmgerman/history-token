@@ -89,13 +89,14 @@ r_int
 id|physmem_size
 suffix:semicolon
 multiline_comment|/* Not changed by UML */
-DECL|variable|mmu_gathers
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/* Changed during early boot */
 DECL|variable|kmalloc_ok

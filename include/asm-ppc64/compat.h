@@ -3,6 +3,7 @@ DECL|macro|_ASM_PPC64_COMPAT_H
 mdefine_line|#define _ASM_PPC64_COMPAT_H
 multiline_comment|/*&n; * Architecture specific compatibility types&n; */
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 DECL|macro|COMPAT_USER_HZ
 mdefine_line|#define COMPAT_USER_HZ&t;100
 DECL|typedef|compat_size_t

@@ -1214,14 +1214,17 @@ c_cond
 (paren
 id|name
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|entry-&gt;q_name
 comma
 id|name
 comma
-l_int|32
+r_sizeof
+(paren
+id|entry-&gt;q_name
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Insert new entry first&n;&t; * TODO: Perhaps allow sorted lists?&n;&t; *       -&gt; Merge sort if a sorted list should be created&n;&t; */

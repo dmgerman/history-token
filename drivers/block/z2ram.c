@@ -1087,7 +1087,7 @@ suffix:semicolon
 DECL|function|z2_find
 r_static
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|z2_find
 c_func

@@ -1,8 +1,9 @@
-multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: cfi_probe.c,v 1.66 2001/10/02 15:05:12 dwmw2 Exp $&n;*/
+multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: cfi_probe.c,v 1.71 2003/05/28 12:51:48 dwmw2 Exp $&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -24,33 +25,6 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif
-r_int
-id|cfi_jedec_setup
-c_func
-(paren
-r_struct
-id|cfi_private
-op_star
-id|p_cfi
-comma
-r_int
-id|index
-)paren
-suffix:semicolon
-r_int
-id|cfi_jedec_lookup
-c_func
-(paren
-r_int
-id|index
-comma
-r_int
-id|mfr_id
-comma
-r_int
-id|dev_id
-)paren
-suffix:semicolon
 r_static
 r_int
 id|cfi_probe_chip
@@ -103,7 +77,7 @@ op_star
 id|map
 )paren
 suffix:semicolon
-multiline_comment|/* check for QRY, or search for jedec id.&n;   in: interleave,type,mode&n;   ret: table index, &lt;0 for error&n; */
+multiline_comment|/* check for QRY.&n;   in: interleave,type,mode&n;   ret: table index, &lt;0 for error&n; */
 DECL|function|qry_present
 r_static
 r_inline
@@ -239,6 +213,74 @@ id|cfi
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|base
+op_plus
+l_int|0
+)paren
+op_ge
+id|map-&gt;size
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Probe at base[0x00](0x%08lx) past the end of the map(0x%08lx)&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|base
+comma
+id|map-&gt;size
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|base
+op_plus
+l_int|0xff
+)paren
+op_ge
+id|map-&gt;size
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Probe at base[0x55](0x%08lx) past the end of the map(0x%08lx)&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|base
+op_plus
+l_int|0x55
+comma
+id|map-&gt;size
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|cfi_send_gen_cmd
 c_func
 (paren
@@ -686,7 +728,7 @@ id|cfi_ident
 suffix:semicolon
 id|cfi-&gt;cfi_mode
 op_assign
-l_int|1
+id|CFI_MODE_CFI
 suffix:semicolon
 id|cfi-&gt;fast_prog
 op_assign
@@ -1226,7 +1268,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Typical block erase timeout: %d &#xfffd;s&bslash;n&quot;
+l_string|&quot;Typical block erase timeout: %d ms&bslash;n&quot;
 comma
 l_int|1
 op_lshift
@@ -1236,7 +1278,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Maximum block erase timeout: %d &#xfffd;s&bslash;n&quot;
+l_string|&quot;Maximum block erase timeout: %d ms&bslash;n&quot;
 comma
 (paren
 l_int|1
@@ -1262,7 +1304,7 @@ id|cfip-&gt;ChipEraseTimeoutMax
 id|printk
 c_func
 (paren
-l_string|&quot;Typical chip erase timeout: %d &#xfffd;s&bslash;n&quot;
+l_string|&quot;Typical chip erase timeout: %d ms&bslash;n&quot;
 comma
 l_int|1
 op_lshift
@@ -1272,7 +1314,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Maximum chip erase timeout: %d &#xfffd;s&bslash;n&quot;
+l_string|&quot;Maximum chip erase timeout: %d ms&bslash;n&quot;
 comma
 (paren
 l_int|1

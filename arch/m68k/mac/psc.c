@@ -21,7 +21,7 @@ id|__u8
 op_star
 id|psc
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|psc_irq
 c_func
 (paren
@@ -397,7 +397,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * PSC interrupt handler. It&squot;s a lot like the VIA interrupt handler.&n; */
 DECL|function|psc_irq
-r_void
+id|irqreturn_t
 id|psc_irq
 c_func
 (paren
@@ -507,6 +507,7 @@ op_logical_neg
 id|events
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_for
 c_loop
@@ -577,6 +578,9 @@ l_int|0x80
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|psc_irq_enable
 r_void

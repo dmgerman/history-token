@@ -3403,6 +3403,11 @@ id|EFAULT
 suffix:semicolon
 id|data64
 op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|A
 c_func
 (paren
@@ -4188,7 +4193,7 @@ id|mysock
 op_logical_and
 id|mysock-&gt;sk
 op_logical_and
-id|mysock-&gt;sk-&gt;family
+id|mysock-&gt;sk-&gt;sk_family
 op_eq
 id|AF_INET6
 )paren

@@ -6,6 +6,7 @@ mdefine_line|#define __OCP_H__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/ocp_ids.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;&t;&t;/* For phys_addr_t */
 DECL|macro|DEBUG

@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodemgmt.c,v 1.84 2002/11/12 11:17:29 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodemgmt.c,v 1.94 2003/02/19 17:50:26 gleixner Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/sched.h&gt; /* For cond_resched() */
 macro_line|#include &quot;nodelist.h&quot;
 multiline_comment|/**&n; *&t;jffs2_reserve_space - request physical space to write nodes to flash&n; *&t;@c: superblock info&n; *&t;@minsize: Minimum acceptable size of allocation&n; *&t;@ofs: Returned value of node offset&n; *&t;@len: Returned value of allocation length&n; *&t;@prio: Allocation type - ALLOC_{NORMAL,DELETION}&n; *&n; *&t;Requests a block of physical space on the flash. Returns zero for success&n; *&t;and puts &squot;ofs&squot; and &squot;len&squot; into the appriopriate place, or returns -ENOSPC&n; *&t;or other error if appropriate.&n; *&n; *&t;If it returns zero, jffs2_reserve_space() also downs the per-filesystem&n; *&t;allocation semaphore, to prevent more than one allocation from being&n; *&t;active at any time. The semaphore is later released by jffs2_commit_allocation()&n; *&n; *&t;jffs2_reserve_space() may trigger garbage collection in order to make room&n; *&t;for the requested allocation.&n; */
 r_static
@@ -114,14 +115,14 @@ l_string|&quot;jffs2_reserve_space(): alloc sem got&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
 id|c-&gt;erase_completion_lock
 )paren
 suffix:semicolon
-multiline_comment|/* this needs a little more thought */
+multiline_comment|/* this needs a little more thought (true &lt;tglx&gt; :)) */
 r_while
 c_loop
 (paren
@@ -144,6 +145,11 @@ id|blocksneeded
 r_int
 id|ret
 suffix:semicolon
+r_uint32
+id|dirty
+comma
+id|avail
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -151,12 +157,23 @@ op_amp
 id|c-&gt;alloc_sem
 )paren
 suffix:semicolon
+multiline_comment|/* calculate real dirty size&n;&t;&t;&t; * dirty_size contains blocks on erase_pending_list&n;&t;&t;&t; * those blocks are counted in c-&gt;nr_erasing_blocks.&n;&t;&t;&t; * If one block is actually erased, it is not longer counted as dirty_space&n;&t;&t;&t; * but it is counted in c-&gt;nr_erasing_blocks, so we add it and subtract it&n;&t;&t;&t; * with c-&gt;nr_erasing_blocks * c-&gt;sector_size again.&n;&t;&t;&t; * Blocks on erasable_list are counted as dirty_size, but not in c-&gt;nr_erasing_blocks&n;&t;&t;&t; * This helps us to force gc and pick eventually a clean block to spread the load.&n;&t;&t;&t; * We add unchecked_size here, as we hopefully will find some space to use.&n;&t;&t;&t; * This will affect the sum only once, as gc first finishes checking&n;&t;&t;&t; * of nodes.&n;&t;&t;&t; */
+id|dirty
+op_assign
+id|c-&gt;dirty_size
+op_plus
+id|c-&gt;erasing_size
+op_minus
+id|c-&gt;nr_erasing_blocks
+op_star
+id|c-&gt;sector_size
+op_plus
+id|c-&gt;unchecked_size
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|c-&gt;dirty_size
-op_plus
-id|c-&gt;unchecked_size
+id|dirty
 OL
 id|c-&gt;sector_size
 )paren
@@ -170,7 +187,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;dirty size 0x%08x + unchecked_size 0x%08x &lt; sector size 0x%08x, returning -ENOSPC&bslash;n&quot;
 comma
-id|c-&gt;dirty_size
+id|dirty
 comma
 id|c-&gt;unchecked_size
 comma
@@ -178,7 +195,59 @@ id|c-&gt;sector_size
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOSPC
+suffix:semicolon
+)brace
+multiline_comment|/* Calc possibly available space. Possibly available means that we&n;&t;&t;&t; * don&squot;t know, if unchecked size contains obsoleted nodes, which could give us some&n;&t;&t;&t; * more usable space. This will affect the sum only once, as gc first finishes checking&n;&t;&t;&t; * of nodes.&n;&t;&t;&t; + Return -ENOSPC, if the maximum possibly available space is less or equal than &n;&t;&t;&t; * blocksneeded * sector_size.&n;&t;&t;&t; * This blocks endless gc looping on a filesystem, which is nearly full, even if&n;&t;&t;&t; * the check above passes.&n;&t;&t;&t; */
+id|avail
+op_assign
+id|c-&gt;free_size
+op_plus
+id|c-&gt;dirty_size
+op_plus
+id|c-&gt;erasing_size
+op_plus
+id|c-&gt;unchecked_size
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|avail
+op_div
+id|c-&gt;sector_size
+)paren
+op_le
+id|blocksneeded
+)paren
+(brace
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;max. available size 0x%08x  &lt; blocksneeded * sector_size 0x%08x, returning -ENOSPC&bslash;n&quot;
+comma
+id|avail
+comma
+id|blocksneeded
+op_star
+id|c-&gt;sector_size
+)paren
+)paren
+suffix:semicolon
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -231,7 +300,7 @@ id|c-&gt;flash_size
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -279,7 +348,7 @@ op_amp
 id|c-&gt;alloc_sem
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -322,7 +391,7 @@ id|ret
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -394,7 +463,7 @@ id|minsize
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -445,7 +514,7 @@ id|ret
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -507,7 +576,7 @@ c_cond
 id|c-&gt;wbuf_len
 )paren
 (brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -533,7 +602,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -832,7 +901,7 @@ l_string|&quot;jffs2_do_reserve_space: Flushing write buffer&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* c-&gt;nextblock is NULL, no update to c-&gt;nextblock allowed */
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -847,7 +916,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -921,6 +990,15 @@ id|ENOSPC
 suffix:semicolon
 )brace
 multiline_comment|/* Make sure this can&squot;t deadlock. Someone has to start the erases&n;&t;&t;&t;   of erase_pending blocks */
+macro_line|#ifdef __ECOS
+multiline_comment|/* In eCos, we don&squot;t have a handy kernel thread doing the erases for&n;&t;&t;&t;   us. We do them ourselves right now. */
+id|jffs2_erase_pending_blocks
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+macro_line|#else
 id|set_current_state
 c_func
 (paren
@@ -1016,7 +1094,7 @@ id|c
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1038,7 +1116,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1060,6 +1138,7 @@ op_minus
 id|EINTR
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* An erase may have failed, decreasing the&n;&t;&t;&t;   amount of free space available. So we must&n;&t;&t;&t;   restart from the beginning */
 r_return
 op_minus
@@ -1151,7 +1230,7 @@ id|jeb-&gt;first_node-&gt;next_in_ino
 )paren
 (brace
 multiline_comment|/* Only node in it beforehand was a CLEANMARKER node (we think). &n;&t;&t;   So mark it obsolete now that there&squot;s going to be another node&n;&t;&t;   in the block. This will reduce used_size to zero but We&squot;ve &n;&t;&t;   already set c-&gt;nextblock so that jffs2_mark_node_obsolete()&n;&t;&t;   won&squot;t try to refile it to the dirty_list.&n;&t;&t;*/
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1166,7 +1245,7 @@ comma
 id|jeb-&gt;first_node
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1243,9 +1322,15 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;jffs2_add_physical_node_ref(): Node at 0x%x, size 0x%x&bslash;n&quot;
+l_string|&quot;jffs2_add_physical_node_ref(): Node at 0x%x(%d), size 0x%x&bslash;n&quot;
 comma
 id|ref_offset
+c_func
+(paren
+r_new
+)paren
+comma
+id|ref_flags
 c_func
 (paren
 r_new
@@ -1299,7 +1384,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#endif
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1404,7 +1489,7 @@ id|c-&gt;wbuf_len
 )paren
 (brace
 multiline_comment|/* Flush the last write in the block if it&squot;s outstanding */
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1419,7 +1504,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1460,7 +1545,7 @@ id|jeb
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1537,6 +1622,8 @@ id|n
 suffix:semicolon
 r_int
 id|ret
+comma
+id|addedsize
 suffix:semicolon
 r_int
 id|retlen
@@ -1625,7 +1712,7 @@ id|c-&gt;blocks
 id|blocknr
 )braket
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1774,6 +1861,7 @@ op_sub_assign
 id|ref-&gt;totlen
 suffix:semicolon
 )brace
+singleline_comment|// Take care, that wasted size is taken into concern
 r_if
 c_cond
 (paren
@@ -1804,17 +1892,19 @@ l_string|&quot;Dirtying&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|jeb-&gt;dirty_size
-op_add_assign
+id|addedsize
+op_assign
 id|ref-&gt;totlen
 op_plus
 id|jeb-&gt;wasted_size
 suffix:semicolon
+id|jeb-&gt;dirty_size
+op_add_assign
+id|addedsize
+suffix:semicolon
 id|c-&gt;dirty_size
 op_add_assign
-id|ref-&gt;totlen
-op_plus
-id|jeb-&gt;wasted_size
+id|addedsize
 suffix:semicolon
 id|c-&gt;wasted_size
 op_sub_assign
@@ -1836,6 +1926,10 @@ c_func
 l_string|&quot;Wasting&bslash;n&quot;
 )paren
 )paren
+suffix:semicolon
+id|addedsize
+op_assign
+l_int|0
 suffix:semicolon
 id|jeb-&gt;wasted_size
 op_add_assign
@@ -1883,7 +1977,7 @@ id|JFFS2_SB_FLAG_MOUNTING
 )paren
 (brace
 multiline_comment|/* Mount in progress. Don&squot;t muck about with the block&n;&t;&t;   lists because they&squot;re not ready yet, and don&squot;t actually&n;&t;&t;   obliterate nodes that look obsolete. If they weren&squot;t &n;&t;&t;   marked obsolete on the flash at the time they _became_&n;&t;&t;   obsolete, there was probably a reason for that. */
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -2002,6 +2096,7 @@ op_amp
 id|c-&gt;erasable_pending_wbuf_list
 )paren
 suffix:semicolon
+macro_line|#if 0 /* This check was added to allow us to find places where we added nodes to the lists&n;&t; after dropping the alloc_sem, and it did that just fine. But it also caused us to&n;&t; lock the alloc_sem in other places, like clear_inode(), when we wouldn&squot;t otherwise&n;&t; have needed to. So I suspect it&squot;s outlived its usefulness. Thomas? */
 multiline_comment|/* We&squot;ve changed the rules slightly. After&n;&t;&t;&t;   writing a node you now mustn&squot;t drop the&n;&t;&t;&t;   alloc_sem before you&squot;ve finished all the&n;&t;&t;&t;   list management - this is so that when we&n;&t;&t;&t;   get here, we know that no other nodes have&n;&t;&t;&t;   been written, and the above check on wbuf&n;&t;&t;&t;   is valid - wbuf_len is nonzero IFF the node&n;&t;&t;&t;   which obsoletes this node is still in the&n;&t;&t;&t;   wbuf.&n;&n;&t;&t;&t;   So we BUG() if that new rule is broken, to&n;&t;&t;&t;   make sure we catch it and fix it.&n;&t;&t;&t;*/
 r_if
 c_cond
@@ -2035,6 +2130,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -2155,7 +2251,7 @@ c_func
 (paren
 id|jeb-&gt;dirty_size
 op_minus
-id|ref-&gt;totlen
+id|addedsize
 )paren
 )paren
 (brace
@@ -2289,7 +2385,7 @@ id|jeb-&gt;used_size
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -2404,7 +2500,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Short read from obsoleted node at 0x%08x: %d&bslash;n&quot;
+l_string|&quot;Short read from obsoleted node at 0x%08x: %zd&bslash;n&quot;
 comma
 id|ref_offset
 c_func
@@ -2581,7 +2677,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Short write in obliterating obsoleted node at 0x%08x: %d&bslash;n&quot;
+l_string|&quot;Short write in obliterating obsoleted node at 0x%08x: %zd&bslash;n&quot;
 comma
 id|ref_offset
 c_func

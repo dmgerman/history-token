@@ -384,6 +384,10 @@ id|net_device_stats
 op_star
 id|stats
 suffix:semicolon
+id|skb-&gt;real_dev
+op_assign
+id|skb-&gt;dev
+suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|grp-&gt;vlan_devices

@@ -810,6 +810,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|amanda
+id|PROVIDES_CONNTRACK
+c_func
+(paren
+id|amanda
+)paren
+suffix:semicolon
 DECL|variable|ip_amanda_lock
 id|EXPORT_SYMBOL
 c_func

@@ -127,21 +127,19 @@ mdefine_line|#define _PAGE_RO        0x200          /* HW read-only             
 DECL|macro|_PAGE_INVALID
 mdefine_line|#define _PAGE_INVALID   0x400          /* HW invalid                       */
 multiline_comment|/* Software bits in the page table entry */
-DECL|macro|_PAGE_MKCLEAN
-mdefine_line|#define _PAGE_MKCLEAN   0x002
 DECL|macro|_PAGE_ISCLEAN
-mdefine_line|#define _PAGE_ISCLEAN   0x004
+mdefine_line|#define _PAGE_ISCLEAN   0x002
 multiline_comment|/* Mask and four different kinds of invalid pages. */
 DECL|macro|_PAGE_INVALID_MASK
 mdefine_line|#define _PAGE_INVALID_MASK&t;0x601
 DECL|macro|_PAGE_INVALID_EMPTY
 mdefine_line|#define _PAGE_INVALID_EMPTY&t;0x400
 DECL|macro|_PAGE_INVALID_NONE
-mdefine_line|#define _PAGE_INVALID_NONE&t;0x001
+mdefine_line|#define _PAGE_INVALID_NONE&t;0x401
 DECL|macro|_PAGE_INVALID_SWAP
-mdefine_line|#define _PAGE_INVALID_SWAP&t;0x200
+mdefine_line|#define _PAGE_INVALID_SWAP&t;0x600
 DECL|macro|_PAGE_INVALID_FILE
-mdefine_line|#define _PAGE_INVALID_FILE&t;0x201
+mdefine_line|#define _PAGE_INVALID_FILE&t;0x601
 macro_line|#ifndef __s390x__
 multiline_comment|/* Bits in the segment table entry */
 DECL|macro|_PAGE_TABLE_LEN
@@ -266,57 +264,6 @@ id|pte_t
 id|pteval
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|pte_val
-c_func
-(paren
-id|pteval
-)paren
-op_amp
-(paren
-id|_PAGE_MKCLEAN
-op_or
-id|_PAGE_INVALID
-)paren
-)paren
-op_eq
-id|_PAGE_MKCLEAN
-)paren
-(brace
-id|pte_val
-c_func
-(paren
-id|pteval
-)paren
-op_and_assign
-op_complement
-id|_PAGE_MKCLEAN
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;sske %0,%1&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-l_int|0
-)paren
-comma
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pteval
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
 op_star
 id|pteptr
 op_assign
@@ -1094,11 +1041,7 @@ id|pte
 )paren
 op_and_assign
 op_complement
-(paren
-id|_PAGE_MKCLEAN
-op_or
 id|_PAGE_ISCLEAN
-)paren
 suffix:semicolon
 r_return
 id|pte
@@ -1420,9 +1363,11 @@ id|__pte
 suffix:semicolon
 )brace
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(pg, pgprot)                                                &bslash;&n;({                                                                        &bslash;&n;&t;struct page *__page = (pg);                                       &bslash;&n;&t;pgprot_t __pgprot = (pgprot);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;pte_t __pte = mk_pte_phys(__physpage, __pgprot);                  &bslash;&n;&t;                                                                  &bslash;&n;&t;if (!(pgprot_val(__pgprot) &amp; _PAGE_ISCLEAN)) {&t;&t;&t;  &bslash;&n;&t;&t;int __users = !!PagePrivate(__page) + !!__page-&gt;mapping;  &bslash;&n;&t;&t;if (__users + page_count(__page) == 1)                    &bslash;&n;&t;&t;&t;pte_val(__pte) |= _PAGE_MKCLEAN;                  &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;__pte;                                                            &bslash;&n;})
+mdefine_line|#define mk_pte(pg, pgprot)                                                &bslash;&n;({                                                                        &bslash;&n;&t;struct page *__page = (pg);                                       &bslash;&n;&t;pgprot_t __pgprot = (pgprot);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;pte_t __pte = mk_pte_phys(__physpage, __pgprot);                  &bslash;&n;&t;__pte;                                                            &bslash;&n;})
 DECL|macro|pfn_pte
-mdefine_line|#define pfn_pte(pfn, pgprot)                                              &bslash;&n;({                                                                        &bslash;&n;&t;struct page *__page = mem_map+(pfn);                              &bslash;&n;&t;pgprot_t __pgprot = (pgprot);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((pfn) &lt;&lt; PAGE_SHIFT);             &bslash;&n;&t;pte_t __pte = mk_pte_phys(__physpage, __pgprot);                  &bslash;&n;&t;                                                                  &bslash;&n;&t;if (!(pgprot_val(__pgprot) &amp; _PAGE_ISCLEAN)) {&t;&t;&t;  &bslash;&n;&t;&t;int __users = !!PagePrivate(__page) + !!__page-&gt;mapping;  &bslash;&n;&t;&t;if (__users + page_count(__page) == 1)                    &bslash;&n;&t;&t;&t;pte_val(__pte) |= _PAGE_MKCLEAN;                  &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;__pte;                                                            &bslash;&n;})
+mdefine_line|#define pfn_pte(pfn, pgprot)                                              &bslash;&n;({                                                                        &bslash;&n;&t;pgprot_t __pgprot = (pgprot);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((pfn) &lt;&lt; PAGE_SHIFT);             &bslash;&n;&t;pte_t __pte = mk_pte_phys(__physpage, __pgprot);                  &bslash;&n;&t;__pte;                                                            &bslash;&n;})
+DECL|macro|arch_set_page_uptodate
+mdefine_line|#define arch_set_page_uptodate(__page)&t;&t;&t;&t;&t;  &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;asm volatile (&quot;sske %0,%1&quot; : : &quot;d&quot; (0),&t;&t;&t;  &bslash;&n;&t;&t;&t;      &quot;a&quot; (__pa((__page-mem_map) &lt;&lt; PAGE_SHIFT)));&bslash;&n;&t;} while (0)
 macro_line|#ifdef __s390x__
 DECL|macro|pfn_pmd
 mdefine_line|#define pfn_pmd(pfn, pgprot)                                              &bslash;&n;({                                                                        &bslash;&n;&t;pgprot_t __pgprot = (pgprot);                                     &bslash;&n;&t;unsigned long __physpage = __pa((pfn) &lt;&lt; PAGE_SHIFT);             &bslash;&n;&t;pmd_t __pmd = __pmd(__physpage + pgprot_val(__pgprot));           &bslash;&n;&t;__pmd;                                                            &bslash;&n;})

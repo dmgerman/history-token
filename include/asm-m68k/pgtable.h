@@ -183,31 +183,6 @@ id|pte
 )paren
 (brace
 )brace
-macro_line|#ifdef CONFIG_SUN3
-multiline_comment|/* Macros to (de)construct the fake PTEs representing swap pages. */
-DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;((x).val &amp; 0x7F)
-DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;(((x).val) &gt;&gt; 7)
-DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type,offset) ((swp_entry_t) { ((type) | ((offset) &lt;&lt; 7)) })
-DECL|macro|__pte_to_swp_entry
-mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
-DECL|macro|__swp_entry_to_pte
-mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
-macro_line|#else
-multiline_comment|/* Encode and de-code a swap entry (must be !pte_none(e) &amp;&amp; !pte_present(e)) */
-DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 1) &amp; 0xff)
-DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 10)
-DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset) ((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 10) })
-DECL|macro|__pte_to_swp_entry
-mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
-DECL|macro|__swp_entry_to_pte
-mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
-macro_line|#endif /* CONFIG_SUN3 */
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
@@ -221,6 +196,16 @@ macro_line|#include &lt;asm/motorola_pgtable.h&gt;
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.&n; */
+macro_line|#ifdef SUN3_PAGE_NOCACHE
+DECL|macro|__SUN3_PAGE_NOCACHE
+macro_line|# define __SUN3_PAGE_NOCACHE&t;SUN3_PAGE_NOCACHE
+macro_line|#else
+DECL|macro|__SUN3_PAGE_NOCACHE
+macro_line|# define __SUN3_PAGE_NOCACHE&t;0
+macro_line|#endif
+DECL|macro|pgprot_noncached
+mdefine_line|#define pgprot_noncached(prot)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(MMU_IS_SUN3&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; ? (__pgprot(pgprot_val(prot) | __SUN3_PAGE_NOCACHE))&t;&t;&t;&bslash;&n;&t; : ((MMU_IS_851 || MMU_IS_030)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    ? (__pgprot(pgprot_val(prot) | _PAGE_NOCACHE030))&t;&t;&t;&bslash;&n;&t;    : (MMU_IS_040 || MMU_IS_060)&t;&t;&t;&t;&t;&bslash;&n;&t;    ? (__pgprot((pgprot_val(prot) &amp; _CACHEMASK040) | _PAGE_NOCACHE_S))&t;&bslash;&n;&t;    : (prot)))
 DECL|typedef|pte_addr_t
 r_typedef
 id|pte_t

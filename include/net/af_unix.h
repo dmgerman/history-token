@@ -132,10 +132,10 @@ multiline_comment|/* More in this chain? */
 r_if
 c_cond
 (paren
-id|s-&gt;next
+id|s-&gt;sk_next
 )paren
 r_return
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
 multiline_comment|/* Look for next non-empty chain. */
 r_for

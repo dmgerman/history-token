@@ -421,7 +421,7 @@ id|sk
 (brace
 id|intrfc-&gt;if_sklist
 op_assign
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
 r_goto
 id|out_unlock
@@ -432,20 +432,20 @@ c_loop
 (paren
 id|s
 op_logical_and
-id|s-&gt;next
+id|s-&gt;sk_next
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|s-&gt;next
+id|s-&gt;sk_next
 op_eq
 id|sk
 )paren
 (brace
-id|s-&gt;next
+id|s-&gt;sk_next
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 suffix:semicolon
 r_goto
 id|out_unlock
@@ -453,7 +453,7 @@ suffix:semicolon
 )brace
 id|s
 op_assign
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
 )brace
 id|out_unlock
@@ -504,7 +504,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 macro_line|#ifdef IPX_REFCNT_DEBUG
@@ -538,7 +538,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 op_ne
 l_int|1
@@ -555,7 +555,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 )paren
 suffix:semicolon
@@ -848,7 +848,7 @@ id|intrfc
 op_assign
 id|intrfc
 suffix:semicolon
-id|sk-&gt;next
+id|sk-&gt;sk_next
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -874,13 +874,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|s-&gt;next
+id|s-&gt;sk_next
 )paren
 id|s
 op_assign
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
-id|s-&gt;next
+id|s-&gt;sk_next
 op_assign
 id|sk
 suffix:semicolon
@@ -942,7 +942,7 @@ id|port
 )paren
 id|s
 op_assign
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
 r_return
 id|s
@@ -1096,7 +1096,7 @@ r_break
 suffix:semicolon
 id|s
 op_assign
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
 )brace
 id|spin_unlock_bh
@@ -1173,13 +1173,13 @@ c_func
 id|s
 )paren
 suffix:semicolon
-id|s-&gt;err
+id|s-&gt;sk_err
 op_assign
 id|ENOLINK
 suffix:semicolon
 id|s
 op_member_access_from_pointer
-id|error_report
+id|sk_error_report
 c_func
 (paren
 id|s
@@ -1193,7 +1193,7 @@ id|ipxs-&gt;port
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;zapped
+id|s-&gt;sk_zapped
 op_assign
 l_int|1
 suffix:semicolon
@@ -1204,9 +1204,9 @@ id|s
 suffix:semicolon
 id|s
 op_assign
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
-id|t-&gt;next
+id|t-&gt;sk_next
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1634,7 +1634,7 @@ suffix:semicolon
 )brace
 id|s
 op_assign
-id|s-&gt;next
+id|s-&gt;sk_next
 suffix:semicolon
 )brace
 multiline_comment|/* skb was solely for us, and we did not make a copy, so free it. */
@@ -1842,7 +1842,7 @@ id|connection
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
 suffix:semicolon
 r_if
@@ -5849,7 +5849,7 @@ comma
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;no_check
+id|sk-&gt;sk_no_check
 op_assign
 l_int|1
 suffix:semicolon
@@ -5907,30 +5907,28 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 )paren
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
-id|__set_bit
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
 id|sock-&gt;sk
@@ -6101,7 +6099,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_logical_or
 id|addr_len
 op_ne
@@ -6406,7 +6404,7 @@ comma
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
@@ -6485,7 +6483,7 @@ id|ipx_route
 op_star
 id|rt
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_CLOSE
 suffix:semicolon
@@ -6659,7 +6657,7 @@ id|sock-&gt;state
 op_assign
 id|SS_CONNECTED
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
@@ -6762,7 +6760,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -7205,7 +7203,7 @@ op_assign
 id|msg-&gt;msg_flags
 suffix:semicolon
 multiline_comment|/* Socket gets bound below anyway */
-multiline_comment|/*&t;if (sk-&gt;zapped)&n;&t;&t;return -EIO; */
+multiline_comment|/*&t;if (sk-&gt;sk_zapped)&n;&t;&t;return -EIO; */
 multiline_comment|/* Socket not bound */
 r_if
 c_cond
@@ -7335,7 +7333,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -7570,7 +7568,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 r_goto
 id|out
@@ -7669,7 +7667,7 @@ id|rc
 r_goto
 id|out_free
 suffix:semicolon
-id|sk-&gt;stamp
+id|sk-&gt;sk_stamp
 op_assign
 id|skb-&gt;stamp
 suffix:semicolon
@@ -7788,13 +7786,13 @@ id|TIOCOUTQ
 suffix:colon
 id|amount
 op_assign
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_minus
 id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 r_if
@@ -7837,7 +7835,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 multiline_comment|/* These two are safe on a single CPU system as only&n;&t;&t; * user tasks fiddle here */
@@ -8041,7 +8039,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;stamp.tv_sec
+id|sk-&gt;sk_stamp.tv_sec
 )paren
 r_break
 suffix:semicolon
@@ -8064,7 +8062,7 @@ op_star
 id|arg
 comma
 op_amp
-id|sk-&gt;stamp
+id|sk-&gt;sk_stamp
 comma
 r_sizeof
 (paren

@@ -84,7 +84,7 @@ id|index
 suffix:semicolon
 multiline_comment|/* index into blens (or border) */
 DECL|member|blens
-id|uIntf
+id|uInt
 op_star
 id|blens
 suffix:semicolon
@@ -145,25 +145,25 @@ id|hufts
 suffix:semicolon
 multiline_comment|/* single malloc for tree space */
 DECL|member|window
-id|Bytef
+id|Byte
 op_star
 id|window
 suffix:semicolon
 multiline_comment|/* sliding window */
 DECL|member|end
-id|Bytef
+id|Byte
 op_star
 id|end
 suffix:semicolon
 multiline_comment|/* one byte after sliding window */
 DECL|member|read
-id|Bytef
+id|Byte
 op_star
 id|read
 suffix:semicolon
 multiline_comment|/* window read pointer */
 DECL|member|write
-id|Bytef
+id|Byte
 op_star
 id|write
 suffix:semicolon
@@ -231,9 +231,6 @@ multiline_comment|/* copy as much as possible from the sliding window to the out
 r_extern
 r_int
 id|zlib_inflate_flush
-id|OF
-c_func
-(paren
 (paren
 id|inflate_blocks_statef
 op_star
@@ -241,7 +238,6 @@ comma
 id|z_streamp
 comma
 r_int
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* inflate private state */

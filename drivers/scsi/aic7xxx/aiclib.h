@@ -3,16 +3,14 @@ macro_line|#ifndef&t;_AICLIB_H
 DECL|macro|_AICLIB_H
 mdefine_line|#define _AICLIB_H
 multiline_comment|/*&n; * Linux Interrupt Support.&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
-DECL|macro|AIC_LINUX_IRQRETURN_T
-mdefine_line|#define&t;AIC_LINUX_IRQRETURN_T irqreturn_t
-DECL|macro|AIC_LINUX_IRQRETURN
-mdefine_line|#define&t;AIC_LINUX_IRQRETURN(ours) return (IRQ_RETVAL(ours))
-macro_line|#else
-DECL|macro|AIC_LINUX_IRQRETURN_T
-mdefine_line|#define&t;AIC_LINUX_IRQRETURN_T void
-DECL|macro|AIC_LINUX_IRQRETURN
-mdefine_line|#define&t;AIC_LINUX_IRQRETURN(ours)  return
+macro_line|#ifndef IRQ_RETVAL
+DECL|typedef|irqreturn_t
+r_typedef
+r_void
+id|irqreturn_t
+suffix:semicolon
+DECL|macro|IRQ_RETVAL
+mdefine_line|#define&t;IRQ_RETVAL(x)
 macro_line|#endif
 multiline_comment|/*&n; * SCSI command format&n; */
 multiline_comment|/*&n; * Define dome bits that are in ALL (or a lot of) scsi commands&n; */

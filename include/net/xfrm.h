@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/route.h&gt;
@@ -21,7 +22,7 @@ r_struct
 id|semaphore
 id|xfrm_cfg_sem
 suffix:semicolon
-multiline_comment|/* Organization of SPD aka &quot;XFRM rules&quot;&n;   ------------------------------------&n;&n;   Basic objects:&n;   - policy rule, struct xfrm_policy (=SPD entry)&n;   - bundle of transformations, struct dst_entry == struct xfrm_dst (=SA bundle)&n;   - instance of a transformer, struct xfrm_state (=SA)&n;   - template to clone xfrm_state, struct xfrm_tmpl&n;&n;   SPD is plain linear list of xfrm_policy rules, ordered by priority.&n;   (To be compatible with existing pfkeyv2 implementations,&n;   many rules with priority of 0x7fffffff are allowed to exist and&n;   such rules are ordered in an unpredictable way, thanks to bsd folks.)&n;&n;   Lookup is plain linear search until the first match with selector.&n;&n;   If &quot;action&quot; is &quot;block&quot;, then we prohibit the flow, otherwise:&n;   if &quot;xfrms_nr&quot; is zero, the flow passes untransformed. Otherwise,&n;   policy entry has list of up to XFRM_MAX_DEPTH transformations,&n;   described by templates xfrm_tmpl. Each template is resolved&n;   to a complete xfrm_state (see below) and we pack bundle of transformations&n;   to a dst_entry returned to requestor.&n;&n;   dst -. xfrm  .-&gt; xfrm_state #1&n;    |---. child .-&gt; dst -. xfrm .-&gt; xfrm_state #2&n;                     |---. child .-&gt; dst -. xfrm .-&gt; xfrm_state #3&n;                                      |---. child .-&gt; NULL&n;&n;   Bundles are cached at xrfm_policy struct (field -&gt;bundles).&n;&n;&n;   Resolution of xrfm_tmpl&n;   -----------------------&n;   Template contains:&n;   1. -&gt;mode&t;&t;Mode: transport or tunnel&n;   2. -&gt;id.proto&t;Protocol: AH/ESP/IPCOMP&n;   3. -&gt;id.daddr&t;Remote tunnel endpoint, ignored for transport mode.&n;      Q: allow to resolve security gateway?&n;   4. -&gt;id.spi          If not zero, static SPI.&n;   5. -&gt;saddr&t;&t;Local tunnel endpoint, ignored for transport mode.&n;   6. -&gt;algos&t;&t;List of allowed algos. Plain bitmask now.&n;      Q: ealgos, aalgos, calgos. What a mess...&n;   7. -&gt;share&t;&t;Sharing mode.&n;      Q: how to implement private sharing mode? To add struct sock* to&n;      flow id?&n;&n;   Having this template we search through SAD searching for entries&n;   with appropriate mode/proto/algo, permitted by selector.&n;   If no appropriate entry found, it is requested from key manager.&n;&n;   PROBLEMS:&n;   Q: How to find all the bundles referring to a physical path for&n;      PMTU discovery? Seems, dst should contain list of all parents...&n;      and enter to infinite locking hierarchy disaster.&n;      No! It is easier, we will not search for them, let them find us.&n;      We add genid to each dst plus pointer to genid of raw IP route,&n;      pmtu disc will update pmtu on raw IP route and increase its genid.&n;      dst_check() will see this for top level and trigger resyncing&n;      metrics. Plus, it will be made via sk-&gt;dst_cache. Solved.&n; */
+multiline_comment|/* Organization of SPD aka &quot;XFRM rules&quot;&n;   ------------------------------------&n;&n;   Basic objects:&n;   - policy rule, struct xfrm_policy (=SPD entry)&n;   - bundle of transformations, struct dst_entry == struct xfrm_dst (=SA bundle)&n;   - instance of a transformer, struct xfrm_state (=SA)&n;   - template to clone xfrm_state, struct xfrm_tmpl&n;&n;   SPD is plain linear list of xfrm_policy rules, ordered by priority.&n;   (To be compatible with existing pfkeyv2 implementations,&n;   many rules with priority of 0x7fffffff are allowed to exist and&n;   such rules are ordered in an unpredictable way, thanks to bsd folks.)&n;&n;   Lookup is plain linear search until the first match with selector.&n;&n;   If &quot;action&quot; is &quot;block&quot;, then we prohibit the flow, otherwise:&n;   if &quot;xfrms_nr&quot; is zero, the flow passes untransformed. Otherwise,&n;   policy entry has list of up to XFRM_MAX_DEPTH transformations,&n;   described by templates xfrm_tmpl. Each template is resolved&n;   to a complete xfrm_state (see below) and we pack bundle of transformations&n;   to a dst_entry returned to requestor.&n;&n;   dst -. xfrm  .-&gt; xfrm_state #1&n;    |---. child .-&gt; dst -. xfrm .-&gt; xfrm_state #2&n;                     |---. child .-&gt; dst -. xfrm .-&gt; xfrm_state #3&n;                                      |---. child .-&gt; NULL&n;&n;   Bundles are cached at xrfm_policy struct (field -&gt;bundles).&n;&n;&n;   Resolution of xrfm_tmpl&n;   -----------------------&n;   Template contains:&n;   1. -&gt;mode&t;&t;Mode: transport or tunnel&n;   2. -&gt;id.proto&t;Protocol: AH/ESP/IPCOMP&n;   3. -&gt;id.daddr&t;Remote tunnel endpoint, ignored for transport mode.&n;      Q: allow to resolve security gateway?&n;   4. -&gt;id.spi          If not zero, static SPI.&n;   5. -&gt;saddr&t;&t;Local tunnel endpoint, ignored for transport mode.&n;   6. -&gt;algos&t;&t;List of allowed algos. Plain bitmask now.&n;      Q: ealgos, aalgos, calgos. What a mess...&n;   7. -&gt;share&t;&t;Sharing mode.&n;      Q: how to implement private sharing mode? To add struct sock* to&n;      flow id?&n;&n;   Having this template we search through SAD searching for entries&n;   with appropriate mode/proto/algo, permitted by selector.&n;   If no appropriate entry found, it is requested from key manager.&n;&n;   PROBLEMS:&n;   Q: How to find all the bundles referring to a physical path for&n;      PMTU discovery? Seems, dst should contain list of all parents...&n;      and enter to infinite locking hierarchy disaster.&n;      No! It is easier, we will not search for them, let them find us.&n;      We add genid to each dst plus pointer to genid of raw IP route,&n;      pmtu disc will update pmtu on raw IP route and increase its genid.&n;      dst_check() will see this for top level and trigger resyncing&n;      metrics. Plus, it will be made via sk-&gt;sk_dst_cache. Solved.&n; */
 multiline_comment|/* Full description of state of transformer. */
 DECL|struct|xfrm_state
 r_struct
@@ -832,6 +833,11 @@ r_struct
 id|xfrm_policy
 op_star
 id|next
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 multiline_comment|/* This lock only affects elements except for entry. */
 DECL|member|lock
@@ -2445,7 +2451,7 @@ c_cond
 (paren
 id|sk
 op_logical_and
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 id|XFRM_POLICY_IN
 )braket
@@ -2689,12 +2695,12 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|0
 )braket
 op_logical_or
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|1
 )braket
@@ -2743,7 +2749,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|0
 )braket
@@ -2755,7 +2761,7 @@ l_int|NULL
 id|__xfrm_sk_free_policy
 c_func
 (paren
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|0
 )braket
@@ -2763,7 +2769,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|0
 )braket
@@ -2777,7 +2783,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|1
 )braket
@@ -2789,7 +2795,7 @@ l_int|NULL
 id|__xfrm_sk_free_policy
 c_func
 (paren
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|1
 )braket
@@ -2797,7 +2803,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|1
 )braket
@@ -3763,7 +3769,7 @@ suffix:semicolon
 r_struct
 id|xfrm_policy
 op_star
-id|xfrm_policy_delete
+id|xfrm_policy_bysel
 c_func
 (paren
 r_int
@@ -3773,6 +3779,9 @@ r_struct
 id|xfrm_selector
 op_star
 id|sel
+comma
+r_int
+r_delete
 )paren
 suffix:semicolon
 r_struct

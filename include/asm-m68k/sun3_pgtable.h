@@ -777,6 +777,17 @@ DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) kunmap(pte)
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) kunmap(pte)
+multiline_comment|/* Macros to (de)construct the fake PTEs representing swap pages. */
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(x)&t;&t;((x).val &amp; 0x7F)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(x)&t;&t;(((x).val) &gt;&gt; 7)
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type,offset) ((swp_entry_t) { ((type) | ((offset) &lt;&lt; 7)) })
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
 macro_line|#endif&t;/* !__ASSEMBLY__ */
 macro_line|#endif&t;/* !_SUN3_PGTABLE_H */
 eof

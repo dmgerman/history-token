@@ -7608,7 +7608,7 @@ l_int|3
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This reverses the affects of uart_configure_port, hanging up the&n; * port before removal.&n; */
+multiline_comment|/*&n; * This reverses the effects of uart_configure_port, hanging up the&n; * port before removal.&n; */
 r_static
 r_void
 DECL|function|uart_unconfigure_port
@@ -7927,6 +7927,10 @@ id|normal-&gt;driver_name
 op_assign
 id|drv-&gt;driver_name
 suffix:semicolon
+id|normal-&gt;devfs_name
+op_assign
+id|drv-&gt;devfs_name
+suffix:semicolon
 id|normal-&gt;name
 op_assign
 id|drv-&gt;dev_name
@@ -8208,10 +8212,6 @@ id|p
 op_assign
 id|drv-&gt;tty_driver
 suffix:semicolon
-id|drv-&gt;tty_driver
-op_assign
-l_int|NULL
-suffix:semicolon
 id|tty_unregister_driver
 c_func
 (paren
@@ -8227,14 +8227,18 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|drv-&gt;tty_driver-&gt;termios
+id|p-&gt;termios
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|drv-&gt;tty_driver
+id|p
 )paren
+suffix:semicolon
+id|drv-&gt;tty_driver
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|uart_console_device

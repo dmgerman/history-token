@@ -161,7 +161,7 @@ id|Root_SDA1
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Get boot string from flash */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|boot_string
@@ -172,7 +172,10 @@ op_star
 )paren
 id|ZX4500_BOOT_STRING_ADDR
 comma
-id|ZX4500_BOOT_STRING_LEN
+r_sizeof
+(paren
+id|boot_string
+)paren
 )paren
 suffix:semicolon
 id|boot_string

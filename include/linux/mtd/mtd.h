@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mtd.h,v 1.33 2001/06/09 00:08:59 dwmw2 Exp $ */
+multiline_comment|/* $Id: mtd.h,v 1.45 2003/05/20 21:56:40 dwmw2 Exp $ */
 macro_line|#ifndef __MTD_MTD_H__
 DECL|macro|__MTD_MTD_H__
 mdefine_line|#define __MTD_MTD_H__
@@ -6,7 +6,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#endif /* __KERNEL__ */
@@ -193,6 +192,25 @@ DECL|macro|MEMGETREGIONCOUNT
 mdefine_line|#define MEMGETREGIONCOUNT&t;_IOR(&squot;M&squot;, 7, int)
 DECL|macro|MEMGETREGIONINFO
 mdefine_line|#define MEMGETREGIONINFO&t;_IOWR(&squot;M&squot;, 8, struct region_info_user)
+DECL|macro|MEMSETOOBSEL
+mdefine_line|#define MEMSETOOBSEL&t;&t;_IOW(&squot;M&squot;, 9, struct nand_oobinfo)
+DECL|struct|nand_oobinfo
+r_struct
+id|nand_oobinfo
+(brace
+DECL|member|useecc
+r_int
+id|useecc
+suffix:semicolon
+DECL|member|eccpos
+r_int
+id|eccpos
+(braket
+l_int|6
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#ifndef __KERNEL__
 DECL|typedef|mtd_info_t
 r_typedef
@@ -211,6 +229,12 @@ r_typedef
 r_struct
 id|region_info_user
 id|region_info_t
+suffix:semicolon
+DECL|typedef|nand_oobinfo_t
+r_typedef
+r_struct
+id|nand_oobinfo
+id|nand_oobinfo_t
 suffix:semicolon
 multiline_comment|/* User-space ioctl definitions */
 macro_line|#else /* __KERNEL__ */
@@ -358,6 +382,12 @@ DECL|member|index
 r_int
 id|index
 suffix:semicolon
+singleline_comment|// oobinfo is a nand_oobinfo structure, which can be set by iotcl (MEMSETOOBINFO)
+DECL|member|oobinfo
+r_struct
+id|nand_oobinfo
+id|oobinfo
+suffix:semicolon
 multiline_comment|/* Data for variable erase regions. If numeraseregions is zero,&n;&t; * it means that the whole device has erasesize as given above. &n;&t; */
 DECL|member|numeraseregions
 r_int
@@ -373,12 +403,6 @@ multiline_comment|/* This really shouldn&squot;t be here. It can go away in 2.5 
 DECL|member|bank_size
 id|u_int32_t
 id|bank_size
-suffix:semicolon
-DECL|member|module
-r_struct
-id|module
-op_star
-id|module
 suffix:semicolon
 DECL|member|erase
 r_int
@@ -443,6 +467,12 @@ comma
 id|u_char
 op_star
 id|addr
+comma
+id|loff_t
+id|from
+comma
+r_int
+id|len
 )paren
 suffix:semicolon
 DECL|member|read
@@ -529,6 +559,11 @@ comma
 id|u_char
 op_star
 id|eccbuf
+comma
+r_struct
+id|nand_oobinfo
+op_star
+id|oobsel
 )paren
 suffix:semicolon
 DECL|member|write_ecc
@@ -561,6 +596,11 @@ comma
 id|u_char
 op_star
 id|eccbuf
+comma
+r_struct
+id|nand_oobinfo
+op_star
+id|oobsel
 )paren
 suffix:semicolon
 DECL|member|read_oob
@@ -618,6 +658,89 @@ op_star
 id|buf
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t; * Methods to access the protection register area, present in some &n;&t; * flash devices. The user data is one time programmable but the&n;&t; * factory data is read only. &n;&t; */
+DECL|member|read_user_prot_reg
+r_int
+(paren
+op_star
+id|read_user_prot_reg
+)paren
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+id|loff_t
+id|from
+comma
+r_int
+id|len
+comma
+r_int
+op_star
+id|retlen
+comma
+id|u_char
+op_star
+id|buf
+)paren
+suffix:semicolon
+DECL|member|read_fact_prot_reg
+r_int
+(paren
+op_star
+id|read_fact_prot_reg
+)paren
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+id|loff_t
+id|from
+comma
+r_int
+id|len
+comma
+r_int
+op_star
+id|retlen
+comma
+id|u_char
+op_star
+id|buf
+)paren
+suffix:semicolon
+multiline_comment|/* This function is not yet implemented */
+DECL|member|write_user_prot_reg
+r_int
+(paren
+op_star
+id|write_user_prot_reg
+)paren
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+id|loff_t
+id|from
+comma
+r_int
+id|len
+comma
+r_int
+op_star
+id|retlen
+comma
+id|u_char
+op_star
+id|buf
+)paren
+suffix:semicolon
 multiline_comment|/* iovec-based read/write methods. We need these especially for NAND flash,&n;&t;   with its limited number of write cycles per erase.&n;&t;   NB: The &squot;count&squot; parameter is the number of _vectors_, each of &n;&t;   which contains an (ofs, len) tuple.&n;&t;*/
 DECL|member|readv
 r_int
@@ -648,6 +771,44 @@ op_star
 id|retlen
 )paren
 suffix:semicolon
+DECL|member|readv_ecc
+r_int
+(paren
+op_star
+id|readv_ecc
+)paren
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+r_struct
+id|iovec
+op_star
+id|vecs
+comma
+r_int
+r_int
+id|count
+comma
+id|loff_t
+id|from
+comma
+r_int
+op_star
+id|retlen
+comma
+id|u_char
+op_star
+id|eccbuf
+comma
+r_struct
+id|nand_oobinfo
+op_star
+id|oobsel
+)paren
+suffix:semicolon
 DECL|member|writev
 r_int
 (paren
@@ -676,6 +837,45 @@ comma
 r_int
 op_star
 id|retlen
+)paren
+suffix:semicolon
+DECL|member|writev_ecc
+r_int
+(paren
+op_star
+id|writev_ecc
+)paren
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+r_const
+r_struct
+id|iovec
+op_star
+id|vecs
+comma
+r_int
+r_int
+id|count
+comma
+id|loff_t
+id|to
+comma
+r_int
+op_star
+id|retlen
+comma
+id|u_char
+op_star
+id|eccbuf
+comma
+r_struct
+id|nand_oobinfo
+op_star
+id|oobsel
 )paren
 suffix:semicolon
 multiline_comment|/* Sync */
@@ -763,6 +963,16 @@ r_void
 op_star
 id|priv
 suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+DECL|member|usecount
+r_int
+id|usecount
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Kernel-side ioctl definitions */
@@ -791,24 +1001,6 @@ r_extern
 r_struct
 id|mtd_info
 op_star
-id|__get_mtd_device
-c_func
-(paren
-r_struct
-id|mtd_info
-op_star
-id|mtd
-comma
-r_int
-id|num
-)paren
-suffix:semicolon
-DECL|function|get_mtd_device
-r_static
-r_inline
-r_struct
-id|mtd_info
-op_star
 id|get_mtd_device
 c_func
 (paren
@@ -820,44 +1012,8 @@ comma
 r_int
 id|num
 )paren
-(brace
-r_struct
-id|mtd_info
-op_star
-id|ret
 suffix:semicolon
-id|ret
-op_assign
-id|__get_mtd_device
-c_func
-(paren
-id|mtd
-comma
-id|num
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_logical_and
-op_logical_neg
-id|try_module_get
-c_func
-(paren
-id|ret-&gt;module
-)paren
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
-DECL|function|put_mtd_device
-r_static
-r_inline
+r_extern
 r_void
 id|put_mtd_device
 c_func
@@ -867,14 +1023,7 @@ id|mtd_info
 op_star
 id|mtd
 )paren
-(brace
-id|module_put
-c_func
-(paren
-id|mtd-&gt;module
-)paren
 suffix:semicolon
-)brace
 DECL|struct|mtd_notifier
 r_struct
 id|mtd_notifier
@@ -905,11 +1054,10 @@ op_star
 id|mtd
 )paren
 suffix:semicolon
-DECL|member|next
+DECL|member|list
 r_struct
-id|mtd_notifier
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -933,7 +1081,59 @@ op_star
 id|old
 )paren
 suffix:semicolon
-macro_line|#ifndef MTDC
+r_int
+id|default_mtd_writev
+c_func
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+r_const
+r_struct
+id|iovec
+op_star
+id|vecs
+comma
+r_int
+r_int
+id|count
+comma
+id|loff_t
+id|to
+comma
+r_int
+op_star
+id|retlen
+)paren
+suffix:semicolon
+r_int
+id|default_mtd_readv
+c_func
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+r_struct
+id|iovec
+op_star
+id|vecs
+comma
+r_int
+r_int
+id|count
+comma
+id|loff_t
+id|from
+comma
+r_int
+op_star
+id|retlen
+)paren
+suffix:semicolon
 DECL|macro|MTD_ERASE
 mdefine_line|#define MTD_ERASE(mtd, args...) (*(mtd-&gt;erase))(mtd, args)
 DECL|macro|MTD_POINT
@@ -958,7 +1158,6 @@ DECL|macro|MTD_WRITEOOB
 mdefine_line|#define MTD_WRITEOOB(mtd, args...) (*(mtd-&gt;write_oob))(mtd, args)
 DECL|macro|MTD_SYNC
 mdefine_line|#define MTD_SYNC(mtd) do { if (mtd-&gt;sync) (*(mtd-&gt;sync))(mtd);  } while (0) 
-macro_line|#endif /* MTDC */
 multiline_comment|/*&n; * Debugging macro and defines&n; */
 DECL|macro|MTD_DEBUG_LEVEL0
 mdefine_line|#define MTD_DEBUG_LEVEL0&t;(0)&t;/* Quiet   */
@@ -970,10 +1169,10 @@ DECL|macro|MTD_DEBUG_LEVEL3
 mdefine_line|#define MTD_DEBUG_LEVEL3&t;(3)&t;/* Noisy   */
 macro_line|#ifdef CONFIG_MTD_DEBUG
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)&t;&t;&t;&bslash;&n;&t;if (n &lt;=  CONFIG_MTD_DEBUG_VERBOSE) {&t;&bslash;&n;&t;&t;printk(KERN_INFO args);&t;&bslash;&n;&t;}
+mdefine_line|#define DEBUG(n, args...)&t;&t;&t;&t;&bslash;&n; &t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (n &lt;= CONFIG_MTD_DEBUG_VERBOSE)&t;&bslash;&n;&t;&t;&t;printk(KERN_INFO args);&t;&t;&bslash;&n;&t;} while(0)
 macro_line|#else /* CONFIG_MTD_DEBUG */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
+mdefine_line|#define DEBUG(n, args...) do { } while(0)
 macro_line|#endif /* CONFIG_MTD_DEBUG */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __MTD_MTD_H__ */

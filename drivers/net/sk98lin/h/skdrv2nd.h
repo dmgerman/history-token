@@ -657,6 +657,12 @@ id|SK_AC
 op_star
 id|pAC
 suffix:semicolon
+DECL|member|proc
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|typedef|TX_PORT

@@ -6558,6 +6558,11 @@ r_int
 id|sym53c8xx_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -6574,17 +6579,9 @@ r_int
 id|length
 comma
 r_int
-id|hostno
-comma
-r_int
 id|func
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
 r_struct
 id|host_data
 op_star
@@ -6597,24 +6594,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|retv
-suffix:semicolon
-id|host
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostno
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|host
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 id|host_data
 op_assign
@@ -6701,12 +6680,6 @@ id|EINVAL
 suffix:semicolon
 macro_line|#endif
 )brace
-id|scsi_host_put
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
 r_return
 id|retv
 suffix:semicolon
@@ -7216,7 +7189,7 @@ op_assign
 id|dev-&gt;host_id
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Edit its name.&n;&t; */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|np-&gt;s.chip_name
@@ -7227,8 +7200,6 @@ r_sizeof
 (paren
 id|np-&gt;s.chip_name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|sprintf
@@ -9669,19 +9640,6 @@ op_star
 id|nvp
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *  PCI is required.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; *    Initialize driver general stuff.&n;&t; */
 macro_line|#ifdef SYM_LINUX_BOOT_COMMAND_LINE_SUPPORT
 macro_line|#ifdef MODULE

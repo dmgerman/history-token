@@ -5812,7 +5812,7 @@ id|KERN_ERR
 l_string|&quot;IOP reset timeout.&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// Better to leak this for safety: - status;
+multiline_comment|/* The controller still may respond and overwrite&n;&t;&t;&t; * status_phys, LEAK it to prevent memory corruption.&n;&t;&t;&t; */
 r_return
 op_minus
 id|ETIMEDOUT
@@ -5891,6 +5891,7 @@ comma
 id|c-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* The controller still may respond and&n;&t;&t;&t;&t; * overwrite status_phys, LEAK it to prevent&n;&t;&t;&t;&t; * memory corruption.&n;&t;&t;&t;&t; */
 r_return
 op_minus
 id|ETIMEDOUT
@@ -13430,6 +13431,8 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|count
@@ -13443,10 +13446,24 @@ id|KERN_INFO
 l_string|&quot;i2o: Checking for PCI I2O controllers...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if

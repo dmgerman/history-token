@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Dynamic DMA mapping support for AMD Hammer.&n; * &n; * Use the integrated AGP GART in the Hammer northbridge as an IOMMU for PCI.&n; * This allows to use PCI devices that only support 32bit addresses on systems&n; * with more than 4GB. &n; *&n; * See Documentation/DMA-mapping.txt for the interface specification.&n; * &n; * Copyright 2002 Andi Kleen, SuSE Labs.&n; * $Id: pci-gart.c,v 1.20 2003/03/12 08:23:29 ak Exp $&n; */
-multiline_comment|/* &n; * Notebook:&n;&n;agpgart_be&n; check if the simple reservation scheme is enough.&n;&n;possible future tuning: &n; fast path for sg streaming mappings &n; more intelligent flush strategy - flush only a single NB? flush only when&n; gart area fills up and alloc_iommu wraps. &n; don&squot;t flush on allocation - need to unmap the gart area first to avoid prefetches&n; by the CPU&n; move boundary between IOMMU and AGP in GART dynamically&n;  &n;*/
+multiline_comment|/* &n; * Notebook:&n;&n;possible future tuning: &n; fast path for sg streaming mappings - only take the locks once.&n; more intelligent flush strategy - flush only the NB of the CPU directly&n; connected to the device?&n; move boundary between IOMMU and AGP in GART dynamically&n;  &n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -95,11 +95,11 @@ mdefine_line|#define GPTE_VALID    1
 DECL|macro|GPTE_COHERENT
 mdefine_line|#define GPTE_COHERENT 2
 DECL|macro|GPTE_ENCODE
-mdefine_line|#define GPTE_ENCODE(x) (((x) &amp; 0xfffff000) | (((x) &gt;&gt; 32) &lt;&lt; 4) | GPTE_VALID | GPTE_COHERENT)
+mdefine_line|#define GPTE_ENCODE(x) &bslash;&n;&t;(((x) &amp; 0xfffff000) | (((x) &gt;&gt; 32) &lt;&lt; 4) | GPTE_VALID | GPTE_COHERENT)
 DECL|macro|GPTE_DECODE
 mdefine_line|#define GPTE_DECODE(x) (((x) &amp; 0xfffff000) | (((u64)(x) &amp; 0xff0) &lt;&lt; 28))
 DECL|macro|for_all_nb
-mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;pci_for_each_dev(dev) &bslash;&n;&t;&t;if (dev-&gt;bus-&gt;number == 0 &amp;&amp; PCI_FUNC(dev-&gt;devfn) == 3 &amp;&amp; &bslash;&n;&t;&t;    (PCI_SLOT(dev-&gt;devfn) &gt;= 24) &amp;&amp; (PCI_SLOT(dev-&gt;devfn) &lt;= 31))
+mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;dev=NULL; &bslash;&n;&t;while ((dev = pci_find_device(PCI_ANY_ID, PCI_ANY_ID, dev)) != NULL) &bslash;&n;&t;&t;if (dev-&gt;bus-&gt;number == 0 &amp;&amp; PCI_FUNC(dev-&gt;devfn) == 3 &amp;&amp; &bslash;&n;&t;&t;    (PCI_SLOT(dev-&gt;devfn) &gt;= 24) &amp;&amp; (PCI_SLOT(dev-&gt;devfn) &lt;= 31))
 DECL|macro|EMERGENCY_PAGES
 mdefine_line|#define EMERGENCY_PAGES 32 /* = 128KB */ 
 macro_line|#ifdef CONFIG_AGP
@@ -145,6 +145,10 @@ c_func
 (paren
 r_int
 id|size
+comma
+r_int
+op_star
+id|flush
 )paren
 (brace
 r_int
@@ -184,6 +188,12 @@ op_eq
 op_minus
 l_int|1
 )paren
+(brace
+op_star
+id|flush
+op_assign
+l_int|1
+suffix:semicolon
 id|offset
 op_assign
 id|find_next_zero_string
@@ -198,6 +208,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -230,10 +241,17 @@ id|next_bit
 op_ge
 id|iommu_pages
 )paren
+(brace
 id|next_bit
 op_assign
 l_int|0
 suffix:semicolon
+op_star
+id|flush
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -284,10 +302,6 @@ id|offset
 comma
 id|size
 )paren
-suffix:semicolon
-id|next_bit
-op_assign
-id|offset
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -387,6 +401,11 @@ r_int
 r_int
 id|iommu_page
 suffix:semicolon
+r_int
+id|flush
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -450,6 +469,14 @@ r_else
 r_int
 id|high
 op_assign
+l_int|0
+comma
+id|mmu
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 (paren
 r_int
 r_int
@@ -461,13 +488,17 @@ id|memory
 )paren
 op_plus
 id|size
-op_ge
-l_int|0xffffffff
+)paren
+OG
+l_int|0xffffffffUL
+)paren
+id|high
+op_assign
+l_int|1
 suffix:semicolon
-r_int
 id|mmu
 op_assign
-id|high
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -545,6 +576,9 @@ id|alloc_iommu
 c_func
 (paren
 id|size
+comma
+op_amp
+id|flush
 )paren
 suffix:semicolon
 r_if
@@ -639,6 +673,11 @@ id|phys_mem
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|flush
+)paren
 id|flush_gart
 c_func
 (paren
@@ -702,15 +741,9 @@ id|dma_addr_t
 id|bus
 )paren
 (brace
-id|u64
-id|pte
-suffix:semicolon
 r_int
 r_int
 id|iommu_page
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|size
 op_assign
@@ -726,33 +759,21 @@ r_if
 c_cond
 (paren
 id|bus
-template_param
+op_ge
+id|iommu_bus_base
+op_logical_and
+id|bus
+op_le
 id|iommu_bus_base
 op_plus
 id|iommu_size
 )paren
 (brace
-id|free_pages
-c_func
-(paren
-(paren
 r_int
-r_int
-)paren
-id|vaddr
-comma
-id|get_order
-c_func
-(paren
+id|pages
+op_assign
 id|size
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|size
-op_rshift_assign
+op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
 id|iommu_page
@@ -762,8 +783,27 @@ id|bus
 op_minus
 id|iommu_bus_base
 )paren
-op_div
-id|PAGE_SIZE
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+id|vaddr
+op_assign
+id|__va
+c_func
+(paren
+id|GPTE_DECODE
+c_func
+(paren
+id|iommu_gatt_base
+(braket
+id|iommu_page
+)braket
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_IOMMU_DEBUG
+r_int
+id|i
 suffix:semicolon
 r_for
 c_loop
@@ -774,12 +814,13 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|size
+id|pages
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+id|u64
 id|pte
 op_assign
 id|iommu_gatt_base
@@ -810,36 +851,31 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|free_page
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|__va
-c_func
-(paren
-id|GPTE_DECODE
-c_func
-(paren
-id|pte
-)paren
-)paren
-)paren
-suffix:semicolon
 )brace
-id|flush_gart
-c_func
-(paren
-)paren
-suffix:semicolon
+macro_line|#endif
 id|free_iommu
 c_func
 (paren
 id|iommu_page
 comma
+id|pages
+)paren
+suffix:semicolon
+)brace
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|vaddr
+comma
+id|get_order
+c_func
+(paren
 id|size
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1015,7 +1051,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PCI-DMA: Error: ran out out IOMMU space for %p size %lu at device %s[%s]&bslash;n&quot;
+l_string|&quot;PCI-DMA: Out of IOMMU space for %p size %lu at device %s[%s]&bslash;n&quot;
 comma
 id|addr
 comma
@@ -1179,9 +1215,9 @@ r_return
 id|mmu
 suffix:semicolon
 )brace
-DECL|function|__pci_map_single
+DECL|function|pci_map_single
 id|dma_addr_t
-id|__pci_map_single
+id|pci_map_single
 c_func
 (paren
 r_struct
@@ -1198,9 +1234,6 @@ id|size
 comma
 r_int
 id|dir
-comma
-r_int
-id|flush
 )paren
 (brace
 r_int
@@ -1217,6 +1250,11 @@ r_int
 id|i
 comma
 id|npages
+suffix:semicolon
+r_int
+id|flush
+op_assign
+l_int|0
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -1279,6 +1317,9 @@ id|alloc_iommu
 c_func
 (paren
 id|npages
+comma
+op_amp
+id|flush
 )paren
 suffix:semicolon
 r_if
@@ -1453,8 +1494,6 @@ r_int
 id|iommu_page
 suffix:semicolon
 r_int
-id|i
-comma
 id|npages
 suffix:semicolon
 r_if
@@ -1497,6 +1536,10 @@ id|PAGE_SIZE
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
+macro_line|#ifdef CONFIG_IOMMU_DEBUG
+r_int
+id|i
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1538,11 +1581,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-id|flush_gart
-c_func
-(paren
-)paren
-suffix:semicolon
+macro_line|#endif
 id|free_iommu
 c_func
 (paren
@@ -1552,11 +1591,11 @@ id|npages
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__pci_map_single
+DECL|variable|pci_map_single
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__pci_map_single
+id|pci_map_single
 )paren
 suffix:semicolon
 DECL|variable|pci_unmap_single
@@ -1769,6 +1808,7 @@ r_int
 id|init_k8_gatt
 c_func
 (paren
+r_struct
 id|agp_kern_info
 op_star
 id|info
@@ -1950,10 +1990,9 @@ id|gatt_reg
 suffix:semicolon
 id|gatt_reg
 op_assign
+id|__pa
+c_func
 (paren
-(paren
-id|u64
-)paren
 id|gatt
 )paren
 op_rshift
@@ -2053,6 +2092,14 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|agp_amdk8_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|pci_iommu_init
 r_void
 id|__init
@@ -2062,6 +2109,7 @@ c_func
 r_void
 )paren
 (brace
+r_struct
 id|agp_kern_info
 id|info
 suffix:semicolon
@@ -2083,15 +2131,6 @@ multiline_comment|/* Add other K8 AGP bridge drivers here */
 id|no_agp
 op_assign
 id|no_agp
-op_logical_or
-(paren
-id|agp_init
-c_func
-(paren
-)paren
-OL
-l_int|0
-)paren
 op_logical_or
 (paren
 id|agp_amdk8_init
@@ -2388,25 +2427,24 @@ id|bad_dma_address
 op_assign
 id|iommu_bus_base
 suffix:semicolon
-id|change_page_attr
+multiline_comment|/* &n;         * Unmap the IOMMU part of the GART. The alias of the page is always mapped&n;&t; * with cache enabled and there is no full cache coherency across the GART&n;&t; * remapping. The unmapping avoids automatic prefetches from the CPU &n;&t; * allocating cache lines in there. All CPU accesses are done via the &n;&t; * direct mapping to the backing memory. The GART address is only used by PCI &n;&t; * devices. &n;&t; */
+id|clear_kernel_mapping
 c_func
 (paren
-id|virt_to_page
-c_func
 (paren
+r_int
+r_int
+)paren
 id|__va
 c_func
 (paren
-id|iommu_start
-)paren
+id|iommu_bus_base
 )paren
 comma
-id|iommu_pages
-comma
-id|PAGE_KERNEL
+id|iommu_size
 )paren
 suffix:semicolon
-id|global_flush_tlb
+id|flush_gart
 c_func
 (paren
 )paren

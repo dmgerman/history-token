@@ -2400,6 +2400,13 @@ id|irport-&gt;priv
 op_assign
 id|self
 suffix:semicolon
+multiline_comment|/* Keep track of module usage */
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|self-&gt;netdev
+)paren
+suffix:semicolon
 multiline_comment|/* Initialize IO */
 id|self-&gt;io
 op_assign
@@ -3284,6 +3291,10 @@ comma
 id|speed
 )paren
 suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3393,6 +3404,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4704,8 +4719,6 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4810,8 +4823,6 @@ c_func
 (paren
 id|self-&gt;io-&gt;dma
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -5005,6 +5016,17 @@ suffix:semicolon
 id|iobase
 op_assign
 id|self-&gt;irport-&gt;io.fir_base
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|self-&gt;pmdev
+)paren
+id|pm_unregister
+c_func
+(paren
+id|self-&gt;pmdev
+)paren
 suffix:semicolon
 multiline_comment|/* This will destroy irport */
 id|irport_close

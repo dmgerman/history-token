@@ -3457,6 +3457,10 @@ r_int
 id|gdth_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+comma
 r_char
 op_star
 comma
@@ -3465,8 +3469,6 @@ op_star
 op_star
 comma
 id|off_t
-comma
-r_int
 comma
 r_int
 comma

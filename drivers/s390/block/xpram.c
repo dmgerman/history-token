@@ -8,8 +8,9 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;  /* HDIO_GETGEO */
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|XPRAM_NAME
 mdefine_line|#define XPRAM_NAME&t;&quot;xpram&quot;
@@ -25,6 +26,21 @@ DECL|macro|PRINT_WARN
 mdefine_line|#define PRINT_WARN(x...)&t;printk(KERN_WARNING XPRAM_NAME &quot; warning:&quot; x)
 DECL|macro|PRINT_ERR
 mdefine_line|#define PRINT_ERR(x...)&t;&t;printk(KERN_ERR XPRAM_NAME &quot; error:&quot; x)
+DECL|variable|xpram_sysclass
+r_static
+r_struct
+id|sysdev_class
+id|xpram_sysclass
+op_assign
+(brace
+id|set_kset_name
+c_func
+(paren
+l_string|&quot;xpram&quot;
+)paren
+comma
+)brace
+suffix:semicolon
 DECL|variable|xpram_sys_device
 r_static
 r_struct
@@ -33,25 +49,15 @@ id|xpram_sys_device
 op_assign
 (brace
 dot
-id|name
+id|id
 op_assign
-l_string|&quot;S/390 expanded memory RAM disk&quot;
+l_int|0
 comma
 dot
-id|dev
+id|cls
 op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;S/390 expanded memory RAM disk&quot;
-comma
-dot
-id|bus_id
-op_assign
-l_string|&quot;xpram&quot;
-comma
-)brace
+op_amp
+id|xpram_sysclass
 comma
 )brace
 suffix:semicolon
@@ -1670,7 +1676,7 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|disk-&gt;disk_name
+id|disk-&gt;devfs_name
 comma
 l_string|&quot;slram/%d&quot;
 comma
@@ -1790,6 +1796,13 @@ op_amp
 id|xpram_sys_device
 )paren
 suffix:semicolon
+id|sysdev_class_unregister
+c_func
+(paren
+op_amp
+id|xpram_sys_class
+)paren
+suffix:semicolon
 )brace
 DECL|function|xpram_init
 r_static
@@ -1864,6 +1877,23 @@ id|rc
 suffix:semicolon
 id|rc
 op_assign
+id|sysdev_class_register
+c_func
+(paren
+op_amp
+id|xpram_sysclass
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
+id|rc
+op_assign
 id|sys_device_register
 c_func
 (paren
@@ -1876,9 +1906,18 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|sysdev_class_unregister
+c_func
+(paren
+op_amp
+id|xpram_syclass
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
+)brace
 id|rc
 op_assign
 id|xpram_setup_blkdev

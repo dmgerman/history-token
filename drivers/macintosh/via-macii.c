@@ -110,7 +110,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|macii_interrupt
 c_func
 (paren
@@ -1314,7 +1314,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The notorious ADB interrupt handler - does all of the protocol handling, &n; * except for starting new send operations. Relies heavily on the ADB &n; * controller sending and receiving data, thereby generating SR interrupts&n; * for us. This means there has to be always activity on the ADB bus, otherwise&n; * the whole process dies and has to be re-kicked by sending TALK requests ...&n; * CUDA-based Macs seem to solve this with the autopoll option, for MacII-type&n; * ADB the problem isn&squot;t solved yet (retransmit of the latest active TALK seems&n; * a good choice; either on timeout or on a timer interrupt).&n; *&n; * The basic ADB state machine was left unchanged from the original MacII code&n; * by Alan Cox, which was based on the CUDA driver for PowerMac. &n; * The syntax of the ADB status lines seems to be totally different on MacII, &n; * though. MacII uses the states Command -&gt; Even -&gt; Odd -&gt; Even -&gt;...-&gt; Idle for&n; * sending, and Idle -&gt; Even -&gt; Odd -&gt; Even -&gt;...-&gt; Idle for receiving. Start &n; * and end of a receive packet are signaled by asserting /IRQ on the interrupt&n; * line. Timeouts are signaled by a sequence of 4 0xFF, with /IRQ asserted on &n; * every other byte. SRQ is probably signaled by 3 or more 0xFF tacked on the &n; * end of a packet. (Thanks to Guido Koerber for eavesdropping on the ADB &n; * protocol with a logic analyzer!!)&n; *&n; * Note: As of 21/10/97, the MacII ADB part works including timeout detection&n; * and retransmit (Talk to the last active device).&n; */
 DECL|function|macii_interrupt
-r_void
+r_static
+id|irqreturn_t
 id|macii_interrupt
 c_func
 (paren
@@ -1369,6 +1370,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|driver_running
@@ -2259,6 +2261,9 @@ c_func
 (paren
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 eof

@@ -279,13 +279,9 @@ id|X
 op_eq
 l_int|0
 )paren
-(brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
-)brace
 id|A
 op_div_assign
 id|X
@@ -306,13 +302,9 @@ id|fentry-&gt;k
 op_eq
 l_int|0
 )paren
-(brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
-)brace
 id|A
 op_div_assign
 id|fentry-&gt;k
@@ -699,10 +691,6 @@ id|SKF_AD_OFF
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ptr
 op_assign
 id|load_pointer
@@ -712,9 +700,11 @@ id|skb
 comma
 id|k
 )paren
-)paren
-op_ne
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
 )paren
 (brace
 id|A
@@ -849,10 +839,6 @@ id|SKF_AD_OFF
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ptr
 op_assign
 id|load_pointer
@@ -862,9 +848,11 @@ id|skb
 comma
 id|k
 )paren
-)paren
-op_ne
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
 )paren
 (brace
 id|A
@@ -982,10 +970,6 @@ id|SKF_AD_OFF
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ptr
 op_assign
 id|load_pointer
@@ -995,9 +979,11 @@ id|skb
 comma
 id|k
 )paren
-)paren
-op_ne
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
 )paren
 (brace
 id|A
@@ -1143,13 +1129,9 @@ id|k
 op_ge
 id|len
 )paren
-(brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
-)brace
 id|X
 op_assign
 (paren
@@ -1293,12 +1275,10 @@ r_default
 suffix:colon
 multiline_comment|/* Invalid instruction counts as RET */
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* Handle ancillary data, which are impossible&n;&t;&t;   (or very difficult) to get parsing packet contents.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Handle ancillary data, which are impossible&n;&t;&t; * (or very difficult) to get parsing packet contents.&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -1346,9 +1326,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;sk_chk_filter - verify socket filter code&n; *&t;@filter: filter to verify&n; *&t;@flen: length of filter&n; *&n; * Check the user&squot;s filter code. If we let some ugly&n; * filter code slip through kaboom! The filter must contain&n; * no references or jumps that are out of range, no illegal instructions&n; * and no backward jumps. It must end with a RET instruction&n; *&n; * Returns 0 if the rule set is legal or a negative errno code if not.&n; */
@@ -1398,7 +1376,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;        * Check the filter code now.&n;        */
+multiline_comment|/* check the filter code now */
 r_for
 c_loop
 (paren
@@ -1414,7 +1392,7 @@ id|pc
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;                 *&t;All jumps are forward as they are not signed&n;                 */
+multiline_comment|/* all jumps are forward as they are not signed */
 id|ftest
 op_assign
 op_amp
@@ -1435,7 +1413,7 @@ op_eq
 id|BPF_JMP
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; *&t;But they mustn&squot;t jump off the end.&n;&t;&t;&t; */
+multiline_comment|/* but they mustn&squot;t jump off the end */
 r_if
 c_cond
 (paren
@@ -1448,7 +1426,7 @@ op_eq
 id|BPF_JA
 )paren
 (brace
-multiline_comment|/* Note, the large ftest-&gt;k might cause&n;&t;&t;&t;&t;   loops. Compare this with conditional&n;&t;&t;&t;&t;   jumps below, where offsets are limited. --ANK (981016)&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Note, the large ftest-&gt;k might cause loops.&n;&t;&t;&t;&t; * Compare this with conditional jumps below,&n;&t;&t;&t;&t; * where offsets are limited. --ANK (981016)&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1472,7 +1450,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; *&t;For conditionals both must be safe&n;&t;&t;&t;&t; */
+multiline_comment|/* for conditionals both must be safe */
 r_if
 c_cond
 (paren
@@ -1492,15 +1470,13 @@ l_int|1
 op_ge
 id|flen
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
 )brace
-)brace
-multiline_comment|/*&n;                 *&t;Check that memory operations use valid addresses.&n;                 */
+multiline_comment|/* check that memory operations use valid addresses. */
 r_if
 c_cond
 (paren
@@ -1509,7 +1485,7 @@ op_ge
 id|BPF_MEMWORDS
 )paren
 (brace
-multiline_comment|/*&n;                &t; *&t;But it might not be a memory operation...&n;                &t; */
+multiline_comment|/* but it might not be a memory operation... */
 r_switch
 c_cond
 (paren
@@ -1539,7 +1515,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; *&t;The program must end with a return. We don&squot;t care where they&n;&t; *&t;jumped within the script (its always forwards) but in the&n;&t; *&t;end they _will_ hit this.&n;&t; */
+multiline_comment|/*&n;&t; * The program must end with a return. We don&squot;t care where they&n;&t; * jumped within the script (its always forwards) but in the end&n;&t; * they _will_ hit this.&n;&t; */
 r_return
 (paren
 id|BPF_CLASS
@@ -1615,18 +1591,11 @@ OG
 id|BPF_MAXINSNS
 )paren
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 id|fp
 op_assign
-(paren
-r_struct
-id|sk_filter
-op_star
-)paren
 id|sock_kmalloc
 c_func
 (paren
@@ -1646,18 +1615,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|fp
-op_eq
-l_int|NULL
 )paren
-(brace
 r_return
-(paren
 op_minus
 id|ENOMEM
-)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1706,10 +1670,6 @@ id|fp-&gt;len
 op_assign
 id|fprog-&gt;len
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|err
 op_assign
 id|sk_chk_filter
@@ -1719,9 +1679,12 @@ id|fp-&gt;insns
 comma
 id|fp-&gt;len
 )paren
-)paren
-op_eq
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
 )paren
 (brace
 r_struct
@@ -1733,14 +1696,14 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;lock.slock
+id|sk-&gt;sk_lock.slock
 )paren
 suffix:semicolon
 id|old_fp
 op_assign
-id|sk-&gt;filter
+id|sk-&gt;sk_filter
 suffix:semicolon
-id|sk-&gt;filter
+id|sk-&gt;sk_filter
 op_assign
 id|fp
 suffix:semicolon
@@ -1748,7 +1711,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;lock.slock
+id|sk-&gt;sk_lock.slock
 )paren
 suffix:semicolon
 id|fp
@@ -1770,9 +1733,7 @@ id|fp
 )paren
 suffix:semicolon
 r_return
-(paren
 id|err
-)paren
 suffix:semicolon
 )brace
 eof

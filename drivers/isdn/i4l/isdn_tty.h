@@ -280,12 +280,6 @@ id|tty_driver
 id|tty_modem
 suffix:semicolon
 multiline_comment|/* tty-device             */
-DECL|member|cua_modem
-r_struct
-id|tty_driver
-id|cua_modem
-suffix:semicolon
-multiline_comment|/* cua-device             */
 DECL|member|modem_table
 r_struct
 id|tty_struct

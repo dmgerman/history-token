@@ -32,8 +32,20 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
+DECL|macro|E100_CABLE_UNKNOWN
+mdefine_line|#define E100_CABLE_UNKNOWN&t;0
+DECL|macro|E100_CABLE_OK
+mdefine_line|#define E100_CABLE_OK&t;&t;1&t;&t;
+DECL|macro|E100_CABLE_OPEN_NEAR
+mdefine_line|#define E100_CABLE_OPEN_NEAR&t;2&t;/* Open Circuit Near End  */
+DECL|macro|E100_CABLE_OPEN_FAR
+mdefine_line|#define E100_CABLE_OPEN_FAR&t;3&t;/* Open Circuit Far End   */
+DECL|macro|E100_CABLE_SHORT_NEAR
+mdefine_line|#define E100_CABLE_SHORT_NEAR&t;4&t;/* Short Circuit Near End */
+DECL|macro|E100_CABLE_SHORT_FAR
+mdefine_line|#define E100_CABLE_SHORT_FAR&t;5&t;/* Short Circuit Far End  */
 DECL|macro|E100_REGS_LEN
-mdefine_line|#define E100_REGS_LEN 1
+mdefine_line|#define E100_REGS_LEN 2
 multiline_comment|/*&n; *  Configure parameters for buffers per controller.&n; *  If the machine this is being used on is a faster machine (i.e. &gt; 150MHz)&n; *  and running on a 10MBS network then more queueing of data occurs. This&n; *  may indicate the some of the numbers below should be adjusted.  Here are&n; *  some typical numbers:&n; *                             MAX_TCB 64&n; *                             MAX_RFD 64&n; *  The default numbers give work well on most systems tests so no real&n; *  adjustments really need to take place.  Also, if the machine is connected&n; *  to a 100MBS network the numbers described above can be lowered from the&n; *  defaults as considerably less data will be queued.&n; */
 DECL|macro|TX_FRAME_CNT
 mdefine_line|#define TX_FRAME_CNT   8&t;/* consecutive transmit frames per interrupt */
@@ -76,10 +88,6 @@ mdefine_line|#define E100_MAX_SCB_WAIT&t;100&t;/* Max udelays in wait_scb */
 DECL|macro|E100_MAX_CU_IDLE_WAIT
 mdefine_line|#define E100_MAX_CU_IDLE_WAIT&t;50&t;/* Max udelays in wait_cus_idle */
 multiline_comment|/* HWI feature related constant */
-DECL|macro|HWI_MAX_LOOP
-mdefine_line|#define HWI_MAX_LOOP                    100
-DECL|macro|MAX_SAME_RESULTS
-mdefine_line|#define MAX_SAME_RESULTS&t;&t;3
 DECL|macro|HWI_REGISTER_GRANULARITY
 mdefine_line|#define HWI_REGISTER_GRANULARITY        80&t;/* register granularity = 80 Cm */
 DECL|macro|HWI_NEAR_END_BOUNDARY
@@ -2360,13 +2368,6 @@ l_int|16
 )braket
 suffix:semicolon
 macro_line|#endif
-DECL|member|ifname
-r_char
-id|ifname
-(braket
-id|IFNAMSIZ
-)braket
-suffix:semicolon
 macro_line|#ifdef E100_CU_DEBUG&t;
 DECL|member|last_cmd
 id|u8
@@ -2391,6 +2392,26 @@ DECL|macro|E100_SPEED_100_FULL
 mdefine_line|#define E100_SPEED_100_FULL 4
 multiline_comment|/********* function prototypes *************/
 r_extern
+r_int
+id|e100_open
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|e100_close
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|e100_isolate_driver
 c_func
@@ -2399,6 +2420,17 @@ r_struct
 id|e100_private
 op_star
 id|bdp
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|e100_hw_init
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -2569,31 +2601,28 @@ DECL|enum|test_offsets
 r_enum
 id|test_offsets
 (brace
-DECL|enumerator|E100_EEPROM_TEST_FAIL
-id|E100_EEPROM_TEST_FAIL
-op_assign
-l_int|0
+DECL|enumerator|test_link
+id|test_link
 comma
-DECL|enumerator|E100_CHIP_TIMEOUT
-id|E100_CHIP_TIMEOUT
+DECL|enumerator|test_eeprom
+id|test_eeprom
 comma
-DECL|enumerator|E100_ROM_TEST_FAIL
-id|E100_ROM_TEST_FAIL
+DECL|enumerator|test_self_test
+id|test_self_test
 comma
-DECL|enumerator|E100_REG_TEST_FAIL
-id|E100_REG_TEST_FAIL
+DECL|enumerator|test_loopback_mac
+id|test_loopback_mac
 comma
-DECL|enumerator|E100_MAC_TEST_FAIL
-id|E100_MAC_TEST_FAIL
+DECL|enumerator|test_loopback_phy
+id|test_loopback_phy
 comma
-DECL|enumerator|E100_LPBK_MAC_FAIL
-id|E100_LPBK_MAC_FAIL
+DECL|enumerator|cable_diag
+id|cable_diag
 comma
-DECL|enumerator|E100_LPBK_PHY_FAIL
-id|E100_LPBK_PHY_FAIL
+DECL|enumerator|max_test_res
+id|max_test_res
 comma
-DECL|enumerator|E100_MAX_TEST_RES
-id|E100_MAX_TEST_RES
+multiline_comment|/* must be last */
 )brace
 suffix:semicolon
 macro_line|#endif

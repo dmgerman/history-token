@@ -696,6 +696,17 @@ comma
 id|status
 )paren
 suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;search_node %p start_node %p return_node %p&bslash;n&quot;
+comma
+id|scope_info.scope.node
+comma
+id|parser_state-&gt;start_node
+comma
+id|node
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

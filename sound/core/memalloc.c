@@ -133,13 +133,13 @@ macro_line|#else
 DECL|macro|snd_assert
 mdefine_line|#define snd_assert(expr, args...) /**/
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 4, 0)
 macro_line|#ifdef CONFIG_PCI
 macro_line|#if defined(__i386__) || defined(__ppc__) || defined(__x86_64__)
 DECL|macro|HACK_PCI_ALLOC_CONSISTENT
 mdefine_line|#define HACK_PCI_ALLOC_CONSISTENT
 multiline_comment|/*&n; * A hack to allocate large buffers via pci_alloc_consistent()&n; *&n; * since pci_alloc_consistent always tries GFP_DMA when the requested&n; * pci memory region is below 32bit, it happens quite often that even&n; * 2 order of pages cannot be allocated.&n; *&n; * so in the following, we allocate at first without dma_mask, so that&n; * allocation will be done without GFP_DMA.  if the area doesn&squot;t match&n; * with the requested region, then realloate with the original dma_mask&n; * again.&n; */
 DECL|function|snd_pci_hack_alloc_consistent
+r_static
 r_void
 op_star
 id|snd_pci_hack_alloc_consistent
@@ -312,7 +312,6 @@ DECL|macro|pci_alloc_consistent
 mdefine_line|#define pci_alloc_consistent snd_pci_hack_alloc_consistent
 macro_line|#endif /* arch */
 macro_line|#endif /* CONFIG_PCI */
-macro_line|#endif /* LINUX &gt;= 2.4.0 */
 multiline_comment|/*&n; * compare the two devices&n; * returns non-zero if matched.&n; */
 DECL|function|compare_device
 r_static
@@ -746,7 +745,7 @@ op_star
 id|dev
 comma
 r_int
-id|allow_unused
+id|search_empty
 )paren
 (brace
 r_struct
@@ -784,6 +783,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|mem-&gt;used
+op_logical_and
+id|search_empty
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|compare_device
 c_func
 (paren
@@ -792,7 +800,7 @@ id|mem-&gt;dev
 comma
 id|dev
 comma
-id|allow_unused
+id|search_empty
 )paren
 )paren
 r_return
@@ -2011,7 +2019,7 @@ id|dma_addr
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 4, 0) &amp;&amp; defined(__i386__)
+macro_line|#if defined(__i386__)
 multiline_comment|/*&n; * on ix86, we allocate a page with GFP_KERNEL to assure the&n; * allocation.  the code is almost same with kernel/i386/pci-dma.c but&n; * it allocates only a single page and checks the validity of the&n; * page address with the given pci dma mask.&n; */
 multiline_comment|/**&n; * snd_malloc_pci_page - allocate a page in the valid pci dma mask&n; * @pci: pci device pointer&n; * @addrp: the pointer to store the physical address of the buffer&n; *&n; * Allocates a single page for the given PCI device and returns&n; * the virtual address and stores the physical address on addrp.&n; * &n; * This function cannot be called from interrupt handlers or&n; * within spinlocks.&n; */
 DECL|function|snd_malloc_pci_page
@@ -2641,6 +2649,8 @@ r_struct
 id|pci_dev
 op_star
 id|pci
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|card
@@ -2649,10 +2659,24 @@ id|card
 op_assign
 l_int|0
 suffix:semicolon
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|pci
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|pci
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_struct

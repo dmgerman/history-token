@@ -1873,6 +1873,8 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_const
 r_struct
@@ -1886,10 +1888,24 @@ l_string|&quot;ENTER&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Probe for Intel, AMD RNGs */
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|pdev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|pdev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|ent

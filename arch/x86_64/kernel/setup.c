@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -31,6 +32,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;video/edid.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
@@ -38,8 +40,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/bootsetup.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
-DECL|macro|Dprintk
-mdefine_line|#define Dprintk(x...) printk(x)
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|boot_cpu_data
 r_struct
@@ -50,6 +50,13 @@ DECL|variable|mmu_cr4_features
 r_int
 r_int
 id|mmu_cr4_features
+suffix:semicolon
+DECL|variable|mmu_cr4_features
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|mmu_cr4_features
+)paren
 suffix:semicolon
 DECL|variable|__initdata
 r_int
@@ -110,6 +117,11 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|variable|edid_info
+r_struct
+id|edid_info
+id|edid_info
 suffix:semicolon
 DECL|variable|e820
 r_struct
@@ -774,6 +786,30 @@ op_amp
 id|from
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;numa=&quot;
+comma
+l_int|5
+)paren
+)paren
+id|numa_setup
+c_func
+(paren
+id|from
+op_plus
+l_int|5
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_GART_IOMMU 
 r_if
 c_cond
@@ -952,15 +988,6 @@ op_star
 id|cmdline_p
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-id|Dprintk
-c_func
-(paren
-l_string|&quot;setup_arch&bslash;n&quot;
-)paren
-suffix:semicolon
 id|ROOT_DEV
 op_assign
 id|ORIG_ROOT_DEV
@@ -972,6 +999,10 @@ suffix:semicolon
 id|screen_info
 op_assign
 id|SCREEN_INFO
+suffix:semicolon
+id|edid_info
+op_assign
+id|EDID_INFO
 suffix:semicolon
 id|aux_device_present
 op_assign
@@ -1376,6 +1407,10 @@ op_amp
 id|vram_resource
 )paren
 suffix:semicolon
+(brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* request I/O space for devices used on all i[345]86 PCs */
 r_for
 c_loop
@@ -1402,6 +1437,7 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+)brace
 id|pci_mem_start
 op_assign
 id|IOMAP_START

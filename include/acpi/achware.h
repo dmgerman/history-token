@@ -95,9 +95,6 @@ r_struct
 id|acpi_generic_address
 op_star
 id|reg
-comma
-id|u32
-id|offset
 )paren
 suffix:semicolon
 id|acpi_status
@@ -113,9 +110,6 @@ r_struct
 id|acpi_generic_address
 op_star
 id|reg
-comma
-id|u32
-id|offset
 )paren
 suffix:semicolon
 id|acpi_status

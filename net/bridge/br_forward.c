@@ -56,7 +56,7 @@ id|skb
 )paren
 (brace
 macro_line|#ifdef CONFIG_NETFILTER
-multiline_comment|/* FIXME: skb bas not been linearized: is this valid?? --RR */
+multiline_comment|/* ip_refrag calls ip_fragment, which doesn&squot;t copy the MAC header. */
 r_if
 c_cond
 (paren

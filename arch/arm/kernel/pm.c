@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/arch/arm/kernel/suspend.c&n; *&n; * This progra
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Tell the linker that pm_do_suspend may not be present.&n; */
@@ -150,14 +149,6 @@ c_func
 id|RESUME_POWER_ON
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Restore the CPU frequency settings.&n;&t; */
-macro_line|#ifdef CONFIG_CPU_FREQ
-id|cpufreq_restore
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Resume LDM devices.&n;&t; */
 id|device_resume
 c_func

@@ -3692,6 +3692,16 @@ comma
 l_int|16
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|wss_port
+(braket
+id|dev
+)braket
+op_ne
+id|SNDRV_AUTO_PORT
+)paren
 id|pnp_resource_change
 c_func
 (paren
@@ -3923,7 +3933,9 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PnP configure failure (out of resources?)&bslash;n&quot;
+l_string|&quot;PnP configure failure (out of resources?) err = %d&bslash;n&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 r_return
@@ -5323,6 +5335,15 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Yamaha OPL3-SA soundcard not found or device busy&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PNP
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|opl3sa2_pnpc_driver
 )paren
 suffix:semicolon
 macro_line|#endif

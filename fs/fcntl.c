@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/poll.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -292,6 +293,7 @@ op_star
 id|file
 comma
 r_int
+r_int
 id|orig_start
 )paren
 (brace
@@ -300,10 +302,11 @@ r_int
 id|newfd
 suffix:semicolon
 r_int
-id|error
-suffix:semicolon
 r_int
 id|start
+suffix:semicolon
+r_int
+id|error
 suffix:semicolon
 id|error
 op_assign
@@ -451,6 +454,7 @@ id|file
 op_star
 id|file
 comma
+r_int
 r_int
 id|start
 )paren
@@ -1190,14 +1194,6 @@ id|cmd
 r_case
 id|F_DUPFD
 suffix:colon
-r_if
-c_cond
-(paren
-id|arg
-OL
-id|NR_OPEN
-)paren
-(brace
 id|get_file
 c_func
 (paren
@@ -1214,7 +1210,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1329,6 +1324,11 @@ multiline_comment|/*&n;&t;&t;&t; * XXX If f_owner is a process group, the&n;&t;&
 id|err
 op_assign
 id|filp-&gt;f_owner.pid
+suffix:semicolon
+id|force_successful_syscall_return
+c_func
+(paren
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

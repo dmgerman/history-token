@@ -28,7 +28,8 @@ r_int
 id|ide_default_irq
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace
@@ -39,7 +40,8 @@ suffix:semicolon
 DECL|function|ide_default_io_base
 r_static
 id|__inline__
-id|ide_ioreg_t
+r_int
+r_int
 id|ide_default_io_base
 c_func
 (paren
@@ -63,10 +65,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data_port
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl_port
 comma
 r_int
@@ -100,85 +104,93 @@ r_void
 )paren
 (brace
 )brace
-DECL|macro|SUPPORT_SLOW_DATA_PORTS
-macro_line|#undef SUPPORT_SLOW_DATA_PORTS
-DECL|macro|SUPPORT_SLOW_DATA_PORTS
-mdefine_line|#define SUPPORT_SLOW_DATA_PORTS 0
-multiline_comment|/* this definition is used only on startup .. */
-DECL|macro|HD_DATA
-macro_line|#undef HD_DATA
-DECL|macro|HD_DATA
-mdefine_line|#define HD_DATA NULL
-multiline_comment|/* get rid of defs from io.h - ide has its private and conflicting versions */
+multiline_comment|/*&n; * Get rid of defs from io.h - ide has its private and conflicting versions&n; * Since so far no single m68k platform uses ISA/PCI I/O space for IDE, we&n; * always use the `raw&squot; MMIO versions&n; */
 DECL|macro|inb
 macro_line|#undef inb
 DECL|macro|inw
 macro_line|#undef inw
+DECL|macro|insw
+macro_line|#undef insw
+DECL|macro|inl
+macro_line|#undef inl
+DECL|macro|insl
+macro_line|#undef insl
 DECL|macro|outb
 macro_line|#undef outb
 DECL|macro|outw
 macro_line|#undef outw
-DECL|macro|inb_p
-macro_line|#undef inb_p
-DECL|macro|outb_p
-macro_line|#undef outb_p
-DECL|macro|insw
-macro_line|#undef insw
 DECL|macro|outsw
 macro_line|#undef outsw
-DECL|macro|insw_swapw
-macro_line|#undef insw_swapw
-DECL|macro|outsw_swapw
-macro_line|#undef outsw_swapw
-multiline_comment|/* &n; * define IO method and translation,&n; * so far only Q40 has ide-if on ISA &n;*/
-macro_line|#ifndef CONFIG_Q40
-DECL|macro|ADDR_TRANS_B
-mdefine_line|#define ADDR_TRANS_B(_addr_) (_addr_)
-DECL|macro|ADDR_TRANS_W
-mdefine_line|#define ADDR_TRANS_W(_addr_) (_addr_)
-macro_line|#else
-DECL|macro|ADDR_TRANS_B
-mdefine_line|#define ADDR_TRANS_B(_addr_) (MACH_IS_Q40 ? ((unsigned char *)Q40_ISA_IO_B(_addr_)) : (_addr_))
-DECL|macro|ADDR_TRANS_W
-mdefine_line|#define ADDR_TRANS_W(_addr_) (MACH_IS_Q40 ? ((unsigned char *)Q40_ISA_IO_W(_addr_)) : (_addr_))
-macro_line|#endif
-DECL|macro|inb
-mdefine_line|#define inb(p)     in_8(ADDR_TRANS_B(p))
-DECL|macro|inb_p
-mdefine_line|#define inb_p(p)     in_8(ADDR_TRANS_B(p))
-DECL|macro|inw
-mdefine_line|#define inw(p)     in_be16(ADDR_TRANS_W(p))
-DECL|macro|inw_p
-mdefine_line|#define inw_p(p)     in_be16(ADDR_TRANS_W(p))
-DECL|macro|outb
-mdefine_line|#define outb(v,p)  out_8(ADDR_TRANS_B(p),v)
-DECL|macro|outb_p
-mdefine_line|#define outb_p(v,p)  out_8(ADDR_TRANS_B(p),v)
-DECL|macro|outw
-mdefine_line|#define outw(v,p)  out_be16(ADDR_TRANS_W(p),v)
-DECL|macro|insw
-mdefine_line|#define insw(port, buf, nr) raw_insw(ADDR_TRANS_W(port), buf, nr)
-DECL|macro|outsw
-mdefine_line|#define outsw(port, buf, nr) raw_outsw(ADDR_TRANS_W(port), buf, nr)
-DECL|macro|insl
-mdefine_line|#define insl(data_reg, buffer, wcount) insw(data_reg, buffer, (wcount)&lt;&lt;1)
+DECL|macro|outl
+macro_line|#undef outl
 DECL|macro|outsl
-mdefine_line|#define outsl(data_reg, buffer, wcount) outsw(data_reg, buffer, (wcount)&lt;&lt;1)
+macro_line|#undef outsl
+DECL|macro|readb
+macro_line|#undef readb
+DECL|macro|readw
+macro_line|#undef readw
+DECL|macro|readl
+macro_line|#undef readl
+DECL|macro|writeb
+macro_line|#undef writeb
+DECL|macro|writew
+macro_line|#undef writew
+DECL|macro|writel
+macro_line|#undef writel
+DECL|macro|inb
+mdefine_line|#define inb&t;&t;&t;&t;in_8
+DECL|macro|inw
+mdefine_line|#define inw&t;&t;&t;&t;in_be16
+DECL|macro|insw
+mdefine_line|#define insw(port, addr, n)&t;&t;raw_insw((u16 *)port, addr, n)
+DECL|macro|inl
+mdefine_line|#define inl&t;&t;&t;&t;in_be32
+DECL|macro|insl
+mdefine_line|#define insl(port, addr, n)&t;&t;raw_insl((u32 *)port, addr, n)
+DECL|macro|outb
+mdefine_line|#define outb(val, port)&t;&t;&t;out_8(port, val)
+DECL|macro|outw
+mdefine_line|#define outw(val, port)&t;&t;&t;out_be16(port, val)
+DECL|macro|outsw
+mdefine_line|#define outsw(port, addr, n)&t;&t;raw_outsw((u16 *)port, addr, n)
+DECL|macro|outl
+mdefine_line|#define outl(val, port)&t;&t;&t;out_be32(port, val)
+DECL|macro|outsl
+mdefine_line|#define outsl(port, addr, n)&t;&t;raw_outsl((u32 *)port, addr, n)
+DECL|macro|readb
+mdefine_line|#define readb&t;&t;&t;&t;in_8
+DECL|macro|readw
+mdefine_line|#define readw&t;&t;&t;&t;in_be16
+DECL|macro|__ide_mm_insw
+mdefine_line|#define __ide_mm_insw(port, addr, n)&t;raw_insw((u16 *)port, addr, n)
+DECL|macro|readl
+mdefine_line|#define readl&t;&t;&t;&t;in_be32
+DECL|macro|__ide_mm_insl
+mdefine_line|#define __ide_mm_insl(port, addr, n)&t;raw_insl((u32 *)port, addr, n)
+DECL|macro|writeb
+mdefine_line|#define writeb(val, port)&t;&t;out_8(port, val)
+DECL|macro|writew
+mdefine_line|#define writew(val, port)&t;&t;out_be16(port, val)
+DECL|macro|__ide_mm_outsw
+mdefine_line|#define __ide_mm_outsw(port, addr, n)&t;raw_outsw((u16 *)port, addr, n)
+DECL|macro|writel
+mdefine_line|#define writel(val, port)&t;&t;out_be32(port, val)
+DECL|macro|__ide_mm_outsl
+mdefine_line|#define __ide_mm_outsl(port, addr, n)&t;raw_outsl((u32 *)port, addr, n)
 macro_line|#if defined(CONFIG_ATARI) || defined(CONFIG_Q40)
-DECL|macro|insl_swapw
-mdefine_line|#define insl_swapw(data_reg, buffer, wcount) &bslash;&n;    insw_swapw(data_reg, buffer, (wcount)&lt;&lt;1)
-DECL|macro|outsl_swapw
-mdefine_line|#define outsl_swapw(data_reg, buffer, wcount) &bslash;&n;    outsw_swapw(data_reg, buffer, (wcount)&lt;&lt;1)
 DECL|macro|insw_swapw
-mdefine_line|#define insw_swapw(port, buf, nr) raw_insw_swapw(ADDR_TRANS_W(port), buf, nr)
+mdefine_line|#define insw_swapw(port, addr, n)&t;raw_insw_swapw((u16 *)port, addr, n)
 DECL|macro|outsw_swapw
-mdefine_line|#define outsw_swapw(port, buf, nr) raw_outsw_swapw(ADDR_TRANS_W(port),buf,nr)
-macro_line|#endif /* CONFIG_ATARI || CONFIG_Q40 */
-DECL|macro|ATA_ARCH_ACK_INTR
-mdefine_line|#define ATA_ARCH_ACK_INTR
+mdefine_line|#define outsw_swapw(port, addr, n)&t;raw_outsw_swapw((u16 *)port, addr, n)
+macro_line|#endif
+multiline_comment|/* Q40 and Atari have byteswapped IDE busses and since many interesting&n; * values in the identification string are text, chars and words they&n; * happened to be almost correct without swapping.. However *_capacity&n; * is needed for drives over 8 GB. RZ */
+macro_line|#if defined(CONFIG_Q40) || defined(CONFIG_ATARI)
+DECL|macro|M68K_IDE_SWAPW
+mdefine_line|#define M68K_IDE_SWAPW  (MACH_IS_Q40 || MACH_IS_ATARI)
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_FALCON_IDE
-DECL|macro|ATA_ARCH_LOCK
-mdefine_line|#define ATA_ARCH_LOCK
+DECL|macro|IDE_ARCH_LOCK
+mdefine_line|#define IDE_ARCH_LOCK
 r_extern
 r_int
 id|falconide_intr_lock
@@ -226,14 +238,14 @@ c_func
 suffix:semicolon
 )brace
 )brace
-DECL|function|ide_get_lock
 r_static
 id|__inline__
 r_void
+DECL|function|ide_get_lock
 id|ide_get_lock
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -300,6 +312,10 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_FALCON_IDE */
+DECL|macro|IDE_ARCH_ACK_INTR
+mdefine_line|#define IDE_ARCH_ACK_INTR
+DECL|macro|ide_ack_intr
+mdefine_line|#define ide_ack_intr(hwif)&t;((hwif)-&gt;hw.ack_intr ? (hwif)-&gt;hw.ack_intr(hwif) : 1)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _M68K_IDE_H */
 eof

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach-summit/mach_apic.h&gt;
+macro_line|#include &lt;asm/mach-summit/mach_apicdef.h&gt;
 macro_line|#include &lt;asm/mach-summit/mach_ipi.h&gt;
 macro_line|#include &lt;asm/mach-summit/mach_mpparse.h&gt;
 DECL|function|probe_summit

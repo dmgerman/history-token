@@ -140,7 +140,11 @@ suffix:colon
 l_string|&quot;0&quot;
 (paren
 op_complement
-l_int|8191UL
+(paren
+id|THREAD_SIZE
+op_minus
+l_int|1
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -150,7 +154,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info() &bslash;&n;&t;((struct thread_info *) __get_free_pages(GFP_KERNEL,THREAD_ORDER))
+mdefine_line|#define alloc_thread_info(tsk) &bslash;&n;&t;((struct thread_info *) __get_free_pages(GFP_KERNEL,THREAD_ORDER))
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), THREAD_ORDER)
 DECL|macro|get_thread_info
@@ -180,6 +184,8 @@ DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;16&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
 DECL|macro|TIF_IA32
 mdefine_line|#define TIF_IA32&t;&t;17&t;/* 32bit process */ 
+DECL|macro|TIF_FORK
+mdefine_line|#define TIF_FORK&t;&t;18&t;/* ret_from_fork */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME
@@ -196,6 +202,8 @@ DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
 DECL|macro|_TIF_IA32
 mdefine_line|#define _TIF_IA32&t;&t;(1&lt;&lt;TIF_IA32)
+DECL|macro|_TIF_FORK
+mdefine_line|#define _TIF_FORK&t;&t;(1&lt;&lt;TIF_FORK)
 DECL|macro|_TIF_WORK_MASK
 mdefine_line|#define _TIF_WORK_MASK&t;&t;0x0000FFFE&t;/* work to do on interrupt/exception return */
 DECL|macro|_TIF_ALLWORK_MASK

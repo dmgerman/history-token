@@ -1162,7 +1162,7 @@ multiline_comment|/* Socket must be connected */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_CONNECTED
 )paren
@@ -1250,7 +1250,7 @@ id|RFCOMM_REUSE_DLC
 )paren
 (brace
 multiline_comment|/* DLC is now used by device.&n;&t;&t; * Socket must be disconnected */
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|BT_CLOSED
 suffix:semicolon
@@ -3955,19 +3955,16 @@ id|driver_name
 op_assign
 l_string|&quot;rfcomm&quot;
 comma
-macro_line|#ifdef CONFIG_DEVFS_FS
 dot
-id|name
+id|devfs_name
 op_assign
 l_string|&quot;bluetooth/rfcomm/&quot;
 comma
-macro_line|#else
 dot
 id|name
 op_assign
 l_string|&quot;rfcomm&quot;
 comma
-macro_line|#endif
 dot
 id|major
 op_assign

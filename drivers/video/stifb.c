@@ -4547,7 +4547,7 @@ id|out_err1
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* get framebuffer pysical and virtual base addr &amp; len (64bit ready) */
+multiline_comment|/* get framebuffer physical and virtual base addr &amp; len (64bit ready) */
 id|fix-&gt;smem_start
 op_assign
 id|fb-&gt;sti-&gt;regions_phys

@@ -257,7 +257,7 @@ id|d.channels
 )paren
 )paren
 multiline_comment|/* workaround for different Name in structure */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|IoAdapters
@@ -278,12 +278,7 @@ l_int|1
 op_member_access_from_pointer
 id|Properties.Name
 comma
-id|MIN
-c_func
-(paren
-l_int|30
-comma
-id|strlen
+r_sizeof
 (paren
 id|IoAdapters
 (braket
@@ -292,10 +287,7 @@ op_minus
 l_int|1
 )braket
 op_member_access_from_pointer
-id|Properties
-dot
 id|Name
-)paren
 )paren
 )paren
 suffix:semicolon

@@ -10326,7 +10326,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-id|unregister_trdev
+id|unregister_netdev
 c_func
 (paren
 id|dev

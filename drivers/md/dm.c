@@ -21,12 +21,14 @@ mdefine_line|#define MAX_DEVICES 1024
 DECL|variable|major
 r_static
 r_int
+r_int
 id|major
 op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|_major
 r_static
+r_int
 r_int
 id|_major
 op_assign
@@ -967,7 +969,6 @@ id|ti-&gt;len
 op_minus
 id|offset
 suffix:semicolon
-multiline_comment|/* FIXME: obey io_restrictions ! */
 multiline_comment|/*&n;&t; * Does the target need to split even further ?&n;&t; */
 r_if
 c_cond
@@ -1920,6 +1921,7 @@ id|free_minor
 c_func
 (paren
 r_int
+r_int
 id|minor
 )paren
 (brace
@@ -1953,6 +1955,7 @@ r_int
 id|specific_minor
 c_func
 (paren
+r_int
 r_int
 id|minor
 )paren
@@ -2005,7 +2008,7 @@ id|_minor_bits
 )paren
 id|r
 op_assign
-id|minor
+l_int|0
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -2024,16 +2027,21 @@ r_int
 id|next_free_minor
 c_func
 (paren
-r_void
+r_int
+r_int
+op_star
+id|minor
 )paren
 (brace
 r_int
-id|minor
-comma
 id|r
 op_assign
 op_minus
 id|EBUSY
+suffix:semicolon
+r_int
+r_int
+id|m
 suffix:semicolon
 id|spin_lock
 c_func
@@ -2042,7 +2050,7 @@ op_amp
 id|_minor_lock
 )paren
 suffix:semicolon
-id|minor
+id|m
 op_assign
 id|find_first_zero_bit
 c_func
@@ -2055,7 +2063,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|minor
+id|m
 op_ne
 id|MAX_DEVICES
 )paren
@@ -2063,14 +2071,19 @@ id|MAX_DEVICES
 id|set_bit
 c_func
 (paren
-id|minor
+id|m
 comma
 id|_minor_bits
 )paren
 suffix:semicolon
+op_star
+id|minor
+op_assign
+id|m
+suffix:semicolon
 id|r
 op_assign
-id|minor
+l_int|0
 suffix:semicolon
 )brace
 id|spin_unlock
@@ -2094,9 +2107,13 @@ id|alloc_dev
 c_func
 (paren
 r_int
+r_int
 id|minor
 )paren
 (brace
+r_int
+id|r
+suffix:semicolon
 r_struct
 id|mapped_device
 op_star
@@ -2132,7 +2149,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* get a minor number for the dev */
-id|minor
+id|r
 op_assign
 (paren
 id|minor
@@ -2144,6 +2161,8 @@ c_cond
 id|next_free_minor
 c_func
 (paren
+op_amp
+id|minor
 )paren
 suffix:colon
 id|specific_minor
@@ -2155,7 +2174,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|minor
+id|r
 OL
 l_int|0
 )paren
@@ -2170,14 +2189,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|DMWARN
-c_func
-(paren
-l_string|&quot;allocating minor %d.&quot;
-comma
-id|minor
-)paren
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2245,7 +2256,7 @@ id|md-&gt;io_pool
 id|free_minor
 c_func
 (paren
-id|md-&gt;disk-&gt;first_minor
+id|minor
 )paren
 suffix:semicolon
 id|kfree
@@ -2282,7 +2293,7 @@ suffix:semicolon
 id|free_minor
 c_func
 (paren
-id|md-&gt;disk-&gt;first_minor
+id|minor
 )paren
 suffix:semicolon
 id|kfree
@@ -2510,6 +2521,7 @@ id|dm_create
 c_func
 (paren
 r_int
+r_int
 id|minor
 comma
 r_struct
@@ -2576,6 +2588,12 @@ r_return
 id|r
 suffix:semicolon
 )brace
+id|dm_table_resume_targets
+c_func
+(paren
+id|md-&gt;map
+)paren
+suffix:semicolon
 op_star
 id|result
 op_assign
@@ -2626,10 +2644,23 @@ id|md-&gt;holders
 )paren
 )paren
 (brace
-id|DMWARN
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
 c_func
 (paren
-l_string|&quot;destroying md&quot;
+id|DMF_SUSPENDED
+comma
+op_amp
+id|md-&gt;flags
+)paren
+)paren
+id|dm_table_suspend_targets
+c_func
+(paren
+id|md-&gt;map
 )paren
 suffix:semicolon
 id|__unbind
@@ -2927,6 +2958,12 @@ op_amp
 id|md-&gt;flags
 )paren
 suffix:semicolon
+id|dm_table_suspend_targets
+c_func
+(paren
+id|md-&gt;map
+)paren
+suffix:semicolon
 id|up_write
 c_func
 (paren
@@ -2994,6 +3031,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|dm_table_resume_targets
+c_func
+(paren
+id|md-&gt;map
+)paren
+suffix:semicolon
 id|clear_bit
 c_func
 (paren

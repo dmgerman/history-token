@@ -505,7 +505,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|lance_interrupt
 c_func
 (paren
@@ -2494,7 +2494,7 @@ suffix:semicolon
 multiline_comment|/* The LANCE interrupt handler. */
 DECL|function|lance_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|lance_interrupt
 c_func
 (paren
@@ -2551,6 +2551,7 @@ l_string|&quot;lance_interrupt(): invalid dev_id&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -2806,6 +2807,7 @@ op_or
 id|CSR0_INEA
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -3055,6 +3057,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* get packet, toss into skbuff */

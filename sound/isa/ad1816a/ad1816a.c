@@ -1959,6 +1959,14 @@ c_cond
 op_logical_neg
 id|cards
 )paren
+(brace
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|ad1816a_pnpc_driver
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1966,6 +1974,7 @@ id|KERN_ERR
 l_string|&quot;no AD1816A based soundcards found.&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif&t;/* MODULE */
 r_return
 id|cards

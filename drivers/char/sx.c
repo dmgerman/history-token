@@ -42,11 +42,6 @@ macro_line|#include &lt;linux/generic_serial.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;sx.h&quot;
 multiline_comment|/* I don&squot;t think that this driver can handle more than 256 ports on&n;   one machine. You&squot;ll have to increase the number of boards in sx.h&n;   if you want more than 4 boards.  */
-multiline_comment|/* Why the hell am I defining these here? */
-DECL|macro|SX_TYPE_NORMAL
-mdefine_line|#define SX_TYPE_NORMAL 1
-DECL|macro|SX_TYPE_CALLOUT
-mdefine_line|#define SX_TYPE_CALLOUT 2
 macro_line|#ifndef PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
 DECL|macro|PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
 mdefine_line|#define PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8 0x2000
@@ -165,15 +160,6 @@ id|ptr
 suffix:semicolon
 r_static
 r_void
-id|sx_hungup
-(paren
-r_void
-op_star
-id|ptr
-)paren
-suffix:semicolon
-r_static
-r_void
 id|sx_close
 (paren
 r_void
@@ -243,13 +229,10 @@ r_void
 )paren
 suffix:semicolon
 DECL|variable|sx_driver
-DECL|variable|sx_callout_driver
 r_static
 r_struct
 id|tty_driver
 id|sx_driver
-comma
-id|sx_callout_driver
 suffix:semicolon
 DECL|variable|sx_table
 r_static
@@ -491,8 +474,6 @@ comma
 id|sx_chars_in_buffer
 comma
 id|sx_close
-comma
-id|sx_hungup
 comma
 )brace
 suffix:semicolon
@@ -4007,22 +3988,6 @@ r_if
 c_cond
 (paren
 (paren
-op_complement
-(paren
-id|port-&gt;gs.flags
-op_amp
-id|ASYNC_NORMAL_ACTIVE
-)paren
-op_logical_or
-op_complement
-(paren
-id|port-&gt;gs.flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-)paren
-op_logical_and
-(paren
 id|sx_read_channel_byte
 c_func
 (paren
@@ -4075,21 +4040,6 @@ multiline_comment|/* DCD went down! */
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-(paren
-id|port-&gt;gs.flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
-(paren
-id|port-&gt;gs.flags
-op_amp
-id|ASYNC_CALLOUT_NOHUP
-)paren
-)paren
-op_logical_and
 op_logical_neg
 (paren
 id|port-&gt;gs.tty-&gt;termios-&gt;c_cflag
@@ -4977,14 +4927,6 @@ id|port-&gt;gs.tty
 op_assign
 id|tty
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port-&gt;gs.count
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|port-&gt;gs.count
 op_increment
 suffix:semicolon
@@ -5020,13 +4962,6 @@ id|retval
 (brace
 id|port-&gt;gs.count
 op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;gs.count
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|retval
@@ -5123,14 +5058,6 @@ suffix:semicolon
 id|port-&gt;gs.count
 op_decrement
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port-&gt;gs.count
-)paren
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -5185,23 +5112,10 @@ id|ASYNC_SPLIT_TERMIOS
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|tty-&gt;driver-&gt;subtype
-op_eq
-id|SERIAL_TYPE_NORMAL
-)paren
 op_star
 id|tty-&gt;termios
 op_assign
 id|port-&gt;gs.normal_termios
-suffix:semicolon
-r_else
-op_star
-id|tty-&gt;termios
-op_assign
-id|port-&gt;gs.callout_termios
 suffix:semicolon
 id|sx_set_real_termios
 (paren
@@ -5209,14 +5123,6 @@ id|port
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;gs.session
-op_assign
-id|current-&gt;session
-suffix:semicolon
-id|port-&gt;gs.pgrp
-op_assign
-id|current-&gt;pgrp
-suffix:semicolon
 id|port-&gt;c_dcd
 op_assign
 id|sx_get_CD
@@ -5240,32 +5146,6 @@ c_func
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* I haven&squot;t the foggiest why the decrement use count has to happen&n;   here. The whole linux serial drivers stuff needs to be redesigned.&n;   My guess is that this is a hack to minimize the impact of a bug&n;   elsewhere. Thinking about it some more. (try it sometime) Try&n;   running minicom on a serial port that is driven by a modularized&n;   driver. Have the modem hangup. Then remove the driver module. Then&n;   exit minicom.  I expect an &quot;oops&quot;.  -- REW */
-DECL|function|sx_hungup
-r_static
-r_void
-id|sx_hungup
-(paren
-r_void
-op_star
-id|ptr
-)paren
-(brace
-multiline_comment|/*&n;&t;struct sx_port *port = ptr; &n;  */
-id|func_enter
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Don&squot;t force the SX card to close. mgetty doesn&squot;t like it !!!!!! -- pvdl */
-multiline_comment|/* For some reson we added this code. Don&squot;t know why anymore ;-( -- pvdl */
-multiline_comment|/*&n;&t;sx_setsignals (port, 0, 0);&n;&t;sx_reconfigure_port(port);&t;&n;&t;sx_send_command (port, HS_CLOSE, 0, 0);&n;&n;&t;if (sx_read_channel_byte (port, hi_hstat) != HS_IDLE_CLOSED) {&n;&t;&t;if (sx_send_command (port, HS_FORCE_CLOSED, -1, HS_IDLE_CLOSED) != 1) {&n;&t;&t;&t;printk (KERN_ERR &n;&t;&t;&t;        &quot;sx: sent the force_close command, but card didn&squot;t react&bslash;n&quot;);&n;&t;&t;} else&n;&t;&t;&t;sx_dprintk (SX_DEBUG_CLOSE, &quot;sent the force_close command.&bslash;n&quot;);&n;&t;}&n;&t;*/
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-id|func_exit
-(paren
-)paren
 suffix:semicolon
 )brace
 DECL|function|sx_close
@@ -5450,8 +5330,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|func_exit
 (paren
 )paren
@@ -8754,6 +8632,10 @@ id|sx_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|sx_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|sx_driver.driver_name
 op_assign
 l_string|&quot;specialix_sx&quot;
@@ -8776,7 +8658,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|sx_driver.subtype
 op_assign
-id|SX_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|sx_driver.init_termios
 op_assign
@@ -8879,22 +8761,6 @@ id|sx_driver.hangup
 op_assign
 id|gs_hangup
 suffix:semicolon
-id|sx_callout_driver
-op_assign
-id|sx_driver
-suffix:semicolon
-id|sx_callout_driver.name
-op_assign
-l_string|&quot;cux&quot;
-suffix:semicolon
-id|sx_callout_driver.major
-op_assign
-id|SX_CALLOUT_MAJOR
-suffix:semicolon
-id|sx_callout_driver.subtype
-op_assign
-id|SX_TYPE_CALLOUT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8915,41 +8781,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;sx: Couldn&squot;t register sx driver, error = %d&bslash;n&quot;
-comma
-id|error
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|error
-op_assign
-id|tty_register_driver
-c_func
-(paren
-op_amp
-id|sx_callout_driver
-)paren
-)paren
-)paren
-(brace
-id|tty_unregister_driver
-c_func
-(paren
-op_amp
-id|sx_driver
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;sx: Couldn&squot;t register sx callout driver, error = %d&bslash;n&quot;
 comma
 id|error
 )paren
@@ -9212,10 +9043,6 @@ l_string|&quot;initing port %d&bslash;n&quot;
 comma
 id|j
 )paren
-suffix:semicolon
-id|port-&gt;gs.callout_termios
-op_assign
-id|tty_std_termios
 suffix:semicolon
 id|port-&gt;gs.normal_termios
 op_assign
@@ -9490,13 +9317,6 @@ op_amp
 id|sx_driver
 )paren
 suffix:semicolon
-id|tty_unregister_driver
-c_func
-(paren
-op_amp
-id|sx_callout_driver
-)paren
-suffix:semicolon
 id|func_exit
 c_func
 (paren
@@ -9753,14 +9573,6 @@ id|EIO
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-id|pci_present
-(paren
-)paren
-)paren
-(brace
 macro_line|#ifndef TWO_ZERO
 r_while
 c_loop
@@ -9827,8 +9639,8 @@ id|pci_fun
 r_break
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Specialix has a whole bunch of cards with&n;&t;&t;&t;   0x2000 as the device ID. They say its because&n;&t;&t;&t;   the standard requires it. Stupid standard. */
-multiline_comment|/* It seems that reading a word doesn&squot;t work reliably on 2.0.&n;&t;&t;&t;   Also, reading a non-aligned dword doesn&squot;t work. So we read the&n;&t;&t;&t;   whole dword at 0x2c and extract the word at 0x2e (SUBSYSTEM_ID)&n;&t;&t;&t;   ourselves */
+multiline_comment|/* Specialix has a whole bunch of cards with&n;&t;&t;   0x2000 as the device ID. They say its because&n;&t;&t;   the standard requires it. Stupid standard. */
+multiline_comment|/* It seems that reading a word doesn&squot;t work reliably on 2.0.&n;&t;&t;   Also, reading a non-aligned dword doesn&squot;t work. So we read the&n;&t;&t;   whole dword at 0x2c and extract the word at 0x2e (SUBSYSTEM_ID)&n;&t;&t;   ourselves */
 multiline_comment|/* I don&squot;t know why the define doesn&squot;t work, constant 0x2c does --REW */
 id|pci_read_config_dword
 (paren
@@ -9976,7 +9788,7 @@ l_string|&quot;ioremap failed&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* XXX handle error */
 )brace
-multiline_comment|/* Most of the stuff on the CF board is offset by&n;&t;&t;&t;   0x18000 ....  */
+multiline_comment|/* Most of the stuff on the CF board is offset by&n;&t;&t;   0x18000 ....  */
 r_if
 c_cond
 (paren
@@ -10045,7 +9857,6 @@ id|board-&gt;base
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 r_for

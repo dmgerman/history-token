@@ -952,9 +952,9 @@ id|dn_fib_tables
 suffix:semicolon
 macro_line|#else /* Endnode */
 DECL|macro|dn_fib_init
-mdefine_line|#define dn_fib_init() (0)
+mdefine_line|#define dn_fib_init()  do { } while(0)
 DECL|macro|dn_fib_cleanup
-mdefine_line|#define dn_fib_cleanup() (0)
+mdefine_line|#define dn_fib_cleanup() do { } while(0)
 DECL|macro|dn_fib_lookup
 mdefine_line|#define dn_fib_lookup(fl, res) (-ESRCH)
 DECL|macro|dn_fib_info_put

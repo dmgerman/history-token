@@ -2,17 +2,9 @@ macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_X86_GENERICARCH
-DECL|macro|x86_summit
-mdefine_line|#define x86_summit 1&t;/* must be an constant expressiona for generic arch */
-macro_line|#else
-r_extern
-r_int
-id|x86_summit
-suffix:semicolon
-macro_line|#endif
+macro_line|#include &lt;asm/smp.h&gt;
 DECL|macro|esr_disable
-mdefine_line|#define esr_disable (x86_summit ? 1 : 0)
+mdefine_line|#define esr_disable (1)
 DECL|macro|NO_BALANCE_IRQ
 mdefine_line|#define NO_BALANCE_IRQ (0)
 DECL|macro|XAPIC_DEST_CPUS_MASK
@@ -56,7 +48,7 @@ id|XAPIC_DEST_CLUSTER_MASK
 suffix:semicolon
 )brace
 DECL|macro|APIC_DFR_VALUE
-mdefine_line|#define APIC_DFR_VALUE&t;(x86_summit ? APIC_DFR_CLUSTER : APIC_DFR_FLAT)
+mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|function|target_cpus
 r_static
 r_inline
@@ -70,19 +62,15 @@ r_void
 (brace
 r_return
 (paren
-id|x86_summit
-ques
-c_cond
-id|XAPIC_DEST_CPUS_MASK
-suffix:colon
-id|cpu_online_map
+op_complement
+l_int|0UL
 )paren
 suffix:semicolon
 )brace
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS&t;(target_cpus())
 DECL|macro|INT_DELIVERY_MODE
-mdefine_line|#define INT_DELIVERY_MODE (x86_summit ? dest_Fixed : dest_LowestPrio)
+mdefine_line|#define INT_DELIVERY_MODE (dest_Fixed)
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
 DECL|macro|APIC_BROADCAST_ID
@@ -104,22 +92,7 @@ id|apicid
 )paren
 (brace
 r_return
-(paren
-id|x86_summit
-ques
-c_cond
 l_int|0
-suffix:colon
-(paren
-id|bitmap
-op_amp
-(paren
-l_int|1
-op_lshift
-id|apicid
-)paren
-)paren
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* we don&squot;t use the phys_cpu_present_map to indicate apicid presence */
@@ -136,22 +109,7 @@ id|bit
 )paren
 (brace
 r_return
-(paren
-id|x86_summit
-ques
-c_cond
 l_int|1
-suffix:colon
-(paren
-id|phys_cpu_present_map
-op_amp
-(paren
-l_int|1
-op_lshift
-id|bit
-)paren
-)paren
-)paren
 suffix:semicolon
 )brace
 DECL|macro|apicid_cluster
@@ -162,34 +120,6 @@ id|bios_cpu_apicid
 (braket
 )braket
 suffix:semicolon
-DECL|function|get_apic_id
-r_static
-r_inline
-r_int
-id|get_apic_id
-c_func
-(paren
-r_int
-r_int
-id|x
-)paren
-(brace
-r_return
-(paren
-(paren
-(paren
-id|x
-)paren
-op_rshift
-l_int|24
-)paren
-op_amp
-l_int|0xFF
-)paren
-suffix:semicolon
-)brace
-DECL|macro|GET_APIC_ID
-mdefine_line|#define&t;&t;GET_APIC_ID(x)&t;get_apic_id(x)
 DECL|function|init_apic_ldr
 r_static
 r_inline
@@ -206,41 +136,15 @@ id|val
 comma
 id|id
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|x86_summit
-)paren
 id|id
 op_assign
 id|xapic_phys_to_log_apicid
 c_func
 (paren
-id|GET_APIC_ID
+id|hard_smp_processor_id
 c_func
 (paren
-op_star
-(paren
-r_int
-r_int
-op_star
 )paren
-(paren
-id|APIC_BASE
-op_plus
-id|APIC_ID
-)paren
-)paren
-)paren
-suffix:semicolon
-r_else
-id|id
-op_assign
-l_int|1UL
-op_lshift
-id|smp_processor_id
-c_func
-(paren
 )paren
 suffix:semicolon
 id|apic_write_around
@@ -324,16 +228,7 @@ r_void
 id|printk
 c_func
 (paren
-l_string|&quot;Enabling APIC mode:  %s.  Using %d I/O APICs&bslash;n&quot;
-comma
-(paren
-id|x86_summit
-ques
-c_cond
-l_string|&quot;Summit&quot;
-suffix:colon
-l_string|&quot;Flat&quot;
-)paren
+l_string|&quot;Enabling APIC mode:  Summit.  Using %d I/O APICs&bslash;n&quot;
 comma
 id|nr_ioapics
 )paren
@@ -399,11 +294,6 @@ r_int
 id|mps_cpu
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|x86_summit
-)paren
 r_return
 (paren
 r_int
@@ -412,10 +302,6 @@ id|bios_cpu_apicid
 (braket
 id|mps_cpu
 )braket
-suffix:semicolon
-r_else
-r_return
-id|mps_cpu
 suffix:semicolon
 )brace
 DECL|function|ioapic_phys_id_map
@@ -431,14 +317,7 @@ id|phys_map
 (brace
 multiline_comment|/* For clustered we don&squot;t have a good way to do this yet - hack */
 r_return
-(paren
-id|x86_summit
-ques
-c_cond
 l_int|0x0F
-suffix:colon
-id|phys_map
-)paren
 suffix:semicolon
 )brace
 DECL|function|apicid_to_cpu_present
@@ -453,21 +332,8 @@ r_int
 id|apicid
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|x86_summit
-)paren
 r_return
 l_int|1
-suffix:semicolon
-r_else
-r_return
-(paren
-l_int|1ul
-op_lshift
-id|apicid
-)paren
 suffix:semicolon
 )brace
 DECL|function|mpc_apic_id
@@ -542,30 +408,10 @@ r_int
 id|boot_cpu_physical_apicid
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|x86_summit
-)paren
 r_return
-(paren
 l_int|1
-)paren
-suffix:semicolon
-r_else
-r_return
-id|test_bit
-c_func
-(paren
-id|boot_cpu_physical_apicid
-comma
-op_amp
-id|phys_cpu_present_map
-)paren
 suffix:semicolon
 )brace
-DECL|macro|APIC_ID_MASK
-mdefine_line|#define&t;&t;APIC_ID_MASK&t;&t;(0xFF&lt;&lt;24)
 DECL|function|cpu_mask_to_apicid
 r_static
 r_inline
@@ -686,7 +532,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-id|TARGET_CPUS
+l_int|0xFF
 suffix:semicolon
 )brace
 id|apicid

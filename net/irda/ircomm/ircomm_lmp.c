@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_lmp.c&n; * Version:       1.0&n; * Description:   Interface between IrCOMM and IrLMP&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Jun  6 20:48:27 1999&n; * Modified at:   Sun Dec 12 13:44:17 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Sources:       Previous IrLPT work by Thomas Davis&n; * &n; *     Copyright (c) 1999 Dag Brattli, All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_lmp.c&n; * Version:       1.0&n; * Description:   Interface between IrCOMM and IrLMP&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Jun  6 20:48:27 1999&n; * Modified at:   Sun Dec 12 13:44:17 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Sources:       Previous IrLPT work by Thomas Davis&n; * &n; *     Copyright (c) 1999 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
@@ -60,14 +60,17 @@ id|notify.instance
 op_assign
 id|self
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|notify.name
 comma
 l_string|&quot;IrCOMM&quot;
 comma
-id|NOTIFY_MAX_NAME
+r_sizeof
+(paren
+id|notify.name
+)paren
 )paren
 suffix:semicolon
 id|self-&gt;lsap
@@ -167,6 +170,20 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t forget to refcount it - should be NULL anyway */
+r_if
+c_cond
+(paren
+id|userdata
+)paren
+(brace
+id|skb_get
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|irlmp_connect_request
@@ -209,7 +226,7 @@ id|userdata
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 r_int
 id|ret
@@ -233,7 +250,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -245,7 +262,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 op_minus
@@ -255,7 +272,7 @@ multiline_comment|/* Reserve space for MUX and LAP header */
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|LMP_MAX_HEADER
 )paren
@@ -263,10 +280,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|skb
-op_assign
-id|userdata
-suffix:semicolon
 multiline_comment|/*  &n;&t;&t; *  Check that the client has reserved enough space for &n;&t;&t; *  headers&n;&t;&t; */
 id|ASSERT
 c_func
@@ -274,7 +287,7 @@ c_func
 id|skb_headroom
 c_func
 (paren
-id|skb
+id|userdata
 )paren
 op_ge
 id|LMP_MAX_HEADER
@@ -285,6 +298,17 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t forget to refcount it - should be NULL anyway */
+id|skb_get
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
+id|tx_skb
+op_assign
+id|userdata
+suffix:semicolon
 )brace
 id|ret
 op_assign
@@ -293,7 +317,7 @@ c_func
 (paren
 id|self-&gt;lsap
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 r_return
@@ -324,7 +348,7 @@ id|info
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 r_int
 id|ret
@@ -346,7 +370,7 @@ op_logical_neg
 id|userdata
 )paren
 (brace
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -358,7 +382,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 op_minus
@@ -368,14 +392,24 @@ multiline_comment|/*  Reserve space for MUX and LAP header */
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|LMP_MAX_HEADER
 )paren
 suffix:semicolon
 id|userdata
 op_assign
-id|skb
+id|tx_skb
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Don&squot;t forget to refcount it - should be NULL anyway */
+id|skb_get
+c_func
+(paren
+id|userdata
+)paren
 suffix:semicolon
 )brace
 id|ret
@@ -626,6 +660,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t forget to refcount it - see ircomm_tty_do_softint() */
+id|skb_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|skb-&gt;destructor
 op_assign
 id|ircomm_lmp_flow_control
@@ -703,12 +744,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* irlmp_data_request already free the packet */
 )brace
 r_return
 id|ret
@@ -805,6 +841,13 @@ comma
 id|skb
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see ircomm_tty_data_indication(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return
@@ -937,6 +980,13 @@ op_amp
 id|info
 )paren
 suffix:semicolon
+multiline_comment|/* Drop reference count - see ircomm_tty_connect_confirm(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircomm_lmp_connect_indication (instance, sap, qos, max_sdu_size,&n; *                                         max_header_size, skb)&n; *&n; *    Peer device wants to make a connection with us&n; *&n; */
 DECL|function|ircomm_lmp_connect_indication
@@ -1064,6 +1114,13 @@ op_amp
 id|info
 )paren
 suffix:semicolon
+multiline_comment|/* Drop reference count - see ircomm_tty_connect_indication(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircomm_lmp_disconnect_indication (instance, sap, reason, skb)&n; *&n; *    Peer device has closed the connection, or the link went down for some&n; *    other reason&n; */
 DECL|function|ircomm_lmp_disconnect_indication
@@ -1153,5 +1210,19 @@ op_amp
 id|info
 )paren
 suffix:semicolon
+multiline_comment|/* Drop reference count - see ircomm_tty_disconnect_indication(). */
+r_if
+c_cond
+(paren
+id|skb
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
 )brace
 eof

@@ -1582,24 +1582,12 @@ c_cond
 (paren
 id|self-&gt;netdev
 )paren
-(brace
-id|rtnl_lock
-c_func
-(paren
-)paren
-suffix:semicolon
-id|unregister_netdevice
+id|unregister_netdev
 c_func
 (paren
 id|self-&gt;netdev
 )paren
 suffix:semicolon
-id|rtnl_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Release the PORT that this driver is using */
 id|IRDA_DEBUG
 c_func
@@ -4455,6 +4443,10 @@ id|speed
 suffix:semicolon
 multiline_comment|/* Queue will be restarted after speed change&n;&t;&t;&t;&t; * to make sure packets gets through the&n;&t;&t;&t;&t; * proper xmit handler - Jean II */
 )brace
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4540,6 +4532,10 @@ id|iobase
 op_plus
 id|BSR
 )paren
+suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -4695,6 +4691,10 @@ id|speed
 suffix:semicolon
 multiline_comment|/* Keep queue stopped :&n;&t;&t;&t;&t; * the speed change operation may change the&n;&t;&t;&t;&t; * xmit handler, and we want to make sure&n;&t;&t;&t;&t; * the next packet get through the proper&n;&t;&t;&t;&t; * Tx path, so block the Tx queue until&n;&t;&t;&t;&t; * the speed change has been done.&n;&t;&t;&t;&t; * Jean II */
 )brace
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5008,6 +5008,10 @@ id|iobase
 op_plus
 id|BSR
 )paren
+suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func

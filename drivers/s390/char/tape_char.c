@@ -105,6 +105,11 @@ id|tape_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|read
 op_assign
 id|tapechar_read
@@ -932,8 +937,6 @@ id|minor
 comma
 id|rc
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -977,8 +980,6 @@ id|device
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|PTR_ERR
 c_func
@@ -1053,8 +1054,6 @@ c_func
 (paren
 id|device
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|rc
@@ -1190,8 +1189,6 @@ c_func
 (paren
 id|device
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

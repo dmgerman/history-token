@@ -261,8 +261,6 @@ id|acpi_ec_status
 comma
 op_amp
 id|ec-&gt;status_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -308,8 +306,6 @@ id|acpi_ec_status
 comma
 op_amp
 id|ec-&gt;status_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -473,8 +469,6 @@ id|ACPI_EC_COMMAND_READ
 comma
 op_amp
 id|ec-&gt;command_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -504,8 +498,6 @@ id|address
 comma
 op_amp
 id|ec-&gt;data_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -535,8 +527,6 @@ id|data
 comma
 op_amp
 id|ec-&gt;data_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -692,8 +682,6 @@ id|ACPI_EC_COMMAND_WRITE
 comma
 op_amp
 id|ec-&gt;command_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -723,8 +711,6 @@ id|address
 comma
 op_amp
 id|ec-&gt;data_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -754,8 +740,6 @@ id|data
 comma
 op_amp
 id|ec-&gt;data_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -1066,8 +1050,6 @@ id|ACPI_EC_COMMAND_QUERY
 comma
 op_amp
 id|ec-&gt;command_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -1097,8 +1079,6 @@ id|data
 comma
 op_amp
 id|ec-&gt;data_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1283,8 +1263,6 @@ id|value
 comma
 op_amp
 id|ec-&gt;command_addr
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore

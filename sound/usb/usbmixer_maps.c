@@ -64,10 +64,10 @@ multiline_comment|/* 4: IT digital in */
 (brace
 l_int|5
 comma
-l_string|&quot;Digital In Playback Source&quot;
+l_int|NULL
 )brace
 comma
-multiline_comment|/* SU */
+multiline_comment|/* DISABLED: this seems to be bogus on some firmware */
 (brace
 l_int|6
 comma
@@ -94,7 +94,7 @@ multiline_comment|/* FU */
 (brace
 l_int|11
 comma
-l_string|&quot;Capture Source&quot;
+l_string|&quot;Capture Input Source&quot;
 )brace
 comma
 multiline_comment|/* SU */
@@ -109,8 +109,24 @@ multiline_comment|/* 13: OT pcm capture */
 multiline_comment|/* 14: MU (w/o controls) */
 multiline_comment|/* 15: PU (3D enh) */
 multiline_comment|/* 16: MU (w/o controls) */
-multiline_comment|/* 17: PU (updown) */
-multiline_comment|/* FIXME: what control? */
+(brace
+l_int|17
+comma
+l_int|NULL
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* DISABLED: PU-switch (any effect?) */
+(brace
+l_int|17
+comma
+l_string|&quot;Channel Routing&quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* PU: mode select */
 (brace
 l_int|18
 comma
@@ -141,11 +157,10 @@ multiline_comment|/* 20: OT headphone */
 (brace
 l_int|21
 comma
-l_string|&quot;Digital Out Extension&quot;
+l_int|NULL
 )brace
 comma
-multiline_comment|/* EU */
-multiline_comment|/* FIXME: what? */
+multiline_comment|/* DISABLED: EU (for what?) */
 (brace
 l_int|22
 comma
@@ -165,21 +180,25 @@ multiline_comment|/* 24: OT digital out */
 (brace
 l_int|25
 comma
-l_string|&quot;Digital Out2 Playback&quot;
+l_string|&quot;IEC958 Optical Playback&quot;
 )brace
 comma
 multiline_comment|/* FU */
-multiline_comment|/* FIXME: corresponds to 26 */
-multiline_comment|/* 26: OT digital out */
+(brace
+l_int|26
+comma
+l_string|&quot;IEC958 Optical Playback&quot;
+)brace
+comma
+multiline_comment|/* OT */
 (brace
 l_int|27
 comma
-l_string|&quot;Output Extension&quot;
+l_int|NULL
 )brace
 comma
-multiline_comment|/* EU */
-multiline_comment|/* FIXME: what? */
-multiline_comment|/* 28: FU (mute) */
+multiline_comment|/* DISABLED: EU (for what?) */
+multiline_comment|/* 28: FU speaker (mute) */
 (brace
 l_int|0
 )brace

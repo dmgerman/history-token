@@ -1731,7 +1731,7 @@ suffix:semicolon
 macro_line|#if defined(ENABLE_MVME16x_NET) || defined(ENABLE_BVME6000_NET)
 DECL|function|i596_error
 r_static
-r_void
+id|irqreturn_t
 id|i596_error
 c_func
 (paren
@@ -1837,6 +1837,9 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -4124,7 +4127,6 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
-op_amp
 id|i596_interrupt
 comma
 l_int|0
@@ -4166,7 +4168,6 @@ c_func
 (paren
 l_int|0x56
 comma
-op_amp
 id|i596_error
 comma
 l_int|0

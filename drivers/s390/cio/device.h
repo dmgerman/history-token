@@ -423,6 +423,24 @@ id|ccw_device
 op_star
 )paren
 suffix:semicolon
+r_void
+id|ccw_device_add_stlck
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+)paren
+suffix:semicolon
+r_int
+id|ccw_device_stlck
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* qdio needs this. */
 r_void
 id|ccw_device_set_timeout

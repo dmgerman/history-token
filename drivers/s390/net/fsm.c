@@ -109,7 +109,7 @@ id|fsm_instance
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|this-&gt;name

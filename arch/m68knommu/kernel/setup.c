@@ -506,6 +506,10 @@ macro_line|#if defined(CONFIG_M5272)
 DECL|macro|CPU
 mdefine_line|#define CPU &quot;COLDFIRE(m5272)&quot;
 macro_line|#endif
+macro_line|#if defined(CONFIG_M5282)
+DECL|macro|CPU
+mdefine_line|#define CPU &quot;COLDFIRE(m5282)&quot;
+macro_line|#endif
 macro_line|#if defined(CONFIG_M5307)
 DECL|macro|CPU
 mdefine_line|#define&t;CPU &quot;COLDFIRE(m5307)&quot;
@@ -878,18 +882,6 @@ comma
 r_int
 )paren
 id|_ramend
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_BLKMEM
-id|ROOT_DEV
-op_assign
-id|MKDEV
-c_func
-(paren
-id|BLKMEM_MAJOR
-comma
-l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif

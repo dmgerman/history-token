@@ -2021,6 +2021,14 @@ c_cond
 op_logical_neg
 id|cards
 )paren
+(brace
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|als100_pnpc_driver
+)paren
+suffix:semicolon
 id|snd_printk
 c_func
 (paren
@@ -2028,6 +2036,7 @@ id|KERN_ERR
 l_string|&quot;no ALS100 based soundcards found&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 id|cards

@@ -4859,7 +4859,7 @@ c_func
 (paren
 l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
 comma
-id|irq
+id|xirq
 )paren
 suffix:semicolon
 r_return
@@ -5890,6 +5890,15 @@ op_logical_neg
 id|cards
 )paren
 (brace
+macro_line|#ifdef CONFIG_PNP
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|interwave_pnpc_driver
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MODULE
 id|printk
 c_func

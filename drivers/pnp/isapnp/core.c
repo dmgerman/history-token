@@ -1708,6 +1708,16 @@ r_struct
 id|pnp_id
 op_star
 id|id
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+suffix:semicolon
+id|id
 op_assign
 id|isapnp_alloc
 c_func
@@ -1724,14 +1734,6 @@ c_cond
 (paren
 op_logical_neg
 id|id
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
 )paren
 r_return
 suffix:semicolon
@@ -5163,6 +5165,13 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Inititialization.&n; */
+DECL|variable|isapnp_protocol
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|isapnp_protocol
+)paren
+suffix:semicolon
 DECL|variable|isapnp_present
 id|EXPORT_SYMBOL
 c_func

@@ -44,7 +44,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_ACPI_TABLES
+id|NUM_ACPI_TABLE_TYPES
 suffix:semicolon
 id|i
 op_increment
@@ -55,7 +55,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|i
 )braket
@@ -77,14 +77,14 @@ id|ACPI_STRNCMP
 (paren
 id|signature
 comma
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|i
 )braket
 dot
 id|signature
 comma
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|i
 )braket
@@ -119,7 +119,7 @@ comma
 r_char
 op_star
 )paren
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|i
 )braket
@@ -253,7 +253,7 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;%s located at %p&bslash;n&quot;
 comma
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|table_info-&gt;type
 )braket
@@ -406,7 +406,7 @@ id|table_info
 )paren
 (brace
 r_struct
-id|acpi_table_desc
+id|acpi_table_list
 op_star
 id|list_head
 suffix:semicolon
@@ -422,69 +422,7 @@ comma
 id|table_type
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Install the table into the global data structure&n;&t; */
-id|list_head
-op_assign
-op_amp
-id|acpi_gbl_acpi_tables
-(braket
-id|table_type
-)braket
-suffix:semicolon
-id|table_desc
-op_assign
-id|list_head
-suffix:semicolon
-multiline_comment|/*&n;&t; * Two major types of tables:  1) Only one instance is allowed.  This&n;&t; * includes most ACPI tables such as the DSDT.  2) Multiple instances of&n;&t; * the table are allowed.  This includes SSDT and PSDTs.&n;&t; */
-r_if
-c_cond
-(paren
-id|ACPI_IS_SINGLE_TABLE
-(paren
-id|acpi_gbl_acpi_table_data
-(braket
-id|table_type
-)braket
-dot
-id|flags
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Only one table allowed, and a table has alread been installed&n;&t;&t; *  at this location, so return an error.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|list_head-&gt;pointer
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_ALREADY_EXISTS
-)paren
-suffix:semicolon
-)brace
-id|table_desc-&gt;count
-op_assign
-l_int|1
-suffix:semicolon
-id|table_desc-&gt;prev
-op_assign
-l_int|NULL
-suffix:semicolon
-id|table_desc-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * Multiple tables allowed for this table type, we must link&n;&t;&t; * the new table in to the list of tables of this type.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|list_head-&gt;pointer
-)paren
-(brace
+multiline_comment|/* Allocate a descriptor for this table */
 id|table_desc
 op_assign
 id|ACPI_MEM_CALLOCATE
@@ -509,41 +447,74 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Install the table into the global data structure&n;&t; */
+id|list_head
+op_assign
+op_amp
+id|acpi_gbl_table_lists
+(braket
+id|table_type
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t; * Two major types of tables:  1) Only one instance is allowed.  This&n;&t; * includes most ACPI tables such as the DSDT.  2) Multiple instances of&n;&t; * the table are allowed.  This includes SSDT and PSDTs.&n;&t; */
+r_if
+c_cond
+(paren
+id|ACPI_IS_SINGLE_TABLE
+(paren
+id|acpi_gbl_table_data
+(braket
+id|table_type
+)braket
+dot
+id|flags
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Only one table allowed, and a table has alread been installed&n;&t;&t; *  at this location, so return an error.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|list_head-&gt;next
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_ALREADY_EXISTS
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * Link the new table in to the list of tables of this type.&n;&t; * Just insert at the start of the list, order unimportant.&n;&t; *&n;&t; * table_desc-&gt;Prev is already NULL from calloc()&n;&t; */
+id|table_desc-&gt;next
+op_assign
+id|list_head-&gt;next
+suffix:semicolon
+id|list_head-&gt;next
+op_assign
+id|table_desc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|table_desc-&gt;next
+)paren
+(brace
+id|table_desc-&gt;next-&gt;prev
+op_assign
+id|table_desc
+suffix:semicolon
+)brace
 id|list_head-&gt;count
 op_increment
 suffix:semicolon
-multiline_comment|/* Update the original previous */
-id|list_head-&gt;prev-&gt;next
-op_assign
-id|table_desc
-suffix:semicolon
-multiline_comment|/* Update new entry */
-id|table_desc-&gt;prev
-op_assign
-id|list_head-&gt;prev
-suffix:semicolon
-id|table_desc-&gt;next
-op_assign
-id|list_head
-suffix:semicolon
-multiline_comment|/* Update list head */
-id|list_head-&gt;prev
-op_assign
-id|table_desc
-suffix:semicolon
-)brace
-r_else
-(brace
-id|table_desc-&gt;count
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* Common initialization of the table descriptor */
+multiline_comment|/* Finish initialization of the table descriptor */
 id|table_desc-&gt;type
 op_assign
-id|table_info-&gt;type
+(paren
+id|u8
+)paren
+id|table_type
 suffix:semicolon
 id|table_desc-&gt;pointer
 op_assign
@@ -602,7 +573,7 @@ multiline_comment|/*&n;&t; * Set the appropriate global pointer (if there is one
 r_if
 c_cond
 (paren
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|table_type
 )braket
@@ -612,7 +583,7 @@ id|global_ptr
 (brace
 op_star
 (paren
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|table_type
 )braket
@@ -638,10 +609,10 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_delete_acpi_tables&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete all internal ACPI tables&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_delete_all_tables&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete all internal ACPI tables&n; *&n; ******************************************************************************/
 r_void
-DECL|function|acpi_tb_delete_acpi_tables
-id|acpi_tb_delete_acpi_tables
+DECL|function|acpi_tb_delete_all_tables
+id|acpi_tb_delete_all_tables
 (paren
 r_void
 )paren
@@ -659,31 +630,42 @@ l_int|0
 suffix:semicolon
 id|type
 OL
-id|NUM_ACPI_TABLES
+id|NUM_ACPI_TABLE_TYPES
 suffix:semicolon
 id|type
 op_increment
 )paren
 (brace
-id|acpi_tb_delete_acpi_table
+id|acpi_tb_delete_tables_by_type
 (paren
 id|type
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_delete_acpi_table&n; *&n; * PARAMETERS:  Type                - The table type to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete an internal ACPI table&n; *              Locks the ACPI table mutex&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_delete_tables_by_type&n; *&n; * PARAMETERS:  Type                - The table type to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete an internal ACPI table&n; *              Locks the ACPI table mutex&n; *&n; ******************************************************************************/
 r_void
-DECL|function|acpi_tb_delete_acpi_table
-id|acpi_tb_delete_acpi_table
+DECL|function|acpi_tb_delete_tables_by_type
+id|acpi_tb_delete_tables_by_type
 (paren
 id|acpi_table_type
 id|type
 )paren
 (brace
+r_struct
+id|acpi_table_desc
+op_star
+id|table_desc
+suffix:semicolon
+id|u32
+id|count
+suffix:semicolon
+id|u32
+id|i
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;tb_delete_acpi_table&quot;
+l_string|&quot;tb_delete_tables_by_type&quot;
 comma
 id|type
 )paren
@@ -778,63 +760,24 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Free the table */
-id|acpi_tb_free_acpi_tables_of_type
-(paren
-op_amp
-id|acpi_gbl_acpi_tables
-(braket
-id|type
-)braket
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|acpi_ut_release_mutex
-(paren
-id|ACPI_MTX_TABLES
-)paren
-suffix:semicolon
-id|return_VOID
-suffix:semicolon
-)brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_free_acpi_tables_of_type&n; *&n; * PARAMETERS:  table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Free the memory associated with an internal ACPI table&n; *              Table mutex should be locked.&n; *&n; ******************************************************************************/
-r_void
-DECL|function|acpi_tb_free_acpi_tables_of_type
-id|acpi_tb_free_acpi_tables_of_type
-(paren
-r_struct
-id|acpi_table_desc
-op_star
-id|list_head
-)paren
-(brace
-r_struct
-id|acpi_table_desc
-op_star
-id|table_desc
-suffix:semicolon
-id|u32
-id|count
-suffix:semicolon
-id|u32
-id|i
-suffix:semicolon
-id|ACPI_FUNCTION_TRACE_PTR
-(paren
-l_string|&quot;tb_free_acpi_tables_of_type&quot;
-comma
-id|list_head
-)paren
-suffix:semicolon
 multiline_comment|/* Get the head of the list */
 id|table_desc
 op_assign
-id|list_head
+id|acpi_gbl_table_lists
+(braket
+id|type
+)braket
+dot
+id|next
 suffix:semicolon
 id|count
 op_assign
-id|list_head-&gt;count
+id|acpi_gbl_table_lists
+(braket
+id|type
+)braket
+dot
+id|count
 suffix:semicolon
 multiline_comment|/*&n;&t; * Walk the entire list, deleting both the allocated tables&n;&t; * and the table descriptors&n;&t; */
 r_for
@@ -860,6 +803,14 @@ id|table_desc
 )paren
 suffix:semicolon
 )brace
+(paren
+r_void
+)paren
+id|acpi_ut_release_mutex
+(paren
+id|ACPI_MTX_TABLES
+)paren
+suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
@@ -874,22 +825,24 @@ op_star
 id|table_desc
 )paren
 (brace
+multiline_comment|/* Must have a valid table descriptor and pointer */
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|table_desc
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|table_desc-&gt;pointer
+)paren
 )paren
 (brace
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|table_desc-&gt;pointer
-)paren
-(brace
 multiline_comment|/* Valid table, determine type of memory allocation */
 r_switch
 c_cond
@@ -930,7 +883,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_uninstall_table&n; *&n; * PARAMETERS:  table_info          - A table info struct&n; *&n; * RETURN:      Pointer to the next table in the list (of same type)&n; *&n; * DESCRIPTION: Free the memory associated with an internal ACPI table that&n; *              is either installed or has never been installed.&n; *              Table mutex should be locked.&n; *&n; ******************************************************************************/
 r_struct
 id|acpi_table_desc
@@ -951,7 +903,7 @@ id|next_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;acpi_tb_uninstall_table&quot;
+l_string|&quot;tb_uninstall_table&quot;
 comma
 id|table_desc
 )paren
@@ -969,7 +921,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Unlink the descriptor */
+multiline_comment|/* Unlink the descriptor from the doubly linked list */
 r_if
 c_cond
 (paren
@@ -977,6 +929,19 @@ id|table_desc-&gt;prev
 )paren
 (brace
 id|table_desc-&gt;prev-&gt;next
+op_assign
+id|table_desc-&gt;next
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Is first on list, update list head */
+id|acpi_gbl_table_lists
+(braket
+id|table_desc-&gt;type
+)braket
+dot
+id|next
 op_assign
 id|table_desc-&gt;next
 suffix:semicolon
@@ -998,39 +963,6 @@ id|acpi_tb_delete_single_table
 id|table_desc
 )paren
 suffix:semicolon
-multiline_comment|/* Free the table descriptor (Don&squot;t delete the list head, tho) */
-r_if
-c_cond
-(paren
-(paren
-id|table_desc-&gt;prev
-)paren
-op_eq
-(paren
-id|table_desc-&gt;next
-)paren
-)paren
-(brace
-id|next_desc
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Clear the list head */
-id|table_desc-&gt;pointer
-op_assign
-l_int|NULL
-suffix:semicolon
-id|table_desc-&gt;length
-op_assign
-l_int|0
-suffix:semicolon
-id|table_desc-&gt;count
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-(brace
 multiline_comment|/* Free the table descriptor */
 id|next_desc
 op_assign
@@ -1041,7 +973,7 @@ id|ACPI_MEM_FREE
 id|table_desc
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* Return pointer to the next descriptor */
 id|return_PTR
 (paren
 id|next_desc

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#89 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#90 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifndef _AIC79XX_H_
 DECL|macro|_AIC79XX_H_
 mdefine_line|#define _AIC79XX_H_
@@ -2573,40 +2573,40 @@ DECL|member|seltime
 r_int
 id|seltime
 suffix:semicolon
-multiline_comment|/*&n;&t; * Interrupt coalessing settings.&n;&t; */
-DECL|macro|AHD_INT_COALESSING_TIMER_DEFAULT
-mdefine_line|#define&t;AHD_INT_COALESSING_TIMER_DEFAULT&t;&t;250 /*us*/
-DECL|macro|AHD_INT_COALESSING_MAXCMDS_DEFAULT
-mdefine_line|#define&t;AHD_INT_COALESSING_MAXCMDS_DEFAULT&t;&t;10
-DECL|macro|AHD_INT_COALESSING_MAXCMDS_MAX
-mdefine_line|#define&t;AHD_INT_COALESSING_MAXCMDS_MAX&t;&t;&t;127
-DECL|macro|AHD_INT_COALESSING_MINCMDS_DEFAULT
-mdefine_line|#define&t;AHD_INT_COALESSING_MINCMDS_DEFAULT&t;&t;5
-DECL|macro|AHD_INT_COALESSING_MINCMDS_MAX
-mdefine_line|#define&t;AHD_INT_COALESSING_MINCMDS_MAX&t;&t;&t;127
-DECL|macro|AHD_INT_COALESSING_THRESHOLD_DEFAULT
-mdefine_line|#define&t;AHD_INT_COALESSING_THRESHOLD_DEFAULT&t;&t;2000
-DECL|macro|AHD_INT_COALESSING_STOP_THRESHOLD_DEFAULT
-mdefine_line|#define&t;AHD_INT_COALESSING_STOP_THRESHOLD_DEFAULT&t;1000
-DECL|member|int_coalessing_timer
+multiline_comment|/*&n;&t; * Interrupt coalescing settings.&n;&t; */
+DECL|macro|AHD_INT_COALESCING_TIMER_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESCING_TIMER_DEFAULT&t;&t;250 /*us*/
+DECL|macro|AHD_INT_COALESCING_MAXCMDS_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESCING_MAXCMDS_DEFAULT&t;&t;10
+DECL|macro|AHD_INT_COALESCING_MAXCMDS_MAX
+mdefine_line|#define&t;AHD_INT_COALESCING_MAXCMDS_MAX&t;&t;&t;127
+DECL|macro|AHD_INT_COALESCING_MINCMDS_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESCING_MINCMDS_DEFAULT&t;&t;5
+DECL|macro|AHD_INT_COALESCING_MINCMDS_MAX
+mdefine_line|#define&t;AHD_INT_COALESCING_MINCMDS_MAX&t;&t;&t;127
+DECL|macro|AHD_INT_COALESCING_THRESHOLD_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESCING_THRESHOLD_DEFAULT&t;&t;2000
+DECL|macro|AHD_INT_COALESCING_STOP_THRESHOLD_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESCING_STOP_THRESHOLD_DEFAULT&t;1000
+DECL|member|int_coalescing_timer
 id|u_int
-id|int_coalessing_timer
+id|int_coalescing_timer
 suffix:semicolon
-DECL|member|int_coalessing_maxcmds
+DECL|member|int_coalescing_maxcmds
 id|u_int
-id|int_coalessing_maxcmds
+id|int_coalescing_maxcmds
 suffix:semicolon
-DECL|member|int_coalessing_mincmds
+DECL|member|int_coalescing_mincmds
 id|u_int
-id|int_coalessing_mincmds
+id|int_coalescing_mincmds
 suffix:semicolon
-DECL|member|int_coalessing_threshold
+DECL|member|int_coalescing_threshold
 id|u_int
-id|int_coalessing_threshold
+id|int_coalescing_threshold
 suffix:semicolon
-DECL|member|int_coalessing_stop_threshold
+DECL|member|int_coalescing_stop_threshold
 id|u_int
-id|int_coalessing_stop_threshold
+id|int_coalescing_stop_threshold
 suffix:semicolon
 DECL|member|user_discenable
 r_uint16
@@ -3064,7 +3064,7 @@ id|enable
 )paren
 suffix:semicolon
 r_void
-id|ahd_update_coalessing_values
+id|ahd_update_coalescing_values
 c_func
 (paren
 r_struct
@@ -3083,7 +3083,7 @@ id|mincmds
 )paren
 suffix:semicolon
 r_void
-id|ahd_enable_coalessing
+id|ahd_enable_coalescing
 c_func
 (paren
 r_struct
@@ -3941,8 +3941,8 @@ DECL|macro|AHD_SHOW_TQIN
 mdefine_line|#define AHD_SHOW_TQIN&t;&t;0x04000
 DECL|macro|AHD_SHOW_SG
 mdefine_line|#define AHD_SHOW_SG&t;&t;0x08000
-DECL|macro|AHD_SHOW_INT_COALESSING
-mdefine_line|#define AHD_SHOW_INT_COALESSING&t;0x10000
+DECL|macro|AHD_SHOW_INT_COALESCING
+mdefine_line|#define AHD_SHOW_INT_COALESCING&t;0x10000
 DECL|macro|AHD_DEBUG_SEQUENCER
 mdefine_line|#define AHD_DEBUG_SEQUENCER&t;0x20000
 macro_line|#endif

@@ -281,9 +281,9 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifndef ARCH_HAS_VALID_HUGEPAGE_RANGE
-DECL|macro|check_valid_hugepage_range
-mdefine_line|#define check_valid_hugepage_range(addr, len)&t;0
+macro_line|#ifndef ARCH_HAS_HUGEPAGE_ONLY_RANGE
+DECL|macro|is_hugepage_only_range
+mdefine_line|#define is_hugepage_only_range(addr, len)&t;0
 macro_line|#endif
 macro_line|#else /* !CONFIG_HUGETLB_PAGE */
 DECL|function|is_vm_hugetlb_page
@@ -331,8 +331,8 @@ DECL|macro|is_aligned_hugepage_range
 mdefine_line|#define is_aligned_hugepage_range(addr, len)&t;0
 DECL|macro|pmd_huge
 mdefine_line|#define pmd_huge(x)&t;0
-DECL|macro|check_valid_hugepage_range
-mdefine_line|#define check_valid_hugepage_range(addr, len)&t;0
+DECL|macro|is_hugepage_only_range
+mdefine_line|#define is_hugepage_only_range(addr, len)&t;0
 macro_line|#ifndef HPAGE_MASK
 DECL|macro|HPAGE_MASK
 mdefine_line|#define HPAGE_MASK&t;0&t;&t;/* Keep the compiler happy */
@@ -341,6 +341,24 @@ mdefine_line|#define HPAGE_SIZE&t;0
 macro_line|#endif
 macro_line|#endif /* !CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef CONFIG_HUGETLBFS
+DECL|struct|hugetlbfs_config
+r_struct
+id|hugetlbfs_config
+(brace
+DECL|member|uid
+id|uid_t
+id|uid
+suffix:semicolon
+DECL|member|gid
+id|gid_t
+id|gid
+suffix:semicolon
+DECL|member|mode
+id|umode_t
+id|mode
+suffix:semicolon
+)brace
+suffix:semicolon
 r_extern
 r_struct
 id|file_operations

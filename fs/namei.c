@@ -6776,11 +6776,19 @@ op_amp
 id|dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
+multiline_comment|/* We don&squot;t d_delete() NFS sillyrenamed files--they still exist. */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|error
+op_logical_and
+op_logical_neg
+(paren
+id|dentry-&gt;d_flags
+op_amp
+id|DCACHE_NFSFS_RENAMED
+)paren
 )paren
 (brace
 id|d_delete
@@ -6961,12 +6969,11 @@ c_cond
 (paren
 id|inode
 )paren
-id|inode
-op_assign
-id|igrab
+id|atomic_inc
 c_func
 (paren
-id|inode
+op_amp
+id|inode-&gt;i_count
 )paren
 suffix:semicolon
 id|error

@@ -1164,6 +1164,7 @@ suffix:semicolon
 DECL|function|videodev_proc_destroy
 r_static
 r_void
+id|__exit
 id|videodev_proc_destroy
 c_func
 (paren

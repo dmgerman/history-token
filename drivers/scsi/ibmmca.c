@@ -13868,6 +13868,11 @@ r_int
 id|ibmmca_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shpnt
+comma
 r_char
 op_star
 id|buffer
@@ -13882,9 +13887,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -13932,10 +13934,8 @@ id|hosts
 (braket
 id|i
 )braket
-op_member_access_from_pointer
-id|host_no
 op_ne
-id|hostno
+id|shpnt
 suffix:semicolon
 id|i
 op_increment
@@ -13955,13 +13955,6 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Check it */
-id|shpnt
-op_assign
-id|hosts
-(braket
-id|i
-)braket
-suffix:semicolon
 id|host_index
 op_assign
 id|i
@@ -13984,7 +13977,7 @@ id|len
 comma
 l_string|&quot;&bslash;nIBM MCA SCSI: Can&squot;t find adapter for host number %d&bslash;n&quot;
 comma
-id|hostno
+id|shpnt-&gt;host_no
 )paren
 suffix:semicolon
 r_return
@@ -14084,7 +14077,7 @@ id|len
 comma
 l_string|&quot;               This Hostnumber..........: %d&bslash;n&quot;
 comma
-id|hostno
+id|shpnt-&gt;host_no
 )paren
 suffix:semicolon
 id|len

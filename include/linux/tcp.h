@@ -2,11 +2,8 @@ multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol sui
 macro_line|#ifndef _LINUX_TCP_H
 DECL|macro|_LINUX_TCP_H
 mdefine_line|#define _LINUX_TCP_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;linux/ip.h&gt;
 DECL|struct|tcphdr
 r_struct
 id|tcphdr
@@ -612,6 +609,11 @@ id|tcpi_reordering
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 multiline_comment|/* This defines a selective acknowledgement block. */
 DECL|struct|tcp_sack_block
 r_struct
@@ -1258,5 +1260,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|tcp_sk
 mdefine_line|#define tcp_sk(__sk) (&amp;((struct tcp_sock *)__sk)-&gt;tcp)
+macro_line|#endif
 macro_line|#endif&t;/* _LINUX_TCP_H */
 eof

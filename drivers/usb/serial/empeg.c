@@ -258,6 +258,11 @@ id|empeg_driver
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
 l_string|&quot;empeg&quot;
@@ -1592,6 +1597,9 @@ op_star
 id|serial
 )paren
 (brace
+r_int
+id|r
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1608,6 +1616,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|r
+op_assign
 id|usb_set_configuration
 (paren
 id|serial-&gt;dev
@@ -1617,7 +1627,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* continue on with initialization */
 r_return
-l_int|0
+id|r
 suffix:semicolon
 )brace
 DECL|function|empeg_shutdown

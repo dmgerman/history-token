@@ -749,6 +749,8 @@ id|user_dev-&gt;name
 comma
 id|UINPUT_MAX_NAME_SIZE
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 id|dev-&gt;name
 op_assign
@@ -756,8 +758,6 @@ id|kmalloc
 c_func
 (paren
 id|size
-op_plus
-l_int|1
 comma
 id|GFP_KERNEL
 )paren
@@ -778,7 +778,7 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|dev-&gt;name
@@ -787,13 +787,6 @@ id|user_dev-&gt;name
 comma
 id|size
 )paren
-suffix:semicolon
-id|dev-&gt;name
-(braket
-id|size
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|dev-&gt;id.bustype
 op_assign

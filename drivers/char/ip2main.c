@@ -79,9 +79,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -159,8 +157,6 @@ DECL|macro|iounmap
 mdefine_line|#define iounmap(a) vfree((a))
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL&t;1
-DECL|macro|SERIAL_TYPE_CALLOUT
-mdefine_line|#define SERIAL_TYPE_CALLOUT&t;2
 DECL|macro|schedule_timeout
 mdefine_line|#define schedule_timeout(a){current-&gt;timeout = jiffies + (a); schedule();}
 DECL|macro|signal_pending
@@ -247,41 +243,6 @@ id|pcDriver_name
 op_assign
 l_string|&quot;ip2&quot;
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
-DECL|variable|pcTty
-r_static
-r_char
-op_star
-id|pcTty
-op_assign
-l_string|&quot;tts/F%d&quot;
-suffix:semicolon
-DECL|variable|pcCallout
-r_static
-r_char
-op_star
-id|pcCallout
-op_assign
-l_string|&quot;cua/F%d&quot;
-suffix:semicolon
-macro_line|#else
-DECL|variable|pcTty
-r_static
-r_char
-op_star
-id|pcTty
-op_assign
-l_string|&quot;ttyF&quot;
-suffix:semicolon
-DECL|variable|pcCallout
-r_static
-r_char
-op_star
-id|pcCallout
-op_assign
-l_string|&quot;cuf&quot;
-suffix:semicolon
-macro_line|#endif
 DECL|variable|pcIpl
 r_static
 r_char
@@ -293,8 +254,6 @@ suffix:semicolon
 multiline_comment|/* Serial subtype definitions */
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL    1
-DECL|macro|SERIAL_TYPE_CALLOUT
-mdefine_line|#define SERIAL_TYPE_CALLOUT   2
 singleline_comment|// cheezy kludge or genius - you decide?
 r_int
 id|ip2_loadmain
@@ -763,12 +722,6 @@ r_static
 r_struct
 id|tty_driver
 id|ip2_tty_driver
-suffix:semicolon
-DECL|variable|ip2_callout_driver
-r_static
-r_struct
-id|tty_driver
-id|ip2_callout_driver
 suffix:semicolon
 DECL|variable|ref_count
 r_static
@@ -1489,30 +1442,6 @@ c_cond
 (paren
 id|err
 op_assign
-id|tty_unregister_driver
-(paren
-op_amp
-id|ip2_callout_driver
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;IP2: failed to unregister callout driver (%d)&bslash;n&quot;
-comma
-id|err
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
 id|unregister_chrdev
 (paren
 id|IP2_IPL_MAJOR
@@ -1674,15 +1603,12 @@ r_int
 id|firmsize
 )paren
 (brace
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 r_int
+id|i
+comma
 id|j
 comma
 id|box
-suffix:semicolon
-macro_line|#endif
-r_int
-id|i
 suffix:semicolon
 r_int
 id|err
@@ -2236,15 +2162,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else /* LINUX_VERSION_CODE &gt; 2.1.99 */
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
 r_struct
 id|pci_dev
 op_star
@@ -2348,10 +2265,10 @@ id|pci_irq
 suffix:semicolon
 singleline_comment|//&t;&t;If the PCI BIOS assigned it, lets try and use it.  If we
 singleline_comment|//&t;&t;can&squot;t acquire it or it screws up, deal with it then.
-singleline_comment|//&t;&t;&t;&t;&t;if (!is_valid_irq(pci_irq)) {
-singleline_comment|//&t;&t;&t;&t;&t;&t;printk( KERN_ERR &quot;IP2: Bad PCI BIOS IRQ(%d)&bslash;n&quot;,pci_irq);
-singleline_comment|//&t;&t;&t;&t;&t;&t;pci_irq = 0;
-singleline_comment|//&t;&t;&t;&t;&t;}
+singleline_comment|//&t;&t;&t;&t;if (!is_valid_irq(pci_irq)) {
+singleline_comment|//&t;&t;&t;&t;&t;printk( KERN_ERR &quot;IP2: Bad PCI BIOS IRQ(%d)&bslash;n&quot;,pci_irq);
+singleline_comment|//&t;&t;&t;&t;&t;pci_irq = 0;
+singleline_comment|//&t;&t;&t;&t;}
 id|ip2config.irq
 (braket
 id|i
@@ -2396,7 +2313,6 @@ c_func
 id|status
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 macro_line|#endif&t;/* ! 2_0_X */
@@ -2676,7 +2592,11 @@ id|THIS_MODULE
 suffix:semicolon
 id|ip2_tty_driver.name
 op_assign
-id|pcTty
+l_string|&quot;ttyF&quot;
+suffix:semicolon
+id|ip2_tty_driver.devfs_name
+op_assign
+l_string|&quot;tts/F&quot;
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,0)
 id|ip2_tty_driver.driver_name
@@ -2724,19 +2644,12 @@ id|HUPCL
 op_or
 id|CLOCAL
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 id|ip2_tty_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
-macro_line|#else
-id|ip2_tty_driver.flags
-op_assign
-id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-macro_line|#endif
 id|ip2_tty_driver.refcount
 op_assign
 op_amp
@@ -2819,33 +2732,6 @@ id|ip2_tty_driver.hangup
 op_assign
 id|ip2_hangup
 suffix:semicolon
-multiline_comment|/* Initialise the callout driver structure from the tty driver, and&n;&t; * make the needed adjustments.&n;&t; */
-id|ip2_callout_driver
-op_assign
-id|ip2_tty_driver
-suffix:semicolon
-id|ip2_callout_driver.name
-op_assign
-id|pcCallout
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,0)
-id|ip2_callout_driver.driver_name
-op_assign
-id|pcDriver_name
-suffix:semicolon
-id|ip2_callout_driver.read_proc
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
-id|ip2_callout_driver.major
-op_assign
-id|IP2_CALLOUT_MAJOR
-suffix:semicolon
-id|ip2_callout_driver.subtype
-op_assign
-id|SERIAL_TYPE_CALLOUT
-suffix:semicolon
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -2877,31 +2763,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;IP2: failed to register tty driver (%d)&bslash;n&quot;
-comma
-id|err
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
-id|tty_register_driver
-(paren
-op_amp
-id|ip2_callout_driver
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;IP2: failed to register callout driver (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -3008,7 +2869,6 @@ id|i
 r_continue
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 r_if
 c_cond
 (paren
@@ -3144,32 +3004,10 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|tty_register_device
-c_func
-(paren
-op_amp
-id|ip2_callout_driver
-comma
-id|j
-op_plus
-id|ABS_BIGGEST_BOX
-op_star
-(paren
-id|box
-op_plus
-id|i
-op_star
-id|ABS_MAX_BOXES
-)paren
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 )brace
 )brace
 )brace
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5829,16 +5667,6 @@ suffix:semicolon
 )brace
 )brace
 r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-)paren
 (brace
 r_if
 c_cond
@@ -6243,90 +6071,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * 2. If this is a callout device, make sure the normal port is not in&n;&t; *    use, and that someone else doesn&squot;t have the callout device locked.&n;&t; *    (These are the only tests the standard serial driver makes for&n;&t; *    callout devices.)&n;&t; */
-r_if
-c_cond
-(paren
-id|tty-&gt;driver-&gt;subtype
-op_eq
-id|SERIAL_TYPE_CALLOUT
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_NORMAL_ACTIVE
-)paren
-(brace
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_SESSION_LOCKOUT
-)paren
-op_logical_and
-(paren
-id|pCh-&gt;session
-op_ne
-id|current-&gt;session
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_PGRP_LOCKOUT
-)paren
-op_logical_and
-(paren
-id|pCh-&gt;pgrp
-op_ne
-id|current-&gt;pgrp
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-id|pCh-&gt;flags
-op_or_assign
-id|ASYNC_CALLOUT_ACTIVE
-suffix:semicolon
-r_goto
-id|noblock
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * 3. Handle a non-blocking open of a normal port.&n;&t; */
 r_if
 c_cond
@@ -6348,19 +6092,6 @@ id|TTY_IO_ERROR
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-(brace
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
 id|pCh-&gt;flags
 op_or_assign
 id|ASYNC_NORMAL_ACTIVE
@@ -6373,41 +6104,14 @@ multiline_comment|/*&n;&t; * 4. Now loop waiting for the port to be free and car
 r_if
 c_cond
 (paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pCh-&gt;NormalTermios.c_cflag
-op_amp
-id|CLOCAL
-)paren
-(brace
-id|do_clocal
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
 id|tty-&gt;termios-&gt;c_cflag
 op_amp
 id|CLOCAL
 )paren
-(brace
 id|do_clocal
 op_assign
 l_int|1
 suffix:semicolon
-)brace
-)brace
 macro_line|#ifdef IP2DEBUG_OPEN
 id|printk
 c_func
@@ -6448,17 +6152,6 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-)paren
-(brace
 id|i2QueueCommands
 c_func
 (paren
@@ -6495,7 +6188,6 @@ c_func
 id|pCh-&gt;pMyBord
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6544,13 +6236,6 @@ op_logical_neg
 (paren
 id|pCh-&gt;flags
 op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|pCh-&gt;flags
-op_amp
 id|ASYNC_CLOSING
 )paren
 op_logical_and
@@ -6573,24 +6258,6 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#ifdef IP2DEBUG_OPEN
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ASYNC_CALLOUT_ACTIVE = %s&bslash;n&quot;
-comma
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-ques
-c_cond
-l_string|&quot;True&quot;
-suffix:colon
-l_string|&quot;False&quot;
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -6627,11 +6294,7 @@ l_int|3
 comma
 l_int|2
 comma
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
+l_int|0
 comma
 (paren
 id|pCh-&gt;flags
@@ -6759,28 +6422,11 @@ op_amp
 id|ASYNC_SPLIT_TERMIOS
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|tty-&gt;driver-&gt;subtype
-op_eq
-id|SERIAL_TYPE_NORMAL
-)paren
-(brace
 op_star
 id|tty-&gt;termios
 op_assign
 id|pCh-&gt;NormalTermios
 suffix:semicolon
-)brace
-r_else
-(brace
-op_star
-id|tty-&gt;termios
-op_assign
-id|pCh-&gt;CalloutTermios
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Now we must send the termios settings to the loadware */
 id|set_params
@@ -6792,15 +6438,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* override previous and never reset ??? */
-id|pCh-&gt;session
-op_assign
-id|current-&gt;session
-suffix:semicolon
-id|pCh-&gt;pgrp
-op_assign
-id|current-&gt;pgrp
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now set any i2lib options. These may go away if the i2lib code ends&n;&t; * up rolled into the mainline.&n;&t; */
 id|pCh-&gt;channelOptions
 op_or_assign
@@ -6961,18 +6598,6 @@ op_amp
 id|ASYNC_NORMAL_ACTIVE
 )paren
 id|pCh-&gt;NormalTermios
-op_assign
-op_star
-id|tty-&gt;termios
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_CALLOUT_ACTIVE
-)paren
-id|pCh-&gt;CalloutTermios
 op_assign
 op_star
 id|tty-&gt;termios
@@ -7159,8 +6784,6 @@ op_and_assign
 op_complement
 (paren
 id|ASYNC_NORMAL_ACTIVE
-op_or
-id|ASYNC_CALLOUT_ACTIVE
 op_or
 id|ASYNC_CLOSING
 )paren
@@ -7363,11 +6986,7 @@ suffix:semicolon
 id|pCh-&gt;flags
 op_and_assign
 op_complement
-(paren
 id|ASYNC_NORMAL_ACTIVE
-op_or
-id|ASYNC_CALLOUT_ACTIVE
-)paren
 suffix:semicolon
 id|pCh-&gt;pTTY
 op_assign

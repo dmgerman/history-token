@@ -300,8 +300,6 @@ id|in_value
 comma
 op_amp
 id|gpe_register_info-&gt;status_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|gpe_register_info-&gt;status
@@ -336,8 +334,6 @@ id|in_value
 comma
 op_amp
 id|gpe_register_info-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|gpe_register_info-&gt;enable

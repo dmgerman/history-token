@@ -87,9 +87,11 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|POOL_TIMEOUT_JIFFIES
 mdefine_line|#define&t;POOL_TIMEOUT_JIFFIES&t;((100 /* msec */ * HZ) / 1000)
-DECL|macro|POOL_POISON_BYTE
-mdefine_line|#define&t;POOL_POISON_BYTE&t;0xa7
-DECL|variable|pools_lock
+DECL|macro|POOL_POISON_FREED
+mdefine_line|#define&t;POOL_POISON_FREED&t;0xa7&t;/* !inuse */
+DECL|macro|POOL_POISON_ALLOCATED
+mdefine_line|#define&t;POOL_POISON_ALLOCATED&t;0xa9&t;/* !initted */
+r_static
 id|DECLARE_MUTEX
 (paren
 id|pools_lock
@@ -452,7 +454,7 @@ id|SLAB_KERNEL
 r_return
 id|retval
 suffix:semicolon
-id|strncpy
+id|strlcpy
 (paren
 id|retval-&gt;name
 comma
@@ -461,16 +463,6 @@ comma
 r_sizeof
 id|retval-&gt;name
 )paren
-suffix:semicolon
-id|retval-&gt;name
-(braket
-r_sizeof
-id|retval-&gt;name
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|retval-&gt;dev
 op_assign
@@ -673,7 +665,7 @@ id|memset
 (paren
 id|page-&gt;vaddr
 comma
-id|POOL_POISON_BYTE
+id|POOL_POISON_FREED
 comma
 id|pool-&gt;allocation
 )paren
@@ -780,7 +772,7 @@ id|memset
 (paren
 id|page-&gt;vaddr
 comma
-id|POOL_POISON_BYTE
+id|POOL_POISON_FREED
 comma
 id|pool-&gt;allocation
 )paren
@@ -1225,6 +1217,17 @@ id|offset
 op_plus
 id|page-&gt;dma
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
+id|memset
+(paren
+id|retval
+comma
+id|POOL_POISON_ALLOCATED
+comma
+id|pool-&gt;size
+)paren
+suffix:semicolon
+macro_line|#endif
 id|done
 suffix:colon
 id|spin_unlock_irqrestore
@@ -1526,7 +1529,7 @@ id|memset
 (paren
 id|vaddr
 comma
-id|POOL_POISON_BYTE
+id|POOL_POISON_FREED
 comma
 id|pool-&gt;size
 )paren

@@ -714,7 +714,7 @@ op_amp
 id|llc-&gt;pdu_unack_q
 )paren
 suffix:semicolon
-id|sk-&gt;backlog_rcv
+id|sk-&gt;sk_backlog_rcv
 op_assign
 id|llc_backlog_rcv
 suffix:semicolon
@@ -897,7 +897,7 @@ id|skb_queue_len
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 suffix:semicolon
@@ -906,14 +906,14 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
@@ -931,7 +931,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 op_ne
 l_int|1
@@ -951,7 +951,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 )paren
 suffix:semicolon
@@ -1041,7 +1041,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
@@ -1157,7 +1157,7 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
 (brace
 id|llc_sk

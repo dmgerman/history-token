@@ -26,7 +26,7 @@ mdefine_line|#define NB85E_CACHE_LINE_SIZE&t;16
 multiline_comment|/* For &lt;asm/cache.h&gt; */
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES&t;&t;&t;&t;NB85E_CACHE_LINE_SIZE
-macro_line|#ifndef __ASSEMBLY__
+macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(__ASSEMBLY__)
 multiline_comment|/* Set caching params via the BHC and DCC registers.  */
 r_void
 id|nb85e_cache_enable
@@ -192,6 +192,6 @@ DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range&t;nb85e_cache_flush_icache_user_range
 DECL|macro|flush_cache_sigtramp
 mdefine_line|#define flush_cache_sigtramp&t;nb85e_cache_flush_sigtramp
-macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#endif /* __KERNEL__ &amp;&amp; !__ASSEMBLY__ */
 macro_line|#endif /* __V850_NB85E_CACHE_H__ */
 eof

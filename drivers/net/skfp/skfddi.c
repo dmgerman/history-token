@@ -1098,30 +1098,6 @@ id|boot_msg
 )paren
 suffix:semicolon
 multiline_comment|/* Scan for Syskonnect FDDI PCI controllers */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* is PCI BIOS even present? */
-id|printk
-c_func
-(paren
-l_string|&quot;no PCI BIOS present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-op_minus
-id|ENODEV
-)paren
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -8113,11 +8089,6 @@ suffix:semicolon
 singleline_comment|// Set flag.
 )brace
 singleline_comment|// drv_reset_indication
-singleline_comment|//--------------- functions for use as a module ----------------
-macro_line|#ifdef MODULE
-multiline_comment|/************************&n; *&n; * Note now that module autoprobing is allowed under PCI. The&n; * IRQ lines will not be auto-detected; instead I&squot;ll rely on the BIOSes&n; * to &quot;do the right thing&quot;.&n; *&n; ************************/
-DECL|macro|LP
-mdefine_line|#define LP(a) ((struct s_smc*)(a))
 DECL|variable|mdev
 r_static
 r_struct
@@ -8125,10 +8096,11 @@ id|net_device
 op_star
 id|mdev
 suffix:semicolon
-multiline_comment|/************************&n; *&n; * init_module&n; *&n; *  If compiled as a module, find&n; *  adapters and initialize them.&n; *&n; ************************/
-DECL|function|init_module
+DECL|function|skfd_init
+r_static
 r_int
-id|init_module
+id|__init
+id|skfd_init
 c_func
 (paren
 r_void
@@ -8138,13 +8110,6 @@ r_struct
 id|net_device
 op_star
 id|p
-suffix:semicolon
-id|PRINTK
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;FDDI init module&bslash;n&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8180,24 +8145,18 @@ l_int|NULL
 suffix:semicolon
 id|p
 op_assign
-id|LP
-c_func
 (paren
+(paren
+r_struct
+id|s_smc
+op_star
+)paren
 id|p-&gt;priv
 )paren
 op_member_access_from_pointer
 id|os.next_module
 )paren
 (brace
-id|PRINTK
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;device to register: %s&bslash;n&quot;
-comma
-id|p-&gt;name
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8222,56 +8181,10 @@ id|EIO
 suffix:semicolon
 )brace
 )brace
-id|PRINTK
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;+++++ exit with success +++++&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// init_module
-multiline_comment|/************************&n; *&n; * cleanup_module&n; *&n; *  Release all resources claimed by this module.&n; *&n; ************************/
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-id|PRINTK
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;cleanup_module&bslash;n&quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|mdev
-op_ne
-l_int|NULL
-)paren
-(brace
-id|mdev
-op_assign
-id|unlink_modules
-c_func
-(paren
-id|mdev
-)paren
-suffix:semicolon
-)brace
-r_return
-suffix:semicolon
-)brace
-singleline_comment|// cleanup_module
-multiline_comment|/************************&n; *&n; * unlink_modules&n; *&n; *  Unregister devices and release their memory.&n; *&n; ************************/
 DECL|function|unlink_modules
 r_static
 r_struct
@@ -8408,5 +8321,42 @@ id|next
 suffix:semicolon
 )brace
 singleline_comment|// unlink_modules
-macro_line|#endif&t;&t;&t;&t;/* MODULE */
+DECL|function|skfd_exit
+r_static
+r_void
+id|__exit
+id|skfd_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|mdev
+)paren
+id|mdev
+op_assign
+id|unlink_modules
+c_func
+(paren
+id|mdev
+)paren
+suffix:semicolon
+)brace
+DECL|variable|skfd_init
+id|module_init
+c_func
+(paren
+id|skfd_init
+)paren
+suffix:semicolon
+DECL|variable|skfd_exit
+id|module_exit
+c_func
+(paren
+id|skfd_exit
+)paren
+suffix:semicolon
 eof

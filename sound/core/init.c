@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -114,6 +113,16 @@ id|entry-&gt;card-&gt;id
 )paren
 suffix:semicolon
 )brace
+r_static
+r_void
+id|snd_card_free_thread
+c_func
+(paren
+r_void
+op_star
+id|__card
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *  snd_card_new - create and initialize a soundcard structure&n; *  @idx: card index (address) [0 ... (SNDRV_CARDS-1)]&n; *  @xid: card identification (ASCII string)&n; *  @module: top level module for locking&n; *  @extra_size: allocate this extra size after the main soundcard structure&n; *&n; *  Creates and initializes a soundcard structure.&n; *&n; *  Returns kmallocated snd_card_t structure. Creates the ALSA control interface&n; *  (which is blocked until snd_card_register function is called).&n; */
 DECL|function|snd_card_new
 id|snd_card_t
@@ -204,7 +213,7 @@ id|xid
 r_goto
 id|__error
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|card-&gt;id
@@ -215,8 +224,6 @@ r_sizeof
 (paren
 id|card-&gt;id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -448,6 +455,17 @@ c_func
 (paren
 op_amp
 id|card-&gt;shutdown_sleep
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|card-&gt;free_workq
+comma
+id|snd_card_free_thread
+comma
+id|card
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
@@ -750,12 +768,10 @@ id|f_ops
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
 id|f_ops-&gt;owner
 op_assign
 id|file-&gt;f_op-&gt;owner
 suffix:semicolon
-macro_line|#endif
 id|f_ops-&gt;release
 op_assign
 id|file-&gt;f_op-&gt;release
@@ -910,6 +926,15 @@ op_amp
 id|snd_card_rwlock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
+id|wake_up
+c_func
+(paren
+op_amp
+id|card-&gt;power_sleep
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* wait, until all devices are ready for the free operation */
 id|wait_event
 c_func
@@ -1193,16 +1218,6 @@ op_star
 id|card
 )paren
 (brace
-id|DECLARE_WORK
-c_func
-(paren
-id|works
-comma
-id|snd_card_free_thread
-comma
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1228,7 +1243,7 @@ id|schedule_work
 c_func
 (paren
 op_amp
-id|works
+id|card-&gt;free_workq
 )paren
 )paren
 r_return
@@ -1238,7 +1253,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;kernel_thread failed in snd_card_free_in_thread for card %i&bslash;n&quot;
+l_string|&quot;schedule_work() failed in snd_card_free_in_thread for card %i&bslash;n&quot;
 comma
 id|card-&gt;number
 )paren
@@ -1331,6 +1346,56 @@ id|spos
 op_ne
 l_char|&squot;&bslash;0&squot;
 op_logical_and
+op_logical_neg
+id|isalnum
+c_func
+(paren
+op_star
+id|spos
+)paren
+)paren
+id|spos
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|isdigit
+c_func
+(paren
+op_star
+id|spos
+)paren
+)paren
+op_star
+id|id
+op_increment
+op_assign
+id|isalpha
+c_func
+(paren
+id|card-&gt;shortname
+(braket
+l_int|0
+)braket
+)paren
+ques
+c_cond
+id|card-&gt;shortname
+(braket
+l_int|0
+)braket
+suffix:colon
+l_char|&squot;D&squot;
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_star
+id|spos
+op_ne
+l_char|&squot;&bslash;0&squot;
+op_logical_and
 (paren
 r_int
 )paren
@@ -1377,6 +1442,22 @@ suffix:semicolon
 id|id
 op_assign
 id|card-&gt;id
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|id
+op_eq
+l_char|&squot;&bslash;0&squot;
+)paren
+id|strcpy
+c_func
+(paren
+id|id
+comma
+l_string|&quot;default&quot;
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -1652,11 +1733,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|card-&gt;id
 (braket
 l_int|0
 )braket
+op_eq
+l_char|&squot;&bslash;0&squot;
 )paren
 id|choose_default_id
 c_func
@@ -2645,19 +2727,43 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
-multiline_comment|/**&n; *  snd_power_wait - wait until the power-state is changed.&n; *  @card: soundcard structure&n; *&n; *  Waits until the power-state is changed.&n; *&n; *  Note: the power lock must be active before call.&n; */
+multiline_comment|/**&n; *  snd_power_wait - wait until the power-state is changed.&n; *  @card: soundcard structure&n; *  @power_state: expected power state&n; *  @file: file structure for the O_NONBLOCK check (optional)&n; *&n; *  Waits until the power-state is changed.&n; *&n; *  Note: the power lock must be active before call.&n; */
 DECL|function|snd_power_wait
-r_void
+r_int
 id|snd_power_wait
 c_func
 (paren
 id|snd_card_t
 op_star
 id|card
+comma
+r_int
+r_int
+id|power_state
+comma
+r_struct
+id|file
+op_star
+id|file
 )paren
 (brace
 id|wait_queue_t
 id|wait
+suffix:semicolon
+multiline_comment|/* fastpath */
+r_if
+c_cond
+(paren
+id|snd_power_get_state
+c_func
+(paren
+id|card
+)paren
+op_eq
+id|power_state
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|init_waitqueue_entry
 c_func
@@ -2677,6 +2783,62 @@ comma
 op_amp
 id|wait
 )paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|card-&gt;shutdown
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|snd_power_get_state
+c_func
+(paren
+id|card
+)paren
+op_eq
+id|power_state
+)paren
+(brace
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|card-&gt;power_sleep
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|file
+op_logical_and
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_NONBLOCK
+)paren
+)paren
+r_return
+op_minus
+id|EAGAIN
 suffix:semicolon
 id|snd_power_unlock
 c_func
@@ -2698,22 +2860,13 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|card-&gt;power_sleep
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
 id|snd_power_lock
 c_func
 (paren
 id|card
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif /* CONFIG_PM */
 eof

@@ -26,13 +26,14 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|variable|mmu_gathers
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 DECL|variable|swapper_pg_dir
 id|pgd_t

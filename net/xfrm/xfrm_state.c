@@ -435,8 +435,6 @@ r_if
 c_cond
 (paren
 id|x-&gt;lft.hard_use_expires_seconds
-op_logical_and
-id|x-&gt;curlft.use_time
 )paren
 (brace
 r_int
@@ -444,7 +442,13 @@ id|tmo
 op_assign
 id|x-&gt;lft.hard_use_expires_seconds
 op_plus
+(paren
 id|x-&gt;curlft.use_time
+ques
+c_cond
+suffix:colon
+id|now
+)paren
 op_minus
 id|now
 suffix:semicolon
@@ -521,8 +525,6 @@ r_if
 c_cond
 (paren
 id|x-&gt;lft.soft_use_expires_seconds
-op_logical_and
-id|x-&gt;curlft.use_time
 )paren
 (brace
 r_int
@@ -530,7 +532,13 @@ id|tmo
 op_assign
 id|x-&gt;lft.soft_use_expires_seconds
 op_plus
+(paren
 id|x-&gt;curlft.use_time
+ques
+c_cond
+suffix:colon
+id|now
+)paren
 op_minus
 id|now
 suffix:semicolon
@@ -3400,7 +3408,7 @@ op_member_access_from_pointer
 id|compile_policy
 c_func
 (paren
-id|sk-&gt;family
+id|sk-&gt;sk_family
 comma
 id|optname
 comma

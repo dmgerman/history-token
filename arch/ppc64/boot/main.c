@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * Updates for PPC64 by Todd Inglett, Dave Engebretsen &amp; Peter Bergner.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-DECL|macro|__KERNEL__
-mdefine_line|#define __KERNEL__
 macro_line|#include &quot;ppc32-types.h&quot;
 macro_line|#include &quot;zlib.h&quot;
 macro_line|#include &lt;linux/elf.h&gt;
@@ -140,6 +138,55 @@ r_void
 m_exit
 (paren
 r_void
+)paren
+suffix:semicolon
+r_int
+r_int
+id|strlen
+c_func
+(paren
+r_const
+r_char
+op_star
+id|s
+)paren
+suffix:semicolon
+r_void
+op_star
+id|memmove
+c_func
+(paren
+r_void
+op_star
+id|dest
+comma
+r_const
+r_void
+op_star
+id|src
+comma
+r_int
+r_int
+id|n
+)paren
+suffix:semicolon
+r_void
+op_star
+id|memcpy
+c_func
+(paren
+r_void
+op_star
+id|dest
+comma
+r_const
+r_void
+op_star
+id|src
+comma
+r_int
+r_int
+id|n
 )paren
 suffix:semicolon
 r_static

@@ -952,6 +952,23 @@ id|dev
 op_ne
 id|SNDRV_AUTO_PORT
 )paren
+id|pnp_resource_change
+c_func
+(paren
+op_amp
+id|cfg-&gt;port_resource
+(braket
+l_int|0
+)braket
+comma
+id|cs4232_pcm_port
+(braket
+id|dev
+)braket
+comma
+l_int|4
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3497,6 +3514,15 @@ op_logical_neg
 id|cards
 )paren
 (brace
+macro_line|#ifdef CONFIG_PNP
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|wavefront_pnpc_driver
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MODULE
 id|printk
 (paren
@@ -3527,6 +3553,7 @@ r_void
 r_int
 id|idx
 suffix:semicolon
+macro_line|#ifdef CONFIG_PNP
 id|pnp_unregister_card_driver
 c_func
 (paren
@@ -3534,6 +3561,7 @@ op_amp
 id|wavefront_pnpc_driver
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
