@@ -1380,7 +1380,6 @@ comma
 suffix:semicolon
 DECL|function|uPD98402_init
 r_int
-id|__init
 id|uPD98402_init
 c_func
 (paren
