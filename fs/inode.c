@@ -340,13 +340,11 @@ id|inode-&gt;i_state
 op_amp
 id|flags
 )paren
-op_ne
+op_eq
 id|flags
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|spin_lock
 c_func
 (paren
