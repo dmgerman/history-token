@@ -119,6 +119,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_CPU_FREQ_DEBUG
 multiline_comment|/* divide by 1000 to get VID. */
 DECL|variable|mobile_vid_table
 r_static
@@ -195,6 +196,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* divide by 10 to get FID. */
 DECL|variable|fid_codes
 r_static
