@@ -3275,6 +3275,8 @@ c_func
 (paren
 l_string|&quot;%s - turning break %s&quot;
 comma
+id|__FUNCTION__
+comma
 id|state
 op_eq
 id|BREAK_OFF
@@ -3283,8 +3285,6 @@ c_cond
 l_string|&quot;off&quot;
 suffix:colon
 l_string|&quot;on&quot;
-comma
-id|__FUNCTION__
 )paren
 suffix:semicolon
 id|result

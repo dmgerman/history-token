@@ -2748,6 +2748,18 @@ id|dentry
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * VFS dentry helper functions.&n; */
+r_extern
+r_void
+id|dentry_unhash
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * File types&n; *&n; * NOTE! These match bits 12..15 of stat.st_mode&n; * (ie &quot;(i_mode &gt;&gt; 12) &amp; 15&quot;).&n; */
 DECL|macro|DT_UNKNOWN
 mdefine_line|#define DT_UNKNOWN&t;0

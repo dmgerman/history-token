@@ -1,11 +1,13 @@
 multiline_comment|/* Driver for Freecom USB/IDE adaptor&n; *&n; * $Id: freecom.c,v 1.22 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Freecom v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (C) 2000 David Brown &lt;usb-storage@davidb.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * This driver was developed with information provided in FREECOM&squot;s USB&n; * Programmers Reference Guide.  For further information contact Freecom&n; * (http://www.freecom.de/)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;freecom.h&quot;
-macro_line|#include &quot;linux/hdreg.h&quot;
 macro_line|#ifdef CONFIG_USB_STORAGE_DEBUG
 r_static
 r_void
@@ -191,7 +193,8 @@ r_int
 DECL|function|freecom_readdata
 id|freecom_readdata
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -349,7 +352,8 @@ r_int
 DECL|function|freecom_writedata
 id|freecom_writedata
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -508,7 +512,8 @@ r_int
 id|freecom_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -968,7 +973,7 @@ id|us-&gt;srb-&gt;sc_data_direction
 )paren
 (brace
 r_case
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:colon
 multiline_comment|/* catch bogus &quot;read 0 length&quot; case */
 r_if
@@ -1139,7 +1144,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:colon
 multiline_comment|/* catch bogus &quot;write 0 length&quot; case */
 r_if
@@ -1266,7 +1271,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:colon
 multiline_comment|/* Easy, do nothing. */
 r_break

@@ -7,6 +7,8 @@ DECL|macro|FTDI_8U232AM_PID
 mdefine_line|#define FTDI_8U232AM_PID 0x6001 /* Similar device to SIO above */
 DECL|macro|FTDI_8U232AM_ALT_PID
 mdefine_line|#define FTDI_8U232AM_ALT_PID 0x6006 /* FTDI&squot;s alternate PID for above */
+DECL|macro|FTDI_8U2232C_PID
+mdefine_line|#define FTDI_8U2232C_PID 0x6010 /* Dual channel device */
 DECL|macro|FTDI_RELAIS_PID
 mdefine_line|#define FTDI_RELAIS_PID&t;0xFA10  /* Relais device from Rudolf Gugler */
 DECL|macro|FTDI_NF_RIC_VID
@@ -282,6 +284,12 @@ DECL|macro|FTDI_SIO_SET_EVENT_CHAR
 mdefine_line|#define FTDI_SIO_SET_EVENT_CHAR&t;6 /* Set the event character */
 DECL|macro|FTDI_SIO_SET_ERROR_CHAR
 mdefine_line|#define FTDI_SIO_SET_ERROR_CHAR&t;7 /* Set the error character */
+multiline_comment|/* Port interface code for FT2232C */
+DECL|macro|INTERFACE_A
+mdefine_line|#define INTERFACE_A&t;&t;1
+DECL|macro|INTERFACE_B
+mdefine_line|#define INTERFACE_B&t;&t;2
+multiline_comment|/*&n; *   BmRequestType:  1100 0000b&n; *   bRequest:       FTDI_E2_READ&n; *   wValue:         0&n; *   wIndex:         Address of word to read&n; *   wLength:        2&n; *   Data:           Will return a word of data from E2Address&n; *&n; */
 multiline_comment|/* Port Identifier Table */
 DECL|macro|PIT_DEFAULT
 mdefine_line|#define PIT_DEFAULT &t;&t;0 /* SIOA */
@@ -327,6 +335,11 @@ DECL|enumerator|FT232BM
 id|FT232BM
 op_assign
 l_int|3
+comma
+DECL|enumerator|FT2232C
+id|FT2232C
+op_assign
+l_int|4
 comma
 DECL|typedef|ftdi_chip_type_t
 )brace

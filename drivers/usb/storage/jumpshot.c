@@ -1,13 +1,15 @@
 multiline_comment|/* Driver for Lexar &quot;Jumpshot&quot; Compact Flash reader&n; *&n; * $Id: jumpshot.c,v 1.7 2002/02/25 00:40:13 mdharm Exp $&n; *&n; * jumpshot driver v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Jimmie Mayfield (mayfield+usb@sackheads.org)&n; *&n; *   Many thanks to Robert Baruch for the SanDisk SmartMedia reader driver&n; *   which I used as a template for this driver.&n; *&n; *   Some bugfixes and scatter-gather code by Gregory P. Smith &n; *   (greg-usb@electricrain.com)&n; *&n; *   Fix for media change by Joerg Schneider (js@joergschneider.com)&n; *&n; * Developed with the assistance of:&n; *&n; *   (C) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n;  * This driver attempts to support the Lexar Jumpshot USB CompactFlash &n;  * reader.  Like many other USB CompactFlash readers, the Jumpshot contains&n;  * a USB-to-ATA chip. &n;  *&n;  * This driver supports reading and writing.  If you&squot;re truly paranoid,&n;  * however, you can force the driver into a write-protected state by setting&n;  * the WP enable bits in jumpshot_handle_mode_sense.  See the comments&n;  * in that routine.&n;  */
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;jumpshot.h&quot;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 DECL|function|jumpshot_bulk_read
 r_static
 r_inline
@@ -1163,7 +1165,8 @@ id|us_data
 op_star
 id|us
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -1737,7 +1740,8 @@ r_int
 id|jumpshot_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -2705,7 +2709,7 @@ id|us
 comma
 id|srb
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2734,7 +2738,7 @@ id|us
 comma
 id|srb
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 )brace

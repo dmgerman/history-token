@@ -1854,8 +1854,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|result
 op_eq
 l_int|0
@@ -1865,7 +1863,37 @@ op_eq
 op_minus
 id|EPIPE
 )paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+OG
+l_int|1
+op_logical_and
+(paren
+(paren
+id|u8
+op_star
 )paren
+id|buf
+)paren
+(braket
+l_int|1
+)braket
+op_ne
+id|type
+)paren
+(brace
+id|result
+op_assign
+op_minus
+id|EPROTO
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -2698,7 +2726,7 @@ r_return
 id|result
 suffix:semicolon
 multiline_comment|/* NOTE:  seems like Microsoft and Apple don&squot;t bother verifying&n;&t; * the clear &quot;took&quot;, so some devices could lock up if you check...&n;&t; * such as the Hagiwara FlashGate DUAL.  So we won&squot;t bother.&n;&t; *&n;&t; * NOTE:  make sure the logic here doesn&squot;t diverge much from&n;&t; * the copy in usb-storage, for as long as we need two copies.&n;&t; */
-multiline_comment|/* toggle was reset by the clear, then ep was reactivated */
+multiline_comment|/* toggle was reset by the clear */
 id|usb_settoggle
 c_func
 (paren
@@ -2719,29 +2747,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|usb_endpoint_running
-c_func
-(paren
-id|dev
-comma
-id|usb_pipeendpoint
-c_func
-(paren
-id|pipe
-)paren
-comma
-id|usb_pipeout
-c_func
-(paren
-id|pipe
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_disable_endpoint -- Disable an endpoint by address&n; * @dev: the device whose endpoint is being disabled&n; * @epaddr: the endpoint&squot;s address.  Endpoint number for output,&n; *&t;endpoint number + USB_DIR_IN for input&n; *&n; * Deallocates hcd/hardware state for this endpoint ... and nukes all&n; * pending urbs.&n; *&n; * If the HCD hasn&squot;t registered a disable() function, this marks the&n; * endpoint as halted and sets its maxpacket size to 0 to prevent&n; * further submissions.&n; */
+multiline_comment|/**&n; * usb_disable_endpoint -- Disable an endpoint by address&n; * @dev: the device whose endpoint is being disabled&n; * @epaddr: the endpoint&squot;s address.  Endpoint number for output,&n; *&t;endpoint number + USB_DIR_IN for input&n; *&n; * Deallocates hcd/hardware state for this endpoint ... and nukes all&n; * pending urbs.&n; *&n; * If the HCD hasn&squot;t registered a disable() function, this sets the&n; * endpoint&squot;s maxpacket size to 0 to prevent further submissions.&n; */
 DECL|function|usb_disable_endpoint
 r_void
 id|usb_disable_endpoint
@@ -2797,17 +2807,6 @@ c_func
 id|epaddr
 )paren
 )paren
-(brace
-id|usb_endpoint_halt
-c_func
-(paren
-id|dev
-comma
-id|epnum
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|dev-&gt;epmaxpacketout
 (braket
 id|epnum
@@ -2815,19 +2814,7 @@ id|epnum
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_else
-(brace
-id|usb_endpoint_halt
-c_func
-(paren
-id|dev
-comma
-id|epnum
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|dev-&gt;epmaxpacketin
 (braket
 id|epnum
@@ -2835,7 +2822,6 @@ id|epnum
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/**&n; * usb_disable_interface -- Disable all endpoints for an interface&n; * @dev: the device whose interface is being disabled&n; * @intf: pointer to the interface descriptor&n; *&n; * Disables all the endpoints for the interface&squot;s current altsetting.&n; */
@@ -2977,18 +2963,6 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-id|dev-&gt;halted
-(braket
-l_int|0
-)braket
-op_assign
-id|dev-&gt;halted
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* getting rid of interfaces will disconnect&n;&t; * any drivers bound to them (a key side effect)&n;&t; */
 r_if
 c_cond
@@ -3103,7 +3077,7 @@ id|USB_STATE_ADDRESS
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * usb_enable_endpoint - Enable an endpoint for USB communications&n; * @dev: the device whose interface is being enabled&n; * @epd: pointer to the endpoint descriptor&n; *&n; * Marks the endpoint as running, resets its toggle, and stores&n; * its maxpacket value.  For control endpoints, both the input&n; * and output sides are handled.&n; */
+multiline_comment|/*&n; * usb_enable_endpoint - Enable an endpoint for USB communications&n; * @dev: the device whose interface is being enabled&n; * @epd: pointer to the endpoint descriptor&n; *&n; * Resets the endpoint toggle and stores its maxpacket value.&n; * For control endpoints, both the input and output sides are handled.&n; */
 DECL|function|usb_enable_endpoint
 r_void
 id|usb_enable_endpoint
@@ -3164,16 +3138,6 @@ op_logical_or
 id|is_control
 )paren
 (brace
-id|usb_endpoint_running
-c_func
-(paren
-id|dev
-comma
-id|epnum
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|usb_settoggle
 c_func
 (paren
@@ -3207,16 +3171,6 @@ op_logical_or
 id|is_control
 )paren
 (brace
-id|usb_endpoint_running
-c_func
-(paren
-id|dev
-comma
-id|epnum
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|usb_settoggle
 c_func
 (paren
@@ -3329,6 +3283,17 @@ r_int
 id|manual
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;state
+op_eq
+id|USB_STATE_SUSPENDED
+)paren
+r_return
+op_minus
+id|EHOSTUNREACH
 suffix:semicolon
 id|iface
 op_assign
@@ -3590,6 +3555,17 @@ id|usb_host_config
 op_star
 id|config
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;state
+op_eq
+id|USB_STATE_SUSPENDED
+)paren
+r_return
+op_minus
+id|EHOSTUNREACH
+suffix:semicolon
 multiline_comment|/* caller must own dev-&gt;serialize (config won&squot;t change)&n;&t; * and the usb bus readlock (so driver bindings are stable);&n;&t; * so calls during probe() are fine&n;&t; */
 r_for
 c_loop
@@ -3687,18 +3663,6 @@ l_int|0
 )braket
 op_assign
 id|dev-&gt;toggle
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;halted
-(braket
-l_int|0
-)braket
-op_assign
-id|dev-&gt;halted
 (braket
 l_int|1
 )braket
@@ -3941,6 +3905,17 @@ id|dev-&gt;dev
 comma
 l_string|&quot;config 0 descriptor??&bslash;n&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;state
+op_eq
+id|USB_STATE_SUSPENDED
+)paren
+r_return
+op_minus
+id|EHOSTUNREACH
 suffix:semicolon
 multiline_comment|/* Allocate memory for new interfaces before doing anything else,&n;&t; * so that if we run out then nothing will have changed. */
 id|n

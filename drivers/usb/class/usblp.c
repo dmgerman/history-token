@@ -655,7 +655,8 @@ id|usblp
 )paren
 suffix:semicolon
 multiline_comment|/* forward reference to make our lives easier */
-r_extern
+DECL|variable|usblp_driver
+r_static
 r_struct
 id|usb_driver
 id|usblp_driver
@@ -4944,12 +4945,16 @@ c_func
 id|DRIVER_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|proto_bias
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

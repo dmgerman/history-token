@@ -45,11 +45,14 @@ id|kb_pressure_click
 op_assign
 l_int|0x10
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|kb_pressure_click
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

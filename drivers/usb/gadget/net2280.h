@@ -1314,6 +1314,11 @@ id|protocol_stall
 suffix:colon
 l_int|1
 comma
+DECL|member|softconnect
+id|softconnect
+suffix:colon
+l_int|1
+comma
 DECL|member|got_irq
 id|got_irq
 suffix:colon

@@ -534,16 +534,6 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* one bit for each endpoint ([0] = IN, [1] = OUT) */
-DECL|member|halted
-r_int
-r_int
-id|halted
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* endpoint halts; one bit per endpoint # &amp; direction; */
-multiline_comment|/* [0] = IN, [1] = OUT */
 DECL|member|epmaxpacketin
 r_int
 id|epmaxpacketin
@@ -2218,11 +2208,6 @@ DECL|macro|usb_dotoggle
 mdefine_line|#define&t;usb_dotoggle(dev, ep, out)  ((dev)-&gt;toggle[out] ^= (1 &lt;&lt; (ep)))
 DECL|macro|usb_settoggle
 mdefine_line|#define usb_settoggle(dev, ep, out, bit) ((dev)-&gt;toggle[out] = ((dev)-&gt;toggle[out] &amp; ~(1 &lt;&lt; (ep))) | ((bit) &lt;&lt; (ep)))
-multiline_comment|/* Endpoint halt control/status ... likewise USE WITH CAUTION */
-DECL|macro|usb_endpoint_running
-mdefine_line|#define usb_endpoint_running(dev, ep, out) ((dev)-&gt;halted[out] &amp;= ~(1 &lt;&lt; (ep)))
-DECL|macro|usb_endpoint_halted
-mdefine_line|#define usb_endpoint_halted(dev, ep, out) ((dev)-&gt;halted[out] &amp; (1 &lt;&lt; (ep)))
 DECL|function|__create_pipe
 r_static
 r_inline

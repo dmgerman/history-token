@@ -67,11 +67,16 @@ id|MODULE_LICENSE
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -81,11 +86,14 @@ comma
 l_string|&quot;Debug enabled or not&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|swapRGB_on
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -95,11 +103,14 @@ comma
 l_string|&quot;Red/blue swap: 1=always, 0=auto, -1=never&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|video_nr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/********************************************************************&n; *&n; * Memory management&n; *&n; * This is a shameless copy from the USB-cpia driver (linux kernel&n; * version 2.3.29 or so, I have no idea what this code actually does ;).&n; * Actually it seems to be a copy of a shameless copy of the bttv-driver.&n; * Or that is a copy of a shameless copy of ... (To the powers: is there&n; * no generic kernel-function to do this sort of stuff?)&n; *&n; * Yes, it was a shameless copy from the bttv-driver. IIRC, Alan says&n; * there will be one, but apparentely not yet -jerdfelt&n; *&n; * So I copied it again for the ov511 driver -claudio&n; *&n; * Same for the se401 driver -Jeroen&n; *&n; * And the STV0680 driver - Kevin&n; ********************************************************************/

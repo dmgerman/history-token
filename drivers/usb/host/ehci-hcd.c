@@ -652,7 +652,7 @@ l_int|16
 r_int
 id|msec
 op_assign
-l_int|500
+l_int|5000
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -746,8 +746,17 @@ comma
 id|cap
 )paren
 suffix:semicolon
+singleline_comment|// some BIOS versions seem buggy...
+singleline_comment|// return 1;
+id|ehci_warn
+(paren
+id|ehci
+comma
+l_string|&quot;continuing after BIOS bug...&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 id|ehci_dbg
