@@ -1065,6 +1065,16 @@ id|block_device
 op_star
 id|i_bdev
 suffix:semicolon
+DECL|member|i_cdev
+r_struct
+id|cdev
+op_star
+id|i_cdev
+suffix:semicolon
+DECL|member|i_cindex
+r_int
+id|i_cindex
+suffix:semicolon
 DECL|member|i_dnotify_mask
 r_int
 r_int

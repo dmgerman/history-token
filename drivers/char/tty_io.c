@@ -9728,11 +9728,11 @@ c_cond
 id|error
 )paren
 (brace
-id|cdev_put
+id|kobject_del
 c_func
 (paren
 op_amp
-id|driver-&gt;cdev
+id|driver-&gt;cdev.kobj
 )paren
 suffix:semicolon
 id|unregister_chrdev_region
