@@ -1,6 +1,6 @@
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &quot;crc32defs.h&quot;
-macro_line|#include &lt;sys/types.h&gt;
+macro_line|#include &lt;inttypes.h&gt;
 DECL|macro|ENTRIES_PER_LINE
 mdefine_line|#define ENTRIES_PER_LINE 4
 DECL|macro|LE_TABLE_SIZE
@@ -9,7 +9,7 @@ DECL|macro|BE_TABLE_SIZE
 mdefine_line|#define BE_TABLE_SIZE (1 &lt;&lt; CRC_BE_BITS)
 DECL|variable|crc32table_le
 r_static
-id|u_int32_t
+r_uint32
 id|crc32table_le
 (braket
 id|LE_TABLE_SIZE
@@ -17,7 +17,7 @@ id|LE_TABLE_SIZE
 suffix:semicolon
 DECL|variable|crc32table_be
 r_static
-id|u_int32_t
+r_uint32
 id|crc32table_be
 (braket
 id|BE_TABLE_SIZE
@@ -38,7 +38,7 @@ id|i
 comma
 id|j
 suffix:semicolon
-id|u_int32_t
+r_uint32
 id|crc
 op_assign
 l_int|1
@@ -139,7 +139,7 @@ id|i
 comma
 id|j
 suffix:semicolon
-id|u_int32_t
+r_uint32
 id|crc
 op_assign
 l_int|0x80000000
@@ -224,7 +224,7 @@ r_void
 id|output_table
 c_func
 (paren
-id|u_int32_t
+r_uint32
 id|table
 (braket
 )braket

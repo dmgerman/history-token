@@ -1305,7 +1305,7 @@ op_assign
 op_amp
 id|node_memblk
 (braket
-id|num_memblks
+id|num_node_memblks
 )braket
 suffix:semicolon
 r_for
@@ -1384,7 +1384,7 @@ id|p-&gt;nid
 op_assign
 id|pxm
 suffix:semicolon
-id|num_memblks
+id|num_node_memblks
 op_increment
 suffix:semicolon
 )brace
@@ -1515,7 +1515,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_memblks
+id|num_node_memblks
 suffix:semicolon
 id|i
 op_increment
@@ -1569,7 +1569,7 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|num_memblks
+id|num_node_memblks
 suffix:semicolon
 id|j
 op_increment
@@ -1644,7 +1644,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;Number of memory chunks in system = %d&bslash;n&quot;
 comma
-id|num_memblks
+id|num_node_memblks
 )paren
 suffix:semicolon
 r_if

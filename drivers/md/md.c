@@ -1733,29 +1733,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;md_minor
-op_ge
-id|MAX_MD_DEVS
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;md: %s: invalid raid minor (%x)&bslash;n&quot;
-comma
-id|b
-comma
-id|sb-&gt;md_minor
-)paren
-suffix:semicolon
-r_goto
-m_abort
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|sb-&gt;raid_disks
 op_le
 l_int|0
@@ -4078,11 +4055,11 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: WARNING: %s appears to be on the same physical&quot;
+l_string|&quot;%s: WARNING: %s appears to be on the same physical&quot;
 l_string|&quot; disk as %s. True&bslash;n     protection against single-disk&quot;
 l_string|&quot; failure might be compromised.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -4946,9 +4923,9 @@ id|tmp
 id|printk
 c_func
 (paren
-l_string|&quot;md%d: &quot;
+l_string|&quot;%s: &quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -5251,9 +5228,9 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: updating md%d RAID superblock on device (in sync %d)&bslash;n&quot;
+l_string|&quot;md: updating %s RAID superblock on device (in sync %d)&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -5949,9 +5926,9 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;md: md%d: unsupported raid array version %d.%d.%d&bslash;n&quot;
+l_string|&quot;md: %s: unsupported raid array version %d.%d.%d&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -6003,10 +5980,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;md: md%d: raid array is not clean&quot;
+l_string|&quot;md: %s: raid array is not clean&quot;
 l_string|&quot; -- starting background reconstruction&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -6896,9 +6873,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: md%d switched to read-write mode.&bslash;n&quot;
+l_string|&quot;md: %s switched to read-write mode.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -6932,9 +6909,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;md: md%d has no personality assigned.&bslash;n&quot;
+l_string|&quot;md: %s has no personality assigned.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -7001,9 +6978,9 @@ l_int|2
 id|printk
 c_func
 (paren
-l_string|&quot;md: md%d still in use.&bslash;n&quot;
+l_string|&quot;md: %s still in use.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -7181,9 +7158,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: md%d stopped.&bslash;n&quot;
+l_string|&quot;md: %s stopped.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -7223,9 +7200,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: md%d switched to read-only mode.&bslash;n&quot;
+l_string|&quot;md: %s switched to read-only mode.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -7536,9 +7513,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: md%d locked, cannot run&bslash;n&quot;
+l_string|&quot;md: %s locked, cannot run&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -7566,9 +7543,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: md%d already running, cannot run %s&bslash;n&quot;
+l_string|&quot;md: %s already running, cannot run %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -7591,14 +7568,25 @@ id|mddev
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|rdev0-&gt;preferred_minor
+op_ge
+l_int|0
+op_logical_and
+id|rdev0-&gt;preferred_minor
+OL
+id|MAX_MD_DEVS
+)paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: created md%d&bslash;n&quot;
+l_string|&quot;md: created %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -7653,6 +7641,24 @@ id|mddev
 )paren
 suffix:semicolon
 )brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;md: %s had invalid preferred minor %d&bslash;n&quot;
+comma
+id|bdevname
+c_func
+(paren
+id|rdev-&gt;bdev
+comma
+id|b
+)paren
+comma
+id|rdev0-&gt;preferred_minor
+)paren
+suffix:semicolon
 multiline_comment|/* on success, candidates will be empty, on error&n;&t;&t; * it won&squot;t...&n;&t;&t; */
 id|ITERATE_RDEV_GENERIC
 c_func
@@ -8661,9 +8667,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: personality does not support diskops!&bslash;n&quot;
+l_string|&quot;%s: personality does not support diskops!&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -8777,9 +8783,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: ADD_NEW_DISK not supported&bslash;n&quot;
+l_string|&quot;%s: ADD_NEW_DISK not supported&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9031,7 +9037,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: trying to generate %s error in md%d ... &bslash;n&quot;
+l_string|&quot;md: trying to generate %s error in %s ... &bslash;n&quot;
 comma
 id|__bdevname
 c_func
@@ -9041,7 +9047,7 @@ comma
 id|b
 )paren
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9176,7 +9182,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: trying to remove %s from md%d ... &bslash;n&quot;
+l_string|&quot;md: trying to remove %s from %s ... &bslash;n&quot;
 comma
 id|__bdevname
 c_func
@@ -9186,7 +9192,7 @@ comma
 id|b
 )paren
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9244,7 +9250,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: cannot remove active disk %s from md%d ... &bslash;n&quot;
+l_string|&quot;md: cannot remove active disk %s from %s ... &bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -9254,7 +9260,7 @@ comma
 id|b
 )paren
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9311,7 +9317,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: trying to hot-add %s to md%d ... &bslash;n&quot;
+l_string|&quot;md: trying to hot-add %s to %s ... &bslash;n&quot;
 comma
 id|__bdevname
 c_func
@@ -9321,7 +9327,7 @@ comma
 id|b
 )paren
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9340,10 +9346,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: HOT_ADD may only be used with&quot;
+l_string|&quot;%s: HOT_ADD may only be used with&quot;
 l_string|&quot; version-0 superblocks.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9366,9 +9372,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: personality does not support diskops!&bslash;n&quot;
+l_string|&quot;%s: personality does not support diskops!&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9454,9 +9460,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: disk size %llu blocks &lt; array size %llu&bslash;n&quot;
+l_string|&quot;%s: disk size %llu blocks &lt; array size %llu&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9496,7 +9502,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: can not hot-add faulty %s disk to md%d!&bslash;n&quot;
+l_string|&quot;md: can not hot-add faulty %s disk to %s!&bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -9506,7 +9512,7 @@ comma
 id|b
 )paren
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9552,9 +9558,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md%d: can not hot-add to full array!&bslash;n&quot;
+l_string|&quot;%s: can not hot-add to full array!&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -10126,9 +10132,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: array md%d already has disks!&bslash;n&quot;
+l_string|&quot;md: array %s already has disks!&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -10154,9 +10160,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: array md%d already initialised!&bslash;n&quot;
+l_string|&quot;md: array %s already initialised!&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -10900,7 +10906,7 @@ c_func
 (paren
 id|thread-&gt;name
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|thread-&gt;mddev
@@ -11053,9 +11059,9 @@ id|thread
 id|dprintk
 c_func
 (paren
-l_string|&quot;md: waking up MD thread %p.&bslash;n&quot;
+l_string|&quot;md: waking up MD thread %s.&bslash;n&quot;
 comma
-id|thread
+id|thread-&gt;tsk-&gt;comm
 )paren
 suffix:semicolon
 id|set_bit
@@ -11335,14 +11341,37 @@ op_star
 id|rdev
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mddev
+)paren
+(brace
+id|MD_BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rdev
+op_logical_or
+id|rdev-&gt;faulty
+)paren
+r_return
+suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;md_error dev:(%d:%d), rdev:(%d:%d), (caller: %p,%p,%p,%p).&bslash;n&quot;
+l_string|&quot;md_error dev:%s, rdev:(%d:%d), (caller: %p,%p,%p,%p).&bslash;n&quot;
 comma
-id|MD_MAJOR
-comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -11384,31 +11413,6 @@ c_func
 l_int|3
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mddev
-)paren
-(brace
-id|MD_BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rdev
-op_logical_or
-id|rdev-&gt;faulty
-)paren
-r_return
 suffix:semicolon
 r_if
 c_cond
@@ -12340,9 +12344,9 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;md%d : %sactive&quot;
+l_string|&quot;%s : %sactive&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -13251,9 +13255,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: md%d in immediate safe mode&bslash;n&quot;
+l_string|&quot;md: %s in immediate safe mode&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -13401,17 +13405,17 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: delaying resync of md%d&quot;
-l_string|&quot; until md%d has finished resync (they&quot;
+l_string|&quot;md: delaying resync of %s&quot;
+l_string|&quot; until %s has finished resync (they&quot;
 l_string|&quot; share one or more physical units)&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
 )paren
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev2
@@ -13507,9 +13511,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: syncing RAID array md%d&bslash;n&quot;
+l_string|&quot;md: syncing RAID array %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -13667,9 +13671,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: resuming recovery of md%d from checkpoint.&bslash;n&quot;
+l_string|&quot;md: resuming recovery of %s from checkpoint.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -13972,9 +13976,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: md%d: sync done.&bslash;n&quot;
+l_string|&quot;md: %s: sync done.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -14050,9 +14054,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: checkpointing recovery of md%d.&bslash;n&quot;
+l_string|&quot;md: checkpointing recovery of %s.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -14494,7 +14498,7 @@ id|md_do_sync
 comma
 id|mddev
 comma
-l_string|&quot;md%d_resync&quot;
+l_string|&quot;%s_resync&quot;
 )paren
 suffix:semicolon
 r_if
@@ -14508,10 +14512,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;md%d: could not start resync&quot;
+l_string|&quot;%s: could not start resync&quot;
 l_string|&quot; thread...&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev

@@ -2,11 +2,9 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_ARCH_H
 DECL|macro|_ASM_IA64_SN_ARCH_H
 mdefine_line|#define _ASM_IA64_SN_ARCH_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/sn2/arch.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 DECL|typedef|shubreg_t
 r_typedef
 id|u64

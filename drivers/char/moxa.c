@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -1254,8 +1255,6 @@ r_void
 r_int
 id|i
 comma
-id|n
-comma
 id|numBoards
 suffix:semicolon
 r_struct
@@ -2002,6 +2001,7 @@ id|p
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
 id|n
 op_assign
 (paren

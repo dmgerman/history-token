@@ -2,8 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_TYPES_H
 DECL|macro|_ASM_IA64_SN_TYPES_H
 mdefine_line|#define _ASM_IA64_SN_TYPES_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 DECL|typedef|cpuid_t
 r_typedef
 r_int
@@ -51,22 +49,11 @@ r_char
 id|clusterid_t
 suffix:semicolon
 multiline_comment|/* Clusterid of the cell */
-DECL|typedef|__psunsigned_t
-r_typedef
-r_uint64
-id|__psunsigned_t
-suffix:semicolon
 DECL|typedef|iopaddr_t
 r_typedef
 r_int
 r_int
 id|iopaddr_t
-suffix:semicolon
-DECL|typedef|uchar_t
-r_typedef
-r_int
-r_char
-id|uchar_t
 suffix:semicolon
 DECL|typedef|paddr_t
 r_typedef

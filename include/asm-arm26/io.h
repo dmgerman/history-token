@@ -481,6 +481,12 @@ DECL|macro|readw
 mdefine_line|#define readw(c)                        (__readwrite_bug(&quot;readw&quot;),0)
 DECL|macro|readl
 mdefine_line|#define readl(c)                        (__readwrite_bug(&quot;readl&quot;),0)
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr)&t;&t;readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr)&t;&t;readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr)&t;&t;readl(addr)
 DECL|macro|writeb
 mdefine_line|#define writeb(v,c)                     __readwrite_bug(&quot;writeb&quot;)
 DECL|macro|writew

@@ -113,6 +113,12 @@ mdefine_line|#define insl(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base),
 DECL|macro|outsl
 mdefine_line|#define outsl(port, buf, nl)&t;_outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 macro_line|#endif
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr) readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr) readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr) readl(addr)
 r_extern
 r_void
 id|_insb

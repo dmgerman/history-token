@@ -1456,10 +1456,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|num_memblks
+id|num_node_memblks
 )paren
 (brace
-multiline_comment|/* No SRAT table, to assume one node (node 0) */
+multiline_comment|/* No SRAT table, so assume one node (node 0) */
 r_if
 c_cond
 (paren
@@ -1491,7 +1491,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_memblks
+id|num_node_memblks
 suffix:semicolon
 id|i
 op_increment

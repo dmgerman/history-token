@@ -625,11 +625,7 @@ id|vcc_write_space
 suffix:semicolon
 id|vcc
 op_assign
-id|atm_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|kmalloc
 c_func

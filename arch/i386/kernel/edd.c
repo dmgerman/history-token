@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/i386/kernel/edd.c&n; *  Copyright (C) 2002, 2003 Dell Inc.&n; *  by Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&n; * BIOS Enhanced Disk Drive Services (EDD)&n; * conformant to T13 Committee www.t13.org&n; *   projects 1572D, 1484D, 1386D, 1226DT&n; *&n; * This code takes information provided by BIOS EDD calls&n; * fn41 - Check Extensions Present and&n; * fn48 - Get Device Parametes with EDD extensions&n; * made in setup.S, copied to safe structures in setup.c,&n; * and presents it in sysfs.&n; *&n; * Please see http://domsch.com/linux/edd30/results.html for&n; * the list of BIOSs which have been reported to implement EDD.&n; * If you don&squot;t see yours listed, please send a report as described there.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License v2.0 as published by&n; * the Free Software Foundation&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; */
+multiline_comment|/*&n; * linux/arch/i386/kernel/edd.c&n; *  Copyright (C) 2002, 2003 Dell Inc.&n; *  by Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *  disk80 signature by Matt Domsch, Andrew Wilks, and Sandeep K. Shandilya&n; *&n; * BIOS Enhanced Disk Drive Services (EDD)&n; * conformant to T13 Committee www.t13.org&n; *   projects 1572D, 1484D, 1386D, 1226DT&n; *&n; * This code takes information provided by BIOS EDD calls&n; * fn41 - Check Extensions Present and&n; * fn48 - Get Device Parametes with EDD extensions&n; * made in setup.S, copied to safe structures in setup.c,&n; * and presents it in sysfs.&n; *&n; * Please see http://domsch.com/linux/edd30/results.html for&n; * the list of BIOSs which have been reported to implement EDD.&n; * If you don&squot;t see yours listed, please send a report as described there.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License v2.0 as published by&n; * the Free Software Foundation&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; */
 multiline_comment|/*&n; * Known issues:&n; * - refcounting of struct device objects could be improved.&n; *&n; * TODO:&n; * - Add IDE and USB disk device support&n; * - move edd.[ch] to better locations if/when one is decided&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -36,12 +36,12 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|EDD_VERSION
-mdefine_line|#define EDD_VERSION &quot;0.10 2003-Oct-11&quot;
+mdefine_line|#define EDD_VERSION &quot;0.12 2004-Jan-26&quot;
 DECL|macro|EDD_DEVICE_NAME_SIZE
 mdefine_line|#define EDD_DEVICE_NAME_SIZE 16
 DECL|macro|REPORT_URL
 mdefine_line|#define REPORT_URL &quot;http:
-singleline_comment|//domsch.com/linux/edd30/results.html&quot;
+singleline_comment|//linux.dell.com/edd/results.html&quot;
 DECL|macro|left
 mdefine_line|#define left (PAGE_SIZE - (p - buf) - 1)
 DECL|struct|edd_device
@@ -1171,6 +1171,50 @@ suffix:semicolon
 )brace
 r_static
 id|ssize_t
+DECL|function|edd_show_disk80_sig
+id|edd_show_disk80_sig
+c_func
+(paren
+r_struct
+id|edd_device
+op_star
+id|edev
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_char
+op_star
+id|p
+op_assign
+id|buf
+suffix:semicolon
+id|p
+op_add_assign
+id|snprintf
+c_func
+(paren
+id|p
+comma
+id|left
+comma
+l_string|&quot;0x%08x&bslash;n&quot;
+comma
+id|edd_disk80_sig
+)paren
+suffix:semicolon
+r_return
+(paren
+id|p
+op_minus
+id|buf
+)paren
+suffix:semicolon
+)brace
+r_static
+id|ssize_t
 DECL|function|edd_show_extensions
 id|edd_show_extensions
 c_func
@@ -2067,6 +2111,47 @@ l_int|1
 suffix:semicolon
 )brace
 r_static
+r_int
+DECL|function|edd_has_disk80_sig
+id|edd_has_disk80_sig
+c_func
+(paren
+r_struct
+id|edd_device
+op_star
+id|edev
+)paren
+(brace
+r_struct
+id|edd_info
+op_star
+id|info
+op_assign
+id|edd_dev_get_info
+c_func
+(paren
+id|edev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|edev
+op_logical_or
+op_logical_neg
+id|info
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+id|info-&gt;device
+op_eq
+l_int|0x80
+suffix:semicolon
+)brace
+r_static
 id|EDD_DEVICE_ATTR
 c_func
 (paren
@@ -2196,6 +2281,19 @@ comma
 id|edd_has_edd30
 )paren
 suffix:semicolon
+r_static
+id|EDD_DEVICE_ATTR
+c_func
+(paren
+id|mbr_signature
+comma
+l_int|0444
+comma
+id|edd_show_disk80_sig
+comma
+id|edd_has_disk80_sig
+)paren
+suffix:semicolon
 multiline_comment|/* These are default attributes that are added for every edd&n; * device discovered.&n; */
 DECL|variable|def_attrs
 r_static
@@ -2251,6 +2349,9 @@ id|edd_attr_interface
 comma
 op_amp
 id|edd_attr_host_bus
+comma
+op_amp
+id|edd_attr_mbr_signature
 comma
 l_int|NULL
 comma

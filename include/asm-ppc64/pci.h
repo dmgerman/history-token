@@ -13,6 +13,20 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x10000000
+r_extern
+r_int
+id|pcibios_scan_all_fns
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_int
+id|devfn
+)paren
+suffix:semicolon
 DECL|function|pcibios_set_master
 r_static
 r_inline

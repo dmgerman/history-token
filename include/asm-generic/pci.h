@@ -35,5 +35,7 @@ op_assign
 id|res-&gt;end
 suffix:semicolon
 )brace
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 macro_line|#endif
 eof

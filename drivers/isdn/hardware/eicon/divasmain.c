@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasmain.c,v 1.46 2003/10/10 12:28:14 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasmain.c,v 1.47 2004/02/03 16:03:01 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -37,7 +37,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.46 $&quot;
+l_string|&quot;$Revision: 1.47 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static
@@ -2538,11 +2538,6 @@ op_star
 id|psoft_isr
 )paren
 (brace
-id|flush_scheduled_work
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|0

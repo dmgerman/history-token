@@ -17,16 +17,12 @@ id|cpu_online_map
 suffix:semicolon
 DECL|macro|cpu_to_node
 mdefine_line|#define cpu_to_node(cpu)&t;&t;(fake_node ? 0 : (cpu))
-DECL|macro|memblk_to_node
-mdefine_line|#define memblk_to_node(memblk) &t;(fake_node ? 0 : (memblk))
 DECL|macro|parent_node
 mdefine_line|#define parent_node(node)&t;&t;(node)
 DECL|macro|node_to_first_cpu
 mdefine_line|#define node_to_first_cpu(node) &t;(fake_node ? 0 : (node))
 DECL|macro|node_to_cpumask
 mdefine_line|#define node_to_cpumask(node)&t;(fake_node ? cpu_online_map : (1UL &lt;&lt; (node)))
-DECL|macro|node_to_memblk
-mdefine_line|#define node_to_memblk(node)&t;&t;(node)
 DECL|function|pcibus_to_cpumask
 r_static
 r_inline

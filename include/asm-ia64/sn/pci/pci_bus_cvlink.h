@@ -24,10 +24,6 @@ DECL|macro|MAX_PCI_XWIDGET
 mdefine_line|#define MAX_PCI_XWIDGET 256
 DECL|macro|MAX_ATE_MAPS
 mdefine_line|#define MAX_ATE_MAPS 1024
-DECL|macro|SET_PCIA64
-mdefine_line|#define SET_PCIA64(dev) &bslash;&n;&t;(((struct sn_device_sysdata *)((dev)-&gt;sysdata))-&gt;isa64) = 1
-DECL|macro|IS_PCIA64
-mdefine_line|#define IS_PCIA64(dev)&t;(((dev)-&gt;dma_mask == 0xffffffffffffffffUL) || &bslash;&n;&t;&t;(((struct sn_device_sysdata *)((dev)-&gt;sysdata))-&gt;isa64))
 DECL|macro|IS_PCI32G
 mdefine_line|#define IS_PCI32G(dev)&t;((dev)-&gt;dma_mask &gt;= 0xffffffff)
 DECL|macro|IS_PCI32L
@@ -53,24 +49,6 @@ id|sn_device_sysdata
 DECL|member|vhdl
 id|vertex_hdl_t
 id|vhdl
-suffix:semicolon
-DECL|member|isa64
-r_int
-id|isa64
-suffix:semicolon
-DECL|member|dma_buf_sync
-r_volatile
-r_int
-r_int
-op_star
-id|dma_buf_sync
-suffix:semicolon
-DECL|member|xbow_buf_sync
-r_volatile
-r_int
-r_int
-op_star
-id|xbow_buf_sync
 suffix:semicolon
 DECL|member|pci_provider
 id|pciio_provider_t

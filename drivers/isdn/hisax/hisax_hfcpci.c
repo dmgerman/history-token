@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;hisax_hfcpci.h&quot;
 singleline_comment|// debugging cruft
 DECL|macro|__debug_variable

@@ -412,6 +412,12 @@ DECL|macro|readw
 mdefine_line|#define readw(addr)&t;__readw((unsigned long)(addr))
 DECL|macro|readl
 mdefine_line|#define readl(addr)&t;__readl((unsigned long)(addr))
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr) readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr) readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr) readl(addr)
 DECL|macro|writeb
 mdefine_line|#define writeb(b, addr)&t;__writeb((b),(unsigned long)(addr))
 DECL|macro|writew

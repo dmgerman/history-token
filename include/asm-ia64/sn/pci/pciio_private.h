@@ -12,6 +12,7 @@ id|pciio_piomap_s
 (brace
 DECL|member|pp_flags
 r_int
+r_int
 id|pp_flags
 suffix:semicolon
 multiline_comment|/* PCIIO_PIOMAP flags */
@@ -54,6 +55,7 @@ id|pciio_dmamap_s
 (brace
 DECL|member|pd_flags
 r_int
+r_int
 id|pd_flags
 suffix:semicolon
 multiline_comment|/* PCIIO_DMAMAP flags */
@@ -75,6 +77,7 @@ r_struct
 id|pciio_intr_s
 (brace
 DECL|member|pi_flags
+r_int
 r_int
 id|pi_flags
 suffix:semicolon

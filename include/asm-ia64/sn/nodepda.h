@@ -2,14 +2,14 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_NODEPDA_H
 DECL|macro|_ASM_IA64_SN_NODEPDA_H
 mdefine_line|#define _ASM_IA64_SN_NODEPDA_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/bte.h&gt;
+macro_line|#include &lt;asm/sn/sn2/arch.h&gt;
 multiline_comment|/*&n; * NUMA Node-Specific Data structures are defined in this file.&n; * In particular, this is the location of the node PDA.&n; * A pointer to the right node PDA is saved in each CPU PDA.&n; */
 multiline_comment|/*&n; * Node-specific data structure.&n; *&n; * One of these structures is allocated on each node of a NUMA system.&n; *&n; * This structure provides a convenient way of keeping together &n; * all per-node data structures. &n; */
 DECL|struct|nodepda_s

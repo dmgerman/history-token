@@ -49,7 +49,7 @@ DECL|macro|RFALSE
 mdefine_line|#define RFALSE( cond, format, args... ) do {;} while( 0 )
 macro_line|#endif
 DECL|macro|CONSTF
-mdefine_line|#define CONSTF __attribute__( ( const ) )
+mdefine_line|#define CONSTF __attribute_const__
 multiline_comment|/*&n; * Disk Data Structures&n; */
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                             SUPER BLOCK                                 */
@@ -4139,7 +4139,6 @@ id|from
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|copy_item_head
 c_func
@@ -4158,7 +4157,6 @@ id|p_v_from
 suffix:semicolon
 singleline_comment|// first key is in cpu form, second - le
 r_extern
-r_inline
 r_int
 id|comp_keys
 (paren
@@ -4176,7 +4174,6 @@ id|cpu_key
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|comp_short_keys
 (paren
@@ -4194,7 +4191,6 @@ id|cpu_key
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|le_key2cpu_key
 (paren
@@ -4212,7 +4208,6 @@ id|from
 suffix:semicolon
 singleline_comment|// both are cpu keys
 r_extern
-r_inline
 r_int
 id|comp_cpu_keys
 (paren
@@ -4228,7 +4223,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|comp_short_cpu_keys
 (paren
@@ -4244,7 +4238,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|cpu_key2cpu_key
 (paren
@@ -4260,7 +4253,6 @@ op_star
 suffix:semicolon
 singleline_comment|// both are in le form
 r_extern
-r_inline
 r_int
 id|comp_le_keys
 (paren
@@ -4276,7 +4268,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|comp_short_le_keys
 (paren
@@ -4473,7 +4464,6 @@ id|p_s_search_path
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|decrement_bcount
 (paren
@@ -5067,7 +5057,6 @@ id|sd_attrs
 )paren
 suffix:semicolon
 multiline_comment|/* namei.c */
-r_inline
 r_void
 id|set_de_name_and_namelen
 (paren
@@ -5832,7 +5821,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* do_balance.c */
-r_inline
 r_void
 id|do_balance_mark_leaf_dirty
 (paren

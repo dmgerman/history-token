@@ -2227,6 +2227,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|runqueue_t
+op_star
+id|rq
+suffix:semicolon
 id|local_irq_save
 c_func
 (paren
@@ -2266,6 +2270,17 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the child was a (relative-) CPU hog then decrease&n;&t; * the sleep_avg of the parent as well.&n;&t; */
+id|rq
+op_assign
+id|task_rq_lock
+c_func
+(paren
+id|p-&gt;parent
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2291,6 +2306,15 @@ op_div
 id|EXIT_WEIGHT
 op_plus
 l_int|1
+)paren
+suffix:semicolon
+id|task_rq_unlock
+c_func
+(paren
+id|rq
+comma
+op_amp
+id|flags
 )paren
 suffix:semicolon
 )brace

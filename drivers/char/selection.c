@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/consolemap.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/tiocl.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
@@ -1330,7 +1331,17 @@ comma
 id|current
 )paren
 suffix:semicolon
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 id|poke_blanked_console
+c_func
+(paren
+)paren
+suffix:semicolon
+id|release_console_sem
 c_func
 (paren
 )paren

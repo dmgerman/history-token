@@ -29,7 +29,7 @@ suffix:semicolon
 multiline_comment|/* Stuff below this line could be architecture independent */
 r_extern
 r_int
-id|num_memblks
+id|num_node_memblks
 suffix:semicolon
 multiline_comment|/* total number of memory chunks */
 multiline_comment|/*&n; * List of node memory chunks. Filled when parsing SRAT table to&n; * obtain information about memory nodes.&n;*/
@@ -80,7 +80,7 @@ r_struct
 id|node_memblk_s
 id|node_memblk
 (braket
-id|NR_MEMBLKS
+id|NR_NODE_MEMBLKS
 )braket
 suffix:semicolon
 r_extern

@@ -46,13 +46,13 @@ id|verbose
 suffix:semicolon
 multiline_comment|/**&n; *  since we need only a few bits to store internal state we don&squot;t allocate&n; *  extra memory but use frontend-&gt;data as bitfield&n; */
 DECL|macro|SET_PWM
-mdefine_line|#define SET_PWM(data,pwm) do { &t;&t;&bslash;&n;&t;(long) data &amp;= ~0xff; &t;&t;&bslash;&n;&t;(long) data |= pwm; &t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SET_PWM(data,pwm) do { &t;&t;&bslash;&n;&t;long d = (long)data;&t;&t;&bslash;&n;&t;d &amp;= ~0xff; &t;&t;&t;&bslash;&n;&t;d |= pwm; &t;&t;&t;&bslash;&n;&t;data = (void *)d;&t;&t;&bslash;&n;} while (0)
 DECL|macro|SET_REG0
-mdefine_line|#define SET_REG0(data,reg0) do {&t;&bslash;&n;&t;(long) data &amp;= ~(0xff &lt;&lt; 8); &t;&bslash;&n;&t;(long) data |= reg0 &lt;&lt; 8; &t;&bslash;&n;} while (0)
+mdefine_line|#define SET_REG0(data,reg0) do {&t;&bslash;&n;&t;long d = (long)data;&t;&t;&bslash;&n;&t;d &amp;= ~(0xff &lt;&lt; 8); &t;&t;&bslash;&n;&t;d |= reg0 &lt;&lt; 8; &t;&t;&bslash;&n;&t;data = (void *)d;&t;&t;&bslash;&n;} while (0)
 DECL|macro|SET_TUNER
-mdefine_line|#define SET_TUNER(data,type) do {&t;&bslash;&n;&t;(long) data &amp;= ~(0xff &lt;&lt; 16); &t;&bslash;&n;&t;(long) data |= type &lt;&lt; 16;&t;&bslash;&n;} while (0)
+mdefine_line|#define SET_TUNER(data,type) do {&t;&bslash;&n;&t;long d = (long)data;&t;&t;&bslash;&n;&t;d &amp;= ~(0xff &lt;&lt; 16); &t;&t;&bslash;&n;&t;d |= type &lt;&lt; 16;&t;&t;&bslash;&n;&t;data = (void *)d;&t;&t;&bslash;&n;} while (0)
 DECL|macro|SET_DEMOD_ADDR
-mdefine_line|#define SET_DEMOD_ADDR(data,type) do {&t;&bslash;&n;&t;(long) data &amp;= ~(0xff &lt;&lt; 24); &t;&bslash;&n;&t;(long) data |= type &lt;&lt; 24;&t;&bslash;&n;} while (0)
+mdefine_line|#define SET_DEMOD_ADDR(data,type) do {&t;&bslash;&n;&t;long d = (long)data;&t;&t;&bslash;&n;&t;d &amp;= ~(0xff &lt;&lt; 24); &t;&t;&bslash;&n;&t;d |= type &lt;&lt; 24;&t;&t;&bslash;&n;&t;data = (void *)d;&t;&t;&bslash;&n;} while (0)
 DECL|macro|GET_PWM
 mdefine_line|#define GET_PWM(data) ((u8) ((long) data &amp; 0xff))
 DECL|macro|GET_REG0

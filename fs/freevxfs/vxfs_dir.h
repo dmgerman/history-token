@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_DIR_H_
 DECL|macro|_VXFS_DIR_H_
 mdefine_line|#define _VXFS_DIR_H_
-macro_line|#ident &quot;$Id: vxfs_dir.h,v 1.7 2001/05/21 15:48:26 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - directory structure.&n; *&n; * This file contains the definition of the vxfs directory format.&n; */
 multiline_comment|/*&n; * VxFS directory block header.&n; *&n; * This entry is the head of every filesystem block in a directory.&n; * It is used for free space managment and additionally includes&n; * a hash for speeding up directory search (lookup).&n; *&n; * The hash may be empty and in fact we do not use it all in the&n; * Linux driver for now.&n; */
 DECL|struct|vxfs_dirblk

@@ -4023,7 +4023,7 @@ suffix:semicolon
 id|ncp_date_unix2dos
 c_func
 (paren
-id|attr-&gt;ia_ctime.tv_sec
+id|attr-&gt;ia_atime.tv_sec
 comma
 op_amp
 (paren

@@ -1186,10 +1186,24 @@ r_struct
 id|flow_flush_info
 id|info
 suffix:semicolon
-multiline_comment|/* Don&squot;t want cpus going down or up during this, also protects&n;&t; * against multiple callers. */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|flow_flush_sem
+)paren
+suffix:semicolon
+multiline_comment|/* Don&squot;t want cpus going down or up during this. */
 id|lock_cpu_hotplug
 c_func
 (paren
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|flow_flush_sem
 )paren
 suffix:semicolon
 id|atomic_set
@@ -1250,6 +1264,13 @@ c_func
 (paren
 op_amp
 id|info.completion
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|flow_flush_sem
 )paren
 suffix:semicolon
 id|unlock_cpu_hotplug

@@ -110,6 +110,8 @@ suffix:semicolon
 multiline_comment|/* Override the logic in pci_scan_bus for skipping already-configured&n;   bus numbers.  */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;1
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;alpha_mv.min_io_address
 DECL|macro|PCIBIOS_MIN_MEM

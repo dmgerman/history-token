@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * arch/ppc/syslib/gen550_dbg.c&n; *&n; * A library of polled 16550 serial routines.  These are intended to&n; * be used to support progress messages, xmon, kgdb, etc. on a&n; * variety of platforms.&n; *&n; * Adapted from lots of code ripped from the arch/ppc/boot/ polled&n; * 16550 support.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2002-2003 (c) MontaVista Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;&t;&t;/* For linux/serial_core.h */
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;

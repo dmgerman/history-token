@@ -5482,13 +5482,15 @@ id|image-&gt;height
 op_sub_assign
 id|height
 suffix:semicolon
+id|image-&gt;data
+op_assign
 (paren
 r_const
 id|u8
 op_star
 )paren
 id|image-&gt;data
-op_add_assign
+op_plus
 id|size
 suffix:semicolon
 )brace

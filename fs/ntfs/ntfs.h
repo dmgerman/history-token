@@ -411,7 +411,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_inline
 id|time_t
 id|ntfs2utc
 c_func

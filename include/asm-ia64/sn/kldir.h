@@ -2,7 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_KLDIR_H
 DECL|macro|_ASM_IA64_SN_KLDIR_H
 mdefine_line|#define _ASM_IA64_SN_KLDIR_H
-macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * The kldir memory area resides at a fixed place in each node&squot;s memory and&n; * provides pointers to most other IP27 memory areas.  This allows us to&n; * resize and/or relocate memory areas at a later time without breaking all&n; * firmware and kernels that use them.  Indices in the array are&n; * permanently dedicated to areas listed below.  Some memory areas (marked&n; * below) reside at a permanently fixed location, but are included in the&n; * directory for completeness.&n; */
 DECL|macro|KLDIR_MAGIC
 mdefine_line|#define KLDIR_MAGIC&t;&t;0x434d5f53505f5357
@@ -38,7 +38,8 @@ id|offset
 suffix:semicolon
 multiline_comment|/* Offset from start of node space  */
 DECL|member|pointer
-id|__psunsigned_t
+r_int
+r_int
 id|pointer
 suffix:semicolon
 multiline_comment|/* Pointer to area in some cases    */

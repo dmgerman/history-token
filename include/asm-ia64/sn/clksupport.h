@@ -3,9 +3,7 @@ multiline_comment|/*&n; * This file contains definitions for accessing a platfor
 macro_line|#ifndef _ASM_IA64_SN_CLKSUPPORT_H
 DECL|macro|_ASM_IA64_SN_CLKSUPPORT_H
 mdefine_line|#define _ASM_IA64_SN_CLKSUPPORT_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
 DECL|typedef|clkreg_t
 r_typedef
 r_int

@@ -1254,11 +1254,6 @@ l_string|&quot;hexium_orion: device is a Hexium Orion w/ 1 SVHS + 3 BNC inputs.&
 )paren
 suffix:semicolon
 multiline_comment|/* we store the pointer in our private data field */
-(paren
-r_struct
-id|hexium
-op_star
-)paren
 id|dev-&gt;ext_priv
 op_assign
 id|hexium
@@ -1290,11 +1285,6 @@ l_string|&quot;hexium_orion: device is a Hexium Orion w/ 4 BNC inputs.&bslash;n&
 )paren
 suffix:semicolon
 multiline_comment|/* we store the pointer in our private data field */
-(paren
-r_struct
-id|hexium
-op_star
-)paren
 id|dev-&gt;ext_priv
 op_assign
 id|hexium
@@ -1345,11 +1335,6 @@ l_string|&quot;hexium_orion: device is a Hexium HV-PCI6/Orion (old).&bslash;n&qu
 )paren
 suffix:semicolon
 multiline_comment|/* we store the pointer in our private data field */
-(paren
-r_struct
-id|hexium
-op_star
-)paren
 id|dev-&gt;ext_priv
 op_assign
 id|hexium

@@ -492,10 +492,6 @@ op_amp
 id|elan_104nc_spin
 )paren
 suffix:semicolon
-(paren
-id|__u8
-op_star
-)paren
 id|to
 op_add_assign
 id|thislen

@@ -1021,7 +1021,6 @@ id|tc
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 r_int
 id|__init
@@ -1032,7 +1031,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|__init
 id|efi_set_rtc_mmss

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_FSHEAD_H_
 DECL|macro|_VXFS_FSHEAD_H_
 mdefine_line|#define _VXFS_FSHEAD_H_
-macro_line|#ident &quot;$Id: vxfs_fshead.h,v 1.7 2001/05/23 17:27:39 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - fileset header structures.&n; *&n; * This file contains the physical structure of the VxFS&n; * fileset header.&n; */
 multiline_comment|/*&n; * Fileset header &n; */
 DECL|struct|vxfs_fsh

@@ -894,11 +894,7 @@ id|he_dev-&gt;atm_dev-&gt;dev_data
 op_assign
 id|he_dev
 suffix:semicolon
-id|HE_DEV
-c_func
-(paren
-id|atm_dev
-)paren
+id|atm_dev-&gt;dev_data
 op_assign
 id|he_dev
 suffix:semicolon
@@ -10750,11 +10746,7 @@ op_amp
 id|he_vcc-&gt;tx_waitq
 )paren
 suffix:semicolon
-id|HE_VCC
-c_func
-(paren
-id|vcc
-)paren
+id|vcc-&gt;dev_data
 op_assign
 id|he_vcc
 suffix:semicolon

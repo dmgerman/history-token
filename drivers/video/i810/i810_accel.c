@@ -23,7 +23,6 @@ multiline_comment|/* Macros */
 DECL|macro|PUT_RING
 mdefine_line|#define PUT_RING(n) {                                        &bslash;&n;&t;i810_writel(par-&gt;cur_tail, par-&gt;iring.virtual, n);   &bslash;&n;        par-&gt;cur_tail += 4;                                  &bslash;&n;        par-&gt;cur_tail &amp;= RING_SIZE_MASK;                     &bslash;&n;}                                                                      
 r_extern
-r_inline
 r_void
 id|flush_cache
 c_func
