@@ -439,7 +439,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The BIO completion handler simply queues the BIO up for the process-context&n; * handler.&n; *&n; * During I/O bi_private points at the dio.  After I/O, bi_private is used to&n; * implement a singly-linked list of completed BIOs, at dio-&gt;bio_list.&n; */
 DECL|function|dio_bio_end_io
 r_static
-r_void
+r_int
 id|dio_bio_end_io
 c_func
 (paren
@@ -447,6 +447,13 @@ r_struct
 id|bio
 op_star
 id|bio
+comma
+r_int
+r_int
+id|bytes_done
+comma
+r_int
+id|error
 )paren
 (brace
 r_struct
@@ -459,6 +466,14 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bio-&gt;bi_size
+)paren
+r_return
+l_int|1
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -496,6 +511,9 @@ id|dio-&gt;bio_list_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static

@@ -16509,7 +16509,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This implements &quot;read block 0&quot; for floppy_revalidate().&n; * Needed for format autodetection, checking whether there is&n; * a disk in the drive, and whether that disk is writable.&n; */
 DECL|function|floppy_rb0_complete
 r_static
-r_void
+r_int
 id|floppy_rb0_complete
 c_func
 (paren
@@ -16517,8 +16517,23 @@ r_struct
 id|bio
 op_star
 id|bio
+comma
+r_int
+r_int
+id|bytes_done
+comma
+r_int
+id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|bio-&gt;bi_size
+)paren
+r_return
+l_int|1
+suffix:semicolon
 id|complete
 c_func
 (paren
@@ -16529,6 +16544,9 @@ op_star
 )paren
 id|bio-&gt;bi_private
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|__floppy_read_block_0

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/fs/nfs/rpcauth.c&n; *&n; * Generic RPC authentication API.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
+multiline_comment|/*&n; * linux/net/sunrpc/auth.c&n; *&n; * Generic RPC client authentication API.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -10,8 +10,6 @@ macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 macro_line|# define RPCDBG_FACILITY&t;RPCDBG_AUTH
 macro_line|#endif
-DECL|macro|RPC_MAXFLAVOR
-mdefine_line|#define RPC_MAXFLAVOR&t;8
 DECL|variable|auth_flavors
 r_static
 r_struct
@@ -19,7 +17,7 @@ id|rpc_authops
 op_star
 id|auth_flavors
 (braket
-id|RPC_MAXFLAVOR
+id|RPC_AUTH_MAXFLAVOR
 )braket
 op_assign
 (brace
@@ -47,8 +45,7 @@ op_star
 id|ops
 )paren
 (brace
-r_int
-r_int
+id|rpc_authflavor_t
 id|flavor
 suffix:semicolon
 r_if
@@ -60,7 +57,7 @@ op_assign
 id|ops-&gt;au_flavor
 )paren
 op_ge
-id|RPC_MAXFLAVOR
+id|RPC_AUTH_MAXFLAVOR
 )paren
 r_return
 op_minus
@@ -103,8 +100,7 @@ op_star
 id|ops
 )paren
 (brace
-r_int
-r_int
+id|rpc_authflavor_t
 id|flavor
 suffix:semicolon
 r_if
@@ -116,7 +112,7 @@ op_assign
 id|ops-&gt;au_flavor
 )paren
 op_ge
-id|RPC_MAXFLAVOR
+id|RPC_AUTH_MAXFLAVOR
 )paren
 r_return
 op_minus
@@ -155,8 +151,7 @@ DECL|function|rpcauth_create
 id|rpcauth_create
 c_func
 (paren
-r_int
-r_int
+id|rpc_authflavor_t
 id|flavor
 comma
 r_struct
@@ -175,7 +170,7 @@ c_cond
 (paren
 id|flavor
 op_ge
-id|RPC_MAXFLAVOR
+id|RPC_AUTH_MAXFLAVOR
 op_logical_or
 op_logical_neg
 (paren

@@ -74,6 +74,11 @@ r_int
 r_int
 id|nr_mapped
 suffix:semicolon
+DECL|member|nr_slab
+r_int
+r_int
+id|nr_slab
+suffix:semicolon
 )brace
 id|____cacheline_aligned_in_smp
 id|page_states

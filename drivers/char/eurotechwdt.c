@@ -19,7 +19,6 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|variable|eurwdt_is_open
 r_static
 r_int

@@ -1024,7 +1024,7 @@ suffix:semicolon
 r_case
 id|RC_REPLSTAT
 suffix:colon
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 op_amp

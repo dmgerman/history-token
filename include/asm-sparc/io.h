@@ -101,168 +101,7 @@ l_int|0xff
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Memory mapped I/O to PCI&n; */
-DECL|function|readb
-r_static
-id|__inline__
-id|u8
-id|readb
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-op_star
-(paren
-r_volatile
-id|u8
-op_star
-)paren
-id|addr
-suffix:semicolon
-)brace
-DECL|function|readw
-r_static
-id|__inline__
-id|u16
-id|readw
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-id|flip_word
-c_func
-(paren
-op_star
-(paren
-r_volatile
-id|u16
-op_star
-)paren
-id|addr
-)paren
-suffix:semicolon
-)brace
-DECL|function|readl
-r_static
-id|__inline__
-id|u32
-id|readl
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-id|flip_dword
-c_func
-(paren
-op_star
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-id|addr
-)paren
-suffix:semicolon
-)brace
-DECL|function|writeb
-r_static
-id|__inline__
-r_void
-id|writeb
-c_func
-(paren
-id|u8
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-(brace
-op_star
-(paren
-r_volatile
-id|u8
-op_star
-)paren
-id|addr
-op_assign
-id|b
-suffix:semicolon
-)brace
-DECL|function|writew
-r_static
-id|__inline__
-r_void
-id|writew
-c_func
-(paren
-id|u16
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-(brace
-op_star
-(paren
-r_volatile
-id|u16
-op_star
-)paren
-id|addr
-op_assign
-id|flip_word
-c_func
-(paren
-id|b
-)paren
-suffix:semicolon
-)brace
-DECL|function|writel
-r_static
-id|__inline__
-r_void
-id|writel
-c_func
-(paren
-id|u32
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-(brace
-op_star
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-id|addr
-op_assign
-id|flip_dword
-c_func
-(paren
-id|b
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Now the &squot;raw&squot; versions. */
+multiline_comment|/*&n; * Memory mapped I/O to PCI&n; *&n; * Observe that ioremap returns void* cookie, but accessors, such&n; * as readb, take unsigned long as address, by API. This mismatch&n; * happened historically. The ioremap is much older than accessors,&n; * so at one time ioremap&squot;s cookie was used as address (*a = val).&n; * When accessors came about, they were designed to be compatible across&n; * buses, so that drivers can select proper ones like sunhme.c did.&n; * To make that easier, they use same aruments (ulong) for sbus, pci, isa.&n; * The offshot is, we must cast readb et. al. arguments with a #define.&n; */
 DECL|function|__raw_readb
 r_static
 id|__inline__
@@ -407,6 +246,18 @@ op_assign
 id|b
 suffix:semicolon
 )brace
+DECL|macro|readb
+mdefine_line|#define readb(addr)&t;(*(volatile u8 *)(addr))
+DECL|macro|readw
+mdefine_line|#define readw(addr)&t;flip_word(*(volatile u16 *)(addr))
+DECL|macro|readl
+mdefine_line|#define readl(addr)&t;flip_dword(*(volatile u32 *)(addr))
+DECL|macro|writeb
+mdefine_line|#define writeb(b, a)&t;(*(volatile u8 *)(a) = b)
+DECL|macro|writew
+mdefine_line|#define writew(b, a)&t;(*(volatile u16 *)(a) = flip_word(b))
+DECL|macro|writel
+mdefine_line|#define writel(b, a)&t;(*(volatile u32 *)(a) = flip_dword(b))
 multiline_comment|/*&n; * I/O space operations&n; *&n; * Arrangement on a Sun is somewhat complicated.&n; *&n; * First of all, we want to use standard Linux drivers&n; * for keyboard, PC serial, etc. These drivers think&n; * they access I/O space and use inb/outb.&n; * On the other hand, EBus bridge accepts PCI *memory*&n; * cycles and converts them into ISA *I/O* cycles.&n; * Ergo, we want inb &amp; outb to generate PCI memory cycles.&n; *&n; * If we want to issue PCI *I/O* cycles, we do this&n; * with a low 64K fixed window in PCIC. This window gets&n; * mapped somewhere into virtual kernel space and we&n; * can use inb/outb again.&n; */
 DECL|macro|inb_local
 mdefine_line|#define inb_local(addr)&t;&t;readb(addr)
@@ -686,7 +537,7 @@ op_assign
 id|b
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The only reason for #define&squot;s is to hide casts to unsigned long.&n; * XXX Rewrite drivers without structures for registers.&n; */
+multiline_comment|/*&n; * The only reason for #define&squot;s is to hide casts to unsigned long.&n; */
 DECL|macro|sbus_readb
 mdefine_line|#define sbus_readb(a)&t;&t;_sbus_readb((unsigned long)(a))
 DECL|macro|sbus_readw
@@ -784,7 +635,6 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* P3: talk davem into dropping &quot;name&quot; argument in favor of res-&gt;name */
 multiline_comment|/*&n; * Bus number may be in res-&gt;flags... somewhere.&n; */
 r_extern
 r_int
@@ -810,7 +660,6 @@ op_star
 id|name
 )paren
 suffix:semicolon
-multiline_comment|/* XXX Partial deallocations? I think not! */
 r_extern
 r_void
 id|sbus_iounmap
@@ -835,7 +684,7 @@ mdefine_line|#define RTC_PORT(x)   (rtc_port + (x))
 DECL|macro|RTC_ALWAYS_BCD
 mdefine_line|#define RTC_ALWAYS_BCD  0
 multiline_comment|/* Nothing to do */
-multiline_comment|/* P3: Only IDE DMA may need these. */
+multiline_comment|/* P3: Only IDE DMA may need these. XXX Verify that it still does... */
 DECL|macro|dma_cache_inv
 mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { } while (0)
 DECL|macro|dma_cache_wback
