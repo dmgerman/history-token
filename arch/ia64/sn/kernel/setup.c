@@ -171,6 +171,14 @@ op_star
 op_star
 )paren
 suffix:semicolon
+r_static
+r_void
+id|scan_for_ionodes
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|nodepdaindr
 r_static
 id|nodepda_t
@@ -258,6 +266,7 @@ macro_line|#endif
 multiline_comment|/*&n; * This routine can only be used during init, since&n; * smp_boot_data is an init data structure.&n; * We have to use smp_boot_data.cpu_phys_id to find&n; * the physical id of the processor because the normal&n; * cpu_physical_id() relies on data structures that&n; * may not be initialized yet.&n; */
 r_static
 r_int
+id|__init
 DECL|function|pxm_to_nasid
 id|pxm_to_nasid
 c_func
@@ -1061,6 +1070,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn_init_pdas - setup node data areas&n; *&n; * One time setup for Node Data Area.  Called by sn_setup().&n; */
 r_void
+id|__init
 DECL|function|sn_init_pdas
 id|sn_init_pdas
 c_func
@@ -1073,13 +1083,6 @@ id|cmdline_p
 (brace
 id|cnodeid_t
 id|cnode
-suffix:semicolon
-r_void
-id|scan_for_ionodes
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure that the PDA fits entirely in the same page as the &n;&t; * cpu_data area.&n;&t; */
 r_if
@@ -1671,7 +1674,9 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Scan klconfig for ionodes.  Add the nasids to the&n; * physical_node_map and the pda and increment numionodes.&n; */
+r_static
 r_void
+id|__init
 DECL|function|scan_for_ionodes
 id|scan_for_ionodes
 c_func
