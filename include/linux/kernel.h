@@ -533,6 +533,8 @@ DECL|macro|TAINT_FORCED_MODULE
 mdefine_line|#define TAINT_FORCED_MODULE&t;&t;(1&lt;&lt;1)
 DECL|macro|TAINT_UNSAFE_SMP
 mdefine_line|#define TAINT_UNSAFE_SMP&t;&t;(1&lt;&lt;2)
+DECL|macro|TAINT_FORCED_RMMOD
+mdefine_line|#define TAINT_FORCED_RMMOD&t;&t;(1&lt;&lt;3)
 r_extern
 r_void
 id|dump_stack
