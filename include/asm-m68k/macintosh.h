@@ -268,12 +268,12 @@ DECL|macro|MAC_IDE_BABOON
 mdefine_line|#define MAC_IDE_BABOON&t;&t;3
 DECL|macro|MAC_SCC_II
 mdefine_line|#define MAC_SCC_II&t;&t;1
-DECL|macro|MAC_SCC_QUADRA
-mdefine_line|#define MAC_SCC_QUADRA&t;&t;2
-DECL|macro|MAC_SCC_QUADRA2
-mdefine_line|#define MAC_SCC_QUADRA2&t;&t;3
 DECL|macro|MAC_SCC_IOP
-mdefine_line|#define MAC_SCC_IOP&t;&t;4
+mdefine_line|#define MAC_SCC_IOP&t;&t;2
+DECL|macro|MAC_SCC_QUADRA
+mdefine_line|#define MAC_SCC_QUADRA&t;&t;3
+DECL|macro|MAC_SCC_PSC
+mdefine_line|#define MAC_SCC_PSC&t;&t;4
 DECL|macro|MAC_ETHER_NONE
 mdefine_line|#define MAC_ETHER_NONE&t;&t;0&t;
 DECL|macro|MAC_ETHER_SONIC
@@ -381,6 +381,8 @@ DECL|macro|MAC_MODEL_P575
 mdefine_line|#define MAC_MODEL_P575&t;&t;92&t;/* aka: LC575, P577/P578 */
 DECL|macro|MAC_MODEL_Q605
 mdefine_line|#define MAC_MODEL_Q605&t;&t;94
+DECL|macro|MAC_MODEL_Q605_ACC
+mdefine_line|#define MAC_MODEL_Q605_ACC&t;95&t;/* Q605 accelerated to 33 MHz */
 DECL|macro|MAC_MODEL_Q630
 mdefine_line|#define MAC_MODEL_Q630&t;&t;98&t;/* aka: LC630, P630/631/635/636/637/638/640 */
 DECL|macro|MAC_MODEL_P588
