@@ -199,7 +199,7 @@ id|pciio_info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pci_bus_cvlink_init() - To be called once during initialization before &n; *&t;SGI IO Infrastructure init is called.&n; */
+multiline_comment|/*&n; * pci_bus_cvlink_init() - To be called once during initialization before&n; *&t;SGI IO Infrastructure init is called.&n; */
 r_int
 DECL|function|pci_bus_cvlink_init
 id|pci_bus_cvlink_init
@@ -273,7 +273,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pci_bus_to_vertex() - Given a logical Linux Bus Number returns the associated &n; *&t;pci bus vertex from the SGI IO Infrastructure.&n; */
+multiline_comment|/*&n; * pci_bus_to_vertex() - Given a logical Linux Bus Number returns the associated&n; *&t;pci bus vertex from the SGI IO Infrastructure.&n; */
 r_static
 r_inline
 id|vertex_hdl_t
@@ -303,7 +303,7 @@ r_return
 id|pci_bus
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * devfn_to_vertex() - returns the vertex of the device given the bus, slot, &n; *&t;and function numbers.&n; */
+multiline_comment|/*&n; * devfn_to_vertex() - returns the vertex of the device given the bus, slot,&n; *&t;and function numbers.&n; */
 id|vertex_hdl_t
 DECL|function|devfn_to_vertex
 id|devfn_to_vertex
@@ -495,6 +495,7 @@ id|device_vertex
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sn_alloc_pci_sysdata() - This routine allocates a pci controller&n; *&t;which is expected as the pci_dev and pci_bus sysdata by the Linux&n; *      PCI infrastructure.&n; */
+r_static
 r_struct
 id|pci_controller
 op_star
@@ -629,6 +630,12 @@ c_func
 id|KERN_WARNING
 l_string|&quot;sn_pci_fixup_bus(): Unable to &quot;
 l_string|&quot;allocate memory for widget_sysdata&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|pci_sysdata
 )paren
 suffix:semicolon
 r_return
@@ -779,6 +786,12 @@ c_func
 id|KERN_WARNING
 l_string|&quot;sn_pci_fixup_slot: Unable to &quot;
 l_string|&quot;allocate memory for device_sysdata&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|pci_sysdata
 )paren
 suffix:semicolon
 r_return
@@ -1296,6 +1309,18 @@ id|KERN_WARNING
 l_string|&quot;sn_pci_fixup:  pcibr_intr_alloc() failed&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|pci_sysdata
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|device_sysdata
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -1487,7 +1512,7 @@ id|flush_nasid_list
 id|MAX_NASIDS
 )braket
 suffix:semicolon
-multiline_comment|/* Initialize the data structures for flushing write buffers after a PIO read.&n; * The theory is: &n; * Take an unused int. pin and associate it with a pin that is in use.&n; * After a PIO read, force an interrupt on the unused pin, forcing a write buffer flush&n; * on the in use pin.  This will prevent the race condition between PIO read responses and &n; * DMA writes.&n; */
+multiline_comment|/* Initialize the data structures for flushing write buffers after a PIO read.&n; * The theory is:&n; * Take an unused int. pin and associate it with a pin that is in use.&n; * After a PIO read, force an interrupt on the unused pin, forcing a write buffer flush&n; * on the in use pin.  This will prevent the race condition between PIO read responses and&n; * DMA writes.&n; */
 r_static
 r_struct
 id|sn_flush_device_list
@@ -2079,7 +2104,7 @@ l_int|23
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* If it&squot;s IO9, then slot 2 maps to slot 7 and slot 6 maps to slot 8.&n;&t; * To see this is non-trivial.  By drawing pictures and reading manuals and talking&n;&t; * to HW guys, we can see that on IO9 bus 1, slots 7 and 8 are always unused.&n;&t; * Further, since we short-circuit slots  1, 3, and 4 above, we only have to worry&n;&t; * about the case when there is a card in slot 2.  A multifunction card will appear&n;&t; * to be in slot 6 (from an interrupt point of view) also.  That&squot;s the  most we&squot;ll&n;&t; * have to worry about.  A four function card will overload the interrupt lines in&n;&t; * slot 2 and 6.  &n;&t; * We also need to special case the 12160 device in slot 3.  Fortunately, we have&n;&t; * a spare intr. line for pin 4, so we&squot;ll use that for the 12160.&n;&t; * All other buses have slot 3 and 4 and slots 7 and 8 unused.  Since we can only&n;&t; * see slots 1 and 2 and slots 5 and 6 coming through here for those buses (this&n;&t; * is true only on Pxbricks with 2 physical slots per bus), we just need to add&n;&t; * 2 to the slot number to find an unused slot.&n;&t; * We have convinced ourselves that we will never see a case where two different cards&n;&t; * in two different slots will ever share an interrupt line, so there is no need to&n;&t; * special case this.&n;&t; */
+multiline_comment|/* If it&squot;s IO9, then slot 2 maps to slot 7 and slot 6 maps to slot 8.&n;&t; * To see this is non-trivial.  By drawing pictures and reading manuals and talking&n;&t; * to HW guys, we can see that on IO9 bus 1, slots 7 and 8 are always unused.&n;&t; * Further, since we short-circuit slots  1, 3, and 4 above, we only have to worry&n;&t; * about the case when there is a card in slot 2.  A multifunction card will appear&n;&t; * to be in slot 6 (from an interrupt point of view) also.  That&squot;s the  most we&squot;ll&n;&t; * have to worry about.  A four function card will overload the interrupt lines in&n;&t; * slot 2 and 6.&n;&t; * We also need to special case the 12160 device in slot 3.  Fortunately, we have&n;&t; * a spare intr. line for pin 4, so we&squot;ll use that for the 12160.&n;&t; * All other buses have slot 3 and 4 and slots 7 and 8 unused.  Since we can only&n;&t; * see slots 1 and 2 and slots 5 and 6 coming through here for those buses (this&n;&t; * is true only on Pxbricks with 2 physical slots per bus), we just need to add&n;&t; * 2 to the slot number to find an unused slot.&n;&t; * We have convinced ourselves that we will never see a case where two different cards&n;&t; * in two different slots will ever share an interrupt line, so there is no need to&n;&t; * special case this.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2452,268 +2477,7 @@ r_return
 id|p
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sn_pci_fixup() - This routine is called when platform_pci_fixup() is &n; *&t;invoked at the end of pcibios_init() to link the Linux pci &n; *&t;infrastructure to SGI IO Infrasturcture - ia64/kernel/pci.c&n; *&n; *&t;Other platform specific fixup can also be done here.&n; */
-r_static
-r_void
-id|__init
-DECL|function|sn_pci_fixup
-id|sn_pci_fixup
-c_func
-(paren
-r_int
-id|arg
-)paren
-(brace
-r_struct
-id|list_head
-op_star
-id|ln
-suffix:semicolon
-r_struct
-id|pci_bus
-op_star
-id|pci_bus
-op_assign
-l_int|NULL
-suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-op_assign
-l_int|NULL
-suffix:semicolon
-r_extern
-r_int
-id|numnodes
-suffix:semicolon
-r_int
-id|cnode
-comma
-id|ret
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|arg
-op_eq
-l_int|0
-)paren
-(brace
-macro_line|#ifdef CONFIG_PROC_FS
-r_extern
-r_void
-id|register_sn_procfs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-r_extern
-r_void
-id|sgi_master_io_infr_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sn_init_cpei_timer
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|sgi_master_io_infr_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|numnodes
-suffix:semicolon
-id|cnode
-op_increment
-)paren
-(brace
-r_extern
-r_void
-id|intr_init_vecblk
-c_func
-(paren
-id|cnodeid_t
-)paren
-suffix:semicolon
-id|intr_init_vecblk
-c_func
-(paren
-id|cnode
-)paren
-suffix:semicolon
-)brace
-id|sn_init_cpei_timer
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|register_sn_procfs
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-suffix:semicolon
-)brace
-id|done_probing
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * Initialize the pci bus vertex in the pci_bus struct.&n;&t; */
-r_for
-c_loop
-(paren
-id|ln
-op_assign
-id|pci_root_buses.next
-suffix:semicolon
-id|ln
-op_ne
-op_amp
-id|pci_root_buses
-suffix:semicolon
-id|ln
-op_assign
-id|ln-&gt;next
-)paren
-(brace
-id|pci_bus
-op_assign
-id|pci_bus_b
-c_func
-(paren
-id|ln
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|sn_pci_fixup_bus
-c_func
-(paren
-id|pci_bus
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;sn_pci_fixup: sn_pci_fixup_bus fails : error %d&bslash;n&quot;
-comma
-id|ret
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n; &t; * set the root start and end so that drivers calling check_region()&n;&t; * won&squot;t see a conflict&n;&t; */
-macro_line|#ifdef CONFIG_IA64_SGI_SN_SIM
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_RUNNING_ON_SIMULATOR
-c_func
-(paren
-)paren
-)paren
-(brace
-id|ioport_resource.start
-op_assign
-l_int|0xc000000000000000
-suffix:semicolon
-id|ioport_resource.end
-op_assign
-l_int|0xcfffffffffffffff
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/*&n;&t; * Set the root start and end for Mem Resource.&n;&t; */
-id|iomem_resource.start
-op_assign
-l_int|0
-suffix:semicolon
-id|iomem_resource.end
-op_assign
-l_int|0xffffffffffffffff
-suffix:semicolon
-multiline_comment|/*&n;&t; * Initialize the device vertex in the pci_dev struct.&n;&t; */
-r_while
-c_loop
-(paren
-(paren
-id|pci_dev
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-id|pci_dev
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|ret
-op_assign
-id|sn_pci_fixup_slot
-c_func
-(paren
-id|pci_dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;sn_pci_fixup: sn_pci_fixup_slot fails : error %d&bslash;n&quot;
-comma
-id|ret
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
-)brace
-multiline_comment|/*&n; * linux_bus_cvlink() Creates a link between the Linux PCI Bus number &n; *&t;to the actual hardware component that it represents:&n; *&t;/dev/hw/linux/busnum/0 -&gt; ../../../hw/module/001c01/slab/0/Ibrick/xtalk/15/pci&n; *&n; *&t;The bus vertex, when called to devfs_generate_path() returns:&n; *&t;&t;hw/module/001c01/slab/0/Ibrick/xtalk/15/pci&n; *&t;&t;hw/module/001c01/slab/1/Pbrick/xtalk/12/pci-x/0&n; *&t;&t;hw/module/001c01/slab/1/Pbrick/xtalk/12/pci-x/1&n; */
+multiline_comment|/*&n; * linux_bus_cvlink() Creates a link between the Linux PCI Bus number&n; *&t;to the actual hardware component that it represents:&n; *&t;/dev/hw/linux/busnum/0 -&gt; ../../../hw/module/001c01/slab/0/Ibrick/xtalk/15/pci&n; *&n; *&t;The bus vertex, when called to devfs_generate_path() returns:&n; *&t;&t;hw/module/001c01/slab/0/Ibrick/xtalk/15/pci&n; *&t;&t;hw/module/001c01/slab/1/Pbrick/xtalk/12/pci-x/0&n; *&t;&t;hw/module/001c01/slab/1/Pbrick/xtalk/12/pci-x/1&n; */
 r_void
 DECL|function|linux_bus_cvlink
 id|linux_bus_cvlink
@@ -2853,7 +2617,7 @@ op_amp
 id|basebus_num
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Assign the correct bus number and also the nasid of this &n;&t; * pci Xwidget.&n;&t; */
+multiline_comment|/*&n;&t; * Assign the correct bus number and also the nasid of this&n;&t; * pci Xwidget.&n;&t; */
 id|bus_number
 op_assign
 id|basebus_num
@@ -3004,7 +2768,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pci_bus_to_hcl_cvlink() - This routine is called after SGI IO Infrastructure &n; *      initialization has completed to set up the mappings between PCI BRIDGE&n; *      ASIC and logical pci bus numbers. &n; *&n; *      Must be called before pci_init() is invoked.&n; */
+multiline_comment|/*&n; * pci_bus_to_hcl_cvlink() - This routine is called after SGI IO Infrastructure&n; *      initialization has completed to set up the mappings between PCI BRIDGE&n; *      ASIC and logical pci bus numbers.&n; *&n; *      Must be called before pci_init() is invoked.&n; */
 r_int
 DECL|function|pci_bus_to_hcl_cvlink
 id|pci_bus_to_hcl_cvlink
@@ -3175,7 +2939,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* &n; &t;&t;&t;&t; * BASEIO IObricks attached to a module have &n;&t;&t;&t;&t; * a higher priority than non BASEIO IOBricks &n;&t;&t;&t;&t; * when it comes to persistant pci bus&n;&t;&t;&t;&t; * numbering, so put them on the front of the&n;&t;&t;&t;&t; * list.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * BASEIO IObricks attached to a module have&n;&t;&t;&t;&t; * a higher priority than non BASEIO IOBricks&n;&t;&t;&t;&t; * when it comes to persistant pci bus&n;&t;&t;&t;&t; * numbering, so put them on the front of the&n;&t;&t;&t;&t; * list.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3212,7 +2976,7 @@ op_assign
 id|softlistp-&gt;bl_next
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; * We now have a list of all the pci bridges associated with&n;&t;&t; * the module_id, modules[i].  Call pci_bus_map_create() for&n;&t;&t; * each pci bridge&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We now have a list of all the pci bridges associated with&n;&t;&t; * the module_id, modules[i].  Call pci_bus_map_create() for&n;&t;&t; * each pci bridge&n;&t;&t; */
 id|softlistp
 op_assign
 id|first_in_list
@@ -3283,6 +3047,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Ugly hack to get PCI setup until we have a proper ACPI namespace.&n; */
+DECL|macro|PCI_BUSES_TO_SCAN
+mdefine_line|#define PCI_BUSES_TO_SCAN 256
 r_extern
 r_struct
 id|pci_ops
@@ -3296,8 +3062,6 @@ id|sn_pci_init
 r_void
 )paren
 (brace
-DECL|macro|PCI_BUSES_TO_SCAN
-macro_line|#&t;define PCI_BUSES_TO_SCAN 256
 r_int
 id|i
 op_assign
@@ -3307,6 +3071,60 @@ r_struct
 id|pci_controller
 op_star
 id|controller
+suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|ln
+suffix:semicolon
+r_struct
+id|pci_bus
+op_star
+id|pci_bus
+op_assign
+l_int|NULL
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+op_assign
+l_int|NULL
+suffix:semicolon
+r_extern
+r_int
+id|numnodes
+suffix:semicolon
+r_int
+id|cnode
+comma
+id|ret
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+r_extern
+r_void
+id|register_sn_procfs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+r_extern
+r_void
+id|sgi_master_io_infr_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sn_init_cpei_timer
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3333,12 +3151,53 @@ op_complement
 id|PAGE_MASK
 suffix:semicolon
 multiline_comment|/*&n;&t; * set pci_raw_ops, etc.&n;&t; */
-id|sn_pci_fixup
+id|sgi_master_io_infr_init
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|cnode
+op_assign
+l_int|0
+suffix:semicolon
+id|cnode
+OL
+id|numnodes
+suffix:semicolon
+id|cnode
+op_increment
+)paren
+(brace
+r_extern
+r_void
+id|intr_init_vecblk
+c_func
+(paren
+id|cnodeid_t
+)paren
+suffix:semicolon
+id|intr_init_vecblk
+c_func
+(paren
+id|cnode
+)paren
+suffix:semicolon
+)brace
+id|sn_init_cpei_timer
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|register_sn_procfs
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|controller
 op_assign
 id|kmalloc
@@ -3401,12 +3260,142 @@ id|controller
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * actually find devices and fill in hwgraph structs&n;&t; */
-id|sn_pci_fixup
+id|done_probing
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * Initialize the pci bus vertex in the pci_bus struct.&n;&t; */
+r_for
+c_loop
+(paren
+id|ln
+op_assign
+id|pci_root_buses.next
+suffix:semicolon
+id|ln
+op_ne
+op_amp
+id|pci_root_buses
+suffix:semicolon
+id|ln
+op_assign
+id|ln-&gt;next
+)paren
+(brace
+id|pci_bus
+op_assign
+id|pci_bus_b
 c_func
 (paren
-l_int|1
+id|ln
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|sn_pci_fixup_bus
+c_func
+(paren
+id|pci_bus
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;sn_pci_fixup: sn_pci_fixup_bus fails : error %d&bslash;n&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * set the root start and end so that drivers calling check_region()&n;&t; * won&squot;t see a conflict&n;&t; */
+macro_line|#ifdef CONFIG_IA64_SGI_SN_SIM
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_RUNNING_ON_SIMULATOR
+c_func
+(paren
+)paren
+)paren
+(brace
+id|ioport_resource.start
+op_assign
+l_int|0xc000000000000000
+suffix:semicolon
+id|ioport_resource.end
+op_assign
+l_int|0xcfffffffffffffff
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/*&n;&t; * Set the root start and end for Mem Resource.&n;&t; */
+id|iomem_resource.start
+op_assign
+l_int|0
+suffix:semicolon
+id|iomem_resource.end
+op_assign
+l_int|0xffffffffffffffff
+suffix:semicolon
+multiline_comment|/*&n;&t; * Initialize the device vertex in the pci_dev struct.&n;&t; */
+r_while
+c_loop
+(paren
+(paren
+id|pci_dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|pci_dev
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+id|ret
+op_assign
+id|sn_pci_fixup_slot
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;sn_pci_fixup: sn_pci_fixup_slot fails : error %d&bslash;n&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
 r_return
 l_int|0
 suffix:semicolon
