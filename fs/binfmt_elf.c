@@ -2026,6 +2026,8 @@ op_star
 id|files
 suffix:semicolon
 r_int
+id|have_pt_gnu_stack
+comma
 id|executable_stack
 op_assign
 id|EXSTACK_DEFAULT
@@ -2570,19 +2572,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef LEGACY_BINARIES
-r_if
-c_cond
+id|have_pt_gnu_stack
+op_assign
 (paren
 id|i
-op_eq
+OL
 id|elf_ex.e_phnum
 )paren
-id|current-&gt;personality
-op_or_assign
-id|READ_IMPLIES_EXEC
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Some simple consistency checks for the interpreter */
 r_if
 c_cond
@@ -2863,6 +2860,21 @@ id|elf_ex
 comma
 id|ibcs2_interpreter
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|elf_read_implies_exec
+c_func
+(paren
+id|elf_ex
+comma
+id|have_pt_gnu_stack
+)paren
+)paren
+id|current-&gt;personality
+op_or_assign
+id|READ_IMPLIES_EXEC
 suffix:semicolon
 multiline_comment|/* Do this so that we can load the interpreter, if need be.  We will&n;&t;   change some of these later */
 id|current-&gt;mm-&gt;rss
