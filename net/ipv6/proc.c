@@ -674,7 +674,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;%-32s&bslash;t%ld&bslash;n&quot;
+l_string|&quot;%-32s&bslash;t%lu&bslash;n&quot;
 comma
 id|snmp6_list
 (braket

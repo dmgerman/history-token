@@ -894,9 +894,9 @@ suffix:semicolon
 multiline_comment|/* data private to the driver */
 )brace
 suffix:semicolon
-DECL|struct|pnp_card_id
+DECL|struct|pnp_card_device_id
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 (brace
 DECL|member|id
 r_char
@@ -996,6 +996,11 @@ DECL|struct|pnp_card_driver
 r_struct
 id|pnp_card_driver
 (brace
+DECL|member|global_list
+r_struct
+id|list_head
+id|global_list
+suffix:semicolon
 DECL|member|name
 r_char
 op_star
@@ -1004,7 +1009,7 @@ suffix:semicolon
 DECL|member|id_table
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|id_table
 suffix:semicolon
@@ -1027,7 +1032,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|card_id
 )paren

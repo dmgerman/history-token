@@ -30,7 +30,7 @@ c_func
 id|__NR_ia32_rt_sigreturn
 )paren
 l_string|&quot;,%eax&bslash;n&quot;
-l_string|&quot;   int $0x80&bslash;n&quot;
+l_string|&quot;   syscall&bslash;n&quot;
 l_string|&quot;sig32_rt_tramp_end:&bslash;n&quot;
 l_string|&quot;sig32_tramp:&bslash;n&quot;
 l_string|&quot;&t;popl %eax&bslash;n&quot;
@@ -41,7 +41,7 @@ c_func
 id|__NR_ia32_sigreturn
 )paren
 l_string|&quot;,%eax&bslash;n&quot;
-l_string|&quot;&t;int $0x80&bslash;n&quot;
+l_string|&quot;&t;syscall&bslash;n&quot;
 l_string|&quot;sig32_tramp_end:&bslash;n&quot;
 l_string|&quot;&t;.code64&bslash;n&quot;
 )paren
@@ -85,7 +85,7 @@ op_star
 id|syscall32_page
 suffix:semicolon
 multiline_comment|/* RED-PEN: This knows too much about high level VM */
-multiline_comment|/* Alternative would be to generate a vma with appropiate backing options&n;   and let it be handled by generic VM */
+multiline_comment|/* Alternative would be to generate a vma with appropriate backing options&n;   and let it be handled by generic VM */
 DECL|function|map_syscall32
 r_int
 id|map_syscall32

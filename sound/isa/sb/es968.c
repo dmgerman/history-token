@@ -304,7 +304,7 @@ suffix:semicolon
 DECL|variable|__devinitdata
 r_static
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 id|snd_es968_pnpids
 (braket
 )braket
@@ -428,7 +428,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|id
 )paren
@@ -446,13 +446,13 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|GFP_ATOMIC
-comma
 r_sizeof
 (paren
-r_struct
-id|pnp_resource_table
+op_star
+id|cfg
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_int
@@ -715,7 +715,7 @@ id|pcard
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|pid
 )paren
@@ -1039,7 +1039,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|id
 )paren

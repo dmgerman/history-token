@@ -4481,27 +4481,6 @@ id|STB_WEAK
 )paren
 r_break
 suffix:semicolon
-macro_line|#if defined(CONFIG_SPARC32) || defined(CONFIG_SPARC64)
-multiline_comment|/* Ok if Sparc register directive. */
-r_if
-c_cond
-(paren
-id|ELF_ST_TYPE
-c_func
-(paren
-id|sym
-(braket
-id|i
-)braket
-dot
-id|st_info
-)paren
-op_eq
-id|STT_REGISTER
-)paren
-r_break
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren

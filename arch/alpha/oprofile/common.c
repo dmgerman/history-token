@@ -798,4 +798,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_void
+id|__exit
+DECL|function|oprofile_arch_exit
+id|oprofile_arch_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 eof
