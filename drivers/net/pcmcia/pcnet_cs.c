@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for NS8390-based cards&n;&n;    This driver supports the D-Link DE-650 and Linksys EthernetCard&n;    cards, the newer D-Link and Linksys combo cards, Accton EN2212&n;    cards, the RPTI EP400, and the PreMax PE-200 in non-shared-memory&n;    mode, and the IBM Credit Card Adapter, the NE4100, the Thomas&n;    Conrad ethernet card, and the Kingston KNE-PCM/x in shared-memory&n;    mode.  It will also handle the Socket EA card in either mode.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    pcnet_cs.c 1.144 2001/11/07 04:06:56&n;    &n;    The network driver code is based on Donald Becker&squot;s NE2000 code:&n;&n;    Written 1992,1993 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@scyld.com&n;&n;    Based also on Keith Moore&squot;s changes to Don Becker&squot;s code, for IBM&n;    CCAE support.  Drivers merged back together, and shared-memory&n;    Socket EA support added, by Ken Raeburn, September 1995.&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for NS8390-based cards&n;&n;    This driver supports the D-Link DE-650 and Linksys EthernetCard&n;    cards, the newer D-Link and Linksys combo cards, Accton EN2212&n;    cards, the RPTI EP400, and the PreMax PE-200 in non-shared-memory&n;    mode, and the IBM Credit Card Adapter, the NE4100, the Thomas&n;    Conrad ethernet card, and the Kingston KNE-PCM/x in shared-memory&n;    mode.  It will also handle the Socket EA card in either mode.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    pcnet_cs.c 1.149 2002/06/29 06:27:37&n;    &n;    The network driver code is based on Donald Becker&squot;s NE2000 code:&n;&n;    Written 1992,1993 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@scyld.com&n;&n;    Based also on Keith Moore&squot;s changes to Don Becker&squot;s code, for IBM&n;    CCAE support.  Drivers merged back together, and shared-memory&n;    Socket EA support added, by Ken Raeburn, September 1995.&n;&n;======================================================================*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -81,7 +81,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;pcnet_cs.c 1.144 2001/11/07 04:06:56 (David Hinds)&quot;
+l_string|&quot;pcnet_cs.c 1.149 2002/06/29 06:27:37 (David Hinds)&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG
@@ -3877,11 +3877,6 @@ op_assign
 op_amp
 id|info-&gt;node
 suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_CONFIG_PENDING
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3915,6 +3910,28 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|id
+op_eq
+l_int|0x30
+)paren
+op_logical_and
+op_logical_neg
+id|info-&gt;pna_phy
+op_logical_and
+(paren
+id|info-&gt;eth_phy
+op_eq
+l_int|4
+)paren
+)paren
+id|info-&gt;eth_phy
+op_assign
+l_int|0
 suffix:semicolon
 id|printk
 c_func
@@ -4055,6 +4072,11 @@ l_string|&quot;&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
+suffix:semicolon
 r_return
 suffix:semicolon
 id|cs_failed
@@ -4079,6 +4101,11 @@ id|u_long
 )paren
 id|link
 )paren
+suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -4295,6 +4322,8 @@ suffix:colon
 id|link-&gt;state
 op_or_assign
 id|DEV_PRESENT
+op_or
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 id|pcnet_config
 c_func
@@ -5387,6 +5416,12 @@ comma
 l_string|&quot;pcnet_close(&squot;%s&squot;)&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+id|ei_close
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 id|free_irq
@@ -8507,7 +8542,7 @@ l_string|&quot;does not match!&bslash;n&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 id|register_pccard_driver

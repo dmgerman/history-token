@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for SMC91c92-based cards.&n;&n;    This driver supports Megahertz PCMCIA ethernet cards; and&n;    Megahertz, Motorola, Ositech, and Psion Dacom ethernet/modem&n;    multifunction cards.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    smc91c92_cs.c 1.2 2002/09/28 15:00:00&n;    &n;    This driver contains code written by Donald Becker&n;    (becker@scyld.com), Rowan Hughes (x-csrdh@jcu.edu.au),&n;    David Hinds (dahinds@users.sourceforge.net), and Erik Stahlman&n;    (erik@vt.edu).  Donald wrote the SMC 91c92 code using parts of&n;    Erik&squot;s SMC 91c94 driver.  Rowan wrote a similar driver, and I&squot;ve&n;    incorporated some parts of his driver here.  I (Dave) wrote most&n;    of the PCMCIA glue code, and the Ositech support code.  Kelly&n;    Stephens (kstephen@holli.com) added support for the Motorola&n;    Mariner, with help from Allen Brost. &n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License, incorporated herein by reference.&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for SMC91c92-based cards.&n;&n;    This driver supports Megahertz PCMCIA ethernet cards; and&n;    Megahertz, Motorola, Ositech, and Psion Dacom ethernet/modem&n;    multifunction cards.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    smc91c92_cs.c 1.122 2002/10/25 06:26:39&n;&n;    This driver contains code written by Donald Becker&n;    (becker@scyld.com), Rowan Hughes (x-csrdh@jcu.edu.au),&n;    David Hinds (dahinds@users.sourceforge.net), and Erik Stahlman&n;    (erik@vt.edu).  Donald wrote the SMC 91c92 code using parts of&n;    Erik&squot;s SMC 91c94 driver.  Rowan wrote a similar driver, and I&squot;ve&n;    incorporated some parts of his driver here.  I (Dave) wrote most&n;    of the PCMCIA glue code, and the Ositech support code.  Kelly&n;    Stephens (kstephen@holli.com) added support for the Motorola&n;    Mariner, with help from Allen Brost.&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License, incorporated herein by reference.&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -126,7 +126,7 @@ macro_line|#endif
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;smc91c92_cs&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.2&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.122&quot;
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Operational parameter that usually are not changed. */
 multiline_comment|/* Time in jiffies before concluding Tx hung */
@@ -231,6 +231,14 @@ DECL|member|mii_if
 r_struct
 id|mii_if_info
 id|mii_if
+suffix:semicolon
+DECL|member|duplex
+r_int
+id|duplex
+suffix:semicolon
+DECL|member|rx_ovrn
+r_int
+id|rx_ovrn
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -471,7 +479,7 @@ mdefine_line|#define&t;MULTICAST4&t;4
 DECL|macro|MULTICAST6
 mdefine_line|#define&t;MULTICAST6&t;6
 DECL|macro|MGMT
-mdefine_line|#define MGMT    &t;8 
+mdefine_line|#define MGMT    &t;8
 DECL|macro|REVISION
 mdefine_line|#define REVISION&t;0x0a
 multiline_comment|/* Transmit status bits. */
@@ -558,7 +566,7 @@ id|args
 suffix:semicolon
 r_static
 r_int
-id|smc91c92_open
+id|smc_open
 c_func
 (paren
 r_struct
@@ -569,13 +577,32 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|smc91c92_close
+id|smc_close
 c_func
 (paren
 r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|smc_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
 )paren
 suffix:semicolon
 r_static
@@ -638,7 +665,7 @@ r_static
 r_struct
 id|net_device_stats
 op_star
-id|smc91c92_get_stats
+id|smc_get_stats
 c_func
 (paren
 r_struct
@@ -710,7 +737,7 @@ id|arg
 suffix:semicolon
 r_static
 r_void
-id|smc_mdio_sync
+id|mdio_sync
 c_func
 (paren
 id|ioaddr_t
@@ -719,7 +746,7 @@ id|addr
 suffix:semicolon
 r_static
 r_int
-id|smc_mdio_read
+id|mdio_read
 c_func
 (paren
 r_struct
@@ -736,7 +763,7 @@ id|loc
 suffix:semicolon
 r_static
 r_void
-id|smc_mdio_write
+id|mdio_write
 c_func
 (paren
 r_struct
@@ -756,25 +783,6 @@ id|value
 suffix:semicolon
 r_static
 r_int
-id|smc_ioctl
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifreq
-op_star
-id|rq
-comma
-r_int
-id|cmd
-)paren
-suffix:semicolon
-r_static
-r_int
 id|smc_link_ok
 c_func
 (paren
@@ -784,7 +792,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*======================================================================&n;&n;    This bit of code is used to avoid unregistering network devices&n;    at inappropriate times.  2.2 and later kernels are fairly picky&n;    about when this can happen.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    This bit of code is used to avoid unregistering network devices&n;    at inappropriate times.  2.2 and later kernels are fairly picky&n;    about when this can happen.&n;&n;======================================================================*/
 DECL|function|flush_stale_links
 r_static
 r_void
@@ -1074,7 +1082,7 @@ suffix:semicolon
 id|dev-&gt;get_stats
 op_assign
 op_amp
-id|smc91c92_get_stats
+id|smc_get_stats
 suffix:semicolon
 id|dev-&gt;set_config
 op_assign
@@ -1086,11 +1094,6 @@ op_assign
 op_amp
 id|set_rx_mode
 suffix:semicolon
-id|dev-&gt;do_ioctl
-op_assign
-op_amp
-id|smc_ioctl
-suffix:semicolon
 id|ether_setup
 c_func
 (paren
@@ -1100,12 +1103,17 @@ suffix:semicolon
 id|dev-&gt;open
 op_assign
 op_amp
-id|smc91c92_open
+id|smc_open
 suffix:semicolon
 id|dev-&gt;stop
 op_assign
 op_amp
-id|smc91c92_close
+id|smc_close
+suffix:semicolon
+id|dev-&gt;do_ioctl
+op_assign
+op_amp
+id|smc_ioctl
 suffix:semicolon
 macro_line|#ifdef HAVE_TX_TIMEOUT
 id|dev-&gt;tx_timeout
@@ -1131,11 +1139,11 @@ id|dev
 suffix:semicolon
 id|smc-&gt;mii_if.mdio_read
 op_assign
-id|smc_mdio_read
+id|mdio_read
 suffix:semicolon
 id|smc-&gt;mii_if.mdio_write
 op_assign
-id|smc_mdio_write
+id|mdio_write
 suffix:semicolon
 id|smc-&gt;mii_if.phy_id_mask
 op_assign
@@ -1612,7 +1620,7 @@ DECL|macro|first_tuple
 mdefine_line|#define first_tuple(a, b, c) get_tuple(GetFirstTuple, a, b, c)
 DECL|macro|next_tuple
 mdefine_line|#define next_tuple(a, b, c) get_tuple(GetNextTuple, a, b, c)
-multiline_comment|/*======================================================================&n;&n;    Configuration stuff for Megahertz cards&n;&n;    mhz_3288_power() is used to power up a 3288&squot;s ethernet chip.&n;    mhz_mfc_config() handles socket setup for multifunction (1144&n;    and 3288) cards.  mhz_setup() gets a card&squot;s hardware ethernet&n;    address.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    Configuration stuff for Megahertz cards&n;&n;    mhz_3288_power() is used to power up a 3288&squot;s ethernet chip.&n;    mhz_mfc_config() handles socket setup for multifunction (1144&n;    and 3288) cards.  mhz_setup() gets a card&squot;s hardware ethernet&n;    address.&n;&n;======================================================================*/
 DECL|function|mhz_3288_power
 r_static
 r_int
@@ -2283,7 +2291,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*======================================================================&n;&n;    Configuration stuff for the Motorola Mariner&n;&n;    mot_config() writes directly to the Mariner configuration&n;    registers because the CIS is just bogus.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    Configuration stuff for the Motorola Mariner&n;&n;    mot_config() writes directly to the Mariner configuration&n;    registers because the CIS is just bogus.&n;&n;======================================================================*/
 DECL|function|mot_config
 r_static
 r_void
@@ -3510,7 +3518,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*======================================================================&n;&n;    This verifies that the chip is some SMC91cXX variant, and returns&n;    the revision code if successful.  Otherwise, it returns -ENODEV.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    This verifies that the chip is some SMC91cXX variant, and returns&n;    the revision code if successful.  Otherwise, it returns -ENODEV.&n;&n;======================================================================*/
 DECL|function|check_sig
 r_static
 r_int
@@ -4242,11 +4250,6 @@ id|KERN_NOTICE
 l_string|&quot;smc91c92_cs: Unable to find hardware address.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_CONFIG_PENDING
-suffix:semicolon
 r_goto
 id|config_undo
 suffix:semicolon
@@ -4264,10 +4267,13 @@ op_assign
 op_amp
 id|smc-&gt;node
 suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_CONFIG_PENDING
+id|smc-&gt;duplex
+op_assign
+l_int|0
+suffix:semicolon
+id|smc-&gt;rx_ovrn
+op_assign
+l_int|0
 suffix:semicolon
 id|rev
 op_assign
@@ -4646,7 +4652,7 @@ op_increment
 (brace
 id|j
 op_assign
-id|smc_mdio_read
+id|mdio_read
 c_func
 (paren
 id|dev
@@ -4726,6 +4732,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
+suffix:semicolon
 r_return
 suffix:semicolon
 id|config_undo
@@ -4747,6 +4758,11 @@ id|u_long
 )paren
 id|link
 )paren
+suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 )brace
 multiline_comment|/* smc91c92_config */
@@ -4971,6 +4987,8 @@ suffix:colon
 id|link-&gt;state
 op_or_assign
 id|DEV_PRESENT
+op_or
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 id|smc91c92_config
 c_func
@@ -5241,10 +5259,10 @@ DECL|macro|MDIO_DATA_WRITE1
 mdefine_line|#define MDIO_DATA_WRITE1&t;(MDIO_DIR_WRITE | MDIO_DATA_OUT)
 DECL|macro|MDIO_DATA_READ
 mdefine_line|#define MDIO_DATA_READ&t;&t;0x02
-DECL|function|smc_mdio_sync
+DECL|function|mdio_sync
 r_static
 r_void
-id|smc_mdio_sync
+id|mdio_sync
 c_func
 (paren
 id|ioaddr_t
@@ -5289,10 +5307,10 @@ id|addr
 suffix:semicolon
 )brace
 )brace
-DECL|function|smc_mdio_read
+DECL|function|mdio_read
 r_static
 r_int
-id|smc_mdio_read
+id|mdio_read
 c_func
 (paren
 r_struct
@@ -5338,7 +5356,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|smc_mdio_sync
+id|mdio_sync
 c_func
 (paren
 id|addr
@@ -5460,10 +5478,10 @@ op_amp
 l_int|0xffff
 suffix:semicolon
 )brace
-DECL|function|smc_mdio_write
+DECL|function|mdio_write
 r_static
 r_void
-id|smc_mdio_write
+id|mdio_write
 c_func
 (paren
 r_struct
@@ -5520,7 +5538,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|smc_mdio_sync
+id|mdio_sync
 c_func
 (paren
 id|addr
@@ -5611,7 +5629,7 @@ id|addr
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*======================================================================&n;  &n;    The driver core code, most of which should be common with a&n;    non-PCMCIA implementation.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    The driver core code, most of which should be common with a&n;    non-PCMCIA implementation.&n;&n;======================================================================*/
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|function|smc_dump
 r_static
@@ -5725,10 +5743,10 @@ id|BANK_SELECT
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|smc91c92_open
+DECL|function|smc_open
 r_static
 r_int
-id|smc91c92_open
+id|smc_open
 c_func
 (paren
 r_struct
@@ -5757,7 +5775,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s: smc91c92_open(%p), ID/Window %4.4x.&bslash;n&quot;
+l_string|&quot;%s: smc_open(%p), ID/Window %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5886,12 +5904,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* smc91c92_open */
+multiline_comment|/* smc_open */
 multiline_comment|/*====================================================================*/
-DECL|function|smc91c92_close
+DECL|function|smc_close
 r_static
 r_int
-id|smc91c92_close
+id|smc_close
 c_func
 (paren
 r_struct
@@ -5924,7 +5942,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s: smc91c92_close(), status %4.4x.&bslash;n&quot;
+l_string|&quot;%s: smc_close(), status %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6040,8 +6058,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* smc91c92_close */
-multiline_comment|/*======================================================================&n;&n;   Transfer a packet to the hardware and trigger the packet send.&n;   This may be called at either from either the Tx queue code&n;   or the interrupt handler.&n;   &n;======================================================================*/
+multiline_comment|/* smc_close */
+multiline_comment|/*======================================================================&n;&n;   Transfer a packet to the hardware and trigger the packet send.&n;   This may be called at either from either the Tx queue code&n;   or the interrupt handler.&n;&n;======================================================================*/
 DECL|function|smc_hardware_send_packet
 r_static
 r_void
@@ -6453,7 +6471,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s: smc91c92_start_xmit(length = %d) called,&quot;
+l_string|&quot;%s: smc_start_xmit(length = %d) called,&quot;
 l_string|&quot; status %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6547,6 +6565,28 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Paranoia, we should always be in window 2 */
+multiline_comment|/* need MC_RESET to keep the memory consistent. errata? */
+r_if
+c_cond
+(paren
+id|smc-&gt;rx_ovrn
+)paren
+(brace
+id|outw
+c_func
+(paren
+id|MC_RESET
+comma
+id|ioaddr
+op_plus
+id|MMU_CMD
+)paren
+suffix:semicolon
+id|smc-&gt;rx_ovrn
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Allocate the memory; send the packet now if we win. */
 id|outw
 c_func
@@ -6657,7 +6697,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*======================================================================&n;&n;    Handle a Tx anomolous event.  Entered while in Window 2.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    Handle a Tx anomolous event.  Entered while in Window 2.&n;&n;======================================================================*/
 DECL|function|smc_tx_err
 r_static
 r_void
@@ -6828,6 +6868,8 @@ id|TCR
 )paren
 op_or
 id|TCR_ENABLE
+op_or
+id|smc-&gt;duplex
 comma
 id|ioaddr
 op_plus
@@ -6981,6 +7023,8 @@ id|TCR
 )paren
 op_or
 id|TCR_ENABLE
+op_or
+id|smc-&gt;duplex
 comma
 id|ioaddr
 op_plus
@@ -7363,6 +7407,16 @@ suffix:semicolon
 id|smc-&gt;stats.rx_fifo_errors
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|smc-&gt;duplex
+)paren
+id|smc-&gt;rx_ovrn
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* need MC_RESET outside smc_interrupt */
 id|outw
 c_func
 (paren
@@ -7936,12 +7990,12 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*====================================================================*/
-DECL|function|smc91c92_get_stats
+DECL|function|smc_get_stats
 r_static
 r_struct
 id|net_device_stats
 op_star
-id|smc91c92_get_stats
+id|smc_get_stats
 c_func
 (paren
 r_struct
@@ -7968,7 +8022,7 @@ op_amp
 id|smc-&gt;stats
 suffix:semicolon
 )brace
-multiline_comment|/*======================================================================&n;  &n;    Calculate values for the hardware multicast filter hash table.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    Calculate values for the hardware multicast filter hash table.&n;&n;======================================================================*/
 DECL|function|fill_multicast_tbl
 r_static
 r_void
@@ -8062,7 +8116,7 @@ l_int|7
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*======================================================================&n;  &n;    Set the receive mode.&n;    &n;    This routine is used by both the protocol level to notify us of&n;    promiscuous/multicast mode changes, and by the open/reset code to&n;    initialize the Rx registers.  We always set the multicast list and&n;    leave the receiver running.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    Set the receive mode.&n;&n;    This routine is used by both the protocol level to notify us of&n;    promiscuous/multicast mode changes, and by the open/reset code to&n;    initialize the Rx registers.  We always set the multicast list and&n;    leave the receiver running.&n;&n;======================================================================*/
 DECL|function|set_rx_mode
 r_static
 r_void
@@ -8255,7 +8309,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*======================================================================&n;&n;    Senses when a card&squot;s config changes. Here, it&squot;s coax or TP.&n; &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    Senses when a card&squot;s config changes. Here, it&squot;s coax or TP.&n;&n;======================================================================*/
 DECL|function|s9k_config
 r_static
 r_int
@@ -8790,6 +8844,8 @@ op_or
 id|TCR_ENABLE
 op_or
 id|TCR_PAD_EN
+op_or
+id|smc-&gt;duplex
 comma
 id|ioaddr
 op_plus
@@ -8817,7 +8873,7 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* Reset MII */
-id|smc_mdio_write
+id|mdio_write
 c_func
 (paren
 id|dev
@@ -8829,8 +8885,21 @@ comma
 l_int|0x8000
 )paren
 suffix:semicolon
+multiline_comment|/* Advertise 100F, 100H, 10F, 10H */
+id|mdio_write
+c_func
+(paren
+id|dev
+comma
+id|smc-&gt;mii_if.phy_id
+comma
+l_int|4
+comma
+l_int|0x01e1
+)paren
+suffix:semicolon
 multiline_comment|/* Restart MII autonegotiation */
-id|smc_mdio_write
+id|mdio_write
 c_func
 (paren
 id|dev
@@ -8842,7 +8911,7 @@ comma
 l_int|0x0000
 )paren
 suffix:semicolon
-id|smc_mdio_write
+id|mdio_write
 c_func
 (paren
 id|dev
@@ -8881,7 +8950,7 @@ id|INTERRUPT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*======================================================================&n;&n;    Media selection timer routine&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    Media selection timer routine&n;&n;======================================================================*/
 DECL|function|media_check
 r_static
 r_void
@@ -8958,6 +9027,28 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
+multiline_comment|/* need MC_RESET to keep the memory consistent. errata? */
+r_if
+c_cond
+(paren
+id|smc-&gt;rx_ovrn
+)paren
+(brace
+id|outw
+c_func
+(paren
+id|MC_RESET
+comma
+id|ioaddr
+op_plus
+id|MMU_CMD
+)paren
+suffix:semicolon
+id|smc-&gt;rx_ovrn
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|i
 op_assign
 id|inw
@@ -9116,7 +9207,7 @@ l_int|3
 suffix:semicolon
 id|link
 op_assign
-id|smc_mdio_read
+id|mdio_read
 c_func
 (paren
 id|dev
@@ -9172,7 +9263,7 @@ id|smc-&gt;link_status
 id|u_short
 id|p
 op_assign
-id|smc_mdio_read
+id|mdio_read
 c_func
 (paren
 id|dev
@@ -9198,6 +9289,33 @@ c_cond
 l_string|&quot;found&quot;
 suffix:colon
 l_string|&quot;lost&quot;
+)paren
+suffix:semicolon
+id|smc-&gt;duplex
+op_assign
+(paren
+(paren
+(paren
+id|p
+op_amp
+l_int|0x0100
+)paren
+op_logical_or
+(paren
+(paren
+id|p
+op_amp
+l_int|0x1c0
+)paren
+op_eq
+l_int|0x40
+)paren
+)paren
+ques
+c_cond
+id|TCR_FDUPLX
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -9229,23 +9347,7 @@ l_string|&quot;10&quot;
 )paren
 comma
 (paren
-(paren
-(paren
-id|p
-op_amp
-l_int|0x0100
-)paren
-op_logical_or
-(paren
-(paren
-id|p
-op_amp
-l_int|0x1c0
-)paren
-op_eq
-l_int|0x40
-)paren
-)paren
+id|smc-&gt;duplex
 ques
 c_cond
 l_char|&squot;F&squot;
@@ -9255,22 +9357,39 @@ l_char|&squot;H&squot;
 )paren
 suffix:semicolon
 )brace
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|outw
+c_func
+(paren
+id|inw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|TCR
+)paren
+op_or
+id|smc-&gt;duplex
+comma
+id|ioaddr
+op_plus
+id|TCR
+)paren
+suffix:semicolon
 id|smc-&gt;link_status
 op_assign
 id|link
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|smc-&gt;cfg
-op_amp
-id|CFG_MII_SELECT
-)paren
 r_goto
 id|reschedule
 suffix:semicolon
+)brace
 multiline_comment|/* Ignore collisions unless we&squot;ve had no rx&squot;s recently */
 r_if
 c_cond
@@ -10436,7 +10555,7 @@ l_string|&quot;smc91c92_cs: Card Services release does not match!&bslash;n&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 id|register_pccard_driver
