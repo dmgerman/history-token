@@ -5097,6 +5097,10 @@ op_minus
 id|EAGAIN
 )paren
 (brace
+id|rqstp-&gt;rq_res.len
+op_assign
+l_int|0
+suffix:semicolon
 id|svc_sock_release
 c_func
 (paren
