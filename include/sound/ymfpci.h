@@ -5,6 +5,7 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 macro_line|#include &quot;pcm.h&quot;
 macro_line|#include &quot;rawmidi.h&quot;
 macro_line|#include &quot;ac97_codec.h&quot;
+macro_line|#include &quot;timer.h&quot;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#ifndef PCI_VENDOR_ID_YAMAHA
 DECL|macro|PCI_VENDOR_ID_YAMAHA
@@ -906,6 +907,11 @@ id|snd_rawmidi_t
 op_star
 id|rawmidi
 suffix:semicolon
+DECL|member|timer
+id|snd_timer_t
+op_star
+id|timer
+suffix:semicolon
 DECL|member|pci
 r_struct
 id|pci_dev
@@ -1128,6 +1134,18 @@ id|chip
 comma
 r_int
 id|rear_switch
+)paren
+suffix:semicolon
+r_int
+id|snd_ymfpci_timer
+c_func
+(paren
+id|ymfpci_t
+op_star
+id|chip
+comma
+r_int
+id|device
 )paren
 suffix:semicolon
 r_int
