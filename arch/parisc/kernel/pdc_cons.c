@@ -107,7 +107,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PDC_CONSOLE
+macro_line|#if defined(CONFIG_PDC_CONSOLE) || defined(CONFIG_SERIAL_MUX)
+DECL|macro|PDC_CONSOLE_DEVICE
+mdefine_line|#define PDC_CONSOLE_DEVICE pdc_console_device
 DECL|function|pdc_console_device
 r_static
 id|kdev_t
@@ -129,10 +131,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_PDC_CONSOLE
-DECL|macro|PDC_CONSOLE_DEVICE
-mdefine_line|#define PDC_CONSOLE_DEVICE pdc_console_device
 macro_line|#else
 DECL|macro|PDC_CONSOLE_DEVICE
 mdefine_line|#define PDC_CONSOLE_DEVICE NULL
@@ -144,30 +142,38 @@ id|console
 id|pdc_cons
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;ttyB&quot;
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|pdc_console_write
 comma
+dot
 id|device
-suffix:colon
+op_assign
 id|PDC_CONSOLE_DEVICE
 comma
+dot
 id|setup
-suffix:colon
+op_assign
 id|pdc_console_setup
 comma
+dot
 id|flags
-suffix:colon
+op_assign
+id|CON_BOOT
+op_or
 id|CON_PRINTBUFFER
 op_or
 id|CON_ENABLED
 comma
+dot
 id|index
-suffix:colon
+op_assign
 op_minus
 l_int|1
 comma
@@ -243,13 +249,14 @@ suffix:semicolon
 )brace
 DECL|function|pdc_console_init
 r_void
+id|__init
 id|pdc_console_init
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#if defined(EARLY_BOOTUP_DEBUG) || defined(CONFIG_PDC_CONSOLE)
+macro_line|#if defined(EARLY_BOOTUP_DEBUG) || defined(CONFIG_PDC_CONSOLE) || defined(CONFIG_SERIAL_MUX)
 id|pdc_console_init_force
 c_func
 (paren
