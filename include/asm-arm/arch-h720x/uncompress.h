@@ -1,0 +1,120 @@
+multiline_comment|/*&n; * linux/include/asm-arm/arch-h720x/uncompress.h&n; *&n; * Copyright (C) 2001-2002 Jungjun Kim&n; */
+macro_line|#ifndef __ASM_ARCH_UNCOMPRESS_H
+DECL|macro|__ASM_ARCH_UNCOMPRESS_H
+mdefine_line|#define __ASM_ARCH_UNCOMPRESS_H
+macro_line|#include &lt;asm/arch/hardware.h&gt;
+DECL|macro|LSR
+mdefine_line|#define LSR &t;0x14
+DECL|macro|TEMPTY
+mdefine_line|#define TEMPTY &t;0x40
+DECL|function|putstr
+r_static
+r_void
+id|putstr
+c_func
+(paren
+r_const
+r_char
+op_star
+id|s
+)paren
+(brace
+r_char
+id|c
+suffix:semicolon
+r_volatile
+r_int
+r_char
+op_star
+id|p
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+(paren
+id|IO_PHYS
+op_plus
+l_int|0x20000
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|c
+op_assign
+op_star
+id|s
+op_increment
+)paren
+op_ne
+l_char|&squot;&bslash;0&squot;
+)paren
+(brace
+multiline_comment|/* wait until transmit buffer is empty */
+r_while
+c_loop
+(paren
+(paren
+id|p
+(braket
+id|LSR
+)braket
+op_amp
+id|TEMPTY
+)paren
+op_eq
+l_int|0x0
+)paren
+(brace
+suffix:semicolon
+)brace
+multiline_comment|/* write next character */
+op_star
+id|p
+op_assign
+id|c
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c
+op_eq
+l_char|&squot;&bslash;n&squot;
+)paren
+(brace
+r_while
+c_loop
+(paren
+(paren
+id|p
+(braket
+id|LSR
+)braket
+op_amp
+id|TEMPTY
+)paren
+op_eq
+l_int|0x0
+)paren
+(brace
+suffix:semicolon
+)brace
+op_star
+id|p
+op_assign
+l_char|&squot;&bslash;r&squot;
+suffix:semicolon
+)brace
+)brace
+)brace
+multiline_comment|/*&n; * nothing to do&n; */
+DECL|macro|arch_decomp_setup
+mdefine_line|#define arch_decomp_setup()
+DECL|macro|arch_decomp_wdog
+mdefine_line|#define arch_decomp_wdog()
+macro_line|#endif
+eof
