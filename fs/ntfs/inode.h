@@ -20,12 +20,12 @@ DECL|member|initialized_size
 id|s64
 id|initialized_size
 suffix:semicolon
-multiline_comment|/* Copy from $DATA/$INDEX_ALLOCATION. */
+multiline_comment|/* Copy from the attribute record. */
 DECL|member|allocated_size
 id|s64
 id|allocated_size
 suffix:semicolon
-multiline_comment|/* Copy from $DATA/$INDEX_ALLOCATION. */
+multiline_comment|/* Copy from the attribute record. */
 DECL|member|state
 r_int
 r_int
@@ -561,5 +561,34 @@ op_star
 id|mnt
 )paren
 suffix:semicolon
+macro_line|#ifdef NTFS_RW
+r_extern
+r_void
+id|ntfs_truncate
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|vi
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ntfs_setattr
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_struct
+id|iattr
+op_star
+id|attr
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _LINUX_NTFS_FS_INODE_H */
 eof

@@ -81,5 +81,25 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * flush_dcache_mft_record_page - flush_dcache_page() for mft records&n; * @ni:&t;&t;ntfs inode structure of mft record&n; *&n; * Call flush_dcache_page() for the page in which an mft record resides.&n; *&n; * This must be called every time an mft record is modified, just after the&n; * modification.&n; */
+DECL|function|flush_dcache_mft_record_page
+r_static
+r_inline
+r_void
+id|flush_dcache_mft_record_page
+c_func
+(paren
+id|ntfs_inode
+op_star
+id|ni
+)paren
+(brace
+id|flush_dcache_page
+c_func
+(paren
+id|ni-&gt;page
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* _LINUX_NTFS_MFT_H */
 eof
