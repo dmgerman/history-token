@@ -37,7 +37,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%2&t;&t;&bslash;n&bslash;&n;&t;cmpi&t;0,%0,0&t;&t;&bslash;n&bslash;&n;&t;li&t;%0,0&t;&t;&bslash;n&bslash;&n;&t;bne-&t;2f&t;&t;&bslash;n&bslash;&n;&t;addi&t;%0,%0,1&t;&t;&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%2&t;&t;&bslash;n&bslash;&n;&t;bne-&t;1b&t;&t;&bslash;n&bslash;&n;2:&t;eieio&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%2&t;&t;&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&t;&t;&bslash;n&bslash;&n;&t;li&t;%0,0&t;&t;&bslash;n&bslash;&n;&t;bne-&t;2f&t;&t;&bslash;n&bslash;&n;&t;addi&t;%0,%0,1&t;&t;&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%2&t;&t;&bslash;n&bslash;&n;&t;bne-&t;1b&t;&t;&bslash;n&bslash;&n;2:&t;eieio&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
