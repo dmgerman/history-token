@@ -6,6 +6,24 @@ suffix:semicolon
 r_struct
 id|tty_struct
 suffix:semicolon
+multiline_comment|/* Possible values of bitmask for enabling sysrq functions */
+multiline_comment|/* 0x0001 is reserved for enable everything */
+DECL|macro|SYSRQ_ENABLE_LOG
+mdefine_line|#define SYSRQ_ENABLE_LOG&t;0x0002
+DECL|macro|SYSRQ_ENABLE_KEYBOARD
+mdefine_line|#define SYSRQ_ENABLE_KEYBOARD&t;0x0004
+DECL|macro|SYSRQ_ENABLE_DUMP
+mdefine_line|#define SYSRQ_ENABLE_DUMP&t;0x0008
+DECL|macro|SYSRQ_ENABLE_SYNC
+mdefine_line|#define SYSRQ_ENABLE_SYNC&t;0x0010
+DECL|macro|SYSRQ_ENABLE_REMOUNT
+mdefine_line|#define SYSRQ_ENABLE_REMOUNT&t;0x0020
+DECL|macro|SYSRQ_ENABLE_SIGNAL
+mdefine_line|#define SYSRQ_ENABLE_SIGNAL&t;0x0040
+DECL|macro|SYSRQ_ENABLE_BOOT
+mdefine_line|#define SYSRQ_ENABLE_BOOT&t;0x0080
+DECL|macro|SYSRQ_ENABLE_RTNICE
+mdefine_line|#define SYSRQ_ENABLE_RTNICE&t;0x0100
 DECL|struct|sysrq_key_op
 r_struct
 id|sysrq_key_op
@@ -37,6 +55,10 @@ DECL|member|action_msg
 r_char
 op_star
 id|action_msg
+suffix:semicolon
+DECL|member|enable_mask
+r_int
+id|enable_mask
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -70,6 +92,9 @@ comma
 r_struct
 id|tty_struct
 op_star
+comma
+r_int
+id|check_mask
 )paren
 suffix:semicolon
 r_int

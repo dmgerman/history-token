@@ -108,6 +108,11 @@ id|action_msg
 op_assign
 l_string|&quot;Changing Loglevel&quot;
 comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_LOG
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* SAK sysrq handler */
@@ -177,6 +182,11 @@ id|action_msg
 op_assign
 l_string|&quot;SAK&quot;
 comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_KEYBOARD
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
@@ -245,6 +255,11 @@ id|action_msg
 op_assign
 l_string|&quot;Keyboard mode set to XLATE&quot;
 comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_KEYBOARD
+comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_VT */
@@ -303,6 +318,11 @@ id|action_msg
 op_assign
 l_string|&quot;Resetting&quot;
 comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_BOOT
+comma
 )brace
 suffix:semicolon
 DECL|function|sysrq_handle_sync
@@ -353,6 +373,11 @@ id|action_msg
 op_assign
 l_string|&quot;Emergency Sync&quot;
 comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_SYNC
+comma
 )brace
 suffix:semicolon
 DECL|function|sysrq_handle_mountro
@@ -402,6 +427,11 @@ dot
 id|action_msg
 op_assign
 l_string|&quot;Emergency Remount R/O&quot;
+comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_REMOUNT
 comma
 )brace
 suffix:semicolon
@@ -461,6 +491,11 @@ id|action_msg
 op_assign
 l_string|&quot;Show Regs&quot;
 comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_DUMP
+comma
 )brace
 suffix:semicolon
 DECL|function|sysrq_handle_showstate
@@ -511,6 +546,11 @@ id|action_msg
 op_assign
 l_string|&quot;Show State&quot;
 comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_DUMP
+comma
 )brace
 suffix:semicolon
 DECL|function|sysrq_handle_showmem
@@ -560,6 +600,11 @@ dot
 id|action_msg
 op_assign
 l_string|&quot;Show Memory&quot;
+comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_DUMP
 comma
 )brace
 suffix:semicolon
@@ -660,6 +705,11 @@ id|action_msg
 op_assign
 l_string|&quot;Terminate All Tasks&quot;
 comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_SIGNAL
+comma
 )brace
 suffix:semicolon
 DECL|function|sysrq_handle_kill
@@ -715,6 +765,11 @@ id|action_msg
 op_assign
 l_string|&quot;Kill All Tasks&quot;
 comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_SIGNAL
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* END SIGNAL SYSRQ HANDLERS BLOCK */
@@ -765,6 +820,12 @@ dot
 id|action_msg
 op_assign
 l_string|&quot;Nice All RT Tasks&quot;
+comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_RTNICE
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* Key Operations table and lock */
@@ -1114,6 +1175,9 @@ r_struct
 id|tty_struct
 op_star
 id|tty
+comma
+r_int
+id|check_mask
 )paren
 (brace
 r_struct
@@ -1171,6 +1235,24 @@ c_cond
 id|op_p
 )paren
 (brace
+multiline_comment|/* Should we check for enabled operations (/proc/sysrq-trigger should not)&n;&t;&t; * and is the invoked operation enabled? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|check_mask
+op_logical_or
+id|sysrq_enabled
+op_eq
+l_int|1
+op_logical_or
+(paren
+id|sysrq_enabled
+op_amp
+id|op_p-&gt;enable_mask
+)paren
+)paren
+(brace
 id|printk
 (paren
 l_string|&quot;%s&bslash;n&quot;
@@ -1192,6 +1274,14 @@ comma
 id|pt_regs
 comma
 id|tty
+)paren
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;This sysrq operation is disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1324,6 +1414,8 @@ comma
 id|pt_regs
 comma
 id|tty
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace

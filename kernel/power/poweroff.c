@@ -87,6 +87,12 @@ dot
 id|action_msg
 op_assign
 l_string|&quot;Power Off&quot;
+comma
+dot
+id|enable_mask
+op_assign
+id|SYSRQ_ENABLE_BOOT
+comma
 )brace
 suffix:semicolon
 DECL|function|pm_sysrq_init
