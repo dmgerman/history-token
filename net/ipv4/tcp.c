@@ -1552,7 +1552,7 @@ c_func
 id|child
 )paren
 suffix:semicolon
-id|tcp_acceptq_removed
+id|sk_acceptq_removed
 c_func
 (paren
 id|sk
@@ -8306,7 +8306,7 @@ id|newsk
 op_assign
 id|req-&gt;sk
 suffix:semicolon
-id|tcp_acceptq_removed
+id|sk_acceptq_removed
 c_func
 (paren
 id|sk
