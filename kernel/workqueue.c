@@ -51,6 +51,11 @@ id|task_t
 op_star
 id|thread
 suffix:semicolon
+DECL|member|run_depth
+r_int
+id|run_depth
+suffix:semicolon
+multiline_comment|/* Detect run_workqueue() recursion depth */
 DECL|variable|____cacheline_aligned
 )brace
 id|____cacheline_aligned
@@ -394,6 +399,34 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|cwq-&gt;run_depth
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cwq-&gt;run_depth
+OG
+l_int|3
+)paren
+(brace
+multiline_comment|/* morton gets to eat his hat */
+id|printk
+c_func
+(paren
+l_string|&quot;%s: recursion depth exceeded: %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|cwq-&gt;run_depth
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -498,6 +531,9 @@ id|cwq-&gt;work_done
 )paren
 suffix:semicolon
 )brace
+id|cwq-&gt;run_depth
+op_decrement
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1062,6 +1098,20 @@ id|wq
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|wq
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|wq
+)paren
+)paren
 suffix:semicolon
 r_for
 c_loop
