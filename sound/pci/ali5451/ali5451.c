@@ -9481,6 +9481,18 @@ id|im
 r_return
 l_int|0
 suffix:semicolon
+id|snd_pcm_suspend_all
+c_func
+(paren
+id|chip-&gt;pcm
+)paren
+suffix:semicolon
+id|snd_ac97_suspend
+c_func
+(paren
+id|chip-&gt;ac97
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -9890,12 +9902,6 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
-id|snd_ac97_resume
-c_func
-(paren
-id|chip-&gt;ac97
-)paren
-suffix:semicolon
 singleline_comment|// start HW channel
 id|outl
 c_func
@@ -9941,6 +9947,12 @@ c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
+id|snd_ac97_resume
+c_func
+(paren
+id|chip-&gt;ac97
 )paren
 suffix:semicolon
 r_return

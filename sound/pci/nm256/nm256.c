@@ -5102,6 +5102,12 @@ c_func
 id|chip-&gt;pcm
 )paren
 suffix:semicolon
+id|snd_ac97_suspend
+c_func
+(paren
+id|chip-&gt;ac97
+)paren
+suffix:semicolon
 id|chip-&gt;coeffs_current
 op_assign
 l_int|0

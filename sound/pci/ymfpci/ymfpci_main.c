@@ -11630,6 +11630,12 @@ c_func
 id|chip-&gt;pcm_4ch
 )paren
 suffix:semicolon
+id|snd_ac97_suspend
+c_func
+(paren
+id|chip-&gt;ac97
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

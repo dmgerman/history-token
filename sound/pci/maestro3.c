@@ -10690,6 +10690,12 @@ c_func
 id|chip-&gt;pcm
 )paren
 suffix:semicolon
+id|snd_ac97_suspend
+c_func
+(paren
+id|chip-&gt;ac97
+)paren
+suffix:semicolon
 id|big_mdelay
 c_func
 (paren
