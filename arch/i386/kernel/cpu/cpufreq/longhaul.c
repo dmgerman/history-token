@@ -1085,8 +1085,7 @@ comma
 id|longhaul.val
 )paren
 suffix:semicolon
-singleline_comment|//TODO: Nehemiah may have borken MaxMHzBR.
-singleline_comment|// need to extrapolate from FSB.
+multiline_comment|/*&n;&t;&t; * TODO: This code works, but raises a lot of questions.&n;&t;&t; * - Some Nehemiah&squot;s seem to have broken Min/MaxMHzBR&squot;s.&n;&t;&t; *   We get around this by using a hardcoded multiplier of 5.0x&n;&t;&t; *   for the minimimum speed, and the speed we booted up at for the max.&n;&t;&t; *   This is done in longhaul_get_cpu_mult() by reading the EBLCR register.&n;&t;&t; * - According to some VIA documentation EBLCR is only&n;&t;&t; *   in pre-Nehemiah C3s. How this still works is a mystery.&n;&t;&t; *   We&squot;re possibly using something undocumented and unsupported,&n;&t;&t; *   But it works, so we don&squot;t grumble.&n;&t;&t; */
 id|minmult
 op_assign
 l_int|50
