@@ -1909,6 +1909,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|status
+op_eq
+id|nfserr_symlink
+)paren
+r_return
+id|nfserr_notdir
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|status
 )paren
