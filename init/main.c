@@ -1282,6 +1282,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Re-enable preemption but disable interrupts to make sure&n;&t; * we dont get preempted until we schedule() in cpu_idle().&n;&t; */
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -1500,6 +1511,11 @@ c_func
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up the scheduler prior starting any interrupts (such as the&n;&t; * timer interrupt). Full topology setup happens at smp_init()&n;&t; * time - but meanwhile we still have a functioning scheduler.&n;&t; */
 id|sched_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_disable
 c_func
 (paren
 )paren
