@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.12 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.13 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -75,42 +75,6 @@ id|PAGE_SIZE
 id|BUG
 c_func
 (paren
-)paren
-suffix:semicolon
-id|debug_text_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-l_string|&quot;ALLC&quot;
-)paren
-suffix:semicolon
-id|debug_text_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-id|magic
-)paren
-suffix:semicolon
-id|debug_int_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-id|cplength
-)paren
-suffix:semicolon
-id|debug_int_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-id|datasize
 )paren
 suffix:semicolon
 id|size
@@ -383,29 +347,6 @@ id|device
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|debug_text_event
-c_func
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-l_string|&quot;FREE&quot;
-)paren
-suffix:semicolon
-id|debug_int_event
-c_func
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-(paren
-r_int
-)paren
-id|cqr
-)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
