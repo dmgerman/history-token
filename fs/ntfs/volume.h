@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * volume.h - Defines for volume structures in NTFS Linux kernel driver. Part&n; *&t;      of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (C) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * volume.h - Defines for volume structures in NTFS Linux kernel driver. Part&n; *&t;      of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (c) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _LINUX_NTFS_VOLUME_H
 DECL|macro|_LINUX_NTFS_VOLUME_H
 mdefine_line|#define _LINUX_NTFS_VOLUME_H
@@ -142,25 +142,11 @@ id|u8
 id|index_record_size_bits
 suffix:semicolon
 multiline_comment|/* log2(index_record_size) */
-r_union
-(brace
 DECL|member|nr_clusters
 id|LCN
 id|nr_clusters
 suffix:semicolon
-multiline_comment|/* Volume size in clusters. */
-DECL|member|nr_lcn_bits
-id|LCN
-id|nr_lcn_bits
-suffix:semicolon
-multiline_comment|/* Number of bits in lcn bitmap. */
-)brace
-id|SN
-c_func
-(paren
-id|vcl
-)paren
-suffix:semicolon
+multiline_comment|/* Volume size in clusters == number of&n;&t;&t;&t;&t;&t;   bits in lcn bitmap. */
 DECL|member|mft_lcn
 id|LCN
 id|mft_lcn
@@ -211,27 +197,12 @@ id|rw_semaphore
 id|mftbmp_lock
 suffix:semicolon
 multiline_comment|/* Lock for serializing accesses to the&n;&t;&t;&t;&t;&t;    mft record bitmap ($MFT/$BITMAP). */
-r_union
-(brace
 DECL|member|nr_mft_records
 r_int
 r_int
 id|nr_mft_records
 suffix:semicolon
-multiline_comment|/* Number of mft records. */
-DECL|member|nr_mft_bits
-r_int
-r_int
-id|nr_mft_bits
-suffix:semicolon
-multiline_comment|/* Number of bits in mft bitmap. */
-)brace
-id|SN
-c_func
-(paren
-id|vmm
-)paren
-suffix:semicolon
+multiline_comment|/* Number of mft records == number of&n;&t;&t;&t;&t;&t;   bits in mft bitmap. */
 DECL|member|mftbmp_mapping
 r_struct
 id|address_space
@@ -325,9 +296,5 @@ DECL|typedef|ntfs_volume
 )brace
 id|ntfs_volume
 suffix:semicolon
-DECL|macro|_VCL
-mdefine_line|#define _VCL(X)  SC(vcl,X)
-DECL|macro|_VMM
-mdefine_line|#define _VMM(X)  SC(vmm,X)
 macro_line|#endif /* _LINUX_NTFS_VOLUME_H */
 eof
