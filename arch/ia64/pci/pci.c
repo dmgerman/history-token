@@ -454,12 +454,11 @@ op_amp
 id|pci_sal_ops
 suffix:semicolon
 multiline_comment|/* default to SAL &lt; 3.2 */
-DECL|function|pci_set_sal_ops
 r_static
 r_int
 id|__init
+DECL|function|pci_set_sal_ops
 id|pci_set_sal_ops
-c_func
 (paren
 r_void
 )paren
