@@ -2481,6 +2481,9 @@ id|s
 id|resource_map_t
 op_star
 id|m
+comma
+op_star
+id|n
 suffix:semicolon
 r_static
 r_int
@@ -2520,8 +2523,13 @@ id|mem_db
 suffix:semicolon
 id|m
 op_assign
-id|m-&gt;next
+id|n
 )paren
+(brace
+id|n
+op_assign
+id|m-&gt;next
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2537,6 +2545,7 @@ id|s
 )paren
 r_break
 suffix:semicolon
+)brace
 id|up
 c_func
 (paren
