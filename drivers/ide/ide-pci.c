@@ -15,24 +15,26 @@ DECL|macro|DEVID_PIIXa
 mdefine_line|#define DEVID_PIIXa&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82371FB_0})
 DECL|macro|DEVID_PIIXb
 mdefine_line|#define DEVID_PIIXb&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82371FB_1})
+DECL|macro|DEVID_MPIIX
+mdefine_line|#define DEVID_MPIIX&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82371MX})
 DECL|macro|DEVID_PIIX3
 mdefine_line|#define DEVID_PIIX3&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82371SB_1})
 DECL|macro|DEVID_PIIX4
 mdefine_line|#define DEVID_PIIX4&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82371AB})
-DECL|macro|DEVID_ICH0
-mdefine_line|#define DEVID_ICH0&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801AB_1})
+DECL|macro|DEVID_PIIX4E
+mdefine_line|#define DEVID_PIIX4E&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801AB_1})
 DECL|macro|DEVID_PIIX4E2
 mdefine_line|#define DEVID_PIIX4E2&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82443MX_1})
-DECL|macro|DEVID_ICH
-mdefine_line|#define DEVID_ICH&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801AA_1})
+DECL|macro|DEVID_PIIX4U
+mdefine_line|#define DEVID_PIIX4U&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801AA_1})
 DECL|macro|DEVID_PIIX4U2
 mdefine_line|#define DEVID_PIIX4U2&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82372FB_1})
 DECL|macro|DEVID_PIIX4NX
 mdefine_line|#define DEVID_PIIX4NX&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82451NX})
-DECL|macro|DEVID_ICH2
-mdefine_line|#define DEVID_ICH2&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_9})
-DECL|macro|DEVID_ICH2M
-mdefine_line|#define DEVID_ICH2M&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_8})
+DECL|macro|DEVID_PIIX4U3
+mdefine_line|#define DEVID_PIIX4U3&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_9})
+DECL|macro|DEVID_PIIX4U4
+mdefine_line|#define DEVID_PIIX4U4&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_8})
 DECL|macro|DEVID_VIA_IDE
 mdefine_line|#define DEVID_VIA_IDE&t;((ide_pci_devid_t){PCI_VENDOR_ID_VIA,     PCI_DEVICE_ID_VIA_82C561})
 DECL|macro|DEVID_VP_IDE
@@ -45,6 +47,10 @@ DECL|macro|DEVID_PDC20265
 mdefine_line|#define DEVID_PDC20265&t;((ide_pci_devid_t){PCI_VENDOR_ID_PROMISE, PCI_DEVICE_ID_PROMISE_20265})
 DECL|macro|DEVID_PDC20267
 mdefine_line|#define DEVID_PDC20267&t;((ide_pci_devid_t){PCI_VENDOR_ID_PROMISE, PCI_DEVICE_ID_PROMISE_20267})
+DECL|macro|DEVID_PDC20268
+mdefine_line|#define DEVID_PDC20268  ((ide_pci_devid_t){PCI_VENDOR_ID_PROMISE, PCI_DEVICE_ID_PROMISE_20268})
+DECL|macro|DEVID_PDC20268R
+mdefine_line|#define DEVID_PDC20268R ((ide_pci_devid_t){PCI_VENDOR_ID_PROMISE, PCI_DEVICE_ID_PROMISE_20268R})
 DECL|macro|DEVID_RZ1000
 mdefine_line|#define DEVID_RZ1000&t;((ide_pci_devid_t){PCI_VENDOR_ID_PCTECH,  PCI_DEVICE_ID_PCTECH_RZ1000})
 DECL|macro|DEVID_RZ1001
@@ -103,14 +109,22 @@ DECL|macro|DEVID_HINT
 mdefine_line|#define DEVID_HINT&t;((ide_pci_devid_t){0x3388,                0x8013})
 DECL|macro|DEVID_CS5530
 mdefine_line|#define DEVID_CS5530&t;((ide_pci_devid_t){PCI_VENDOR_ID_CYRIX,   PCI_DEVICE_ID_CYRIX_5530_IDE})
-DECL|macro|DEVID_AMD7403
-mdefine_line|#define DEVID_AMD7403&t;((ide_pci_devid_t){PCI_VENDOR_ID_AMD,     PCI_DEVICE_ID_AMD_COBRA_7403})
+DECL|macro|DEVID_AMD7401
+mdefine_line|#define DEVID_AMD7401&t;((ide_pci_devid_t){PCI_VENDOR_ID_AMD,     PCI_DEVICE_ID_AMD_COBRA_7401})
 DECL|macro|DEVID_AMD7409
 mdefine_line|#define DEVID_AMD7409&t;((ide_pci_devid_t){PCI_VENDOR_ID_AMD,     PCI_DEVICE_ID_AMD_VIPER_7409})
+DECL|macro|DEVID_AMD7411
+mdefine_line|#define DEVID_AMD7411&t;((ide_pci_devid_t){PCI_VENDOR_ID_AMD,     PCI_DEVICE_ID_AMD_VIPER_7411})
+DECL|macro|DEVID_PDCADMA
+mdefine_line|#define DEVID_PDCADMA&t;((ide_pci_devid_t){PCI_VENDOR_ID_PDC,     PCI_DEVICE_ID_PDC_1841})
 DECL|macro|DEVID_SLC90E66
 mdefine_line|#define DEVID_SLC90E66&t;((ide_pci_devid_t){PCI_VENDOR_ID_EFAR,    PCI_DEVICE_ID_EFAR_SLC90E66_1})
 DECL|macro|DEVID_OSB4
 mdefine_line|#define DEVID_OSB4&t;((ide_pci_devid_t){PCI_VENDOR_ID_SERVERWORKS, PCI_DEVICE_ID_SERVERWORKS_OSB4IDE})
+DECL|macro|DEVID_CSB5
+mdefine_line|#define DEVID_CSB5&t;((ide_pci_devid_t){PCI_VENDOR_ID_SERVERWORKS, PCI_DEVICE_ID_SERVERWORKS_CSB5IDE})
+DECL|macro|DEVID_ITE8172G
+mdefine_line|#define DEVID_ITE8172G&t;((ide_pci_devid_t){PCI_VENDOR_ID_ITE,     PCI_DEVICE_ID_ITE_IT8172G})
 DECL|macro|IDE_IGNORE
 mdefine_line|#define&t;IDE_IGNORE&t;((void *)-1)
 macro_line|#ifdef CONFIG_BLK_DEV_AEC62XX
@@ -243,11 +257,11 @@ mdefine_line|#define INIT_ALI15X3&t;NULL
 DECL|macro|DMA_ALI15X3
 mdefine_line|#define DMA_ALI15X3&t;NULL
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_AMD7409
+macro_line|#ifdef CONFIG_BLK_DEV_AMD74XX
 r_extern
 r_int
 r_int
-id|pci_init_amd7409
+id|pci_init_amd74xx
 c_func
 (paren
 r_struct
@@ -262,7 +276,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|ata66_amd7409
+id|ata66_amd74xx
 c_func
 (paren
 id|ide_hwif_t
@@ -271,7 +285,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|ide_init_amd7409
+id|ide_init_amd74xx
 c_func
 (paren
 id|ide_hwif_t
@@ -280,7 +294,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|ide_dmacapable_amd7409
+id|ide_dmacapable_amd74xx
 c_func
 (paren
 id|ide_hwif_t
@@ -290,23 +304,23 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|macro|PCI_AMD7409
-mdefine_line|#define PCI_AMD7409&t;&amp;pci_init_amd7409
-DECL|macro|ATA66_AMD7409
-mdefine_line|#define ATA66_AMD7409&t;&amp;ata66_amd7409
-DECL|macro|INIT_AMD7409
-mdefine_line|#define INIT_AMD7409&t;&amp;ide_init_amd7409
-DECL|macro|DMA_AMD7409
-mdefine_line|#define DMA_AMD7409&t;&amp;ide_dmacapable_amd7409
+DECL|macro|PCI_AMD74XX
+mdefine_line|#define PCI_AMD74XX&t;&amp;pci_init_amd74xx
+DECL|macro|ATA66_AMD74XX
+mdefine_line|#define ATA66_AMD74XX&t;&amp;ata66_amd74xx
+DECL|macro|INIT_AMD74XX
+mdefine_line|#define INIT_AMD74XX&t;&amp;ide_init_amd74xx
+DECL|macro|DMA_AMD74XX
+mdefine_line|#define DMA_AMD74XX&t;&amp;ide_dmacapable_amd74xx
 macro_line|#else
-DECL|macro|PCI_AMD7409
-mdefine_line|#define PCI_AMD7409&t;NULL
-DECL|macro|ATA66_AMD7409
-mdefine_line|#define ATA66_AMD7409&t;NULL
-DECL|macro|INIT_AMD7409
-mdefine_line|#define INIT_AMD7409&t;NULL
-DECL|macro|DMA_AMD7409
-mdefine_line|#define DMA_AMD7409&t;NULL
+DECL|macro|PCI_AMD74XX
+mdefine_line|#define PCI_AMD74XX&t;NULL
+DECL|macro|ATA66_AMD74XX
+mdefine_line|#define ATA66_AMD74XX&t;NULL
+DECL|macro|INIT_AMD74XX
+mdefine_line|#define INIT_AMD74XX&t;NULL
+DECL|macro|DMA_AMD74XX
+mdefine_line|#define DMA_AMD74XX&t;NULL
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_CMD64X
 r_extern
@@ -547,15 +561,11 @@ DECL|variable|hpt363_shared_irq
 r_static
 id|byte
 id|hpt363_shared_irq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|hpt363_shared_pin
 r_static
 id|byte
 id|hpt363_shared_pin
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|PCI_HPT366
 mdefine_line|#define PCI_HPT366&t;NULL
@@ -598,11 +608,11 @@ macro_line|#else
 DECL|macro|INIT_OPTI621
 mdefine_line|#define INIT_OPTI621&t;NULL
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_OSB4
+macro_line|#ifdef CONFIG_BLK_DEV_PDC_ADMA
 r_extern
 r_int
 r_int
-id|pci_init_osb4
+id|pci_init_pdcadma
 c_func
 (paren
 r_struct
@@ -617,7 +627,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|ata66_osb4
+id|ata66_pdcadma
 c_func
 (paren
 id|ide_hwif_t
@@ -626,26 +636,42 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|ide_init_osb4
+id|ide_init_pdcadma
 c_func
 (paren
 id|ide_hwif_t
 op_star
 )paren
 suffix:semicolon
-DECL|macro|PCI_OSB4
-mdefine_line|#define PCI_OSB4        &amp;pci_init_osb4
-DECL|macro|ATA66_OSB4
-mdefine_line|#define ATA66_OSB4      &amp;ata66_osb4
-DECL|macro|INIT_OSB4
-mdefine_line|#define INIT_OSB4       &amp;ide_init_osb4
+r_extern
+r_void
+id|ide_dmacapable_pdcadma
+c_func
+(paren
+id|ide_hwif_t
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|macro|PCI_PDCADMA
+mdefine_line|#define PCI_PDCADMA&t;&amp;pci_init_pdcadma
+DECL|macro|ATA66_PDCADMA
+mdefine_line|#define ATA66_PDCADMA&t;&amp;ata66_pdcadma
+DECL|macro|INIT_PDCADMA
+mdefine_line|#define INIT_PDCADMA&t;&amp;ide_init_pdcadma
+DECL|macro|DMA_PDCADMA
+mdefine_line|#define DMA_PDCADMA&t;&amp;ide_dmacapable_pdcadma
 macro_line|#else
-DECL|macro|PCI_OSB4
-mdefine_line|#define PCI_OSB4        NULL
-DECL|macro|ATA66_OSB4
-mdefine_line|#define ATA66_OSB4      NULL
-DECL|macro|INIT_OSB4
-mdefine_line|#define INIT_OSB4       NULL
+DECL|macro|PCI_PDCADMA
+mdefine_line|#define PCI_PDCADMA&t;IDE_IGNORE
+DECL|macro|ATA66_PDCADMA
+mdefine_line|#define ATA66_PDCADMA&t;IDE_IGNORE
+DECL|macro|INIT_PDCADMA
+mdefine_line|#define INIT_PDCADMA&t;IDE_IGNORE
+DECL|macro|DMA_PDCADMA
+mdefine_line|#define DMA_PDCADMA&t;IDE_IGNORE
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_PDC202XX
 r_extern
@@ -745,6 +771,53 @@ mdefine_line|#define ATA66_PIIX&t;NULL
 DECL|macro|INIT_PIIX
 mdefine_line|#define INIT_PIIX&t;NULL
 macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IT8172
+r_extern
+r_int
+r_int
+id|pci_init_it8172
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ata66_it8172
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ide_init_it8172
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+DECL|macro|PCI_IT8172
+mdefine_line|#define PCI_IT8172&t;&amp;pci_init_it8172
+DECL|macro|INIT_IT8172
+mdefine_line|#define INIT_IT8172&t;&amp;ide_init_it8172
+macro_line|#else
+DECL|macro|PCI_IT8172
+mdefine_line|#define PCI_IT8172&t;NULL
+DECL|macro|ATA66_IT8172
+mdefine_line|#define ATA66_IT8172&t;NULL
+DECL|macro|INIT_IT8172
+mdefine_line|#define INIT_IT8172&t;NULL
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_RZ1000
 r_extern
 r_void
@@ -763,6 +836,55 @@ mdefine_line|#define INIT_RZ1000&t;IDE_IGNORE
 macro_line|#endif
 DECL|macro|INIT_SAMURAI
 mdefine_line|#define INIT_SAMURAI&t;NULL
+macro_line|#ifdef CONFIG_BLK_DEV_SVWKS
+r_extern
+r_int
+r_int
+id|pci_init_svwks
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ata66_svwks
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ide_init_svwks
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+DECL|macro|PCI_SVWKS
+mdefine_line|#define PCI_SVWKS&t;&amp;pci_init_svwks
+DECL|macro|ATA66_SVWKS
+mdefine_line|#define ATA66_SVWKS&t;&amp;ata66_svwks
+DECL|macro|INIT_SVWKS
+mdefine_line|#define INIT_SVWKS&t;&amp;ide_init_svwks
+macro_line|#else
+DECL|macro|PCI_SVWKS
+mdefine_line|#define PCI_SVWKS&t;NULL
+DECL|macro|ATA66_SVWKS
+mdefine_line|#define ATA66_SVWKS&t;NULL
+DECL|macro|INIT_SVWKS
+mdefine_line|#define INIT_SVWKS&t;NULL
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_SIS5513
 r_extern
 r_int
@@ -1193,6 +1315,42 @@ l_int|0
 )brace
 comma
 (brace
+id|DEVID_MPIIX
+comma
+l_string|&quot;MPIIX&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+id|INIT_PIIX
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x6D
+comma
+l_int|0x80
+comma
+l_int|0x80
+)brace
+comma
+(brace
+l_int|0x6F
+comma
+l_int|0x80
+comma
+l_int|0x80
+)brace
+)brace
+comma
+id|ON_BOARD
+comma
+l_int|0
+)brace
+comma
+(brace
 id|DEVID_PIIX3
 comma
 l_string|&quot;PIIX3&quot;
@@ -1265,9 +1423,9 @@ l_int|0
 )brace
 comma
 (brace
-id|DEVID_ICH0
+id|DEVID_PIIX4E
 comma
-l_string|&quot;ICH0&quot;
+l_string|&quot;PIIX4&quot;
 comma
 id|PCI_PIIX
 comma
@@ -1337,9 +1495,9 @@ l_int|0
 )brace
 comma
 (brace
-id|DEVID_ICH
+id|DEVID_PIIX4U
 comma
-l_string|&quot;ICH&quot;
+l_string|&quot;PIIX4&quot;
 comma
 id|PCI_PIIX
 comma
@@ -1445,9 +1603,9 @@ l_int|0
 )brace
 comma
 (brace
-id|DEVID_ICH2
+id|DEVID_PIIX4U3
 comma
-l_string|&quot;ICH2&quot;
+l_string|&quot;PIIX4&quot;
 comma
 id|PCI_PIIX
 comma
@@ -1481,9 +1639,9 @@ l_int|0
 )brace
 comma
 (brace
-id|DEVID_ICH2M
+id|DEVID_PIIX4U4
 comma
-l_string|&quot;ICH2-M&quot;
+l_string|&quot;PIIX4&quot;
 comma
 id|PCI_PIIX
 comma
@@ -1588,6 +1746,152 @@ comma
 l_int|0
 )brace
 comma
+macro_line|#ifdef CONFIG_PDC202XX_FORCE
+(brace
+id|DEVID_PDC20246
+comma
+l_string|&quot;PDC20246&quot;
+comma
+id|PCI_PDC202XX
+comma
+l_int|NULL
+comma
+id|INIT_PDC202XX
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|OFF_BOARD
+comma
+l_int|16
+)brace
+comma
+(brace
+id|DEVID_PDC20262
+comma
+l_string|&quot;PDC20262&quot;
+comma
+id|PCI_PDC202XX
+comma
+id|ATA66_PDC202XX
+comma
+id|INIT_PDC202XX
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|OFF_BOARD
+comma
+l_int|48
+)brace
+comma
+(brace
+id|DEVID_PDC20265
+comma
+l_string|&quot;PDC20265&quot;
+comma
+id|PCI_PDC202XX
+comma
+id|ATA66_PDC202XX
+comma
+id|INIT_PDC202XX
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|OFF_BOARD
+comma
+l_int|48
+)brace
+comma
+(brace
+id|DEVID_PDC20267
+comma
+l_string|&quot;PDC20267&quot;
+comma
+id|PCI_PDC202XX
+comma
+id|ATA66_PDC202XX
+comma
+id|INIT_PDC202XX
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|OFF_BOARD
+comma
+l_int|48
+)brace
+comma
+macro_line|#else /* !CONFIG_PDC202XX_FORCE */
 (brace
 id|DEVID_PDC20246
 comma
@@ -1730,6 +2034,80 @@ comma
 id|OFF_BOARD
 comma
 l_int|48
+)brace
+comma
+macro_line|#endif
+(brace
+id|DEVID_PDC20268
+comma
+l_string|&quot;PDC20268&quot;
+comma
+id|PCI_PDC202XX
+comma
+id|ATA66_PDC202XX
+comma
+id|INIT_PDC202XX
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|OFF_BOARD
+comma
+l_int|16
+)brace
+comma
+multiline_comment|/* Promise used a different PCI ident for the raid card apparently to try and&n;&t;   prevent Linux detecting it and using our own raid code. We want to detect&n;&t;   it for the ataraid drivers, so we have to list both here.. */
+(brace
+id|DEVID_PDC20268R
+comma
+l_string|&quot;PDC20268&quot;
+comma
+id|PCI_PDC202XX
+comma
+id|ATA66_PDC202XX
+comma
+id|INIT_PDC202XX
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|OFF_BOARD
+comma
+l_int|16
 )brace
 comma
 (brace
@@ -2741,9 +3119,9 @@ l_int|0
 )brace
 comma
 (brace
-id|DEVID_AMD7403
+id|DEVID_AMD7401
 comma
-l_string|&quot;AMD7403&quot;
+l_string|&quot;AMD7401&quot;
 comma
 l_int|NULL
 comma
@@ -2781,13 +3159,13 @@ id|DEVID_AMD7409
 comma
 l_string|&quot;AMD7409&quot;
 comma
-id|PCI_AMD7409
+id|PCI_AMD74XX
 comma
-id|ATA66_AMD7409
+id|ATA66_AMD74XX
 comma
-id|INIT_AMD7409
+id|INIT_AMD74XX
 comma
-id|DMA_AMD7409
+id|DMA_AMD74XX
 comma
 (brace
 (brace
@@ -2808,6 +3186,78 @@ l_int|0x02
 )brace
 comma
 id|ON_BOARD
+comma
+l_int|0
+)brace
+comma
+(brace
+id|DEVID_AMD7411
+comma
+l_string|&quot;AMD7411&quot;
+comma
+id|PCI_AMD74XX
+comma
+id|ATA66_AMD74XX
+comma
+id|INIT_AMD74XX
+comma
+id|DMA_AMD74XX
+comma
+(brace
+(brace
+l_int|0x40
+comma
+l_int|0x01
+comma
+l_int|0x01
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x02
+comma
+l_int|0x02
+)brace
+)brace
+comma
+id|ON_BOARD
+comma
+l_int|0
+)brace
+comma
+(brace
+id|DEVID_PDCADMA
+comma
+l_string|&quot;PDCADMA&quot;
+comma
+id|PCI_PDCADMA
+comma
+id|ATA66_PDCADMA
+comma
+id|INIT_PDCADMA
+comma
+id|DMA_PDCADMA
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|OFF_BOARD
 comma
 l_int|0
 )brace
@@ -2853,11 +3303,11 @@ id|DEVID_OSB4
 comma
 l_string|&quot;ServerWorks OSB4&quot;
 comma
-id|PCI_OSB4
+id|PCI_SVWKS
 comma
-id|ATA66_OSB4
+id|ATA66_SVWKS
 comma
-id|INIT_OSB4
+id|INIT_SVWKS
 comma
 l_int|NULL
 comma
@@ -2876,6 +3326,78 @@ comma
 l_int|0x00
 comma
 l_int|0x00
+)brace
+)brace
+comma
+id|ON_BOARD
+comma
+l_int|0
+)brace
+comma
+(brace
+id|DEVID_CSB5
+comma
+l_string|&quot;ServerWorks CSB5&quot;
+comma
+id|PCI_SVWKS
+comma
+id|ATA66_SVWKS
+comma
+id|INIT_SVWKS
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|ON_BOARD
+comma
+l_int|0
+)brace
+comma
+(brace
+id|DEVID_ITE8172G
+comma
+l_string|&quot;IT8172G&quot;
+comma
+id|PCI_IT8172
+comma
+l_int|NULL
+comma
+id|INIT_IT8172
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x00
+comma
+l_int|0x01
 )brace
 )brace
 comma
@@ -2960,6 +3482,9 @@ id|PCI_DEVICE_ID_PROMISE_20265
 suffix:colon
 r_case
 id|PCI_DEVICE_ID_PROMISE_20267
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_PROMISE_20268
 suffix:colon
 r_case
 id|PCI_DEVICE_ID_ARTOP_ATP850UF
@@ -3508,7 +4033,19 @@ r_int
 r_int
 id|class_rev
 suffix:semicolon
+r_static
+r_int
+id|secondpdc
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef CONFIG_IDEDMA_AUTO
+r_if
+c_cond
+(paren
+op_logical_neg
+id|noautodma
+)paren
 id|autodma
 op_assign
 l_int|1
@@ -3958,6 +4495,36 @@ id|port
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t;&t; * If this is a Promise FakeRaid controller, the 2nd controller will be marked as &n;&t;&t; * disabled while it is actually there and enabled by the bios for raid purposes. &n;&t;&t; * Skip the normal &quot;is it enabled&quot; test for those.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|IDE_PCI_DEVID_EQ
+c_func
+(paren
+id|d-&gt;devid
+comma
+id|DEVID_PDC20265
+)paren
+)paren
+op_logical_and
+(paren
+id|secondpdc
+op_increment
+op_eq
+l_int|1
+)paren
+op_logical_and
+(paren
+id|port
+op_eq
+l_int|1
+)paren
+)paren
+r_goto
+id|controller_ok
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3987,6 +4554,8 @@ id|e-&gt;val
 r_continue
 suffix:semicolon
 multiline_comment|/* port not enabled */
+id|controller_ok
+suffix:colon
 r_if
 c_cond
 (paren
@@ -4341,6 +4910,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IDE_PCI_DEVID_EQ
+c_func
+(paren
+id|d-&gt;devid
+comma
+id|DEVID_MPIIX
+)paren
+)paren
+r_goto
+id|bypass_piix_dma
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|hwif-&gt;udma_four
 )paren
 (brace
@@ -4408,6 +4991,22 @@ id|d-&gt;devid
 comma
 id|DEVID_HPT34X
 )paren
+op_logical_or
+id|IDE_PCI_DEVID_EQ
+c_func
+(paren
+id|d-&gt;devid
+comma
+id|DEVID_VIA_IDE
+)paren
+op_logical_or
+id|IDE_PCI_DEVID_EQ
+c_func
+(paren
+id|d-&gt;devid
+comma
+id|DEVID_VP_IDE
+)paren
 )paren
 id|autodma
 op_assign
@@ -4455,6 +5054,14 @@ c_func
 id|d-&gt;devid
 comma
 id|DEVID_PDC20267
+)paren
+op_logical_or
+id|IDE_PCI_DEVID_EQ
+c_func
+(paren
+id|d-&gt;devid
+comma
+id|DEVID_PDC20268
 )paren
 op_logical_or
 id|IDE_PCI_DEVID_EQ
@@ -4726,6 +5333,8 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif&t;/* CONFIG_BLK_DEV_IDEDMA */
+id|bypass_piix_dma
+suffix:colon
 id|bypass_umc_dma
 suffix:colon
 r_if
@@ -4882,11 +5491,13 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
+l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;slot_name
+id|dev-&gt;bus-&gt;number
+comma
+id|dev-&gt;devfn
 )paren
 suffix:semicolon
 id|ide_setup_pci_device
@@ -5022,6 +5633,41 @@ comma
 id|pin2
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* I forgot why I did this once, but it fixed something. */
+id|pci_write_config_byte
+c_func
+(paren
+id|dev2
+comma
+id|PCI_INTERRUPT_PIN
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;PCI: %s: Fixing interrupt %d pin %d to ZERO &bslash;n&quot;
+comma
+id|d-&gt;name
+comma
+id|dev2-&gt;irq
+comma
+id|pin2
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|dev2
+comma
+id|PCI_INTERRUPT_LINE
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_break
 suffix:semicolon
@@ -5030,11 +5676,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
+l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;slot_name
+id|dev-&gt;bus-&gt;number
+comma
+id|dev-&gt;devfn
 )paren
 suffix:semicolon
 id|ide_setup_pci_device
@@ -5060,11 +5708,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
+l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
 comma
 id|d2-&gt;name
 comma
-id|dev2-&gt;slot_name
+id|dev2-&gt;bus-&gt;number
+comma
+id|dev2-&gt;devfn
 )paren
 suffix:semicolon
 id|ide_setup_pci_device
@@ -5215,6 +5865,47 @@ c_func
 (paren
 id|d-&gt;devid
 comma
+id|DEVID_ITE8172G
+)paren
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|PCI_FUNC
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+op_amp
+l_int|1
+)paren
+op_logical_or
+op_logical_neg
+(paren
+(paren
+id|dev
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|8
+)paren
+op_eq
+id|PCI_CLASS_STORAGE_IDE
+)paren
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* IT8172G is also more than only an IDE controller */
+r_else
+r_if
+c_cond
+(paren
+id|IDE_PCI_DEVID_EQ
+c_func
+(paren
+id|d-&gt;devid
+comma
 id|DEVID_UM8886A
 )paren
 op_logical_and
@@ -5290,11 +5981,13 @@ id|IDE_PCI_DEVID_NULL
 id|printk
 c_func
 (paren
-l_string|&quot;%s: unknown IDE controller on PCI slot %s, VID=%04x, DID=%04x&bslash;n&quot;
+l_string|&quot;%s: unknown IDE controller on PCI bus %02x device %02x, VID=%04x, DID=%04x&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;slot_name
+id|dev-&gt;bus-&gt;number
+comma
+id|dev-&gt;devfn
 comma
 id|devid.vid
 comma
@@ -5305,11 +5998,13 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
+l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;slot_name
+id|dev-&gt;bus-&gt;number
+comma
+id|dev-&gt;devfn
 )paren
 suffix:semicolon
 id|ide_setup_pci_device

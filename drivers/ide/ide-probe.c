@@ -3139,10 +3139,10 @@ macro_line|#ifdef CONFIG_IDEPCI_SHARE_IRQ
 r_int
 id|sa
 op_assign
+id|IDE_CHIPSET_IS_PCI
+c_func
 (paren
 id|hwif-&gt;chipset
-op_eq
-id|ide_pci
 )paren
 ques
 c_cond
@@ -3154,10 +3154,10 @@ macro_line|#else /* !CONFIG_IDEPCI_SHARE_IRQ */
 r_int
 id|sa
 op_assign
+id|IDE_CHIPSET_IS_PCI
+c_func
 (paren
 id|hwif-&gt;chipset
-op_eq
-id|ide_pci
 )paren
 ques
 c_cond

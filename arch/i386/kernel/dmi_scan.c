@@ -977,6 +977,35 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This bios swaps the APM minute reporting bytes over (Many sony laptops&n; * have this problem).&n; */
+DECL|function|swab_apm_power_in_minutes
+r_static
+id|__init
+r_int
+id|swab_apm_power_in_minutes
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|apm_info.get_power_status_swabinminutes
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;BIOS strings suggest APM reports battery life in minutes and wrong byte order.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Process the DMI blacklists&n; */
 multiline_comment|/*&n; *&t;This will be expanded over time to force things like the APM &n; *&t;interrupt mask settings according to the laptop&n; */
 DECL|variable|dmi_blacklist

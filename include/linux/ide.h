@@ -75,6 +75,9 @@ DECL|macro|ERROR_RESET
 mdefine_line|#define ERROR_RESET&t;3&t;/* Reset controller every 4th retry */
 DECL|macro|ERROR_RECAL
 mdefine_line|#define ERROR_RECAL&t;1&t;/* Recalibrate every 2nd retry */
+multiline_comment|/*&n; * state flags&n; */
+DECL|macro|DMA_PIO_RETRY
+mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
 multiline_comment|/*&n; * Ensure that various configuration flags have compatible settings&n; */
 macro_line|#ifdef REALLY_SLOW_IO
 DECL|macro|REALLY_FAST_IO
@@ -143,17 +146,6 @@ DECL|macro|IDE_BCOUNTL_REG
 mdefine_line|#define IDE_BCOUNTL_REG&t;&t;IDE_LCYL_REG
 DECL|macro|IDE_BCOUNTH_REG
 mdefine_line|#define IDE_BCOUNTH_REG&t;&t;IDE_HCYL_REG
-macro_line|#ifdef REALLY_FAST_IO
-DECL|macro|OUT_BYTE
-mdefine_line|#define OUT_BYTE(b,p)&t;&t;outb((b),(p))
-DECL|macro|IN_BYTE
-mdefine_line|#define IN_BYTE(p)&t;&t;(byte)inb(p)
-macro_line|#else
-DECL|macro|OUT_BYTE
-mdefine_line|#define OUT_BYTE(b,p)&t;&t;outb_p((b),(p))
-DECL|macro|IN_BYTE
-mdefine_line|#define IN_BYTE(p)&t;&t;(byte)inb_p(p)
-macro_line|#endif /* REALLY_FAST_IO */
 DECL|macro|GET_ERR
 mdefine_line|#define GET_ERR()&t;&t;IN_BYTE(IDE_ERROR_REG)
 DECL|macro|GET_STAT
@@ -328,6 +320,25 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/ide.h&gt;
+multiline_comment|/*&n; * If the arch-dependant ide.h did not declare/define any OUT_BYTE&n; * or IN_BYTE functions, we make some defaults here.&n; */
+macro_line|#ifndef HAVE_ARCH_OUT_BYTE
+macro_line|#ifdef REALLY_FAST_IO
+DECL|macro|OUT_BYTE
+mdefine_line|#define OUT_BYTE(b,p)          outb((b),(p))
+macro_line|#else
+DECL|macro|OUT_BYTE
+mdefine_line|#define OUT_BYTE(b,p)          outb_p((b),(p))
+macro_line|#endif
+macro_line|#endif
+macro_line|#ifndef HAVE_ARCH_IN_BYTE
+macro_line|#ifdef REALLY_FAST_IO
+DECL|macro|IN_BYTE
+mdefine_line|#define IN_BYTE(p)             (byte)inb_p(p)
+macro_line|#else
+DECL|macro|IN_BYTE
+mdefine_line|#define IN_BYTE(p)             (byte)inb(p)
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/*&n; * Now for the data we need to maintain per-drive:  ide_drive_t&n; */
 DECL|macro|ide_scsi
 mdefine_line|#define ide_scsi&t;0x21
@@ -451,6 +462,16 @@ id|byte
 id|using_dma
 suffix:semicolon
 multiline_comment|/* disk is using dma for read/write */
+DECL|member|retry_pio
+id|byte
+id|retry_pio
+suffix:semicolon
+multiline_comment|/* retrying dma capable host in pio */
+DECL|member|state
+id|byte
+id|state
+suffix:semicolon
+multiline_comment|/* retry state */
 DECL|member|waiting_for_dma
 id|byte
 id|waiting_for_dma
@@ -818,6 +839,18 @@ id|byte
 id|dn
 suffix:semicolon
 multiline_comment|/* now wide spread use */
+DECL|member|failures
+r_int
+r_int
+id|failures
+suffix:semicolon
+multiline_comment|/* current failure count */
+DECL|member|max_failures
+r_int
+r_int
+id|max_failures
+suffix:semicolon
+multiline_comment|/* maximum allowed failure count */
 DECL|typedef|ide_drive_t
 )brace
 id|ide_drive_t
@@ -885,6 +918,44 @@ id|ide_dma_action_t
 comma
 id|ide_drive_t
 op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * An ide_ideproc_t() performs CPU-polled transfers to/from a drive.&n; * Arguments are: the drive, the buffer pointer, and the length (in bytes or&n; * words depending on if it&squot;s an IDE or ATAPI call).&n; *&n; * If it is not defined for a controller, standard-code is used from ide.c.&n; *&n; * Controllers which are not memory-mapped in the standard way need to &n; * override that mechanism using this function to work.&n; *&n; */
+DECL|enumerator|ideproc_ide_input_data
+DECL|enumerator|ideproc_ide_output_data
+r_typedef
+r_enum
+(brace
+id|ideproc_ide_input_data
+comma
+id|ideproc_ide_output_data
+comma
+DECL|enumerator|ideproc_atapi_input_bytes
+DECL|enumerator|ideproc_atapi_output_bytes
+id|ideproc_atapi_input_bytes
+comma
+id|ideproc_atapi_output_bytes
+DECL|typedef|ide_ide_action_t
+)brace
+id|ide_ide_action_t
+suffix:semicolon
+DECL|typedef|ide_ideproc_t
+r_typedef
+r_void
+(paren
+id|ide_ideproc_t
+)paren
+(paren
+id|ide_ide_action_t
+comma
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * An ide_tuneproc_t() is used to set the speed of an IDE interface&n; * to a particular PIO mode.  The &quot;byte&quot; parameter is used&n; * to select the PIO mode by number (0,1,2,3,4,5), and a value of 255&n; * indicates that the interface driver should &quot;auto-tune&quot; the PIO mode&n; * according to the drive capabilities in drive-&gt;id;&n; *&n; * Not all interface types support tuning, and not all of those&n; * support all possible PIO settings.  They may silently ignore&n; * or round values as they see fit.&n; */
@@ -985,6 +1056,21 @@ comma
 id|ide_dma_action_t
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * ide soft-power support&n; */
+DECL|typedef|ide_busproc_t
+r_typedef
+r_int
+(paren
+id|ide_busproc_t
+)paren
+(paren
+r_struct
+id|hwif_s
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * hwif_chipset_t is used to keep track of the specific hardware&n; * chipset used by each IDE interface, if known.&n; */
 DECL|enumerator|ide_unknown
 DECL|enumerator|ide_generic
@@ -1035,11 +1121,18 @@ comma
 id|ide_4drives
 comma
 DECL|enumerator|ide_pmac
+DECL|enumerator|ide_etrax100
 id|ide_pmac
+comma
+id|ide_etrax100
 DECL|typedef|hwif_chipset_t
 )brace
 id|hwif_chipset_t
 suffix:semicolon
+DECL|macro|IDE_CHIPSET_PCI_MASK
+mdefine_line|#define IDE_CHIPSET_PCI_MASK&t;&bslash;&n;    ((1&lt;&lt;ide_pci)|(1&lt;&lt;ide_cmd646)|(1&lt;&lt;ide_ali14xx))
+DECL|macro|IDE_CHIPSET_IS_PCI
+mdefine_line|#define IDE_CHIPSET_IS_PCI(c)&t;((IDE_CHIPSET_PCI_MASK &gt;&gt; (c)) &amp; 1)
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|struct|ide_pci_devid_s
 r_typedef
@@ -1159,6 +1252,12 @@ op_star
 id|rwproc
 suffix:semicolon
 multiline_comment|/* adjust timing based upon rq-&gt;cmd direction */
+DECL|member|ideproc
+id|ide_ideproc_t
+op_star
+id|ideproc
+suffix:semicolon
+multiline_comment|/* CPU-polled transfer routine */
 DECL|member|dmaproc
 id|ide_dmaproc_t
 op_star
@@ -1194,6 +1293,11 @@ r_int
 id|sg_dma_direction
 suffix:semicolon
 multiline_comment|/* dma transfer direction */
+DECL|member|sg_dma_active
+r_int
+id|sg_dma_active
+suffix:semicolon
+multiline_comment|/* is it in use */
 DECL|member|mate
 r_struct
 id|hwif_s
@@ -1346,6 +1450,17 @@ op_star
 id|hwif_data
 suffix:semicolon
 multiline_comment|/* extra hwif data */
+DECL|member|busproc
+id|ide_busproc_t
+op_star
+id|busproc
+suffix:semicolon
+multiline_comment|/* driver soft-power interface */
+DECL|member|bus_state
+id|byte
+id|bus_state
+suffix:semicolon
+multiline_comment|/* power state of the IDE bus */
 DECL|typedef|ide_hwif_t
 )brace
 id|ide_hwif_t
@@ -1943,6 +2058,17 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+DECL|typedef|ide_driver_reinit_proc
+r_typedef
+r_int
+(paren
+id|ide_driver_reinit_proc
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
 DECL|struct|ide_driver_s
 r_typedef
 r_struct
@@ -2041,6 +2167,11 @@ DECL|member|proc
 id|ide_proc_entry_t
 op_star
 id|proc
+suffix:semicolon
+DECL|member|driver_reinit
+id|ide_driver_reinit_proc
+op_star
+id|driver_reinit
 suffix:semicolon
 DECL|typedef|ide_driver_t
 )brace
@@ -2372,6 +2503,14 @@ suffix:semicolon
 multiline_comment|/*&n; * Start a reset operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
 id|ide_startstop_t
 id|ide_do_reset
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Re-Start an operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
+id|ide_startstop_t
+id|restart_request
 (paren
 id|ide_drive_t
 op_star

@@ -12,8 +12,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-DECL|macro|CONFIG_BLK_DEV_IDEDMA_TIMEOUT
-macro_line|#undef CONFIG_BLK_DEV_IDEDMA_TIMEOUT
+multiline_comment|/*&n; * Long lost data from 2.0.34 that is now in 2.0.39&n; *&n; * This was used in ./drivers/block/triton.c to do DMA Base address setup&n; * when PnP failed.  Oh the things we forget.  I believe this was part&n; * of SFF-8038i that has been withdrawn from public access... :-((&n; */
+DECL|macro|DEFAULT_BMIBA
+mdefine_line|#define DEFAULT_BMIBA&t;0xe800&t;/* in case BIOS did not init it */
+DECL|macro|DEFAULT_BMCRBA
+mdefine_line|#define DEFAULT_BMCRBA&t;0xcc00&t;/* VIA&squot;s default value */
+DECL|macro|DEFAULT_BMALIBA
+mdefine_line|#define DEFAULT_BMALIBA&t;0xd400&t;/* ALI&squot;s default value */
 r_extern
 r_char
 op_star
@@ -128,6 +133,42 @@ comma
 l_string|&quot;WDC AC23200L&quot;
 comma
 l_string|&quot;21.10N21&quot;
+)brace
+comma
+(brace
+l_string|&quot;Compaq CRD-8241B&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;CRD-8400B&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;SanDisk SDP3B-64&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;SAMSUNG CD-ROM SN-124&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;PLEXTOR CD-R PX-W8432T&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;ATAPI CD-ROM DRIVE 40X MAXIMUM&quot;
+comma
+l_string|&quot;ALL&quot;
 )brace
 comma
 (brace
@@ -386,9 +427,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: dma_intr: bad DMA status&bslash;n&quot;
+l_string|&quot;%s: dma_intr: bad DMA status (dma_stat=%x)&bslash;n&quot;
 comma
 id|drive-&gt;name
+comma
+id|dma_stat
 )paren
 suffix:semicolon
 )brace
@@ -435,6 +478,16 @@ r_int
 id|nents
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwif-&gt;sg_dma_active
+)paren
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -748,46 +801,9 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-id|pci_unmap_sg
-c_func
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pci_dev
-comma
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|sg_table
-comma
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|sg_nents
-comma
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|sg_dma_direction
-)paren
+r_goto
+id|use_pio_instead
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* revert to PIO for this request */
 )brace
 r_else
 (brace
@@ -850,6 +866,63 @@ l_int|1
 op_lshift
 l_int|16
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|xcount
+op_eq
+l_int|0x0000
+)paren
+(brace
+multiline_comment|/* &n;&t;&t;&t;&t;&t; * Most chipsets correctly interpret a length of 0x0000 as 64KB,&n;&t;&t;&t;&t;&t; * but at least one (e.g. CS5530) misinterprets it as zero (!).&n;&t;&t;&t;&t;&t; * So here we break the 64KB entry into two 32KB entries instead.&n;&t;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|count
+op_increment
+op_ge
+id|PRD_ENTRIES
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: DMA table too small&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_goto
+id|use_pio_instead
+suffix:semicolon
+)brace
+op_star
+id|table
+op_increment
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+l_int|0x8000
+)paren
+suffix:semicolon
+op_star
+id|table
+op_increment
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|cur_addr
+op_plus
+l_int|0x8000
+)paren
+suffix:semicolon
+id|xcount
+op_assign
+l_int|0x8000
+suffix:semicolon
+)brace
 op_star
 id|table
 op_increment
@@ -880,18 +953,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|count
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s: empty DMA table?&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-r_else
+(brace
 r_if
 c_cond
 (paren
@@ -911,6 +975,67 @@ suffix:semicolon
 r_return
 id|count
 suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: empty DMA table?&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+id|use_pio_instead
+suffix:colon
+id|pci_unmap_sg
+c_func
+(paren
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|pci_dev
+comma
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|sg_table
+comma
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|sg_nents
+comma
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|sg_dma_direction
+)paren
+suffix:semicolon
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|sg_dma_active
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* revert to PIO for this request */
 )brace
 multiline_comment|/* Teardown mappings after DMA has completed.  */
 DECL|function|ide_destroy_dmatable
@@ -976,6 +1101,16 @@ id|drive
 op_member_access_from_pointer
 id|sg_dma_direction
 )paren
+suffix:semicolon
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|sg_dma_active
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  For both Blacklisted and Whitelisted drives.&n; *  This is setup to be called as an extern for future support&n; *  to other special driver code.&n; */
@@ -1562,6 +1697,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_BLK_DEV_IDEDMA_TIMEOUT
 multiline_comment|/*&n; * 1 dmaing, 2 error, 4 intr&n; */
 DECL|function|dma_timer_expiry
 r_static
@@ -1659,6 +1795,120 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else /* CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
+DECL|function|ide_dma_timeout_revovery
+r_static
+id|ide_startstop_t
+id|ide_dma_timeout_revovery
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+id|ide_hwgroup_t
+op_star
+id|hwgroup
+op_assign
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+r_int
+id|enable_dma
+op_assign
+id|drive-&gt;using_dma
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|ide_startstop_t
+id|startstop
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|hwgroup-&gt;handler
+op_assign
+l_int|NULL
+suffix:semicolon
+id|del_timer
+c_func
+(paren
+op_amp
+id|hwgroup-&gt;timer
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|drive-&gt;waiting_for_dma
+op_assign
+l_int|0
+suffix:semicolon
+id|startstop
+op_assign
+id|ide_do_reset
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|enable_dma
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|drive-&gt;using_dma
+)paren
+)paren
+(paren
+r_void
+)paren
+id|hwif
+op_member_access_from_pointer
+id|dmaproc
+c_func
+(paren
+id|ide_dma_on
+comma
+id|drive
+)paren
+suffix:semicolon
+r_return
+id|startstop
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
 multiline_comment|/*&n; * ide_dmaproc() initiates/aborts DMA read/write operations on a drive.&n; *&n; * The caller is assumed to have selected the drive and programmed the drive&squot;s&n; * sector address using CHS or LBA.  All that remains is to prepare for DMA&n; * and then issue the actual read/write DMA/PIO command to the drive.&n; *&n; * For ATAPI devices, we just prepare for DMA and return. The caller should&n; * then issue the packet command to the drive and call us again with&n; * ide_dma_begin afterwards.&n; *&n; * Returns 0 if all went well.&n; * Returns 1 if DMA read/write could not be started, in which case&n; * the caller should revert to PIO for the current request.&n; * May also be invoked from trm290.c&n; */
 DECL|function|ide_dmaproc
 r_int
@@ -1672,6 +1922,7 @@ op_star
 id|drive
 )paren
 (brace
+singleline_comment|//&t;ide_hwgroup_t *hwgroup&t;&t;= HWGROUP(drive);
 id|ide_hwif_t
 op_star
 id|hwif
@@ -1904,6 +2155,22 @@ id|ide_disk
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_TIMEOUT
+id|ide_set_handler
+c_func
+(paren
+id|drive
+comma
+op_amp
+id|ide_dma_intr
+comma
+id|WAIT_CMD
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* issue cmd to drive */
+macro_line|#else /* !CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
 id|ide_set_handler
 c_func
 (paren
@@ -1918,6 +2185,7 @@ id|dma_timer_expiry
 )paren
 suffix:semicolon
 multiline_comment|/* issue cmd to drive */
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
 id|OUT_BYTE
 c_func
 (paren
@@ -2016,6 +2284,15 @@ l_int|7
 )paren
 op_ne
 l_int|4
+ques
+c_cond
+(paren
+l_int|0x10
+op_or
+id|dma_stat
+)paren
+suffix:colon
+l_int|0
 suffix:semicolon
 multiline_comment|/* verify good DMA status */
 r_case
@@ -2105,8 +2382,117 @@ suffix:semicolon
 r_case
 id|ide_dma_timeout
 suffix:colon
+singleline_comment|// FIXME: Many IDE chipsets do not permit command file register access
+singleline_comment|// FIXME: while the bus-master function is still active.
+singleline_comment|// FIXME: To prevent deadlock with those chipsets, we must be extremely
+singleline_comment|// FIXME: careful here (and in ide_intr() as well) to NOT access any
+singleline_comment|// FIXME: registers from the 0x1Fx/0x17x sets before terminating the
+singleline_comment|// FIXME: bus-master operation via the bus-master control reg.
+singleline_comment|// FIXME: Otherwise, chipset deadlock will occur, and some systems will
+singleline_comment|// FIXME: lock up completely!!
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_TIMEOUT
 multiline_comment|/*&n;&t;&t;&t; * Have to issue an abort and requeue the request&n;&t;&t;&t; * DMA engine got turned off by a goofy ASIC, and&n;&t;&t;&t; * we have to clean up the mess, and here is as good&n;&t;&t;&t; * as any.  Do it globally for all chipsets.&n;&t;&t;&t; */
+id|outb
+c_func
+(paren
+l_int|0x00
+comma
+id|dma_base
+)paren
+suffix:semicolon
+multiline_comment|/* stop DMA */
+id|dma_stat
+op_assign
+id|inb
+c_func
+(paren
+id|dma_base
+op_plus
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* get DMA status */
+id|outb
+c_func
+(paren
+id|dma_stat
+op_or
+l_int|6
+comma
+id|dma_base
+op_plus
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* clear the INTR &amp; ERROR bits */
+id|printk
+c_func
+(paren
+l_string|&quot;%s: %s: Lets do it again!&quot;
+"&bslash;"
+l_string|&quot;stat = 0x%02x, dma_stat = 0x%02x&bslash;n&quot;
+comma
+id|drive-&gt;name
+comma
+id|ide_dmafunc_verbose
+c_func
+(paren
+id|func
+)paren
+comma
+id|GET_STAT
+c_func
+(paren
+)paren
+comma
+id|dma_stat
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma_stat
+op_amp
+l_int|0xF0
+)paren
+r_return
+id|ide_dma_timeout_revovery
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: %s: (restart_request) Lets do it again!&quot;
+"&bslash;"
+l_string|&quot;stat = 0x%02x, dma_stat = 0x%02x&bslash;n&quot;
+comma
+id|drive-&gt;name
+comma
+id|ide_dmafunc_verbose
+c_func
+(paren
+id|func
+)paren
+comma
+id|GET_STAT
+c_func
+(paren
+)paren
+comma
+id|dma_stat
+)paren
+suffix:semicolon
+r_return
+id|restart_request
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+singleline_comment|// BUG: return types do not match!!
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
 r_case
 id|ide_dma_retune
@@ -2494,6 +2880,15 @@ id|dev
 op_assign
 id|hwif-&gt;pci_dev
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_FORCED
+r_int
+id|second_chance
+op_assign
+l_int|0
+suffix:semicolon
+id|second_chance_to_dma
+suffix:colon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_FORCED */
 r_if
 c_cond
 (paren
@@ -2551,6 +2946,86 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_FORCED
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|dma_base
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|second_chance
+)paren
+)paren
+(brace
+r_int
+r_int
+id|set_bmiba
+op_assign
+l_int|0
+suffix:semicolon
+id|second_chance
+op_increment
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|dev-&gt;vendor
+)paren
+(brace
+r_case
+id|PCI_VENDOR_ID_AL
+suffix:colon
+id|set_bmiba
+op_assign
+id|DEFAULT_BMALIBA
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_VENDOR_ID_VIA
+suffix:colon
+id|set_bmiba
+op_assign
+id|DEFAULT_BMCRBA
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_VENDOR_ID_INTEL
+suffix:colon
+id|set_bmiba
+op_assign
+id|DEFAULT_BMIBA
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+id|dma_base
+suffix:semicolon
+)brace
+id|pci_write_config_dword
+c_func
+(paren
+id|dev
+comma
+l_int|0x20
+comma
+id|set_bmiba
+op_or
+l_int|1
+)paren
+suffix:semicolon
+r_goto
+id|second_chance_to_dma
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_FORCED */
 r_if
 c_cond
 (paren

@@ -4163,8 +4163,6 @@ suffix:semicolon
 id|ntfs_volume
 op_star
 id|vol
-op_assign
-id|ino-&gt;vol
 suffix:semicolon
 r_int
 id|byte
@@ -4194,6 +4192,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|vol
+op_assign
+id|ino-&gt;vol
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -446,6 +446,10 @@ comma
 id|lo
 op_assign
 l_int|0
+comma
+id|invalid_data_set
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;         * at that point bibma+0x2 et bibma+0xa are byte registers&n;         * to investigate:&n;         */
 id|u8
@@ -644,6 +648,25 @@ c_cond
 id|dev-&gt;device
 )paren
 (brace
+r_case
+id|PCI_DEVICE_ID_PROMISE_20268
+suffix:colon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;&bslash;n                                PDC20268 TX2 Chipset.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|invalid_data_set
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_PROMISE_20267
 suffix:colon
@@ -1030,6 +1053,14 @@ suffix:colon
 l_string|&quot;PCI   &quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|invalid_data_set
+)paren
+)paren
 id|p
 op_add_assign
 id|sprintf
@@ -1206,6 +1237,14 @@ suffix:colon
 l_string|&quot;no &quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|invalid_data_set
+)paren
+)paren
 id|p
 op_add_assign
 id|sprintf
@@ -1264,6 +1303,14 @@ id|smask
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|invalid_data_set
+)paren
+)paren
 id|p
 op_add_assign
 id|sprintf
@@ -1310,6 +1357,21 @@ l_string|&quot;--------------- Can ATAPI DMA ---------------&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|invalid_data_set
+)paren
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;--------------- Cannot Decode HOST ---------------&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 (paren
 r_char
@@ -2303,6 +2365,16 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_PROMISE_20268
+)paren
+r_goto
+id|skip_register_hell
+suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren
@@ -3025,6 +3097,18 @@ id|DP
 )paren
 suffix:semicolon
 macro_line|#endif /* PDC202XX_DECODE_REGISTER_INFO */
+id|skip_register_hell
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drive-&gt;init_speed
+)paren
+id|drive-&gt;init_speed
+op_assign
+id|speed
+suffix:semicolon
 id|err
 op_assign
 id|ide_config_drive_speed
@@ -3034,6 +3118,10 @@ id|drive
 comma
 id|speed
 )paren
+suffix:semicolon
+id|drive-&gt;current_speed
+op_assign
+id|speed
 suffix:semicolon
 macro_line|#if PDC202XX_DEBUG_DRIVE_INFO
 id|printk
@@ -3322,6 +3410,12 @@ id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_PROMISE_20267
 )paren
+op_logical_or
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_PROMISE_20268
+)paren
 )paren
 op_logical_and
 id|udma_66
@@ -3411,6 +3505,16 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_PROMISE_20268
+)paren
+r_goto
+id|jump_pci_mucking
 suffix:semicolon
 id|pci_read_config_word
 c_func
@@ -4047,6 +4151,8 @@ op_or
 id|PREFETCH_EN
 )paren
 suffix:semicolon
+id|jump_pci_mucking
+suffix:colon
 r_if
 c_cond
 (paren
@@ -4229,6 +4335,13 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* restore original pci-config space */
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_ne
+id|PCI_DEVICE_ID_PROMISE_20268
+)paren
 id|pci_write_config_dword
 c_func
 (paren
@@ -5194,6 +5307,12 @@ id|dev-&gt;device
 op_ne
 id|PCI_DEVICE_ID_PROMISE_20267
 )paren
+op_logical_and
+(paren
+id|dev-&gt;device
+op_ne
+id|PCI_DEVICE_ID_PROMISE_20268
+)paren
 )paren
 (brace
 id|pci_write_config_byte
@@ -5601,6 +5720,46 @@ op_amp
 id|pdc202xx_reset
 suffix:semicolon
 )brace
+DECL|macro|CONFIG_PDC202XX_32_UNMASK
+macro_line|#undef CONFIG_PDC202XX_32_UNMASK
+macro_line|#ifdef CONFIG_PDC202XX_32_UNMASK
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+dot
+id|io_32bit
+op_assign
+l_int|1
+suffix:semicolon
+id|hwif-&gt;drives
+(braket
+l_int|1
+)braket
+dot
+id|io_32bit
+op_assign
+l_int|1
+suffix:semicolon
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+dot
+id|unmask
+op_assign
+l_int|1
+suffix:semicolon
+id|hwif-&gt;drives
+(braket
+l_int|1
+)braket
+dot
+id|unmask
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif /* CONFIG_PDC202XX_32_UNMASK */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond

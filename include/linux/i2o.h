@@ -13,6 +13,7 @@ mdefine_line|#define I2O_MAX_MANAGERS&t;4
 macro_line|#include &lt;asm/semaphore.h&gt; /* Needed for MUTEX init macros */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * message structures&n; */
 DECL|struct|i2o_message

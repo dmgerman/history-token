@@ -2426,10 +2426,20 @@ mdefine_line|#define PCI_DEVICE_ID_AIRONET_4500&t;0x4800
 singleline_comment|// drivers/net/aironet4500_card.c
 DECL|macro|PCI_VENDOR_ID_TITAN
 mdefine_line|#define PCI_VENDOR_ID_TITAN&t;&t;0x14D2
+DECL|macro|PCI_DEVICE_ID_TITAN_010L
+mdefine_line|#define PCI_DEVICE_ID_TITAN_010L&t;0x8001
+DECL|macro|PCI_DEVICE_ID_TITAN_100L
+mdefine_line|#define PCI_DEVICE_ID_TITAN_100L&t;0x8010
 DECL|macro|PCI_DEVICE_ID_TITAN_110L
 mdefine_line|#define PCI_DEVICE_ID_TITAN_110L&t;0x8011
+DECL|macro|PCI_DEVICE_ID_TITAN_200L
+mdefine_line|#define PCI_DEVICE_ID_TITAN_200L&t;0x8020
 DECL|macro|PCI_DEVICE_ID_TITAN_210L
 mdefine_line|#define PCI_DEVICE_ID_TITAN_210L&t;0x8021
+DECL|macro|PCI_DEVICE_ID_TITAN_400L
+mdefine_line|#define PCI_DEVICE_ID_TITAN_400L&t;0x8040
+DECL|macro|PCI_DEVICE_ID_TITAN_800L
+mdefine_line|#define PCI_DEVICE_ID_TITAN_800L&t;0x8080
 DECL|macro|PCI_DEVICE_ID_TITAN_100
 mdefine_line|#define PCI_DEVICE_ID_TITAN_100&t;&t;0xA001
 DECL|macro|PCI_DEVICE_ID_TITAN_200

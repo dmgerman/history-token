@@ -1841,7 +1841,7 @@ id|err
 r_return
 id|err
 suffix:semicolon
-id|down_write
+id|down_read
 c_func
 (paren
 op_amp
@@ -2131,7 +2131,7 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-id|up_write
+id|up_read
 c_func
 (paren
 op_amp
@@ -2148,7 +2148,7 @@ l_int|0
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|up_write
+id|up_read
 c_func
 (paren
 op_amp

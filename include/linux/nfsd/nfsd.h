@@ -101,7 +101,7 @@ op_star
 comma
 r_int
 comma
-id|off_t
+id|loff_t
 comma
 id|ino_t
 comma

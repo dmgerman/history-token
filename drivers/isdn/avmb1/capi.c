@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capi.c,v 1.44.6.12 2001/06/09 15:14:15 kai Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
+multiline_comment|/*&n; * $Id: capi.c,v 1.44.6.13 2001/08/13 07:46:15 kai Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -41,7 +41,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.44.6.12 $&quot;
+l_string|&quot;$Revision: 1.44.6.13 $&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func

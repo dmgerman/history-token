@@ -20,16 +20,18 @@ DECL|macro|NO_DOOR_LOCKING
 mdefine_line|#define NO_DOOR_LOCKING 0
 macro_line|#endif
 multiline_comment|/************************************************************************/
-DECL|macro|SECTOR_SIZE
-mdefine_line|#define SECTOR_SIZE&t;&t;512
 DECL|macro|SECTOR_BITS
 mdefine_line|#define SECTOR_BITS &t;&t;9
+DECL|macro|SECTOR_SIZE
+mdefine_line|#define SECTOR_SIZE&t;&t;(1 &lt;&lt; SECTOR_BITS)
 DECL|macro|SECTORS_PER_FRAME
-mdefine_line|#define SECTORS_PER_FRAME&t;(CD_FRAMESIZE / SECTOR_SIZE)
+mdefine_line|#define SECTORS_PER_FRAME&t;(CD_FRAMESIZE &gt;&gt; SECTOR_BITS)
 DECL|macro|SECTOR_BUFFER_SIZE
 mdefine_line|#define SECTOR_BUFFER_SIZE&t;(CD_FRAMESIZE * 32)
 DECL|macro|SECTORS_BUFFER
-mdefine_line|#define SECTORS_BUFFER&t;&t;(SECTOR_BUFFER_SIZE / SECTOR_SIZE)
+mdefine_line|#define SECTORS_BUFFER&t;&t;(SECTOR_BUFFER_SIZE &gt;&gt; SECTOR_BITS)
+DECL|macro|SECTORS_MAX
+mdefine_line|#define SECTORS_MAX&t;&t;(131072 &gt;&gt; SECTOR_BITS)
 DECL|macro|BLOCKS_PER_FRAME
 mdefine_line|#define BLOCKS_PER_FRAME&t;(CD_FRAMESIZE / BLOCK_SIZE)
 DECL|macro|MIN

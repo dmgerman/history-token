@@ -9781,11 +9781,6 @@ c_func
 id|bh-&gt;b_size
 )paren
 suffix:semicolon
-r_int
-id|loop
-op_assign
-l_int|0
-suffix:semicolon
 id|cleaned_buffers_try_again
 suffix:colon
 id|spin_lock
@@ -10019,20 +10014,16 @@ multiline_comment|/* We waited synchronously, so we can free the buffers. */
 r_if
 c_cond
 (paren
-(paren
 id|gfp_mask
 op_amp
 id|__GFP_WAIT
 )paren
-op_logical_and
-op_logical_neg
-id|loop
-)paren
 (brace
-id|loop
+id|gfp_mask
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
+multiline_comment|/* no IO or waiting this time around */
 r_goto
 id|cleaned_buffers_try_again
 suffix:semicolon

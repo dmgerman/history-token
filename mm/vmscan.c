@@ -1630,12 +1630,8 @@ id|page
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * page_launder - clean dirty inactive pages, move to inactive_clean list&n; * @gfp_mask: what operations we are allowed to do&n; * @sync: are we allowed to do synchronous IO in emergencies ?&n; *&n; * When this function is called, we are most likely low on free +&n; * inactive_clean pages. Since we want to refill those pages as&n; * soon as possible, we&squot;ll make two loops over the inactive list,&n; * one to move the already cleaned pages to the inactive_clean lists&n; * and one to (often asynchronously) clean the dirty inactive pages.&n; *&n; * In situations where kswapd cannot keep up, user processes will&n; * end up calling this function. Since the user process needs to&n; * have a page before it can continue with its allocation, we&squot;ll&n; * do synchronous page flushing in that case.&n; *&n; * This code used to be heavily inspired by the FreeBSD source code. &n; * Thanks go out to Matthew Dillon.&n; */
-DECL|macro|MAX_LAUNDER
-mdefine_line|#define MAX_LAUNDER &t;&t;(4 * (1 &lt;&lt; page_cluster))
 DECL|macro|CAN_DO_FS
 mdefine_line|#define CAN_DO_FS&t;&t;(gfp_mask &amp; __GFP_FS)
-DECL|macro|CAN_DO_IO
-mdefine_line|#define CAN_DO_IO&t;&t;(gfp_mask &amp; __GFP_IO)
 DECL|function|page_launder
 r_int
 id|page_launder
@@ -1649,13 +1645,9 @@ id|sync
 )paren
 (brace
 r_int
-id|launder_loop
-comma
 id|maxscan
 comma
 id|cleaned_pages
-comma
-id|maxlaunder
 suffix:semicolon
 r_struct
 id|list_head
@@ -1667,20 +1659,22 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|launder_loop
-op_assign
-l_int|0
-suffix:semicolon
-id|maxlaunder
-op_assign
-l_int|0
-suffix:semicolon
 id|cleaned_pages
 op_assign
 l_int|0
 suffix:semicolon
-id|dirty_page_rescan
-suffix:colon
+multiline_comment|/* Will we wait on IO? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sync
+)paren
+id|gfp_mask
+op_and_assign
+op_complement
+id|__GFP_WAIT
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1898,13 +1892,10 @@ id|writepage
 r_goto
 id|page_active
 suffix:semicolon
-multiline_comment|/* First time through? Move it to the back of the list */
+multiline_comment|/* Can&squot;t do it? Move it to the back of the list */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|launder_loop
-op_logical_or
 op_logical_neg
 id|CAN_DO_FS
 )paren
@@ -1984,10 +1975,6 @@ id|page-&gt;buffers
 )paren
 (brace
 r_int
-r_int
-id|buffer_mask
-suffix:semicolon
-r_int
 id|clearedbuf
 suffix:semicolon
 r_int
@@ -2015,55 +2002,6 @@ op_amp
 id|pagemap_lru_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Will we do (asynchronous) IO? */
-r_if
-c_cond
-(paren
-id|launder_loop
-op_logical_and
-id|maxlaunder
-op_eq
-l_int|0
-op_logical_and
-id|sync
-)paren
-id|buffer_mask
-op_assign
-id|gfp_mask
-suffix:semicolon
-multiline_comment|/* Do as much as we can */
-r_else
-r_if
-c_cond
-(paren
-id|launder_loop
-op_logical_and
-id|maxlaunder
-op_decrement
-OG
-l_int|0
-)paren
-id|buffer_mask
-op_assign
-id|gfp_mask
-op_amp
-op_complement
-id|__GFP_WAIT
-suffix:semicolon
-multiline_comment|/* Don&squot;t wait, async write-out */
-r_else
-id|buffer_mask
-op_assign
-id|gfp_mask
-op_amp
-op_complement
-(paren
-id|__GFP_WAIT
-op_or
-id|__GFP_IO
-)paren
-suffix:semicolon
-multiline_comment|/* Don&squot;t even start IO */
 multiline_comment|/* Try to free the page buffers. */
 id|clearedbuf
 op_assign
@@ -2072,7 +2010,7 @@ c_func
 (paren
 id|page
 comma
-id|buffer_mask
+id|gfp_mask
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Re-take the spinlock. Note that we cannot&n;&t;&t;&t; * unlock the page yet since we&squot;re still&n;&t;&t;&t; * accessing the page_struct here...&n;&t;&t;&t; */
@@ -2242,50 +2180,6 @@ op_amp
 id|pagemap_lru_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we don&squot;t have enough free pages, we loop back once&n;&t; * to queue the dirty pages for writeout. When we were called&n;&t; * by a user process (that /needs/ a free page) and we didn&squot;t&n;&t; * free anything yet, we wait synchronously on the writeout of&n;&t; * MAX_SYNC_LAUNDER pages.&n;&t; *&n;&t; * We also wake up bdflush, since bdflush should, under most&n;&t; * loads, flush out the dirty pages before we have to wait on&n;&t; * IO.&n;&t; */
-r_if
-c_cond
-(paren
-id|CAN_DO_IO
-op_logical_and
-op_logical_neg
-id|launder_loop
-op_logical_and
-id|free_shortage
-c_func
-(paren
-)paren
-)paren
-(brace
-id|launder_loop
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* If we cleaned pages, never do synchronous IO. */
-r_if
-c_cond
-(paren
-id|cleaned_pages
-)paren
-id|sync
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* We only do a few &quot;out of order&quot; flushes. */
-id|maxlaunder
-op_assign
-id|MAX_LAUNDER
-suffix:semicolon
-multiline_comment|/* Kflushd takes care of the rest. */
-id|wakeup_bdflush
-c_func
-(paren
-)paren
-suffix:semicolon
-r_goto
-id|dirty_page_rescan
-suffix:semicolon
-)brace
 multiline_comment|/* Return the number of pages moved to the inactive_clean list. */
 r_return
 id|cleaned_pages
@@ -2879,6 +2773,23 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * If needed, we move pages from the active list&n;&t; * to the inactive list.&n;&t; */
+r_if
+c_cond
+(paren
+id|inactive_shortage
+c_func
+(paren
+)paren
+)paren
+id|ret
+op_add_assign
+id|refill_inactive
+c_func
+(paren
+id|gfp_mask
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * If we&squot;re low on free pages, move pages from the&n;&t; * inactive_dirty list to the inactive_clean list.&n;&t; *&n;&t; * Usually bdflush will have pre-cleaned the pages&n;&t; * before we get around to moving them to the other&n;&t; * list, so this is a relatively cheap operation.&n;&t; */
 id|ret
 op_add_assign
@@ -2907,23 +2818,6 @@ c_func
 (paren
 id|DEF_PRIORITY
 comma
-id|gfp_mask
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * If needed, we move pages from the active list&n;&t; * to the inactive list.&n;&t; */
-r_if
-c_cond
-(paren
-id|inactive_shortage
-c_func
-(paren
-)paren
-)paren
-id|ret
-op_add_assign
-id|refill_inactive
-c_func
-(paren
 id|gfp_mask
 )paren
 suffix:semicolon
@@ -3064,13 +2958,6 @@ id|DEF_PRIORITY
 )paren
 suffix:semicolon
 )brace
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_disk
-)paren
-suffix:semicolon
 multiline_comment|/* &n;&t;&t; * We go to sleep if either the free page shortage&n;&t;&t; * or the inactive page shortage is gone. We do this&n;&t;&t; * because:&n;&t;&t; * 1) we need no more free pages   or&n;&t;&t; * 2) the inactive pages need to be flushed to disk,&n;&t;&t; *    it wouldn&squot;t help to eat CPU time now ...&n;&t;&t; *&n;&t;&t; * We go to sleep for one second, but if it&squot;s needed&n;&t;&t; * we&squot;ll be woken up earlier...&n;&t;&t; */
 r_if
 c_cond
@@ -3088,6 +2975,13 @@ c_func
 )paren
 )paren
 (brace
+id|run_task_queue
+c_func
+(paren
+op_amp
+id|tq_disk
+)paren
+suffix:semicolon
 id|interruptible_sleep_on_timeout
 c_func
 (paren

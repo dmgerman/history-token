@@ -1,4 +1,4 @@
-multiline_comment|/* -*- linux-c -*-&n; * APM BIOS driver for Linux&n; * Copyright 1994-2001 Stephen Rothwell (sfr@canb.auug.org.au)&n; *&n; * Initial development of this driver was funded by NEC Australia P/L&n; *&t;and NEC Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * October 1995, Rik Faith (faith@cs.unc.edu):&n; *    Minor enhancements and updates (to the patch set) for 1.3.x&n; *    Documentation&n; * January 1996, Rik Faith (faith@cs.unc.edu):&n; *    Make /proc/apm easy to format (bump driver version)&n; * March 1996, Rik Faith (faith@cs.unc.edu):&n; *    Prohibit APM BIOS calls unless apm_enabled.&n; *    (Thanks to Ulrich Windl &lt;Ulrich.Windl@rz.uni-regensburg.de&gt;)&n; * April 1996, Stephen Rothwell (sfr@canb.auug.org.au)&n; *    Version 1.0 and 1.1&n; * May 1996, Version 1.2&n; * Feb 1998, Version 1.3&n; * Feb 1998, Version 1.4&n; * Aug 1998, Version 1.5&n; * Sep 1998, Version 1.6&n; * Nov 1998, Version 1.7&n; * Jan 1999, Version 1.8&n; * Jan 1999, Version 1.9&n; * Oct 1999, Version 1.10&n; * Nov 1999, Version 1.11&n; * Jan 2000, Version 1.12&n; * Feb 2000, Version 1.13&n; * Nov 2000, Version 1.14&n; *&n; * History:&n; *    0.6b: first version in official kernel, Linux 1.3.46&n; *    0.7: changed /proc/apm format, Linux 1.3.58&n; *    0.8: fixed gcc 2.7.[12] compilation problems, Linux 1.3.59&n; *    0.9: only call bios if bios is present, Linux 1.3.72&n; *    1.0: use fixed device number, consolidate /proc/apm into this file,&n; *         Linux 1.3.85&n; *    1.1: support user-space standby and suspend, power off after system&n; *         halted, Linux 1.3.98&n; *    1.2: When resetting RTC after resume, take care so that the time&n; *         is only incorrect by 30-60mS (vs. 1S previously) (Gabor J. Toth&n; *         &lt;jtoth@princeton.edu&gt;); improve interaction between&n; *         screen-blanking and gpm (Stephen Rothwell); Linux 1.99.4&n; *    1.2a:Simple change to stop mysterious bug reports with SMP also added&n; *&t;   levels to the printk calls. APM is not defined for SMP machines.&n; *         The new replacment for it is, but Linux doesn&squot;t yet support this.&n; *         Alan Cox Linux 2.1.55&n; *    1.3: Set up a valid data descriptor 0x40 for buggy BIOS&squot;s&n; *    1.4: Upgraded to support APM 1.2. Integrated ThinkPad suspend patch by&n; *         Dean Gaudet &lt;dgaudet@arctic.org&gt;.&n; *         C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt; Linux 2.1.87&n; *    1.5: Fix segment register reloading (in case of bad segments saved&n; *         across BIOS call).&n; *         Stephen Rothwell&n; *    1.6: Cope with complier/assembler differences.&n; *         Only try to turn off the first display device.&n; *         Fix OOPS at power off with no APM BIOS by Jan Echternach&n; *                   &lt;echter@informatik.uni-rostock.de&gt;&n; *         Stephen Rothwell&n; *    1.7: Modify driver&squot;s cached copy of the disabled/disengaged flags&n; *         to reflect current state of APM BIOS.&n; *         Chris Rankin &lt;rankinc@bellsouth.net&gt;&n; *         Reset interrupt 0 timer to 100Hz after suspend&n; *         Chad Miller &lt;cmiller@surfsouth.com&gt;&n; *         Add CONFIG_APM_IGNORE_SUSPEND_BOUNCE&n; *         Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n; *         Allow boot time disabling of APM&n; *         Make boot messages far less verbose by default&n; *         Make asm safer&n; *         Stephen Rothwell&n; *    1.8: Add CONFIG_APM_RTC_IS_GMT&n; *         Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n; *         change APM_NOINTS to CONFIG_APM_ALLOW_INTS&n; *         remove dependency on CONFIG_PROC_FS&n; *         Stephen Rothwell&n; *    1.9: Fix small typo.  &lt;laslo@ilo.opole.pl&gt;&n; *         Try to cope with BIOS&squot;s that need to have all display&n; *         devices blanked and not just the first one.&n; *         Ross Paterson &lt;ross@soi.city.ac.uk&gt;&n; *         Fix segment limit setting it has always been wrong as&n; *         the segments needed to have byte granularity.&n; *         Mark a few things __init.&n; *         Add hack to allow power off of SMP systems by popular request.&n; *         Use CONFIG_SMP instead of __SMP__&n; *         Ignore BOUNCES for three seconds.&n; *         Stephen Rothwell&n; *   1.10: Fix for Thinkpad return code.&n; *         Merge 2.2 and 2.3 drivers.&n; *         Remove APM dependencies in arch/i386/kernel/process.c&n; *         Remove APM dependencies in drivers/char/sysrq.c&n; *         Reset time across standby.&n; *         Allow more inititialisation on SMP.&n; *         Remove CONFIG_APM_POWER_OFF and make it boot time&n; *         configurable (default on).&n; *         Make debug only a boot time parameter (remove APM_DEBUG).&n; *         Try to blank all devices on any error.&n; *   1.11: Remove APM dependencies in drivers/char/console.c&n; *         Check nr_running to detect if we are idle (from&n; *         Borislav Deianov &lt;borislav@lix.polytechnique.fr&gt;)&n; *         Fix for bioses that don&squot;t zero the top part of the&n; *         entrypoint offset (Mario Sitta &lt;sitta@al.unipmn.it&gt;)&n; *         (reported by Panos Katsaloulis &lt;teras@writeme.com&gt;).&n; *         Real mode power off patch (Walter Hofmann&n; *         &lt;Walter.Hofmann@physik.stud.uni-erlangen.de&gt;).&n; *   1.12: Remove CONFIG_SMP as the compiler will optimize&n; *         the code away anyway (smp_num_cpus == 1 in UP)&n; *         noted by Artur Skawina &lt;skawina@geocities.com&gt;.&n; *         Make power off under SMP work again.&n; *         Fix thinko with initial engaging of BIOS.&n; *         Make sure power off only happens on CPU 0&n; *         (Paul &quot;Rusty&quot; Russell &lt;rusty@rustcorp.com.au&gt;).&n; *         Do error notification to user mode if BIOS calls fail.&n; *         Move entrypoint offset fix to ...boot/setup.S&n; *         where it belongs (Cosmos &lt;gis88564@cis.nctu.edu.tw&gt;).&n; *         Remove smp-power-off. SMP users must now specify&n; *         &quot;apm=power-off&quot; on the kernel command line. Suggested&n; *         by Jim Avera &lt;jima@hal.com&gt;, modified by Alan Cox&n; *         &lt;alan@lxorguk.ukuu.org.uk&gt;.&n; *         Register the /proc/apm entry even on SMP so that&n; *         scripts that check for it before doing power off&n; *         work (Jim Avera &lt;jima@hal.com&gt;).&n; *   1.13: Changes for new pm_ interfaces (Andy Henroid&n; *         &lt;andy_henroid@yahoo.com&gt;).&n; *         Modularize the code.&n; *         Fix the Thinkpad (again) :-( (CONFIG_APM_IGNORE_MULTIPLE_SUSPENDS&n; *         is now the way life works).&n; *         Fix thinko in suspend() (wrong return).&n; *         Notify drivers on critical suspend.&n; *         Make kapmd absorb more idle time (Pavel Machek &lt;pavel@suse.cz&gt;&n; *         modified by sfr).&n; *         Disable interrupts while we are suspended (Andy Henroid&n; *         &lt;andy_henroid@yahoo.com&gt; fixed by sfr).&n; *         Make power off work on SMP again (Tony Hoyle&n; *         &lt;tmh@magenta-logic.com&gt; and &lt;zlatko@iskon.hr&gt;) modified by sfr.&n; *         Remove CONFIG_APM_SUSPEND_BOUNCE.  The bounce ignore&n; *         interval is now configurable.&n; *   1.14: Make connection version persist across module unload/load.&n; *         Enable and engage power management earlier.&n; *         Disengage power management on module unload.&n; *&n; * APM 1.1 Reference:&n; *&n; *   Intel Corporation, Microsoft Corporation. Advanced Power Management&n; *   (APM) BIOS Interface Specification, Revision 1.1, September 1993.&n; *   Intel Order Number 241704-001.  Microsoft Part Number 781-110-X01.&n; *&n; * [This document is available free from Intel by calling 800.628.8686 (fax&n; * 916.356.6100) or 800.548.4725; or via anonymous ftp from&n; * ftp://ftp.intel.com/pub/IAL/software_specs/apmv11.doc.  It is also&n; * available from Microsoft by calling 206.882.8080.]&n; *&n; * APM 1.2 Reference:&n; *   Intel Corporation, Microsoft Corporation. Advanced Power Management&n; *   (APM) BIOS Interface Specification, Revision 1.2, February 1996.&n; *&n; * [This document is available from Microsoft at:&n; *    http://www.microsoft.com/hwdev/busbios/amp_12.htm]&n; */
+multiline_comment|/* -*- linux-c -*-&n; * APM BIOS driver for Linux&n; * Copyright 1994-2001 Stephen Rothwell (sfr@canb.auug.org.au)&n; *&n; * Initial development of this driver was funded by NEC Australia P/L&n; *&t;and NEC Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * October 1995, Rik Faith (faith@cs.unc.edu):&n; *    Minor enhancements and updates (to the patch set) for 1.3.x&n; *    Documentation&n; * January 1996, Rik Faith (faith@cs.unc.edu):&n; *    Make /proc/apm easy to format (bump driver version)&n; * March 1996, Rik Faith (faith@cs.unc.edu):&n; *    Prohibit APM BIOS calls unless apm_enabled.&n; *    (Thanks to Ulrich Windl &lt;Ulrich.Windl@rz.uni-regensburg.de&gt;)&n; * April 1996, Stephen Rothwell (sfr@canb.auug.org.au)&n; *    Version 1.0 and 1.1&n; * May 1996, Version 1.2&n; * Feb 1998, Version 1.3&n; * Feb 1998, Version 1.4&n; * Aug 1998, Version 1.5&n; * Sep 1998, Version 1.6&n; * Nov 1998, Version 1.7&n; * Jan 1999, Version 1.8&n; * Jan 1999, Version 1.9&n; * Oct 1999, Version 1.10&n; * Nov 1999, Version 1.11&n; * Jan 2000, Version 1.12&n; * Feb 2000, Version 1.13&n; * Nov 2000, Version 1.14&n; *&n; * History:&n; *    0.6b: first version in official kernel, Linux 1.3.46&n; *    0.7: changed /proc/apm format, Linux 1.3.58&n; *    0.8: fixed gcc 2.7.[12] compilation problems, Linux 1.3.59&n; *    0.9: only call bios if bios is present, Linux 1.3.72&n; *    1.0: use fixed device number, consolidate /proc/apm into this file,&n; *         Linux 1.3.85&n; *    1.1: support user-space standby and suspend, power off after system&n; *         halted, Linux 1.3.98&n; *    1.2: When resetting RTC after resume, take care so that the time&n; *         is only incorrect by 30-60mS (vs. 1S previously) (Gabor J. Toth&n; *         &lt;jtoth@princeton.edu&gt;); improve interaction between&n; *         screen-blanking and gpm (Stephen Rothwell); Linux 1.99.4&n; *    1.2a:Simple change to stop mysterious bug reports with SMP also added&n; *&t;   levels to the printk calls. APM is not defined for SMP machines.&n; *         The new replacment for it is, but Linux doesn&squot;t yet support this.&n; *         Alan Cox Linux 2.1.55&n; *    1.3: Set up a valid data descriptor 0x40 for buggy BIOS&squot;s&n; *    1.4: Upgraded to support APM 1.2. Integrated ThinkPad suspend patch by&n; *         Dean Gaudet &lt;dgaudet@arctic.org&gt;.&n; *         C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt; Linux 2.1.87&n; *    1.5: Fix segment register reloading (in case of bad segments saved&n; *         across BIOS call).&n; *         Stephen Rothwell&n; *    1.6: Cope with complier/assembler differences.&n; *         Only try to turn off the first display device.&n; *         Fix OOPS at power off with no APM BIOS by Jan Echternach&n; *                   &lt;echter@informatik.uni-rostock.de&gt;&n; *         Stephen Rothwell&n; *    1.7: Modify driver&squot;s cached copy of the disabled/disengaged flags&n; *         to reflect current state of APM BIOS.&n; *         Chris Rankin &lt;rankinc@bellsouth.net&gt;&n; *         Reset interrupt 0 timer to 100Hz after suspend&n; *         Chad Miller &lt;cmiller@surfsouth.com&gt;&n; *         Add CONFIG_APM_IGNORE_SUSPEND_BOUNCE&n; *         Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n; *         Allow boot time disabling of APM&n; *         Make boot messages far less verbose by default&n; *         Make asm safer&n; *         Stephen Rothwell&n; *    1.8: Add CONFIG_APM_RTC_IS_GMT&n; *         Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n; *         change APM_NOINTS to CONFIG_APM_ALLOW_INTS&n; *         remove dependency on CONFIG_PROC_FS&n; *         Stephen Rothwell&n; *    1.9: Fix small typo.  &lt;laslo@ilo.opole.pl&gt;&n; *         Try to cope with BIOS&squot;s that need to have all display&n; *         devices blanked and not just the first one.&n; *         Ross Paterson &lt;ross@soi.city.ac.uk&gt;&n; *         Fix segment limit setting it has always been wrong as&n; *         the segments needed to have byte granularity.&n; *         Mark a few things __init.&n; *         Add hack to allow power off of SMP systems by popular request.&n; *         Use CONFIG_SMP instead of __SMP__&n; *         Ignore BOUNCES for three seconds.&n; *         Stephen Rothwell&n; *   1.10: Fix for Thinkpad return code.&n; *         Merge 2.2 and 2.3 drivers.&n; *         Remove APM dependencies in arch/i386/kernel/process.c&n; *         Remove APM dependencies in drivers/char/sysrq.c&n; *         Reset time across standby.&n; *         Allow more inititialisation on SMP.&n; *         Remove CONFIG_APM_POWER_OFF and make it boot time&n; *         configurable (default on).&n; *         Make debug only a boot time parameter (remove APM_DEBUG).&n; *         Try to blank all devices on any error.&n; *   1.11: Remove APM dependencies in drivers/char/console.c&n; *         Check nr_running to detect if we are idle (from&n; *         Borislav Deianov &lt;borislav@lix.polytechnique.fr&gt;)&n; *         Fix for bioses that don&squot;t zero the top part of the&n; *         entrypoint offset (Mario Sitta &lt;sitta@al.unipmn.it&gt;)&n; *         (reported by Panos Katsaloulis &lt;teras@writeme.com&gt;).&n; *         Real mode power off patch (Walter Hofmann&n; *         &lt;Walter.Hofmann@physik.stud.uni-erlangen.de&gt;).&n; *   1.12: Remove CONFIG_SMP as the compiler will optimize&n; *         the code away anyway (smp_num_cpus == 1 in UP)&n; *         noted by Artur Skawina &lt;skawina@geocities.com&gt;.&n; *         Make power off under SMP work again.&n; *         Fix thinko with initial engaging of BIOS.&n; *         Make sure power off only happens on CPU 0&n; *         (Paul &quot;Rusty&quot; Russell &lt;rusty@rustcorp.com.au&gt;).&n; *         Do error notification to user mode if BIOS calls fail.&n; *         Move entrypoint offset fix to ...boot/setup.S&n; *         where it belongs (Cosmos &lt;gis88564@cis.nctu.edu.tw&gt;).&n; *         Remove smp-power-off. SMP users must now specify&n; *         &quot;apm=power-off&quot; on the kernel command line. Suggested&n; *         by Jim Avera &lt;jima@hal.com&gt;, modified by Alan Cox&n; *         &lt;alan@lxorguk.ukuu.org.uk&gt;.&n; *         Register the /proc/apm entry even on SMP so that&n; *         scripts that check for it before doing power off&n; *         work (Jim Avera &lt;jima@hal.com&gt;).&n; *   1.13: Changes for new pm_ interfaces (Andy Henroid&n; *         &lt;andy_henroid@yahoo.com&gt;).&n; *         Modularize the code.&n; *         Fix the Thinkpad (again) :-( (CONFIG_APM_IGNORE_MULTIPLE_SUSPENDS&n; *         is now the way life works).&n; *         Fix thinko in suspend() (wrong return).&n; *         Notify drivers on critical suspend.&n; *         Make kapmd absorb more idle time (Pavel Machek &lt;pavel@suse.cz&gt;&n; *         modified by sfr).&n; *         Disable interrupts while we are suspended (Andy Henroid&n; *         &lt;andy_henroid@yahoo.com&gt; fixed by sfr).&n; *         Make power off work on SMP again (Tony Hoyle&n; *         &lt;tmh@magenta-logic.com&gt; and &lt;zlatko@iskon.hr&gt;) modified by sfr.&n; *         Remove CONFIG_APM_SUSPEND_BOUNCE.  The bounce ignore&n; *         interval is now configurable.&n; *   1.14: Make connection version persist across module unload/load.&n; *         Enable and engage power management earlier.&n; *         Disengage power management on module unload.&n; *         Make CONFIG_APM_REAL_MODE_POWER_OFF run time configurable.&n; *         (Arjan van de Ven &lt;arjanv@redhat.com&gt;) modified by sfr.&n; *         Work around byte swap bug in one of the Vaio&squot;s BIOS&squot;s&n; *         (Marc Boucher &lt;marc@mbsi.ca&gt;).&n; *         Exposed the disable flag to dmi so that we can handle known&n; *&t;   broken APM (Alan Cox &lt;alan@redhat.com&gt;).&n; *&n; * APM 1.1 Reference:&n; *&n; *   Intel Corporation, Microsoft Corporation. Advanced Power Management&n; *   (APM) BIOS Interface Specification, Revision 1.1, September 1993.&n; *   Intel Order Number 241704-001.  Microsoft Part Number 781-110-X01.&n; *&n; * [This document is available free from Intel by calling 800.628.8686 (fax&n; * 916.356.6100) or 800.548.4725; or via anonymous ftp from&n; * ftp://ftp.intel.com/pub/IAL/software_specs/apmv11.doc.  It is also&n; * available from Microsoft by calling 206.882.8080.]&n; *&n; * APM 1.2 Reference:&n; *   Intel Corporation, Microsoft Corporation. Advanced Power Management&n; *   (APM) BIOS Interface Specification, Revision 1.2, February 1996.&n; *&n; * [This document is available from Microsoft at:&n; *    http://www.microsoft.com/hwdev/busbios/amp_12.htm]&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -243,6 +243,9 @@ DECL|variable|apm_disabled
 r_static
 r_int
 id|apm_disabled
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|power_off
@@ -259,6 +262,21 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_APM_REAL_MODE_POWER_OFF
+DECL|variable|realmode_power_off
+r_static
+r_int
+id|realmode_power_off
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|realmode_power_off
+r_static
+r_int
+id|realmode_power_off
+suffix:semicolon
+macro_line|#endif
 DECL|variable|exit_kapmd
 r_static
 r_int
@@ -268,6 +286,26 @@ DECL|variable|kapmd_running
 r_static
 r_int
 id|kapmd_running
+suffix:semicolon
+macro_line|#ifdef CONFIG_APM_ALLOW_INTS
+DECL|variable|allow_ints
+r_static
+r_int
+id|allow_ints
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|allow_ints
+r_static
+r_int
+id|allow_ints
+suffix:semicolon
+macro_line|#endif
+DECL|variable|broken_psr
+r_static
+r_int
+id|broken_psr
 suffix:semicolon
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
@@ -454,13 +492,8 @@ suffix:semicolon
 DECL|macro|ERROR_COUNT
 mdefine_line|#define ERROR_COUNT&t;(sizeof(error_table)/sizeof(lookup_t))
 multiline_comment|/*&n; * These are the actual BIOS calls.  Depending on APM_ZERO_SEGS and&n; * CONFIG_APM_ALLOW_INTS, we are being really paranoid here!  Not only&n; * are interrupts disabled, but all the segment registers (except SS)&n; * are saved and zeroed this means that if the BIOS tries to reference&n; * any data without explicitly loading the segment registers, the kernel&n; * will fault immediately rather than have some unforeseen circumstances&n; * for the rest of the kernel.  And it will be very obvious!  :-) Doing&n; * this depends on CS referring to the same physical memory as DS so that&n; * DS can be zeroed before the call. Unfortunately, we can&squot;t do anything&n; * about the stack segment/pointer.  Also, we tell the compiler that&n; * everything could change.&n; *&n; * Also, we KNOW that for the non error case of apm_bios_call, there&n; * is no useful data returned in the low order 8 bits of eax.&n; */
-macro_line|#ifndef CONFIG_APM_ALLOW_INTS
 DECL|macro|APM_DO_CLI
-macro_line|#&t;define APM_DO_CLI&t;__cli()
-macro_line|#else
-DECL|macro|APM_DO_CLI
-macro_line|#&t;define APM_DO_CLI&t;__sti()
-macro_line|#endif
+mdefine_line|#define APM_DO_CLI&t;&bslash;&n;&t;if (apm_info.allow_ints) &bslash;&n;&t;&t;__sti(); &bslash;&n;&t;else &bslash;&n;&t;&t;__cli();
 macro_line|#ifdef APM_ZERO_SEGS
 DECL|macro|APM_DECL_SEGS
 macro_line|#&t;define APM_DECL_SEGS &bslash;&n;&t;&t;unsigned int saved_fs; unsigned int saved_gs;
@@ -1194,7 +1227,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_APM_REAL_MODE_POWER_OFF
 r_int
 r_char
 id|po_bios_call
@@ -1248,7 +1280,6 @@ l_int|0x15
 multiline_comment|/* int   $0x15       */
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * This may be called on an SMP machine.&n;&t; */
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Some bioses don&squot;t like being called from CPU != 0 */
@@ -1290,7 +1321,11 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_APM_REAL_MODE_POWER_OFF
+r_if
+c_cond
+(paren
+id|apm_info.realmode_power_off
+)paren
 id|machine_real_restart
 c_func
 (paren
@@ -1302,7 +1337,7 @@ id|po_bios_call
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
+r_else
 (paren
 r_void
 )paren
@@ -1312,7 +1347,6 @@ c_func
 id|APM_STATE_OFF
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_APM_DO_ENABLE
 DECL|function|apm_enable_power_management
@@ -1480,6 +1514,31 @@ id|bat
 op_assign
 id|ecx
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|apm_info.get_power_status_swabinminutes
+)paren
+(brace
+op_star
+id|life
+op_assign
+id|swab16
+c_func
+(paren
+(paren
+id|u16
+)paren
+id|edx
+)paren
+suffix:semicolon
+op_star
+id|life
+op_or_assign
+l_int|0x8000
+suffix:semicolon
+)brace
+r_else
 op_star
 id|life
 op_assign
@@ -5178,6 +5237,41 @@ c_func
 (paren
 id|str
 comma
+l_string|&quot;allow-ints&quot;
+comma
+l_int|10
+)paren
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|strncmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;allow_ints&quot;
+comma
+l_int|10
+)paren
+op_eq
+l_int|0
+)paren
+)paren
+id|apm_info.allow_ints
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|strncmp
+c_func
+(paren
+id|str
+comma
 l_string|&quot;broken-psr&quot;
 comma
 l_int|10
@@ -5201,6 +5295,41 @@ l_int|0
 )paren
 )paren
 id|apm_info.get_power_status_broken
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|strncmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;realmode-power-off&quot;
+comma
+l_int|18
+)paren
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|strncmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;realmode_power_off&quot;
+comma
+l_int|18
+)paren
+op_eq
+l_int|0
+)paren
+)paren
+id|apm_info.realmode_power_off
 op_assign
 l_int|1
 suffix:semicolon
@@ -5506,6 +5635,46 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|allow_ints
+)paren
+id|apm_info.allow_ints
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|broken_psr
+)paren
+id|apm_info.get_power_status_broken
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|realmode_power_off
+)paren
+id|apm_info.realmode_power_off
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* User can override, but default is to trust DMI */
+r_if
+c_cond
+(paren
+id|apm_disabled
+op_ne
+op_minus
+l_int|1
+)paren
+id|apm_info.disabled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Fix for the Compaq Contura 3/25c which reports BIOS version 0.1&n;&t; * but is reportedly a 1.0 BIOS.&n;&t; */
 r_if
 c_cond
@@ -5594,7 +5763,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|apm_info.disabled
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|apm_disabled
+op_eq
+l_int|1
 )paren
 (brace
 id|printk
@@ -5604,6 +5781,7 @@ id|KERN_NOTICE
 l_string|&quot;apm: disabled on user request.&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_return
 op_minus
 id|ENODEV
@@ -6190,6 +6368,38 @@ c_func
 id|bounce_interval
 comma
 l_string|&quot;Set the number of ticks to ignore suspend bounces&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|allow_ints
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|allow_ints
+comma
+l_string|&quot;Allow interrupts during BIOS calls&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|broken_psr
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|broken_psr
+comma
+l_string|&quot;BIOS has a broken GetPowerStatus call&quot;
 )paren
 suffix:semicolon
 id|EXPORT_NO_SYMBOLS

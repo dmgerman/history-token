@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnloop.c,v 1.11.6.3 2001/06/09 15:14:19 kai Exp $&n;&n; * ISDN low-level module implementing a dummy loop driver.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdnloop.c,v 1.11.6.4 2001/07/13 09:20:12 kai Exp $&n;&n; * ISDN low-level module implementing a dummy loop driver.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -9,7 +9,7 @@ DECL|variable|revision
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.11.6.3 $&quot;
+l_string|&quot;$Revision: 1.11.6.4 $&quot;
 suffix:semicolon
 r_static
 r_int
@@ -7093,23 +7093,9 @@ op_star
 id|id1
 )paren
 (brace
-id|ulong
-id|flags
-suffix:semicolon
 id|isdnloop_card
 op_star
 id|card
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7126,23 +7112,11 @@ id|id1
 )paren
 )paren
 (brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren

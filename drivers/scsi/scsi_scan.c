@@ -997,6 +997,48 @@ id|BLIST_SPARSELUN
 )brace
 comma
 (brace
+l_string|&quot;CMD&quot;
+comma
+l_string|&quot;CRA-7280&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_SPARSELUN
+)brace
+comma
+singleline_comment|// CMD RAID Controller
+(brace
+l_string|&quot;CNSI&quot;
+comma
+l_string|&quot;G7324&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_SPARSELUN
+)brace
+comma
+singleline_comment|// Chaparral G7324 RAID
+(brace
+l_string|&quot;Zzyzx&quot;
+comma
+l_string|&quot;RocketStor 500S&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_SPARSELUN
+)brace
+comma
+(brace
+l_string|&quot;Zzyzx&quot;
+comma
+l_string|&quot;RocketStor 2000&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_SPARSELUN
+)brace
+comma
+(brace
 l_string|&quot;SONY&quot;
 comma
 l_string|&quot;TSL&quot;
@@ -2844,6 +2886,29 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; * Check for SPARSELUN before checking the peripheral qualifier,&n;&t; * so sparse lun devices are completely scanned.&n;&t; */
+multiline_comment|/*&n;&t; * Get any flags for this device.  &n;&t; */
+id|bflags
+op_assign
+id|get_device_flags
+(paren
+id|scsi_result
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bflags
+op_amp
+id|BLIST_SPARSELUN
+)paren
+(brace
+op_star
+id|sparse_lun
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Check the peripheral qualifier field - this tells us whether LUNS&n;&t; * are supported here or not.&n;&t; */
 r_if
 c_cond
@@ -2871,14 +2936,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* assume no peripheral if any sort of error */
 )brace
-multiline_comment|/*&n;&t; * Get any flags for this device.  &n;&t; */
-id|bflags
-op_assign
-id|get_device_flags
-(paren
-id|scsi_result
-)paren
-suffix:semicolon
 multiline_comment|/*   The Toshiba ROM was &quot;gender-changed&quot; here as an inline hack.&n;&t;      This is now much more generic.&n;&t;      This is a mess: What we really want is to leave the scsi_result&n;&t;      alone, and just change the SDpnt structure. And the SDpnt is what&n;&t;      we want print_inquiry to print.  -- REW&n;&t; */
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hysdn_procconf.c,v 1.8.6.2 2001/04/20 02:42:00 keil Exp $&n;&n; * Linux driver for HYSDN cards, /proc/net filesystem dir and conf functions.&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: hysdn_procconf.c,v 1.8.6.3 2001/08/13 07:46:15 kai Exp $&n;&n; * Linux driver for HYSDN cards, /proc/net filesystem dir and conf functions.&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|hysdn_procconf_revision
 op_assign
-l_string|&quot;$Revision: 1.8.6.2 $&quot;
+l_string|&quot;$Revision: 1.8.6.3 $&quot;
 suffix:semicolon
 DECL|macro|INFO_OUT_LEN
 mdefine_line|#define INFO_OUT_LEN 80&t;&t;/* length of info line including lf */

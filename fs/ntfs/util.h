@@ -1,20 +1,4 @@
 multiline_comment|/*&n; * util.h - Header file for util.c&n; *&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; * Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
-multiline_comment|/* Which character set is used for file names. */
-multiline_comment|/*  Translate everything to UTF-8. */
-DECL|macro|nct_utf8
-mdefine_line|#define nct_utf8             1
-multiline_comment|/*  Translate to 8859-1. */
-DECL|macro|nct_iso8859_1
-mdefine_line|#define nct_iso8859_1        2
-multiline_comment|/*  Quote unprintables with &quot;:&quot;. */
-DECL|macro|nct_uni_xlate
-mdefine_line|#define nct_uni_xlate        4
-multiline_comment|/*  Do that in the vfat way instead of the documented way. */
-DECL|macro|nct_uni_xlate_vfat
-mdefine_line|#define nct_uni_xlate_vfat   8
-multiline_comment|/*  Use a mapping table to determine printables. */
-DECL|macro|nct_map
-mdefine_line|#define nct_map              16
 multiline_comment|/* The first 16 inodes correspond to NTFS special files. */
 r_typedef
 r_enum
@@ -139,24 +123,6 @@ id|size
 suffix:semicolon
 multiline_comment|/* String operations */
 multiline_comment|/*  Copy Unicode &lt;-&gt; ASCII */
-macro_line|#if 0
-r_void
-id|ntfs_uni2ascii
-c_func
-(paren
-r_char
-op_star
-id|to
-comma
-r_char
-op_star
-id|from
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-macro_line|#endif
 r_void
 id|ntfs_ascii2uni
 c_func

@@ -104,6 +104,10 @@ DECL|member|get_power_status_broken
 r_int
 id|get_power_status_broken
 suffix:semicolon
+DECL|member|get_power_status_swabinminutes
+r_int
+id|get_power_status_swabinminutes
+suffix:semicolon
 DECL|member|allow_ints
 r_int
 id|allow_ints

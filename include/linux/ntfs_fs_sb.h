@@ -23,11 +23,6 @@ DECL|member|umask
 id|ntmode_t
 id|umask
 suffix:semicolon
-DECL|member|nct
-r_int
-r_int
-id|nct
-suffix:semicolon
 DECL|member|nls_map
 r_void
 op_star

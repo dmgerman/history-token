@@ -17,16 +17,6 @@ macro_line|#include &quot;uxio.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-DECL|macro|HW_ID_EICON_PCI
-mdefine_line|#define HW_ID_EICON_PCI&t;&t;&t;0x1133
-DECL|macro|HW_ID_DIVA_SERVER_P
-mdefine_line|#define HW_ID_DIVA_SERVER_P&t;&t;0xE014
-DECL|macro|HW_ID_DIVA_SERVER_B_ST
-mdefine_line|#define HW_ID_DIVA_SERVER_B_ST&t;0xE010
-DECL|macro|HW_ID_DIVA_SERVER_B_U
-mdefine_line|#define HW_ID_DIVA_SERVER_B_U&t;0xE013
-DECL|macro|HW_ID_DIVA_SERVER_Q
-mdefine_line|#define HW_ID_DIVA_SERVER_Q   &t;0xE012
 DECL|variable|Divas_fops
 r_struct
 id|file_operations
@@ -189,9 +179,9 @@ op_assign
 id|pcibios_find_device
 c_func
 (paren
-id|HW_ID_EICON_PCI
+id|PCI_VENDOR_ID_EICON
 comma
-id|HW_ID_DIVA_SERVER_Q
+id|PCI_DEVICE_ID_EICON_MAESTRAQ
 comma
 id|wDeviceIndex
 comma
@@ -661,9 +651,9 @@ op_assign
 id|pcibios_find_device
 c_func
 (paren
-id|HW_ID_EICON_PCI
+id|PCI_VENDOR_ID_EICON
 comma
-id|HW_ID_DIVA_SERVER_B_ST
+id|PCI_DEVICE_ID_EICON_MAESTRA
 comma
 id|wDeviceIndex
 comma
@@ -930,9 +920,9 @@ op_assign
 id|pcibios_find_device
 c_func
 (paren
-id|HW_ID_EICON_PCI
+id|PCI_VENDOR_ID_EICON
 comma
-id|HW_ID_DIVA_SERVER_B_U
+id|PCI_DEVICE_ID_EICON_MAESTRAQ_U
 comma
 id|wDeviceIndex
 comma
@@ -1215,9 +1205,9 @@ op_assign
 id|pcibios_find_device
 c_func
 (paren
-id|HW_ID_EICON_PCI
+id|PCI_VENDOR_ID_EICON
 comma
-id|HW_ID_DIVA_SERVER_P
+id|PCI_DEVICE_ID_EICON_MAESTRAP
 comma
 id|wDeviceIndex
 comma
