@@ -2391,6 +2391,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|dma
+)paren
+id|ide_init_sg_cmd
+c_func
+(paren
+id|drive
+comma
+id|rq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|rq_data_dir
 c_func
 (paren
@@ -4113,15 +4127,6 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
-multiline_comment|/* make rq completion pointers new submission pointers */
-id|blk_rq_prep_restart
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
