@@ -5572,6 +5572,11 @@ id|rtl8139_hw_start
 id|dev
 )paren
 suffix:semicolon
+id|netif_start_queue
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5974,11 +5979,6 @@ id|RTL_W16
 id|IntrMask
 comma
 id|rtl8139_intr_mask
-)paren
-suffix:semicolon
-id|netif_start_queue
-(paren
-id|dev
 )paren
 suffix:semicolon
 )brace
