@@ -14800,6 +14800,8 @@ op_plus
 id|hdrlen
 op_plus
 l_int|2
+op_plus
+l_int|2
 )paren
 suffix:semicolon
 r_if
@@ -14816,6 +14818,15 @@ r_goto
 id|badrx
 suffix:semicolon
 )brace
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* This way the IP header is aligned */
 id|buffer
 op_assign
 (paren
