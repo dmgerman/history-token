@@ -322,7 +322,7 @@ macro_line|# define PCI_READ_CONFIG_WORD(pd, rv, bv) pci_read_config_word (pd, r
 DECL|macro|PCI_BUS_DEV
 macro_line|# define PCI_BUS_DEV pdev-&gt;bus-&gt;number, pdev-&gt;devfn
 DECL|macro|PCI_PRESENT
-macro_line|# define PCI_PRESENT pci_present ()
+macro_line|# define PCI_PRESENT (1)
 DECL|macro|PCI_SET_MASTER
 macro_line|# define PCI_SET_MASTER pci_set_master (pdev)
 DECL|macro|PCI_FIND_DEVICE
