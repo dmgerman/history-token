@@ -410,102 +410,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Sonics SiliconBackplane support routines.  ROFL, you should see all the&n; * buzz words used on this company&squot;s website :-)&n; *&n; * All of these routines must be invoked with bp-&gt;lock held and&n; * interrupts disabled.&n; */
-DECL|macro|SBID_SDRAM
-mdefine_line|#define SBID_SDRAM&t;&t;0
-DECL|macro|SBID_PCI_MEM
-mdefine_line|#define SBID_PCI_MEM&t;&t;1
-DECL|macro|SBID_PCI_CFG
-mdefine_line|#define SBID_PCI_CFG&t;&t;2
-DECL|macro|SBID_PCI_DMA
-mdefine_line|#define SBID_PCI_DMA&t;&t;3
-DECL|macro|SBID_SDRAM_SWAPPED
-mdefine_line|#define&t;SBID_SDRAM_SWAPPED&t;4
-DECL|macro|SBID_ENUM
-mdefine_line|#define SBID_ENUM&t;&t;5
-DECL|macro|SBID_REG_SDRAM
-mdefine_line|#define SBID_REG_SDRAM&t;&t;6
-DECL|macro|SBID_REG_ILINE20
-mdefine_line|#define SBID_REG_ILINE20&t;7
-DECL|macro|SBID_REG_EMAC
-mdefine_line|#define SBID_REG_EMAC&t;&t;8
-DECL|macro|SBID_REG_CODEC
-mdefine_line|#define SBID_REG_CODEC&t;&t;9
-DECL|macro|SBID_REG_USB
-mdefine_line|#define SBID_REG_USB&t;&t;10
-DECL|macro|SBID_REG_PCI
-mdefine_line|#define SBID_REG_PCI&t;&t;11
-DECL|macro|SBID_REG_MIPS
-mdefine_line|#define SBID_REG_MIPS&t;&t;12
-DECL|macro|SBID_REG_EXTIF
-mdefine_line|#define SBID_REG_EXTIF&t;&t;13
-DECL|macro|SBID_EXTIF
-mdefine_line|#define&t;SBID_EXTIF&t;&t;14
-DECL|macro|SBID_EJTAG
-mdefine_line|#define&t;SBID_EJTAG&t;&t;15
-DECL|macro|SBID_MAX
-mdefine_line|#define&t;SBID_MAX&t;&t;16
-DECL|function|ssb_get_addr
-r_static
-id|u32
-id|ssb_get_addr
-c_func
-(paren
-r_struct
-id|b44
-op_star
-id|bp
-comma
-id|u32
-id|id
-comma
-id|u32
-id|instance
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|id
-)paren
-(brace
-r_case
-id|SBID_PCI_DMA
-suffix:colon
-r_return
-l_int|0x40000000
-suffix:semicolon
-r_case
-id|SBID_ENUM
-suffix:colon
-r_return
-l_int|0x18000000
-suffix:semicolon
-r_case
-id|SBID_REG_EMAC
-suffix:colon
-r_return
-l_int|0x18000000
-suffix:semicolon
-r_case
-id|SBID_REG_CODEC
-suffix:colon
-r_return
-l_int|0x18001000
-suffix:semicolon
-r_case
-id|SBID_REG_PCI
-suffix:colon
-r_return
-l_int|0x18002000
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-suffix:semicolon
-)brace
+DECL|macro|SB_PCI_DMA
+mdefine_line|#define SB_PCI_DMA             0x40000000      /* Client Mode PCI memory access space (1 GB) */
+DECL|macro|BCM4400_PCI_CORE_ADDR
+mdefine_line|#define BCM4400_PCI_CORE_ADDR  0x18002000      /* Address of PCI core on BCM4400 cards */
 DECL|function|ssb_get_core_rev
 r_static
 id|u32
@@ -572,15 +480,7 @@ id|bp-&gt;pdev
 comma
 id|SSB_BAR0_WIN
 comma
-id|ssb_get_addr
-c_func
-(paren
-id|bp
-comma
-id|SBID_REG_PCI
-comma
-l_int|0
-)paren
+id|BCM4400_PCI_CORE_ADDR
 )paren
 suffix:semicolon
 id|pci_rev
@@ -7968,19 +7868,6 @@ l_int|90
 op_amp
 l_int|0x1f
 suffix:semicolon
-id|bp-&gt;mdc_port
-op_assign
-(paren
-id|eeprom
-(braket
-l_int|90
-)braket
-op_rshift
-l_int|14
-)paren
-op_amp
-l_int|0x1
-suffix:semicolon
 multiline_comment|/* With this, plus the rx_header prepended to the data by the&n;&t; * hardware, we&squot;ll land the ethernet header on a 2-byte boundary.&n;&t; */
 id|bp-&gt;rx_offset
 op_assign
@@ -8000,15 +7887,7 @@ id|bp
 suffix:semicolon
 id|bp-&gt;dma_offset
 op_assign
-id|ssb_get_addr
-c_func
-(paren
-id|bp
-comma
-id|SBID_PCI_DMA
-comma
-l_int|0
-)paren
+id|SB_PCI_DMA
 suffix:semicolon
 multiline_comment|/* XXX - really required? &n;&t;   bp-&gt;flags |= B44_FLAG_BUGGY_TXPTR;&n;         */
 id|out
