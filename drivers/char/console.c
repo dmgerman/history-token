@@ -11290,6 +11290,15 @@ id|vt_cons
 id|currcons
 )braket
 suffix:semicolon
+id|vc_cons
+(braket
+id|currcons
+)braket
+dot
+id|d-&gt;vc_tty
+op_assign
+id|tty
+suffix:semicolon
 r_if
 c_cond
 (paren
