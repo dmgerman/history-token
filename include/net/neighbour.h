@@ -625,6 +625,11 @@ op_star
 op_star
 id|hash_buckets
 suffix:semicolon
+DECL|member|hash_mask
+r_int
+r_int
+id|hash_mask
+suffix:semicolon
 DECL|member|phash_buckets
 r_struct
 id|pneigh_entry
