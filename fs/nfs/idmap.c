@@ -303,6 +303,8 @@ id|idmap-&gt;idmap_server
 comma
 op_amp
 id|idmap_upcall_ops
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

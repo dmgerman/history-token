@@ -664,7 +664,7 @@ id|ctx_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* gss_verify_mic: hash messages_buffer and return gss verify token. */
+multiline_comment|/* gss_get_mic: compute a mic over message and return mic_token. */
 id|u32
 DECL|function|gss_get_mic
 id|gss_get_mic
@@ -681,12 +681,12 @@ comma
 r_struct
 id|xdr_netobj
 op_star
-id|message_buffer
+id|message
 comma
 r_struct
 id|xdr_netobj
 op_star
-id|message_token
+id|mic_token
 )paren
 (brace
 r_return
@@ -699,13 +699,13 @@ id|context_handle
 comma
 id|qop
 comma
-id|message_buffer
+id|message
 comma
-id|message_token
+id|mic_token
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* gss_verify_mic: hash messages_buffer and return gss verify token. */
+multiline_comment|/* gss_verify_mic: check whether the provided mic_token verifies message. */
 id|u32
 DECL|function|gss_verify_mic
 id|gss_verify_mic
@@ -719,12 +719,12 @@ comma
 r_struct
 id|xdr_netobj
 op_star
-id|signbuf
+id|message
 comma
 r_struct
 id|xdr_netobj
 op_star
-id|checksum
+id|mic_token
 comma
 id|u32
 op_star
@@ -739,9 +739,9 @@ c_func
 (paren
 id|context_handle
 comma
-id|signbuf
+id|message
 comma
-id|checksum
+id|mic_token
 comma
 id|qstate
 )paren

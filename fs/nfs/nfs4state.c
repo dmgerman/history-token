@@ -130,7 +130,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|nfs4_verifier
+op_star
+id|clp
 )paren
 )paren
 suffix:semicolon

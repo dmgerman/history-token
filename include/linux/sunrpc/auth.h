@@ -505,6 +505,15 @@ id|rpc_task
 op_star
 )paren
 suffix:semicolon
+r_int
+id|rpcauth_deadcred
+c_func
+(paren
+r_struct
+id|rpc_task
+op_star
+)paren
+suffix:semicolon
 r_void
 id|rpcauth_init_credcache
 c_func

@@ -120,6 +120,12 @@ DECL|member|waitq
 id|wait_queue_head_t
 id|waitq
 suffix:semicolon
+DECL|macro|RPC_PIPE_WAIT_FOR_OPEN
+mdefine_line|#define RPC_PIPE_WAIT_FOR_OPEN&t;1
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
 DECL|member|ops
 r_struct
 id|rpc_pipe_ops
@@ -223,6 +229,9 @@ comma
 r_struct
 id|rpc_pipe_ops
 op_star
+comma
+r_int
+id|flags
 )paren
 suffix:semicolon
 r_extern
@@ -241,6 +250,21 @@ c_func
 r_struct
 id|file
 op_star
+)paren
+suffix:semicolon
+r_void
+id|__rpc_purge_one_upcall
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_struct
+id|rpc_pipe_msg
+op_star
+id|target
 )paren
 suffix:semicolon
 macro_line|#endif
