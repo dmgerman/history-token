@@ -81,7 +81,7 @@ mdefine_line|#define SK_MAX_MACS&t;&t;2
 DECL|macro|SK_MAX_NETS
 mdefine_line|#define SK_MAX_NETS&t;&t;2
 DECL|macro|SK_IOC
-mdefine_line|#define SK_IOC&t;&t;&t;char*
+mdefine_line|#define SK_IOC&t;&t;&t;char __iomem *
 DECL|typedef|SK_MBUF
 r_typedef
 r_struct

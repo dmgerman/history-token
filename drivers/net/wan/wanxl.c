@@ -130,6 +130,7 @@ id|irq
 suffix:semicolon
 DECL|member|plx
 id|u8
+id|__iomem
 op_star
 id|plx
 suffix:semicolon
@@ -1718,6 +1719,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|dbr
 op_assign
@@ -2537,6 +2539,7 @@ id|mem_phy
 suffix:semicolon
 multiline_comment|/* memory PCI base addr */
 id|u8
+id|__iomem
 op_star
 id|mem
 suffix:semicolon

@@ -564,6 +564,7 @@ DECL|function|desc_address
 r_static
 r_inline
 id|pkt_desc
+id|__iomem
 op_star
 id|desc_address
 c_func
@@ -583,6 +584,7 @@ macro_line|#ifdef PAGE0_ALWAYS_MAPPED
 r_return
 (paren
 id|pkt_desc
+id|__iomem
 op_star
 )paren
 (paren
@@ -611,6 +613,7 @@ macro_line|#else
 r_return
 (paren
 id|pkt_desc
+id|__iomem
 op_star
 )paren
 (paren
@@ -787,6 +790,7 @@ op_increment
 )paren
 (brace
 id|pkt_desc
+id|__iomem
 op_star
 id|desc
 op_assign
@@ -1346,6 +1350,7 @@ op_star
 id|port
 comma
 id|pkt_desc
+id|__iomem
 op_star
 id|desc
 comma
@@ -1751,6 +1756,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|pkt_desc
+id|__iomem
 op_star
 id|desc
 suffix:semicolon
@@ -2079,6 +2085,7 @@ l_int|1
 )paren
 (brace
 id|pkt_desc
+id|__iomem
 op_star
 id|desc
 suffix:semicolon
@@ -4138,6 +4145,7 @@ id|port
 )paren
 suffix:semicolon
 id|pkt_desc
+id|__iomem
 op_star
 id|desc
 suffix:semicolon
@@ -4523,6 +4531,7 @@ op_star
 id|card
 comma
 id|u8
+id|__iomem
 op_star
 id|rambase
 comma

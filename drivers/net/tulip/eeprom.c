@@ -1630,7 +1630,7 @@ DECL|macro|EE_ENB
 mdefine_line|#define EE_ENB&t;&t;(0x4800 | EE_CS)
 multiline_comment|/* Delay between EEPROM clock transitions.&n;   Even at 33Mhz current PCI implementations don&squot;t overrun the EEPROM clock.&n;   We add a bus turn-around to insure that this remains true. */
 DECL|macro|eeprom_delay
-mdefine_line|#define eeprom_delay()&t;inl(ee_addr)
+mdefine_line|#define eeprom_delay()&t;ioread32(ee_addr)
 multiline_comment|/* The EEPROM commands include the alway-set leading bit. */
 DECL|macro|EE_READ_CMD
 mdefine_line|#define EE_READ_CMD&t;&t;(6)
@@ -1668,7 +1668,9 @@ id|tp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ee_addr
 op_assign
 id|tp-&gt;base_addr
@@ -1686,7 +1688,7 @@ op_lshift
 id|addr_len
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|EE_ENB
@@ -1697,7 +1699,7 @@ comma
 id|ee_addr
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|EE_ENB
@@ -1741,7 +1743,7 @@ id|EE_DATA_WRITE
 suffix:colon
 l_int|0
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|EE_ENB
@@ -1756,7 +1758,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|EE_ENB
@@ -1783,7 +1785,7 @@ l_int|1
 op_or
 (paren
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ee_addr
@@ -1799,7 +1801,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|EE_ENB
@@ -1827,7 +1829,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|EE_ENB
@@ -1852,7 +1854,7 @@ l_int|1
 op_or
 (paren
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ee_addr
@@ -1867,7 +1869,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|EE_ENB
@@ -1882,7 +1884,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* Terminate the EEPROM access. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|EE_ENB

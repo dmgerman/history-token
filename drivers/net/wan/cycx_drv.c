@@ -68,6 +68,7 @@ id|reset_cyc2x
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -78,6 +79,7 @@ id|detect_cyc2x
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -292,16 +294,12 @@ id|cfm
 comma
 id|u32
 id|len
-)paren
-(brace
+comma
+r_int
 r_int
 id|dpmbase
-op_assign
-(paren
-r_int
 )paren
-id|hw-&gt;dpmbase
-suffix:semicolon
+(brace
 r_int
 id|err
 suffix:semicolon
@@ -569,6 +567,7 @@ id|cycx_exec
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -758,6 +757,7 @@ id|memory_exists
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -837,6 +837,7 @@ id|reset_load
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -849,6 +850,7 @@ id|cnt
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|pt_code
 op_assign
@@ -897,6 +899,7 @@ id|buffer_load
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -946,6 +949,7 @@ id|cycx_start
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1021,6 +1025,7 @@ id|cycx_reset_boot
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -1033,6 +1038,7 @@ id|len
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|pt_start
 op_assign
@@ -1121,6 +1127,7 @@ id|cycx_data_boot
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -1133,6 +1140,7 @@ id|len
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|pt_boot_cmd
 op_assign
@@ -1302,6 +1310,7 @@ id|cycx_code_boot
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -1314,6 +1323,7 @@ id|len
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|pt_boot_cmd
 op_assign
@@ -1515,6 +1525,7 @@ op_star
 id|code_image
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|pt_cycld
 op_assign
@@ -2036,6 +2047,7 @@ id|detect_cyc2x
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -2114,6 +2126,7 @@ id|reset_cyc2x
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

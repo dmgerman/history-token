@@ -11918,6 +11918,7 @@ id|find_eth_addr_in_vpd
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_base
 comma
@@ -11949,6 +11950,7 @@ op_increment
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|p
 op_assign

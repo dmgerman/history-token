@@ -127,6 +127,7 @@ suffix:semicolon
 multiline_comment|/* memory mapped access */
 DECL|member|mem_ptr_virt
 r_void
+id|__iomem
 op_star
 id|mem_ptr_virt
 suffix:semicolon
@@ -1569,7 +1570,7 @@ r_int
 id|mem_ptr_phys
 suffix:semicolon
 r_void
-op_star
+id|__iomem
 op_star
 id|mem_ptr_virt
 suffix:semicolon

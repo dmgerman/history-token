@@ -1059,6 +1059,7 @@ id|rx_tail
 suffix:semicolon
 DECL|member|regs
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -8272,6 +8273,7 @@ id|tulip_read_eeprom
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|regs
 comma
@@ -8291,6 +8293,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ee_addr
 op_assign
@@ -9436,6 +9439,7 @@ r_int
 id|rc
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
