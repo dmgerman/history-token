@@ -8051,7 +8051,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * inputs&n;&t; */
 DECL|macro|A_ADD_VOLUME_IN
 mdefine_line|#define A_ADD_VOLUME_IN(var,vol,input) &bslash;&n;A_OP(icode, &amp;ptr, iMAC0, A_GPR(var), A_GPR(var), A_GPR(vol), A_EXTIN(input))
-multiline_comment|/* AC&squot;97 Playback Volume - used only for mic */
+multiline_comment|/* AC&squot;97 Playback Volume - used only for mic (renamed later) */
 id|A_ADD_VOLUME_IN
 c_func
 (paren
@@ -8210,6 +8210,11 @@ id|nctl
 op_increment
 )braket
 comma
+id|emu-&gt;no_ac97
+ques
+c_cond
+l_string|&quot;CD Playback Volume&quot;
+suffix:colon
 l_string|&quot;Audigy CD Playback Volume&quot;
 comma
 id|gpr
@@ -8256,6 +8261,11 @@ id|nctl
 op_increment
 )braket
 comma
+id|emu-&gt;no_ac97
+ques
+c_cond
+l_string|&quot;CD Capture Volume&quot;
+suffix:colon
 l_string|&quot;Audigy CD Capture Volume&quot;
 comma
 id|gpr
@@ -8394,6 +8404,11 @@ id|nctl
 op_increment
 )braket
 comma
+id|emu-&gt;no_ac97
+ques
+c_cond
+l_string|&quot;Line Playback Volume&quot;
+suffix:colon
 l_string|&quot;Line2 Playback Volume&quot;
 comma
 id|gpr
@@ -8440,6 +8455,11 @@ id|nctl
 op_increment
 )braket
 comma
+id|emu-&gt;no_ac97
+ques
+c_cond
+l_string|&quot;Line Capture Volume&quot;
+suffix:colon
 l_string|&quot;Line2 Capture Volume&quot;
 comma
 id|gpr
@@ -8578,6 +8598,11 @@ id|nctl
 op_increment
 )braket
 comma
+id|emu-&gt;no_ac97
+ques
+c_cond
+l_string|&quot;Aux Playback Volume&quot;
+suffix:colon
 l_string|&quot;Aux2 Playback Volume&quot;
 comma
 id|gpr
@@ -8624,6 +8649,11 @@ id|nctl
 op_increment
 )braket
 comma
+id|emu-&gt;no_ac97
+ques
+c_cond
+l_string|&quot;Aux Capture Volume&quot;
+suffix:colon
 l_string|&quot;Aux2 Capture Volume&quot;
 comma
 id|gpr
