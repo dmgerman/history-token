@@ -1289,6 +1289,13 @@ c_func
 id|xfrm_state_insert
 )paren
 suffix:semicolon
+DECL|variable|xfrm_state_replace
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_state_replace
+)paren
+suffix:semicolon
 DECL|variable|xfrm_state_check_expire
 id|EXPORT_SYMBOL
 c_func
