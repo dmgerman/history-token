@@ -77,7 +77,7 @@ mdefine_line|#define CPUID_TCM&t;2
 DECL|macro|CPUID_TLBTYPE
 mdefine_line|#define CPUID_TLBTYPE&t;3
 DECL|macro|read_cpuid
-mdefine_line|#define read_cpuid(reg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;asm(&quot;mrc%? p15, 0, %0, c0, c0, &quot; __stringify(reg)&t;&bslash;&n;&t;&t;    : &quot;=r&quot; (__val));&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define read_cpuid(reg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;asm(&quot;mrc&t;p15, 0, %0, c0, c0, &quot; __stringify(reg)&t;&bslash;&n;&t;&t;    : &quot;=r&quot; (__val)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;    :&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;    : &quot;cc&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 DECL|macro|__cacheid_present
 mdefine_line|#define __cacheid_present(val)&t;&t;(val != read_cpuid(CPUID_ID))
 DECL|macro|__cacheid_vivt

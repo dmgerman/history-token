@@ -20,6 +20,11 @@ macro_line|#include &lt;asm/mach/irq.h&gt;
 multiline_comment|/*&n; * Maximum IRQ count.  Currently, this is arbitary.  However, it should&n; * not be set too low to prevent false triggering.  Conversely, if it&n; * is set too high, then you could miss a stuck IRQ.&n; *&n; * Maybe we ought to set a timer and re-enable the IRQ at a later time?&n; */
 DECL|macro|MAX_IRQ_CNT
 mdefine_line|#define MAX_IRQ_CNT&t;100000
+DECL|variable|noirqdebug
+r_static
+r_int
+id|noirqdebug
+suffix:semicolon
 DECL|variable|irq_err_count
 r_static
 r_volatile
@@ -827,6 +832,8 @@ c_cond
 (paren
 op_logical_neg
 id|count
+op_logical_or
+id|noirqdebug
 )paren
 r_return
 suffix:semicolon
@@ -3262,4 +3269,32 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|function|noirqdebug_setup
+r_static
+r_int
+id|__init
+id|noirqdebug_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|noirqdebug
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;noirqdebug&quot;
+comma
+id|noirqdebug_setup
+)paren
+suffix:semicolon
 eof
