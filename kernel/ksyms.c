@@ -773,6 +773,13 @@ c_func
 id|check_disk_change
 )paren
 suffix:semicolon
+DECL|variable|__check_disk_change
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__check_disk_change
+)paren
+suffix:semicolon
 DECL|variable|__invalidate_buffers
 id|EXPORT_SYMBOL
 c_func

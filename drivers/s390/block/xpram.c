@@ -1109,26 +1109,6 @@ id|size
 suffix:semicolon
 r_int
 id|idx
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-op_logical_neg
-id|inode
-)paren
-op_logical_or
-id|kdev_none
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-id|idx
 op_assign
 id|minor
 c_func
@@ -1147,24 +1127,18 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|cmd
+op_ne
+id|HDIO_GETGEO
 )paren
-(brace
-r_case
-id|BLKRRPART
-suffix:colon
-multiline_comment|/* re-read partition table: can&squot;t do it */
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_case
-id|HDIO_GETGEO
-suffix:colon
-multiline_comment|/*&n;&t;&t; * get geometry: we have to fake one...  trim the size to a&n;&t;&t; * multiple of 64 (32k): tell we have 16 sectors, 4 heads,&n;&t;&t; * whatever cylinders. Tell also that data starts at sector. 4.&n;&t;&t; */
+multiline_comment|/*&n;&t; * get geometry: we have to fake one...  trim the size to a&n;&t; * multiple of 64 (32k): tell we have 16 sectors, 4 heads,&n;&t; * whatever cylinders. Tell also that data starts at sector. 4.&n;&t; */
 id|geo
 op_assign
 (paren
@@ -1237,15 +1211,8 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 )brace
 )brace
-DECL|variable|xpram_devops
 r_static
 r_struct
 id|block_device_operations
@@ -1271,7 +1238,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Setup xpram_sizes array.&n; */
-DECL|function|xpram_setup_sizes
 r_static
 r_int
 id|__init
@@ -1548,7 +1514,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|xpram_setup_blkdev
 r_static
 r_int
 id|__init
@@ -1732,7 +1697,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Finally, the init/exit functions.&n; */
-DECL|function|xpram_exit
 r_static
 r_void
 id|__exit
@@ -1770,7 +1734,6 @@ id|xpram_sys_device
 )paren
 suffix:semicolon
 )brace
-DECL|function|xpram_init
 r_static
 r_int
 id|__init
@@ -1881,14 +1844,12 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|variable|xpram_init
 id|module_init
 c_func
 (paren
 id|xpram_init
 )paren
 suffix:semicolon
-DECL|variable|xpram_exit
 id|module_exit
 c_func
 (paren

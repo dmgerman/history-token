@@ -3907,7 +3907,7 @@ comma
 dot
 id|revalidate
 op_assign
-id|ata_revalidate
+id|ide_revalidate
 )brace
 )brace
 suffix:semicolon
