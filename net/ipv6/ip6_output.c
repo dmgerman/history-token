@@ -2224,7 +2224,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_else
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 id|dst

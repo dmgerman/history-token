@@ -4065,7 +4065,7 @@ id|dev
 )paren
 r_break
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp

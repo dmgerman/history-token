@@ -1209,7 +1209,7 @@ op_amp
 id|rt-&gt;rt6i_gateway
 )paren
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1242,7 +1242,7 @@ r_return
 id|rt
 suffix:semicolon
 )brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1255,7 +1255,7 @@ id|ip6_null_entry
 suffix:semicolon
 )brace
 DECL|macro|BACKTRACK
-mdefine_line|#define BACKTRACK() &bslash;&n;if (rt == &amp;ip6_null_entry &amp;&amp; strict) { &bslash;&n;       while ((fn = fn-&gt;parent) != NULL) { &bslash;&n;&t;&t;if (fn-&gt;fn_flags &amp; RTN_ROOT) { &bslash;&n;&t;&t;&t;dst_clone(&amp;rt-&gt;u.dst); &bslash;&n;&t;&t;&t;goto out; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (fn-&gt;fn_flags &amp; RTN_RTINFO) &bslash;&n;&t;&t;&t;goto restart; &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define BACKTRACK() &bslash;&n;if (rt == &amp;ip6_null_entry &amp;&amp; strict) { &bslash;&n;       while ((fn = fn-&gt;parent) != NULL) { &bslash;&n;&t;&t;if (fn-&gt;fn_flags &amp; RTN_ROOT) { &bslash;&n;&t;&t;&t;dst_hold(&amp;rt-&gt;u.dst); &bslash;&n;&t;&t;&t;goto out; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (fn-&gt;fn_flags &amp; RTN_RTINFO) &bslash;&n;&t;&t;&t;goto restart; &bslash;&n;&t;} &bslash;&n;}
 DECL|function|ip6_route_input
 r_void
 id|ip6_route_input
@@ -1357,7 +1357,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1441,7 +1441,7 @@ r_goto
 id|relookup
 suffix:semicolon
 )brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1581,7 +1581,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1692,7 +1692,7 @@ r_goto
 id|relookup
 suffix:semicolon
 )brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -3138,7 +3138,7 @@ id|rt-&gt;rt6i_metric
 )paren
 r_continue
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -3334,7 +3334,7 @@ id|rt1-&gt;rt6i_gateway
 )paren
 )paren
 (brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -4111,7 +4111,7 @@ c_cond
 (paren
 id|rt
 )paren
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
