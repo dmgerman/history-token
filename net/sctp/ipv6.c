@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/ndisc.h&gt;
@@ -2220,6 +2221,39 @@ l_int|20
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Dump the v6 addr to the seq file. */
+DECL|function|sctp_v6_seq_dump_addr
+r_static
+r_void
+id|sctp_v6_seq_dump_addr
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|seq
+comma
+r_union
+id|sctp_addr
+op_star
+id|addr
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x &quot;
+comma
+id|NIP6
+c_func
+(paren
+id|addr-&gt;v6.sin6_addr
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Initialize a PF_INET6 socket msg_name. */
 DECL|function|sctp_inet6_msgname
 r_static
@@ -3263,6 +3297,11 @@ dot
 id|is_ce
 op_assign
 id|sctp_v6_is_ce
+comma
+dot
+id|seq_dump_addr
+op_assign
+id|sctp_v6_seq_dump_addr
 comma
 dot
 id|net_header_len

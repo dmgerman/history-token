@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
@@ -98,6 +99,38 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sctp_eps_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sctp_eps_proc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sctp_assocs_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sctp_assocs_proc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Return the address of the control sock. */
 DECL|function|sctp_get_ctl_sock
 r_struct
@@ -123,11 +156,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|rc
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -166,10 +194,8 @@ id|ent
 suffix:semicolon
 )brace
 r_else
-id|rc
-op_assign
-op_minus
-id|ENOMEM
+r_goto
+id|out_nomem
 suffix:semicolon
 )brace
 r_if
@@ -180,13 +206,39 @@ c_func
 (paren
 )paren
 )paren
-id|rc
-op_assign
-op_minus
-id|ENOMEM
+r_goto
+id|out_nomem
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sctp_eps_proc_init
+c_func
+(paren
+)paren
+)paren
+r_goto
+id|out_nomem
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sctp_assocs_proc_init
+c_func
+(paren
+)paren
+)paren
+r_goto
+id|out_nomem
 suffix:semicolon
 r_return
-id|rc
+l_int|0
+suffix:semicolon
+id|out_nomem
+suffix:colon
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. &n; * Note: Do not make this __exit as it is used in the init error&n; * path.&n; */
@@ -199,6 +251,16 @@ r_void
 )paren
 (brace
 id|sctp_snmp_proc_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+id|sctp_eps_proc_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+id|sctp_assocs_proc_exit
 c_func
 (paren
 )paren
@@ -1966,6 +2028,39 @@ r_return
 id|newsk
 suffix:semicolon
 )brace
+multiline_comment|/* Dump the v4 addr to the seq file. */
+DECL|function|sctp_v4_seq_dump_addr
+r_static
+r_void
+id|sctp_v4_seq_dump_addr
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|seq
+comma
+r_union
+id|sctp_addr
+op_star
+id|addr
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;%d.%d.%d.%d &quot;
+comma
+id|NIPQUAD
+c_func
+(paren
+id|addr-&gt;v4.sin_addr
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Event handler for inet address addition/deletion events.&n; * Basically, whenever there is an event, we re-build our local address list.&n; */
 DECL|function|sctp_inetaddr_event
 r_static
@@ -3064,6 +3159,11 @@ dot
 id|is_ce
 op_assign
 id|sctp_v4_is_ce
+comma
+dot
+id|seq_dump_addr
+op_assign
+id|sctp_v4_seq_dump_addr
 comma
 dot
 id|net_header_len
