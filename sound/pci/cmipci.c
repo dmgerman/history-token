@@ -1025,6 +1025,7 @@ id|open_mutex
 suffix:semicolon
 DECL|member|mixer_insensitive
 r_int
+r_int
 id|mixer_insensitive
 suffix:colon
 l_int|1
@@ -9207,12 +9208,14 @@ suffix:semicolon
 multiline_comment|/* mask bits to turn on */
 DECL|member|is_byte
 r_int
+r_int
 id|is_byte
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* byte access? */
 DECL|member|ac3_sensitive
+r_int
 r_int
 id|ac3_sensitive
 suffix:colon

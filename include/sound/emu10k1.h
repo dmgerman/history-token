@@ -1226,6 +1226,7 @@ id|number
 suffix:semicolon
 DECL|member|use
 r_int
+r_int
 id|use
 suffix:colon
 l_int|1
@@ -1906,6 +1907,7 @@ id|port
 suffix:semicolon
 multiline_comment|/* I/O port number */
 DECL|member|APS
+r_int
 r_int
 id|APS
 suffix:colon

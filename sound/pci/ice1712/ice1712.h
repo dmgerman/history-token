@@ -1667,6 +1667,7 @@ op_star
 suffix:semicolon
 DECL|member|no_mpu401
 r_int
+r_int
 id|no_mpu401
 suffix:colon
 l_int|1

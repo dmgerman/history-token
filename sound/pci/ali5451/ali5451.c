@@ -463,6 +463,7 @@ id|number
 suffix:semicolon
 DECL|member|use
 r_int
+r_int
 id|use
 suffix:colon
 l_int|1
@@ -504,6 +505,7 @@ op_star
 id|extra
 suffix:semicolon
 DECL|member|running
+r_int
 r_int
 id|running
 suffix:colon

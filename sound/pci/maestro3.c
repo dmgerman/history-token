@@ -1510,6 +1510,7 @@ id|irq
 suffix:semicolon
 DECL|member|allegro_flag
 r_int
+r_int
 id|allegro_flag
 suffix:colon
 l_int|1

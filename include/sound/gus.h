@@ -481,6 +481,7 @@ suffix:semicolon
 multiline_comment|/* sequencer port number */
 DECL|member|midi_has_voices
 r_int
+r_int
 id|midi_has_voices
 suffix:colon
 l_int|1
@@ -684,6 +685,7 @@ r_int
 id|number
 suffix:semicolon
 DECL|member|use
+r_int
 r_int
 id|use
 suffix:colon

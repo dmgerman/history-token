@@ -151,6 +151,7 @@ id|number
 suffix:semicolon
 DECL|member|stereo
 r_int
+r_int
 id|stereo
 suffix:colon
 l_int|1

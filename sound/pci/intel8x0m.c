@@ -615,6 +615,7 @@ l_int|2
 suffix:semicolon
 DECL|member|in_ac97_init
 r_int
+r_int
 id|in_ac97_init
 suffix:colon
 l_int|1
