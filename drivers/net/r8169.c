@@ -10932,16 +10932,9 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Give a racing hard_start_xmit a few cycles to complete. */
-id|set_current_state
+id|synchronize_kernel
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
 )paren
 suffix:semicolon
 id|rtl8169_tx_clear
@@ -10998,6 +10991,12 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
+id|dev
+)paren
+suffix:semicolon
+id|netif_poll_enable
+c_func
+(paren
 id|dev
 )paren
 suffix:semicolon
