@@ -2513,7 +2513,7 @@ id|count
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the caller is doing a write at the end of the file,&n;&t; * then extend the allocation (and the buffer used for the write)&n;&t; * out to the file system&squot;s write iosize.  We clean up any extra&n;&t; * space left over when the file is closed in xfs_inactive().&n;&t; *&n;&t; * We don&squot;t bother with this for sync writes, because we need&n;&t; * to minimize the amount we write for good performance.&n;&t; */
+multiline_comment|/*&n;&t; * If the caller is doing a write at the end of the file,&n;&t; * then extend the allocation (and the buffer used for the write)&n;&t; * out to the file system&squot;s write iosize.  We clean up any extra&n;&t; * space left over when the file is closed in xfs_inactive().&n;&t; *&n;&t; * For sync writes, we are flushing delayed allocate space to&n;&t; * try to make additional space available for allocation near&n;&t; * the filesystem full boundary - preallocation hurts in that&n;&t; * situation, of course.&n;&t; */
 r_if
 c_cond
 (paren

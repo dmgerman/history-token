@@ -132,7 +132,7 @@ op_lshift
 l_int|7
 )paren
 comma
-multiline_comment|/* sync write */
+multiline_comment|/* sync write to flush delalloc space */
 DECL|enumerator|BMAPI_TRYLOCK
 id|BMAPI_TRYLOCK
 op_assign
