@@ -16,12 +16,16 @@ id|pgkern_mask
 suffix:semicolon
 DECL|macro|__flush_tlb_all
 macro_line|# define __flush_tlb_all()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (cpu_has_pge)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__flush_tlb_global();&t;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__flush_tlb();&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-macro_line|#ifndef CONFIG_X86_INVLPG
+DECL|macro|cpu_has_invlpg
+mdefine_line|#define cpu_has_invlpg&t;(boot_cpu_data.x86 &gt; 3)
+DECL|macro|__flush_tlb_single
+mdefine_line|#define __flush_tlb_single(addr) &bslash;&n;&t;__asm__ __volatile__(&quot;invlpg %0&quot;: :&quot;m&quot; (*(char *) addr))
+macro_line|#ifdef CONFIG_X86_INVLPG
 DECL|macro|__flush_tlb_one
-mdefine_line|#define __flush_tlb_one(addr) __flush_tlb()
+macro_line|# define __flush_tlb_one(addr) __flush_tlb_single(addr)
 macro_line|#else
 DECL|macro|__flush_tlb_one
-mdefine_line|#define __flush_tlb_one(addr) &bslash;&n;__asm__ __volatile__(&quot;invlpg %0&quot;: :&quot;m&quot; (*(char *) addr))
+macro_line|# define __flush_tlb_one(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (cpu_has_invlpg)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__flush_tlb_single(addr);&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__flush_tlb();&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif
 multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb() flushes the current mm struct TLBs&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_kernel_range(start, end) flushes a range of kernel pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; *&n; * ..but the i386 has somewhat limited tlb flushing capabilities,&n; * and page-granular flushes are available only on i486 and up.&n; */
 macro_line|#ifndef CONFIG_SMP

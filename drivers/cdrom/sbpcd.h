@@ -190,17 +190,17 @@ DECL|macro|frame_size_bit
 mdefine_line|#define frame_size_bit&t;&t;0x01
 multiline_comment|/*&n; * disk states (bits of diskstate_flags):&n; */
 DECL|macro|upc_valid
-mdefine_line|#define upc_valid&t;&t;(D_S[d].diskstate_flags&amp;upc_bit)
+mdefine_line|#define upc_valid&t;&t;(current_drive-&gt;diskstate_flags&amp;upc_bit)
 DECL|macro|volume_valid
-mdefine_line|#define volume_valid&t;&t;(D_S[d].diskstate_flags&amp;volume_bit)
+mdefine_line|#define volume_valid&t;&t;(current_drive-&gt;diskstate_flags&amp;volume_bit)
 DECL|macro|toc_valid
-mdefine_line|#define toc_valid&t;&t;(D_S[d].diskstate_flags&amp;toc_bit)
+mdefine_line|#define toc_valid&t;&t;(current_drive-&gt;diskstate_flags&amp;toc_bit)
 DECL|macro|cd_size_valid
-mdefine_line|#define cd_size_valid&t;&t;(D_S[d].diskstate_flags&amp;cd_size_bit)
+mdefine_line|#define cd_size_valid&t;&t;(current_drive-&gt;diskstate_flags&amp;cd_size_bit)
 DECL|macro|subq_valid
-mdefine_line|#define subq_valid&t;&t;(D_S[d].diskstate_flags&amp;subq_bit)
+mdefine_line|#define subq_valid&t;&t;(current_drive-&gt;diskstate_flags&amp;subq_bit)
 DECL|macro|frame_size_valid
-mdefine_line|#define frame_size_valid&t;(D_S[d].diskstate_flags&amp;frame_size_bit)
+mdefine_line|#define frame_size_valid&t;(current_drive-&gt;diskstate_flags&amp;frame_size_bit)
 multiline_comment|/*&n; * the status_bits variable&n; */
 DECL|macro|p_success
 mdefine_line|#define p_success&t;0x100
@@ -311,19 +311,19 @@ DECL|macro|p2_check
 mdefine_line|#define p2_check&t;0x01
 multiline_comment|/*&n; * used drive states:&n; */
 DECL|macro|st_door_closed
-mdefine_line|#define st_door_closed&t;(D_S[d].status_bits&amp;p_door_closed)
+mdefine_line|#define st_door_closed&t;(current_drive-&gt;status_bits&amp;p_door_closed)
 DECL|macro|st_caddy_in
-mdefine_line|#define st_caddy_in&t;(D_S[d].status_bits&amp;p_caddy_in)
+mdefine_line|#define st_caddy_in&t;(current_drive-&gt;status_bits&amp;p_caddy_in)
 DECL|macro|st_spinning
-mdefine_line|#define st_spinning&t;(D_S[d].status_bits&amp;p_spinning)
+mdefine_line|#define st_spinning&t;(current_drive-&gt;status_bits&amp;p_spinning)
 DECL|macro|st_check
-mdefine_line|#define st_check&t;(D_S[d].status_bits&amp;p_check)
+mdefine_line|#define st_check&t;(current_drive-&gt;status_bits&amp;p_check)
 DECL|macro|st_busy
-mdefine_line|#define st_busy&t;&t;(D_S[d].status_bits&amp;p_busy_new)
+mdefine_line|#define st_busy&t;&t;(current_drive-&gt;status_bits&amp;p_busy_new)
 DECL|macro|st_door_locked
-mdefine_line|#define st_door_locked&t;(D_S[d].status_bits&amp;p_door_locked)
+mdefine_line|#define st_door_locked&t;(current_drive-&gt;status_bits&amp;p_door_locked)
 DECL|macro|st_diskok
-mdefine_line|#define st_diskok&t;(D_S[d].status_bits&amp;p_disk_ok)
+mdefine_line|#define st_diskok&t;(current_drive-&gt;status_bits&amp;p_disk_ok)
 multiline_comment|/*&n; * bits of the CDi_status register:&n; */
 DECL|macro|s_not_result_ready
 mdefine_line|#define s_not_result_ready&t;0x04 /* 0: &quot;result ready&quot; */
@@ -376,37 +376,37 @@ mdefine_line|#define drv_famV&t;0x2000&t;&t;/* ECS-AT (vertos-100) family */
 DECL|macro|drv_at
 mdefine_line|#define drv_at&t;&t;(drv_famV+0x01)&t;/* ECS-AT, firmware &quot;1.00&quot; */
 DECL|macro|fam0_drive
-mdefine_line|#define fam0_drive&t;(D_S[d].drv_type&amp;drv_fam0)
+mdefine_line|#define fam0_drive&t;(current_drive-&gt;drv_type&amp;drv_fam0)
 DECL|macro|famL_drive
-mdefine_line|#define famL_drive&t;(D_S[d].drv_type&amp;drv_famL)
+mdefine_line|#define famL_drive&t;(current_drive-&gt;drv_type&amp;drv_famL)
 DECL|macro|famV_drive
-mdefine_line|#define famV_drive&t;(D_S[d].drv_type&amp;drv_famV)
+mdefine_line|#define famV_drive&t;(current_drive-&gt;drv_type&amp;drv_famV)
 DECL|macro|fam1_drive
-mdefine_line|#define fam1_drive&t;(D_S[d].drv_type&amp;drv_fam1)
+mdefine_line|#define fam1_drive&t;(current_drive-&gt;drv_type&amp;drv_fam1)
 DECL|macro|fam2_drive
-mdefine_line|#define fam2_drive&t;(D_S[d].drv_type&amp;drv_fam2)
+mdefine_line|#define fam2_drive&t;(current_drive-&gt;drv_type&amp;drv_fam2)
 DECL|macro|famT_drive
-mdefine_line|#define famT_drive&t;(D_S[d].drv_type&amp;drv_famT)
+mdefine_line|#define famT_drive&t;(current_drive-&gt;drv_type&amp;drv_famT)
 DECL|macro|fam0L_drive
-mdefine_line|#define fam0L_drive&t;(D_S[d].drv_type&amp;(drv_fam0|drv_famL))
+mdefine_line|#define fam0L_drive&t;(current_drive-&gt;drv_type&amp;(drv_fam0|drv_famL))
 DECL|macro|fam0V_drive
-mdefine_line|#define fam0V_drive&t;(D_S[d].drv_type&amp;(drv_fam0|drv_famV))
+mdefine_line|#define fam0V_drive&t;(current_drive-&gt;drv_type&amp;(drv_fam0|drv_famV))
 DECL|macro|famLV_drive
-mdefine_line|#define famLV_drive&t;(D_S[d].drv_type&amp;(drv_famL|drv_famV))
+mdefine_line|#define famLV_drive&t;(current_drive-&gt;drv_type&amp;(drv_famL|drv_famV))
 DECL|macro|fam0LV_drive
-mdefine_line|#define fam0LV_drive&t;(D_S[d].drv_type&amp;(drv_fam0|drv_famL|drv_famV))
+mdefine_line|#define fam0LV_drive&t;(current_drive-&gt;drv_type&amp;(drv_fam0|drv_famL|drv_famV))
 DECL|macro|fam1L_drive
-mdefine_line|#define fam1L_drive&t;(D_S[d].drv_type&amp;(drv_fam1|drv_famL))
+mdefine_line|#define fam1L_drive&t;(current_drive-&gt;drv_type&amp;(drv_fam1|drv_famL))
 DECL|macro|fam1V_drive
-mdefine_line|#define fam1V_drive&t;(D_S[d].drv_type&amp;(drv_fam1|drv_famV))
+mdefine_line|#define fam1V_drive&t;(current_drive-&gt;drv_type&amp;(drv_fam1|drv_famV))
 DECL|macro|fam1LV_drive
-mdefine_line|#define fam1LV_drive&t;(D_S[d].drv_type&amp;(drv_fam1|drv_famL|drv_famV))
+mdefine_line|#define fam1LV_drive&t;(current_drive-&gt;drv_type&amp;(drv_fam1|drv_famL|drv_famV))
 DECL|macro|fam01_drive
-mdefine_line|#define fam01_drive&t;(D_S[d].drv_type&amp;(drv_fam0|drv_fam1))
+mdefine_line|#define fam01_drive&t;(current_drive-&gt;drv_type&amp;(drv_fam0|drv_fam1))
 DECL|macro|fam12_drive
-mdefine_line|#define fam12_drive&t;(D_S[d].drv_type&amp;(drv_fam1|drv_fam2))
+mdefine_line|#define fam12_drive&t;(current_drive-&gt;drv_type&amp;(drv_fam1|drv_fam2))
 DECL|macro|fam2T_drive
-mdefine_line|#define fam2T_drive&t;(D_S[d].drv_type&amp;(drv_fam2|drv_famT))
+mdefine_line|#define fam2T_drive&t;(current_drive-&gt;drv_type&amp;(drv_fam2|drv_famT))
 multiline_comment|/*&n; * audio states:&n; */
 DECL|macro|audio_completed
 mdefine_line|#define audio_completed&t;3 /* Forgot this one! --AJK */

@@ -54,6 +54,7 @@ mdefine_line|#define EA_NEW&t;&t;0x0004
 DECL|macro|EA_MALLOC
 mdefine_line|#define EA_MALLOC&t;0x0008
 multiline_comment|/* Forward references */
+r_static
 r_void
 id|ea_release
 c_func
@@ -69,11 +70,11 @@ op_star
 id|ea_buf
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * NAME: jfs_WriteEAInLine&n; *                                                                    &n; * FUNCTION: Attempt to write an EA inline if area is available&n; *                                                                    &n; * PRE CONDITIONS:&n; *&t;Already verified that the specified EA is small enough to fit inline&n; *&n; * PARAMETERS:&n; *&t;ip&t;- Inode pointer&n; *&t;ealist&t;- EA list pointer&n; *&t;size&t;- size of ealist in bytes&n; *&t;ea&t;- dxd_t structure to be filled in with necessary EA information&n; *&t;&t;  if we successfully copy the EA inline&n; *&n; * NOTES:&n; *&t;Checks if the inode&squot;s inline area is available.  If so, copies EA inline&n; *&t;and sets &lt;ea&gt; fields appropriately.  Otherwise, returns failure, EA will&n; *&t;have to be put into an extent.&n; *&n; * RETURNS: 0 for successful copy to inline area; -1 if area not available&n; */
-DECL|function|jfs_WriteEAInLine
+multiline_comment|/*&n; * NAME: ea_write_inline&n; *                                                                    &n; * FUNCTION: Attempt to write an EA inline if area is available&n; *                                                                    &n; * PRE CONDITIONS:&n; *&t;Already verified that the specified EA is small enough to fit inline&n; *&n; * PARAMETERS:&n; *&t;ip&t;- Inode pointer&n; *&t;ealist&t;- EA list pointer&n; *&t;size&t;- size of ealist in bytes&n; *&t;ea&t;- dxd_t structure to be filled in with necessary EA information&n; *&t;&t;  if we successfully copy the EA inline&n; *&n; * NOTES:&n; *&t;Checks if the inode&squot;s inline area is available.  If so, copies EA inline&n; *&t;and sets &lt;ea&gt; fields appropriately.  Otherwise, returns failure, EA will&n; *&t;have to be put into an extent.&n; *&n; * RETURNS: 0 for successful copy to inline area; -1 if area not available&n; */
+DECL|function|ea_write_inline
 r_static
 r_int
-id|jfs_WriteEAInLine
+id|ea_write_inline
 c_func
 (paren
 r_struct
@@ -249,11 +250,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME: jfs_WriteEA&n; *                                                                    &n; * FUNCTION: Write an EA for an inode&n; *                                                                    &n; * PRE CONDITIONS: EA has been verified &n; *&n; * PARAMETERS:&n; *&t;ip&t;- Inode pointer&n; *&t;ealist&t;- EA list pointer&n; *&t;size&t;- size of ealist in bytes&n; *&t;ea&t;- dxd_t structure to be filled in appropriately with where the&n; *&t;&t;  EA was copied&n; *&n; * NOTES: Will write EA inline if able to, otherwise allocates blocks for an&n; *&t;extent and synchronously writes it to those blocks.&n; *&n; * RETURNS: 0 for success; Anything else indicates failure&n; */
-DECL|function|jfs_WriteEA
+multiline_comment|/*&n; * NAME: ea_write&n; *                                                                    &n; * FUNCTION: Write an EA for an inode&n; *                                                                    &n; * PRE CONDITIONS: EA has been verified &n; *&n; * PARAMETERS:&n; *&t;ip&t;- Inode pointer&n; *&t;ealist&t;- EA list pointer&n; *&t;size&t;- size of ealist in bytes&n; *&t;ea&t;- dxd_t structure to be filled in appropriately with where the&n; *&t;&t;  EA was copied&n; *&n; * NOTES: Will write EA inline if able to, otherwise allocates blocks for an&n; *&t;extent and synchronously writes it to those blocks.&n; *&n; * RETURNS: 0 for success; Anything else indicates failure&n; */
+DECL|function|ea_write
 r_static
 r_int
-id|jfs_WriteEA
+id|ea_write
 c_func
 (paren
 r_struct
@@ -351,7 +352,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|jfs_WriteEAInLine
+id|ea_write_inline
 c_func
 (paren
 id|ip
@@ -609,11 +610,11 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME: jfs_ReadEAInLine&n; *                                                                    &n; * FUNCTION: Read an inlined EA into user&squot;s buffer&n; *                                                                    &n; * PARAMETERS:&n; *&t;ip&t;- Inode pointer&n; *&t;ealist&t;- Pointer to buffer to fill in with EA&n; *&n; * RETURNS: 0&n; */
-DECL|function|jfs_ReadEAInLine
+multiline_comment|/*&n; * NAME: ea_read_inline&n; *                                                                    &n; * FUNCTION: Read an inlined EA into user&squot;s buffer&n; *                                                                    &n; * PARAMETERS:&n; *&t;ip&t;- Inode pointer&n; *&t;ealist&t;- Pointer to buffer to fill in with EA&n; *&n; * RETURNS: 0&n; */
+DECL|function|ea_read_inline
 r_static
 r_int
-id|jfs_ReadEAInLine
+id|ea_read_inline
 c_func
 (paren
 r_struct
@@ -721,11 +722,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME: jfs_ReadEA&n; *                                                                    &n; * FUNCTION: copy EA data into user&squot;s buffer&n; *                                                                    &n; * PARAMETERS:&n; *&t;ip&t;- Inode pointer&n; *&t;ealist&t;- Pointer to buffer to fill in with EA&n; *&n; * NOTES:  If EA is inline calls jfs_ReadEAInLine() to copy EA.&n; *&n; * RETURNS: 0 for success; other indicates failure&n; */
-DECL|function|jfs_ReadEA
+multiline_comment|/*&n; * NAME: ea_read&n; *                                                                    &n; * FUNCTION: copy EA data into user&squot;s buffer&n; *                                                                    &n; * PARAMETERS:&n; *&t;ip&t;- Inode pointer&n; *&t;ealist&t;- Pointer to buffer to fill in with EA&n; *&n; * NOTES:  If EA is inline calls ea_read_inline() to copy EA.&n; *&n; * RETURNS: 0 for success; other indicates failure&n; */
+DECL|function|ea_read
 r_static
 r_int
-id|jfs_ReadEA
+id|ea_read
 c_func
 (paren
 r_struct
@@ -808,7 +809,7 @@ op_amp
 id|DXD_INLINE
 )paren
 r_return
-id|jfs_ReadEAInLine
+id|ea_read_inline
 c_func
 (paren
 id|ip
@@ -958,6 +959,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME: ea_get&n; *                                                                    &n; * FUNCTION: Returns buffer containing existing extended attributes.&n; *&t;     The size of the buffer will be the larger of the existing&n; *&t;     attributes size, or min_size.&n; *&n; *&t;     The buffer, which may be inlined in the inode or in the&n; * &t;     page cache must be release by calling ea_release or ea_put&n; *                                                                    &n; * PARAMETERS:&n; *&t;inode&t;- Inode pointer&n; *&t;ea_buf&t;- Structure to be populated with ealist and its metadata&n; *&t;min_size- minimum size of buffer to be returned&n; *&n; * RETURNS: 0 for success; Other indicates failure&n; */
 DECL|function|ea_get
+r_static
 r_int
 id|ea_get
 c_func
@@ -1285,20 +1287,20 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|rc
 op_assign
-id|jfs_ReadEA
+id|ea_read
 c_func
 (paren
 id|inode
 comma
 id|ea_buf-&gt;xattr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
+)paren
 )paren
 (brace
 id|kfree
@@ -1480,20 +1482,20 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|rc
 op_assign
-id|jfs_ReadEA
+id|ea_read
 c_func
 (paren
 id|inode
 comma
 id|ea_buf-&gt;xattr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
+)paren
 )paren
 (brace
 id|discard_metapage
@@ -1632,6 +1634,7 @@ id|ea_size
 suffix:semicolon
 )brace
 DECL|function|ea_release
+r_static
 r_void
 id|ea_release
 c_func
@@ -1710,6 +1713,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ea_put
+r_static
 r_int
 id|ea_put
 c_func
@@ -1841,7 +1845,7 @@ id|EA_MALLOC
 (brace
 id|rc
 op_assign
-id|jfs_WriteEA
+id|ea_write
 c_func
 (paren
 id|inode
@@ -1883,7 +1887,7 @@ r_else
 multiline_comment|/* -&gt;xattr must point to original ea&squot;s metapage */
 id|rc
 op_assign
-id|jfs_WriteEA
+id|ea_write
 c_func
 (paren
 id|inode

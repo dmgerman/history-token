@@ -42,14 +42,6 @@ id|MAX_MD_DEVS
 )braket
 suffix:semicolon
 r_extern
-r_struct
-id|hd_struct
-id|md_hd_struct
-(braket
-id|MAX_MD_DEVS
-)braket
-suffix:semicolon
-r_extern
 r_char
 op_star
 id|partition_name

@@ -251,7 +251,14 @@ id|super_block
 op_star
 id|t_super
 suffix:semicolon
-multiline_comment|/* super for this FS when journal_begin was &n;                                   called. */
+multiline_comment|/* super for this FS when journal_begin was &n;                                   called. saves calls to reiserfs_get_super */
+DECL|member|displace_new_blocks
+r_int
+id|displace_new_blocks
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* if new block allocation occurres, that block&n;&t;&t;&t;&t;   should be displaced from others */
 )brace
 suffix:semicolon
 multiline_comment|/*&n;** one of these for each transaction.  The most important part here is the j_realblock.&n;** this list of cnodes is used to hash all the blocks in all the commits, to mark all the&n;** real buffer heads dirty once all the commits hit the disk,&n;** and to make sure every real block in a transaction is on disk before allowing the log area&n;** to be overwritten */
@@ -636,6 +643,28 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|struct|reiserfs_bitmap_info
+r_struct
+id|reiserfs_bitmap_info
+(brace
+singleline_comment|// FIXME: Won&squot;t work with block sizes &gt; 8K
+DECL|member|first_zero_hint
+id|__u16
+id|first_zero_hint
+suffix:semicolon
+DECL|member|free_count
+id|__u16
+id|free_count
+suffix:semicolon
+DECL|member|bh
+r_struct
+id|buffer_head
+op_star
+id|bh
+suffix:semicolon
+multiline_comment|/* the actual bitmap */
+)brace
+suffix:semicolon
 r_struct
 id|proc_dir_entry
 suffix:semicolon
@@ -683,6 +712,26 @@ suffix:semicolon
 DECL|member|search_by_key_restarted
 id|stat_cnt_t
 id|search_by_key_restarted
+suffix:semicolon
+DECL|member|insert_item_restarted
+id|stat_cnt_t
+id|insert_item_restarted
+suffix:semicolon
+DECL|member|paste_into_item_restarted
+id|stat_cnt_t
+id|paste_into_item_restarted
+suffix:semicolon
+DECL|member|cut_from_item_restarted
+id|stat_cnt_t
+id|cut_from_item_restarted
+suffix:semicolon
+DECL|member|delete_solid_item_restarted
+id|stat_cnt_t
+id|delete_solid_item_restarted
+suffix:semicolon
+DECL|member|delete_item_restarted
+id|stat_cnt_t
+id|delete_item_restarted
 suffix:semicolon
 DECL|member|leaked_oid
 id|stat_cnt_t
@@ -816,9 +865,9 @@ DECL|member|free_block
 id|stat_cnt_t
 id|free_block
 suffix:semicolon
-DECL|struct|__find_forward_stats
+DECL|struct|__scan_bitmap_stats
 r_struct
-id|__find_forward_stats
+id|__scan_bitmap_stats
 (brace
 DECL|member|call
 id|stat_cnt_t
@@ -840,13 +889,17 @@ DECL|member|in_journal_hint
 id|stat_cnt_t
 id|in_journal_hint
 suffix:semicolon
-DECL|member|in_journal_out
+DECL|member|in_journal_nohint
 id|stat_cnt_t
-id|in_journal_out
+id|in_journal_nohint
 suffix:semicolon
-DECL|member|find_forward
+DECL|member|stolen
+id|stat_cnt_t
+id|stolen
+suffix:semicolon
+DECL|member|scan_bitmap
 )brace
-id|find_forward
+id|scan_bitmap
 suffix:semicolon
 DECL|struct|__journal_stats
 r_struct
@@ -949,12 +1002,10 @@ suffix:semicolon
 multiline_comment|/* Pointer to the super block in the buffer */
 DECL|member|s_ap_bitmap
 r_struct
-id|buffer_head
-op_star
+id|reiserfs_bitmap_info
 op_star
 id|s_ap_bitmap
 suffix:semicolon
-multiline_comment|/* array of buffers, holding block bitmap */
 DECL|member|s_journal
 r_struct
 id|reiserfs_journal
@@ -994,6 +1045,40 @@ r_int
 id|s_mount_opt
 suffix:semicolon
 multiline_comment|/* reiserfs&squot;s mount options are set&n;                                   here (currently - NOTAIL, NOLOG,&n;                                   REPLAYONLY) */
+r_struct
+(brace
+multiline_comment|/* This is a structure that describes block allocator options */
+DECL|member|bits
+r_int
+r_int
+id|bits
+suffix:semicolon
+multiline_comment|/* Bitfield for enable/disable kind of options */
+DECL|member|large_file_size
+r_int
+r_int
+id|large_file_size
+suffix:semicolon
+multiline_comment|/* size started from which we consider file to be a large one(in blocks) */
+DECL|member|border
+r_int
+id|border
+suffix:semicolon
+multiline_comment|/* percentage of disk, border takes */
+DECL|member|preallocmin
+r_int
+id|preallocmin
+suffix:semicolon
+multiline_comment|/* Minimal file size (in blocks) starting from which we do preallocations */
+DECL|member|preallocsize
+r_int
+id|preallocsize
+suffix:semicolon
+multiline_comment|/* Number of blocks we try to prealloc when file&n;&t;&t;&t;&t;   reaches preallocmin size (in blocks) or&n;&t;&t;&t;&t;   prealloc_list is empty. */
+DECL|member|s_alloc_options
+)brace
+id|s_alloc_options
+suffix:semicolon
 multiline_comment|/* Comment? -Hans */
 DECL|member|s_wait
 id|wait_queue_head_t
@@ -1072,6 +1157,11 @@ id|proc_dir_entry
 op_star
 id|procdir
 suffix:semicolon
+DECL|member|reserved_blocks
+r_int
+id|reserved_blocks
+suffix:semicolon
+multiline_comment|/* amount of blocks reserved for further allocations */
 )brace
 suffix:semicolon
 multiline_comment|/* Definitions of reiserfs on-disk properties: */
@@ -1080,8 +1170,10 @@ mdefine_line|#define REISERFS_3_5 0
 DECL|macro|REISERFS_3_6
 mdefine_line|#define REISERFS_3_6 1
 multiline_comment|/* Mount options */
-DECL|macro|NOTAIL
-mdefine_line|#define NOTAIL 0  /* -o notail: no tails will be created in a session */
+DECL|macro|REISERFS_LARGETAIL
+mdefine_line|#define REISERFS_LARGETAIL 0  /* large tails will be created in a session */
+DECL|macro|REISERFS_SMALLTAIL
+mdefine_line|#define REISERFS_SMALLTAIL 17  /* small (for files less than block size) tails will be created in a session */
 DECL|macro|REPLAYONLY
 mdefine_line|#define REPLAYONLY 3 /* replay journal and return 0. Use by fsck */
 DECL|macro|REISERFS_NOLOG
@@ -1132,8 +1224,10 @@ DECL|macro|reiserfs_hashed_relocation
 mdefine_line|#define reiserfs_hashed_relocation(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_HASHED_RELOCATION))
 DECL|macro|reiserfs_test4
 mdefine_line|#define reiserfs_test4(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_TEST4))
-DECL|macro|dont_have_tails
-mdefine_line|#define dont_have_tails(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; NOTAIL))
+DECL|macro|have_large_tails
+mdefine_line|#define have_large_tails(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_LARGETAIL))
+DECL|macro|have_small_tails
+mdefine_line|#define have_small_tails(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_SMALLTAIL))
 DECL|macro|replay_only
 mdefine_line|#define replay_only(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REPLAYONLY))
 DECL|macro|reiserfs_dont_log

@@ -451,7 +451,7 @@ singleline_comment|// done: file does not have direct items anymore
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* if we&squot;ve copied bytes from disk into the page, we need to zero&n;    ** out the unused part of the block (it was not up to date before)&n;    ** the page is still kmapped (by whoever called reiserfs_get_block)&n;    */
+multiline_comment|/* if we&squot;ve copied bytes from disk into the page, we need to zero&n;    ** out the unused part of the block (it was not up to date before)&n;    */
 r_if
 c_cond
 (paren
@@ -475,14 +475,22 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+r_char
+op_star
+id|kaddr
+op_assign
+id|kmap_atomic
+c_func
+(paren
+id|up_to_date_bh-&gt;b_page
+comma
+id|KM_USER0
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
-id|page_address
-c_func
-(paren
-id|unbh-&gt;b_page
-)paren
+id|kaddr
 op_plus
 id|pgoff
 comma
@@ -491,6 +499,14 @@ comma
 id|n_blk_size
 op_minus
 id|total_tail
+)paren
+suffix:semicolon
+id|kunmap_atomic
+c_func
+(paren
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace

@@ -251,21 +251,9 @@ DECL|macro|N_DRIVE
 mdefine_line|#define N_DRIVE 8
 DECL|macro|FLOPPY_MOTOR_MASK
 mdefine_line|#define FLOPPY_MOTOR_MASK 0xf0
-multiline_comment|/*&n; * Most Alphas have no problems with floppy DMA crossing 64k borders,&n; * except for XL and RUFFIAN.  They are also the only one with DMA&n; * limits, so we use that to test in the generic kernel.&n; */
-DECL|macro|__CROSS_64KB
-mdefine_line|#define __CROSS_64KB(a,s)&t;&t;&t;&t;&t;&bslash;&n;({ unsigned long __s64 = (unsigned long)(a);&t;&t;&t;&bslash;&n;   unsigned long __e64 = __s64 + (unsigned long)(s) - 1;&t;&bslash;&n;   (__s64 ^ __e64) &amp; ~0xfffful; })
-macro_line|#ifdef CONFIG_ALPHA_GENERIC
+multiline_comment|/*&n; * Most Alphas have no problems with floppy DMA crossing 64k borders,&n; * except for certain ones, like XL and RUFFIAN.&n; *&n; * However, the test is simple and fast, and this *is* floppy, after all,&n; * so we do it for all platforms, just to make sure.&n; *&n; * This is advantageous in other circumstances as well, as in moving&n; * about the PCI DMA windows and forcing the floppy to start doing&n; * scatter-gather when it never had before, and there *is* a problem&n; * on that platform... ;-}&n; */
 DECL|macro|CROSS_64KB
-macro_line|# define CROSS_64KB(a,s)   (__CROSS_64KB(a,s) &amp;&amp; ~alpha_mv.max_dma_address)
-macro_line|#else
-macro_line|# if defined(CONFIG_ALPHA_XL) || defined(CONFIG_ALPHA_RUFFIAN) || defined(CONFIG_ALPHA_NAUTILUS)
-DECL|macro|CROSS_64KB
-macro_line|#  define CROSS_64KB(a,s)  __CROSS_64KB(a,s)
-macro_line|# else
-DECL|macro|CROSS_64KB
-macro_line|#  define CROSS_64KB(a,s)  (0)
-macro_line|# endif
-macro_line|#endif
+mdefine_line|#define CROSS_64KB(a,s)&t;&t;&t;&t;&t;&t;&bslash;&n;({ unsigned long __s64 = (unsigned long)(a);&t;&t;&t;&bslash;&n;   unsigned long __e64 = __s64 + (unsigned long)(s) - 1;&t;&bslash;&n;   (__s64 ^ __e64) &amp; ~0xfffful; })
 DECL|macro|EXTRA_FLOPPY_PARAMS
 mdefine_line|#define EXTRA_FLOPPY_PARAMS
 macro_line|#endif /* __ASM_ALPHA_FLOPPY_H */
