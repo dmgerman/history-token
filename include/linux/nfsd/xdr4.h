@@ -1017,6 +1017,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|NFS4_SVC_XDRSIZE
 mdefine_line|#define NFS4_SVC_XDRSIZE&t;&t;sizeof(struct nfsd4_compoundargs)
+macro_line|#if CONFIG_NFSD_V3
 r_static
 r_inline
 r_void
@@ -1066,6 +1067,7 @@ op_assign
 id|fhp-&gt;fh_post_ctime
 suffix:semicolon
 )brace
+macro_line|#endif
 r_int
 id|nfs4svc_encode_voidres
 c_func
