@@ -2440,7 +2440,7 @@ r_return
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * e1000_proc_list_setup - build link list of proc praramters&n; * @adapter: board private structure&n; *&n; * Order matters - ethx.info entries are ordered in the order links &n; * are added to list.&n; */
+multiline_comment|/*&n; * e1000_proc_list_setup - build link list of proc praramters&n; * @adapter: board private structure&n; *&n; * Order matters - ethx.info entries are ordered in the order links&n; * are added to list.&n; */
 DECL|macro|LIST_ADD_F
 mdefine_line|#define LIST_ADD_F(T,D,F) &bslash;&n;&t;e1000_proc_list_add(proc_list_head, (T), (D), sizeof(*(D)), (F))
 DECL|macro|LIST_ADD_BLANK
