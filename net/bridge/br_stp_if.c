@@ -640,7 +640,7 @@ id|net_bridge
 op_star
 id|br
 comma
-r_int
+id|u16
 id|newprio
 )paren
 (brace
@@ -773,7 +773,7 @@ id|net_bridge_port
 op_star
 id|p
 comma
-r_int
+id|u8
 id|newprio
 )paren
 (brace
@@ -857,7 +857,7 @@ id|net_bridge_port
 op_star
 id|p
 comma
-r_int
+id|u32
 id|path_cost
 )paren
 (brace

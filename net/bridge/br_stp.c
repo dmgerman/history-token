@@ -88,7 +88,7 @@ id|net_bridge
 op_star
 id|br
 comma
-r_int
+id|u16
 id|port_no
 )paren
 (brace
@@ -136,7 +136,7 @@ id|net_bridge_port
 op_star
 id|p
 comma
-r_int
+id|u16
 id|root_port
 )paren
 (brace
@@ -364,9 +364,7 @@ id|net_bridge_port
 op_star
 id|p
 suffix:semicolon
-r_int
-id|root_port
-suffix:semicolon
+id|u16
 id|root_port
 op_assign
 l_int|0
