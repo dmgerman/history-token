@@ -2,7 +2,6 @@ macro_line|#ifndef _H8300_SYSTEM_H
 DECL|macro|_H8300_SYSTEM_H
 mdefine_line|#define _H8300_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt; /* get configuration macros */
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 DECL|macro|prepare_to_switch
 mdefine_line|#define prepare_to_switch()&t;do { } while(0)
@@ -163,8 +162,6 @@ id|ptr
 )paren
 )paren
 suffix:colon
-l_string|&quot;er0&quot;
-comma
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
