@@ -11,23 +11,6 @@ DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
 mdefine_line|#define check_apicid_used(bitmap, apicid) (bitmap &amp; (1 &lt;&lt; apicid))
-DECL|function|summit_check
-r_static
-r_inline
-r_void
-id|summit_check
-c_func
-(paren
-r_char
-op_star
-id|oem
-comma
-r_char
-op_star
-id|productid
-)paren
-(brace
-)brace
 DECL|function|apic_id_registered
 r_static
 r_inline
