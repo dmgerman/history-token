@@ -1312,31 +1312,8 @@ mdefine_line|#define INIT_SP&t;&t;(sizeof(init_stack) + (unsigned long) &amp;ini
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;ksp: INIT_SP, &bslash;&n;&t;fs: KERNEL_DS, &bslash;&n;&t;pgdir: swapper_pg_dir, &bslash;&n;}
 multiline_comment|/*&n; * Return saved PC of a blocked thread. For now, this is the &quot;user&quot; PC&n; */
-DECL|function|thread_saved_pc
-r_static
-r_inline
-r_int
-r_int
-id|thread_saved_pc
-c_func
-(paren
-r_struct
-id|thread_struct
-op_star
-id|t
-)paren
-(brace
-r_return
-(paren
-id|t-&gt;regs
-)paren
-ques
-c_cond
-id|t-&gt;regs-&gt;nip
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
+DECL|macro|thread_saved_pc
+mdefine_line|#define thread_saved_pc(tsk)&t;&bslash;&n;&t;((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;nip: 0)
 DECL|macro|copy_segments
 mdefine_line|#define copy_segments(tsk, mm)&t;&t;do { } while (0)
 DECL|macro|release_segments
