@@ -2846,7 +2846,7 @@ r_int
 r_int
 id|portid
 op_assign
-id|p-&gt;portid
+id|pbm-&gt;portid
 suffix:semicolon
 r_int
 r_int

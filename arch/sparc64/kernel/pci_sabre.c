@@ -2112,13 +2112,6 @@ id|ino
 )paren
 (brace
 r_struct
-id|pci_controller_info
-op_star
-id|p
-op_assign
-id|pbm-&gt;parent
-suffix:semicolon
-r_struct
 id|ino_bucket
 op_star
 id|bucket
@@ -2225,7 +2218,7 @@ c_func
 suffix:semicolon
 id|imap
 op_assign
-id|p-&gt;controller_regs
+id|pbm-&gt;controller_regs
 op_plus
 id|imap_off
 suffix:semicolon
@@ -2243,7 +2236,7 @@ id|ino
 suffix:semicolon
 id|iclr
 op_assign
-id|p-&gt;controller_regs
+id|pbm-&gt;controller_regs
 op_plus
 id|iclr_off
 suffix:semicolon
@@ -2533,7 +2526,7 @@ r_int
 r_int
 id|base
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 suffix:semicolon
 id|iommu_tag
 (braket
@@ -2854,7 +2847,7 @@ r_int
 r_int
 id|afsr_reg
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_UE_AFSR
 suffix:semicolon
@@ -2862,7 +2855,7 @@ r_int
 r_int
 id|afar_reg
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_UECE_AFAR
 suffix:semicolon
@@ -3152,7 +3145,7 @@ r_int
 r_int
 id|afsr_reg
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_CE_AFSR
 suffix:semicolon
@@ -3160,7 +3153,7 @@ r_int
 r_int
 id|afar_reg
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_UECE_AFAR
 suffix:semicolon
@@ -3429,13 +3422,13 @@ id|reported
 suffix:semicolon
 id|afsr_reg
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_PIOAFSR
 suffix:semicolon
 id|afar_reg
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_PIOAFAR
 suffix:semicolon
@@ -3847,7 +3840,7 @@ r_int
 r_int
 id|base
 op_assign
-id|p-&gt;controller_regs
+id|pbm-&gt;controller_regs
 suffix:semicolon
 r_int
 r_int
@@ -3855,7 +3848,7 @@ id|irq
 comma
 id|portid
 op_assign
-id|p-&gt;portid
+id|pbm-&gt;portid
 suffix:semicolon
 id|u64
 id|tmp
@@ -4112,13 +4105,6 @@ id|pbm
 op_assign
 id|pdev-&gt;bus-&gt;sysdata
 suffix:semicolon
-r_struct
-id|pci_controller_info
-op_star
-id|p
-op_assign
-id|pbm-&gt;parent
-suffix:semicolon
 r_int
 r_int
 id|base
@@ -4132,14 +4118,14 @@ id|IORESOURCE_IO
 )paren
 id|base
 op_assign
-id|p-&gt;controller_regs
+id|pbm-&gt;controller_regs
 op_plus
 id|SABRE_IOSPACE
 suffix:semicolon
 r_else
 id|base
 op_assign
-id|p-&gt;controller_regs
+id|pbm-&gt;controller_regs
 op_plus
 id|SABRE_MEMSPACE
 suffix:semicolon
@@ -4181,13 +4167,6 @@ op_star
 id|pbm
 op_assign
 id|pcp-&gt;pbm
-suffix:semicolon
-r_struct
-id|pci_controller_info
-op_star
-id|p
-op_assign
-id|pbm-&gt;parent
 suffix:semicolon
 r_struct
 id|resource
@@ -4268,7 +4247,7 @@ id|IORESOURCE_IO
 )paren
 id|base
 op_assign
-id|p-&gt;controller_regs
+id|pbm-&gt;controller_regs
 op_plus
 id|SABRE_IOSPACE
 suffix:semicolon
@@ -4276,7 +4255,7 @@ r_else
 (brace
 id|base
 op_assign
-id|p-&gt;controller_regs
+id|pbm-&gt;controller_regs
 op_plus
 id|SABRE_MEMSPACE
 suffix:semicolon
@@ -5058,25 +5037,25 @@ suffix:semicolon
 multiline_comment|/* Register addresses. */
 id|iommu-&gt;iommu_control
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_CONTROL
 suffix:semicolon
 id|iommu-&gt;iommu_tsbbase
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_TSBBASE
 suffix:semicolon
 id|iommu-&gt;iommu_flush
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_FLUSH
 suffix:semicolon
 id|iommu-&gt;write_complete_reg
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_WRSYNC
 suffix:semicolon
@@ -5091,7 +5070,7 @@ op_assign
 id|sabre_read
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_CONTROL
 )paren
@@ -5103,7 +5082,7 @@ suffix:semicolon
 id|sabre_write
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_CONTROL
 comma
@@ -5128,7 +5107,7 @@ op_increment
 id|sabre_write
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_TAG
 op_plus
@@ -5144,7 +5123,7 @@ suffix:semicolon
 id|sabre_write
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_DATA
 op_plus
@@ -5233,7 +5212,7 @@ suffix:semicolon
 id|sabre_write
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_TSBBASE
 comma
@@ -5249,7 +5228,7 @@ op_assign
 id|sabre_read
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_CONTROL
 )paren
@@ -5320,7 +5299,7 @@ suffix:semicolon
 id|sabre_write
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOMMU_CONTROL
 comma
@@ -5401,7 +5380,7 @@ r_int
 r_int
 id|ibase
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOSPACE
 suffix:semicolon
@@ -5409,7 +5388,7 @@ r_int
 r_int
 id|mbase
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_MEMSPACE
 suffix:semicolon
@@ -6017,6 +5996,10 @@ op_assign
 op_amp
 id|p-&gt;pbm_A
 suffix:semicolon
+id|pbm-&gt;chip_type
+op_assign
+id|PBM_CHIP_TYPE_SABRE
+suffix:semicolon
 id|pbm-&gt;parent
 op_assign
 id|p
@@ -6470,7 +6453,7 @@ suffix:semicolon
 multiline_comment|/* Hack up top-level resources. */
 id|pbm-&gt;io_space.start
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_IOSPACE
 suffix:semicolon
@@ -6492,7 +6475,7 @@ id|IORESOURCE_IO
 suffix:semicolon
 id|pbm-&gt;mem_space.start
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_MEMSPACE
 suffix:semicolon
@@ -6901,7 +6884,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|p-&gt;portid
+id|p-&gt;pbm_A.portid
+op_assign
+id|upa_portid
+suffix:semicolon
+id|p-&gt;pbm_B.portid
 op_assign
 id|upa_portid
 suffix:semicolon
@@ -6988,7 +6975,16 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * First REG in property is base of entire SABRE register space.&n;&t; */
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
+op_assign
+id|pr_regs
+(braket
+l_int|0
+)braket
+dot
+id|phys_addr
+suffix:semicolon
+id|p-&gt;pbm_B.controller_regs
 op_assign
 id|pr_regs
 (braket
@@ -6999,7 +6995,7 @@ id|phys_addr
 suffix:semicolon
 id|pci_dma_wsync
 op_assign
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_WRSYNC
 suffix:semicolon
@@ -7008,7 +7004,7 @@ c_func
 (paren
 l_string|&quot;PCI: Found SABRE, main regs at %016lx, wsync at %016lx&bslash;n&quot;
 comma
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 comma
 id|pci_dma_wsync
 )paren
@@ -7035,7 +7031,7 @@ l_int|8
 id|sabre_write
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|clear_irq
 comma
@@ -7063,7 +7059,7 @@ l_int|8
 id|sabre_write
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|clear_irq
 comma
@@ -7074,7 +7070,7 @@ multiline_comment|/* Error interrupts are enabled later after the bus scan. */
 id|sabre_write
 c_func
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_PCICTRL
 comma
@@ -7095,7 +7091,7 @@ op_assign
 id|p-&gt;pbm_B.config_space
 op_assign
 (paren
-id|p-&gt;controller_regs
+id|p-&gt;pbm_A.controller_regs
 op_plus
 id|SABRE_CONFIGSPACE
 )paren
