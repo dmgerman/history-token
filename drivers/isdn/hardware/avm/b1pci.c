@@ -1471,6 +1471,7 @@ op_star
 id|pdev
 )paren
 (brace
+macro_line|#ifdef CONFIG_ISDN_DRV_AVMB1_B1PCIV4
 id|avmcard
 op_star
 id|card
@@ -1499,6 +1500,14 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+macro_line|#else
+id|b1pci_remove
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|b1pci_pci_driver
 r_static
