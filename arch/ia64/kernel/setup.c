@@ -2546,7 +2546,7 @@ c_func
 op_amp
 id|num_phys_stacked
 comma
-l_int|0
+l_int|NULL
 )paren
 op_ne
 l_int|0

@@ -799,7 +799,7 @@ op_assign
 id|do_mmap
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|PAGE_START
 c_func
@@ -1080,7 +1080,7 @@ id|p
 suffix:semicolon
 id|p-&gt;pp_head
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|p-&gt;ppl_rb
 op_assign
@@ -1088,7 +1088,7 @@ id|RB_ROOT
 suffix:semicolon
 id|p-&gt;pp_hint
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|atomic_set
 c_func
@@ -3863,7 +3863,7 @@ op_assign
 id|do_mmap
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|pstart
 comma

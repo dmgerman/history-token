@@ -1083,7 +1083,7 @@ DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;0
 multiline_comment|/* This macro yields a string that ld.so will use to load&n;   implementation specific libraries for optimization.  Not terribly&n;   relevant until we have real hardware to play with... */
 DECL|macro|ELF_PLATFORM
-mdefine_line|#define ELF_PLATFORM&t;0
+mdefine_line|#define ELF_PLATFORM&t;NULL
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 macro_line|# define SET_PERSONALITY(EX,IBCS2)&t;&t;&t;&t;&bslash;&n;&t;(current-&gt;personality = (IBCS2) ? PER_SVR4 : PER_LINUX)

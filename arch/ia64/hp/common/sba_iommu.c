@@ -3683,7 +3683,7 @@ id|u64
 op_star
 id|pdirp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -6563,7 +6563,7 @@ c_func
 (paren
 l_string|&quot;bus/mckinley&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

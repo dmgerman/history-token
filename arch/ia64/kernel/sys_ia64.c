@@ -706,7 +706,7 @@ id|file
 op_star
 id|file
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|flags
 op_and_assign

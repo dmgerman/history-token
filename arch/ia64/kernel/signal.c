@@ -1272,7 +1272,7 @@ c_func
 op_amp
 id|sc-&gt;sc_stack
 comma
-l_int|0
+l_int|NULL
 comma
 id|scr-&gt;pt.r12
 )paren

@@ -2290,7 +2290,7 @@ id|ia64_fpreg
 op_star
 id|addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|pt_regs
@@ -4145,7 +4145,7 @@ l_int|0
 suffix:semicolon
 id|sr-&gt;imask
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sr-&gt;spill_offset
 op_assign
@@ -5948,7 +5948,7 @@ l_int|0
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Always regenerate scripts in debug mode */
 id|STAT
@@ -6010,7 +6010,7 @@ op_ge
 id|UNW_CACHE_SIZE
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|script
 op_assign
@@ -6069,7 +6069,7 @@ op_ge
 id|UNW_HASH_SIZE
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|script
 op_assign
@@ -6225,7 +6225,7 @@ id|index
 suffix:semicolon
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -7079,7 +7079,7 @@ id|unw_table_entry
 op_star
 id|e
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -7193,14 +7193,14 @@ id|unw_table_entry
 op_star
 id|e
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|unw_script
 op_star
 id|script
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|unw_labeled_state
@@ -7361,7 +7361,7 @@ id|start
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|unw.cache
@@ -8867,7 +8867,7 @@ id|info-&gt;ip
 suffix:semicolon
 id|info-&gt;rp_loc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
@@ -10300,7 +10300,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|table
@@ -10324,7 +10324,7 @@ op_logical_neg
 id|table
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|init_unwind_table
 c_func

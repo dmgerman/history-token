@@ -187,7 +187,7 @@ c_func
 (paren
 id|ia64_do_show_stack
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_else
@@ -211,7 +211,7 @@ c_func
 op_amp
 id|info
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3245,7 +3245,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

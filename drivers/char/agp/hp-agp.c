@@ -266,7 +266,7 @@ id|hp-&gt;io_tlb_ps
 suffix:semicolon
 id|hp-&gt;gatt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hp-&gt;gatt_entries
 op_assign
@@ -360,7 +360,7 @@ id|HP_ZX1_SBA_IOMMU_COOKIE
 multiline_comment|/* Normal case when no AGP device in system */
 id|hp-&gt;gatt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hp-&gt;gatt_entries
 op_assign
@@ -1164,7 +1164,7 @@ l_string|&quot;memory for I/O PDIR&bslash;n&quot;
 suffix:semicolon
 id|hp-&gt;gatt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hp-&gt;gatt_entries
 op_assign

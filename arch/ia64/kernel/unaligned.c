@@ -4188,7 +4188,7 @@ comma
 op_amp
 id|r2
 comma
-l_int|0
+l_int|NULL
 comma
 id|regs
 )paren

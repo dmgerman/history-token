@@ -611,7 +611,7 @@ id|GDT_ENTRY_TLS_ENTRIES
 )braket
 suffix:semicolon
 DECL|macro|INIT_THREAD_IA32
-macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.ppl =&t;&t;0,
+macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.ppl =&t;&t;NULL,
 macro_line|#else
 DECL|macro|INIT_THREAD_IA32
 macro_line|# define INIT_THREAD_IA32
