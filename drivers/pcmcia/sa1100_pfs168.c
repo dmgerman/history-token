@@ -2,9 +2,10 @@ macro_line|#warning&t;&quot;REVISIT_PFS168: Need to verify and test GPIO power e
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_pfs168.c&n; *&n; * PFS168 PCMCIA specific routines&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
 macro_line|#include &quot;sa1111_generic.h&quot;

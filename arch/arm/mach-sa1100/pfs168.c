@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &quot;generic.h&quot;
-macro_line|#include &quot;sa1111.h&quot;
 DECL|function|pfs168_init
 r_static
 r_int
@@ -50,8 +49,6 @@ r_return
 id|sa1111_init
 c_func
 (paren
-l_int|NULL
-comma
 l_int|0x40000000
 comma
 id|IRQ_GPIO25
