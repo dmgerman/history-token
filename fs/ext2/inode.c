@@ -4745,6 +4745,9 @@ id|inode
 comma
 id|inode-&gt;i_mode
 comma
+id|old_decode_dev
+c_func
+(paren
 id|le32_to_cpu
 c_func
 (paren
@@ -4752,6 +4755,7 @@ id|raw_inode-&gt;i_block
 (braket
 l_int|0
 )braket
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -5239,7 +5243,11 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
+id|old_encode_dev
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 )paren
 suffix:semicolon
 r_else

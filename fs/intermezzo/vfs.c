@@ -943,7 +943,11 @@ op_assign
 (paren
 id|__u32
 )paren
+id|old_encode_dev
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 suffix:semicolon
 id|rb-&gt;rb_uid
 op_assign

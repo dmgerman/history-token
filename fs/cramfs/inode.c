@@ -225,7 +225,11 @@ id|inode
 comma
 id|inode-&gt;i_mode
 comma
+id|old_decode_dev
+c_func
+(paren
 id|cramfs_inode-&gt;size
+)paren
 )paren
 suffix:semicolon
 )brace

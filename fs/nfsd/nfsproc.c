@@ -974,12 +974,14 @@ id|size
 op_assign
 id|attr-&gt;ia_size
 suffix:semicolon
+multiline_comment|/* may need to change when we widen dev_t */
 id|rdev
 op_assign
+id|old_decode_dev
+c_func
 (paren
-id|dev_t
-)paren
 id|size
+)paren
 suffix:semicolon
 r_if
 c_cond

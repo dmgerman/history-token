@@ -4277,7 +4277,11 @@ id|inode
 comma
 id|inode-&gt;i_mode
 comma
+id|old_decode_dev
+c_func
+(paren
 id|rdev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -4405,7 +4409,11 @@ c_func
 (paren
 id|sd_v2
 comma
+id|old_encode_dev
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 )paren
 suffix:semicolon
 r_else
@@ -4557,7 +4565,11 @@ c_func
 (paren
 id|sd_v1
 comma
+id|old_encode_dev
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 )paren
 suffix:semicolon
 r_else
