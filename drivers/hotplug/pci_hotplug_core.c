@@ -2345,8 +2345,12 @@ r_if
 c_cond
 (paren
 id|count
-op_le
+op_eq
 l_int|0
+op_logical_or
+id|count
+OG
+l_int|16384
 )paren
 r_return
 l_int|0
