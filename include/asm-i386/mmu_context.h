@@ -58,7 +58,6 @@ id|state
 op_eq
 id|TLBSTATE_OK
 )paren
-(brace
 id|cpu_tlbstate
 (braket
 id|cpu
@@ -68,7 +67,6 @@ id|state
 op_assign
 id|TLBSTATE_LAZY
 suffix:semicolon
-)brace
 )brace
 macro_line|#else
 DECL|function|enter_lazy_tlb
@@ -178,13 +176,17 @@ c_func
 id|next-&gt;pgd
 )paren
 suffix:semicolon
-multiline_comment|/* load_LDT, if either the previous or next thread&n;&t;&t; * has a non-default LDT.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * load the LDT, if the LDT is different:&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|next-&gt;context.size
-op_plus
-id|prev-&gt;context.size
+id|unlikely
+c_func
+(paren
+id|prev-&gt;context.ldt
+op_ne
+id|next-&gt;context.ldt
+)paren
 )paren
 id|load_LDT
 c_func
@@ -218,13 +220,11 @@ id|active_mm
 op_ne
 id|next
 )paren
-(brace
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
