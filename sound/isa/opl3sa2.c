@@ -4457,6 +4457,13 @@ r_goto
 id|__error
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
 id|chip-&gt;irq
 op_assign
 op_minus
