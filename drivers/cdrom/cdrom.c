@@ -15713,7 +15713,6 @@ id|cdrom_root_table
 )braket
 op_assign
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
 (brace
 dot
 id|ctl_name
@@ -15742,7 +15741,6 @@ id|cdrom_cdrom_table
 comma
 )brace
 comma
-macro_line|#endif /* CONFIG_PROC_FS */
 (brace
 dot
 id|ctl_name
