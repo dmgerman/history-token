@@ -598,7 +598,8 @@ op_star
 r_new
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
