@@ -65,62 +65,62 @@ mdefine_line|#define MSR_RI_LG&t;1&t;&t;/* Recoverable Exception */
 DECL|macro|MSR_LE_LG
 mdefine_line|#define MSR_LE_LG&t;0 &t;&t;/* Little Endian */
 macro_line|#ifdef __ASSEMBLY__
-DECL|macro|MASK
-mdefine_line|#define MASK(X)&t;&t;(1&lt;&lt;(X))
+DECL|macro|__MASK
+mdefine_line|#define __MASK(X)&t;(1&lt;&lt;(X))
 macro_line|#else
-DECL|macro|MASK
-mdefine_line|#define MASK(X)&t;&t;(1UL&lt;&lt;(X))
+DECL|macro|__MASK
+mdefine_line|#define __MASK(X)&t;(1UL&lt;&lt;(X))
 macro_line|#endif
 DECL|macro|MSR_SF
-mdefine_line|#define MSR_SF&t;&t;MASK(MSR_SF_LG)  /* Enable 64 bit mode */
+mdefine_line|#define MSR_SF&t;&t;__MASK(MSR_SF_LG)&t;/* Enable 64 bit mode */
 DECL|macro|MSR_ISF
-mdefine_line|#define MSR_ISF&t;&t;MASK(MSR_ISF_LG) /* Interrupt 64b mode valid on 630 */
+mdefine_line|#define MSR_ISF&t;&t;__MASK(MSR_ISF_LG)&t;/* Interrupt 64b mode valid on 630 */
 DECL|macro|MSR_HV
-mdefine_line|#define MSR_HV &t;&t;MASK(MSR_HV_LG)&t; /* Hypervisor state */
+mdefine_line|#define MSR_HV &t;&t;__MASK(MSR_HV_LG)&t;/* Hypervisor state */
 DECL|macro|MSR_VEC
-mdefine_line|#define MSR_VEC&t;&t;MASK(MSR_VEC_LG) /* Enable AltiVec */
+mdefine_line|#define MSR_VEC&t;&t;__MASK(MSR_VEC_LG)&t;/* Enable AltiVec */
 DECL|macro|MSR_POW
-mdefine_line|#define MSR_POW&t;&t;MASK(MSR_POW_LG) /* Enable Power Management */
+mdefine_line|#define MSR_POW&t;&t;__MASK(MSR_POW_LG)&t;/* Enable Power Management */
 DECL|macro|MSR_WE
-mdefine_line|#define MSR_WE&t;&t;MASK(MSR_WE_LG)&t; /* Wait State Enable */
+mdefine_line|#define MSR_WE&t;&t;__MASK(MSR_WE_LG)&t;/* Wait State Enable */
 DECL|macro|MSR_TGPR
-mdefine_line|#define MSR_TGPR&t;MASK(MSR_TGPR_LG)/* TLB Update registers in use */
+mdefine_line|#define MSR_TGPR&t;__MASK(MSR_TGPR_LG)&t;/* TLB Update registers in use */
 DECL|macro|MSR_CE
-mdefine_line|#define MSR_CE&t;&t;MASK(MSR_CE_LG)&t; /* Critical Interrupt Enable */
+mdefine_line|#define MSR_CE&t;&t;__MASK(MSR_CE_LG)&t;/* Critical Interrupt Enable */
 DECL|macro|MSR_ILE
-mdefine_line|#define MSR_ILE&t;&t;MASK(MSR_ILE_LG) /* Interrupt Little Endian */
+mdefine_line|#define MSR_ILE&t;&t;__MASK(MSR_ILE_LG)&t;/* Interrupt Little Endian */
 DECL|macro|MSR_EE
-mdefine_line|#define MSR_EE&t;&t;MASK(MSR_EE_LG)&t; /* External Interrupt Enable */
+mdefine_line|#define MSR_EE&t;&t;__MASK(MSR_EE_LG)&t;/* External Interrupt Enable */
 DECL|macro|MSR_PR
-mdefine_line|#define MSR_PR&t;&t;MASK(MSR_PR_LG)&t; /* Problem State / Privilege Level */
+mdefine_line|#define MSR_PR&t;&t;__MASK(MSR_PR_LG)&t;/* Problem State / Privilege Level */
 DECL|macro|MSR_FP
-mdefine_line|#define MSR_FP&t;&t;MASK(MSR_FP_LG)&t; /* Floating Point enable */
+mdefine_line|#define MSR_FP&t;&t;__MASK(MSR_FP_LG)&t;/* Floating Point enable */
 DECL|macro|MSR_ME
-mdefine_line|#define MSR_ME&t;&t;MASK(MSR_ME_LG)&t; /* Machine Check Enable */
+mdefine_line|#define MSR_ME&t;&t;__MASK(MSR_ME_LG)&t;/* Machine Check Enable */
 DECL|macro|MSR_FE0
-mdefine_line|#define MSR_FE0&t;&t;MASK(MSR_FE0_LG) /* Floating Exception mode 0 */
+mdefine_line|#define MSR_FE0&t;&t;__MASK(MSR_FE0_LG)&t;/* Floating Exception mode 0 */
 DECL|macro|MSR_SE
-mdefine_line|#define MSR_SE&t;&t;MASK(MSR_SE_LG)&t; /* Single Step */
+mdefine_line|#define MSR_SE&t;&t;__MASK(MSR_SE_LG)&t;/* Single Step */
 DECL|macro|MSR_BE
-mdefine_line|#define MSR_BE&t;&t;MASK(MSR_BE_LG)&t; /* Branch Trace */
+mdefine_line|#define MSR_BE&t;&t;__MASK(MSR_BE_LG)&t;/* Branch Trace */
 DECL|macro|MSR_DE
-mdefine_line|#define MSR_DE&t;&t;MASK(MSR_DE_LG)&t; /* Debug Exception Enable */
+mdefine_line|#define MSR_DE&t;&t;__MASK(MSR_DE_LG)&t;/* Debug Exception Enable */
 DECL|macro|MSR_FE1
-mdefine_line|#define MSR_FE1&t;&t;MASK(MSR_FE1_LG) /* Floating Exception mode 1 */
+mdefine_line|#define MSR_FE1&t;&t;__MASK(MSR_FE1_LG)&t;/* Floating Exception mode 1 */
 DECL|macro|MSR_IP
-mdefine_line|#define MSR_IP&t;&t;MASK(MSR_IP_LG)&t; /* Exception prefix 0x000/0xFFF */
+mdefine_line|#define MSR_IP&t;&t;__MASK(MSR_IP_LG)&t;/* Exception prefix 0x000/0xFFF */
 DECL|macro|MSR_IR
-mdefine_line|#define MSR_IR&t;&t;MASK(MSR_IR_LG)&t; /* Instruction Relocate */
+mdefine_line|#define MSR_IR&t;&t;__MASK(MSR_IR_LG)&t;/* Instruction Relocate */
 DECL|macro|MSR_DR
-mdefine_line|#define MSR_DR&t;&t;MASK(MSR_DR_LG)&t; /* Data Relocate */
+mdefine_line|#define MSR_DR&t;&t;__MASK(MSR_DR_LG)&t;/* Data Relocate */
 DECL|macro|MSR_PE
-mdefine_line|#define MSR_PE&t;&t;MASK(MSR_PE_LG)&t; /* Protection Enable */
+mdefine_line|#define MSR_PE&t;&t;__MASK(MSR_PE_LG)&t;/* Protection Enable */
 DECL|macro|MSR_PX
-mdefine_line|#define MSR_PX&t;&t;MASK(MSR_PX_LG)&t; /* Protection Exclusive Mode */
+mdefine_line|#define MSR_PX&t;&t;__MASK(MSR_PX_LG)&t;/* Protection Exclusive Mode */
 DECL|macro|MSR_RI
-mdefine_line|#define MSR_RI&t;&t;MASK(MSR_RI_LG)&t; /* Recoverable Exception */
+mdefine_line|#define MSR_RI&t;&t;__MASK(MSR_RI_LG)&t;/* Recoverable Exception */
 DECL|macro|MSR_LE
-mdefine_line|#define MSR_LE&t;&t;MASK(MSR_LE_LG)&t; /* Little Endian */
+mdefine_line|#define MSR_LE&t;&t;__MASK(MSR_LE_LG)&t;/* Little Endian */
 DECL|macro|MSR_
 mdefine_line|#define MSR_&t;&t;MSR_ME | MSR_RI | MSR_IR | MSR_DR | MSR_ISF
 DECL|macro|MSR_KERNEL
@@ -1167,31 +1167,8 @@ id|mm_struct
 id|ioremap_mm
 suffix:semicolon
 multiline_comment|/*&n; * Return saved PC of a blocked thread. For now, this is the &quot;user&quot; PC&n; */
-DECL|function|thread_saved_pc
-r_static
-r_inline
-r_int
-r_int
-id|thread_saved_pc
-c_func
-(paren
-r_struct
-id|thread_struct
-op_star
-id|t
-)paren
-(brace
-r_return
-(paren
-id|t-&gt;regs
-)paren
-ques
-c_cond
-id|t-&gt;regs-&gt;nip
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
+DECL|macro|thread_saved_pc
+mdefine_line|#define thread_saved_pc(tsk)    &bslash;&n;        ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;nip: 0)
 DECL|macro|copy_segments
 mdefine_line|#define copy_segments(tsk, mm)&t;&t;do { } while (0)
 DECL|macro|release_segments
