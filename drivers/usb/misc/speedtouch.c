@@ -239,18 +239,24 @@ op_assign
 l_string|&quot;Alcatel SpeedTouch USB&quot;
 suffix:semicolon
 multiline_comment|/* data thread */
-DECL|variable|datapid
-r_static
-r_int
-id|datapid
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|udsl_wqh
 id|DECLARE_WAIT_QUEUE_HEAD
 (paren
 id|udsl_wqh
 )paren
+suffix:semicolon
+r_static
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|thread_grave
+)paren
+suffix:semicolon
+DECL|variable|datapid
+r_static
+r_int
+r_int
+id|datapid
 suffix:semicolon
 macro_line|#ifdef DEBUG_PACKET
 r_int
@@ -1597,18 +1603,24 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|datapid
-op_assign
-l_int|0
-suffix:semicolon
 id|PDEBUG
 (paren
 l_string|&quot;SpeedSARd is exiting&bslash;n&quot;
 )paren
 suffix:semicolon
+id|complete_and_exit
+c_func
+(paren
+op_amp
+id|thread_grave
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+singleline_comment|//never reached
 )brace
 DECL|function|udsl_atm_sar_start
 r_void
@@ -1666,42 +1678,11 @@ op_logical_neg
 id|ret
 )paren
 (brace
-multiline_comment|/* Wait 10 seconds */
-r_int
-id|count
-op_assign
-l_int|10
-op_star
-l_int|100
-suffix:semicolon
-r_while
-c_loop
+id|wait_for_completion
+c_func
 (paren
-id|datapid
-op_logical_and
-op_decrement
-id|count
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|count
-)paren
-id|err
-(paren
-l_string|&quot;giving up on killing SpeedSAR thread.&quot;
+op_amp
+id|thread_grave
 )paren
 suffix:semicolon
 )brace
