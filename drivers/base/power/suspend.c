@@ -26,13 +26,6 @@ id|u32
 id|state
 )paren
 (brace
-r_struct
-id|device_driver
-op_star
-id|drv
-op_assign
-id|dev-&gt;driver
-suffix:semicolon
 r_int
 id|error
 op_assign
@@ -41,13 +34,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drv
+id|dev-&gt;bus
 op_logical_and
-id|drv-&gt;suspend
+id|dev-&gt;bus-&gt;suspend
 )paren
 id|error
 op_assign
-id|drv
+id|dev-&gt;bus
 op_member_access_from_pointer
 id|suspend
 c_func
@@ -55,8 +48,6 @@ c_func
 id|dev
 comma
 id|state
-comma
-id|SUSPEND_SAVE_STATE
 )paren
 suffix:semicolon
 r_if
@@ -201,26 +192,6 @@ c_func
 suffix:semicolon
 r_goto
 id|Done
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;dpm_power_down - Power down devices without interrupts.&n; *&t;@state:&t;State to enter.&n; *&n; *&t;Walk the dpm_off_irq list (built by device_pm_suspend) and power&n; *&t;down each device that requires the call to be made with interrupts&n; *&t;disabled. &n; */
-DECL|function|dpm_power_down
-r_static
-r_int
-id|dpm_power_down
-c_func
-(paren
-id|u32
-id|state
-)paren
-(brace
-r_int
-id|error
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|error
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;device_pm_power_down - Shut down special devices.&n; *&t;@state:&t;&t;Power state to enter.&n; *&n; *&t;Walk the dpm_off_irq list, calling -&gt;power_down() for each device that&n; *&t;couldn&squot;t power down the device with interrupts enabled. When we&squot;re &n; *&t;done, power down system devices. &n; */

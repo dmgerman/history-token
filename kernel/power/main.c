@@ -291,6 +291,7 @@ suffix:semicolon
 id|device_pm_power_down
 c_func
 (paren
+id|PM_SUSPEND_DISK
 )paren
 suffix:semicolon
 r_switch
