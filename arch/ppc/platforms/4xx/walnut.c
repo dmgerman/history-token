@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *    Copyrigh t(c) 1999-2000 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Copyright 2000-2001 MontaVista Software Inc.&n; *      Completed implementation.&n; *      Author: MontaVista Software, Inc.  &lt;source@mvista.com&gt;&n; *&n; *    Module name: walnut.c&n; *&n; *    Description:&n; *      Architecture- / platform-specific boot-time initialization code for&n; *      IBM PowerPC 4xx based boards. Adapted from original&n; *      code by Gary Thomas, Cort Dougan &lt;cort@fsmlabs.com&gt;, and Dan Malek&n; *      &lt;dan@net4x.com&gt;.&n; *&n; *      History: 11/09/2001 - armin&n; *      added board_init to add in additional instuctions needed during platfrom_init&n; *&n; *      01/22/2002 - Armin&n; *      converted pci to ocp&n; *&n; *&n; */
+multiline_comment|/*&n; *&n; *    Copyright(c) 1999-2000 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Copyright 2000-2002 MontaVista Software Inc.&n; *      Completed implementation.&n; *      Author: MontaVista Software, Inc.  &lt;source@mvista.com&gt;&n; *&n; *    Module name: walnut.c&n; *&n; *    Description:&n; *      Architecture- / platform-specific boot-time initialization code for&n; *      IBM PowerPC 4xx based boards. Adapted from original&n; *      code by Gary Thomas, Cort Dougan &lt;cort@fsmlabs.com&gt;, and Dan Malek&n; *      &lt;dan@net4x.com&gt;.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -15,11 +15,8 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
-macro_line|#ifdef CONFIG_PPC_RTC
+macro_line|#include &lt;asm/ibm_ocp_pci.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
-macro_line|#endif
-macro_line|#include &quot;walnut.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
@@ -143,8 +140,8 @@ suffix:semicolon
 suffix:semicolon
 r_void
 id|__init
-DECL|function|board_setup_arch
-id|board_setup_arch
+DECL|function|walnut_setup_arch
+id|walnut_setup_arch
 c_func
 (paren
 r_void
@@ -173,6 +170,11 @@ suffix:semicolon
 r_void
 op_star
 id|fpga_trigger
+suffix:semicolon
+id|ppc4xx_setup_arch
+c_func
+(paren
+)paren
 suffix:semicolon
 id|kb_data
 op_assign
@@ -303,7 +305,6 @@ comma
 id|fpga_trigger
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_RTC
 multiline_comment|/* RTC step for the walnut */
 id|walnut_rtc_base
 op_assign
@@ -327,7 +328,13 @@ comma
 l_int|8
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PPC_RTC */
+multiline_comment|/* Identify the system */
+id|printk
+c_func
+(paren
+l_string|&quot;IBM Walnut port (C) 2000-2002 MontaVista Software, Inc. (source@mvista.com)&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 r_void
 id|__init
@@ -340,35 +347,23 @@ id|pci_controller
 op_star
 id|hose
 comma
-r_void
+r_struct
+id|pcil0_regs
 op_star
-id|pcil0_base
+id|pcip
 )paren
 (brace
+macro_line|#ifdef CONFIG_PCI
 r_int
 r_int
 id|bar_response
 comma
 id|bar
 suffix:semicolon
-r_struct
-id|pcil0_regs
-op_star
-id|pcip
-suffix:semicolon
 multiline_comment|/*&n;&t; * Expected PCI mapping:&n;&t; *&n;&t; *  PLB addr             PCI memory addr&n;&t; *  ---------------------       ---------------------&n;&t; *  0000&squot;0000 - 7fff&squot;ffff &lt;---  0000&squot;0000 - 7fff&squot;ffff&n;&t; *  8000&squot;0000 - Bfff&squot;ffff ---&gt;  8000&squot;0000 - Bfff&squot;ffff&n;&t; *&n;&t; *  PLB addr             PCI io addr&n;&t; *  ---------------------       ---------------------&n;&t; *  e800&squot;0000 - e800&squot;ffff ---&gt;  0000&squot;0000 - 0001&squot;0000&n;&t; *&n;&t; * The following code is simplified by assuming that the bootrom&n;&t; * has been well behaved in following this mapping.&n;&t; */
 macro_line|#ifdef DEBUG
 r_int
 id|i
-suffix:semicolon
-id|pcip
-op_assign
-(paren
-r_struct
-id|pcil0_regs
-op_star
-)paren
-id|pcil0_base
 suffix:semicolon
 id|printk
 c_func
@@ -547,16 +542,6 @@ id|pcip-&gt;ptm2la
 )paren
 )paren
 )paren
-suffix:semicolon
-macro_line|#else
-id|pcip
-op_assign
-(paren
-r_struct
-id|pcil0_regs
-op_star
-)paren
-id|pcil0_base
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* added for IBM boot rom version 1.15 bios bar changes  -AK */
@@ -1161,16 +1146,22 @@ id|pcip-&gt;ptm2la
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
 )brace
 r_void
 id|__init
-DECL|function|board_io_mapping
-id|board_io_mapping
+DECL|function|walnut_map_io
+id|walnut_map_io
 c_func
 (paren
 r_void
 )paren
 (brace
+id|ppc4xx_map_io
+c_func
+(paren
+)paren
+suffix:semicolon
 id|io_block_mapping
 c_func
 (paren
@@ -1186,24 +1177,54 @@ suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|board_setup_irq
-id|board_setup_irq
+DECL|function|platform_init
+id|platform_init
 c_func
 (paren
-r_void
+r_int
+r_int
+id|r3
+comma
+r_int
+r_int
+id|r4
+comma
+r_int
+r_int
+id|r5
+comma
+r_int
+r_int
+id|r6
+comma
+r_int
+r_int
+id|r7
 )paren
 (brace
-)brace
-r_void
-id|__init
-DECL|function|board_init
-id|board_init
+id|ppc4xx_init
 c_func
 (paren
-r_void
+id|r3
+comma
+id|r4
+comma
+id|r5
+comma
+id|r6
+comma
+id|r7
 )paren
-(brace
-macro_line|#ifdef CONFIG_PPC_RTC
+suffix:semicolon
+id|ppc_md.setup_arch
+op_assign
+id|walnut_setup_arch
+suffix:semicolon
+id|ppc_md.setup_io_mappings
+op_assign
+id|walnut_map_io
+suffix:semicolon
+macro_line|#ifdef CONFIG_GEN_RTC
 id|ppc_md.time_init
 op_assign
 id|todc_time_init

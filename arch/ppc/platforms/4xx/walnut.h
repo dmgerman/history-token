@@ -91,11 +91,6 @@ DECL|macro|WALNUT_RTC_VADDR
 mdefine_line|#define WALNUT_RTC_VADDR&t;WALNUT_RTC_PADDR
 DECL|macro|WALNUT_RTC_SIZE
 mdefine_line|#define WALNUT_RTC_SIZE&t;&t;((uint)8*1024)
-multiline_comment|/* ps2 keyboard and mouse */
-DECL|macro|KEYBOARD_IRQ
-mdefine_line|#define KEYBOARD_IRQ&t;&t;25
-DECL|macro|AUX_IRQ
-mdefine_line|#define AUX_IRQ&t;&t;&t;26
 macro_line|#ifdef CONFIG_PPC405GP_INTERNAL_CLOCK
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD&t;&t;201600
