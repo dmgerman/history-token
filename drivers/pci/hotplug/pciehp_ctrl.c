@@ -911,7 +911,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sort_by_size&n; *&n; * Sorts nodes on the list by their length.&n; * Smallest first.&n; *&n; */
+multiline_comment|/**&n; * sort_by_size: sort nodes by their length, smallest first.&n; *&n; * @head: list to sort&n; */
 DECL|function|sort_by_size
 r_static
 r_int
@@ -1293,13 +1293,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_pre_bridge_resource_split&n; *&n; *&t;Returns zero or one node of resources that aren&squot;t in use&n; *&n; */
-DECL|function|do_pre_bridge_resource_split
+multiline_comment|/**&n; * do_pre_bridge_resource_split: return one unused resource node&n; * @head: list to scan&n; *&n; */
 r_static
 r_struct
 id|pci_resource
 op_star
+DECL|function|do_pre_bridge_resource_split
 id|do_pre_bridge_resource_split
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -1517,11 +1518,9 @@ id|node-&gt;length
 OL
 id|alignment
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 multiline_comment|/* Now unlink it */
 r_if
 c_cond
@@ -1573,13 +1572,14 @@ r_return
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_bridge_resource_split&n; *&n; *&t;Returns zero or one node of resources that aren&squot;t in use&n; *&n; */
-DECL|function|do_bridge_resource_split
+multiline_comment|/**&n; * do_bridge_resource_split: return one unused resource node&n; * @head: list to scan&n; *&n; */
 r_static
 r_struct
 id|pci_resource
 op_star
+DECL|function|do_bridge_resource_split
 id|do_bridge_resource_split
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -1781,6 +1781,7 @@ r_struct
 id|pci_resource
 op_star
 id|get_io_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -2107,6 +2108,7 @@ r_struct
 id|pci_resource
 op_star
 id|get_max_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -2478,7 +2480,7 @@ id|split_node
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* return (NULL); */
+multiline_comment|/* return NULL; */
 id|split_node-&gt;base
 op_assign
 id|max-&gt;base
@@ -2584,6 +2586,7 @@ r_struct
 id|pci_resource
 op_star
 id|get_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -3291,11 +3294,9 @@ id|new_slot
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 id|new_slot
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -3366,7 +3367,7 @@ r_return
 id|new_slot
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * slot_remove - Removes a node from the linked list of slots.&n; * @old_slot: slot to remove&n; *&n; * Returns 0 if successful, !0 otherwise.&n; */
+multiline_comment|/**&n; * slot_remove - Removes a node from the linked list of slots.&n; * @old_slot: slot to remove&n; *&n; * Returns 0 if successful, !0 otherwise.&n; */
 DECL|function|slot_remove
 r_static
 r_int
@@ -3408,11 +3409,9 @@ id|next
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5179,6 +5178,7 @@ DECL|function|pushbutton_helper_thread
 r_static
 r_void
 id|pushbutton_helper_thread
+c_func
 (paren
 r_int
 r_int
@@ -5322,6 +5322,7 @@ suffix:semicolon
 DECL|function|pciehp_event_start_thread
 r_int
 id|pciehp_event_start_thread
+c_func
 (paren
 r_void
 )paren
@@ -5393,6 +5394,7 @@ suffix:semicolon
 DECL|function|pciehp_event_stop_thread
 r_void
 id|pciehp_event_stop_thread
+c_func
 (paren
 r_void
 )paren
@@ -5432,6 +5434,7 @@ DECL|function|update_slot_info
 r_static
 r_int
 id|update_slot_info
+c_func
 (paren
 r_struct
 id|slot
@@ -6100,13 +6103,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* End of FOR loop */
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * pciehp_pushbutton_thread&n; *&n; * Scheduled procedure to handle blocking stuff for the pushbuttons&n; * Handles all pending events and exits.&n; *&n; */
 DECL|function|pciehp_pushbutton_thread
 r_void
 id|pciehp_pushbutton_thread
+c_func
 (paren
 r_int
 r_int
@@ -6356,6 +6358,7 @@ suffix:semicolon
 DECL|function|pciehp_enable_slot
 r_int
 id|pciehp_enable_slot
+c_func
 (paren
 r_struct
 id|slot
@@ -6404,9 +6407,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Check to see if (latch closed, card present, power off) */
@@ -6457,9 +6458,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 id|rc
@@ -6501,9 +6500,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 id|rc
@@ -6545,9 +6542,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 id|up
@@ -6579,9 +6574,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 id|func-&gt;bus
 op_assign
@@ -6693,9 +6686,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 multiline_comment|/* Out of memory */
 id|func-&gt;bus
@@ -6772,6 +6763,7 @@ suffix:semicolon
 DECL|function|pciehp_disable_slot
 r_int
 id|pciehp_disable_slot
+c_func
 (paren
 r_struct
 id|slot
@@ -6829,9 +6821,7 @@ op_logical_neg
 id|p_slot-&gt;ctrl
 )paren
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 multiline_comment|/* Check to see if (latch closed, card present, power on) */
 id|down
@@ -6881,9 +6871,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 id|ret
@@ -6925,9 +6913,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 id|ret
@@ -6970,9 +6956,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 id|up
@@ -7213,6 +7197,7 @@ DECL|function|configure_new_device
 r_static
 id|u32
 id|configure_new_device
+c_func
 (paren
 r_struct
 id|controller
@@ -7396,7 +7381,7 @@ id|rc
 id|dbg
 c_func
 (paren
-l_string|&quot;configure_new_function failed %d&bslash;n&quot;
+l_string|&quot;configure_new_function failed: %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -7559,7 +7544,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;returning from configure_new_device&bslash;n&quot;
+l_string|&quot;returning from %s&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -7572,6 +7559,7 @@ DECL|function|configure_new_function
 r_static
 r_int
 id|configure_new_function
+c_func
 (paren
 r_struct
 id|controller
@@ -10079,9 +10067,7 @@ op_eq
 id|PCI_BASE_CLASS_DISPLAY
 )paren
 r_return
-(paren
 id|DEVICE_TYPE_NOT_SUPPORTED
-)paren
 suffix:semicolon
 multiline_comment|/* Figure out IO and memory needs */
 r_for
