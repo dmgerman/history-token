@@ -595,15 +595,15 @@ mdefine_line|#define A_CNF_AUI 0x0002
 DECL|macro|A_CNF_10B_2
 mdefine_line|#define A_CNF_10B_2 0x0004
 DECL|macro|A_CNF_MEDIA_TYPE
-mdefine_line|#define A_CNF_MEDIA_TYPE 0x0060
+mdefine_line|#define A_CNF_MEDIA_TYPE 0x0070
 DECL|macro|A_CNF_MEDIA_AUTO
-mdefine_line|#define A_CNF_MEDIA_AUTO 0x0000
+mdefine_line|#define A_CNF_MEDIA_AUTO 0x0070
 DECL|macro|A_CNF_MEDIA_10B_T
 mdefine_line|#define A_CNF_MEDIA_10B_T 0x0020
 DECL|macro|A_CNF_MEDIA_AUI
 mdefine_line|#define A_CNF_MEDIA_AUI 0x0040
 DECL|macro|A_CNF_MEDIA_10B_2
-mdefine_line|#define A_CNF_MEDIA_10B_2 0x0060
+mdefine_line|#define A_CNF_MEDIA_10B_2 0x0010
 DECL|macro|A_CNF_DC_DC_POLARITY
 mdefine_line|#define A_CNF_DC_DC_POLARITY 0x0080
 DECL|macro|A_CNF_NO_AUTO_POLARITY
