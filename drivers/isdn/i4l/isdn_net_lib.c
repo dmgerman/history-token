@@ -7119,6 +7119,9 @@ comma
 id|ST_WAIT_DHUP
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
 r_int
@@ -7626,6 +7629,7 @@ op_star
 id|arg
 )paren
 (brace
+r_return
 id|fsm_event
 c_func
 (paren

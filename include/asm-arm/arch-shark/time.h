@@ -5,9 +5,9 @@ DECL|macro|IRQ_TIMER
 mdefine_line|#define IRQ_TIMER 0
 DECL|macro|HZ_TIME
 mdefine_line|#define HZ_TIME ((1193180 + HZ/2) / HZ)
-DECL|function|timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|timer_interrupt
 id|timer_interrupt
 c_func
 (paren
@@ -40,6 +40,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */

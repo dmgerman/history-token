@@ -4479,8 +4479,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-op_le
-id|GFP_ZONEMASK
+OL
+id|MAX_NR_ZONES
 suffix:semicolon
 id|i
 op_increment

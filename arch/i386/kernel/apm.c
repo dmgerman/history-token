@@ -2727,7 +2727,6 @@ macro_line|#endif
 )brace
 DECL|function|reinit_timer
 r_static
-r_inline
 r_void
 id|reinit_timer
 c_func
@@ -2736,6 +2735,23 @@ r_void
 )paren
 (brace
 macro_line|#ifdef INIT_TIMER_AFTER_SUSPEND
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|i8253_lock
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|i8253_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* set the clock to 100 Hz */
 id|outb_p
 c_func
@@ -2784,6 +2800,15 @@ id|udelay
 c_func
 (paren
 l_int|10
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|i8253_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 macro_line|#endif

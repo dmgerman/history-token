@@ -8,20 +8,20 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &quot;ptrace.h&quot;
 DECL|macro|REG_PC
 mdefine_line|#define REG_PC&t;15
 DECL|macro|REG_PSR
 mdefine_line|#define REG_PSR&t;16
 multiline_comment|/*&n; * does not yet catch signals sent when the child dies.&n; * in exit.c or in signal.c.&n; */
-macro_line|#if 1
+macro_line|#if 0
 multiline_comment|/*&n; * Breakpoint SWI instruction: SWI &amp;9F0001&n; */
-DECL|macro|BREAKINST_ARM
 mdefine_line|#define BREAKINST_ARM&t;0xef9f0001
-DECL|macro|BREAKINST_THUMB
 mdefine_line|#define BREAKINST_THUMB&t;0xdf00&t;&t;/* fill this in later */
 macro_line|#else
 multiline_comment|/*&n; * New breakpoints - use an undefined instruction.  The ARM architecture&n; * reference manual guarantees that the following instruction space&n; * will produce an undefined instruction exception on all CPUs:&n; *&n; *  ARM:   xxxx 0111 1111 xxxx xxxx xxxx 1111 xxxx&n; *  Thumb: 1101 1110 xxxx xxxx&n; */
@@ -1916,25 +1916,6 @@ id|regs
 id|siginfo_t
 id|info
 suffix:semicolon
-multiline_comment|/*&n;&t; * The PC is always left pointing at the next instruction.  Fix this.&n;&t; */
-id|regs-&gt;ARM_pc
-op_sub_assign
-l_int|4
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tsk-&gt;thread.debug.nsaved
-op_eq
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ptrace: bogus breakpoint trap&bslash;n&quot;
-)paren
-suffix:semicolon
 id|ptrace_cancel_bpt
 c_func
 (paren
@@ -1964,19 +1945,6 @@ c_func
 (paren
 id|regs
 )paren
-op_minus
-(paren
-id|thumb_mode
-c_func
-(paren
-id|regs
-)paren
-ques
-c_cond
-l_int|2
-suffix:colon
-l_int|4
-)paren
 suffix:semicolon
 id|force_sig_info
 c_func
@@ -1990,6 +1958,137 @@ id|tsk
 )paren
 suffix:semicolon
 )brace
+DECL|function|break_trap
+r_static
+r_int
+id|break_trap
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+r_int
+id|instr
+)paren
+(brace
+id|ptrace_break
+c_func
+(paren
+id|current
+comma
+id|regs
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|arm_break_hook
+r_static
+r_struct
+id|undef_hook
+id|arm_break_hook
+op_assign
+(brace
+dot
+id|instr_mask
+op_assign
+l_int|0x0fffffff
+comma
+dot
+id|instr_val
+op_assign
+l_int|0x07f001f0
+comma
+dot
+id|cpsr_mask
+op_assign
+id|PSR_T_BIT
+comma
+dot
+id|cpsr_val
+op_assign
+l_int|0
+comma
+dot
+id|fn
+op_assign
+id|break_trap
+comma
+)brace
+suffix:semicolon
+DECL|variable|thumb_break_hook
+r_static
+r_struct
+id|undef_hook
+id|thumb_break_hook
+op_assign
+(brace
+dot
+id|instr_mask
+op_assign
+l_int|0xffff
+comma
+dot
+id|instr_val
+op_assign
+l_int|0xde01
+comma
+dot
+id|cpsr_mask
+op_assign
+id|PSR_T_BIT
+comma
+dot
+id|cpsr_val
+op_assign
+id|PSR_T_BIT
+comma
+dot
+id|fn
+op_assign
+id|break_trap
+comma
+)brace
+suffix:semicolon
+DECL|function|ptrace_break_init
+r_static
+r_int
+id|__init
+id|ptrace_break_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|register_undef_hook
+c_func
+(paren
+op_amp
+id|arm_break_hook
+)paren
+suffix:semicolon
+id|register_undef_hook
+c_func
+(paren
+op_amp
+id|thumb_break_hook
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ptrace_break_init
+id|core_initcall
+c_func
+(paren
+id|ptrace_break_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Read the word at offset &quot;off&quot; into the &quot;struct user&quot;.  We&n; * actually access the pt_regs stored on the kernel stack.&n; */
 DECL|function|ptrace_read_user
 r_static

@@ -123,9 +123,9 @@ r_return
 id|usec
 suffix:semicolon
 )brace
-DECL|function|pxa_timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|pxa_timer_interrupt
 id|pxa_timer_interrupt
 c_func
 (paren
@@ -202,6 +202,9 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|time_init
 r_void

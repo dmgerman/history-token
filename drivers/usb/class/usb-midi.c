@@ -6325,11 +6325,6 @@ id|u
 suffix:semicolon
 id|error_end
 suffix:colon
-r_if
-c_cond
-(paren
-id|u
-)paren
 id|kfree
 c_func
 (paren
@@ -6705,12 +6700,10 @@ id|alt
 OL
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
 multiline_comment|/* Configure interface */
 r_if
 c_cond
@@ -6830,11 +6823,9 @@ id|inEndpoints
 op_eq
 l_int|NULL
 )paren
-(brace
 r_goto
 id|error_end
 suffix:semicolon
-)brace
 id|inEndpoints
 op_increment
 suffix:semicolon
@@ -6905,11 +6896,9 @@ id|outEndpoints
 op_eq
 l_int|NULL
 )paren
-(brace
 r_goto
 id|error_end
 suffix:semicolon
-)brace
 id|outEndpoints
 op_increment
 suffix:semicolon
@@ -7554,11 +7543,9 @@ id|i
 op_eq
 l_int|NULL
 )paren
-(brace
 r_goto
 id|error_end
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Success! */
 r_for
@@ -8904,13 +8891,11 @@ id|ualt
 OL
 l_int|0
 )paren
-(brace
 id|ualt
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8918,14 +8903,12 @@ id|umin
 template_param
 l_int|15
 )paren
-(brace
 id|umin
 op_assign
 l_int|0x01
 op_or
 id|USB_DIR_IN
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8933,12 +8916,10 @@ id|umout
 template_param
 l_int|15
 )paren
-(brace
 id|umout
 op_assign
 l_int|0x01
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8946,12 +8927,10 @@ id|ucable
 template_param
 l_int|15
 )paren
-(brace
 id|ucable
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|u.deviceName
 op_assign
 l_int|0

@@ -29,7 +29,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC&t;&t;&quot;NetChip 2280 USB Peripheral Controller&quot;
+mdefine_line|#define&t;DRIVER_DESC&t;&t;&quot;NetChip 2280 USB Peripheral Controller&quot;
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define&t;DRIVER_VERSION&t;&t;&quot;May Day 2003&quot;
 DECL|macro|DMA_ADDR_INVALID
@@ -113,6 +113,24 @@ comma
 id|S_IRUGO
 op_or
 id|S_IWUSR
+)paren
+suffix:semicolon
+multiline_comment|/* mode 0 == ep-{a,b,c,d} 1K fifo each&n; * mode 1 == ep-{a,b} 2K fifo each, ep-{c,d} unavailable&n; * mode 2 == ep-a 2K fifo, ep-{b,c} 1K each, ep-d unavailable&n; */
+DECL|variable|fifo_mode
+r_static
+id|ushort
+id|fifo_mode
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* &quot;modprobe net2280 fifo_mode=1&quot; etc */
+id|module_param
+(paren
+id|fifo_mode
+comma
+id|ushort
+comma
+l_int|0644
 )paren
 suffix:semicolon
 DECL|macro|DIR_STRING
@@ -1423,15 +1441,6 @@ id|ep
 op_logical_or
 op_logical_neg
 id|_req
-op_logical_or
-(paren
-op_logical_neg
-id|ep-&gt;desc
-op_logical_and
-id|ep-&gt;num
-op_ne
-l_int|0
-)paren
 )paren
 r_return
 suffix:semicolon
@@ -1484,7 +1493,7 @@ multiline_comment|/* many common platforms have dma-coherent caches, which means
 macro_line|#if&t;defined(CONFIG_X86)
 DECL|macro|USE_KMALLOC
 mdefine_line|#define USE_KMALLOC
-macro_line|#elif&t;define(CONFIG_PPC) &amp;&amp; !defined(CONFIG_NOT_COHERENT_CACHE)
+macro_line|#elif&t;defined(CONFIG_PPC) &amp;&amp; !defined(CONFIG_NOT_COHERENT_CACHE)
 DECL|macro|USE_KMALLOC
 mdefine_line|#define USE_KMALLOC
 multiline_comment|/* FIXME there are other cases, including an x86-64 one ...  */
@@ -1697,6 +1706,9 @@ id|u8
 op_star
 id|buf
 suffix:semicolon
+id|u32
+id|tmp
+suffix:semicolon
 r_int
 id|count
 comma
@@ -1776,8 +1788,8 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* NOTE be careful if you try to align these. fifo lines&n;&t;&t; * should normally be full (4 bytes) and successive partial&n;&t;&t; * lines are ok only in certain cases.&n;&t;&t; */
-id|writel
-(paren
+id|tmp
+op_assign
 id|get_unaligned
 (paren
 (paren
@@ -1786,6 +1798,16 @@ op_star
 )paren
 id|buf
 )paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+id|writel
+(paren
+id|tmp
 comma
 op_amp
 id|regs-&gt;ep_data
@@ -1809,7 +1831,6 @@ OL
 id|ep-&gt;ep.maxpacket
 )paren
 (brace
-id|u32
 id|tmp
 op_assign
 id|count
@@ -1825,6 +1846,12 @@ id|buf
 )paren
 suffix:colon
 id|count
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|tmp
+)paren
 suffix:semicolon
 id|set_fifo_bytecount
 (paren
@@ -2232,13 +2259,23 @@ op_ge
 l_int|4
 )paren
 (brace
-id|put_unaligned
-(paren
+id|tmp
+op_assign
 id|readl
 (paren
 op_amp
 id|regs-&gt;ep_data
 )paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+id|put_unaligned
+(paren
+id|tmp
 comma
 (paren
 id|u32
@@ -2268,6 +2305,12 @@ id|readl
 (paren
 op_amp
 id|regs-&gt;ep_data
+)paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|tmp
 )paren
 suffix:semicolon
 r_do
@@ -4704,7 +4747,7 @@ l_int|0
 )paren
 r_return
 op_minus
-id|EINVAL
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -4727,6 +4770,27 @@ id|readl
 op_amp
 id|ep-&gt;regs-&gt;ep_avail
 )paren
+op_amp
+(paren
+(paren
+l_int|1
+op_lshift
+l_int|12
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|avail
+OG
+id|ep-&gt;fifo_size
+)paren
+r_return
+op_minus
+id|EOVERFLOW
 suffix:semicolon
 r_if
 c_cond
@@ -5006,6 +5070,7 @@ l_int|1
 op_lshift
 id|GENERATE_RESUME
 comma
+op_amp
 id|dev-&gt;usb-&gt;usbstat
 )paren
 suffix:semicolon
@@ -6689,6 +6754,15 @@ id|set_fifo_mode
 (paren
 id|dev
 comma
+(paren
+id|fifo_mode
+op_le
+l_int|2
+)paren
+ques
+c_cond
+id|fifo_mode
+suffix:colon
 l_int|0
 )paren
 suffix:semicolon
@@ -8664,6 +8738,24 @@ id|readl
 (paren
 op_amp
 id|dev-&gt;usb-&gt;setup4567
+)paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|u.raw
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|u.raw
+(braket
+l_int|1
+)braket
 )paren
 suffix:semicolon
 id|le16_to_cpus

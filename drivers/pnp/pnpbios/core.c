@@ -572,6 +572,8 @@ comma
 id|module
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PNP_NOT_SET_STATICALLY
 suffix:colon
@@ -583,6 +585,8 @@ l_string|&quot;PnPBIOS: %s: unable to set static resources&bslash;n&quot;
 comma
 id|module
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|PNP_UNKNOWN_FUNCTION
@@ -596,6 +600,8 @@ comma
 id|module
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PNP_FUNCTION_NOT_SUPPORTED
 suffix:colon
@@ -607,6 +613,8 @@ l_string|&quot;PnPBIOS: %s: function not supported on this system&bslash;n&quot;
 comma
 id|module
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|PNP_INVALID_HANDLE
@@ -620,6 +628,8 @@ comma
 id|module
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PNP_BAD_PARAMETER
 suffix:colon
@@ -631,6 +641,8 @@ l_string|&quot;PnPBIOS: %s: invalid parameters were passed&bslash;n&quot;
 comma
 id|module
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|PNP_SET_FAILED
@@ -644,6 +656,8 @@ comma
 id|module
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PNP_EVENTS_NOT_PENDING
 suffix:colon
@@ -655,6 +669,8 @@ l_string|&quot;PnPBIOS: %s: no events are pending&bslash;n&quot;
 comma
 id|module
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|PNP_SYSTEM_NOT_DOCKED
@@ -668,6 +684,8 @@ comma
 id|module
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PNP_NO_ISA_PNP_CARDS
 suffix:colon
@@ -679,6 +697,8 @@ l_string|&quot;PnPBIOS: %s: no isapnp cards are installed on this system&bslash;
 comma
 id|module
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|PNP_UNABLE_TO_DETERMINE_DOCK_CAPABILITIES
@@ -692,6 +712,8 @@ comma
 id|module
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PNP_CONFIG_CHANGE_FAILED_NO_BATTERY
 suffix:colon
@@ -703,6 +725,8 @@ l_string|&quot;PnPBIOS: %s: unable to undock, the system does not have a battery
 comma
 id|module
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|PNP_CONFIG_CHANGE_FAILED_RESOURCE_CONFLICT
@@ -716,6 +740,8 @@ comma
 id|module
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PNP_BUFFER_TOO_SMALL
 suffix:colon
@@ -727,6 +753,8 @@ l_string|&quot;PnPBIOS: %s: the buffer passed is too small&bslash;n&quot;
 comma
 id|module
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|PNP_USE_ESCD_SUPPORT
@@ -740,6 +768,8 @@ comma
 id|module
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PNP_MESSAGE_NOT_SUPPORTED
 suffix:colon
@@ -751,6 +781,8 @@ l_string|&quot;PnPBIOS: %s: the message is unsupported&bslash;n&quot;
 comma
 id|module
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|PNP_HARDWARE_ERROR
@@ -764,6 +796,8 @@ comma
 id|module
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|printk
@@ -776,6 +810,8 @@ id|module
 comma
 id|status
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace

@@ -7631,7 +7631,7 @@ id|cam-&gt;proc_dir
 )paren
 r_return
 suffix:semicolon
-singleline_comment|// We should probably return an error here
+singleline_comment|// FIXME: We should probably return an error here
 id|ent
 op_assign
 id|create_proc_entry

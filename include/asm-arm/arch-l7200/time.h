@@ -35,9 +35,9 @@ mdefine_line|#define RTC_EN_TIC&t;0x04      /* Enable counter */
 DECL|macro|RTC_EN_STWDOG
 mdefine_line|#define RTC_EN_STWDOG&t;0x08      /* Enable watchdog */
 multiline_comment|/*&n; * Handler for RTC timer interrupt&n; */
-DECL|function|timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|timer_interrupt
 id|timer_interrupt
 c_func
 (paren
@@ -71,6 +71,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Clear interrupt */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up RTC timer interrupt, and return the current time in seconds.&n; */
 DECL|function|time_init

@@ -273,6 +273,8 @@ DECL|macro|ZONE_HIGHMEM
 mdefine_line|#define ZONE_HIGHMEM&t;&t;2
 DECL|macro|MAX_NR_ZONES
 mdefine_line|#define MAX_NR_ZONES&t;&t;3
+DECL|macro|GFP_ZONEMASK
+mdefine_line|#define GFP_ZONEMASK&t;0x03
 multiline_comment|/*&n; * One allocation request operates on a zonelist. A zonelist&n; * is a list of zones, the first one is the &squot;goal&squot; of the&n; * allocation, the other zones are fallback zones, in decreasing&n; * priority.&n; *&n; * Right now a zonelist takes up less than a cacheline. We never&n; * modify it apart from boot-up, and only a few indices are used,&n; * so despite the zonelist table being relatively big, the cache&n; * footprint of this construct is very small.&n; */
 DECL|struct|zonelist
 r_struct
@@ -294,8 +296,6 @@ suffix:semicolon
 singleline_comment|// NULL delimited
 )brace
 suffix:semicolon
-DECL|macro|GFP_ZONEMASK
-mdefine_line|#define GFP_ZONEMASK&t;0x0f
 multiline_comment|/*&n; * The pg_data_t structure is used in machines with CONFIG_DISCONTIGMEM&n; * (mostly NUMA machines?) to denote a higher-level memory zone than the&n; * zone denotes.&n; *&n; * On NUMA machines, each NUMA node would have a pg_data_t to describe&n; * it&squot;s memory layout.&n; *&n; * Memory statistics and page replacement data structures are maintained on a&n; * per-zone basis.&n; */
 r_struct
 id|bootmem_data
@@ -318,9 +318,7 @@ r_struct
 id|zonelist
 id|node_zonelists
 (braket
-id|GFP_ZONEMASK
-op_plus
-l_int|1
+id|MAX_NR_ZONES
 )braket
 suffix:semicolon
 DECL|member|nr_zones

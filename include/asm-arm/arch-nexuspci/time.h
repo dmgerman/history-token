@@ -1,8 +1,8 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-nexuspci/time.h&n; *&n; * Copyright (c) 1997, 1998, 1999, 2000 FutureTV Labs Ltd.&n; *&n; * The FTV PCI card has no real-time clock.  We get timer ticks from the&n; * SCC chip.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-DECL|function|timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|timer_interrupt
 id|timer_interrupt
 c_func
 (paren
@@ -159,6 +159,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|time_init

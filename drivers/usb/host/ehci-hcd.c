@@ -2916,15 +2916,6 @@ id|qh
 suffix:semicolon
 multiline_comment|/* ASSERT:  any requests/urbs are being unlinked */
 multiline_comment|/* ASSERT:  nobody can be submitting urbs for this any more */
-id|ehci_dbg
-(paren
-id|ehci
-comma
-l_string|&quot;ep %02x disable&bslash;n&quot;
-comma
-id|ep
-)paren
-suffix:semicolon
 id|epnum
 op_assign
 id|ep

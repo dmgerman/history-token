@@ -1158,7 +1158,7 @@ c_func
 id|consistent_init
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * make an area consistent for devices.&n; */
+multiline_comment|/*&n; * Make an area consistent for devices.&n; */
 DECL|function|consistent_sync
 r_void
 id|consistent_sync
