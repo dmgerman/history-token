@@ -3,6 +3,9 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
+macro_line|#include &lt;linux/gfp.h&gt;
+macro_line|#include &lt;linux/page-flags.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &quot;agp.h&quot;
 DECL|variable|__initdata
 r_static
@@ -2069,7 +2072,7 @@ id|agp_bridge.dev
 comma
 id|agp_bridge.capndx
 op_plus
-l_int|4
+id|PCI_AGP_STATUS
 comma
 op_amp
 id|agp_bridge.mode
