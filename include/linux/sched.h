@@ -776,10 +776,6 @@ id|sigpending
 id|shared_pending
 suffix:semicolon
 multiline_comment|/* thread group exit support */
-DECL|member|group_exit
-r_int
-id|group_exit
-suffix:semicolon
 DECL|member|group_exit_code
 r_int
 id|group_exit_code
@@ -898,6 +894,8 @@ DECL|macro|SIGNAL_STOP_DEQUEUED
 mdefine_line|#define SIGNAL_STOP_DEQUEUED&t;0x00000002 /* stop signal dequeued */
 DECL|macro|SIGNAL_STOP_CONTINUED
 mdefine_line|#define SIGNAL_STOP_CONTINUED&t;0x00000004 /* SIGCONT since WCONTINUED reap */
+DECL|macro|SIGNAL_GROUP_EXIT
+mdefine_line|#define SIGNAL_GROUP_EXIT&t;0x00000008 /* group exit in progress */
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_USER_RT_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
 DECL|macro|MAX_USER_RT_PRIO
 mdefine_line|#define MAX_USER_RT_PRIO&t;100

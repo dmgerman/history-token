@@ -2840,10 +2840,6 @@ id|sig-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
-id|sig-&gt;group_exit
-op_assign
-l_int|0
-suffix:semicolon
 id|sig-&gt;group_exit_code
 op_assign
 l_int|0
@@ -3947,7 +3943,9 @@ multiline_comment|/*&n;&t;&t; * Important: if an exit-all has been started then&
 r_if
 c_cond
 (paren
-id|current-&gt;signal-&gt;group_exit
+id|current-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 (brace
 id|spin_unlock

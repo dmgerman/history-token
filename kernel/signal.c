@@ -2117,6 +2117,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
+)paren
+multiline_comment|/*&n;&t;&t; * The process is in the middle of dying already.&n;&t;&t; */
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|sig_kernel_stop
 c_func
 (paren
@@ -3174,7 +3184,11 @@ id|sig
 )paren
 op_logical_and
 op_logical_neg
-id|p-&gt;signal-&gt;group_exit
+(paren
+id|p-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
+)paren
 op_logical_and
 op_logical_neg
 id|sigismember
@@ -3213,19 +3227,15 @@ id|sig
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Start a group exit and wake everybody up.&n;&t;&t;&t; * This way we don&squot;t have other threads&n;&t;&t;&t; * running and doing things after a slower&n;&t;&t;&t; * thread has the fatal signal pending.&n;&t;&t;&t; */
-id|p-&gt;signal-&gt;group_exit
+id|p-&gt;signal-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_GROUP_EXIT
 suffix:semicolon
 id|p-&gt;signal-&gt;group_exit_code
 op_assign
 id|sig
 suffix:semicolon
 id|p-&gt;signal-&gt;group_stop_count
-op_assign
-l_int|0
-suffix:semicolon
-id|p-&gt;signal-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -3519,11 +3529,11 @@ id|task_struct
 op_star
 id|t
 suffix:semicolon
-id|p-&gt;signal-&gt;group_stop_count
-op_assign
-l_int|0
-suffix:semicolon
 id|p-&gt;signal-&gt;flags
+op_assign
+id|SIGNAL_GROUP_EXIT
+suffix:semicolon
+id|p-&gt;signal-&gt;group_stop_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -6096,7 +6106,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;signal-&gt;group_exit
+id|current-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 multiline_comment|/*&n;&t;&t; * Group stop is so another thread can do a core dump,&n;&t;&t; * or else we are racing against a death signal.&n;&t;&t; * Just punt the stop so we can get the next signal.&n;&t;&t; */
 r_return

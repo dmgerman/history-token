@@ -2532,7 +2532,11 @@ id|tsk
 )paren
 op_logical_and
 op_logical_neg
-id|tsk-&gt;signal-&gt;group_exit
+(paren
+id|tsk-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
+)paren
 op_logical_and
 op_logical_neg
 id|thread_group_empty
@@ -3429,7 +3433,9 @@ multiline_comment|/* core dumps don&squot;t get here */
 r_if
 c_cond
 (paren
-id|current-&gt;signal-&gt;group_exit
+id|current-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 id|exit_code
 op_assign
@@ -3480,7 +3486,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sig-&gt;group_exit
+id|sig-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 multiline_comment|/* Another thread got here before we took the lock.  */
 id|exit_code
@@ -3489,9 +3497,9 @@ id|sig-&gt;group_exit_code
 suffix:semicolon
 r_else
 (brace
-id|sig-&gt;group_exit
+id|sig-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_GROUP_EXIT
 suffix:semicolon
 id|sig-&gt;group_exit_code
 op_assign
@@ -4244,7 +4252,11 @@ l_int|0
 suffix:semicolon
 id|status
 op_assign
-id|p-&gt;signal-&gt;group_exit
+(paren
+id|p-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
+)paren
 ques
 c_cond
 id|p-&gt;signal-&gt;group_exit_code

@@ -2535,7 +2535,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sig-&gt;group_exit
+id|sig-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Another group action in progress, just&n;&t;&t; * return so that the signal is processed.&n;&t;&t; */
@@ -2565,10 +2567,6 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|sig-&gt;group_exit
-op_assign
-l_int|1
-suffix:semicolon
 id|zap_other_threads
 c_func
 (paren
@@ -2938,7 +2936,7 @@ id|leader
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Now there are really no other threads at all,&n;&t; * so it&squot;s safe to stop telling them to kill themselves.&n;&t; */
-id|sig-&gt;group_exit
+id|sig-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -5899,9 +5897,9 @@ op_amp
 id|mm-&gt;core_done
 )paren
 suffix:semicolon
-id|current-&gt;signal-&gt;group_exit
+id|current-&gt;signal-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_GROUP_EXIT
 suffix:semicolon
 id|current-&gt;signal-&gt;group_exit_code
 op_assign
