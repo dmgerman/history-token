@@ -7566,6 +7566,16 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+id|fb_open
+op_assign
+id|rivafb_open
+comma
+dot
+id|fb_release
+op_assign
+id|rivafb_release
+comma
+dot
 id|fb_check_var
 op_assign
 id|rivafb_check_var
