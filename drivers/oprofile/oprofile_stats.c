@@ -1,6 +1,7 @@
 multiline_comment|/**&n; * @file oprofile_stats.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon&n; */
 macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &quot;oprofile_stats.h&quot;
 macro_line|#include &quot;cpu_buffer.h&quot;
 DECL|variable|oprofile_stats
