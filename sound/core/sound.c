@@ -11,6 +11,7 @@ macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|macro|SNDRV_OS_MINORS
 mdefine_line|#define SNDRV_OS_MINORS 256
 DECL|variable|major
@@ -120,6 +121,13 @@ c_func
 id|cards_limit
 comma
 l_string|&quot;default:8,skill:advanced&quot;
+)paren
+suffix:semicolon
+DECL|variable|CONFIG_SND_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|CONFIG_SND_MAJOR
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS

@@ -16021,4 +16021,11 @@ c_func
 id|exit_sg
 )paren
 suffix:semicolon
+DECL|variable|SCSI_GENERIC_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|SCSI_GENERIC_MAJOR
+)paren
+suffix:semicolon
 eof

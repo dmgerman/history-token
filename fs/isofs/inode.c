@@ -6057,4 +6057,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Actual filesystem name is iso9660, as requested in filesystems.c */
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;iso9660&quot;
+)paren
+suffix:semicolon
 eof
