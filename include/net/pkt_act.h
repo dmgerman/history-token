@@ -911,12 +911,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_else
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 macro_line|#ifdef CONFIG_NET_ACT_INIT
 r_static
