@@ -41,6 +41,13 @@ macro_line|#else
 DECL|macro|gadget_is_sa1100
 mdefine_line|#define&t;gadget_is_sa1100(g)&t;0
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_LH7A40X
+DECL|macro|gadget_is_lh7a40x
+mdefine_line|#define&t;gadget_is_lh7a40x(g)&t;!strcmp(&quot;lh7a40x_udc&quot;, (g)-&gt;name)
+macro_line|#else
+DECL|macro|gadget_is_lh7a40x
+mdefine_line|#define&t;gadget_is_lh7a40x(g)&t;0
+macro_line|#endif
 macro_line|#ifdef CONFIG_USB_GADGET_MQ11XX
 DECL|macro|gadget_is_mq11xx
 mdefine_line|#define&t;gadget_is_mq11xx(g)&t;!strcmp(&quot;mq11xx_udc&quot;, (g)-&gt;name)

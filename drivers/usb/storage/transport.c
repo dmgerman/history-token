@@ -2729,6 +2729,13 @@ r_int
 id|result
 suffix:semicolon
 multiline_comment|/* issue the command */
+id|us-&gt;iobuf
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 id|result
 op_assign
 id|usb_stor_control_msg
@@ -2775,8 +2782,8 @@ r_if
 c_cond
 (paren
 id|result
-op_eq
-l_int|1
+op_ge
+l_int|0
 )paren
 r_return
 id|us-&gt;iobuf
