@@ -2,6 +2,10 @@ multiline_comment|/*&n; *   fs/cifs/cifs_fs_sb.h&n; *&n; *   Copyright (c) Inter
 macro_line|#ifndef _CIFS_FS_SB_H
 DECL|macro|_CIFS_FS_SB_H
 mdefine_line|#define _CIFS_FS_SB_H
+DECL|macro|CIFS_MOUNT_NO_PERM
+mdefine_line|#define CIFS_MOUNT_NO_PERM&t;1 /* do not do client vfs_perm check */
+DECL|macro|CIFS_MOUNT_SET_UID
+mdefine_line|#define CIFS_MOUNT_SET_UID      2 /* set current-&gt;euid in create etc. */
 DECL|struct|cifs_sb_info
 r_struct
 id|cifs_sb_info
@@ -49,6 +53,10 @@ suffix:semicolon
 DECL|member|mnt_dir_mode
 id|mode_t
 id|mnt_dir_mode
+suffix:semicolon
+DECL|member|mnt_cifs_flags
+r_int
+id|mnt_cifs_flags
 suffix:semicolon
 )brace
 suffix:semicolon

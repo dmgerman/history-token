@@ -309,28 +309,6 @@ op_star
 id|p24
 )paren
 suffix:semicolon
-r_int
-id|decode_pw_buffer
-c_func
-(paren
-r_char
-id|in_buffer
-(braket
-l_int|516
-)braket
-comma
-r_char
-op_star
-id|new_pwrd
-comma
-r_int
-id|new_pwrd_size
-comma
-id|__u32
-op_star
-id|new_pw_len
-)paren
-suffix:semicolon
 multiline_comment|/*&n;   This implements the X/Open SMB password encryption&n;   It takes a password, a 8 byte &quot;crypt key&quot; and puts 24 bytes of &n;   encrypted password into p24 */
 multiline_comment|/* Note that password must be uppercased and null terminated */
 r_void

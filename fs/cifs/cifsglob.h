@@ -19,6 +19,8 @@ DECL|macro|MAX_USERNAME_SIZE
 mdefine_line|#define MAX_USERNAME_SIZE 32&t;/* 32 is to allow for 15 char names + null&n;&t;&t;&t;&t;   termination then *2 for unicode versions */
 DECL|macro|MAX_PASSWORD_SIZE
 mdefine_line|#define MAX_PASSWORD_SIZE 16
+DECL|macro|CIFS_MIN_RCV_POOL
+mdefine_line|#define CIFS_MIN_RCV_POOL 4
 multiline_comment|/*&n; * MAX_REQ is the maximum number of requests that WE will send&n; * on one socket concurently. It also matches the most common&n; * value of max multiplex returned by servers.  We may &n; * eventually want to use the negotiated value (in case&n; * future servers can handle more) when we are more confident that&n; * we will not have problems oveloading the socket with pending&n; * write data.&n; */
 DECL|macro|CIFS_MAX_REQ
 mdefine_line|#define CIFS_MAX_REQ 50 
@@ -1052,6 +1054,11 @@ DECL|variable|tconInfoAllocCount
 id|GLOBAL_EXTERN
 id|atomic_t
 id|tconInfoAllocCount
+suffix:semicolon
+DECL|variable|tcpSesAllocCount
+id|GLOBAL_EXTERN
+id|atomic_t
+id|tcpSesAllocCount
 suffix:semicolon
 DECL|variable|tcpSesReconnectCount
 id|GLOBAL_EXTERN
