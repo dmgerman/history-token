@@ -5,8 +5,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/if_arp.h&gt;&t;&t;/* ARPHRD_IRDA */
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/iriap.h&gt;
@@ -132,6 +132,40 @@ id|irlpt_server_init
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|irsock_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|irsock_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|irlap_driver_rcv
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+comma
+r_struct
+id|net_device
+op_star
+comma
+r_struct
+id|packet_type
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* IrTTP */
@@ -734,135 +768,139 @@ id|irtty_set_packet_mode
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|function|irda_init
+macro_line|#ifdef CONFIG_IRDA_DEBUG
+DECL|variable|irda_debug
+id|__u32
+id|irda_debug
+op_assign
+id|IRDA_DEBUG_LEVEL
+suffix:semicolon
+macro_line|#endif
+DECL|variable|irda_packet_type
+r_static
+r_struct
+id|packet_type
+id|irda_packet_type
+op_assign
+(brace
+l_int|0
+comma
+multiline_comment|/* MUTTER ntohs(ETH_P_IRDA),*/
+l_int|NULL
+comma
+id|irlap_driver_rcv
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Function irda_device_event (this, event, ptr)&n; *&n; *    Called when a device is taken up or down&n; *&n; */
+DECL|function|irda_device_event
+r_static
 r_int
-id|__init
-id|irda_init
+id|irda_device_event
 c_func
 (paren
+r_struct
+id|notifier_block
+op_star
+id|this
+comma
+r_int
+r_int
+id|event
+comma
 r_void
+op_star
+id|ptr
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+id|ptr
+suffix:semicolon
+multiline_comment|/* Reject non IrDA devices */
+r_if
+c_cond
+(paren
+id|dev-&gt;type
+op_ne
+id|ARPHRD_IRDA
+)paren
+r_return
+id|NOTIFY_DONE
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|event
+)paren
+(brace
+r_case
+id|NETDEV_UP
+suffix:colon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|3
 comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
+l_string|&quot;(), NETDEV_UP&bslash;n&quot;
 )paren
 suffix:semicolon
-id|irlmp_init
+multiline_comment|/* irda_dev_device_up(dev); */
+r_break
+suffix:semicolon
+r_case
+id|NETDEV_DOWN
+suffix:colon
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|3
+comma
+id|__FUNCTION__
+l_string|&quot;(), NETDEV_DOWN&bslash;n&quot;
 )paren
 suffix:semicolon
-id|irlap_init
-c_func
-(paren
-)paren
+multiline_comment|/* irda_kill_by_device(dev); */
+multiline_comment|/* irda_rt_device_down(dev); */
+multiline_comment|/* irda_dev_device_down(dev); */
+r_break
 suffix:semicolon
-id|iriap_init
-c_func
-(paren
-)paren
+r_default
+suffix:colon
+r_break
 suffix:semicolon
-id|irttp_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|irda_proc_register
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SYSCTL
-id|irda_sysctl_register
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* &n;&t; * Initialize modules that got compiled into the kernel &n;&t; */
-macro_line|#ifdef CONFIG_IRLAN
-id|irlan_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IRCOMM
-id|ircomm_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ircomm_tty_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
+)brace
 r_return
-l_int|0
+id|NOTIFY_DONE
 suffix:semicolon
 )brace
-DECL|function|irda_cleanup
-r_void
-id|__exit
-id|irda_cleanup
-c_func
-(paren
-r_void
-)paren
+DECL|variable|irda_dev_notifier
+r_static
+r_struct
+id|notifier_block
+id|irda_dev_notifier
+op_assign
 (brace
-macro_line|#ifdef CONFIG_SYSCTL
-id|irda_sysctl_unregister
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;
-macro_line|#ifdef CONFIG_PROC_FS
-id|irda_proc_unregister
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Remove higher layers */
-id|irttp_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|iriap_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Remove lower layers */
-id|irda_device_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|irlap_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Must be done before irlmp_cleanup()! DB */
-multiline_comment|/* Remove middle layer */
-id|irlmp_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
+id|irda_device_event
+comma
+l_int|NULL
+comma
+l_int|0
 )brace
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_notify_init (notify)&n; *&n; *    Used for initializing the notify structure&n; *&n; */
 DECL|function|irda_notify_init
 r_void
@@ -917,4 +955,226 @@ id|NOTIFY_MAX_NAME
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Function irda_init (void)&n; *&n; *  Protocol stack intialisation entry point.&n; *  Initialise the various components of the IrDA stack&n; */
+DECL|function|irda_init
+r_int
+id|__init
+id|irda_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;()&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Lower layer of the stack */
+id|irlmp_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irlap_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Higher layers of the stack */
+id|iriap_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irttp_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irsock_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Add IrDA packet type (Start receiving packets) */
+id|irda_packet_type.type
+op_assign
+id|htons
+c_func
+(paren
+id|ETH_P_IRDA
+)paren
+suffix:semicolon
+id|dev_add_pack
+c_func
+(paren
+op_amp
+id|irda_packet_type
+)paren
+suffix:semicolon
+multiline_comment|/* Notifier for Interface changes */
+id|register_netdevice_notifier
+c_func
+(paren
+op_amp
+id|irda_dev_notifier
+)paren
+suffix:semicolon
+multiline_comment|/* External APIs */
+macro_line|#ifdef CONFIG_PROC_FS
+id|irda_proc_register
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SYSCTL
+id|irda_sysctl_register
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Driver/dongle support */
+id|irda_device_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Function irda_cleanup (void)&n; *&n; *  Protocol stack cleanup/removal entry point.&n; *  Cleanup the various components of the IrDA stack&n; */
+DECL|function|irda_cleanup
+r_void
+id|__exit
+id|irda_cleanup
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Remove External APIs */
+macro_line|#ifdef CONFIG_SYSCTL
+id|irda_sysctl_unregister
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif&t;
+macro_line|#ifdef CONFIG_PROC_FS
+id|irda_proc_unregister
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Remove IrDA packet type (stop receiving packets) */
+id|irda_packet_type.type
+op_assign
+id|htons
+c_func
+(paren
+id|ETH_P_IRDA
+)paren
+suffix:semicolon
+id|dev_remove_pack
+c_func
+(paren
+op_amp
+id|irda_packet_type
+)paren
+suffix:semicolon
+multiline_comment|/* Stop receiving interfaces notifications */
+id|unregister_netdevice_notifier
+c_func
+(paren
+op_amp
+id|irda_dev_notifier
+)paren
+suffix:semicolon
+multiline_comment|/* Remove higher layers */
+id|irsock_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irttp_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|iriap_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Remove lower layers */
+id|irda_device_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irlap_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Must be done before irlmp_cleanup()! DB */
+multiline_comment|/* Remove middle layer */
+id|irlmp_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * The IrDA stack must be initialised *before* drivers get initialised,&n; * and *before* higher protocols (IrLAN/IrCOMM/IrNET) get initialised,&n; * otherwise bad things will happen (hashbins will be NULL for example).&n; * Those modules are at module_init()/device_initcall() level.&n; *&n; * On the other hand, it needs to be initialised *after* the basic&n; * networking, the /proc/net filesystem and sysctl module. Those are&n; * currently initialised in .../init/main.c (before initcalls).&n; * Also, it needs to be initialised *after* the random number generator.&n; *&n; * Jean II&n; */
+DECL|variable|irda_init
+id|subsys_initcall
+c_func
+(paren
+id|irda_init
+)paren
+suffix:semicolon
+DECL|variable|irda_cleanup
+id|module_exit
+c_func
+(paren
+id|irda_cleanup
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Dag Brattli &lt;dagb@cs.uit.no&gt; &amp; Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;The Linux IrDA Protocol Stack&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DEBUG
+id|MODULE_PARM
+c_func
+(paren
+id|irda_debug
+comma
+l_string|&quot;1l&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

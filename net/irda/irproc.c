@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 r_extern
@@ -195,6 +195,7 @@ mdefine_line|#define IRDA_ENTRIES_NUM (sizeof(dir)/sizeof(dir[0]))
 multiline_comment|/*&n; * Function irda_proc_register (void)&n; *&n; *    Register irda entry in /proc file system&n; *&n; */
 DECL|function|irda_proc_register
 r_void
+id|__init
 id|irda_proc_register
 c_func
 (paren
@@ -267,6 +268,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function irda_proc_unregister (void)&n; *&n; *    Unregister irda entry in /proc file system&n; *&n; */
 DECL|function|irda_proc_unregister
 r_void
+id|__exit
 id|irda_proc_unregister
 c_func
 (paren
