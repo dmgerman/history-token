@@ -1347,21 +1347,17 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************/
 DECL|macro|FPGA_PROG
-mdefine_line|#define FPGA_PROG   0x0001&t;&t;
-singleline_comment|// PROG enable low
+mdefine_line|#define FPGA_PROG   0x0001&t;&t;/* PROG enable low */
 DECL|macro|FPGA_BUSY
-mdefine_line|#define FPGA_BUSY   0x0002&t;&t;
-singleline_comment|// BUSY high, DONE low
+mdefine_line|#define FPGA_BUSY   0x0002&t;&t;/* BUSY high, DONE low */
 DECL|macro|FPGA_CS
-mdefine_line|#define&t;FPGA_CS     0x000C&t;&t;
-singleline_comment|// Enable I/O pins
+mdefine_line|#define&t;FPGA_CS     0x000C&t;&t;/* Enable I/O pins */
 DECL|macro|FPGA_CCLK
 mdefine_line|#define FPGA_CCLK   0x0100
 DECL|macro|FPGA_DOUT
 mdefine_line|#define FPGA_DOUT   0x0400
 DECL|macro|FPGA_DIN
-mdefine_line|#define FPGA_DIN    FPGA_DOUT   
-singleline_comment|// bidirectional I/O
+mdefine_line|#define FPGA_DIN    FPGA_DOUT   /* bidirectional I/O */
 DECL|function|qBri_FPGA_download
 r_int
 id|qBri_FPGA_download
@@ -1508,7 +1504,7 @@ op_complement
 id|FPGA_PROG
 )paren
 suffix:semicolon
-singleline_comment|// PROGRAM low pulse
+multiline_comment|/* PROGRAM low pulse */
 id|WRITE_WORD
 c_func
 (paren
@@ -1517,13 +1513,13 @@ comma
 id|baseval
 )paren
 suffix:semicolon
-singleline_comment|// release
+multiline_comment|/* release */
 id|diva_os_wait
 (paren
 l_int|50
 )paren
 suffix:semicolon
-singleline_comment|// wait until FPGA finished internal memory clear
+multiline_comment|/* wait until FPGA finished internal memory clear */
 multiline_comment|/*&n; *&t;check done pin, must be low&n; */
 r_if
 c_cond
@@ -1595,14 +1591,14 @@ id|val
 op_lshift_assign
 l_int|1
 )paren
-singleline_comment|// put byte onto FPGA
+multiline_comment|/* put byte onto FPGA */
 (brace
 id|baseval
 op_and_assign
 op_complement
 id|FPGA_DOUT
 suffix:semicolon
-singleline_comment|// clr  data bit
+multiline_comment|/* clr  data bit */
 id|baseval
 op_or_assign
 (paren
@@ -1611,7 +1607,7 @@ op_amp
 id|FPGA_DOUT
 )paren
 suffix:semicolon
-singleline_comment|// copy data bit
+multiline_comment|/* copy data bit */
 id|WRITE_WORD
 c_func
 (paren
@@ -1630,7 +1626,7 @@ op_or
 id|FPGA_CCLK
 )paren
 suffix:semicolon
-singleline_comment|// set CCLK hi
+multiline_comment|/* set CCLK hi */
 id|WRITE_WORD
 c_func
 (paren
@@ -1641,7 +1637,7 @@ op_or
 id|FPGA_CCLK
 )paren
 suffix:semicolon
-singleline_comment|// set CCLK hi
+multiline_comment|/* set CCLK hi */
 id|WRITE_WORD
 c_func
 (paren
@@ -1650,7 +1646,7 @@ comma
 id|baseval
 )paren
 suffix:semicolon
-singleline_comment|// set CCLK lo
+multiline_comment|/* set CCLK lo */
 )brace
 )brace
 id|xdiFreeFile
@@ -4470,7 +4466,7 @@ id|PLX9054_INTCSR
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// disable PCI interrupts
+multiline_comment|/* disable PCI interrupts */
 id|WRITE_DWORD
 c_func
 (paren
