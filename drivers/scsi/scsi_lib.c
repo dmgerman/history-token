@@ -1884,9 +1884,7 @@ c_func
 (paren
 id|SRpnt-&gt;sr_device
 comma
-id|FALSE
-comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1946,9 +1944,7 @@ c_func
 (paren
 id|SDpnt
 comma
-id|FALSE
-comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 )brace
