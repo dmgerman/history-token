@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_INET_H
 DECL|macro|_LINUX_INET_H
 mdefine_line|#define _LINUX_INET_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
 r_extern
 id|__u32
 id|in_aton

@@ -462,7 +462,7 @@ id|pdinfo
 suffix:semicolon
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|i
@@ -1310,7 +1310,7 @@ id|bs_base
 suffix:semicolon
 id|cnode
 op_assign
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid

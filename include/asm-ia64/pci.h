@@ -264,7 +264,49 @@ id|dev
 )paren
 (brace
 )brace
-multiline_comment|/* generic pci stuff */
-macro_line|#include &lt;asm-generic/pci.h&gt;
+r_extern
+r_void
+id|pcibios_resource_to_bus
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|pci_bus_region
+op_star
+id|region
+comma
+r_struct
+id|resource
+op_star
+id|res
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pcibios_bus_to_resource
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|resource
+op_star
+id|res
+comma
+r_struct
+id|pci_bus_region
+op_star
+id|region
+)paren
+suffix:semicolon
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 macro_line|#endif /* _ASM_IA64_PCI_H */
 eof
