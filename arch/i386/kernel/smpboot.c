@@ -359,7 +359,7 @@ id|valid_k7
 suffix:colon
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * TSC synchronization.&n; *&n; * We first check wether all CPUs have their TSC&squot;s synchronized,&n; * then we print a warning if not, and always resync.&n; */
+multiline_comment|/*&n; * TSC synchronization.&n; *&n; * We first check whether all CPUs have their TSC&squot;s synchronized,&n; * then we print a warning if not, and always resync.&n; */
 DECL|variable|tsc_start_flag
 r_static
 id|atomic_t

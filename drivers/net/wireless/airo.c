@@ -3246,7 +3246,7 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-multiline_comment|/* Note, we can have MAX_FIDS outstanding.  FIDs are 16-bits, so we&n;&t;   use the high bit to mark wether it is in use. */
+multiline_comment|/* Note, we can have MAX_FIDS outstanding.  FIDs are 16-bits, so we&n;&t;   use the high bit to mark whether it is in use. */
 DECL|macro|MAX_FIDS
 mdefine_line|#define MAX_FIDS 6
 DECL|member|fids

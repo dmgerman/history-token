@@ -3348,7 +3348,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Decide wether we have an iso, a request, or a response packet */
+multiline_comment|/* Decide whether we have an iso, a request, or a response packet */
 r_if
 c_cond
 (paren
@@ -15783,7 +15783,7 @@ id|tasklet-&gt;type
 op_assign
 id|type
 suffix:semicolon
-multiline_comment|/* We init the tasklet-&gt;link field, so we can list_del() it&n;&t; * without worrying wether it was added to the list or not. */
+multiline_comment|/* We init the tasklet-&gt;link field, so we can list_del() it&n;&t; * without worrying whether it was added to the list or not. */
 id|INIT_LIST_HEAD
 c_func
 (paren

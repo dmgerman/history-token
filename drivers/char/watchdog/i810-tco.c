@@ -538,7 +538,7 @@ id|tco_expect_close
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* scan to see wether or not we got the magic character */
+multiline_comment|/* scan to see whether or not we got the magic character */
 r_for
 c_loop
 (paren

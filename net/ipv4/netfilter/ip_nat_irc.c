@@ -725,7 +725,7 @@ op_amp
 id|ip_irc_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Check wether the whole IP/address pattern is carried in the payload */
+multiline_comment|/* Check whether the whole IP/address pattern is carried in the payload */
 r_if
 c_cond
 (paren

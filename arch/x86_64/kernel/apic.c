@@ -976,7 +976,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Double-check wether this APIC is really registered.&n;&t; * This is meaningless in clustered apic mode, so we skip it.&n;&t; */
+multiline_comment|/*&n;&t; * Double-check whether this APIC is really registered.&n;&t; * This is meaningless in clustered apic mode, so we skip it.&n;&t; */
 r_if
 c_cond
 (paren

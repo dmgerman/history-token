@@ -76,7 +76,7 @@ id|dsps_order
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* wether or not we mess around with power management */
+multiline_comment|/* whether or not we mess around with power management */
 DECL|variable|use_pm
 r_static
 r_int
@@ -15561,7 +15561,7 @@ op_plus
 l_int|0x1f
 )paren
 suffix:semicolon
-multiline_comment|/* it appears some maestros (dell 7500) only work if these are set,&n;&t;&t;regardless of wether we use the assp or not. */
+multiline_comment|/* it appears some maestros (dell 7500) only work if these are set,&n;&t;&t;regardless of whether we use the assp or not. */
 id|outb
 c_func
 (paren
