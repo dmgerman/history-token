@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/char/watchdog/s3c2410_wdt.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Watchdog Timer Support&n; *&n; * Based on, softdog.c by Alan Cox,&n; *     (c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* linux/drivers/char/watchdog/s3c2410_wdt.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Watchdog Timer Support&n; *&n; * Based on, softdog.c by Alan Cox,&n; *     (c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&t;05-Oct-2004&t;BJD&t;Added semaphore init to stop crashes on open&n; *&t;&t;&t;&t;Fixed tmr_count / wdt_count confusion&n; *&t;&t;&t;&t;Added configurable debug&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -23,25 +23,12 @@ mdefine_line|#define S3C2410_VA_WATCHDOG (0)
 macro_line|#include &lt;asm/arch/regs-watchdog.h&gt;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;s3c2410-wdt: &quot;
-macro_line|#ifdef CONFIG_S3C2410_WATCHDOG_DEBUG
-DECL|macro|pr_debug
-macro_line|#undef pr_debug
-DECL|macro|pr_debug
-mdefine_line|#define pr_debug(msg, x...) do { printk(KERN_INFO msg, x); } while(0)
-macro_line|#endif
-multiline_comment|/* configurations from makefile */
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
 DECL|macro|CONFIG_WATCHDOG_NOWAYOUT
-mdefine_line|#define CONFIG_WATCHDOG_NOWAYOUT (0)
-macro_line|#endif
-macro_line|#ifndef CONFIG_S3C2410_WATCHDOG_ATBOOT
+mdefine_line|#define CONFIG_WATCHDOG_NOWAYOUT&t;&t;(0)
 DECL|macro|CONFIG_S3C2410_WATCHDOG_ATBOOT
-mdefine_line|#define CONFIG_S3C2410_WATCHDOG_ATBOOT (0)
-macro_line|#endif
-macro_line|#ifndef CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME
+mdefine_line|#define CONFIG_S3C2410_WATCHDOG_ATBOOT&t;&t;(0)
 DECL|macro|CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME
-mdefine_line|#define CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME (15)
-macro_line|#endif
+mdefine_line|#define CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME&t;(15)
 DECL|variable|tmr_margin
 r_static
 r_int
@@ -70,6 +57,13 @@ id|soft_noboot
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|debug
+r_static
+r_int
+id|debug
+op_assign
+l_int|0
+suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -104,6 +98,16 @@ id|module_param
 c_func
 (paren
 id|soft_noboot
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
 comma
 r_int
 comma
@@ -153,6 +157,14 @@ comma
 l_string|&quot;Watchdog action, set to 1 to ignore reboots, 0 to reboot (default depends on ONLY_TESTING)&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Watchdog debug, set to &gt;1 for debug, (default 0)&quot;
+)paren
+suffix:semicolon
 DECL|enum|close_state
 r_typedef
 r_enum
@@ -169,11 +181,12 @@ DECL|typedef|close_state_t
 )brace
 id|close_state_t
 suffix:semicolon
-DECL|variable|open_lock
 r_static
-r_struct
-id|semaphore
+id|DECLARE_MUTEX
+c_func
+(paren
 id|open_lock
+)paren
 suffix:semicolon
 DECL|variable|wdt_mem
 r_static
@@ -214,13 +227,10 @@ r_static
 id|close_state_t
 id|allow_close
 suffix:semicolon
-DECL|variable|tmr_count
-r_static
-r_int
-r_int
-id|tmr_count
-suffix:semicolon
 multiline_comment|/* watchdog control routines */
+DECL|macro|DBG
+mdefine_line|#define DBG(msg...) do { &bslash;&n;&t;if (debug) &bslash;&n;&t;&t;printk(KERN_INFO msg); &bslash;&n;&t;} while(0)
+multiline_comment|/* functions */
 DECL|function|s3c2410wdt_keepalive
 r_static
 r_int
@@ -303,6 +313,11 @@ r_int
 r_int
 id|wtcon
 suffix:semicolon
+id|s3c2410wdt_stop
+c_func
+(paren
+)paren
+suffix:semicolon
 id|wtcon
 op_assign
 id|readl
@@ -347,20 +362,14 @@ op_or_assign
 id|S3C2410_WTCON_RSTEN
 suffix:semicolon
 )brace
-id|clk_enable
+id|DBG
 c_func
 (paren
-id|wdt_clock
-)paren
-suffix:semicolon
-id|pr_debug
-c_func
-(paren
-l_string|&quot;%s: tmr_count=0x%08x, wtcon=%08lx&bslash;n&quot;
+l_string|&quot;%s: wdt_count=0x%08x, wtcon=%08lx&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|tmr_count
+id|wdt_count
 comma
 id|wtcon
 )paren
@@ -368,11 +377,21 @@ suffix:semicolon
 id|writel
 c_func
 (paren
-id|tmr_count
+id|wdt_count
 comma
 id|wdt_base
 op_plus
 id|S3C2410_WTDAT
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|wdt_count
+comma
+id|wdt_base
+op_plus
+id|S3C2410_WTCNT
 )paren
 suffix:semicolon
 id|writel
@@ -451,7 +470,7 @@ id|timeout
 op_star
 id|freq
 suffix:semicolon
-id|pr_debug
+id|DBG
 c_func
 (paren
 l_string|&quot;%s: count=%d, timeout=%d, freq=%d&bslash;n&quot;
@@ -531,7 +550,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-id|pr_debug
+id|DBG
 c_func
 (paren
 l_string|&quot;%s: timeout=%d, divisor=%d, count=%d (%08x)&bslash;n&quot;
@@ -553,7 +572,7 @@ id|count
 op_div_assign
 id|divisor
 suffix:semicolon
-id|tmr_count
+id|wdt_count
 op_assign
 id|count
 suffix:semicolon
@@ -1239,7 +1258,7 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
-id|pr_debug
+id|DBG
 c_func
 (paren
 l_string|&quot;%s: probe=%p, device=%p&bslash;n&quot;
@@ -1359,10 +1378,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|pr_debug
+id|DBG
 c_func
 (paren
-l_string|&quot;wdt_base=%08lx&bslash;n&quot;
+l_string|&quot;probe: mapped wdt_base=%px&bslash;n&quot;
 comma
 id|wdt_base
 )paren
@@ -1470,6 +1489,12 @@ id|ENOENT
 suffix:semicolon
 )brace
 id|clk_use
+c_func
+(paren
+id|wdt_clock
+)paren
+suffix:semicolon
+id|clk_enable
 c_func
 (paren
 id|wdt_clock
@@ -1757,7 +1782,7 @@ id|banner
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;S3C2410 Watchdog Timer, (c) 2004 Simtec Electronics&quot;
+l_string|&quot;S3C2410 Watchdog Timer, (c) 2004 Simtec Electronics&bslash;n&quot;
 suffix:semicolon
 DECL|function|watchdog_init
 r_static
