@@ -4,10 +4,36 @@ mdefine_line|#define DEBUG 0
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
+DECL|variable|device_root_dir
+r_static
+r_struct
+id|driver_dir_entry
+id|device_root_dir
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;root&quot;
+comma
+dot
+id|mode
+op_assign
+(paren
+id|S_IRWXU
+op_or
+id|S_IRUGO
+op_or
+id|S_IXUGO
+)paren
+comma
+)brace
+suffix:semicolon
 r_extern
 r_struct
 id|device_attribute
@@ -591,7 +617,7 @@ op_add_assign
 id|strlen
 c_func
 (paren
-l_string|&quot;../../..&quot;
+l_string|&quot;../../../root&quot;
 )paren
 suffix:semicolon
 r_if
@@ -641,7 +667,7 @@ c_func
 (paren
 id|path
 comma
-l_string|&quot;../../..&quot;
+l_string|&quot;../../../root&quot;
 )paren
 suffix:semicolon
 id|fill_devpath
@@ -756,8 +782,6 @@ r_struct
 id|driver_dir_entry
 op_star
 id|parent
-op_assign
-l_int|NULL
 suffix:semicolon
 r_struct
 id|device_attribute
@@ -770,15 +794,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;parent
-)paren
 id|parent
 op_assign
+id|dev-&gt;parent
+ques
+c_cond
 op_amp
 id|dev-&gt;parent-&gt;dir
+suffix:colon
+op_amp
+id|device_root_dir
 suffix:semicolon
 id|dev-&gt;dir.name
 op_assign
@@ -860,6 +885,33 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|function|device_driverfs_init
+r_static
+r_int
+id|device_driverfs_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|driverfs_create_dir
+c_func
+(paren
+op_amp
+id|device_root_dir
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+DECL|variable|device_driverfs_init
+id|core_initcall
+c_func
+(paren
+id|device_driverfs_init
+)paren
+suffix:semicolon
 DECL|variable|device_create_file
 id|EXPORT_SYMBOL
 c_func

@@ -54,7 +54,7 @@ c_func
 id|node
 comma
 op_amp
-id|device_root.g_list
+id|global_device_list
 )paren
 (brace
 r_struct
@@ -176,7 +176,7 @@ c_func
 id|node
 comma
 op_amp
-id|device_root.g_list
+id|global_device_list
 )paren
 (brace
 r_struct
@@ -304,7 +304,7 @@ c_func
 id|node
 comma
 op_amp
-id|device_root.g_list
+id|global_device_list
 )paren
 (brace
 r_struct
