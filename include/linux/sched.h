@@ -4020,6 +4020,16 @@ op_star
 id|mask
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+r_extern
+r_void
+id|normalize_rt_tasks
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

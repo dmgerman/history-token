@@ -716,6 +716,55 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* END SIGNAL SYSRQ HANDLERS BLOCK */
+DECL|function|sysrq_handle_unrt
+r_static
+r_void
+id|sysrq_handle_unrt
+c_func
+(paren
+r_int
+id|key
+comma
+r_struct
+id|pt_regs
+op_star
+id|pt_regs
+comma
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+id|normalize_rt_tasks
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|sysrq_unrt_op
+r_static
+r_struct
+id|sysrq_key_op
+id|sysrq_unrt_op
+op_assign
+(brace
+dot
+id|handler
+op_assign
+id|sysrq_handle_unrt
+comma
+dot
+id|help_msg
+op_assign
+l_string|&quot;Nice&quot;
+comma
+dot
+id|action_msg
+op_assign
+l_string|&quot;Nice All RT Tasks&quot;
+)brace
+suffix:semicolon
 multiline_comment|/* Key Operations table and lock */
 DECL|variable|sysrq_key_table_lock
 r_static
@@ -829,7 +878,8 @@ op_amp
 id|sysrq_showmem_op
 comma
 multiline_comment|/* n */
-l_int|NULL
+op_amp
+id|sysrq_unrt_op
 comma
 multiline_comment|/* o */
 l_int|NULL
