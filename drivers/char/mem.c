@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_IA64
@@ -3063,6 +3064,20 @@ id|mmap_zero
 comma
 )brace
 suffix:semicolon
+DECL|variable|zero_bdi
+r_static
+r_struct
+id|backing_dev_info
+id|zero_bdi
+op_assign
+(brace
+dot
+id|capabilities
+op_assign
+id|BDI_CAP_MAP_COPY
+comma
+)brace
+suffix:semicolon
 DECL|variable|full_fops
 r_static
 r_struct
@@ -3276,6 +3291,11 @@ macro_line|#endif
 r_case
 l_int|5
 suffix:colon
+id|filp-&gt;f_mapping-&gt;backing_dev_info
+op_assign
+op_amp
+id|zero_bdi
+suffix:semicolon
 id|filp-&gt;f_op
 op_assign
 op_amp

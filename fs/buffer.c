@@ -2811,8 +2811,11 @@ multiline_comment|/* Race with truncate? */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|mapping-&gt;backing_dev_info-&gt;memory_backed
+id|mapping_cap_account_dirty
+c_func
+(paren
+id|mapping
+)paren
 )paren
 id|inc_page_state
 c_func
