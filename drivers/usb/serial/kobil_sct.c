@@ -2767,8 +2767,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-op_amp
+(paren
 id|port-&gt;tty-&gt;termios
+)paren
 )paren
 (brace
 id|dbg
