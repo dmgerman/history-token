@@ -3997,6 +3997,15 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|port-&gt;pending_gate
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
