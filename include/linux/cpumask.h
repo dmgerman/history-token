@@ -807,25 +807,5 @@ DECL|macro|for_each_online_cpu
 mdefine_line|#define for_each_online_cpu(cpu)  for_each_cpu_mask((cpu), cpu_online_map)
 DECL|macro|for_each_present_cpu
 mdefine_line|#define for_each_present_cpu(cpu) for_each_cpu_mask((cpu), cpu_present_map)
-multiline_comment|/* Begin obsolete cpumask operator emulation */
-DECL|macro|cpu_isset_const
-mdefine_line|#define cpu_isset_const(a,b) cpu_isset(a,b)
-DECL|macro|cpumask_const_t
-mdefine_line|#define cpumask_const_t cpumask_t
-DECL|macro|cpus_coerce
-mdefine_line|#define cpus_coerce(m) (cpus_addr(m)[0])
-DECL|macro|cpus_coerce_const
-mdefine_line|#define cpus_coerce_const cpus_coerce
-DECL|macro|cpus_promote
-mdefine_line|#define cpus_promote(x) ({ cpumask_t m; m.bits[0] = x; m; })
-DECL|macro|cpus_weight_const
-mdefine_line|#define cpus_weight_const cpus_weight
-DECL|macro|first_cpu_const
-mdefine_line|#define first_cpu_const first_cpu
-DECL|macro|mk_cpumask_const
-mdefine_line|#define mk_cpumask_const(x) x
-DECL|macro|next_cpu_const
-mdefine_line|#define next_cpu_const next_cpu
-multiline_comment|/* End of obsolete cpumask operator emulation */
 macro_line|#endif /* __LINUX_CPUMASK_H */
 eof
