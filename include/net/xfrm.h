@@ -1195,7 +1195,7 @@ l_int|1
 )paren
 )paren
 r_return
-id|xfrm_sk_clone_policy
+id|__xfrm_sk_clone_policy
 c_func
 (paren
 id|sk
