@@ -13,6 +13,11 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
+multiline_comment|/* Indirect stringification */
+DECL|macro|__MODULE_STRING_1
+mdefine_line|#define __MODULE_STRING_1(x)&t;#x
+DECL|macro|__MODULE_STRING
+mdefine_line|#define __MODULE_STRING(x)&t;__MODULE_STRING_1(x)
 multiline_comment|/* Not Yet Implemented */
 DECL|macro|MODULE_LICENSE
 mdefine_line|#define MODULE_LICENSE(name)
