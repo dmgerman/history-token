@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/termios.h&gt;
 macro_line|#include &lt;asm/openpromio.h&gt;
