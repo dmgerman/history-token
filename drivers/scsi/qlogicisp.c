@@ -1850,7 +1850,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|do_isp1020_intr_handler
 c_func
 (paren
@@ -3523,7 +3523,7 @@ suffix:semicolon
 DECL|macro|ASYNC_EVENT_INTERRUPT
 mdefine_line|#define ASYNC_EVENT_INTERRUPT&t;0x01
 DECL|function|do_isp1020_intr_handler
-r_void
+id|irqreturn_t
 id|do_isp1020_intr_handler
 c_func
 (paren
@@ -3576,6 +3576,9 @@ id|host-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|isp1020_intr_handler
