@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/isdn/capilli.h&gt;
 DECL|macro|DBG
-mdefine_line|#define DBG(format, arg...) do { &bslash;&n;printk(KERN_INFO __FUNCTION__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); &bslash;&n;} while (0)
+mdefine_line|#define DBG(format, arg...) do { &bslash;&n;printk(KERN_DEBUG &quot;%s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg); &bslash;&n;} while (0)
 r_enum
 (brace
 DECL|enumerator|CARD_DETECTED

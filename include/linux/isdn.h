@@ -640,6 +640,11 @@ r_int
 id|charge
 suffix:semicolon
 multiline_comment|/* Counter for charging units       */
+DECL|member|charge_state
+r_int
+id|charge_state
+suffix:semicolon
+multiline_comment|/* ChargeInfo state machine         */
 DECL|member|chargetime
 id|ulong
 id|chargetime
@@ -684,6 +689,11 @@ r_int
 id|transcount
 suffix:semicolon
 multiline_comment|/* byte-counter for cps-calculation */
+DECL|member|last_jiffies
+r_int
+id|last_jiffies
+suffix:semicolon
+multiline_comment|/* when transcount was reset        */
 DECL|member|sqfull
 r_int
 id|sqfull
