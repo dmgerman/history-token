@@ -1488,6 +1488,8 @@ DECL|macro|CARD_WDEV_ID
 mdefine_line|#define CARD_WDEV_ID(card) card-&gt;gdev-&gt;cdev[1]-&gt;dev.bus_id
 DECL|macro|CARD_DDEV_ID
 mdefine_line|#define CARD_DDEV_ID(card) card-&gt;gdev-&gt;cdev[2]-&gt;dev.bus_id
+DECL|macro|CARD_FROM_CDEV
+mdefine_line|#define CARD_FROM_CDEV(cdev) (struct qeth_card *) &bslash;&n;&t;((struct ccwgroup_device *) cdev-&gt;dev.driver_data)-&gt;dev.driver_data
 DECL|macro|SENSE_COMMAND_REJECT_BYTE
 mdefine_line|#define SENSE_COMMAND_REJECT_BYTE 0
 DECL|macro|SENSE_COMMAND_REJECT_FLAG
