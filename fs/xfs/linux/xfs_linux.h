@@ -37,6 +37,7 @@ macro_line|#include &lt;support/move.h&gt;
 macro_line|#include &lt;support/uuid.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/file.h&gt;

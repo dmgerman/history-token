@@ -934,20 +934,6 @@ multiline_comment|/* buffer to check&t;&t;*/
 multiline_comment|/* Delayed Write Buffer Routines */
 r_extern
 r_void
-id|pagebuf_delwri_flush
-c_func
-(paren
-id|xfs_buftarg_t
-op_star
-comma
-r_int
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|pagebuf_delwri_dequeue
 c_func
 (paren
@@ -1496,13 +1482,6 @@ DECL|macro|XFS_bdstrat
 mdefine_line|#define XFS_bdstrat(bp) pagebuf_iorequest(bp)
 DECL|macro|xfs_iowait
 mdefine_line|#define xfs_iowait(pb)&t;pagebuf_iowait(pb)
-multiline_comment|/*&n; * Go through all incore buffers, and release buffers&n; * if they belong to the given device. This is used in&n; * filesystem error handling to preserve the consistency&n; * of its metadata.&n; */
-DECL|macro|xfs_binval
-mdefine_line|#define xfs_binval(buftarg)&t;xfs_flush_buftarg(buftarg)
-DECL|macro|XFS_bflush
-mdefine_line|#define XFS_bflush(buftarg)&t;xfs_flush_buftarg(buftarg)
-DECL|macro|xfs_incore_relse
-mdefine_line|#define xfs_incore_relse(buftarg,delwri_only,wait)&t;&bslash;&n;&t;xfs_relse_buftarg(buftarg)
 DECL|macro|xfs_baread
 mdefine_line|#define xfs_baread(target, rablkno, ralen)  &bslash;&n;&t;pagebuf_readahead((target), (rablkno), (ralen), PBF_DONT_BLOCK)
 DECL|macro|xfs_buf_get_empty
@@ -1511,5 +1490,75 @@ DECL|macro|xfs_buf_get_noaddr
 mdefine_line|#define xfs_buf_get_noaddr(len, target)&t;pagebuf_get_no_daddr((len), (target))
 DECL|macro|xfs_buf_free
 mdefine_line|#define xfs_buf_free(bp)&t;&t;pagebuf_free(bp)
+multiline_comment|/*&n; *&t;Handling of buftargs.&n; */
+r_extern
+id|xfs_buftarg_t
+op_star
+id|xfs_alloc_buftarg
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_free_buftarg
+c_func
+(paren
+id|xfs_buftarg_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_setsize_buftarg
+c_func
+(paren
+id|xfs_buftarg_t
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_incore_relse
+c_func
+(paren
+id|xfs_buftarg_t
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|xfs_flush_buftarg
+c_func
+(paren
+id|xfs_buftarg_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|macro|xfs_getsize_buftarg
+mdefine_line|#define xfs_getsize_buftarg(buftarg) &bslash;&n;&t;block_size((buftarg)-&gt;pbr_bdev)
+DECL|macro|xfs_readonly_buftarg
+mdefine_line|#define xfs_readonly_buftarg(buftarg) &bslash;&n;&t;bdev_read_only((buftarg)-&gt;pbr_bdev)
+DECL|macro|xfs_binval
+mdefine_line|#define xfs_binval(buftarg) &bslash;&n;&t;xfs_flush_buftarg(buftarg, 1)
+DECL|macro|XFS_bflush
+mdefine_line|#define XFS_bflush(buftarg) &bslash;&n;&t;xfs_flush_buftarg(buftarg, 1)
 macro_line|#endif&t;/* __XFS_BUF_H__ */
 eof
