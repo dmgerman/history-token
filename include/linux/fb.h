@@ -1837,6 +1837,7 @@ id|fbops
 suffix:semicolon
 DECL|member|screen_base
 r_char
+id|__iomem
 op_star
 id|screen_base
 suffix:semicolon
