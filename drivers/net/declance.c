@@ -2644,9 +2644,9 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|lance_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|lance_interrupt
 id|lance_interrupt
 c_func
 (paren
@@ -2940,6 +2940,9 @@ id|ll-&gt;rdp
 comma
 id|LE_C0_INEA
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|last_dev

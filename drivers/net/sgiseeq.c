@@ -1805,7 +1805,7 @@ suffix:semicolon
 )brace
 DECL|function|sgiseeq_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sgiseeq_interrupt
 c_func
 (paren
@@ -1927,6 +1927,9 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sgiseeq_open
 r_static

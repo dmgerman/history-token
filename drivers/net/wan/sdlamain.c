@@ -170,7 +170,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* Miscellaneous functions */
 id|STATIC
-r_void
+id|irqreturn_t
 id|sdla_isr
 (paren
 r_int
@@ -3137,7 +3137,7 @@ multiline_comment|/******* Miscellaneous ***************************************
 multiline_comment|/*============================================================================&n; * SDLA Interrupt Service Routine.&n; * o acknowledge SDLA hardware interrupt.&n; * o call protocol-specific interrupt service routine, if any.&n; */
 DECL|function|sdla_isr
 id|STATIC
-r_void
+id|irqreturn_t
 id|sdla_isr
 (paren
 r_int
@@ -3155,6 +3155,11 @@ id|regs
 (brace
 DECL|macro|card
 mdefine_line|#define&t;card&t;((sdla_t*)dev_id)
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3223,6 +3228,7 @@ id|IRQ_CPU_B
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* if the IRQ is for both CPUs on the same adapter, */
@@ -3335,6 +3341,7 @@ id|card_found_for_IRQ
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -3381,6 +3388,7 @@ id|int_status
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -3410,6 +3418,7 @@ id|int_status
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|spin_lock
@@ -3490,6 +3499,7 @@ l_int|2
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -3515,6 +3525,7 @@ id|card-&gt;configured
 )paren
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 r_if
 c_cond
@@ -3534,6 +3545,7 @@ id|card-&gt;wandev.irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|spin_lock
@@ -3599,6 +3611,9 @@ id|card-&gt;wandev.lock
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 DECL|macro|card
 macro_line|#undef&t;card
 )brace
