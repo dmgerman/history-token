@@ -911,7 +911,7 @@ op_rshift
 l_int|16
 )paren
 op_amp
-l_int|15
+l_int|7
 suffix:semicolon
 r_if
 c_cond
