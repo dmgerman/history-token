@@ -24,7 +24,7 @@ r_int
 id|mce_disabled
 id|__initdata
 suffix:semicolon
-multiline_comment|/* 0: always panic, 1: panic if deadlock possible, 2: try to avoid panic */
+multiline_comment|/* 0: always panic, 1: panic if deadlock possible, 2: try to avoid panic,&n;   3: never panic or exit (for testing only) */
 DECL|variable|tolerant
 r_static
 r_int
@@ -441,6 +441,22 @@ c_func
 id|backup
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tolerant
+op_ge
+l_int|3
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Fake panic: %s&bslash;n&quot;
+comma
+id|msg
+)paren
+suffix:semicolon
+r_else
 id|panic
 c_func
 (paren
@@ -663,34 +679,6 @@ id|i
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* Did this bank cause the exception? */
-multiline_comment|/* XXX: check more flags  */
-r_if
-c_cond
-(paren
-(paren
-id|m.status
-op_amp
-id|MCI_STATUS_PCC
-)paren
-)paren
-(brace
-id|panicm
-op_assign
-id|m
-suffix:semicolon
-)brace
-r_else
-(brace
-id|m.rip
-op_assign
-l_int|0
-suffix:semicolon
-id|m.cs
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|m.misc
 op_assign
 l_int|0
@@ -724,6 +712,47 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* Should be implied by the banks check above, but&n;&t;&t;   check it anyways */
+r_if
+c_cond
+(paren
+(paren
+id|m.status
+op_amp
+id|MCI_STATUS_EN
+)paren
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* Did this bank cause the exception? */
+multiline_comment|/* Assume that the bank with uncorrectable errors did it,&n;&t;&t;   and that there is only a single one. */
+r_if
+c_cond
+(paren
+id|m.status
+op_amp
+id|MCI_STATUS_UC
+)paren
+(brace
+id|panicm
+op_assign
+id|m
+suffix:semicolon
+)brace
+r_else
+(brace
+id|m.rip
+op_assign
+l_int|0
+suffix:semicolon
+id|m.cs
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* In theory _OVER could be a nowayout too, but&n;&t;&t;   assume any overflowed errors were no fatal. */
 id|nowayout
 op_or_assign
 op_logical_neg
@@ -731,11 +760,7 @@ op_logical_neg
 (paren
 id|m.status
 op_amp
-(paren
-id|MCI_STATUS_OVER
-op_or
 id|MCI_STATUS_PCC
-)paren
 )paren
 suffix:semicolon
 id|kill_it
@@ -913,6 +938,13 @@ id|mcestart
 )paren
 suffix:semicolon
 multiline_comment|/* do_exit takes an awful lot of locks and has as slight risk &n;&t;&t;   of deadlocking. If you don&squot;t want that don&squot;t set tolerant &gt;= 2 */
+r_if
+c_cond
+(paren
+id|tolerant
+OL
+l_int|3
+)paren
 id|do_exit
 c_func
 (paren
