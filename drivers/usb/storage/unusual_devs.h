@@ -124,6 +124,33 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Deduced by Jonathan Woithe &lt;jwoithe@physics.adelaide.edu.au&gt;&n; * Entry needed for flags: US_FL_FIX_INQUIRY because initial inquiry message&n; * always fails and confuses drive; without US_FL_START_STOP, drive accesses&n; * (read or write) all fail.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0411
+comma
+l_int|0x001c
+comma
+l_int|0x0113
+comma
+l_int|0x0113
+comma
+l_string|&quot;Buffalo&quot;
+comma
+l_string|&quot;DUB-P40G HDD&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+op_or
+id|US_FL_START_STOP
+)paren
+comma
 macro_line|#ifdef CONFIG_USB_STORAGE_DPCM
 id|UNUSUAL_DEV
 c_func
