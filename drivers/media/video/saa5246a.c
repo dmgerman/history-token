@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Driver for the SAA5246A videotext decoder chip from Philips.&n; *&n; * Only capturing of videotext pages is tested. The SAA5246A chip also has&n; * a TV output but my hardware doesn&squot;t use it. For this reason this driver&n; * does not support changing any TV display settings.&n; *&n; * Copyright (C) 2004 Michael Geng &lt;linux@MichaelGeng.de&gt;&n; *&n; * Derived from&n; *&n; * saa5249 driver&n; * Copyright (C) 1998 Richard Guenther&n; * &lt;richard.guenther@student.uni-tuebingen.de&gt;&n; *&n; * with changes by&n; * Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *&n; * and&n; *&n; * vtx.c&n; * Copyright (C) 1994-97 Martin Buck  &lt;martin-2.buck@student.uni-ulm.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,&n; * USA.&n; */
+multiline_comment|/*&n; * Driver for the SAA5246A or SAA5281 Teletext (=Videotext) decoder chips from&n; * Philips.&n; *&n; * Only capturing of Teletext pages is tested. The videotext chips also have a&n; * TV output but my hardware doesn&squot;t use it. For this reason this driver does&n; * not support changing any TV display settings.&n; *&n; * Copyright (C) 2004 Michael Geng &lt;linux@MichaelGeng.de&gt;&n; *&n; * Derived from&n; *&n; * saa5249 driver&n; * Copyright (C) 1998 Richard Guenther&n; * &lt;richard.guenther@student.uni-tuebingen.de&gt;&n; *&n; * with changes by&n; * Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *&n; * and&n; *&n; * vtx.c&n; * Copyright (C) 1994-97 Martin Buck  &lt;martin-2.buck@student.uni-ulm.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,&n; * USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -8,6 +8,24 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videotext.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &quot;saa5246a.h&quot;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Michael Geng &lt;linux@MichaelGeng.de&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Philips SAA5246A, SAA5281 Teletext decoder driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|struct|saa5246a_device
 r_struct
 id|saa5246a_device
@@ -2761,9 +2779,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SAA5246A driver (&quot;
-id|IF_NAME
-l_string|&quot; interface) for VideoText version %d.%d&bslash;n&quot;
+l_string|&quot;SAA5246A (or compatible) Teletext decoder driver version %d.%d&bslash;n&quot;
 comma
 id|MAJOR_VERSION
 comma
@@ -2889,11 +2905,5 @@ op_minus
 l_int|1
 comma
 )brace
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
 suffix:semicolon
 eof
