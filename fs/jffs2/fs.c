@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: fs.c,v 1.46 2004/07/13 08:56:54 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: fs.c,v 1.47 2004/11/03 12:57:39 jwboyer Exp $&n; *&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -3114,6 +3114,33 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* add setups for other bizarre flashes here... */
+r_if
+c_cond
+(paren
+id|jffs2_nor_ecc
+c_func
+(paren
+id|c
+)paren
+)paren
+(brace
+id|ret
+op_assign
+id|jffs2_nor_ecc_flash_setup
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -3147,5 +3174,22 @@ id|c
 suffix:semicolon
 )brace
 multiline_comment|/* add cleanups for other bizarre flashes here... */
+r_if
+c_cond
+(paren
+id|jffs2_nor_ecc
+c_func
+(paren
+id|c
+)paren
+)paren
+(brace
+id|jffs2_nor_ecc_flash_cleanup
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+)brace
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.45 2003/10/08 11:46:27 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.46 2004/11/03 12:57:39 jwboyer Exp $ */
 macro_line|#ifndef _JFFS2_FS_SB
 DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
@@ -267,7 +267,7 @@ r_struct
 id|semaphore
 id|erase_free_sem
 suffix:semicolon
-macro_line|#ifdef CONFIG_JFFS2_FS_NAND
+macro_line|#if defined CONFIG_JFFS2_FS_NAND || defined CONFIG_JFFS2_FS_NOR_ECC
 multiline_comment|/* Write-behind buffer for NAND flash */
 DECL|member|wbuf
 r_int
