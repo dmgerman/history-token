@@ -9,8 +9,8 @@ macro_line|# define DBG(x...)
 macro_line|#endif
 r_extern
 r_struct
-id|device
-id|device_root
+id|list_head
+id|global_device_list
 suffix:semicolon
 r_extern
 id|spinlock_t

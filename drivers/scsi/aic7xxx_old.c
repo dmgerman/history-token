@@ -18111,11 +18111,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|panic
 c_func
 (paren
@@ -26236,11 +26231,6 @@ id|ILLSADDR
 )paren
 )paren
 (brace
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|panic
 c_func
 (paren

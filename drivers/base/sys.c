@@ -11,12 +11,14 @@ id|device
 id|system_bus
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;System Bus&quot;
 comma
+dot
 id|bus_id
-suffix:colon
+op_assign
 l_string|&quot;sys&quot;
 comma
 )brace
