@@ -1469,14 +1469,6 @@ id|num_cpus
 op_assign
 l_int|1
 suffix:semicolon
-id|cpu_possible_map
-op_assign
-l_int|1
-suffix:semicolon
-id|cpu_online_map
-op_assign
-l_int|1
-suffix:semicolon
 r_for
 c_loop
 (paren
