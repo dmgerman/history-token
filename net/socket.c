@@ -8422,9 +8422,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Initialize sock SLAB cache.&n;&t; */
 id|sk_init
 c_func
