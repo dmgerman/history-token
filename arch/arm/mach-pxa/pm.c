@@ -1,10 +1,4 @@
 multiline_comment|/*&n; * PXA250/210 Power Management Routines&n; *&n; * Original code for the SA11x0:&n; * Copyright (c) 2001 Cliff Brake &lt;cbrake@accelent.com&gt;&n; *&n; * Modified for the PXA250 by Nicolas Pitre:&n; * Copyright (c) 2002 Monta Vista Software, Inc.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
@@ -183,7 +177,7 @@ id|RCNR
 op_assign
 id|xtime.tv_sec
 suffix:semicolon
-multiline_comment|/*&n;&t; * Temporary solution.  This won&squot;t be necessary once&n;&t; * we move pxa support into the serial/* driver&n;&t; * Save the FF UART&n;&t; */
+multiline_comment|/*&n;&t; * Temporary solution.  This won&squot;t be necessary once&n;&t; * we move pxa support into the serial driver&n;&t; * Save the FF UART&n;&t; */
 id|SAVE
 c_func
 (paren
@@ -655,7 +649,7 @@ c_func
 id|ICMR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Temporary solution.  This won&squot;t be necessary once&n;&t; * we move pxa support into the serial/* driver.&n;&t; * Restore the FF UART.&n;&t; */
+multiline_comment|/*&n;&t; * Temporary solution.  This won&squot;t be necessary once&n;&t; * we move pxa support into the serial driver.&n;&t; * Restore the FF UART.&n;&t; */
 id|RESTORE
 c_func
 (paren
@@ -760,164 +754,4 @@ id|sp
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SYSCTL
-multiline_comment|/*&n; * ARGH!  ACPI people defined CTL_ACPI in linux/acpi.h rather than&n; * linux/sysctl.h.&n; *&n; * This means our interface here won&squot;t survive long - it needs a new&n; * interface.  Quick hack to get this working - use sysctl id 9999.&n; */
-macro_line|#warning ACPI broke the kernel, this interface needs to be fixed up.
-DECL|macro|CTL_ACPI
-mdefine_line|#define CTL_ACPI 9999
-DECL|macro|ACPI_S1_SLP_TYP
-mdefine_line|#define ACPI_S1_SLP_TYP 19
-multiline_comment|/*&n; * Send us to sleep.&n; */
-DECL|function|sysctl_pm_do_suspend
-r_static
-r_int
-id|sysctl_pm_do_suspend
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|retval
-suffix:semicolon
-id|retval
-op_assign
-id|pm_send_all
-c_func
-(paren
-id|PM_SUSPEND
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|3
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_eq
-l_int|0
-)paren
-(brace
-id|retval
-op_assign
-id|pm_do_suspend
-c_func
-(paren
-)paren
-suffix:semicolon
-id|pm_send_all
-c_func
-(paren
-id|PM_RESUME
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_return
-id|retval
-suffix:semicolon
-)brace
-DECL|variable|pm_table
-r_static
-r_struct
-id|ctl_table
-id|pm_table
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|ACPI_S1_SLP_TYP
-comma
-l_string|&quot;suspend&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0600
-comma
-l_int|NULL
-comma
-(paren
-id|proc_handler
-op_star
-)paren
-op_amp
-id|sysctl_pm_do_suspend
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
-DECL|variable|pm_dir_table
-r_static
-r_struct
-id|ctl_table
-id|pm_dir_table
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|CTL_ACPI
-comma
-l_string|&quot;pm&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0555
-comma
-id|pm_table
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Initialize power interface&n; */
-DECL|function|pm_init
-r_static
-r_int
-id|__init
-id|pm_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|register_sysctl_table
-c_func
-(paren
-id|pm_dir_table
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|pm_init
-id|__initcall
-c_func
-(paren
-id|pm_init
-)paren
-suffix:semicolon
-macro_line|#endif
 eof
