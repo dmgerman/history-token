@@ -566,6 +566,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_TV_ANALOG
+comma
+dot
 id|name
 op_assign
 l_string|&quot;I2C Voodoo3/Banshee adapter&quot;
@@ -632,6 +637,11 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
+comma
+dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_DDC
 comma
 dot
 id|name
