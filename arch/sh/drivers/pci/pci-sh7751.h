@@ -418,6 +418,8 @@ DECL|macro|SH7751_PCIWCR3
 mdefine_line|#define SH7751_PCIWCR3             0x1F0         /* Wait Control 3 Register */
 DECL|macro|SH7751_PCIMCR
 mdefine_line|#define SH7751_PCIMCR              0x1F4         /* Memory Control Register */
+DECL|macro|SH7751_PCIBCR3
+mdefine_line|#define SH7751_PCIBCR3&t;&t;   0x1f8&t; /* Memory BCR3 Register */
 DECL|macro|SH7751_PCIPCTR
 mdefine_line|#define SH7751_PCIPCTR             0x200         /* Port Control Register */
 DECL|macro|SH7751_PCIPCTR_P2EN
@@ -459,6 +461,10 @@ DECL|macro|SH7751_BCR1
 mdefine_line|#define SH7751_BCR1                0xFF800000    /* Memory BCR1 Register */
 DECL|macro|SH7751_BCR2
 mdefine_line|#define SH7751_BCR2                0xFF800004    /* Memory BCR2 Register */
+DECL|macro|SH7751_BCR3
+mdefine_line|#define SH7751_BCR3                0xFF800050    /* Memory BCR3 Register */
+DECL|macro|SH7751_BCR4
+mdefine_line|#define SH7751_BCR4                0xFE0A00F0    /* Memory BCR4 Register */
 DECL|macro|SH7751_WCR1
 mdefine_line|#define SH7751_WCR1                0xFF800008    /* Wait Control 1 Register */
 DECL|macro|SH7751_WCR2
@@ -487,6 +493,9 @@ mdefine_line|#define SH7751_CS6_BASE_ADDR       (SH7751_CS5_BASE_ADDR + SH7751_M
 multiline_comment|/* General PCI values */
 DECL|macro|SH7751_PCI_HOST_BRIDGE
 mdefine_line|#define SH7751_PCI_HOST_BRIDGE&t;&t;0x6
+multiline_comment|/* Flags */
+DECL|macro|SH7751_PCIC_NO_RESET
+mdefine_line|#define SH7751_PCIC_NO_RESET&t;0x0001
 multiline_comment|/* External functions defined per platform i.e. Big Sur, SE... (these could be routed &n; * through the machine vectors... */
 r_extern
 r_int
@@ -537,6 +546,11 @@ DECL|member|window1
 r_struct
 id|sh7751_pci_address_space
 id|window1
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
