@@ -797,7 +797,6 @@ r_void
 id|cleanup_slots
 c_func
 (paren
-r_const
 r_struct
 id|controller
 op_star
