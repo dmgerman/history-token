@@ -86,18 +86,6 @@ id|SHT
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * This function is only used by one driver and will be going away&n;     * once it switches over to using the slave_detach() function instead.&n;     */
-DECL|member|revoke
-r_int
-(paren
-op_star
-id|revoke
-)paren
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* Used with loadable modules to unload the host structures.  Note:&n;     * there is a default action built into the modules code which may&n;     * be sufficient for most host adapters.  Thus you may not have to supply&n;     * this at all.&n;     */
 DECL|member|release
 r_int

@@ -29173,9 +29173,6 @@ op_ge
 id|osst_dev_max
 )paren
 (brace
-id|SDp-&gt;attached
-op_decrement
-suffix:semicolon
 id|put_disk
 c_func
 (paren
@@ -29186,6 +29183,18 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|scsi_slave_attach
+c_func
+(paren
+id|SDp
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
 multiline_comment|/* find a free minor number */
 r_for
 c_loop
@@ -29247,9 +29256,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|SDp-&gt;attached
-op_decrement
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -29261,6 +29267,12 @@ id|put_disk
 c_func
 (paren
 id|disk
+)paren
+suffix:semicolon
+id|scsi_slave_detach
+c_func
+(paren
+id|SDp
 )paren
 suffix:semicolon
 r_return
@@ -30316,8 +30328,11 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-id|SDp-&gt;attached
-op_decrement
+id|scsi_slave_detach
+c_func
+(paren
+id|SDp
+)paren
 suffix:semicolon
 id|osst_nr_dev
 op_decrement
