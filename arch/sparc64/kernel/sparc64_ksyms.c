@@ -735,6 +735,20 @@ c_func
 id|sparc64_num_cpus_online
 )paren
 suffix:semicolon
+DECL|variable|phys_cpu_present_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_cpu_present_map
+)paren
+suffix:semicolon
+DECL|variable|sparc64_num_cpus_possible
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sparc64_num_cpus_possible
+)paren
+suffix:semicolon
 multiline_comment|/* Spinlock debugging library, optional. */
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|variable|_do_spin_lock

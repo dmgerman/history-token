@@ -144,6 +144,13 @@ suffix:semicolon
 r_extern
 r_int
 r_int
+id|phys_cpu_present_map
+suffix:semicolon
+DECL|macro|cpu_possible
+mdefine_line|#define cpu_possible(cpu)&t;(phys_cpu_present_map &amp; (1UL &lt;&lt; (cpu)))
+r_extern
+r_int
+r_int
 id|cpu_online_map
 suffix:semicolon
 DECL|macro|cpu_online
@@ -154,6 +161,12 @@ id|sparc64_num_cpus_online
 suffix:semicolon
 DECL|macro|num_online_cpus
 mdefine_line|#define num_online_cpus()&t;(atomic_read(&amp;sparc64_num_cpus_online))
+r_extern
+id|atomic_t
+id|sparc64_num_cpus_possible
+suffix:semicolon
+DECL|macro|num_possible_cpus
+mdefine_line|#define num_possible_cpus()&t;(atomic_read(&amp;sparc64_num_cpus_possible))
 DECL|function|any_online_cpu
 r_static
 r_inline
@@ -190,31 +203,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;General functions that each host system must provide.&n; */
-r_extern
-r_void
-id|smp_callin
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|smp_boot_cpus
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|smp_store_cpu_info
-c_func
-(paren
-r_int
-id|id
-)paren
-suffix:semicolon
 DECL|function|hard_smp_processor_id
 r_extern
 id|__inline__
