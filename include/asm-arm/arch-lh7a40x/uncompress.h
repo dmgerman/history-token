@@ -38,10 +38,10 @@ op_assign
 id|ch
 suffix:semicolon
 )brace
-DECL|function|puts
+DECL|function|putstr
 r_static
 r_void
-id|puts
+id|putstr
 (paren
 r_const
 r_char

@@ -12,10 +12,10 @@ mdefine_line|#define AMBA_UART_CR&t;(*(volatile unsigned char *)0x16000014)
 DECL|macro|AMBA_UART_FR
 mdefine_line|#define AMBA_UART_FR&t;(*(volatile unsigned char *)0x16000018)
 multiline_comment|/*&n; * This does not append a newline&n; */
-DECL|function|puts
+DECL|function|putstr
 r_static
 r_void
-id|puts
+id|putstr
 c_func
 (paren
 r_const

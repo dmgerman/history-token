@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &quot;generic.h&quot;
 multiline_comment|/*&n; * Various clock factors driven by the CCCR register.&n; */
 multiline_comment|/* Crystal Frequency to Memory Frequency Multiplier (L) */

@@ -8505,10 +8505,6 @@ op_amp
 id|wanpipe_tx_critical
 )paren
 suffix:semicolon
-id|newsk-&gt;sk_pair
-op_assign
-l_int|NULL
-suffix:semicolon
 id|newsk-&gt;sk_socket
 op_assign
 id|newsock
