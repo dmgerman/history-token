@@ -1018,6 +1018,16 @@ id|__u16
 id|rop
 suffix:semicolon
 multiline_comment|/* bitop operation */
+DECL|member|ul
+id|__u16
+id|ul
+suffix:semicolon
+multiline_comment|/* underlined? */
+DECL|member|rev
+id|__u16
+id|rev
+suffix:semicolon
+multiline_comment|/* reversed? */
 DECL|member|mask
 r_const
 r_char
@@ -2251,6 +2261,17 @@ id|info
 comma
 r_int
 id|state
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_get_color_depth
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
 )paren
 suffix:semicolon
 r_extern
