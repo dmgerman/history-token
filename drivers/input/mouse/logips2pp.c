@@ -1401,11 +1401,7 @@ r_else
 r_if
 c_cond
 (paren
-id|get_model_info
-c_func
-(paren
-id|model
-)paren
+id|model_info
 op_ne
 l_int|NULL
 )paren

@@ -9,16 +9,19 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Serial mouse driver&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Serial mouse driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1064,9 +1067,9 @@ op_star
 id|serio
 comma
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -1359,7 +1362,7 @@ c_func
 (paren
 id|serio
 comma
-id|dev
+id|drv
 )paren
 )paren
 (brace
@@ -1394,13 +1397,29 @@ id|serio-&gt;phys
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sermouse_dev
+DECL|variable|sermouse_drv
 r_static
 r_struct
-id|serio_dev
-id|sermouse_dev
+id|serio_driver
+id|sermouse_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;sermouse&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|interrupt
 op_assign
@@ -1415,6 +1434,7 @@ dot
 id|disconnect
 op_assign
 id|sermouse_disconnect
+comma
 )brace
 suffix:semicolon
 DECL|function|sermouse_init
@@ -1426,11 +1446,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_register_device
+id|serio_register_driver
 c_func
 (paren
 op_amp
-id|sermouse_dev
+id|sermouse_drv
 )paren
 suffix:semicolon
 r_return
@@ -1446,11 +1466,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_unregister_device
+id|serio_unregister_driver
 c_func
 (paren
 op_amp
-id|sermouse_dev
+id|sermouse_drv
 )paren
 suffix:semicolon
 )brace
