@@ -2361,11 +2361,6 @@ op_star
 id|bdev
 comma
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|file
@@ -2481,7 +2476,7 @@ op_member_access_from_pointer
 id|open
 c_func
 (paren
-id|inode
+id|bdev-&gt;bd_inode
 comma
 id|file
 )paren
@@ -2747,7 +2742,7 @@ op_member_access_from_pointer
 id|open
 c_func
 (paren
-id|inode
+id|bdev-&gt;bd_inode
 comma
 id|file
 )paren
@@ -2943,8 +2938,6 @@ c_func
 (paren
 id|bdev
 comma
-id|bdev-&gt;bd_inode
-comma
 op_amp
 id|fake_file
 )paren
@@ -3002,8 +2995,6 @@ id|do_open
 c_func
 (paren
 id|bdev
-comma
-id|inode
 comma
 id|filp
 )paren
