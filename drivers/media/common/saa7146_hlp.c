@@ -3588,7 +3588,9 @@ id|dev
 comma
 id|field
 comma
-id|vv-&gt;standard-&gt;v_calc
+id|vv-&gt;standard-&gt;v_field
+op_star
+l_int|2
 comma
 id|height
 comma
@@ -3618,7 +3620,7 @@ c_func
 (paren
 id|dev
 comma
-id|vv-&gt;standard-&gt;h_calc
+id|vv-&gt;standard-&gt;h_pixels
 comma
 id|width
 comma

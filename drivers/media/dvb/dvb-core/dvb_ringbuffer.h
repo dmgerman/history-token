@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * dvb_ringbuffer.h: ring buffer implementation for the dvb driver&n; *&n; * Copyright (C) 2003 Oliver Endriss &n; * &n; * based on code originally found in av7110.c:&n; * Copyright (C) 1999-2002 Ralph Metzler &amp; Marcus Metzler&n; *                         for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU Lesser General Public License for more details.&n; * &n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
+multiline_comment|/*&n; *&n; * dvb_ringbuffer.h: ring buffer implementation for the dvb driver&n; *&n; * Copyright (C) 2003 Oliver Endriss &n; * Copyright (C) 2004 Andrew de Quincey&n; * &n; * based on code originally found in av7110.c &amp; dvb_ci.c:&n; * Copyright (C) 1999-2003 Ralph Metzler &amp; Marcus Metzler&n; *                         for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU Lesser General Public License for more details.&n; * &n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
 macro_line|#ifndef _DVB_RINGBUFFER_H_
 DECL|macro|_DVB_RINGBUFFER_H_
 mdefine_line|#define _DVB_RINGBUFFER_H_
@@ -35,6 +35,8 @@ id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|DVB_RINGBUFFER_PKTHDRSIZE
+mdefine_line|#define DVB_RINGBUFFER_PKTHDRSIZE 3
 multiline_comment|/*&n;** Notes:&n;** ------&n;** (1) For performance reasons read and write routines don&squot;t check buffer sizes&n;**     and/or number of bytes free/available. This has to be done before these&n;**     routines are called. For example:&n;**&n;**     *** write &lt;buflen&gt; bytes ***&n;**     free = dvb_ringbuffer_free(rbuf);&n;**     if (free &gt;= buflen) &n;**         count = dvb_ringbuffer_write(rbuf, buffer, buflen, 0);&n;**     else&n;**         ...&n;**&n;**     *** read min. 1000, max. &lt;bufsize&gt; bytes ***&n;**     avail = dvb_ringbuffer_avail(rbuf);&n;**     if (avail &gt;= 1000)&n;**         count = dvb_ringbuffer_read(rbuf, buffer, min(avail, bufsize), 0);&n;**     else&n;**         ...&n;**&n;** (2) If there is exactly one reader and one writer, there is no need &n;**     to lock read or write operations.&n;**     Two or more readers must be locked against each other.&n;**     Flushing the buffer counts as a read operation.&n;**     Two or more writers must be locked against each other.&n;*/
 multiline_comment|/* initialize ring buffer, lock and queue */
 r_extern
@@ -171,6 +173,90 @@ id|len
 comma
 r_int
 id|usermem
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * Write a packet into the ringbuffer.&n; *&n; * &lt;rbuf&gt; Ringbuffer to write to.&n; * &lt;buf&gt; Buffer to write.&n; * &lt;len&gt; Length of buffer (currently limited to 65535 bytes max).&n; * &lt;usermem&gt; Set to 1 if &lt;buf&gt; is in userspace.&n; * returns Number of bytes written, or -EFAULT, -ENOMEM, -EVINAL.&n; */
+r_extern
+id|ssize_t
+id|dvb_ringbuffer_pkt_write
+c_func
+(paren
+r_struct
+id|dvb_ringbuffer
+op_star
+id|rbuf
+comma
+id|u8
+op_star
+id|buf
+comma
+r_int
+id|len
+comma
+r_int
+id|usermem
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * Read from a packet in the ringbuffer. Note: unlike dvb_ringbuffer_read(), this&n; * does NOT update the read pointer in the ringbuffer. You must use&n; * dvb_ringbuffer_pkt_dispose() to mark a packet as no longer required.&n; *&n; * &lt;rbuf&gt; Ringbuffer concerned.&n; * &lt;idx&gt; Packet index as returned by dvb_ringbuffer_pkt_next().&n; * &lt;offset&gt; Offset into packet to read from.&n; * &lt;buf&gt; Destination buffer for data.&n; * &lt;len&gt; Size of destination buffer.&n; * &lt;usermem&gt; Set to 1 if &lt;buf&gt; is in userspace.&n; * returns Number of bytes read, or -EFAULT.&n; */
+r_extern
+id|ssize_t
+id|dvb_ringbuffer_pkt_read
+c_func
+(paren
+r_struct
+id|dvb_ringbuffer
+op_star
+id|rbuf
+comma
+r_int
+id|idx
+comma
+r_int
+id|offset
+comma
+id|u8
+op_star
+id|buf
+comma
+r_int
+id|len
+comma
+r_int
+id|usermem
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * Dispose of a packet in the ring buffer.&n; *&n; * &lt;rbuf&gt; Ring buffer concerned.&n; * &lt;idx&gt; Packet index as returned by dvb_ringbuffer_pkt_next().&n; */
+r_extern
+r_void
+id|dvb_ringbuffer_pkt_dispose
+c_func
+(paren
+r_struct
+id|dvb_ringbuffer
+op_star
+id|rbuf
+comma
+r_int
+id|idx
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * Get the index of the next packet in a ringbuffer.&n; *&n; * &lt;rbuf&gt; Ringbuffer concerned.&n; * &lt;idx&gt; Previous packet index, or -1 to return the first packet index.&n; * &lt;pktlen&gt; On success, will be updated to contain the length of the packet in bytes.&n; * returns Packet index (if &gt;=0), or -1 if no packets available.&n; */
+r_extern
+id|ssize_t
+id|dvb_ringbuffer_pkt_next
+c_func
+(paren
+r_struct
+id|dvb_ringbuffer
+op_star
+id|rbuf
+comma
+r_int
+id|idx
+comma
+r_int
+op_star
+id|pktlen
 )paren
 suffix:semicolon
 macro_line|#endif /* _DVB_RINGBUFFER_H_ */

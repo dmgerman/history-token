@@ -1,15 +1,18 @@
-multiline_comment|/*&n; * TTUSB DEC Driver&n; *&n; * Copyright (C) 2003 Alex Woods &lt;linux-dvb@giblets.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * TTUSB DEC Driver&n; *&n; * Copyright (C) 2003-2004 Alex Woods &lt;linux-dvb@giblets.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
+macro_line|#if defined(CONFIG_CRC32) || defined(CONFIG_CRC32_MODULE)
+macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#else
+macro_line|#warning &quot;CRC checking of firmware not available&quot;
+macro_line|#endif
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_demux.h&quot;
@@ -190,6 +193,10 @@ suffix:semicolon
 DECL|member|hi_band
 r_int
 id|hi_band
+suffix:semicolon
+DECL|member|voltage
+r_int
+id|voltage
 suffix:semicolon
 multiline_comment|/* USB bits */
 DECL|member|udev
@@ -660,62 +667,6 @@ id|u8
 op_star
 id|b
 suffix:semicolon
-id|u8
-op_star
-id|c
-suffix:semicolon
-id|b
-op_assign
-id|kmalloc
-c_func
-(paren
-id|COMMAND_PACKET_SIZE
-op_plus
-l_int|4
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|b
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-id|c
-op_assign
-id|kmalloc
-c_func
-(paren
-id|COMMAND_PACKET_SIZE
-op_plus
-l_int|4
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|c
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|b
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|dprintk
 c_func
 (paren
@@ -723,6 +674,28 @@ l_string|&quot;%s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
+suffix:semicolon
+id|b
+op_assign
+id|kmalloc
+c_func
+(paren
+id|COMMAND_PACKET_SIZE
+op_plus
+l_int|4
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|b
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_if
 c_cond
@@ -743,12 +716,6 @@ id|kfree
 c_func
 (paren
 id|b
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|c
 )paren
 suffix:semicolon
 id|printk
@@ -909,12 +876,6 @@ c_func
 id|b
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -928,7 +889,7 @@ id|dec-&gt;udev
 comma
 id|dec-&gt;result_pipe
 comma
-id|c
+id|b
 comma
 id|COMMAND_PACKET_SIZE
 op_plus
@@ -967,12 +928,6 @@ id|kfree
 c_func
 (paren
 id|b
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|c
 )paren
 suffix:semicolon
 r_return
@@ -1014,7 +969,7 @@ c_func
 (paren
 l_string|&quot;0x%02X &quot;
 comma
-id|c
+id|b
 (braket
 id|i
 )braket
@@ -1035,7 +990,7 @@ id|result_length
 op_star
 id|result_length
 op_assign
-id|c
+id|b
 (braket
 l_int|3
 )braket
@@ -1045,7 +1000,7 @@ c_cond
 (paren
 id|cmd_result
 op_logical_and
-id|c
+id|b
 (braket
 l_int|3
 )braket
@@ -1058,12 +1013,12 @@ c_func
 id|cmd_result
 comma
 op_amp
-id|c
+id|b
 (braket
 l_int|4
 )braket
 comma
-id|c
+id|b
 (braket
 l_int|3
 )braket
@@ -1080,12 +1035,6 @@ id|kfree
 c_func
 (paren
 id|b
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|c
 )paren
 suffix:semicolon
 r_return
@@ -5292,6 +5241,7 @@ suffix:semicolon
 id|u32
 id|firmware_size_nl
 suffix:semicolon
+macro_line|#if defined(CONFIG_CRC32) || defined(CONFIG_CRC32_MODULE)
 id|u32
 id|crc32_csum
 comma
@@ -5299,6 +5249,7 @@ id|crc32_check
 comma
 id|tmp
 suffix:semicolon
+macro_line|#endif
 r_const
 r_struct
 id|firmware
@@ -5365,7 +5316,7 @@ l_int|60
 id|printk
 c_func
 (paren
-l_string|&quot;%s: firmware size too small for DSP code (%zu &lt; 60).&bslash;n&quot;
+l_string|&quot;%s: firmware size too small for DSP code (%u &lt; 60).&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5378,6 +5329,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* a 32 bit checksum over the first 56 bytes of the DSP Code is stored&n;&t;   at offset 56 of file, so use it to check if the firmware file is&n;&t;   valid. */
+macro_line|#if defined(CONFIG_CRC32) || defined(CONFIG_CRC32_MODULE)
 id|crc32_csum
 op_assign
 id|crc32
@@ -5443,6 +5395,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -5929,6 +5882,9 @@ id|model
 r_case
 l_int|0x00070008
 suffix:colon
+r_case
+l_int|0x0007000c
+suffix:colon
 id|ttusb_dec_set_model
 c_func
 (paren
@@ -6043,6 +5999,8 @@ op_amp
 id|dec-&gt;adapter
 comma
 id|dec-&gt;model_name
+comma
+id|THIS_MODULE
 )paren
 )paren
 OL
@@ -6944,19 +6902,6 @@ id|__FUNCTION__
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|FE_RESET
-suffix:colon
-id|dprintk
-c_func
-(paren
-l_string|&quot;%s: FE_RESET&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 id|dprintk
@@ -7282,7 +7227,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x0d
+l_int|0x00
 comma
 l_int|0x00
 comma
@@ -7309,6 +7254,9 @@ id|sym_rate
 suffix:semicolon
 id|u32
 id|band
+suffix:semicolon
+id|u32
+id|lnb_voltage
 suffix:semicolon
 id|dprintk
 c_func
@@ -7436,6 +7384,32 @@ id|u32
 )paren
 )paren
 suffix:semicolon
+id|lnb_voltage
+op_assign
+id|htonl
+c_func
+(paren
+id|dec-&gt;voltage
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|b
+(braket
+l_int|28
+)braket
+comma
+op_amp
+id|lnb_voltage
+comma
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+suffix:semicolon
 id|ttusb_dec_send_command
 c_func
 (paren
@@ -7495,19 +7469,6 @@ id|dprintk
 c_func
 (paren
 l_string|&quot;%s: FE_INIT&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|FE_RESET
-suffix:colon
-id|dprintk
-c_func
-(paren
-l_string|&quot;%s: FE_RESET&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -7582,6 +7543,42 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+(paren
+id|fe_sec_voltage_t
+)paren
+id|arg
+)paren
+(brace
+r_case
+id|SEC_VOLTAGE_13
+suffix:colon
+id|dec-&gt;voltage
+op_assign
+l_int|13
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SEC_VOLTAGE_18
+suffix:colon
+id|dec-&gt;voltage
+op_assign
+l_int|18
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * driver for the SAA7146 based AV110 cards (like the Fujitsu-Siemens DVB)&n; * av7110.c: initialization and demux stuff&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler &n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * originally based on code by:&n; * Copyright (C) 1998,1999 Christian Theiss &lt;mistert@rz.fh-augsburg.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -72,7 +73,7 @@ r_static
 r_int
 id|hw_sections
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 DECL|variable|rgb_on
 r_static
@@ -6378,10 +6379,6 @@ l_int|6
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * INITIALIZATION&n; ****************************************************************************/
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,6,0))
-DECL|macro|CONFIG_DVB_AV7110_FIRMWARE_FILE
-mdefine_line|#define CONFIG_DVB_AV7110_FIRMWARE_FILE
-macro_line|#endif
 DECL|function|check_firmware
 r_static
 r_int
@@ -6992,6 +6989,8 @@ op_amp
 id|av7110-&gt;dvb_adapter
 comma
 id|av7110-&gt;card_name
+comma
+id|THIS_MODULE
 )paren
 suffix:semicolon
 multiline_comment|/* the Siemens DVB needs this if you want to have the i2c chips&n;&t;   get recognized before the main driver is fully loaded */
@@ -7011,6 +7010,8 @@ c_func
 id|dev
 comma
 l_int|NULL
+comma
+l_int|0
 comma
 id|SAA7146_I2C_BUS_BIT_RATE_120
 )paren
@@ -7356,6 +7357,9 @@ id|av7110-&gt;arm_app
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|kernel_thread
 c_func
 (paren
@@ -7369,7 +7373,23 @@ id|av7110
 comma
 l_int|0
 )paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;av7110(%d): faile to start arm_mon kernel thread&bslash;n&quot;
+comma
+id|av7110-&gt;dvb_adapter-&gt;num
+)paren
 suffix:semicolon
+r_goto
+id|err2
+suffix:semicolon
+)brace
 multiline_comment|/* set internal volume control to maximum */
 id|av7110-&gt;adac_type
 op_assign
@@ -7385,7 +7405,7 @@ comma
 l_int|0xff
 )paren
 suffix:semicolon
-id|VidMode
+id|av7710_set_video_mode
 c_func
 (paren
 id|av7110
@@ -7633,7 +7653,7 @@ c_cond
 id|ret
 )paren
 r_goto
-id|err
+id|err3
 suffix:semicolon
 id|printk
 c_func
@@ -7654,6 +7674,30 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err3
+suffix:colon
+id|av7110-&gt;arm_rmmod
+op_assign
+l_int|1
+suffix:semicolon
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|av7110-&gt;arm_wait
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|av7110-&gt;arm_thread
+)paren
+id|dvb_delay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|err2
 suffix:colon
 id|av7110_ca_exit
@@ -7670,6 +7714,52 @@ id|av7110
 suffix:semicolon
 id|err
 suffix:colon
+id|dvb_unregister_i2c_bus
+(paren
+id|master_xfer
+comma
+id|av7110-&gt;i2c_bus-&gt;adapter
+comma
+id|av7110-&gt;i2c_bus-&gt;id
+)paren
+suffix:semicolon
+id|dvb_unregister_adapter
+(paren
+id|av7110-&gt;dvb_adapter
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_ne
+id|av7110-&gt;debi_virt
+)paren
+id|pci_free_consistent
+c_func
+(paren
+id|dev-&gt;pci
+comma
+l_int|8192
+comma
+id|av7110-&gt;debi_virt
+comma
+id|av7110-&gt;debi_bus
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_ne
+id|av7110-&gt;iobuf
+)paren
+id|vfree
+c_func
+(paren
+id|av7110-&gt;iobuf
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7685,56 +7775,6 @@ id|av7110
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-l_int|NULL
-op_ne
-id|av7110-&gt;debi_virt
-)paren
-(brace
-id|pci_free_consistent
-c_func
-(paren
-id|dev-&gt;pci
-comma
-l_int|8192
-comma
-id|av7110-&gt;debi_virt
-comma
-id|av7110-&gt;debi_bus
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-l_int|NULL
-op_ne
-id|av7110-&gt;iobuf
-)paren
-(brace
-id|vfree
-c_func
-(paren
-id|av7110-&gt;iobuf
-)paren
-suffix:semicolon
-)brace
-id|dvb_unregister_i2c_bus
-(paren
-id|master_xfer
-comma
-id|av7110-&gt;i2c_bus-&gt;adapter
-comma
-id|av7110-&gt;i2c_bus-&gt;id
-)paren
-suffix:semicolon
-id|dvb_unregister_adapter
-(paren
-id|av7110-&gt;dvb_adapter
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -8318,6 +8358,7 @@ op_amp
 id|av7110_extension
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_INPUT_EVDEV) || defined(CONFIG_INPUT_EVDEV_MODULE)
 r_if
 c_cond
 (paren
@@ -8355,6 +8396,7 @@ id|av7110_extension
 suffix:semicolon
 id|failed_saa7146_register
 suffix:colon
+macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
@@ -8369,11 +8411,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if defined(CONFIG_INPUT_EVDEV) || defined(CONFIG_INPUT_EVDEV_MODULE)
 id|av7110_ir_exit
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|saa7146_unregister_extension
 c_func
 (paren

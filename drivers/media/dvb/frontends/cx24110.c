@@ -89,7 +89,7 @@ id|FE_CAN_FEC_AUTO
 op_or
 id|FE_CAN_QPSK
 op_or
-id|FE_CAN_CLEAN_SETUP
+id|FE_CAN_RECOVER
 )brace
 suffix:semicolon
 multiline_comment|/* fixme: are these values correct? especially ..._tolerance and caps */
@@ -3219,13 +3219,6 @@ id|cx24110_init
 (paren
 id|i2c
 )paren
-suffix:semicolon
-r_case
-id|FE_RESET
-suffix:colon
-multiline_comment|/* no idea what to do for this call */
-multiline_comment|/* fixme (medium): fill me in */
-r_break
 suffix:semicolon
 r_case
 id|FE_SET_TONE

@@ -1,13 +1,15 @@
 multiline_comment|/*&n;     Driver for Philips tda1004xh OFDM Frontend&n;&n;     (c) 2003, 2004 Andrew de Quincey &amp; Robert Schlabbach&n;&n;     This program is free software; you can redistribute it and/or modify&n;     it under the terms of the GNU General Public License as published by&n;     the Free Software Foundation; either version 2 of the License, or&n;     (at your option) any later version.&n;&n;     This program is distributed in the hope that it will be useful,&n;     but WITHOUT ANY WARRANTY; without even the implied warranty of&n;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&n;     GNU General Public License for more details.&n;&n;     You should have received a copy of the GNU General Public License&n;     along with this program; if not, write to the Free Software&n;     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;   */
 multiline_comment|/*&n;    This driver needs a copy of the DLL &quot;ttlcdacc.dll&quot; from the Haupauge or Technotrend&n;    windows driver saved as &squot;/usr/lib/hotplug/firmware/tda1004x.bin&squot;.&n;    You can also pass the complete file name with the module parameter &squot;tda1004x_firmware&squot;.&n;&n;    Currently the DLL from v2.15a of the technotrend driver is supported. Other versions can&n;    be added reasonably painlessly.&n;&n;    Windows driver URL: http://www.technotrend.de/&n; */
+DECL|macro|__KERNEL_SYSCALLS__
+mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
@@ -301,7 +303,6 @@ op_or
 id|FE_CAN_GUARD_INTERVAL_AUTO
 )brace
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|tda1004x_state
 r_struct
 id|tda1004x_state
@@ -334,7 +335,6 @@ l_int|2
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#pragma pack()
 DECL|struct|fwinfo
 r_struct
 id|fwinfo
@@ -1663,7 +1663,7 @@ c_func
 suffix:semicolon
 id|fd
 op_assign
-id|sys_open
+id|open
 c_func
 (paren
 id|tda1004x_firmware
@@ -1698,7 +1698,7 @@ suffix:semicolon
 )brace
 id|filesize
 op_assign
-id|sys_lseek
+id|lseek
 c_func
 (paren
 id|fd
@@ -1852,7 +1852,7 @@ id|EIO
 suffix:semicolon
 )brace
 singleline_comment|// read it!
-id|sys_lseek
+id|lseek
 c_func
 (paren
 id|fd
@@ -1865,7 +1865,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sys_read
+id|read
 c_func
 (paren
 id|fd
@@ -1935,6 +1935,20 @@ id|tda_state
 comma
 id|TDA1004X_CONFC4
 comma
+l_int|0x10
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|tda_state
+comma
+id|TDA1004X_CONFC4
+comma
 l_int|8
 comma
 l_int|8
@@ -1977,6 +1991,20 @@ r_case
 id|FE_TYPE_TDA10046H
 suffix:colon
 singleline_comment|// reset chip
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|tda_state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|tda1004x_write_mask
 c_func
 (paren
@@ -2436,6 +2464,21 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|tda_state
+comma
+id|TDA1004X_CONFADC1
+comma
+l_int|0x10
+comma
+l_int|0
+)paren
+suffix:semicolon
+singleline_comment|// wake up the ADC
 singleline_comment|// Disable the MC44BC374C
 id|tda1004x_enable_tuner_i2c
 c_func
@@ -2732,6 +2775,21 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|tda_state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+singleline_comment|// wake up the chip
 singleline_comment|// Disable the MC44BC374C
 id|tda1004x_enable_tuner_i2c
 c_func
@@ -6262,6 +6320,72 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|tda1004x_sleep
+r_static
+r_int
+id|tda1004x_sleep
+c_func
+(paren
+r_struct
+id|dvb_i2c_bus
+op_star
+id|i2c
+comma
+r_struct
+id|tda1004x_state
+op_star
+id|tda_state
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|tda_state-&gt;fe_type
+)paren
+(brace
+r_case
+id|FE_TYPE_TDA10045H
+suffix:colon
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|tda_state
+comma
+id|TDA1004X_CONFADC1
+comma
+l_int|0x10
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FE_TYPE_TDA10046H
+suffix:colon
+id|tda1004x_write_mask
+c_func
+(paren
+id|i2c
+comma
+id|tda_state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|1
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|tda1004x_ioctl
 r_static
 r_int
@@ -6304,10 +6428,7 @@ r_struct
 id|tda1004x_state
 op_star
 )paren
-op_amp
-(paren
 id|fe-&gt;data
-)paren
 suffix:semicolon
 id|dprintk
 c_func
@@ -6506,6 +6627,22 @@ id|arg
 )paren
 suffix:semicolon
 r_case
+id|FE_SLEEP
+suffix:colon
+id|tda_state-&gt;initialised
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|tda1004x_sleep
+c_func
+(paren
+id|i2c
+comma
+id|tda_state
+)paren
+suffix:semicolon
+r_case
 id|FE_INIT
 suffix:colon
 singleline_comment|// don&squot;t bother reinitialising
@@ -6569,6 +6706,40 @@ suffix:semicolon
 r_return
 id|status
 suffix:semicolon
+r_case
+id|FE_GET_TUNE_SETTINGS
+suffix:colon
+(brace
+r_struct
+id|dvb_frontend_tune_settings
+op_star
+id|fesettings
+op_assign
+(paren
+r_struct
+id|dvb_frontend_tune_settings
+op_star
+)paren
+id|arg
+suffix:semicolon
+id|fesettings-&gt;min_delay_ms
+op_assign
+l_int|800
+suffix:semicolon
+id|fesettings-&gt;step_size
+op_assign
+l_int|166667
+suffix:semicolon
+id|fesettings-&gt;max_drift
+op_assign
+l_int|166667
+op_star
+l_int|2
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 r_return
@@ -6624,6 +6795,11 @@ suffix:semicolon
 r_struct
 id|tda1004x_state
 id|tda_state
+suffix:semicolon
+r_struct
+id|tda1004x_state
+op_star
+id|ptda_state
 suffix:semicolon
 r_struct
 id|i2c_msg
@@ -7100,6 +7276,59 @@ l_int|0
 r_return
 id|status
 suffix:semicolon
+singleline_comment|// create the real state we&squot;ll be passing about
+r_if
+c_cond
+(paren
+(paren
+id|ptda_state
+op_assign
+(paren
+r_struct
+id|tda1004x_state
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|tda1004x_state
+)paren
+comma
+id|GFP_KERNEL
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|memcpy
+c_func
+(paren
+id|ptda_state
+comma
+op_amp
+id|tda_state
+comma
+r_sizeof
+(paren
+r_struct
+id|tda1004x_state
+)paren
+)paren
+suffix:semicolon
+op_star
+id|data
+op_assign
+id|ptda_state
+suffix:semicolon
 singleline_comment|// register
 r_switch
 c_cond
@@ -7118,21 +7347,7 @@ id|tda1004x_ioctl
 comma
 id|i2c
 comma
-(paren
-r_void
-op_star
-)paren
-(paren
-op_star
-(paren
-(paren
-id|u32
-op_star
-)paren
-op_amp
-id|tda_state
-)paren
-)paren
+id|ptda_state
 comma
 op_amp
 id|tda10045h_info
@@ -7149,21 +7364,7 @@ id|tda1004x_ioctl
 comma
 id|i2c
 comma
-(paren
-r_void
-op_star
-)paren
-(paren
-op_star
-(paren
-(paren
-id|u32
-op_star
-)paren
-op_amp
-id|tda_state
-)paren
-)paren
+id|ptda_state
 comma
 op_amp
 id|tda10046h_info
@@ -7198,6 +7399,12 @@ c_func
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|data
 )paren
 suffix:semicolon
 id|dvb_unregister_frontend

@@ -1960,6 +1960,10 @@ id|i2c_adapter
 op_star
 id|i2c_adapter
 comma
+r_int
+r_int
+r_class
+comma
 id|u32
 id|bitrate
 )paren
@@ -2043,6 +2047,12 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|i2c_adapter
+op_member_access_from_pointer
+r_class
+op_assign
+r_class
+suffix:semicolon
 macro_line|#endif
 id|i2c_adapter-&gt;algo
 op_assign
@@ -2065,15 +2075,6 @@ id|i2c_adapter-&gt;retries
 op_assign
 id|SAA7146_I2C_RETRIES
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
-macro_line|#else
-id|i2c_adapter
-op_member_access_from_pointer
-r_class
-op_assign
-id|I2C_ADAP_CLASS_TV_ANALOG
-suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 l_int|0

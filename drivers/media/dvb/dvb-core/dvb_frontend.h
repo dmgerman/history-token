@@ -120,13 +120,36 @@ suffix:semicolon
 multiline_comment|/*  can be used by hardware module... */
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *   private frontend command ioctl&squot;s.&n; *   keep them in sync with the public ones defined in linux/dvb/frontend.h&n; */
+DECL|struct|dvb_frontend_tune_settings
+r_struct
+id|dvb_frontend_tune_settings
+(brace
+DECL|member|min_delay_ms
+r_int
+id|min_delay_ms
+suffix:semicolon
+DECL|member|step_size
+r_int
+id|step_size
+suffix:semicolon
+DECL|member|max_drift
+r_int
+id|max_drift
+suffix:semicolon
+DECL|member|parameters
+r_struct
+id|dvb_frontend_parameters
+id|parameters
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/**&n; *   private frontend command ioctl&squot;s.&n; *   keep them in sync with the public ones defined in linux/dvb/frontend.h&n; * &n; *   FE_SLEEP. Ioctl used to put frontend into a low power mode.&n; *   FE_INIT. Ioctl used to initialise the frontend.&n; *   FE_GET_TUNE_SETTINGS. Get the frontend-specific tuning loop settings for the supplied set of parameters.&n; */
 DECL|macro|FE_SLEEP
 mdefine_line|#define FE_SLEEP              _IO(&squot;v&squot;, 80)
 DECL|macro|FE_INIT
 mdefine_line|#define FE_INIT               _IO(&squot;v&squot;, 81)
-DECL|macro|FE_RESET
-mdefine_line|#define FE_RESET              _IO(&squot;v&squot;, 82)
+DECL|macro|FE_GET_TUNE_SETTINGS
+mdefine_line|#define FE_GET_TUNE_SETTINGS  _IOWR(&squot;v&squot;, 83, struct dvb_frontend_tune_settings)
 r_extern
 r_int
 id|dvb_register_frontend

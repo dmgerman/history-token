@@ -1114,6 +1114,8 @@ op_amp
 id|card-&gt;dvb_adapter
 comma
 id|card-&gt;card_name
+comma
+id|THIS_MODULE
 )paren
 )paren
 OL
