@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -1151,7 +1150,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|page_has_buffers
+id|PagePrivate
 c_func
 (paren
 id|page
@@ -1416,7 +1415,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|page_has_buffers
+id|PagePrivate
 c_func
 (paren
 id|page

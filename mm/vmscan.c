@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for try_to_release_page() */
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for try_to_release_page(),&n;&t;&t;&t;&t;&t;buffer_heads_over_limit */
 macro_line|#include &lt;linux/mm_inline.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
