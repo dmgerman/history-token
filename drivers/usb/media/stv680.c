@@ -3446,12 +3446,6 @@ comma
 id|stv680
 )paren
 suffix:semicolon
-id|urb-&gt;timeout
-op_assign
-id|PENCAM_TIMEOUT
-op_star
-l_int|2
-suffix:semicolon
 id|stv680-&gt;urb
 (braket
 id|i
