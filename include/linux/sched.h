@@ -4150,6 +4150,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|thaw_processes
 r_static
