@@ -105,7 +105,7 @@ id|pg
 op_assign
 id|ia32_shared_page
 (braket
-id|NUM_SHARED__PAGES
+id|NUM_SHARED_PAGES
 op_star
 id|smp_processor_id
 c_func
