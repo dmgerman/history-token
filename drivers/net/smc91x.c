@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * smc91x.c&n; * This is a driver for SMSC&squot;s 91C9x/91C1xx single-chip Ethernet devices.&n; *&n; * Copyright (C) 1996 by Erik Stahlman&n; * Copyright (C) 2001 Standard Microsystems Corporation&n; *&t;Developed by Simple Network Magic Corporation&n; * Copyright (C) 2003 Monta Vista Software, Inc.&n; *&t;Unified SMC91x driver by Nicolas Pitre&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Arguments:&n; * &t;io&t;= for the base address&n; *&t;irq&t;= for the IRQ&n; *&t;nowait&t;= 0 for normal wait states, 1 eliminates additional wait states&n; *&n; * original author:&n; * &t;Erik Stahlman &lt;erik@vt.edu&gt;&n; *&n; * hardware multicast code:&n; *    Peter Cammaert &lt;pc@denkart.be&gt;&n; *&n; * contributors:&n; * &t;Daris A Nevil &lt;dnevil@snmc.com&gt;&n; *      Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Russell King &lt;rmk@arm.linux.org.uk&gt;&n; *&n; * History:&n; *   08/20/00  Arnaldo Melo       fix kfree(skb) in smc_hardware_send_packet&n; *   12/15/00  Christian Jullien  fix &quot;Warning: kfree_skb on hard IRQ&quot;&n; *   03/16/01  Daris A Nevil      modified smc9194.c for use with LAN91C111&n; *   08/22/01  Scott Anderson     merge changes from smc9194 to smc91111&n; *   08/21/01  Pramod B Bhardwaj  added support for RevB of LAN91C111&n; *   12/20/01  Jeff Sutherland    initial port to Xscale PXA with DMA support&n; *   04/07/03  Nicolas Pitre      unified SMC91x driver, killed irq races,&n; *                                more bus abstraction, big cleanup, etc.&n; *   29/09/03  Russell King       - add driver model support&n; *                                - ethtool support&n; *                                - convert to use generic MII interface&n; *                                - add link up/down notification&n; *                                - don&squot;t try to handle full negotiation in&n; *                                  smc_phy_configure&n; *                                - clean up (and fix stack overrun) in PHY&n; *                                  MII read/write functions&n; */
+multiline_comment|/*&n; * smc91x.c&n; * This is a driver for SMSC&squot;s 91C9x/91C1xx single-chip Ethernet devices.&n; *&n; * Copyright (C) 1996 by Erik Stahlman&n; * Copyright (C) 2001 Standard Microsystems Corporation&n; *&t;Developed by Simple Network Magic Corporation&n; * Copyright (C) 2003 Monta Vista Software, Inc.&n; *&t;Unified SMC91x driver by Nicolas Pitre&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Arguments:&n; * &t;io&t;= for the base address&n; *&t;irq&t;= for the IRQ&n; *&t;nowait&t;= 0 for normal wait states, 1 eliminates additional wait states&n; *&n; * original author:&n; * &t;Erik Stahlman &lt;erik@vt.edu&gt;&n; *&n; * hardware multicast code:&n; *    Peter Cammaert &lt;pc@denkart.be&gt;&n; *&n; * contributors:&n; * &t;Daris A Nevil &lt;dnevil@snmc.com&gt;&n; *      Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Russell King &lt;rmk@arm.linux.org.uk&gt;&n; *&n; * History:&n; *   08/20/00  Arnaldo Melo       fix kfree(skb) in smc_hardware_send_packet&n; *   12/15/00  Christian Jullien  fix &quot;Warning: kfree_skb on hard IRQ&quot;&n; *   03/16/01  Daris A Nevil      modified smc9194.c for use with LAN91C111&n; *   08/22/01  Scott Anderson     merge changes from smc9194 to smc91111&n; *   08/21/01  Pramod B Bhardwaj  added support for RevB of LAN91C111&n; *   12/20/01  Jeff Sutherland    initial port to Xscale PXA with DMA support&n; *   04/07/03  Nicolas Pitre      unified SMC91x driver, killed irq races,&n; *                                more bus abstraction, big cleanup, etc.&n; *   29/09/03  Russell King       - add driver model support&n; *                                - ethtool support&n; *                                - convert to use generic MII interface&n; *                                - add link up/down notification&n; *                                - don&squot;t try to handle full negotiation in&n; *                                  smc_phy_configure&n; *                                - clean up (and fix stack overrun) in PHY&n; *                                  MII read/write functions&n; *   22/09/04  Nicolas Pitre      big update (see commit log for details)&n; */
 DECL|variable|version
 r_static
 r_const
@@ -7,7 +7,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;smc91x.c: v1.0, mar 07 2003 by Nicolas Pitre &lt;nico@cam.org&gt;&bslash;n&quot;
+l_string|&quot;smc91x.c: v1.1, sep 22 2004 by Nicolas Pitre &lt;nico@cam.org&gt;&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* Debugging level */
 macro_line|#ifndef SMC_DEBUG
@@ -225,11 +225,11 @@ r_struct
 id|smc_local
 (brace
 multiline_comment|/*&n;&t; * If I have to wait until memory is available to send a&n;&t; * packet, I will store the skbuff here, until I get the&n;&t; * desired memory.  Then, I&squot;ll send it out and free it.&n;&t; */
-DECL|member|saved_skb
+DECL|member|pending_tx_skb
 r_struct
 id|sk_buff
 op_star
-id|saved_skb
+id|pending_tx_skb
 suffix:semicolon
 DECL|member|tx_task
 r_struct
@@ -690,17 +690,17 @@ multiline_comment|/* clear anything saved */
 r_if
 c_cond
 (paren
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_ne
 l_int|NULL
 )paren
 (brace
 id|dev_kfree_skb
 (paren
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 )paren
 suffix:semicolon
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1305,7 +1305,7 @@ mdefine_line|#define smc_special_lock(lock)&t;&t;do { } while (0)
 DECL|macro|smc_special_unlock
 mdefine_line|#define smc_special_unlock(lock)&t;do { } while (0)
 macro_line|#endif
-multiline_comment|/*&n; * This is called to actually send a packet to the chip.&n; * Returns non-zero when successful.&n; */
+multiline_comment|/*&n; * This is called to actually send a packet to the chip.&n; */
 DECL|function|smc_hardware_send_pkt
 r_static
 r_void
@@ -1351,7 +1351,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 suffix:semicolon
 r_int
 r_int
@@ -1398,7 +1398,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1680,12 +1680,12 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_assign
 id|skb
 suffix:semicolon
@@ -1729,7 +1729,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -5030,16 +5030,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 )paren
 (brace
 id|dev_kfree_skb
 c_func
 (paren
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 )paren
 suffix:semicolon
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
