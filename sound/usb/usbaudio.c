@@ -9039,7 +9039,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceClass
+id|desc.bInterfaceClass
 )paren
 suffix:semicolon
 multiline_comment|/* skip non-supported classes */
