@@ -3371,7 +3371,8 @@ c_func
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 r_extern
