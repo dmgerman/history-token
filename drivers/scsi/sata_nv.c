@@ -22,10 +22,6 @@ DECL|macro|NV_MWDMA_MASK
 mdefine_line|#define NV_MWDMA_MASK&t;&t;&t;0x07
 DECL|macro|NV_UDMA_MASK
 mdefine_line|#define NV_UDMA_MASK&t;&t;&t;0x7f
-DECL|macro|NV_PORT0_BMDMA_REG_OFFSET
-mdefine_line|#define NV_PORT0_BMDMA_REG_OFFSET&t;0x00
-DECL|macro|NV_PORT1_BMDMA_REG_OFFSET
-mdefine_line|#define NV_PORT1_BMDMA_REG_OFFSET&t;0x08
 DECL|macro|NV_PORT0_SCR_REG_OFFSET
 mdefine_line|#define NV_PORT0_SCR_REG_OFFSET&t;&t;0x00
 DECL|macro|NV_PORT1_SCR_REG_OFFSET

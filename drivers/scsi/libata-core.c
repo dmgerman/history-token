@@ -173,7 +173,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ata_tf_load_pio - send taskfile registers to host controller&n; *&t;@ap: Port to which output is sent&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Outputs ATA taskfile to standard ATA host controller using PIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
+multiline_comment|/**&n; *&t;ata_tf_load - send taskfile registers to host controller&n; *&t;@ap: Port to which output is sent&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Outputs ATA taskfile to standard ATA host controller.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_tf_load_pio
 r_static
 r_void
@@ -724,7 +724,7 @@ id|tf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_exec_command_pio - issue ATA command to host controller&n; *&t;@ap: port to which command is being issued&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Issues PIO write to ATA command register, with proper&n; *&t;synchronization with interrupt handler / other threads.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_exec_command - issue ATA command to host controller&n; *&t;@ap: port to which command is being issued&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Issues PIO/MMIO write to ATA command register, with proper&n; *&t;synchronization with interrupt handler / other threads.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_exec_command_pio
 r_static
 r_void
@@ -856,7 +856,7 @@ id|tf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_exec - issue ATA command to host controller&n; *&t;@ap: port to which command is being issued&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Issues PIO write to ATA command register, with proper&n; *&t;synchronization with interrupt handler / other threads.&n; *&n; *&t;LOCKING:&n; *&t;Obtains host_set lock.&n; */
+multiline_comment|/**&n; *&t;ata_exec - issue ATA command to host controller&n; *&t;@ap: port to which command is being issued&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Issues PIO/MMIO write to ATA command register, with proper&n; *&t;synchronization with interrupt handler / other threads.&n; *&n; *&t;LOCKING:&n; *&t;Obtains host_set lock.&n; */
 DECL|function|ata_exec
 r_static
 r_inline
@@ -918,7 +918,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_tf_to_host - issue ATA taskfile to host controller&n; *&t;@ap: port to which command is being issued&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Issues ATA taskfile register set to ATA host controller,&n; *&t;via PIO, with proper synchronization with interrupt handler and&n; *&t;other threads.&n; *&n; *&t;LOCKING:&n; *&t;Obtains host_set lock.&n; */
+multiline_comment|/**&n; *&t;ata_tf_to_host - issue ATA taskfile to host controller&n; *&t;@ap: port to which command is being issued&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Issues ATA taskfile register set to ATA host controller,&n; *&t;with proper synchronization with interrupt handler and&n; *&t;other threads.&n; *&n; *&t;LOCKING:&n; *&t;Obtains host_set lock.&n; */
 DECL|function|ata_tf_to_host
 r_static
 r_void
@@ -955,7 +955,7 @@ id|tf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_tf_to_host_nolock - issue ATA taskfile to host controller&n; *&t;@ap: port to which command is being issued&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Issues ATA taskfile register set to ATA host controller,&n; *&t;via PIO, with proper synchronization with interrupt handler and&n; *&t;other threads.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_tf_to_host_nolock - issue ATA taskfile to host controller&n; *&t;@ap: port to which command is being issued&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Issues ATA taskfile register set to ATA host controller,&n; *&t;with proper synchronization with interrupt handler and&n; *&t;other threads.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_tf_to_host_nolock
 r_void
 id|ata_tf_to_host_nolock
@@ -993,7 +993,7 @@ id|tf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_tf_read_pio - input device&squot;s ATA taskfile shadow registers&n; *&t;@ap: Port from which input is read&n; *&t;@tf: ATA taskfile register set for storing input&n; *&n; *&t;Reads ATA taskfile registers for currently-selected device&n; *&t;into @tf via PIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
+multiline_comment|/**&n; *&t;ata_tf_read - input device&squot;s ATA taskfile shadow registers&n; *&t;@ap: Port from which input is read&n; *&t;@tf: ATA taskfile register set for storing input&n; *&n; *&t;Reads ATA taskfile registers for currently-selected device&n; *&t;into @tf.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_tf_read_pio
 r_static
 r_void
@@ -1341,7 +1341,7 @@ id|tf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_check_status_pio - Read device status reg &amp; clear interrupt&n; *&t;@ap: port where the device is&n; *&n; *&t;Reads ATA taskfile status register for currently-selected device&n; *&t;via PIO and return it&squot;s value. This also clears pending interrupts&n; *      from this device&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
+multiline_comment|/**&n; *&t;ata_check_status - Read device status reg &amp; clear interrupt&n; *&t;@ap: port where the device is&n; *&n; *&t;Reads ATA taskfile status register for currently-selected device&n; *&t;and return it&squot;s value. This also clears pending interrupts&n; *      from this device&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_check_status_pio
 r_static
 id|u8
@@ -9398,7 +9398,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_bmdma_setup_mmio - Set up PCI IDE BMDMA transaction (MMIO)&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_bmdma_setup - Set up PCI IDE BMDMA transaction&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_bmdma_setup_mmio
 r_static
 r_void
@@ -9512,7 +9512,7 @@ id|qc-&gt;tf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_bmdma_start_mmio - Start a PCI IDE BMDMA transaction (MMIO)&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_bmdma_start - Start a PCI IDE BMDMA transaction&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_bmdma_start_mmio
 r_static
 r_void
