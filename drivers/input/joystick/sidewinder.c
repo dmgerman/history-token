@@ -4366,12 +4366,14 @@ id|gameport_dev
 id|sw_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|sw_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|sw_disconnect
 comma
 )brace

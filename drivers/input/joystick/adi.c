@@ -3027,12 +3027,14 @@ id|gameport_dev
 id|adi_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|adi_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|adi_disconnect
 comma
 )brace

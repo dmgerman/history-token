@@ -2564,12 +2564,14 @@ id|gameport_dev
 id|tmdc_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|tmdc_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|tmdc_disconnect
 comma
 )brace

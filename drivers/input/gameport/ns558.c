@@ -632,7 +632,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef __ISAPNP__
 DECL|macro|NS558_DEVICE
-mdefine_line|#define NS558_DEVICE(a,b,c,d)&bslash;&n;&t;card_vendor: ISAPNP_ANY_ID, card_device: ISAPNP_ANY_ID,&bslash;&n;&t;vendor: ISAPNP_VENDOR(a,b,c), function: ISAPNP_DEVICE(d)
+mdefine_line|#define NS558_DEVICE(a,b,c,d)&bslash;&n;&t;.card_vendor = ISAPNP_ANY_ID, card_device: ISAPNP_ANY_ID,&bslash;&n;&t;.vendor = ISAPNP_VENDOR(a,b,c), function: ISAPNP_DEVICE(d)
 DECL|variable|pnp_devids
 r_static
 r_struct

@@ -1324,12 +1324,14 @@ id|gameport_dev
 id|guillemot_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|guillemot_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|guillemot_disconnect
 comma
 )brace

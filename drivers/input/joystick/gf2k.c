@@ -2026,12 +2026,14 @@ id|gameport_dev
 id|gf2k_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|gf2k_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|gf2k_disconnect
 comma
 )brace

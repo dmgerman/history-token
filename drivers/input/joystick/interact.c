@@ -1536,12 +1536,14 @@ id|gameport_dev
 id|interact_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|interact_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|interact_disconnect
 comma
 )brace

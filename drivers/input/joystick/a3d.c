@@ -2370,12 +2370,14 @@ id|gameport_dev
 id|a3d_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|a3d_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|a3d_disconnect
 comma
 )brace

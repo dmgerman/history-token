@@ -1424,12 +1424,14 @@ id|gameport_dev
 id|cobra_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|cobra_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|cobra_disconnect
 comma
 )brace

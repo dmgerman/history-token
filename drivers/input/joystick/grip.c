@@ -2772,12 +2772,14 @@ id|gameport_dev
 id|grip_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|grip_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|grip_disconnect
 comma
 )brace

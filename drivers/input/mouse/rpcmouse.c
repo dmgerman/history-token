@@ -43,8 +43,9 @@ id|input_dev
 id|rpcmouse_dev
 op_assign
 (brace
+dot
 id|evbit
-suffix:colon
+op_assign
 (brace
 id|BIT
 c_func
@@ -59,8 +60,9 @@ id|EV_REL
 )paren
 )brace
 comma
+dot
 id|keybit
-suffix:colon
+op_assign
 (brace
 (braket
 id|LONG
@@ -89,8 +91,9 @@ id|BTN_RIGHT
 )paren
 )brace
 comma
+dot
 id|relbit
-suffix:colon
+op_assign
 (brace
 id|BIT
 c_func
@@ -105,12 +108,14 @@ id|REL_Y
 )paren
 )brace
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Acorn RiscPC Mouse&quot;
 comma
+dot
 id|phys
-suffix:colon
+op_assign
 l_string|&quot;rpcmouse/input0&quot;
 comma
 )brace

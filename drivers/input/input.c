@@ -2445,12 +2445,14 @@ id|file_operations
 id|input_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|input_open_file
 comma
 )brace
