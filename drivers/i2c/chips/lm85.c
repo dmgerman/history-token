@@ -3400,16 +3400,6 @@ id|type_name
 op_assign
 l_string|&quot;lm85&quot;
 suffix:semicolon
-id|strlcpy
-c_func
-(paren
-id|new_client-&gt;name
-comma
-l_string|&quot;Generic LM85&quot;
-comma
-id|DEVICE_NAME_SIZE
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -3423,16 +3413,6 @@ id|lm85b
 id|type_name
 op_assign
 l_string|&quot;lm85b&quot;
-suffix:semicolon
-id|strlcpy
-c_func
-(paren
-id|new_client-&gt;name
-comma
-l_string|&quot;National LM85-B&quot;
-comma
-id|DEVICE_NAME_SIZE
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -3448,16 +3428,6 @@ id|type_name
 op_assign
 l_string|&quot;lm85c&quot;
 suffix:semicolon
-id|strlcpy
-c_func
-(paren
-id|new_client-&gt;name
-comma
-l_string|&quot;National LM85-C&quot;
-comma
-id|DEVICE_NAME_SIZE
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -3472,16 +3442,6 @@ id|type_name
 op_assign
 l_string|&quot;adm1027&quot;
 suffix:semicolon
-id|strlcpy
-c_func
-(paren
-id|new_client-&gt;name
-comma
-l_string|&quot;Analog Devices ADM1027&quot;
-comma
-id|DEVICE_NAME_SIZE
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -3495,16 +3455,6 @@ id|adt7463
 id|type_name
 op_assign
 l_string|&quot;adt7463&quot;
-suffix:semicolon
-id|strlcpy
-c_func
-(paren
-id|new_client-&gt;name
-comma
-l_string|&quot;Analog Devices ADT7463&quot;
-comma
-id|DEVICE_NAME_SIZE
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -3529,6 +3479,16 @@ r_goto
 id|ERROR1
 suffix:semicolon
 )brace
+id|strlcpy
+c_func
+(paren
+id|new_client-&gt;name
+comma
+id|type_name
+comma
+id|I2C_NAME_SIZE
+)paren
+suffix:semicolon
 multiline_comment|/* Fill in the remaining client fields */
 id|new_client-&gt;id
 op_assign

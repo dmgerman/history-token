@@ -6,10 +6,8 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
 multiline_comment|/* $Id: i2c-philips-par.c,v 1.29 2003/01/21 08:08:16 kmalkki Exp $ */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
@@ -53,13 +51,6 @@ id|i2c_par
 op_star
 id|adapter_list
 suffix:semicolon
-multiline_comment|/* ----- global defines -----------------------------------------------&t;*/
-DECL|macro|DEB
-mdefine_line|#define DEB(x)&t;&t;/* should be reasonable open, close &amp;c. &t;*/
-DECL|macro|DEB2
-mdefine_line|#define DEB2(x) &t;/* low level debugging - very slow &t;&t;*/
-DECL|macro|DEBE
-mdefine_line|#define DEBE(x)&t;x&t;/* error messages &t;&t;&t;&t;*/
 multiline_comment|/* ----- printer port defines ------------------------------------------*/
 multiline_comment|/* Pin Port  Inverted&t;name&t;*/
 DECL|macro|I2C_ON
@@ -585,15 +576,20 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|printk
-c_func
+id|memset
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-philips-par.o: attaching to %s&bslash;n&quot;
+id|adapter
 comma
-id|port-&gt;name
+l_int|0x00
+comma
+r_sizeof
+(paren
+r_struct
+id|i2c_par
+)paren
 )paren
 suffix:semicolon
+multiline_comment|/* printk(KERN_DEBUG &quot;i2c-philips-par.o: attaching to %s&bslash;n&quot;, port-&gt;name); */
 id|adapter-&gt;pdev
 op_assign
 id|parport_register_device
@@ -847,13 +843,21 @@ id|parport_driver
 id|i2c_driver
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;i2c-philips-par&quot;
 comma
+dot
+id|attach
+op_assign
 id|i2c_parport_attach
 comma
+dot
+id|detach
+op_assign
 id|i2c_parport_detach
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|i2c_bitlp_init
@@ -869,22 +873,16 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2c-philips-par.o: i2c Philips parallel port adapter module version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
+l_string|&quot;i2c Philips parallel port adapter driver&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
 id|parport_register_driver
 c_func
 (paren
 op_amp
 id|i2c_driver
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|i2c_bitlp_exit

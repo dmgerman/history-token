@@ -898,13 +898,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|id
-op_assign
-id|I2C_ALGO_SMBUS
-op_or
-id|I2C_HW_SMBUS_SIS96X
-comma
-dot
 r_class
 op_assign
 id|I2C_ADAP_CLASS_SMBUS
@@ -1139,7 +1132,7 @@ c_func
 (paren
 id|sis96x_adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SiS96x SMBus adapter at 0x%04x&quot;
 comma
