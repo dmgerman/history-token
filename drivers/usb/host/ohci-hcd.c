@@ -935,7 +935,6 @@ id|OHCI_CTRL_IR
 (brace
 id|dev_dbg
 (paren
-op_star
 id|ohci-&gt;hcd.controller
 comma
 l_string|&quot;USB HC TakeOver from BIOS/SMM&bslash;n&quot;
@@ -991,7 +990,6 @@ l_int|0
 (brace
 id|dev_err
 (paren
-op_star
 id|ohci-&gt;hcd.controller
 comma
 l_string|&quot;USB HC TakeOver failed!&bslash;n&quot;
@@ -1015,7 +1013,6 @@ id|ohci-&gt;regs-&gt;intrdisable
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|ohci-&gt;hcd.controller
 comma
 l_string|&quot;USB HC reset_hc %s: ctrl = 0x%x ;&bslash;n&quot;
@@ -1097,7 +1094,6 @@ l_int|0
 (brace
 id|dev_err
 (paren
-op_star
 id|ohci-&gt;hcd.controller
 comma
 l_string|&quot;USB HC reset timed out!&quot;
@@ -1785,7 +1781,6 @@ id|hcd
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;stop %s controller%s&bslash;n&quot;
