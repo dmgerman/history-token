@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
 r_extern
 r_int
 id|__init

@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  acpi_system.c - ACPI System Driver ($Revision: 63 $)&
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_SYSTEM_COMPONENT
 id|ACPI_MODULE_NAME

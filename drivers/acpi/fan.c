@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 DECL|macro|ACPI_FAN_COMPONENT
 mdefine_line|#define ACPI_FAN_COMPONENT&t;&t;0x00200000
 DECL|macro|ACPI_FAN_CLASS
