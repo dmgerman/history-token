@@ -1060,14 +1060,11 @@ r_goto
 id|unl_err_out
 suffix:semicolon
 )brace
-id|err
+id|ctx
 op_assign
 id|get_attr_search_ctx
 c_func
 (paren
-op_amp
-id|ctx
-comma
 id|ni
 comma
 id|mrec
@@ -1076,11 +1073,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+op_logical_neg
+id|ctx
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|unm_unl_err_out
 suffix:semicolon
+)brace
 multiline_comment|/* Find the data attribute in the mft record. */
 r_if
 c_cond

@@ -319,15 +319,11 @@ id|ctx
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|attr_search_context
+op_star
 id|get_attr_search_ctx
 c_func
 (paren
-id|attr_search_context
-op_star
-op_star
-id|ctx
-comma
 id|ntfs_inode
 op_star
 id|ni

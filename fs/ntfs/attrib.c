@@ -3501,6 +3501,8 @@ id|at
 suffix:semicolon
 r_int
 id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -3541,14 +3543,11 @@ c_func
 id|mrec
 )paren
 suffix:semicolon
-id|err
+id|ctx
 op_assign
 id|get_attr_search_ctx
 c_func
 (paren
-op_amp
-id|ctx
-comma
 id|ni
 comma
 id|mrec
@@ -3557,11 +3556,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+op_logical_neg
+id|ctx
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|unm_err_out
 suffix:semicolon
+)brace
 multiline_comment|/* The attribute type is determined from the inode type. */
 r_if
 c_cond
@@ -6271,17 +6278,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * get_attr_search_ctx - allocate and initialize a new attribute search context&n; * @ctx:&t;address of pointer in which to return the new search context&n; * @ni:&t;&t;ntfs inode with which to initialize the search context&n; * @mrec:&t;mft record with which to initialize the search context&n; *&n; * Allocate a new attribute search context, initialize it with @ni and @mrec,&n; * and return it in *@ctx. Return 0 on success or -ENOMEM if allocation failed.&n; */
+multiline_comment|/**&n; * get_attr_search_ctx - allocate and initialize a new attribute search context&n; * @ni:&t;&t;ntfs inode with which to initialize the search context&n; * @mrec:&t;mft record with which to initialize the search context&n; *&n; * Allocate a new attribute search context, initialize it with @ni and @mrec,&n; * and return it. Return NULL if allocation failed.&n; */
 DECL|function|get_attr_search_ctx
-r_int
+id|attr_search_context
+op_star
 id|get_attr_search_ctx
 c_func
 (paren
-id|attr_search_context
-op_star
-op_star
-id|ctx
-comma
 id|ntfs_inode
 op_star
 id|ni
@@ -6291,7 +6294,10 @@ op_star
 id|mrec
 )paren
 (brace
+id|attr_search_context
 op_star
+id|ctx
+suffix:semicolon
 id|ctx
 op_assign
 id|kmem_cache_alloc
@@ -6305,22 +6311,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
-op_star
 id|ctx
 )paren
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
 id|init_attr_search_ctx
 c_func
 (paren
-op_star
 id|ctx
 comma
 id|ni
@@ -6329,10 +6324,10 @@ id|mrec
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * put_attr_search_ctx - release an attribute search context&n; * @ctx:&t;attribute search context to free&n; *&n; * Release the attribute search context @ctx, unmapping an associated extent&n; * mft record if prseent.&n; */
+multiline_comment|/**&n; * put_attr_search_ctx - release an attribute search context&n; * @ctx:&t;attribute search context to free&n; *&n; * Release the attribute search context @ctx, unmapping an associated extent&n; * mft record if present.&n; */
 DECL|function|put_attr_search_ctx
 r_void
 id|put_attr_search_ctx
