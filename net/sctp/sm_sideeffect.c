@@ -1986,7 +1986,7 @@ id|sk
 op_assign
 id|asoc-&gt;base.sk
 suffix:semicolon
-multiline_comment|/* If it is a non-temporary association belonging to a TCP-style&n;&t; * listening socket, do not free it so that accept() can pick it&n;&t; * up later.&n;&t; */
+multiline_comment|/* If it is a non-temporary association belonging to a TCP-style&n;&t; * listening socket that is not closed, do not free it so that accept() &n;&t; * can pick it up later.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2009,6 +2009,12 @@ op_logical_and
 (paren
 op_logical_neg
 id|asoc-&gt;temp
+)paren
+op_logical_and
+(paren
+id|sk-&gt;sk_shutdown
+op_ne
+id|SHUTDOWN_MASK
 )paren
 )paren
 r_return
