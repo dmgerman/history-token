@@ -2,7 +2,6 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#ifndef __UM_PGTABLE_H
 DECL|macro|__UM_PGTABLE_H
 mdefine_line|#define __UM_PGTABLE_H
-macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
@@ -37,8 +36,6 @@ suffix:semicolon
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init() do ; while (0)
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
-DECL|macro|PMD_SHIFT
-mdefine_line|#define PMD_SHIFT&t;22
 DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
@@ -57,8 +54,6 @@ DECL|macro|PTRS_PER_PMD
 mdefine_line|#define PTRS_PER_PMD&t;1
 DECL|macro|PTRS_PER_PGD
 mdefine_line|#define PTRS_PER_PGD&t;1024
-DECL|macro|USER_PTRS_PER_PGD
-mdefine_line|#define USER_PTRS_PER_PGD&t;(TASK_SIZE/PGDIR_SIZE)
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR       0
 DECL|macro|pte_ERROR
@@ -237,6 +232,38 @@ DECL|macro|pmd_newpage
 mdefine_line|#define pmd_newpage(x)  (pmd_val(x) &amp; _PAGE_NEWPAGE)
 DECL|macro|pmd_mkuptodate
 mdefine_line|#define pmd_mkuptodate(x) (pmd_val(x) &amp;= ~_PAGE_NEWPAGE)
+DECL|macro|pud_newpage
+mdefine_line|#define pud_newpage(x)  (pud_val(x) &amp; _PAGE_NEWPAGE)
+DECL|macro|pud_mkuptodate
+mdefine_line|#define pud_mkuptodate(x) (pud_val(x) &amp;= ~_PAGE_NEWPAGE)
+DECL|function|__pud_alloc
+r_static
+r_inline
+id|pud_t
+op_star
+id|__pud_alloc
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+id|pgd_t
+op_star
+id|pgd
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|function|pgd_none
 r_static
@@ -1092,41 +1119,18 @@ DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 multiline_comment|/*&n; * the pgd page can be thought of an array like this: pgd_t[PTRS_PER_PGD]&n; *&n; * this macro returns the index of the entry in the pgd page which would&n; * control the given virtual address&n; */
 DECL|macro|pgd_index
-mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
+mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
+DECL|macro|pgd_index_k
+mdefine_line|#define pgd_index_k(addr) pgd_index(addr)
 multiline_comment|/*&n; * pgd_offset() returns a (pgd_t *)&n; * pgd_index() is used get the offset into the pgd page&squot;s array of pgd_t&squot;s;&n; */
 DECL|macro|pgd_offset
-mdefine_line|#define pgd_offset(mm, address) &bslash;&n;((mm)-&gt;pgd + ((address) &gt;&gt; PGDIR_SHIFT))
+mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/*&n; * a shortcut which implies the use of the kernel&squot;s pgd, instead&n; * of a process&squot;s&n; */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
+multiline_comment|/*&n; * the pmd page can be thought of an array like this: pmd_t[PTRS_PER_PMD]&n; *&n; * this macro returns the index of the entry in the pmd page which would&n; * control the given virtual address&n; */
 DECL|macro|pmd_index
 mdefine_line|#define pmd_index(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
-multiline_comment|/* Find an entry in the second-level page table.. */
-DECL|function|pmd_offset
-r_static
-r_inline
-id|pmd_t
-op_star
-id|pmd_offset
-c_func
-(paren
-id|pgd_t
-op_star
-id|dir
-comma
-r_int
-r_int
-id|address
-)paren
-(brace
-r_return
-(paren
-id|pmd_t
-op_star
-)paren
-id|dir
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * the pte page can be thought of an array like this: pte_t[PTRS_PER_PTE]&n; *&n; * this macro returns the index of the entry in the pte page which would&n; * control the given virtual address&n; */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(address) (((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
@@ -1156,6 +1160,7 @@ mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr) (1)
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+macro_line|#include &lt;asm-um/pgtable-nopud.h&gt;
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */

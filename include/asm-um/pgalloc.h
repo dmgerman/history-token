@@ -6,47 +6,9 @@ macro_line|#include &quot;linux/mm.h&quot;
 macro_line|#include &quot;asm/fixmap.h&quot;
 DECL|macro|pmd_populate_kernel
 mdefine_line|#define pmd_populate_kernel(mm, pmd, pte) &bslash;&n;&t;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + (unsigned long) __pa(pte)))
-DECL|function|pmd_populate
-r_static
-r_inline
-r_void
-id|pmd_populate
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-id|pmd_t
-op_star
-id|pmd
-comma
-r_struct
-id|page
-op_star
-id|pte
-)paren
-(brace
-id|set_pmd
-c_func
-(paren
-id|pmd
-comma
-id|__pmd
-c_func
-(paren
-id|_PAGE_TABLE
-op_plus
-id|page_to_phys
-c_func
-(paren
-id|pte
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
+DECL|macro|pmd_populate
+mdefine_line|#define pmd_populate(mm, pmd, pte) &t;&t;&t;&t;&bslash;&n;&t;set_pmd(pmd, __pmd(_PAGE_TABLE +&t;&t;&t;&bslash;&n;&t;&t;((unsigned long long)page_to_pfn(pte) &lt;&lt;&t;&bslash;&n;&t;&t;&t;(unsigned long long) PAGE_SHIFT)))
+multiline_comment|/*&n; * Allocate and free page tables.&n; */
 r_extern
 id|pgd_t
 op_star
@@ -149,8 +111,8 @@ DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
 DECL|macro|__pmd_free_tlb
 mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
-DECL|macro|pgd_populate
-mdefine_line|#define pgd_populate(mm, pmd, pte)&t;BUG()
+DECL|macro|pud_populate
+mdefine_line|#define pud_populate(mm, pmd, pte)&t;BUG()
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif
