@@ -153,12 +153,10 @@ r_int
 id|sysctl_userprocess_debug
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PPC32
+macro_line|#if defined(CONFIG_PPC32) &amp;&amp; defined(CONFIG_6xx)
 r_extern
 r_int
 r_int
-id|zero_paged_on
-comma
 id|powersave_nap
 suffix:semicolon
 r_int
@@ -831,28 +829,7 @@ id|proc_dointvec
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_PPC32
-(brace
-id|KERN_PPC_ZEROPAGED
-comma
-l_string|&quot;zero-paged&quot;
-comma
-op_amp
-id|zero_paged_on
-comma
-r_sizeof
-(paren
-r_int
-)paren
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|proc_dointvec
-)brace
-comma
+macro_line|#if defined(CONFIG_PPC32) &amp;&amp; defined(CONFIG_6xx)
 (brace
 id|KERN_PPC_POWERSAVE_NAP
 comma
