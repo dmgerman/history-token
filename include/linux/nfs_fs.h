@@ -2087,6 +2087,15 @@ suffix:semicolon
 multiline_comment|/* nfs4proc.c */
 r_extern
 r_int
+id|nfs4_map_errors
+c_func
+(paren
+r_int
+id|err
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|nfs4_proc_setclientid
 c_func
 (paren

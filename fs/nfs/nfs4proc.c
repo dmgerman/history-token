@@ -117,8 +117,6 @@ id|zero_stateid
 suffix:semicolon
 multiline_comment|/* Prevent leaks of NFSv4 errors into userland */
 DECL|function|nfs4_map_errors
-r_static
-r_inline
 r_int
 id|nfs4_map_errors
 c_func
@@ -136,10 +134,9 @@ op_minus
 l_int|1000
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s could not handle NFSv4 error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
