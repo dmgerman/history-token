@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.cache.h 1.10 10/18/01 15:02:09 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * include/asm-ppc/cache.h&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ARCH_PPC_CACHE_H
@@ -12,22 +12,22 @@ DECL|macro|L1_CACHE_LINE_SIZE
 mdefine_line|#define&t;L1_CACHE_LINE_SIZE&t;16
 DECL|macro|LG_L1_CACHE_LINE_SIZE
 mdefine_line|#define LG_L1_CACHE_LINE_SIZE&t;4
-DECL|macro|MAX_L1_COPY_PREFETCH
-mdefine_line|#define MAX_L1_COPY_PREFETCH&t;1
+DECL|macro|MAX_COPY_PREFETCH
+mdefine_line|#define MAX_COPY_PREFETCH&t;1
 macro_line|#elif defined(CONFIG_PPC64BRIDGE)
 DECL|macro|L1_CACHE_LINE_SIZE
 mdefine_line|#define L1_CACHE_LINE_SIZE&t;128
 DECL|macro|LG_L1_CACHE_LINE_SIZE
 mdefine_line|#define LG_L1_CACHE_LINE_SIZE&t;7
-DECL|macro|MAX_L1_COPY_PREFETCH
-mdefine_line|#define MAX_L1_COPY_PREFETCH&t;1
+DECL|macro|MAX_COPY_PREFETCH
+mdefine_line|#define MAX_COPY_PREFETCH&t;1
 macro_line|#else
 DECL|macro|L1_CACHE_LINE_SIZE
 mdefine_line|#define&t;L1_CACHE_LINE_SIZE  32
 DECL|macro|LG_L1_CACHE_LINE_SIZE
 mdefine_line|#define LG_L1_CACHE_LINE_SIZE&t;5
-DECL|macro|MAX_L1_COPY_PREFETCH
-mdefine_line|#define MAX_L1_COPY_PREFETCH&t;4
+DECL|macro|MAX_COPY_PREFETCH
+mdefine_line|#define MAX_COPY_PREFETCH&t;4
 macro_line|#endif
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define&t;L1_CACHE_BYTES L1_CACHE_LINE_SIZE
@@ -47,6 +47,20 @@ macro_line|#endif
 macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(__ASSEMBLY__)
 r_extern
 r_void
+id|clean_dcache_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|stop
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|flush_dcache_range
 c_func
 (paren
@@ -57,6 +71,28 @@ comma
 r_int
 r_int
 id|stop
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|invalidate_dcache_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|stop
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_dcache_all
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */

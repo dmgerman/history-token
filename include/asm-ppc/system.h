@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.system.h 1.14 08/20/01 14:34:41 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; */
 macro_line|#ifndef __PPC_SYSTEM_H
 DECL|macro|__PPC_SYSTEM_H
@@ -126,7 +126,7 @@ r_int
 suffix:semicolon
 macro_line|#else
 DECL|macro|_get_L2CR
-mdefine_line|#define _get_L2CR()&t;0
+mdefine_line|#define _get_L2CR()&t;0L
 DECL|macro|_set_L2CR
 mdefine_line|#define _set_L2CR(val)&t;do { } while(0)
 macro_line|#endif
@@ -426,9 +426,6 @@ DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags)&t;&t;__save_and_cli(flags)
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(flags)&t;__restore_flags(flags)
-macro_line|#endif /* __KERNEL__ */
-DECL|macro|xchg
-mdefine_line|#define xchg(ptr,x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))
 r_static
 id|__inline__
 r_int
@@ -454,7 +451,16 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%2 &bslash;n&bslash;&n;&t;stwcx.&t;%3,0,%2 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%2 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|2
+)paren
+l_string|&quot;&t;stwcx.&t;%3,0,%2 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -650,7 +656,16 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%2 &bslash;n&bslash;&n;&t;cmpw&t;0,%0,%3 &bslash;n&bslash;&n;&t;bne&t;2f &bslash;n&bslash;&n;&t;stwcx.&t;%4,0,%2 &bslash;n&bslash;&n;&t;bne-&t;1b&bslash;n&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%2 &bslash;n&bslash;&n;&t;cmpw&t;0,%0,%3 &bslash;n&bslash;&n;&t;bne&t;2f &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|2
+)paren
+l_string|&quot;&t;stwcx.&t;%4,0,%2 &bslash;n&bslash;&n;&t;bne-&t;1b&bslash;n&quot;
 macro_line|#ifdef CONFIG_SMP
 l_string|&quot;&t;sync&bslash;n&quot;
 macro_line|#endif /* CONFIG_SMP */
@@ -779,5 +794,6 @@ suffix:semicolon
 )brace
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&t;&t;&t;&t;&t;&t; &bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _o_ = (o);&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _n_ = (n);&t;&t;&t;&t;&t; &bslash;&n;     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,&t;&t; &bslash;&n;&t;&t;&t;&t;    (unsigned long)_n_, sizeof(*(ptr))); &bslash;&n;  })
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __PPC_SYSTEM_H */
 eof

@@ -1,17 +1,29 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.coffmain.c 1.14 07/27/01 20:24:18 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;zlib.h&quot;
-macro_line|#include &lt;asm/processor.h&gt;
+multiline_comment|/* Passed from the linker */
 r_extern
 r_char
-id|_start
+id|__image_begin
+comma
+id|__image_end
+suffix:semicolon
+r_extern
+r_char
+id|__ramdisk_begin
 (braket
 )braket
 comma
+id|__ramdisk_end
+suffix:semicolon
+r_extern
+r_char
+id|_start
+comma
 id|_end
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_char
@@ -235,16 +247,32 @@ c_func
 id|RAM_START
 )paren
 suffix:semicolon
+id|initrd_size
+op_assign
+(paren
+r_char
+op_star
+)paren
+(paren
+op_amp
+id|__ramdisk_end
+)paren
+op_minus
+(paren
+r_char
+op_star
+)paren
+(paren
+op_amp
+id|__ramdisk_begin
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|initrd_len
+id|initrd_size
 )paren
 (brace
-id|initrd_size
-op_assign
-id|initrd_len
-suffix:semicolon
 id|initrd_start
 op_assign
 (paren
@@ -268,8 +296,6 @@ id|claim
 c_func
 (paren
 id|initrd_start
-op_minus
-id|RAM_START
 comma
 id|RAM_END
 op_minus
@@ -281,11 +307,18 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;initial ramdisk moving 0x%x &lt;- 0x%p (%x bytes)&bslash;n&quot;
+l_string|&quot;initial ramdisk moving 0x%x &lt;- 0x%p (%x bytes)&bslash;n&bslash;r&quot;
 comma
 id|initrd_start
 comma
-id|initrd_data
+(paren
+r_char
+op_star
+)paren
+(paren
+op_amp
+id|__ramdisk_begin
+)paren
 comma
 id|initrd_size
 )paren
@@ -299,19 +332,54 @@ op_star
 )paren
 id|initrd_start
 comma
-id|initrd_data
+(paren
+r_char
+op_star
+)paren
+(paren
+op_amp
+id|__ramdisk_begin
+)paren
 comma
 id|initrd_size
 )paren
 suffix:semicolon
 )brace
+r_else
+id|a2
+op_assign
+l_int|0xdeadbeef
+suffix:semicolon
 id|im
 op_assign
-id|image_data
+(paren
+r_char
+op_star
+)paren
+(paren
+op_amp
+id|__image_begin
+)paren
 suffix:semicolon
 id|len
 op_assign
-id|image_len
+(paren
+r_char
+op_star
+)paren
+(paren
+op_amp
+id|__image_end
+)paren
+op_minus
+(paren
+r_char
+op_star
+)paren
+(paren
+op_amp
+id|__image_begin
+)paren
 suffix:semicolon
 multiline_comment|/* claim 4MB starting at 0 */
 id|claim

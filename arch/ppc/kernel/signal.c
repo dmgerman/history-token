@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.signal.c 1.7 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/signal.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/i386/kernel/signal.c&quot;&n; *    Copyright (C) 1991, 1992 Linus Torvalds&n; *    1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -647,6 +648,7 @@ c_func
 (paren
 id|sig
 comma
+(paren
 id|act
 ques
 c_cond
@@ -654,7 +656,9 @@ op_amp
 id|new_ka
 suffix:colon
 l_int|NULL
+)paren
 comma
+(paren
 id|oact
 ques
 c_cond
@@ -662,6 +666,7 @@ op_amp
 id|old_ka
 suffix:colon
 l_int|NULL
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -951,6 +956,19 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_FP
+)paren
+id|giveup_fpu
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|rt_sf
 op_increment
 suffix:semicolon
@@ -979,19 +997,6 @@ id|sigregs
 op_star
 )paren
 id|sigctx.regs
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
-id|MSR_FP
-)paren
-id|giveup_fpu
-c_func
-(paren
-id|current
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1229,6 +1234,10 @@ l_int|1
 r_goto
 id|badframe
 suffix:semicolon
+id|current-&gt;thread.fpscr
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_return
 id|ret
@@ -1393,6 +1402,11 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
+id|current-&gt;thread.fpscr
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* turn off all fp exceptions */
 multiline_comment|/* Retrieve rt_sigframe from stack and&n;&t;   set up registers for signal handler&n;&t;*/
 id|newsp
 op_sub_assign
@@ -1653,6 +1667,19 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_FP
+)paren
+id|giveup_fpu
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|sc
 op_increment
 suffix:semicolon
@@ -1681,19 +1708,6 @@ id|sigregs
 op_star
 )paren
 id|sigctx.regs
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
-id|MSR_FP
-)paren
-id|giveup_fpu
-c_func
-(paren
-id|current
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1883,6 +1897,10 @@ l_int|1
 r_goto
 id|badframe
 suffix:semicolon
+id|current-&gt;thread.fpscr
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_return
 id|ret
@@ -2046,6 +2064,11 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
+id|current-&gt;thread.fpscr
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* turn off all fp exceptions */
 id|newsp
 op_sub_assign
 id|__SIGNAL_FRAMESIZE

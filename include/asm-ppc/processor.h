@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.processor.h 1.31 10/05/01 16:26:22 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PPC_PROCESSOR_H
 DECL|macro|__ASM_PPC_PROCESSOR_H
@@ -7,6 +7,7 @@ multiline_comment|/*&n; * Default implementation of macro that returns current&n
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
@@ -228,14 +229,58 @@ DECL|macro|DBCR_JII
 mdefine_line|#define&t;  DBCR_JII&t;0x00000001&t;/* JTAG Serial Inbound Int. Enable */
 DECL|macro|SPRN_DBCR0
 mdefine_line|#define&t;SPRN_DBCR0&t;0x3F2&t;/* Debug Control Register 0 */
+DECL|macro|DBCR0_EDM
+mdefine_line|#define   DBCR0_EDM         0x80000000  /* External Debug Mode             */
+DECL|macro|DBCR0_IDM
+mdefine_line|#define   DBCR0_IDM         0x40000000  /* Internal Debug Mode             */
+DECL|macro|DBCR0_RST
+mdefine_line|#define   DBCR0_RST         0x30000000  /* all the bits in the RST field   */
+DECL|macro|DBCR0_RST_SYSTEM
+mdefine_line|#define   DBCR0_RST_SYSTEM  0x30000000  /* System Reset                    */
+DECL|macro|DBCR0_RST_CHIP
+mdefine_line|#define   DBCR0_RST_CHIP    0x20000000  /* Chip   Reset                    */
+DECL|macro|DBCR0_RST_CORE
+mdefine_line|#define   DBCR0_RST_CORE    0x10000000  /* Core   Reset                    */
+DECL|macro|DBCR0_RST_NONE
+mdefine_line|#define   DBCR0_RST_NONE    0x00000000  /* No     Reset                    */
+DECL|macro|DBCR0_IC
+mdefine_line|#define   DBCR0_IC          0x08000000  /* Instruction Completion          */
+DECL|macro|DBCR0_BT
+mdefine_line|#define   DBCR0_BT          0x04000000  /* Branch Taken                    */
+DECL|macro|DBCR0_EDE
+mdefine_line|#define   DBCR0_EDE         0x02000000  /* Exception Debug Event           */
+DECL|macro|DBCR0_TDE
+mdefine_line|#define   DBCR0_TDE         0x01000000  /* TRAP Debug Event                */
+DECL|macro|DBCR0_IA1
+mdefine_line|#define   DBCR0_IA1         0x00800000  /* Instr Addr compare 1 enable     */
+DECL|macro|DBCR0_IA2
+mdefine_line|#define   DBCR0_IA2         0x00400000  /* Instr Addr compare 2 enable     */
+DECL|macro|DBCR0_IA12
+mdefine_line|#define   DBCR0_IA12        0x00200000  /* Instr Addr 1-2 range enable     */
+DECL|macro|DBCR0_IA12X
+mdefine_line|#define   DBCR0_IA12X       0x00100000  /* Instr Addr 1-2 range eXclusive  */
+DECL|macro|DBCR0_IA3
+mdefine_line|#define   DBCR0_IA3         0x00080000  /* Instr Addr compare 3 enable     */
+DECL|macro|DBCR0_IA4
+mdefine_line|#define   DBCR0_IA4         0x00040000  /* Instr Addr compare 4 enable     */
+DECL|macro|DBCR0_IA34
+mdefine_line|#define   DBCR0_IA34        0x00020000  /* Instr Addr 3-4 range Enable     */
+DECL|macro|DBCR0_IA34X
+mdefine_line|#define   DBCR0_IA34X       0x00010000  /* Instr Addr 3-4 range eXclusive  */
+DECL|macro|DBCR0_IA12T
+mdefine_line|#define   DBCR0_IA12T       0x00008000  /* Instr Addr 1-2 range Toggle     */
+DECL|macro|DBCR0_IA34T
+mdefine_line|#define   DBCR0_IA34T       0x00004000  /* Instr Addr 3-4 range Toggle     */
+DECL|macro|DBCR0_FT
+mdefine_line|#define   DBCR0_FT          0x00000001  /* Freeze Timers on debug event    */
 DECL|macro|SPRN_DBCR1
-mdefine_line|#define&t;SPRN_DBCR1&t;0x3BD&t;/* Debug Control Register 1 */
+mdefine_line|#define&t;SPRN_DBCR1&t;0x3BD&t;/* Debug Control Register 1 */&t;&t;  
 DECL|macro|SPRN_DBSR
-mdefine_line|#define&t;SPRN_DBSR&t;0x3F0&t;/* Debug Status Register */
+mdefine_line|#define&t;SPRN_DBSR&t;0x3F0&t;/* Debug Status Register */&t;&t;  
 DECL|macro|DBSR_IC
-mdefine_line|#define   DBSR_IC&t;    0x80000000&t;/* Instruction Completion             */
+mdefine_line|#define   DBSR_IC&t;    0x80000000&t;/* Instruction Completion          */
 DECL|macro|DBSR_TIE
-mdefine_line|#define   DBSR_TIE&t;    0x10000000&t;/* Trap Instruction debug Event       */
+mdefine_line|#define   DBSR_TIE&t;    0x10000000&t;/* Trap Instruction debug Event    */
 DECL|macro|SPRN_DCCR
 mdefine_line|#define&t;SPRN_DCCR&t;0x3FA&t;/* Data Cache Cacheability Register */
 DECL|macro|DCCR_NOCACHE
@@ -338,10 +383,14 @@ DECL|macro|HID0_SBCLK
 mdefine_line|#define&t;  HID0_SBCLK&t;(1&lt;&lt;27)
 DECL|macro|HID0_EICE
 mdefine_line|#define&t;  HID0_EICE&t;(1&lt;&lt;26)
+DECL|macro|HID0_TBEN
+mdefine_line|#define&t;  HID0_TBEN&t;(1&lt;&lt;26)&t;&t;/* Timebase enable - 7450 */
 DECL|macro|HID0_ECLK
 mdefine_line|#define&t;  HID0_ECLK&t;(1&lt;&lt;25)
 DECL|macro|HID0_PAR
 mdefine_line|#define&t;  HID0_PAR&t;(1&lt;&lt;24)
+DECL|macro|HID0_STEN
+mdefine_line|#define&t;  HID0_STEN&t;(1&lt;&lt;24)&t;&t;/* S/W Tablewalk enable - 7450 */
 DECL|macro|HID0_DOZE
 mdefine_line|#define&t;  HID0_DOZE&t;(1&lt;&lt;23)
 DECL|macro|HID0_NAP
@@ -350,6 +399,12 @@ DECL|macro|HID0_SLEEP
 mdefine_line|#define&t;  HID0_SLEEP&t;(1&lt;&lt;21)
 DECL|macro|HID0_DPM
 mdefine_line|#define&t;  HID0_DPM&t;(1&lt;&lt;20)
+DECL|macro|HID0_BHTCLR
+mdefine_line|#define&t;  HID0_BHTCLR&t;(1&lt;&lt;18)&t;&t;/* Clear branch history table - 7450 */
+DECL|macro|HID0_XAEN
+mdefine_line|#define&t;  HID0_XAEN&t;(1&lt;&lt;17)&t;&t;/* Extended addressing enable - 7450 */
+DECL|macro|HID0_NHR
+mdefine_line|#define   HID0_NHR&t;(1&lt;&lt;16)&t;&t;/* Not hard reset (software bit-7450)*/
 DECL|macro|HID0_ICE
 mdefine_line|#define&t;  HID0_ICE&t;(1&lt;&lt;15)&t;&t;/* Instruction Cache Enable */
 DECL|macro|HID0_DCE
@@ -371,15 +426,37 @@ mdefine_line|#define&t;  HID0_SIED&t;(1&lt;&lt;7)&t;&t;/* Serial Instr. Executio
 DECL|macro|HID0_DFCA
 mdefine_line|#define&t;  HID0_DFCA&t;(1&lt;&lt;6)&t;&t;/* Data Cache Flush Assist */
 DECL|macro|HID0_BTIC
-mdefine_line|#define   HID0_BTIC&t;(1&lt;&lt;5)&t;&t;/* Branch Target Instruction Cache Enable */
+mdefine_line|#define   HID0_BTIC&t;(1&lt;&lt;5)&t;&t;/* Branch Target Instr Cache Enable */
+DECL|macro|HID0_LRSTK
+mdefine_line|#define   HID0_LRSTK&t;(1&lt;&lt;4)&t;&t;/* Link Stack enable - 7450 */
 DECL|macro|HID0_ABE
 mdefine_line|#define   HID0_ABE&t;(1&lt;&lt;3)&t;&t;/* Address Broadcast Enable */
+DECL|macro|HID0_FOLD
+mdefine_line|#define   HID0_FOLD&t;(1&lt;&lt;3)&t;&t;/* Branch Folding enable - 7450 */
 DECL|macro|HID0_BHTE
 mdefine_line|#define&t;  HID0_BHTE&t;(1&lt;&lt;2)&t;&t;/* Branch History Table Enable */
 DECL|macro|HID0_BTCD
 mdefine_line|#define&t;  HID0_BTCD&t;(1&lt;&lt;1)&t;&t;/* Branch target cache disable */
+DECL|macro|HID0_NOPDST
+mdefine_line|#define&t;  HID0_NOPDST&t;(1&lt;&lt;1)&t;&t;/* No-op dst, dstt, etc. instr. */
+DECL|macro|HID0_NOPTI
+mdefine_line|#define&t;  HID0_NOPTI&t;(1&lt;&lt;0)&t;&t;/* No-op dcbt and dcbst instr. */
 DECL|macro|SPRN_HID1
 mdefine_line|#define&t;SPRN_HID1&t;0x3F1&t;/* Hardware Implementation Register 1 */
+DECL|macro|HID1_EMCP
+mdefine_line|#define&t;  HID1_EMCP&t;(1&lt;&lt;31)&t;&t;/* 7450 Machine Check Pin Enable */
+DECL|macro|HID1_PC0
+mdefine_line|#define   HID1_PC0&t;(1&lt;&lt;16)&t;&t;/* 7450 PLL_CFG[0] */
+DECL|macro|HID1_PC1
+mdefine_line|#define   HID1_PC1&t;(1&lt;&lt;15)&t;&t;/* 7450 PLL_CFG[1] */
+DECL|macro|HID1_PC2
+mdefine_line|#define   HID1_PC2&t;(1&lt;&lt;14)&t;&t;/* 7450 PLL_CFG[2] */
+DECL|macro|HID1_PC3
+mdefine_line|#define   HID1_PC3&t;(1&lt;&lt;13)&t;&t;/* 7450 PLL_CFG[3] */
+DECL|macro|HID1_SYNCBE
+mdefine_line|#define&t;  HID1_SYNCBE&t;(1&lt;&lt;11)&t;&t;/* 7450 ABE for sync, eieio */
+DECL|macro|HID1_ABE
+mdefine_line|#define&t;  HID1_ABE&t;(1&lt;&lt;10)&t;&t;/* 7450 Address Broadcast Enable */
 DECL|macro|SPRN_IABR
 mdefine_line|#define&t;SPRN_IABR&t;0x3F2&t;/* Instruction Address Breakpoint Register */
 DECL|macro|SPRN_IAC1
@@ -414,6 +491,14 @@ DECL|macro|SPRN_ICMP
 mdefine_line|#define&t;SPRN_ICMP&t;0x3D5&t;/* Instruction TLB Compare Register */
 DECL|macro|SPRN_ICTC
 mdefine_line|#define&t;SPRN_ICTC&t;0x3FB&t;/* Instruction Cache Throttling Control Reg */
+DECL|macro|SPRN_ICTRL
+mdefine_line|#define&t;SPRN_ICTRL &t;0x3F3&t;/* 1011 7450 icache and interrupt ctrl */
+DECL|macro|ICTRL_EICE
+mdefine_line|#define   ICTRL_EICE&t;&t;0x08000000&t;/* enable icache parity errs */
+DECL|macro|ICTRL_EDCE
+mdefine_line|#define   ICTRL_EDCE&t;&t;0x04000000&t;/* enable dcache parity errs */
+DECL|macro|ICTRL_EICP
+mdefine_line|#define   ICTRL_EICP&t;&t;0x00000100&t;/* enable icache par. check */
 DECL|macro|SPRN_IMISS
 mdefine_line|#define&t;SPRN_IMISS&t;0x3D4&t;/* Instruction TLB Miss Register */
 DECL|macro|SPRN_IMMR
@@ -478,6 +563,20 @@ DECL|macro|L2CR_L2BYP
 mdefine_line|#define L2CR_L2BYP&t;&t;0x00002000&t;/* L2 DLL bypass */
 DECL|macro|L2CR_L2IP
 mdefine_line|#define L2CR_L2IP&t;&t;0x00000001&t;/* L2 GI in progress */
+DECL|macro|SPRN_L2CR2
+mdefine_line|#define SPRN_L2CR2      0x3f8
+DECL|macro|SPRN_L3CR
+mdefine_line|#define&t;SPRN_L3CR&t;0x3FA&t;/* Level 3 Cache Control Regsiter (7450) */
+DECL|macro|L3CR_L3E
+mdefine_line|#define L3CR_L3E&t;&t;0x80000000&t;/* L3 enable */
+DECL|macro|SPRN_MSSCR0
+mdefine_line|#define SPRN_MSSCR0&t;0x3f6&t;/* Memory Subsystem Control Register 0 */
+DECL|macro|SPRN_MSSSR0
+mdefine_line|#define SPRN_MSSSR0&t;0x3f7&t;/* Memory Subsystem Status Register 1 */
+DECL|macro|SPRN_LDSTCR
+mdefine_line|#define SPRN_LDSTCR&t;0x3f8&t;/* Load/Store control register */
+DECL|macro|SPRN_LDSTDB
+mdefine_line|#define SPRN_LDSTDB&t;0x3f4&t;/* */
 DECL|macro|SPRN_LR
 mdefine_line|#define&t;SPRN_LR&t;&t;0x008&t;/* Link Register */
 DECL|macro|SPRN_MMCR0
@@ -506,6 +605,10 @@ DECL|macro|SPRN_PMC3
 mdefine_line|#define&t;SPRN_PMC3&t;0x3BD&t;/* Performance Counter Register 3 */
 DECL|macro|SPRN_PMC4
 mdefine_line|#define&t;SPRN_PMC4&t;0x3BE&t;/* Performance Counter Register 4 */
+DECL|macro|SPRN_PTEHI
+mdefine_line|#define&t;SPRN_PTEHI&t;0x3D5&t;/* 981 7450 PTE HI word (S/W TLB load) */
+DECL|macro|SPRN_PTELO
+mdefine_line|#define&t;SPRN_PTELO&t;0x3D6&t;/* 982 7450 PTE LO word (S/W TLB load)  */
 DECL|macro|SPRN_PVR
 mdefine_line|#define&t;SPRN_PVR&t;0x11F&t;/* Processor Version Register */
 DECL|macro|SPRN_RPA
@@ -546,18 +649,28 @@ DECL|macro|SPRN_SRR2
 mdefine_line|#define&t;SPRN_SRR2&t;0x3DE&t;/* Save/Restore Register 2 */
 DECL|macro|SPRN_SRR3
 mdefine_line|#define&t;SPRN_SRR3 &t;0x3DF&t;/* Save/Restore Register 3 */
+DECL|macro|SPRN_TBHI
+mdefine_line|#define&t;SPRN_TBHI&t;0x3DC&t;/* Time Base High (4xx) */
+DECL|macro|SPRN_TBHU
+mdefine_line|#define&t;SPRN_TBHU&t;0x3CC&t;/* Time Base High User-mode (4xx) */
+DECL|macro|SPRN_TBLO
+mdefine_line|#define&t;SPRN_TBLO&t;0x3DD&t;/* Time Base Low (4xx) */
+DECL|macro|SPRN_TBLU
+mdefine_line|#define&t;SPRN_TBLU&t;0x3CD&t;/* Time Base Low User-mode (4xx) */
 DECL|macro|SPRN_TBRL
 mdefine_line|#define&t;SPRN_TBRL&t;0x10C&t;/* Time Base Read Lower Register (user, R/O) */
 DECL|macro|SPRN_TBRU
 mdefine_line|#define&t;SPRN_TBRU&t;0x10D&t;/* Time Base Read Upper Register (user, R/O) */
 DECL|macro|SPRN_TBWL
-mdefine_line|#define&t;SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (supervisor, R/W) */
+mdefine_line|#define&t;SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (super, R/W) */
 DECL|macro|SPRN_TBWU
-mdefine_line|#define&t;SPRN_TBWU&t;0x11D&t;/* Time Base Upper Register (supervisor, R/W) */
+mdefine_line|#define&t;SPRN_TBWU&t;0x11D&t;/* Time Base Upper Register (super, R/W) */
 DECL|macro|SPRN_TCR
 mdefine_line|#define&t;SPRN_TCR&t;0x3DA&t;/* Timer Control Register */
 DECL|macro|TCR_WP
 mdefine_line|#define&t;  TCR_WP(x)&t;&t;(((x)&amp;0x3)&lt;&lt;30)&t;/* WDT Period */
+DECL|macro|TCR_WP_MASK
+mdefine_line|#define     TCR_WP_MASK         TCR_WP(3)
 DECL|macro|WP_2_17
 mdefine_line|#define&t;    WP_2_17&t;&t;0&t;&t;/* 2^17 clocks */
 DECL|macro|WP_2_21
@@ -568,6 +681,8 @@ DECL|macro|WP_2_29
 mdefine_line|#define&t;    WP_2_29&t;&t;3&t;&t;/* 2^29 clocks */
 DECL|macro|TCR_WRC
 mdefine_line|#define&t;  TCR_WRC(x)&t;&t;(((x)&amp;0x3)&lt;&lt;28)&t;/* WDT Reset Control */
+DECL|macro|TCR_WRC_MASK
+mdefine_line|#define     TCR_WRC_MASK        TCR_WRC(3)
 DECL|macro|WRC_NONE
 mdefine_line|#define&t;    WRC_NONE&t;&t;0&t;&t;/* No reset will occur */
 DECL|macro|WRC_CORE
@@ -582,6 +697,8 @@ DECL|macro|TCR_PIE
 mdefine_line|#define&t;  TCR_PIE&t;&t;0x04000000&t;/* PIT Interrupt Enable */
 DECL|macro|TCR_FP
 mdefine_line|#define&t;  TCR_FP(x)&t;&t;(((x)&amp;0x3)&lt;&lt;24)&t;/* FIT Period */
+DECL|macro|TCR_FP_MASK
+mdefine_line|#define     TCR_FP_MASK         TCR_FP(3)
 DECL|macro|FP_2_9
 mdefine_line|#define&t;    FP_2_9&t;&t;0&t;&t;/* 2^9 clocks */
 DECL|macro|FP_2_13
@@ -617,6 +734,8 @@ DECL|macro|SPRN_THRM3
 mdefine_line|#define&t;SPRN_THRM3&t;0x3FE&t;/* Thermal Management Register 3 */
 DECL|macro|THRM3_E
 mdefine_line|#define&t;  THRM3_E&t;&t;(1&lt;&lt;0)
+DECL|macro|SPRN_TLBMISS
+mdefine_line|#define&t;SPRN_TLBMISS&t;0x3D4&t;/* 980 7450 TLB Miss Register */
 DECL|macro|SPRN_TSR
 mdefine_line|#define&t;SPRN_TSR&t;0x3D8&t;/* Timer Status Register */
 DECL|macro|TSR_ENW
@@ -724,6 +843,8 @@ DECL|macro|IMMR
 mdefine_line|#define&t;IMMR&t;SPRN_IMMR      &t;/* PPC 860/821 Internal Memory Map Register */
 DECL|macro|L2CR
 mdefine_line|#define&t;L2CR&t;SPRN_L2CR    &t;/* PPC 750 L2 control register */
+DECL|macro|L3CR
+mdefine_line|#define&t;L3CR&t;SPRN_L3CR    &t;/* PPC 7450 L3 Cache control register */
 DECL|macro|LR
 mdefine_line|#define&t;LR&t;SPRN_LR
 DECL|macro|PVR
@@ -817,7 +938,11 @@ mdefine_line|#define&t;PVR_403GCX&t;0x00201400
 DECL|macro|PVR_405GP
 mdefine_line|#define&t;PVR_405GP&t;0x40110000
 DECL|macro|PVR_STB03XXX
-mdefine_line|#define&t;PVR_STB03XXX&t;0x40310000 
+mdefine_line|#define&t;PVR_STB03XXX&t;0x40310000
+DECL|macro|PVR_NP405H
+mdefine_line|#define&t;PVR_NP405H&t;0x41410000
+DECL|macro|PVR_NP405L
+mdefine_line|#define&t;PVR_NP405L&t;0x41610000
 DECL|macro|PVR_601
 mdefine_line|#define&t;PVR_601&t;&t;0x00010000
 DECL|macro|PVR_602
@@ -850,6 +975,8 @@ DECL|macro|PVR_7400
 mdefine_line|#define&t;PVR_7400&t;0x000C0000
 DECL|macro|PVR_7410
 mdefine_line|#define&t;PVR_7410&t;0x800C0000
+DECL|macro|PVR_7450
+mdefine_line|#define&t;PVR_7450&t;0x80000000
 multiline_comment|/*&n; * For the 8xx processors, all of them report the same PVR family for&n; * the PowerPC core. The various versions of these processors must be&n; * differentiated by the version number in the Communication Processor&n; * Module (CPM).&n; */
 DECL|macro|PVR_821
 mdefine_line|#define&t;PVR_821&t;&t;0x00500000
@@ -861,6 +988,8 @@ DECL|macro|PVR_860
 mdefine_line|#define&t;PVR_860&t;&t;PVR_821
 DECL|macro|PVR_8240
 mdefine_line|#define&t;PVR_8240&t;0x00810100
+DECL|macro|PVR_8245
+mdefine_line|#define&t;PVR_8245&t;0x80811014
 DECL|macro|PVR_8260
 mdefine_line|#define&t;PVR_8260&t;PVR_8240
 multiline_comment|/* We only need to define a new _MACH_xxx for machines which are part of&n; * a configuration which supports more than one type of different machine.&n; * This is currently limited to CONFIG_ALL_PPC and CHRP/PReP/PMac. -- Tom&n; */
@@ -885,16 +1014,12 @@ mdefine_line|#define _CHRP_Motorola 0x04  /* motorola chrp, the cobra */
 DECL|macro|_CHRP_IBM
 mdefine_line|#define _CHRP_IBM      0x05  /* IBM chrp, the longtrail and longtrail 2 */
 DECL|macro|_GLOBAL
-mdefine_line|#define _GLOBAL(n)&bslash;&n;&t;.globl n;&bslash;&n;n:
+mdefine_line|#define _GLOBAL(n)&bslash;&n;        .stabs __stringify(n:F-1),N_FUN,0,0,n;&bslash;&n;&t;.globl n;&bslash;&n;n:
 multiline_comment|/* Macros for setting and retrieving special purpose registers */
 DECL|macro|stringify
 mdefine_line|#define stringify(s)&t;tostring(s)
 DECL|macro|tostring
 mdefine_line|#define tostring(s)&t;#s
-DECL|macro|mfdcr
-mdefine_line|#define mfdcr(rn)&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfdcr %0,&quot; stringify(rn) &bslash;&n;&t;&t;&t;&t;     : &quot;=r&quot; (rval)); rval;})
-DECL|macro|mtdcr
-mdefine_line|#define mtdcr(rn, v)&t;asm volatile(&quot;mtdcr &quot; stringify(rn) &quot;,%0&quot; : : &quot;r&quot; (v))
 DECL|macro|mfmsr
 mdefine_line|#define mfmsr()&t;&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfmsr %0&quot; : &quot;=r&quot; (rval)); rval;})
 DECL|macro|mtmsr
@@ -903,6 +1028,39 @@ DECL|macro|mfspr
 mdefine_line|#define mfspr(rn)&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfspr %0,&quot; stringify(rn) &bslash;&n;&t;&t;&t;&t;     : &quot;=r&quot; (rval)); rval;})
 DECL|macro|mtspr
 mdefine_line|#define mtspr(rn, v)&t;asm volatile(&quot;mtspr &quot; stringify(rn) &quot;,%0&quot; : : &quot;r&quot; (v))
+DECL|macro|mfsrin
+mdefine_line|#define mfsrin(v)&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfsrin %0,%1&quot; : &quot;=r&quot; (rval) : &quot;r&quot; (v)); &bslash;&n;&t;&t;&t;&t;&t;rval;})
+DECL|macro|proc_trap
+mdefine_line|#define proc_trap()  &t;asm volatile(&quot;trap&quot;)
+macro_line|#ifdef CONFIG_PPC_ISERIES
+multiline_comment|/* Macros for adjusting thread priority (hardware multi-threading) */
+DECL|macro|HMT_PRIO_LOW
+mdefine_line|#define&t;HMT_PRIO_LOW&t;&quot;or 1,1,1&bslash;n&quot;&t;/* low prio, used for spin loops */
+DECL|macro|HMT_PRIO_MED
+mdefine_line|#define HMT_PRIO_MED&t;&quot;or 2,2,2&bslash;n&quot;&t;/* medium prio, for normal code */
+DECL|macro|HMT_PRIO_HIGH
+mdefine_line|#define HMT_PRIO_HIGH&t;&quot;or 3,3,3&bslash;n&quot;&t;/* high priority */
+DECL|macro|HMT_low
+mdefine_line|#define HMT_low()&t;asm volatile(&quot;or 1,1,1&quot;)
+DECL|macro|HMT_medium
+mdefine_line|#define HMT_medium()&t;asm volatile(&quot;or 2,2,2&quot;)
+DECL|macro|HMT_high
+mdefine_line|#define HMT_high()&t;asm volatile(&quot;or 3,3,3&quot;)
+multiline_comment|/* iSeries CTRL register (for runlatch) */
+DECL|macro|CTRLT
+mdefine_line|#define CTRLT&t;&t;0x098
+DECL|macro|CTRLF
+mdefine_line|#define CTRLF&t;&t;0x088
+DECL|macro|RUNLATCH
+mdefine_line|#define RUNLATCH&t;0x0001
+macro_line|#else /* !CONFIG_PPC_ISERIES */
+DECL|macro|HMT_PRIO_LOW
+mdefine_line|#define&t;HMT_PRIO_LOW
+DECL|macro|HMT_PRIO_MED
+mdefine_line|#define HMT_PRIO_MED
+DECL|macro|HMT_PRIO_HIGH
+mdefine_line|#define HMT_PRIO_HIGH
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 multiline_comment|/* Segment Registers */
 DECL|macro|SR0
 mdefine_line|#define SR0&t;0
@@ -1047,8 +1205,13 @@ op_star
 id|last_task_used_altivec
 suffix:semicolon
 multiline_comment|/*&n; * this is the minimum allowable io space due to the location&n; * of the io areas on prep (first one at 0x80000000) but&n; * as soon as I get around to remapping the io areas with the BATs&n; * to match the mac we can raise this. -- Cort&n; */
+macro_line|#ifdef CONFIG_TASK_SIZE_BOOL
+DECL|macro|TASK_SIZE
+mdefine_line|#define TASK_SIZE&t;CONFIG_TASK_SIZE
+macro_line|#else
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(0x80000000UL)
+macro_line|#endif
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(TASK_SIZE / 8 * 3)
@@ -1074,12 +1237,6 @@ r_int
 id|ksp
 suffix:semicolon
 multiline_comment|/* Kernel stack pointer */
-DECL|member|wchan
-r_int
-r_int
-id|wchan
-suffix:semicolon
-multiline_comment|/* Event task is sleeping on */
 DECL|member|regs
 r_struct
 id|pt_regs
@@ -1098,6 +1255,11 @@ op_star
 id|pgdir
 suffix:semicolon
 multiline_comment|/* root of page-table tree */
+DECL|member|fpexc_mode
+r_int
+id|fpexc_mode
+suffix:semicolon
+multiline_comment|/* floating-point exception mode */
 DECL|member|last_syscall
 r_int
 r_int
@@ -1148,7 +1310,7 @@ suffix:semicolon
 DECL|macro|INIT_SP
 mdefine_line|#define INIT_SP&t;&t;(sizeof(init_stack) + (unsigned long) &amp;init_stack)
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;INIT_SP, /* ksp */ &bslash;&n;&t;0, /* wchan */ &bslash;&n;&t;0, /* regs */ &bslash;&n;&t;KERNEL_DS, /*fs*/ &bslash;&n;&t;swapper_pg_dir, /* pgdir */ &bslash;&n;&t;0, /* last_syscall */ &bslash;&n;&t;{0}, 0, 0 &bslash;&n;}
+mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;ksp: INIT_SP, &bslash;&n;&t;fs: KERNEL_DS, &bslash;&n;&t;pgdir: swapper_pg_dir, &bslash;&n;}
 multiline_comment|/*&n; * Return saved PC of a blocked thread. For now, this is the &quot;user&quot; PC&n; */
 DECL|function|thread_saved_pc
 r_static
@@ -1194,15 +1356,96 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;nip: 0)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;gpr[1]: 0)
-multiline_comment|/*&n; * NOTE! The task struct and the stack go together&n; */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
-DECL|macro|alloc_task_struct
-mdefine_line|#define alloc_task_struct() &bslash;&n;&t;((struct task_struct *) __get_free_pages(GFP_KERNEL,1))
-DECL|macro|free_task_struct
-mdefine_line|#define free_task_struct(p)&t;free_pages((unsigned long)(p),1)
-DECL|macro|get_task_struct
-mdefine_line|#define get_task_struct(tsk)      atomic_inc(&amp;virt_to_page(tsk)-&gt;count)
+multiline_comment|/* Get/set floating-point exception mode */
+DECL|macro|GET_FP_EXC_MODE
+mdefine_line|#define GET_FP_EXC_MODE(tsk)&t;&t;__unpack_fe01((tsk)-&gt;thread.fpexc_mode)
+DECL|macro|SET_FP_EXC_MODE
+mdefine_line|#define SET_FP_EXC_MODE(tsk, val)&t;set_fpexc_mode((tsk), (val))
+r_extern
+r_int
+id|set_fpexc_mode
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+r_int
+id|val
+)paren
+suffix:semicolon
+DECL|function|__unpack_fe01
+r_static
+r_inline
+r_int
+r_int
+id|__unpack_fe01
+c_func
+(paren
+r_int
+r_int
+id|msr_bits
+)paren
+(brace
+r_return
+(paren
+(paren
+id|msr_bits
+op_amp
+id|MSR_FE0
+)paren
+op_rshift
+l_int|10
+)paren
+op_or
+(paren
+(paren
+id|msr_bits
+op_amp
+id|MSR_FE1
+)paren
+op_rshift
+l_int|8
+)paren
+suffix:semicolon
+)brace
+DECL|function|__pack_fe01
+r_static
+r_inline
+r_int
+r_int
+id|__pack_fe01
+c_func
+(paren
+r_int
+r_int
+id|fpmode
+)paren
+(brace
+r_return
+(paren
+(paren
+id|fpmode
+op_lshift
+l_int|10
+)paren
+op_amp
+id|MSR_FE0
+)paren
+op_or
+(paren
+(paren
+id|fpmode
+op_lshift
+l_int|8
+)paren
+op_amp
+id|MSR_FE1
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* in process.c - for early bootup debug -- Cort */
 r_int
 id|ll_printk
@@ -1226,10 +1469,6 @@ r_char
 op_star
 )paren
 suffix:semicolon
-DECL|macro|init_task
-mdefine_line|#define init_task&t;(init_task_union.task)
-DECL|macro|init_stack
-mdefine_line|#define init_stack&t;(init_task_union.stack)
 multiline_comment|/* In misc.c */
 r_void
 id|_nmask_and_or_msr
@@ -1244,6 +1483,8 @@ r_int
 id|or_val
 )paren
 suffix:semicolon
+DECL|macro|have_of
+mdefine_line|#define have_of (_machine == _MACH_chrp || _machine == _MACH_Pmac)
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;do { } while (0)
 multiline_comment|/*&n; * Prefetch macros.&n; */
@@ -1308,8 +1549,6 @@ suffix:semicolon
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
 macro_line|#endif /* !__ASSEMBLY__ */
-DECL|macro|have_of
-mdefine_line|#define have_of (_machine == _MACH_chrp || _machine == _MACH_Pmac)
 macro_line|#endif /* __ASM_PPC_PROCESSOR_H */
 macro_line|#endif /* __KERNEL__ */
 eof

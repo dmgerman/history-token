@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.gg2.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  asm-ppc/gg2.h -- VLSI VAS96011/12 `Golden Gate 2&squot; register definitions&n; *&n; *  Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is based on the following documentation:&n; *&n; *&t;The VAS96011/12 Chipset, Data Book, Edition 1.0&n; *&t;VLSI Technology, Inc.&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#ifndef _ASMPPC_GG2_H
 DECL|macro|_ASMPPC_GG2_H
@@ -20,6 +20,12 @@ mdefine_line|#define GG2_ROM_BASE0&t;&t;0xff000000&t;/* ROM bank 0 */
 DECL|macro|GG2_ROM_BASE1
 mdefine_line|#define GG2_ROM_BASE1&t;&t;0xff800000&t;/* ROM bank 1 */
 multiline_comment|/*&n;     *  GG2 specific PCI Registers&n;     */
+r_extern
+r_int
+r_int
+id|gg2_pci_config_base
+suffix:semicolon
+multiline_comment|/* kernel virtual address */
 DECL|macro|GG2_PCI_BUSNO
 mdefine_line|#define GG2_PCI_BUSNO&t;&t;0x40&t;/* Bus number */
 DECL|macro|GG2_PCI_SUBBUSNO

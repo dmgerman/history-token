@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.irq.h 1.9 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _ASM_IRQ_H
 DECL|macro|_ASM_IRQ_H
@@ -34,37 +34,34 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_4xx)
+macro_line|#include &lt;asm/ibm4xx.h&gt;
 multiline_comment|/*&n; * The PowerPC 403 cores&squot; Asynchronous Interrupt Controller (AIC) has&n; * 32 possible interrupts, a majority of which are not implemented on&n; * all cores. There are six configurable, external interrupt pins and&n; * there are eight internal interrupts for the on-chip serial port&n; * (SPU), DMA controller, and JTAG controller.&n; *&n; * The PowerPC 405 cores&squot; Universal Interrupt Controller (UIC) has 32&n; * possible interrupts as well. There are seven, configurable external&n; * interrupt pins and there are 17 internal interrupts for the on-chip&n; * serial port, DMA controller, on-chip Ethernet controller, PCI, etc.&n; *&n; */
+DECL|macro|NR_AIC_IRQS
+mdefine_line|#define&t;NR_AIC_IRQS&t;32
 DECL|macro|NR_IRQS
-mdefine_line|#define&t;NR_IRQS&t;&t;32
-DECL|macro|AIC_INT0
-mdefine_line|#define&t;AIC_INT0&t;(0)
-DECL|macro|AIC_INT4
-mdefine_line|#define&t;AIC_INT4&t;(4)
-DECL|macro|AIC_INT5
-mdefine_line|#define&t;AIC_INT5&t;(5)
-DECL|macro|AIC_INT6
-mdefine_line|#define&t;AIC_INT6&t;(6)
-DECL|macro|AIC_INT7
-mdefine_line|#define&t;AIC_INT7&t;(7)
-DECL|macro|AIC_INT8
-mdefine_line|#define&t;AIC_INT8&t;(8)
-DECL|macro|AIC_INT9
-mdefine_line|#define&t;AIC_INT9&t;(9)
-DECL|macro|AIC_INT10
-mdefine_line|#define&t;AIC_INT10&t;(10)
-DECL|macro|AIC_INT11
-mdefine_line|#define&t;AIC_INT11&t;(11)
-DECL|macro|AIC_INT27
-mdefine_line|#define&t;AIC_INT27&t;(27)
-DECL|macro|AIC_INT28
-mdefine_line|#define&t;AIC_INT28&t;(28)
-DECL|macro|AIC_INT29
-mdefine_line|#define&t;AIC_INT29&t;(29)
-DECL|macro|AIC_INT30
-mdefine_line|#define&t;AIC_INT30&t;(30)
-DECL|macro|AIC_INT31
-mdefine_line|#define&t;AIC_INT31&t;(31)
+mdefine_line|#define&t;NR_IRQS&t;&t;(NR_AIC_IRQS + NR_BOARD_IRQS)
+r_static
+id|__inline__
+r_int
+DECL|function|irq_cannonicalize
+id|irq_cannonicalize
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+r_return
+(paren
+id|irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#elif defined (CONFIG_NP405)
+DECL|macro|NR_AIC_IRQS
+mdefine_line|#define NR_AIC_IRQS&t;32
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS&t;&t;(NR_AIC_IRQS + NR_BOARD_IRQS)
 r_static
 id|__inline__
 r_int
@@ -160,166 +157,6 @@ id|irq
 suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_4xx + CONFIG_8xx */
-macro_line|#if defined(CONFIG_APUS)
-multiline_comment|/*&n; * This structure is used to chain together the ISRs for a particular&n; * interrupt source (if it supports chaining).&n; */
-DECL|struct|irq_node
-r_typedef
-r_struct
-id|irq_node
-(brace
-DECL|member|handler
-r_void
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-DECL|member|dev_id
-r_void
-op_star
-id|dev_id
-suffix:semicolon
-DECL|member|devname
-r_const
-r_char
-op_star
-id|devname
-suffix:semicolon
-DECL|member|next
-r_struct
-id|irq_node
-op_star
-id|next
-suffix:semicolon
-DECL|typedef|irq_node_t
-)brace
-id|irq_node_t
-suffix:semicolon
-multiline_comment|/*&n; * This structure has only 4 elements for speed reasons&n; */
-DECL|struct|irq_handler
-r_typedef
-r_struct
-id|irq_handler
-(brace
-DECL|member|handler
-r_void
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-DECL|member|dev_id
-r_void
-op_star
-id|dev_id
-suffix:semicolon
-DECL|member|devname
-r_const
-r_char
-op_star
-id|devname
-suffix:semicolon
-DECL|typedef|irq_handler_t
-)brace
-id|irq_handler_t
-suffix:semicolon
-multiline_comment|/* count of spurious interrupts */
-r_extern
-r_volatile
-r_int
-r_int
-id|num_spurious
-suffix:semicolon
-r_extern
-r_int
-id|sys_request_irq
-c_func
-(paren
-r_int
-r_int
-comma
-r_void
-(paren
-op_star
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-comma
-r_int
-r_int
-comma
-r_const
-r_char
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sys_free_irq
-c_func
-(paren
-r_int
-r_int
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * This function returns a new irq_node_t&n; */
-r_extern
-id|irq_node_t
-op_star
-id|new_irq_node
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Number of m68k interrupts */
-DECL|macro|SYS_IRQS
-mdefine_line|#define SYS_IRQS 8
-macro_line|#endif /* CONFIG_APUS */
 multiline_comment|/*&n; * this is the # irq&squot;s for all ppc arch&squot;s (pmac/chrp/prep)&n; * so it is the max of them all&n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;256
@@ -367,7 +204,6 @@ c_cond
 (paren
 id|ppc_md.irq_cannonicalize
 )paren
-(brace
 r_return
 id|ppc_md
 dot
@@ -377,18 +213,14 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
 r_return
 id|irq
 suffix:semicolon
 )brace
-)brace
 macro_line|#endif
 DECL|macro|NR_MASK_WORDS
 mdefine_line|#define NR_MASK_WORDS&t;((NR_IRQS + 31) / 32)
-multiline_comment|/* pendatic: these are long because they are used with set_bit --RR */
+multiline_comment|/* pedantic: these are long because they are used with set_bit --RR */
 r_extern
 r_int
 r_int

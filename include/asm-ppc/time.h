@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.time.h 1.17 10/23/01 08:09:35 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Common time prototypes and such for all ppc machines.&n; *&n; * Written by Cort Dougan (cort@fsmlabs.com) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_TIME_H__
@@ -7,6 +7,10 @@ mdefine_line|#define __ASM_TIME_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#ifdef CONFIG_PPC_ISERIES
+macro_line|#include &lt;asm/iSeries/Paca.h&gt;
+macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* time.c */
 r_extern
@@ -121,6 +125,68 @@ c_func
 id|val
 )paren
 suffix:semicolon
+macro_line|#elif defined(CONFIG_PPC_ISERIES)
+multiline_comment|/*&n; * Add code here to set the virtual decrementer in &n; * ItLpPaca if we have shared processors and to&n; * invoke the hypervisor as needed.&n; */
+r_struct
+id|Paca
+op_star
+id|paca
+suffix:semicolon
+r_int
+id|cur_dec
+suffix:semicolon
+id|paca
+op_assign
+(paren
+r_struct
+id|Paca
+op_star
+)paren
+id|mfspr
+c_func
+(paren
+id|SPRG1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|paca-&gt;xLpPaca.xSharedProc
+)paren
+(brace
+id|paca-&gt;xLpPaca.xVirtualDecr
+op_assign
+id|val
+suffix:semicolon
+id|cur_dec
+op_assign
+id|get_dec
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cur_dec
+OG
+id|val
+)paren
+id|HvCall_setVirtualDecr
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_else
+id|mtspr
+c_func
+(paren
+id|SPRN_DEC
+comma
+id|val
+)paren
+suffix:semicolon
 macro_line|#else
 id|mtspr
 c_func
@@ -179,6 +245,19 @@ r_int
 r_int
 id|tbl
 suffix:semicolon
+macro_line|#if defined(CONFIG_403GCX)
+id|asm
+r_volatile
+(paren
+l_string|&quot;mfspr %0, 0x3dd&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|tbl
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
 id|asm
 r_volatile
 (paren
@@ -190,6 +269,7 @@ id|tbl
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|tbl
 suffix:semicolon
@@ -209,6 +289,19 @@ r_int
 r_int
 id|tbl
 suffix:semicolon
+macro_line|#if defined(CONFIG_403GCX)
+id|asm
+r_volatile
+(paren
+l_string|&quot;mfspr %0, 0x3dc&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|tbl
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
 id|asm
 r_volatile
 (paren
@@ -220,6 +313,7 @@ id|tbl
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|tbl
 suffix:semicolon

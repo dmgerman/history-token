@@ -1,9 +1,11 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ns16550.c 1.9 07/30/01 17:19:40 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * COM1 NS16550 support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
+DECL|macro|SERIAL_BAUD
+mdefine_line|#define SERIAL_BAUD&t;9600
 r_extern
 r_void
 id|outb
@@ -59,11 +61,21 @@ c_func
 (paren
 r_int
 id|chan
+comma
+r_void
+op_star
+id|ignored
 )paren
 (brace
 r_int
 r_int
 id|com_port
+suffix:semicolon
+r_int
+r_char
+id|lcr
+comma
+id|dlm
 suffix:semicolon
 multiline_comment|/* We need to find out which type io we&squot;re expecting.  If it&squot;s&n;&t; * &squot;SERIAL_IO_PORT&squot;, we get an offset from the isa_io_base.&n;&t; * If it&squot;s &squot;SERIAL_IO_MEM&squot;, we can the exact location.  -- Tom */
 r_switch
@@ -127,8 +139,10 @@ id|chan
 dot
 id|iomem_reg_shift
 suffix:semicolon
-multiline_comment|/* See if port is present */
-id|outb
+multiline_comment|/* save the LCR */
+id|lcr
+op_assign
+id|inb
 c_func
 (paren
 id|com_port
@@ -138,22 +152,6 @@ id|UART_LCR
 op_lshift
 id|shift
 )paren
-comma
-l_int|0x00
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|com_port
-op_plus
-(paren
-id|UART_IER
-op_lshift
-id|shift
-)paren
-comma
-l_int|0x00
 )paren
 suffix:semicolon
 multiline_comment|/* Access baud rate */
@@ -171,7 +169,53 @@ comma
 l_int|0x80
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_CONSOLE_NONSTD
+id|dlm
+op_assign
+id|inb
+c_func
+(paren
+id|com_port
+op_plus
+(paren
+id|UART_DLM
+op_lshift
+id|shift
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Test if serial port is unconfigured.&n;&t; * We assume that no-one uses less than 110 baud or&n;&t; * less than 7 bits per character these days.&n;&t; *  -- paulus.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|dlm
+op_le
+l_int|4
+)paren
+op_logical_and
+(paren
+id|lcr
+op_amp
+l_int|2
+)paren
+)paren
+multiline_comment|/* port is configured, put the old LCR back */
+id|outb
+c_func
+(paren
+id|com_port
+op_plus
+(paren
+id|UART_LCR
+op_lshift
+id|shift
+)paren
+comma
+id|lcr
+)paren
+suffix:semicolon
+r_else
+(brace
 multiline_comment|/* Input clock. */
 id|outb
 c_func
@@ -187,7 +231,7 @@ comma
 (paren
 id|BASE_BAUD
 op_div
-id|CONFIG_SERIAL_CONSOLE_BAUD
+id|SERIAL_BAUD
 )paren
 )paren
 suffix:semicolon
@@ -205,13 +249,12 @@ comma
 (paren
 id|BASE_BAUD
 op_div
-id|CONFIG_SERIAL_CONSOLE_BAUD
+id|SERIAL_BAUD
 )paren
 op_rshift
 l_int|8
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* 8 data, 1 stop, no parity */
 id|outb
 c_func
@@ -242,6 +285,7 @@ comma
 l_int|0x03
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Clear &amp; enable FIFOs */
 id|outb
 c_func
@@ -380,5 +424,16 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
+)brace
+r_void
+DECL|function|serial_close
+id|serial_close
+c_func
+(paren
+r_int
+r_int
+id|com_port
+)paren
+(brace
 )brace
 eof

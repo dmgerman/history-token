@@ -74,18 +74,18 @@ c_func
 (paren
 id|SPRN_DCCR
 comma
-l_int|0x80000000
+l_int|0xF0000000
 )paren
 suffix:semicolon
-multiline_comment|/* 128 MB of data space at 0x0. */
+multiline_comment|/* 512 MB of data space at 0x0. */
 id|mtspr
 c_func
 (paren
 id|SPRN_ICCR
 comma
-l_int|0x80000000
+l_int|0xF0000000
 )paren
 suffix:semicolon
-multiline_comment|/* 128 MB of instr. space at 0x0. */
+multiline_comment|/* 512 MB of instr. space at 0x0. */
 )brace
 eof

@@ -1,10 +1,20 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.i8259.c 1.7 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;i8259.h&quot;
+macro_line|#include &lt;asm/i8259.h&gt;
+DECL|variable|pci_intack
+r_static
+r_volatile
+r_char
+op_star
+id|pci_intack
+suffix:semicolon
+multiline_comment|/* RO, gives us the irq vector */
 DECL|variable|cached_8259
 r_int
 r_char
@@ -34,13 +44,13 @@ DECL|variable|i8259_pic_irq_offset
 r_int
 id|i8259_pic_irq_offset
 suffix:semicolon
+multiline_comment|/* Acknowledge the irq using the PCI host bridge&squot;s interrupt acknowledge&n; * feature. (Polling is somehow broken on some IBM and Motorola PReP boxes.)&n; */
 DECL|function|i8259_irq
 r_int
 id|i8259_irq
 c_func
 (paren
-r_int
-id|cpu
+r_void
 )paren
 (brace
 r_int
@@ -54,7 +64,75 @@ id|i8259_lock
 multiline_comment|/*, flags*/
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * Perform an interrupt acknowledge cycle on controller 1&n;         */
+id|irq
+op_assign
+op_star
+id|pci_intack
+op_amp
+l_int|0xff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq
+op_eq
+l_int|7
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * This may be a spurious interrupt.&n;&t;&t; *&n;&t;&t; * Read the interrupt status register (ISR). If the most&n;&t;&t; * significant bit is not set then there is no valid&n;&t;&t; * interrupt.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_complement
+id|inb
+c_func
+(paren
+l_int|0x20
+)paren
+op_amp
+l_int|0x80
+)paren
+(brace
+id|irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+)brace
+id|spin_unlock
+multiline_comment|/*_irqrestore*/
+(paren
+op_amp
+id|i8259_lock
+multiline_comment|/*, flags*/
+)paren
+suffix:semicolon
+r_return
+id|irq
+suffix:semicolon
+)brace
+multiline_comment|/* Poke the 8259&squot;s directly using poll commands. */
+DECL|function|i8259_poll
+r_int
+id|i8259_poll
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|irq
+suffix:semicolon
+id|spin_lock
+multiline_comment|/*_irqsave*/
+(paren
+op_amp
+id|i8259_lock
+multiline_comment|/*, flags*/
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Perform an interrupt acknowledge cycle on controller 1&n;&t; */
 id|outb
 c_func
 (paren
@@ -63,6 +141,7 @@ comma
 l_int|0x20
 )paren
 suffix:semicolon
+multiline_comment|/* prepare for poll */
 id|irq
 op_assign
 id|inb
@@ -81,7 +160,7 @@ op_eq
 l_int|2
 )paren
 (brace
-multiline_comment|/*                                     &n;                 * Interrupt is cascaded so perform interrupt&n;                 * acknowledge on controller 2&n;                 */
+multiline_comment|/*&n;&t;&t; * Interrupt is cascaded so perform interrupt&n;&t;&t; * acknowledge on controller 2&n;&t;&t; */
 id|outb
 c_func
 (paren
@@ -90,6 +169,7 @@ comma
 l_int|0xA0
 )paren
 suffix:semicolon
+multiline_comment|/* prepare for poll */
 id|irq
 op_assign
 (paren
@@ -114,7 +194,7 @@ op_eq
 l_int|7
 )paren
 (brace
-multiline_comment|/*                               &n;                 * This may be a spurious interrupt&n;                 *                         &n;                 * Read the interrupt status register. If the most&n;                 * significant bit is not set then there is no valid&n;&t;&t; * interrupt&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This may be a spurious interrupt&n;&t;&t; *&n;&t;&t; * Read the interrupt status register. If the most&n;&t;&t; * significant bit is not set then there is no valid&n;&t;&t; * interrupt&n;&t;&t; */
 id|outb
 c_func
 (paren
@@ -535,13 +615,62 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+DECL|variable|pic1_iores
+r_static
+r_struct
+id|resource
+id|pic1_iores
+op_assign
+(brace
+l_string|&quot;8259 (master)&quot;
+comma
+l_int|0x20
+comma
+l_int|0x21
+comma
+id|IORESOURCE_BUSY
+)brace
+suffix:semicolon
+DECL|variable|pic2_iores
+r_static
+r_struct
+id|resource
+id|pic2_iores
+op_assign
+(brace
+l_string|&quot;8259 (slave)&quot;
+comma
+l_int|0xa0
+comma
+l_int|0xa1
+comma
+id|IORESOURCE_BUSY
+)brace
+suffix:semicolon
+DECL|variable|pic_edgectrl_iores
+r_static
+r_struct
+id|resource
+id|pic_edgectrl_iores
+op_assign
+(brace
+l_string|&quot;8259 edge control&quot;
+comma
+l_int|0x4d0
+comma
+l_int|0x4d1
+comma
+id|IORESOURCE_BUSY
+)brace
+suffix:semicolon
 DECL|function|i8259_init
 r_void
 id|__init
 id|i8259_init
 c_func
 (paren
-r_void
+r_int
+id|intack_addr
 )paren
 (brace
 r_int
@@ -594,15 +723,6 @@ l_int|0x21
 )paren
 suffix:semicolon
 multiline_comment|/* Select 8086 mode */
-id|outb
-c_func
-(paren
-l_int|0xFF
-comma
-l_int|0x21
-)paren
-suffix:semicolon
-multiline_comment|/* Mask all */
 multiline_comment|/* init slave interrupt controller */
 id|outb
 c_func
@@ -640,15 +760,24 @@ l_int|0xA1
 )paren
 suffix:semicolon
 multiline_comment|/* Select 8086 mode */
+multiline_comment|/* always read ISR */
 id|outb
 c_func
 (paren
-l_int|0xFF
+l_int|0x0B
 comma
-l_int|0xA1
+l_int|0x20
 )paren
 suffix:semicolon
-multiline_comment|/* Mask all */
+id|outb
+c_func
+(paren
+l_int|0x0B
+comma
+l_int|0xA0
+)paren
+suffix:semicolon
+multiline_comment|/* Mask all interrupts */
 id|outb
 c_func
 (paren
@@ -674,6 +803,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* reserve our resources */
 id|request_irq
 c_func
 (paren
@@ -688,6 +818,51 @@ comma
 l_string|&quot;82c59 secondary cascade&quot;
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|request_resource
+c_func
+(paren
+op_amp
+id|ioport_resource
+comma
+op_amp
+id|pic1_iores
+)paren
+suffix:semicolon
+id|request_resource
+c_func
+(paren
+op_amp
+id|ioport_resource
+comma
+op_amp
+id|pic2_iores
+)paren
+suffix:semicolon
+id|request_resource
+c_func
+(paren
+op_amp
+id|ioport_resource
+comma
+op_amp
+id|pic_edgectrl_iores
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|intack_addr
+)paren
+id|pci_intack
+op_assign
+id|ioremap
+c_func
+(paren
+id|intack_addr
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace

@@ -76,11 +76,6 @@ r_int
 id|__map_without_bats
 suffix:semicolon
 r_extern
-r_void
-op_star
-id|end_of_DRAM
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|ioremap_base
@@ -106,11 +101,6 @@ r_extern
 r_int
 r_int
 id|total_lowmem
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|ram_phys_base
 suffix:semicolon
 r_extern
 r_int

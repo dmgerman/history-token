@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ptrace.h 1.5 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef _PPC_PTRACE_H
 DECL|macro|_PPC_PTRACE_H
 mdefine_line|#define _PPC_PTRACE_H
@@ -85,6 +85,9 @@ multiline_comment|/* Result of a system call */
 )brace
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* iSeries uses mq field for soft enable flag */
+DECL|macro|softEnable
+mdefine_line|#define softEnable mq
 macro_line|#ifdef __KERNEL__
 DECL|macro|STACK_FRAME_OVERHEAD
 mdefine_line|#define STACK_FRAME_OVERHEAD&t;16&t;/* size of minimum stack frame */
@@ -185,5 +188,10 @@ DECL|macro|PT_FPR31
 mdefine_line|#define PT_FPR31 (PT_FPR0 + 2*31)
 DECL|macro|PT_FPSCR
 mdefine_line|#define PT_FPSCR (PT_FPR0 + 2*32 + 1)
+multiline_comment|/* Get/set all the altivec registers vr0..vr31, vscr, vrsave, in one go */
+DECL|macro|PTRACE_GETVRREGS
+mdefine_line|#define PTRACE_GETVRREGS&t;18
+DECL|macro|PTRACE_SETVRREGS
+mdefine_line|#define PTRACE_SETVRREGS&t;19
 macro_line|#endif
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mpc8xx.h 1.15 11/01/01 12:48:53 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/* This is the single file included by all MPC8xx build options.&n; * Since there are many different boards and no standard configuration,&n; * we have a unique include file for each.  Rather than change every&n; * file that has to include MPC8xx configuration, they all include&n; * this one and the configuration switching is done here.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __CONFIG_8xx_DEFS
@@ -7,31 +7,47 @@ mdefine_line|#define __CONFIG_8xx_DEFS
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_8xx
 macro_line|#ifdef CONFIG_MBX
-macro_line|#include &lt;asm/mbx.h&gt;
+macro_line|#include &lt;platforms/mbx.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_FADS
-macro_line|#include &lt;asm/fads.h&gt;
+macro_line|#include &lt;platforms/fads.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_RPXLITE
-macro_line|#include &lt;asm/rpxlite.h&gt;
+macro_line|#include &lt;platforms/rpxlite.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_BSEIP
-macro_line|#include &lt;asm/bseip.h&gt;
+macro_line|#include &lt;platforms/bseip.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_RPXCLASSIC
-macro_line|#include &lt;asm/rpxclassic.h&gt;
+macro_line|#include &lt;platforms/rpxclassic.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_TQM8xxL)
-macro_line|#include &lt;asm/tqm8xx.h&gt;
+macro_line|#include &lt;platforms/tqm8xx.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_SPD823TS)
-macro_line|#include &lt;asm/spd8xx.h&gt;
+macro_line|#include &lt;platforms/spd8xx.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_IVMS8) || defined(CONFIG_IVML24)
-macro_line|#include &lt;asm/ivms8.h&gt;
+macro_line|#include &lt;platforms/ivms8.h&gt;
 macro_line|#endif
-multiline_comment|/* I need this to get pt_regs.......&n;*/
-macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#if defined(CONFIG_HERMES_PRO)
+macro_line|#include &lt;platforms/hermes.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_IP860)
+macro_line|#include &lt;platforms/ip860.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_LWMON)
+macro_line|#include &lt;platforms/lwmon.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_PCU_E)
+macro_line|#include &lt;platforms/pcu_e.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_CCM)
+macro_line|#include &lt;platforms/ccm.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_LANTEC)
+macro_line|#include &lt;platforms/lantec.h&gt;
+macro_line|#endif
 multiline_comment|/* Currently, all 8xx boards that support a processor to PCI/ISA bridge&n; * use the same memory map.&n; */
 macro_line|#if 0
 macro_line|#if defined(CONFIG_PCI) &amp;&amp; defined(PCI_ISA_IO_ADDR)
@@ -54,21 +70,6 @@ DECL|macro|PCI_DRAM_OFFSET
 mdefine_line|#define PCI_DRAM_OFFSET 0
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
-r_extern
-r_int
-r_int
-id|isa_io_base
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|isa_mem_base
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|pci_dram_offset
-suffix:semicolon
 multiline_comment|/* The &quot;residual&quot; data board information structure the boot loader&n; * hands to us.&n; */
 r_extern
 r_int
@@ -76,6 +77,9 @@ r_char
 id|__res
 (braket
 )braket
+suffix:semicolon
+r_struct
+id|pt_regs
 suffix:semicolon
 r_extern
 r_int
@@ -118,6 +122,6 @@ id|dev_id
 suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* CONFIG_8xx */
-macro_line|#endif
+macro_line|#endif /* __CONFIG_8xx_DEFS */
 macro_line|#endif /* __KERNEL__ */
 eof

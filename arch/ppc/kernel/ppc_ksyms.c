@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.59 11/04/01 22:58:20 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -10,17 +10,16 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/nvram.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/ide.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -33,7 +32,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/feature.h&gt;
+macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
@@ -74,7 +73,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|syscall_trace
+id|do_syscall_trace
 c_func
 (paren
 r_void
@@ -239,11 +238,11 @@ c_func
 id|do_signal
 )paren
 suffix:semicolon
-DECL|variable|syscall_trace
+DECL|variable|do_syscall_trace
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|syscall_trace
+id|do_syscall_trace
 )paren
 suffix:semicolon
 DECL|variable|transfer_to_handler
@@ -646,6 +645,21 @@ c_func
 id|_outsl_ns
 )paren
 suffix:semicolon
+DECL|variable|iopa
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iopa
+)paren
+suffix:semicolon
+DECL|variable|mm_ptov
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mm_ptov
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_PPC_ISERIES
 DECL|variable|ioremap
 id|EXPORT_SYMBOL
 c_func
@@ -667,20 +681,8 @@ c_func
 id|iounmap
 )paren
 suffix:semicolon
-DECL|variable|iopa
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iopa
-)paren
-suffix:semicolon
-DECL|variable|mm_ptov
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mm_ptov
-)paren
-suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 DECL|variable|ppc_ide_md
 id|EXPORT_SYMBOL
 c_func
@@ -695,6 +697,7 @@ c_func
 id|ppc_generic_ide_fix_driveid
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 DECL|variable|isa_io_base
 id|EXPORT_SYMBOL_NOVERS
@@ -731,7 +734,79 @@ c_func
 id|pci_free_consistent
 )paren
 suffix:semicolon
+DECL|variable|pci_bus_io_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_io_base
+)paren
+suffix:semicolon
+DECL|variable|pci_bus_io_base_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_io_base_phys
+)paren
+suffix:semicolon
+DECL|variable|pci_bus_mem_base_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_mem_base_phys
+)paren
+suffix:semicolon
+DECL|variable|pci_bus_to_hose
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_to_hose
+)paren
+suffix:semicolon
+DECL|variable|pci_resource_to_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_resource_to_bus
+)paren
+suffix:semicolon
+DECL|variable|pci_phys_to_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_phys_to_bus
+)paren
+suffix:semicolon
+DECL|variable|pci_bus_to_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_to_phys
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
+macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
+DECL|variable|consistent_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|consistent_alloc
+)paren
+suffix:semicolon
+DECL|variable|consistent_free
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|consistent_free
+)paren
+suffix:semicolon
+DECL|variable|consistent_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|consistent_sync
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|start_thread
 id|EXPORT_SYMBOL
 c_func
@@ -746,8 +821,6 @@ c_func
 id|kernel_thread
 )paren
 suffix:semicolon
-multiline_comment|/*EXPORT_SYMBOL(__restore_flags);*/
-multiline_comment|/*EXPORT_SYMBOL(_disable_interrupts);&n;  EXPORT_SYMBOL(_enable_interrupts);*/
 DECL|variable|flush_instruction_cache
 id|EXPORT_SYMBOL
 c_func
@@ -783,6 +856,27 @@ c_func
 id|flush_dcache_range
 )paren
 suffix:semicolon
+DECL|variable|flush_icache_user_range
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_icache_user_range
+)paren
+suffix:semicolon
+DECL|variable|flush_icache_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_icache_page
+)paren
+suffix:semicolon
+DECL|variable|flush_dcache_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_dcache_page
+)paren
+suffix:semicolon
 DECL|variable|xchg_u32
 id|EXPORT_SYMBOL
 c_func
@@ -812,13 +906,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|global_irq_lock
-)paren
-suffix:semicolon
-DECL|variable|global_irq_count
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|global_irq_count
 )paren
 suffix:semicolon
 DECL|variable|global_irq_holder
@@ -1097,25 +1184,18 @@ c_func
 id|get_property
 )paren
 suffix:semicolon
-DECL|variable|pci_bus_io_base
+DECL|variable|request_OF_resource
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_bus_io_base
+id|request_OF_resource
 )paren
 suffix:semicolon
-DECL|variable|pci_bus_io_base_phys
+DECL|variable|release_OF_resource
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_bus_io_base_phys
-)paren
-suffix:semicolon
-DECL|variable|pci_bus_mem_base_phys
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_bus_mem_base_phys
+id|release_OF_resource
 )paren
 suffix:semicolon
 DECL|variable|pci_device_to_OF_node
@@ -1132,109 +1212,11 @@ c_func
 id|pci_device_from_OF_node
 )paren
 suffix:semicolon
-DECL|variable|pci_bus_to_hose
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_bus_to_hose
-)paren
-suffix:semicolon
-DECL|variable|pci_resource_to_bus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_resource_to_bus
-)paren
-suffix:semicolon
-DECL|variable|pci_phys_to_bus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_phys_to_bus
-)paren
-suffix:semicolon
-DECL|variable|pci_bus_to_phys
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_bus_to_phys
-)paren
-suffix:semicolon
 DECL|variable|pmac_newworld
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|pmac_newworld
-)paren
-suffix:semicolon
-DECL|variable|feature_set
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_set
-)paren
-suffix:semicolon
-DECL|variable|feature_clear
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_clear
-)paren
-suffix:semicolon
-DECL|variable|feature_test
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_test
-)paren
-suffix:semicolon
-DECL|variable|feature_set_gmac_power
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_set_gmac_power
-)paren
-suffix:semicolon
-DECL|variable|feature_gmac_phy_reset
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_gmac_phy_reset
-)paren
-suffix:semicolon
-DECL|variable|feature_set_usb_power
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_set_usb_power
-)paren
-suffix:semicolon
-DECL|variable|feature_set_firewire_power
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_set_firewire_power
-)paren
-suffix:semicolon
-DECL|variable|feature_set_firewire_cable_power
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_set_firewire_cable_power
-)paren
-suffix:semicolon
-DECL|variable|feature_set_modem_power
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_set_modem_power
-)paren
-suffix:semicolon
-DECL|variable|feature_set_airport_power
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|feature_set_airport_power
 )paren
 suffix:semicolon
 macro_line|#endif /* defined(CONFIG_ALL_PPC) */
@@ -1358,6 +1340,13 @@ c_func
 id|memcmp
 )paren
 suffix:semicolon
+DECL|variable|memchr
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|memchr
+)paren
+suffix:semicolon
 DECL|variable|abs
 id|EXPORT_SYMBOL
 c_func
@@ -1365,7 +1354,7 @@ c_func
 id|abs
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VGA_CONSOLE
+macro_line|#if defined(CONFIG_FB_VGA16_MODULE)
 DECL|variable|screen_info
 id|EXPORT_SYMBOL
 c_func
@@ -1381,6 +1370,7 @@ c_func
 id|__delay
 )paren
 suffix:semicolon
+macro_line|#ifndef INLINE_IRQS
 DECL|variable|__sti
 id|EXPORT_SYMBOL
 c_func
@@ -1437,6 +1427,7 @@ c_func
 id|__restore_flags_end
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|timer_interrupt_intercept
 id|EXPORT_SYMBOL
 c_func
@@ -1505,11 +1496,32 @@ id|console_drivers
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
+r_extern
+r_void
+id|xmon_printf
+c_func
+(paren
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
 DECL|variable|xmon
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|xmon
+)paren
+suffix:semicolon
+DECL|variable|xmon_printf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xmon_printf
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1664,13 +1676,6 @@ c_func
 id|__res
 )paren
 suffix:semicolon
-DECL|variable|request_8xxirq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|request_8xxirq
-)paren
-suffix:semicolon
 DECL|variable|cpm_install_handler
 id|EXPORT_SYMBOL
 c_func
@@ -1686,6 +1691,15 @@ id|cpm_free_handler
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_8xx */
+macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_8260)
+DECL|variable|request_8xxirq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_8xxirq
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|ret_to_user_hook
 id|EXPORT_SYMBOL
 c_func
@@ -1763,4 +1777,18 @@ c_func
 id|cur_cpu_spec
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_ALL_PPC)
+r_extern
+r_int
+r_int
+id|agp_special_page
+suffix:semicolon
+DECL|variable|agp_special_page
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|agp_special_page
+)paren
+suffix:semicolon
+macro_line|#endif /* defined(CONFIG_ALL_PPC) */
 eof

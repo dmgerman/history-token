@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.25 11/13/01 21:26:07 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MACHDEP_H
 DECL|macro|_PPC_MACHDEP_H
@@ -19,6 +19,9 @@ suffix:semicolon
 r_struct
 id|seq_file
 suffix:semicolon
+multiline_comment|/* We export this macro for external modules like Alsa to know if&n; * ppc_md.feature_call is implemented or not&n; */
+DECL|macro|CONFIG_PPC_HAS_FEATURE_CALLS
+mdefine_line|#define CONFIG_PPC_HAS_FEATURE_CALLS
 DECL|struct|machdep_calls
 r_struct
 id|machdep_calls
@@ -477,6 +480,23 @@ multiline_comment|/* this is for modules, since _machine can be a define -- Cort
 DECL|member|ppc_machine
 r_int
 id|ppc_machine
+suffix:semicolon
+multiline_comment|/* Motherboard/chipset features. This is a kind of general purpose&n;&t; * hook used to control some machine specific features (like reset&n;&t; * lines, chip power control, etc...).&n;&t; */
+DECL|member|feature_call
+r_int
+(paren
+op_star
+id|feature_call
+)paren
+(paren
+r_int
+r_int
+id|feature
+comma
+dot
+dot
+dot
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* functions for dealing with other cpus */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.page.h 1.8 08/19/01 20:06:47 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef _PPC_PAGE_H
 DECL|macro|_PPC_PAGE_H
 mdefine_line|#define _PPC_PAGE_H
@@ -12,8 +12,13 @@ mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Be sure to change arch/ppc/Makefile to match */
+macro_line|#ifdef CONFIG_KERNEL_START_BOOL
+DECL|macro|PAGE_OFFSET
+mdefine_line|#define PAGE_OFFSET&t;CONFIG_KERNEL_START
+macro_line|#else
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;0xc0000000
+macro_line|#endif /* CONFIG_KERNEL_START_BOOL */
 DECL|macro|KERNELBASE
 mdefine_line|#define KERNELBASE&t;PAGE_OFFSET
 macro_line|#ifndef __ASSEMBLY__
@@ -168,10 +173,60 @@ op_star
 id|from
 )paren
 suffix:semicolon
-DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(page, vaddr)&t;clear_page(page)
-DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to, from, vaddr)&t;copy_page(to, from)
+r_extern
+r_void
+id|clear_user_page
+c_func
+(paren
+r_void
+op_star
+id|page
+comma
+r_int
+r_int
+id|vaddr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|copy_user_page
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+op_star
+id|from
+comma
+r_int
+r_int
+id|vaddr
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ppc_memstart
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ppc_memoffset
+suffix:semicolon
+macro_line|#ifndef CONFIG_APUS
+DECL|macro|PPC_MEMSTART
+mdefine_line|#define PPC_MEMSTART&t;0
+DECL|macro|PPC_MEMOFFSET
+mdefine_line|#define PPC_MEMOFFSET&t;PAGE_OFFSET
+macro_line|#else
+DECL|macro|PPC_MEMSTART
+mdefine_line|#define PPC_MEMSTART&t;ppc_memstart
+DECL|macro|PPC_MEMOFFSET
+mdefine_line|#define PPC_MEMOFFSET&t;ppc_memoffset
+macro_line|#endif
+macro_line|#if defined(CONFIG_APUS) &amp;&amp; !defined(MODULE)
 multiline_comment|/* map phys-&gt;virtual and virtual-&gt;phys for RAM pages */
 DECL|function|___pa
 r_static
@@ -286,10 +341,16 @@ op_star
 id|v
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|___pa
+mdefine_line|#define ___pa(vaddr) ((vaddr)-PPC_MEMOFFSET)
+DECL|macro|___va
+mdefine_line|#define ___va(paddr) ((paddr)+PPC_MEMOFFSET)
+macro_line|#endif
 DECL|macro|__pa
-mdefine_line|#define __pa(x) ___pa ((unsigned long)(x))
+mdefine_line|#define __pa(x) ___pa((unsigned long)(x))
 DECL|macro|__va
-mdefine_line|#define __va(x) ___va ((unsigned long)(x))
+mdefine_line|#define __va(x) ((void *)(___va((unsigned long)(x))))
 DECL|macro|MAP_PAGE_RESERVED
 mdefine_line|#define MAP_PAGE_RESERVED&t;(1&lt;&lt;15)
 DECL|macro|virt_to_page

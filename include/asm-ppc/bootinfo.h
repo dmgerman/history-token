@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.bootinfo.h 1.11 08/17/01 15:23:17 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Non-machine dependent bootinfo structure.  Basic idea&n; * borrowed from the m68k.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@ppc.kernel.org&gt;&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_BOOTINFO_H
@@ -51,6 +51,27 @@ DECL|macro|BI_MACHTYPE
 mdefine_line|#define BI_MACHTYPE&t;&t;0x1016
 DECL|macro|BI_MEMSIZE
 mdefine_line|#define BI_MEMSIZE&t;&t;0x1017
+r_extern
+r_struct
+id|bi_record
+op_star
+id|find_bootinfo
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|parse_bootinfo
+c_func
+(paren
+r_struct
+id|bi_record
+op_star
+id|rec
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_APUS */
 macro_line|#endif /* _PPC_BOOTINFO_H */
 macro_line|#endif /* __KERNEL__ */
