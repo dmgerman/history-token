@@ -278,6 +278,12 @@ DECL|member|cra_u
 )brace
 id|cra_u
 suffix:semicolon
+DECL|member|cra_module
+r_struct
+id|module
+op_star
+id|cra_module
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Algorithm registration interface.&n; */

@@ -6632,6 +6632,12 @@ l_string|&quot;pass&quot;
 )paren
 suffix:semicolon
 )brace
+id|crypto_free_tfm
+c_func
+(paren
+id|tfm
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Scenario F:&n;&t; * &n;&t; *  F1       F2      &n;&t; *  [8 + 5]  [3 + 8]&n;&t; *&n;&t; */
 id|printk
 c_func

@@ -1,25 +1,24 @@
 multiline_comment|/*&n; * Scatterlist Cryptographic API.&n; *&n; * Copyright (c) 2002 James Morris &lt;jmorris@intercode.com.au&gt;&n; * Copyright (c) 2002 David S. Miller (davem@redhat.com)&n; *&n; * Portions derived from Cryptoapi, by Alexander Kjeldaas &lt;astor@fast.no&gt;&n; * and Nettle, by Niels M&#xfffd;ller.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &quot;internal.h&quot;
-DECL|variable|crypto_alg_lock
-r_static
-id|rwlock_t
-id|crypto_alg_lock
-op_assign
-id|RW_LOCK_UNLOCKED
-suffix:semicolon
 r_static
 id|LIST_HEAD
 c_func
 (paren
 id|crypto_alg_list
 )paren
+suffix:semicolon
+DECL|variable|crypto_alg_sem
+r_static
+r_struct
+id|rw_semaphore
+id|crypto_alg_sem
 suffix:semicolon
 DECL|function|c_start
 r_static
@@ -49,11 +48,11 @@ op_assign
 op_star
 id|pos
 suffix:semicolon
-id|read_lock
+id|down_read
 c_func
 (paren
 op_amp
-id|crypto_alg_lock
+id|crypto_alg_sem
 )paren
 suffix:semicolon
 id|list_for_each
@@ -164,11 +163,11 @@ op_star
 id|p
 )paren
 (brace
-id|read_unlock
+id|up_read
 c_func
 (paren
 op_amp
-id|crypto_alg_lock
+id|crypto_alg_sem
 )paren
 suffix:semicolon
 )brace
@@ -377,7 +376,7 @@ suffix:semicolon
 DECL|function|crypto_alg_get
 r_static
 r_inline
-r_void
+r_int
 id|crypto_alg_get
 c_func
 (paren
@@ -387,7 +386,22 @@ op_star
 id|alg
 )paren
 (brace
-multiline_comment|/* XXX: inc refcount */
+r_if
+c_cond
+(paren
+id|alg-&gt;cra_module
+)paren
+r_return
+id|try_inc_mod_count
+c_func
+(paren
+id|alg-&gt;cra_module
+)paren
+suffix:semicolon
+r_else
+r_return
+l_int|1
+suffix:semicolon
 )brace
 DECL|function|crypto_alg_put
 r_static
@@ -402,7 +416,12 @@ op_star
 id|alg
 )paren
 (brace
-multiline_comment|/* XXX: dec refcount */
+id|__MOD_DEC_USE_COUNT
+c_func
+(paren
+id|alg-&gt;cra_module
+)paren
+suffix:semicolon
 )brace
 DECL|function|crypto_alg_lookup
 r_struct
@@ -427,11 +446,11 @@ id|alg
 op_assign
 l_int|NULL
 suffix:semicolon
-id|read_lock
+id|down_read
 c_func
 (paren
 op_amp
-id|crypto_alg_lock
+id|crypto_alg_sem
 )paren
 suffix:semicolon
 id|list_for_each
@@ -464,6 +483,20 @@ op_eq
 id|algid
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|crypto_alg_get
+c_func
+(paren
+(paren
+r_struct
+id|crypto_alg
+op_star
+)paren
+id|p
+)paren
+)paren
 id|alg
 op_assign
 (paren
@@ -473,21 +506,15 @@ op_star
 )paren
 id|p
 suffix:semicolon
-id|crypto_alg_get
-c_func
-(paren
-id|alg
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
+id|up_read
 c_func
 (paren
 op_amp
-id|crypto_alg_lock
+id|crypto_alg_sem
 )paren
 suffix:semicolon
 r_return
@@ -827,11 +854,11 @@ id|list_head
 op_star
 id|p
 suffix:semicolon
-id|write_lock
+id|down_write
 c_func
 (paren
 op_amp
-id|crypto_alg_lock
+id|crypto_alg_sem
 )paren
 suffix:semicolon
 id|list_for_each
@@ -885,11 +912,11 @@ id|crypto_alg_list
 suffix:semicolon
 id|out
 suffix:colon
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp
-id|crypto_alg_lock
+id|crypto_alg_sem
 )paren
 suffix:semicolon
 r_return
@@ -918,11 +945,11 @@ id|list_head
 op_star
 id|p
 suffix:semicolon
-id|write_lock
+id|down_write
 c_func
 (paren
 op_amp
-id|crypto_alg_lock
+id|crypto_alg_sem
 )paren
 suffix:semicolon
 id|list_for_each
@@ -947,6 +974,13 @@ op_star
 id|p
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|alg-&gt;cra_module
+)paren
+suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -964,11 +998,11 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp
-id|crypto_alg_lock
+id|crypto_alg_sem
 )paren
 suffix:semicolon
 r_return
@@ -995,6 +1029,13 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Initializing Cryptographic API&bslash;n&quot;
+)paren
+suffix:semicolon
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|crypto_alg_sem
 )paren
 suffix:semicolon
 id|proc

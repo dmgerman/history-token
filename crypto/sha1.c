@@ -2095,6 +2095,11 @@ id|sha1_ctx
 )paren
 comma
 dot
+id|cra_module
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|cra_u
 op_assign
 (brace
