@@ -821,10 +821,12 @@ id|stat
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ide_multwrite() transfers a block of up to mcount sectors of data&n; * to a drive as part of a disk multiple-sector write operation.&n; *&n; * Returns 0 on success.&n; *&n; * Note that we may be called from two contexts - __ide_do_rw_disk() context&n; * and IRQ context. The IRQ can happen any time after we&squot;ve output the&n; * full &quot;mcount&quot; number of sectors, so we must make sure we update the&n; * state _before_ we output the final part of the data!&n; *&n; * The update and return to BH is a BLOCK Layer Fakey to get more data&n; * to satisfy the hardware atomic segment.  If the hardware atomic segment&n; * is shorter or smaller than the BH segment then we should be OKAY.&n; * This is only valid if we can rewind the rq-&gt;current_nr_sectors counter.&n; */
+multiline_comment|/*&n; * ide_multwrite() transfers a block of up to mcount sectors of data&n; * to a drive as part of a disk multiple-sector write operation.&n; *&n; * Note that we may be called from two contexts - __ide_do_rw_disk() context&n; * and IRQ context. The IRQ can happen any time after we&squot;ve output the&n; * full &quot;mcount&quot; number of sectors, so we must make sure we update the&n; * state _before_ we output the final part of the data!&n; *&n; * The update and return to BH is a BLOCK Layer Fakey to get more data&n; * to satisfy the hardware atomic segment.  If the hardware atomic segment&n; * is shorter or smaller than the BH segment then we should be OKAY.&n; * This is only valid if we can rewind the rq-&gt;current_nr_sectors counter.&n; */
 DECL|function|ide_multwrite
-r_int
+r_static
+r_void
 id|ide_multwrite
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1008,9 +1010,6 @@ c_loop
 id|mcount
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * multwrite_intr() is the handler for disk multwrite interrupts&n; */
 DECL|function|multwrite_intr
@@ -1093,9 +1092,6 @@ c_cond
 id|rq-&gt;nr_sectors
 )paren
 (brace
-r_if
-c_cond
-(paren
 id|ide_multwrite
 c_func
 (paren
@@ -1103,9 +1099,6 @@ id|drive
 comma
 id|drive-&gt;mult_count
 )paren
-)paren
-r_return
-id|ide_stopped
 suffix:semicolon
 id|ide_set_handler
 c_func
@@ -2319,7 +2312,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Ugh.. this part looks ugly because we MUST set up&n;&t; * the interrupt handler before outputting the first block&n;&t; * of data to be written.  If we hit an error (corrupted buffer list)&n;&t; * in ide_multwrite(), then we need to remove the handler/timer&n;&t; * before returning.  Fortunately, this NEVER happens (right?).&n;&t; *&n;&t; * Except when you get an error it seems...&n;&t; *&n;&t; * MAJOR DATA INTEGRITY BUG !!! only if we error &n;&t; */
 id|hwgroup-&gt;wrq
 op_assign
 op_star
@@ -2339,9 +2331,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|ide_multwrite
 c_func
 (paren
@@ -2349,45 +2338,7 @@ id|drive
 comma
 id|drive-&gt;mult_count
 )paren
-)paren
-(brace
-r_int
-r_int
-id|flags
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ide_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|hwgroup-&gt;handler
-op_assign
-l_int|NULL
-suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|hwgroup-&gt;timer
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ide_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|ide_stopped
-suffix:semicolon
-)brace
 )brace
 r_else
 (brace
