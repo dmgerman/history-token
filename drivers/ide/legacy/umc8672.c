@@ -16,15 +16,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_UMC8672_MODULE
-DECL|macro|_IDE_C
-macro_line|# define _IDE_C
-macro_line|# include &quot;ide_modes.h&quot;
-DECL|macro|_IDE_C
-macro_line|# undef _IDE_C
-macro_line|#else
-macro_line|# include &quot;ide_modes.h&quot;
-macro_line|#endif /* CONFIG_BLK_DEV_UMC8672_MODULE */
+macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/*&n; * Default speeds.  These can be changed with &quot;auto-tune&quot; and/or hdparm.&n; */
 DECL|macro|UMC_DRIVE0
 mdefine_line|#define UMC_DRIVE0      1              /* DOS measured drive speeds */
