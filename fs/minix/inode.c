@@ -2264,7 +2264,7 @@ op_logical_neg
 id|raw_inode
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|raw_inode-&gt;i_mode
 op_assign
@@ -2418,7 +2418,7 @@ op_logical_neg
 id|raw_inode
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|raw_inode-&gt;i_mode
 op_assign

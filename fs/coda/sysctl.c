@@ -700,7 +700,7 @@ id|fs_table_header
 suffix:semicolon
 id|fs_table_header
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
