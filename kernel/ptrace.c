@@ -411,14 +411,12 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|send_sig
+id|force_sig_specific
 c_func
 (paren
 id|SIGSTOP
 comma
 id|task
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_return
