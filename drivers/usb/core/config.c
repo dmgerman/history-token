@@ -1,23 +1,40 @@
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_USB_DEBUG
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|USB_MAXALTSETTING
 mdefine_line|#define USB_MAXALTSETTING&t;&t;128&t;/* Hard limit */
 DECL|macro|USB_MAXENDPOINTS
 mdefine_line|#define USB_MAXENDPOINTS&t;&t;30&t;/* Hard limit */
-multiline_comment|/* these maximums are arbitrary */
 DECL|macro|USB_MAXCONFIG
-mdefine_line|#define USB_MAXCONFIG&t;&t;&t;8
-DECL|macro|USB_MAXINTERFACES
-mdefine_line|#define USB_MAXINTERFACES&t;&t;32
+mdefine_line|#define USB_MAXCONFIG&t;&t;&t;8&t;/* Arbitrary limit */
 DECL|function|usb_parse_endpoint
 r_static
 r_int
 id|usb_parse_endpoint
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|ddev
+comma
+r_int
+id|cfgno
+comma
+r_int
+id|inum
+comma
+r_int
+id|asnum
+comma
 r_struct
 id|usb_host_endpoint
 op_star
@@ -69,10 +86,20 @@ op_ne
 id|USB_DT_ENDPOINT
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;unexpected descriptor 0x%X, expecting endpoint, 0x%X&quot;
+id|ddev
+comma
+l_string|&quot;config %d interface %d altsetting %d has an &quot;
+l_string|&quot;unexpected descriptor of type 0x%X, &quot;
+l_string|&quot;expecting endpoint type 0x%X&bslash;n&quot;
+comma
+id|cfgno
+comma
+id|inum
+comma
+id|asnum
 comma
 id|header-&gt;bDescriptorType
 comma
@@ -123,10 +150,21 @@ id|USB_DT_ENDPOINT_SIZE
 suffix:semicolon
 r_else
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;invalid endpoint descriptor&quot;
+id|ddev
+comma
+l_string|&quot;config %d interface %d altsetting %d has an &quot;
+l_string|&quot;invalid endpoint descriptor of length %d&bslash;n&quot;
+comma
+id|cfgno
+comma
+id|inum
+comma
+id|asnum
+comma
+id|header-&gt;bLength
 )paren
 suffix:semicolon
 r_return
@@ -147,10 +185,19 @@ op_ge
 l_int|16
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;invalid endpoint address 0x%X&quot;
+id|ddev
+comma
+l_string|&quot;config %d interface %d altsetting %d has an &quot;
+l_string|&quot;invalid endpoint with address 0x%X&bslash;n&quot;
+comma
+id|cfgno
+comma
+id|inum
+comma
+id|asnum
 comma
 id|endpoint-&gt;desc.bEndpointAddress
 )paren
@@ -223,10 +270,12 @@ id|USB_DT_INTERFACE
 )paren
 r_break
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;skipping descriptor 0x%X&quot;
+id|ddev
+comma
+l_string|&quot;skipping descriptor 0x%X&bslash;n&quot;
 comma
 id|header-&gt;bDescriptorType
 )paren
@@ -249,10 +298,13 @@ c_cond
 id|numskipped
 )paren
 (brace
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;skipped %d class/vendor specific endpoint descriptors&quot;
+id|ddev
+comma
+l_string|&quot;skipped %d class/vendor specific endpoint &quot;
+l_string|&quot;descriptors&bslash;n&quot;
 comma
 id|numskipped
 )paren
@@ -349,6 +401,14 @@ id|usb_parse_interface
 c_func
 (paren
 r_struct
+id|device
+op_star
+id|ddev
+comma
+r_int
+id|cfgno
+comma
+r_struct
 id|usb_host_config
 op_star
 id|config
@@ -426,10 +486,15 @@ op_ne
 id|USB_DT_INTERFACE
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;unexpected descriptor 0x%X, expecting interface, 0x%X&quot;
+id|ddev
+comma
+l_string|&quot;config %d has an unexpected descriptor of type &quot;
+l_string|&quot;0x%X, expecting interface type 0x%X&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|d-&gt;bDescriptorType
 comma
@@ -526,14 +591,23 @@ op_ge
 id|interface-&gt;num_altsetting
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;invalid alternate setting %d for interface %d&quot;
+id|ddev
+comma
+l_string|&quot;config %d interface %d has an invalid &quot;
+l_string|&quot;alternate setting number: %d but max is %d&bslash;n&quot;
+comma
+id|cfgno
+comma
+id|inum
 comma
 id|asnum
 comma
-id|inum
+id|interface-&gt;num_altsetting
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -555,10 +629,15 @@ c_cond
 id|ifp-&gt;desc.bLength
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;duplicate descriptor for interface %d altsetting %d&quot;
+id|ddev
+comma
+l_string|&quot;Duplicate descriptor for config %d &quot;
+l_string|&quot;interface %d altsetting %d&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|inum
 comma
@@ -637,10 +716,12 @@ id|USB_DT_ENDPOINT
 )paren
 r_break
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;skipping descriptor 0x%X&quot;
+id|ddev
+comma
+l_string|&quot;skipping descriptor 0x%X&bslash;n&quot;
 comma
 id|header-&gt;bDescriptorType
 )paren
@@ -663,10 +744,13 @@ c_cond
 id|numskipped
 )paren
 (brace
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;skipped %d class/vendor specific interface descriptors&quot;
+id|ddev
+comma
+l_string|&quot;skipped %d class/vendor specific &quot;
+l_string|&quot;interface descriptors&bslash;n&quot;
 comma
 id|numskipped
 )paren
@@ -690,14 +774,23 @@ OG
 id|USB_MAXENDPOINTS
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;too many endpoints for interface %d altsetting %d&quot;
+id|ddev
+comma
+l_string|&quot;too many endpoints for config %d interface %d &quot;
+l_string|&quot;altsetting %d: %d, maximum allowed: %d&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|inum
 comma
 id|asnum
+comma
+id|ifp-&gt;desc.bNumEndpoints
+comma
+id|USB_MAXENDPOINTS
 )paren
 suffix:semicolon
 r_return
@@ -731,18 +824,10 @@ c_cond
 op_logical_neg
 id|ifp-&gt;endpoint
 )paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;out of memory&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -776,10 +861,19 @@ OL
 id|USB_DT_ENDPOINT_SIZE
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;ran out of descriptors while parsing endpoints&quot;
+id|ddev
+comma
+l_string|&quot;too few endpoint descriptors for &quot;
+l_string|&quot;config %d interface %d altsetting %d&bslash;n&quot;
+comma
+id|cfgno
+comma
+id|inum
+comma
+id|asnum
 )paren
 suffix:semicolon
 r_return
@@ -792,6 +886,14 @@ op_assign
 id|usb_parse_endpoint
 c_func
 (paren
+id|ddev
+comma
+id|cfgno
+comma
+id|inum
+comma
+id|asnum
+comma
 id|ifp-&gt;endpoint
 op_plus
 id|i
@@ -832,10 +934,19 @@ id|usb_parse_configuration
 c_func
 (paren
 r_struct
+id|device
+op_star
+id|ddev
+comma
+r_int
+id|cfgidx
+comma
+r_struct
 id|usb_host_config
 op_star
 id|config
 comma
+r_int
 r_char
 op_star
 id|buffer
@@ -844,6 +955,9 @@ r_int
 id|size
 )paren
 (brace
+r_int
+id|cfgno
+suffix:semicolon
 r_int
 id|nintf
 comma
@@ -859,6 +973,7 @@ id|usb_interface
 op_star
 id|interface
 suffix:semicolon
+r_int
 r_char
 op_star
 id|buffer2
@@ -876,6 +991,7 @@ id|numskipped
 comma
 id|len
 suffix:semicolon
+r_int
 r_char
 op_star
 id|begin
@@ -906,10 +1022,19 @@ OL
 id|USB_DT_CONFIG_SIZE
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;invalid configuration descriptor&quot;
+id|ddev
+comma
+l_string|&quot;invalid descriptor for config index %d: &quot;
+l_string|&quot;type = 0x%X, length = %d&bslash;n&quot;
+comma
+id|cfgidx
+comma
+id|config-&gt;desc.bDescriptorType
+comma
+id|config-&gt;desc.bLength
 )paren
 suffix:semicolon
 r_return
@@ -920,6 +1045,10 @@ suffix:semicolon
 id|config-&gt;desc.wTotalLength
 op_assign
 id|size
+suffix:semicolon
+id|cfgno
+op_assign
+id|config-&gt;desc.bConfigurationValue
 suffix:semicolon
 id|nintf
 op_assign
@@ -935,10 +1064,15 @@ OG
 id|USB_MAXINTERFACES
 )paren
 (brace
-id|warn
+id|dev_warn
 c_func
 (paren
-l_string|&quot;too many interfaces (%d max %d)&quot;
+id|ddev
+comma
+l_string|&quot;config %d has too many interfaces: %d, &quot;
+l_string|&quot;using maximum allowed: %d&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|nintf
 comma
@@ -986,10 +1120,12 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;kmalloc IF %p, numif %i&quot;
+id|ddev
+comma
+l_string|&quot;kmalloc IF %p, numif %i&bslash;n&quot;
 comma
 id|interface
 comma
@@ -1002,18 +1138,10 @@ c_cond
 op_logical_neg
 id|interface
 )paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;out of memory&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1079,10 +1207,15 @@ l_int|2
 )paren
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;invalid descriptor of length %d&quot;
+id|ddev
+comma
+l_string|&quot;config %d has an invalid descriptor &quot;
+l_string|&quot;of length %d&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|header-&gt;bLength
 )paren
@@ -1113,10 +1246,17 @@ OL
 id|USB_DT_INTERFACE_SIZE
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;invalid interface descriptor&quot;
+id|ddev
+comma
+l_string|&quot;config %d has an invalid &quot;
+l_string|&quot;interface descriptor of length %d&bslash;n&quot;
+comma
+id|cfgno
+comma
+id|header-&gt;bLength
 )paren
 suffix:semicolon
 r_return
@@ -1145,14 +1285,21 @@ op_ge
 id|nintf_orig
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;invalid interface number (%d/%d)&quot;
+id|ddev
+comma
+l_string|&quot;config %d has an invalid &quot;
+l_string|&quot;interface number: %d but max is %d&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|i
 comma
 id|nintf_orig
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -1193,10 +1340,15 @@ op_logical_and
 id|j
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;unexpected descriptor type 0x%X&quot;
+id|ddev
+comma
+l_string|&quot;config %d contains an unexpected &quot;
+l_string|&quot;descriptor of type 0x%X&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|header-&gt;bDescriptorType
 )paren
@@ -1250,10 +1402,16 @@ OG
 id|USB_MAXALTSETTING
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;too many alternate settings for interface %d (%d max %d)&bslash;n&quot;
+id|ddev
+comma
+l_string|&quot;too many alternate settings for &quot;
+l_string|&quot;config %d interface %d: %d, &quot;
+l_string|&quot;maximum allowed: %d&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|i
 comma
@@ -1275,10 +1433,15 @@ op_eq
 l_int|0
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;no alternate settings for interface %d&quot;
+id|ddev
+comma
+l_string|&quot;config %d has no interface number &quot;
+l_string|&quot;%d&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|i
 )paren
@@ -1314,18 +1477,10 @@ c_cond
 op_logical_neg
 id|interface-&gt;altsetting
 )paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;couldn&squot;t kmalloc interface-&gt;altsetting&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1393,10 +1548,12 @@ id|USB_DT_INTERFACE
 )paren
 r_break
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;skipping descriptor 0x%X&quot;
+id|ddev
+comma
+l_string|&quot;skipping descriptor 0x%X&bslash;n&quot;
 comma
 id|header-&gt;bDescriptorType
 )paren
@@ -1419,10 +1576,13 @@ c_cond
 id|numskipped
 )paren
 (brace
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;skipped %d class/vendor specific configuration descriptors&quot;
+id|ddev
+comma
+l_string|&quot;skipped %d class/vendor specific configuration &quot;
+l_string|&quot;descriptors&bslash;n&quot;
 comma
 id|numskipped
 )paren
@@ -1456,6 +1616,10 @@ op_assign
 id|usb_parse_interface
 c_func
 (paren
+id|ddev
+comma
+id|cfgno
+comma
 id|config
 comma
 id|buffer
@@ -1532,14 +1696,19 @@ dot
 id|desc.bLength
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;missing altsetting %d for interface %d&quot;
+id|ddev
 comma
-id|j
+l_string|&quot;config %d interface %d has no &quot;
+l_string|&quot;altsetting %d&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|i
+comma
+id|j
 )paren
 suffix:semicolon
 r_return
@@ -1699,6 +1868,14 @@ op_star
 id|dev
 )paren
 (brace
+r_struct
+id|device
+op_star
+id|ddev
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 r_int
 id|ncfg
 op_assign
@@ -1706,6 +1883,9 @@ id|dev-&gt;descriptor.bNumConfigurations
 suffix:semicolon
 r_int
 id|result
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_int
 r_int
@@ -1736,10 +1916,13 @@ OG
 id|USB_MAXCONFIG
 )paren
 (brace
-id|warn
+id|dev_warn
 c_func
 (paren
-l_string|&quot;too many configurations (%d max %d)&quot;
+id|ddev
+comma
+l_string|&quot;too many configurations: %d, &quot;
+l_string|&quot;using maximum allowed: %d&bslash;n&quot;
 comma
 id|ncfg
 comma
@@ -1761,10 +1944,12 @@ OL
 l_int|1
 )paren
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;no configurations&quot;
+id|ddev
+comma
+l_string|&quot;no configurations&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1798,18 +1983,9 @@ c_cond
 op_logical_neg
 id|dev-&gt;config
 )paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;out of memory&quot;
-)paren
+r_goto
+id|err2
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1846,18 +2022,9 @@ c_cond
 op_logical_neg
 id|dev-&gt;rawdescriptors
 )paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;out of memory&quot;
-)paren
+r_goto
+id|err2
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1884,18 +2051,9 @@ c_cond
 op_logical_neg
 id|buffer
 )paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;unable to allocate memory for configuration descriptors&quot;
-)paren
+r_goto
+id|err2
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|desc
 op_assign
 (paren
@@ -1921,7 +2079,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/* We grab the first 8 bytes so we know how long the whole */
-multiline_comment|/*  configuration is */
+multiline_comment|/* configuration is */
 id|result
 op_assign
 id|usb_get_descriptor
@@ -1943,28 +2101,42 @@ c_cond
 (paren
 id|result
 OL
-l_int|8
+l_int|0
 )paren
 (brace
+id|dev_err
+c_func
+(paren
+id|ddev
+comma
+l_string|&quot;unable to read config index %d &quot;
+l_string|&quot;descriptor&bslash;n&quot;
+comma
+id|cfgno
+)paren
+suffix:semicolon
+r_goto
+id|err
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
 id|result
 OL
-l_int|0
+l_int|8
 )paren
-id|err
-c_func
-(paren
-l_string|&quot;unable to get descriptor&quot;
-)paren
-suffix:semicolon
-r_else
 (brace
-id|warn
+id|dev_err
 c_func
 (paren
-l_string|&quot;config descriptor too short (expected %i, got %i)&quot;
+id|ddev
+comma
+l_string|&quot;config index %d descriptor too short &quot;
+l_string|&quot;(expected %i, got %i)&bslash;n&quot;
+comma
+id|cfgno
 comma
 l_int|8
 comma
@@ -1976,12 +2148,10 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_goto
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* Get the full buffer */
 id|length
 op_assign
 id|max
@@ -1999,6 +2169,7 @@ comma
 id|USB_DT_CONFIG_SIZE
 )paren
 suffix:semicolon
+multiline_comment|/* Now that we know the length, get the whole thing */
 id|bigbuffer
 op_assign
 id|kmalloc
@@ -2016,12 +2187,6 @@ op_logical_neg
 id|bigbuffer
 )paren
 (brace
-id|err
-c_func
-(paren
-l_string|&quot;unable to allocate memory for configuration descriptors&quot;
-)paren
-suffix:semicolon
 id|result
 op_assign
 op_minus
@@ -2031,7 +2196,6 @@ r_goto
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* Now that we know the length, get the whole thing */
 id|result
 op_assign
 id|usb_get_descriptor
@@ -2056,10 +2220,15 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;couldn&squot;t get all of config descriptors&quot;
+id|ddev
+comma
+l_string|&quot;unable to read config index %d &quot;
+l_string|&quot;descriptor&bslash;n&quot;
+comma
+id|cfgno
 )paren
 suffix:semicolon
 id|kfree
@@ -2080,10 +2249,15 @@ OL
 id|length
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;config descriptor too short (expected %i, got %i)&quot;
+id|ddev
+comma
+l_string|&quot;config index %d descriptor too short &quot;
+l_string|&quot;(expected %i, got %i)&bslash;n&quot;
+comma
+id|cfgno
 comma
 id|length
 comma
@@ -2118,6 +2292,11 @@ id|usb_parse_configuration
 c_func
 (paren
 op_amp
+id|dev-&gt;dev
+comma
+id|cfgno
+comma
+op_amp
 id|dev-&gt;config
 (braket
 id|cfgno
@@ -2135,10 +2314,17 @@ id|result
 OG
 l_int|0
 )paren
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;descriptor data left&quot;
+id|ddev
+comma
+l_string|&quot;config index %d descriptor has %d &quot;
+l_string|&quot;excess byte(s)&bslash;n&quot;
+comma
+id|cfgno
+comma
+id|result
 )paren
 suffix:semicolon
 r_else
@@ -2158,13 +2344,8 @@ id|err
 suffix:semicolon
 )brace
 )brace
-id|kfree
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
-r_return
+id|result
+op_assign
 l_int|0
 suffix:semicolon
 id|err
@@ -2178,6 +2359,24 @@ suffix:semicolon
 id|dev-&gt;descriptor.bNumConfigurations
 op_assign
 id|cfgno
+suffix:semicolon
+id|err2
+suffix:colon
+r_if
+c_cond
+(paren
+id|result
+op_eq
+op_minus
+id|ENOMEM
+)paren
+id|dev_err
+c_func
+(paren
+id|ddev
+comma
+l_string|&quot;out of memory&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 id|result
