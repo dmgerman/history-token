@@ -2354,6 +2354,10 @@ c_cond
 id|drive-&gt;mult_count
 )paren
 (brace
+id|task-&gt;data_phase
+op_assign
+id|TASKFILE_MULTI_IN
+suffix:semicolon
 id|task-&gt;handler
 op_assign
 op_amp
@@ -2368,6 +2372,10 @@ suffix:colon
 id|WIN_MULTREAD
 suffix:semicolon
 )brace
+id|task-&gt;data_phase
+op_assign
+id|TASKFILE_IN
+suffix:semicolon
 id|task-&gt;handler
 op_assign
 op_amp
@@ -2407,6 +2415,10 @@ c_cond
 id|drive-&gt;mult_count
 )paren
 (brace
+id|task-&gt;data_phase
+op_assign
+id|TASKFILE_MULTI_OUT
+suffix:semicolon
 id|task-&gt;prehandler
 op_assign
 op_amp
@@ -2426,6 +2438,10 @@ suffix:colon
 id|WIN_MULTWRITE
 suffix:semicolon
 )brace
+id|task-&gt;data_phase
+op_assign
+id|TASKFILE_OUT
+suffix:semicolon
 id|task-&gt;prehandler
 op_assign
 op_amp
@@ -2644,6 +2660,10 @@ op_star
 op_amp
 id|args
 suffix:semicolon
+id|drive-&gt;hwif-&gt;data_phase
+op_assign
+id|args.data_phase
+suffix:semicolon
 r_return
 id|do_rw_taskfile
 c_func
@@ -2808,6 +2828,10 @@ op_star
 )paren
 op_amp
 id|args
+suffix:semicolon
+id|drive-&gt;hwif-&gt;data_phase
+op_assign
+id|args.data_phase
 suffix:semicolon
 r_return
 id|do_rw_taskfile
@@ -3026,6 +3050,10 @@ op_star
 )paren
 op_amp
 id|args
+suffix:semicolon
+id|drive-&gt;hwif-&gt;data_phase
+op_assign
+id|args.data_phase
 suffix:semicolon
 r_return
 id|do_rw_taskfile
@@ -6084,6 +6112,10 @@ suffix:semicolon
 id|args.command_type
 op_assign
 id|IDE_DRIVE_TASK_IN
+suffix:semicolon
+id|args.data_phase
+op_assign
+id|TASKFILE_IN
 suffix:semicolon
 id|args.handler
 op_assign

@@ -2872,6 +2872,10 @@ id|args
 r_goto
 id|done
 suffix:semicolon
+id|hwif-&gt;data_phase
+op_assign
+id|args-&gt;data_phase
+suffix:semicolon
 r_if
 c_cond
 (paren

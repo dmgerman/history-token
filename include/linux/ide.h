@@ -2858,6 +2858,11 @@ r_int
 id|sg_dma_active
 suffix:semicolon
 multiline_comment|/* is it in use */
+multiline_comment|/* data phase of the active command (currently only valid for PIO/DMA) */
+DECL|member|data_phase
+r_int
+id|data_phase
+suffix:semicolon
 DECL|member|mmio
 r_int
 id|mmio
