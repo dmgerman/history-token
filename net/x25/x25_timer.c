@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine, randomly fail to work with new &n; *&t;releases, misbehave and/or generally screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;New timer architecture.&n; *&t;&t;&t;&t;&t;Centralised disconnection processing.&n; */
+multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine,&n; *&t;randomly fail to work with new releases, misbehave and/or generally&n; *&t;screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;New timer architecture.&n; *&t;&t;&t;&t;&t;Centralised disconnection processing.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -424,12 +424,10 @@ c_cond
 (paren
 id|sk-&gt;lock.users
 )paren
-(brace
 multiline_comment|/* can currently only occur in state 3 */
 r_goto
 id|restart_heartbeat
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -655,7 +653,6 @@ id|state
 op_eq
 id|X25_STATE_3
 )paren
-(brace
 id|x25_start_t2timer
 c_func
 (paren
@@ -663,16 +660,13 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
-(brace
 id|x25_do_timer_expiry
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
-)brace
 id|bh_unlock_sock
 c_func
 (paren
