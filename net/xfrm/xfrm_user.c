@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|xfrm_nl
 r_static
 r_struct

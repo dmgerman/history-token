@@ -2,6 +2,7 @@ multiline_comment|/*&n; * xfrm_state.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Each xfrm_state may be linked to two tables:&n;&n;   1. Hash table by (spi,daddr,ah/esp) to find SA by SPI. (input,ctl)&n;   2. Hash table by daddr to find what SAs exist for given&n;      destination/tunnel endpoint. (output)&n; */
 DECL|variable|xfrm_state_lock
 r_static
@@ -757,6 +758,7 @@ op_amp
 id|x-&gt;refcnt
 )paren
 suffix:semicolon
+multiline_comment|/* The number two in this test is the reference&n;&t;&t; * mentioned in the comment below plus the reference&n;&t;&t; * our caller holds.  A larger value means that&n;&t;&t; * there are DSTs attached to this xfrm_state.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -766,8 +768,8 @@ c_func
 op_amp
 id|x-&gt;refcnt
 )paren
-op_ne
-l_int|1
+OG
+l_int|2
 )paren
 id|xfrm_flush_bundles
 c_func
@@ -776,6 +778,14 @@ id|x
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* All xfrm_state objects are created by one of two possible&n;&t; * paths:&n;&t; *&n;&t; * 1) xfrm_state_alloc --&gt; xfrm_state_insert&n;&t; * 2) xfrm_state_lookup --&gt; xfrm_state_insert&n;&t; *&n;&t; * The xfrm_state_lookup or xfrm_state_alloc call gives a&n;&t; * reference, and that is what we are dropping here.&n;&t; */
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|x-&gt;refcnt
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
