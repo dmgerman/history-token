@@ -1277,8 +1277,15 @@ DECL|member|channels
 id|u16
 id|channels
 suffix:semicolon
+DECL|member|quirks
+r_int
+id|quirks
+suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Some adapter firmware needs communication memory &n; * below 2gig. This tells the init function to set the&n; * dma mask such that fib memory will be allocated where the&n; * adapter firmware can get to it.&n; */
+DECL|macro|AAC_QUIRK_31BIT
+mdefine_line|#define AAC_QUIRK_31BIT&t;1
 multiline_comment|/*&n; *&t;The adapter interface specs all queues to be located in the same&n; *&t;physically contigous block. The host structure that defines the&n; *&t;commuication queues will assume they are each a separate physically&n; *&t;contigous memory region that will support them all being one big&n; *&t;contigous block. &n; *&t;There is a command and response queue for each level and direction of&n; *&t;commuication. These regions are accessed by both the host and adapter.&n; */
 DECL|struct|aac_queue
 r_struct
