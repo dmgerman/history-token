@@ -2720,7 +2720,7 @@ id|newsk-&gt;sk_error_queue
 suffix:semicolon
 id|newsk-&gt;sk_write_space
 op_assign
-id|tcp_write_space
+id|sk_stream_write_space
 suffix:semicolon
 r_if
 c_cond

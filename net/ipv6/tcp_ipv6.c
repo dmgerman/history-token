@@ -8912,7 +8912,7 @@ id|ipv6_specific
 suffix:semicolon
 id|sk-&gt;sk_write_space
 op_assign
-id|tcp_write_space
+id|sk_stream_write_space
 suffix:semicolon
 id|sk-&gt;sk_use_write_queue
 op_assign
