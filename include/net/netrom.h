@@ -4,6 +4,7 @@ DECL|macro|_NETROM_H
 mdefine_line|#define _NETROM_H 
 macro_line|#include &lt;linux/netrom.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 DECL|macro|NR_NETWORK_LEN
 mdefine_line|#define&t;NR_NETWORK_LEN&t;&t;&t;15
 DECL|macro|NR_TRANSPORT_LEN
