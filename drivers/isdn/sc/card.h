@@ -4,17 +4,18 @@ DECL|macro|CARD_H
 mdefine_line|#define CARD_H
 multiline_comment|/*&n; * We need these if they&squot;re not already included&n; */
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/isdnif.h&gt;
 macro_line|#include &quot;message.h&quot;
 multiline_comment|/*&n; * Amount of time to wait for a reset to complete&n; */
 DECL|macro|CHECKRESET_TIME
-mdefine_line|#define CHECKRESET_TIME&t;&t;milliseconds(4000)
+mdefine_line|#define CHECKRESET_TIME&t;&t;msecs_to_jiffies(4000)
 multiline_comment|/*&n; * Amount of time between line status checks&n; */
 DECL|macro|CHECKSTAT_TIME
-mdefine_line|#define CHECKSTAT_TIME&t;&t;milliseconds(8000)
+mdefine_line|#define CHECKSTAT_TIME&t;&t;msecs_to_jiffies(8000)
 multiline_comment|/*&n; * The maximum amount of time to wait for a message response&n; * to arrive. Use exclusively by send_and_receive&n; */
 DECL|macro|SAR_TIMEOUT
-mdefine_line|#define SAR_TIMEOUT&t;&t;milliseconds(10000)
+mdefine_line|#define SAR_TIMEOUT&t;&t;msecs_to_jiffies(10000)
 multiline_comment|/*&n; * Macro to determine is a card id is valid&n; */
 DECL|macro|IS_VALID_CARD
 mdefine_line|#define IS_VALID_CARD(x)&t;((x &gt;= 0) &amp;&amp; (x &lt;= cinst))

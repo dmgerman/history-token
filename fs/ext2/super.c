@@ -3828,6 +3828,10 @@ op_assign
 op_amp
 id|ext2_export_ops
 suffix:semicolon
+id|sb-&gt;s_xattr
+op_assign
+id|ext2_xattr_handlers
+suffix:semicolon
 id|root
 op_assign
 id|iget

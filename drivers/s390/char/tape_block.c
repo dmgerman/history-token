@@ -806,7 +806,7 @@ suffix:semicolon
 id|elevator_exit
 c_func
 (paren
-id|blkdat-&gt;request_queue
+id|blkdat-&gt;request_queue-&gt;elevator
 )paren
 suffix:semicolon
 id|rc
@@ -816,8 +816,7 @@ c_func
 (paren
 id|blkdat-&gt;request_queue
 comma
-op_amp
-id|elevator_noop
+l_string|&quot;noop&quot;
 )paren
 suffix:semicolon
 r_if

@@ -4326,7 +4326,7 @@ id|gsi
 )paren
 suffix:semicolon
 DECL|function|mp_register_gsi
-r_void
+r_int
 id|mp_register_gsi
 (paren
 id|u32
@@ -4367,6 +4367,7 @@ op_eq
 id|gsi
 )paren
 r_return
+id|gsi
 suffix:semicolon
 macro_line|#endif
 id|ioapic
@@ -4395,6 +4396,7 @@ id|gsi
 )paren
 suffix:semicolon
 r_return
+id|gsi
 suffix:semicolon
 )brace
 id|ioapic_pin
@@ -4473,6 +4475,7 @@ id|ioapic_pin
 )paren
 suffix:semicolon
 r_return
+id|gsi
 suffix:semicolon
 )brace
 r_if
@@ -4512,6 +4515,7 @@ id|ioapic_pin
 )paren
 suffix:semicolon
 r_return
+id|gsi
 suffix:semicolon
 )brace
 id|mp_ioapic_routing
@@ -4557,6 +4561,9 @@ l_int|0
 suffix:colon
 l_int|1
 )paren
+suffix:semicolon
+r_return
+id|gsi
 suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_X86_IO_APIC &amp;&amp; (CONFIG_ACPI_INTERPRETER || CONFIG_ACPI_BOOT)*/

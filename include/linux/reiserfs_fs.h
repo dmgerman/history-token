@@ -813,9 +813,9 @@ DECL|macro|set_offset_v2_k_offset
 macro_line|# define set_offset_v2_k_offset(v2,val) (offset_v2_k_offset(v2) = (val))
 macro_line|#endif
 multiline_comment|/* Key of an item determines its location in the S+tree, and&n;   is composed of 4 components */
-DECL|struct|key
+DECL|struct|reiserfs_key
 r_struct
-id|key
+id|reiserfs_key
 (brace
 DECL|member|k_dir_id
 id|__u32
@@ -863,7 +863,7 @@ id|cpu_key
 (brace
 DECL|member|on_disk_key
 r_struct
-id|key
+id|reiserfs_key
 id|on_disk_key
 suffix:semicolon
 DECL|member|version
@@ -894,7 +894,7 @@ mdefine_line|#define KEY_FOUND 1
 DECL|macro|KEY_NOT_FOUND
 mdefine_line|#define KEY_NOT_FOUND 0
 DECL|macro|KEY_SIZE
-mdefine_line|#define KEY_SIZE (sizeof(struct key))
+mdefine_line|#define KEY_SIZE (sizeof(struct reiserfs_key))
 DECL|macro|SHORT_KEY_SIZE
 mdefine_line|#define SHORT_KEY_SIZE (sizeof (__u32) + sizeof (__u32))
 multiline_comment|/* return values for search_by_key and clones */
@@ -939,7 +939,7 @@ id|item_head
 multiline_comment|/* Everything in the tree is found by searching for it based on&n;&t; * its key.*/
 DECL|member|ih_key
 r_struct
-id|key
+id|reiserfs_key
 id|ih_key
 suffix:semicolon
 r_union
@@ -1195,7 +1195,7 @@ id|version
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -1263,7 +1263,7 @@ id|version
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -1334,7 +1334,7 @@ r_int
 id|version
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
@@ -1420,7 +1420,7 @@ r_int
 id|version
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
@@ -1708,7 +1708,7 @@ DECL|macro|REISERFS_ROOT_PARENT_OBJECTID
 mdefine_line|#define REISERFS_ROOT_PARENT_OBJECTID 1
 r_extern
 r_struct
-id|key
+id|reiserfs_key
 id|root_key
 suffix:semicolon
 multiline_comment|/* &n; * Picture represents a leaf of the S+tree&n; *  ______________________________________________________&n; * |      |  Array of     |                   |           |&n; * |Block |  Object-Item  |      F r e e      |  Objects- |&n; * | head |  Headers      |     S p a c e     |   Items   |&n; * |______|_______________|___________________|___________|&n; */
@@ -1739,7 +1739,7 @@ suffix:semicolon
 multiline_comment|/* dump this in v4/planA */
 DECL|member|blk_right_delim_key
 r_struct
-id|key
+id|reiserfs_key
 id|blk_right_delim_key
 suffix:semicolon
 multiline_comment|/* kept only for compatibility */
@@ -2611,7 +2611,7 @@ DECL|macro|UNFM_P_SHIFT
 mdefine_line|#define UNFM_P_SHIFT 2
 singleline_comment|// in in-core inode key is stored on le form
 DECL|macro|INODE_PKEY
-mdefine_line|#define INODE_PKEY(inode) ((struct key *)(REISERFS_I(inode)-&gt;i_key))
+mdefine_line|#define INODE_PKEY(inode) ((struct reiserfs_key *)(REISERFS_I(inode)-&gt;i_key))
 DECL|macro|MAX_UL_INT
 mdefine_line|#define MAX_UL_INT 0xffffffff
 DECL|macro|MAX_INT
@@ -3090,7 +3090,7 @@ multiline_comment|/* saved value of `reiserfs_generation&squot; counter&n;&t;&t;
 macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
 DECL|member|key
 r_struct
-id|key
+id|reiserfs_key
 id|key
 suffix:semicolon
 multiline_comment|/* key pointer, to pass to block allocator or&n;&t;&t;&t;&t; another low-level subsystem */
@@ -3203,7 +3203,7 @@ id|is_left_mergeable
 )paren
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|ih
 comma
@@ -3412,7 +3412,7 @@ DECL|macro|B_N_PITEM_HEAD
 mdefine_line|#define B_N_PITEM_HEAD(bh,item_num) ( (struct item_head * )((bh)-&gt;b_data + BLKH_SIZE) + (item_num) )
 multiline_comment|/* get key */
 DECL|macro|B_N_PDELIM_KEY
-mdefine_line|#define B_N_PDELIM_KEY(bh,item_num) ( (struct key * )((bh)-&gt;b_data + BLKH_SIZE) + (item_num) )
+mdefine_line|#define B_N_PDELIM_KEY(bh,item_num) ( (struct reiserfs_key * )((bh)-&gt;b_data + BLKH_SIZE) + (item_num) )
 multiline_comment|/* get the key */
 DECL|macro|B_N_PKEY
 mdefine_line|#define B_N_PKEY(bh,item_num) ( &amp;(B_N_PITEM_HEAD(bh,item_num)-&gt;ih_key) )
@@ -4434,7 +4434,7 @@ id|comp_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|le_key
 comma
@@ -4451,7 +4451,7 @@ id|comp_short_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|le_key
 comma
@@ -4473,7 +4473,7 @@ id|to
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|from
 )paren
@@ -4530,12 +4530,12 @@ id|comp_le_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 )paren
 suffix:semicolon
@@ -4545,12 +4545,12 @@ id|comp_short_le_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 )paren
 suffix:semicolon
@@ -4565,7 +4565,7 @@ id|le_key_version
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -4613,13 +4613,13 @@ r_void
 id|copy_key
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|to
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|from
 )paren
@@ -4652,7 +4652,7 @@ id|p_s_path
 suffix:semicolon
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|get_rkey
 (paren
@@ -4931,7 +4931,7 @@ op_star
 id|inode
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -6414,7 +6414,7 @@ suffix:semicolon
 multiline_comment|/* file offset, in blocks */
 DECL|member|key
 r_struct
-id|key
+id|reiserfs_key
 id|key
 suffix:semicolon
 DECL|member|path

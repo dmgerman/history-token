@@ -3,6 +3,7 @@ DECL|macro|ISDN_TTY_STAT_DEBUG
 macro_line|#undef ISDN_TTY_STAT_DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_tty.h&quot;
 macro_line|#ifdef CONFIG_ISDN_AUDIO
@@ -7412,18 +7413,10 @@ c_cond
 id|info-&gt;blocked_open
 )paren
 (brace
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|2
+l_int|500
 )paren
 suffix:semicolon
 id|wake_up_interruptible

@@ -5162,7 +5162,7 @@ op_star
 id|de
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren

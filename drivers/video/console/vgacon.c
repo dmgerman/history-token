@@ -4224,6 +4224,11 @@ op_eq
 op_amp
 id|vga_con
 )paren
+(brace
+id|c-&gt;vc_font.height
+op_assign
+id|fontheight
+suffix:semicolon
 id|vc_resize
 c_func
 (paren
@@ -4235,6 +4240,7 @@ id|rows
 )paren
 suffix:semicolon
 multiline_comment|/* Adjust console size */
+)brace
 )brace
 r_return
 l_int|0

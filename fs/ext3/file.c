@@ -317,15 +317,16 @@ id|setattr
 op_assign
 id|ext3_setattr
 comma
+macro_line|#ifdef CONFIG_EXT3_FS_XATTR
 dot
 id|setxattr
 op_assign
-id|ext3_setxattr
+id|generic_setxattr
 comma
 dot
 id|getxattr
 op_assign
-id|ext3_getxattr
+id|generic_getxattr
 comma
 dot
 id|listxattr
@@ -335,8 +336,9 @@ comma
 dot
 id|removexattr
 op_assign
-id|ext3_removexattr
+id|generic_removexattr
 comma
+macro_line|#endif
 dot
 id|permission
 op_assign

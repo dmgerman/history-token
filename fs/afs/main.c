@@ -292,7 +292,7 @@ r_goto
 id|error
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_KEYS
+macro_line|#ifdef CONFIG_KEYS_TURNED_OFF
 id|ret
 op_assign
 id|afs_key_register
@@ -438,7 +438,7 @@ c_func
 suffix:semicolon
 id|error_keys
 suffix:colon
-macro_line|#ifdef CONFIG_KEYS
+macro_line|#ifdef CONFIG_KEYS_TURNED_OFF
 id|afs_key_unregister
 c_func
 (paren
@@ -527,7 +527,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KEYS
+macro_line|#ifdef CONFIG_KEYS_TURNED_OFF
 id|afs_key_unregister
 c_func
 (paren

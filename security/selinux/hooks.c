@@ -47,6 +47,7 @@ macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;objsec.h&quot;
 macro_line|#include &quot;netif.h&quot;
@@ -1378,32 +1379,6 @@ suffix:semicolon
 r_case
 id|Opt_fscontext
 suffix:colon
-r_if
-c_cond
-(paren
-id|sbsec-&gt;behavior
-op_ne
-id|SECURITY_FS_USE_XATTR
-)paren
-(brace
-id|rc
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;SELinux:  &quot;
-l_string|&quot;fscontext option is invalid for&quot;
-l_string|&quot; this filesystem type&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|out_free
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9614,9 +9589,9 @@ id|selinux_inode_getsecurity
 c_func
 (paren
 r_struct
-id|dentry
+id|inode
 op_star
-id|dentry
+id|inode
 comma
 r_const
 r_char
@@ -9631,13 +9606,6 @@ r_int
 id|size
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|dentry-&gt;d_inode
-suffix:semicolon
 r_struct
 id|inode_security_struct
 op_star
@@ -9759,9 +9727,9 @@ id|selinux_inode_setsecurity
 c_func
 (paren
 r_struct
-id|dentry
+id|inode
 op_star
-id|dentry
+id|inode
 comma
 r_const
 r_char
@@ -9780,13 +9748,6 @@ r_int
 id|flags
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|dentry-&gt;d_inode
-suffix:semicolon
 r_struct
 id|inode_security_struct
 op_star
@@ -9868,13 +9829,16 @@ id|selinux_inode_listsecurity
 c_func
 (paren
 r_struct
-id|dentry
+id|inode
 op_star
-id|dentry
+id|inode
 comma
 r_char
 op_star
 id|buffer
+comma
+r_int
+id|buffer_size
 )paren
 (brace
 r_const
@@ -9890,6 +9854,10 @@ r_if
 c_cond
 (paren
 id|buffer
+op_logical_and
+id|len
+op_le
+id|buffer_size
 )paren
 id|memcpy
 c_func

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/key.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/dcookies.h&gt;
@@ -766,6 +767,21 @@ id|cond_syscall
 c_func
 (paren
 id|compat_set_mempolicy
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_add_key
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_request_key
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_keyctl
 )paren
 multiline_comment|/* arch-specific weak syscall entries */
 id|cond_syscall
@@ -2125,6 +2141,12 @@ id|current-&gt;gid
 op_assign
 id|new_rgid
 suffix:semicolon
+id|key_fsgid_changed
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2263,6 +2285,12 @@ r_else
 r_return
 op_minus
 id|EPERM
+suffix:semicolon
+id|key_fsgid_changed
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -2610,6 +2638,12 @@ id|current-&gt;fsuid
 op_assign
 id|current-&gt;euid
 suffix:semicolon
+id|key_fsuid_changed
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_return
 id|security_task_post_setuid
 c_func
@@ -2781,6 +2815,12 @@ suffix:semicolon
 id|current-&gt;suid
 op_assign
 id|new_suid
+suffix:semicolon
+id|key_fsuid_changed
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 r_return
 id|security_task_post_setuid
@@ -3059,6 +3099,12 @@ l_int|1
 id|current-&gt;suid
 op_assign
 id|suid
+suffix:semicolon
+id|key_fsuid_changed
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 r_return
 id|security_task_post_setuid
@@ -3370,6 +3416,12 @@ id|current-&gt;sgid
 op_assign
 id|sgid
 suffix:semicolon
+id|key_fsgid_changed
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3535,6 +3587,12 @@ op_assign
 id|uid
 suffix:semicolon
 )brace
+id|key_fsuid_changed
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|security_task_post_setuid
 c_func
 (paren
@@ -3650,6 +3708,12 @@ suffix:semicolon
 id|current-&gt;fsgid
 op_assign
 id|gid
+suffix:semicolon
+id|key_fsgid_changed
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 )brace
 r_return

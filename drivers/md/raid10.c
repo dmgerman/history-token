@@ -5699,10 +5699,10 @@ op_amp
 id|conf-&gt;wait_resume
 )paren
 )paren
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|device_barrier

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PCI
@@ -1584,15 +1585,6 @@ r_struct
 id|file
 op_star
 id|filp
-)paren
-suffix:semicolon
-r_static
-r_void
-id|stl_delay
-c_func
-(paren
-r_int
-id|len
 )paren
 suffix:semicolon
 r_static
@@ -5097,10 +5089,14 @@ c_cond
 (paren
 id|portp-&gt;close_delay
 )paren
-id|stl_delay
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|portp-&gt;close_delay
+)paren
 )paren
 suffix:semicolon
 id|wake_up_interruptible
@@ -5133,48 +5129,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *&t;Wait for a specified delay period, this is not a busy-loop. It will&n; *&t;give up the processor while waiting. Unfortunately this has some&n; *&t;rather intimate knowledge of the process management stuff.&n; */
-DECL|function|stl_delay
-r_static
-r_void
-id|stl_delay
-c_func
-(paren
-r_int
-id|len
-)paren
-(brace
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;stl_delay(len=%d)&bslash;n&quot;
-comma
-id|len
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|len
-OG
-l_int|0
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|len
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Write routine. Take data and stuff it in to the TX ring queue.&n; *&t;If transmit interrupts are not running then start them.&n; */
@@ -7931,10 +7885,10 @@ id|current
 )paren
 r_break
 suffix:semicolon
-id|stl_delay
+id|msleep_interruptible
 c_func
 (paren
-l_int|2
+l_int|20
 )paren
 suffix:semicolon
 r_if

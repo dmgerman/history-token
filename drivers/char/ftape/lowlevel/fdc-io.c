@@ -1400,9 +1400,11 @@ op_amp
 id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|add_wait_queue
 c_func

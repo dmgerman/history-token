@@ -2542,6 +2542,13 @@ r_void
 op_star
 id|s_security
 suffix:semicolon
+DECL|member|s_xattr
+r_struct
+id|xattr_handler
+op_star
+op_star
+id|s_xattr
+suffix:semicolon
 DECL|member|s_dirty
 r_struct
 id|list_head
@@ -4224,8 +4231,10 @@ DECL|macro|I_DIRTY_DATASYNC
 mdefine_line|#define I_DIRTY_DATASYNC&t;2 /* Data-related inode changes pending */
 DECL|macro|I_DIRTY_PAGES
 mdefine_line|#define I_DIRTY_PAGES&t;&t;4 /* Data-related inode changes pending */
+DECL|macro|__I_LOCK
+mdefine_line|#define __I_LOCK&t;&t;3
 DECL|macro|I_LOCK
-mdefine_line|#define I_LOCK&t;&t;&t;8
+mdefine_line|#define I_LOCK&t;&t;&t;(1 &lt;&lt; __I_LOCK)
 DECL|macro|I_FREEING
 mdefine_line|#define I_FREEING&t;&t;16
 DECL|macro|I_CLEAR
@@ -5378,20 +5387,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|blkdev_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|block_device
 op_star
@@ -6031,7 +6026,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|vfs_permission
+id|generic_permission
 c_func
 (paren
 r_struct
@@ -6039,6 +6034,19 @@ id|inode
 op_star
 comma
 r_int
+comma
+r_int
+(paren
+op_star
+id|check_acl
+)paren
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_int
+)paren
 )paren
 suffix:semicolon
 r_extern

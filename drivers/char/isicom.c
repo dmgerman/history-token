@@ -5388,12 +5388,6 @@ c_cond
 id|port-&gt;close_delay
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 macro_line|#ifdef ISICOM_DEBUG&t;&t;&t;
 id|printk
 c_func
@@ -5403,10 +5397,14 @@ l_string|&quot;ISICOM: scheduling until time out.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|port-&gt;close_delay
+)paren
 )paren
 suffix:semicolon
 )brace

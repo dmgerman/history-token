@@ -6543,7 +6543,7 @@ macro_line|#if 0
 id|elevator_exit
 c_func
 (paren
-id|device-&gt;request_queue
+id|device-&gt;request_queue-&gt;elevator
 )paren
 suffix:semicolon
 id|rc
@@ -6553,8 +6553,7 @@ c_func
 (paren
 id|device-&gt;request_queue
 comma
-op_amp
-id|elevator_noop
+l_string|&quot;noop&quot;
 )paren
 suffix:semicolon
 r_if

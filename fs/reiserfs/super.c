@@ -432,7 +432,7 @@ suffix:semicolon
 r_extern
 r_const
 r_struct
-id|key
+id|reiserfs_key
 id|MAX_KEY
 suffix:semicolon
 multiline_comment|/* this is used to delete &quot;save link&quot; when there are no items of a&n;   file it points to. It can either happen if unlink is completed but&n;   &quot;save unlink&quot; removal, or if file has both unlink and truncate&n;   pending and as unlink completes first (because key of &quot;save link&quot;&n;   protecting unlink is bigger that a key lf &quot;save link&quot; which&n;   protects truncate), so there left no items to make truncate&n;   completion on */
@@ -447,7 +447,7 @@ op_star
 id|s
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
@@ -546,7 +546,7 @@ comma
 id|obj_key
 suffix:semicolon
 r_struct
-id|key
+id|reiserfs_key
 id|save_link_key
 suffix:semicolon
 r_int
@@ -1426,7 +1426,7 @@ id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
 r_struct
-id|key
+id|reiserfs_key
 id|key
 suffix:semicolon
 r_int

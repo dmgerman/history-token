@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/key.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -3550,10 +3551,18 @@ op_amp
 id|BINPRM_FLAGS_ENFORCE_NONDUMP
 )paren
 )paren
+(brace
+id|suid_keys
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 multiline_comment|/* An exec changes our domain. We are no longer part of the thread&n;&t;   group */
 id|current-&gt;self_exec_id
 op_increment
@@ -3629,7 +3638,7 @@ id|mode
 op_assign
 id|inode-&gt;i_mode
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check execute perms again - if the caller has CAP_DAC_OVERRIDE,&n;&t; * vfs_permission lets a non-executable through&n;&t; */
+multiline_comment|/*&n;&t; * Check execute perms again - if the caller has CAP_DAC_OVERRIDE,&n;&t; * generic_permission lets a non-executable through&n;&t; */
 r_if
 c_cond
 (paren
@@ -3869,6 +3878,25 @@ id|bprm
 (brace
 r_int
 id|unsafe
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bprm-&gt;e_uid
+op_ne
+id|current-&gt;uid
+)paren
+id|suid_keys
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|exec_keys
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 id|task_lock
 c_func
@@ -4979,13 +5007,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|variable|do_execve
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|do_execve
-)paren
-suffix:semicolon
 DECL|function|set_binfmt
 r_int
 id|set_binfmt

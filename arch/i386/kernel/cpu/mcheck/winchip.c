@@ -32,6 +32,12 @@ id|KERN_EMERG
 l_string|&quot;CPU0: Machine Check Exception.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|add_taint
+c_func
+(paren
+id|TAINT_MACHINE_CHECK
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Set up machine check reporting on the Winchip C6 series */
 DECL|function|winchip_mcheck_init

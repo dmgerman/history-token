@@ -9746,6 +9746,11 @@ id|info-&gt;par
 op_assign
 id|default_par
 suffix:semicolon
+id|info-&gt;device
+op_assign
+op_amp
+id|pdev-&gt;dev
+suffix:semicolon
 macro_line|#ifdef __sparc__
 multiline_comment|/*&n;&t;&t;&t; * Map memory-mapped registers.&n;&t;&t;&t; */
 id|default_par-&gt;ati_regbase

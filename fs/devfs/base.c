@@ -4830,13 +4830,6 @@ comma
 id|devfs_setup
 )paren
 suffix:semicolon
-DECL|variable|devfs_mk_symlink
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devfs_mk_symlink
-)paren
-suffix:semicolon
 DECL|variable|devfs_mk_dir
 id|EXPORT_SYMBOL
 c_func

@@ -857,6 +857,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|tainted
+op_or_assign
+id|TAINT_MACHINE_CHECK
+suffix:semicolon
 )brace
 multiline_comment|/* Never do anything final in the polling timer */
 r_if

@@ -121,15 +121,16 @@ id|truncate
 op_assign
 id|ext2_truncate
 comma
+macro_line|#ifdef CONFIG_EXT2_FS_XATTR
 dot
 id|setxattr
 op_assign
-id|ext2_setxattr
+id|generic_setxattr
 comma
 dot
 id|getxattr
 op_assign
-id|ext2_getxattr
+id|generic_getxattr
 comma
 dot
 id|listxattr
@@ -139,8 +140,9 @@ comma
 dot
 id|removexattr
 op_assign
-id|ext2_removexattr
+id|generic_removexattr
 comma
+macro_line|#endif
 dot
 id|setattr
 op_assign
