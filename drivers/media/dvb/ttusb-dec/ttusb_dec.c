@@ -717,7 +717,7 @@ comma
 op_amp
 id|actual_len
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -771,7 +771,7 @@ comma
 op_amp
 id|actual_len
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -5531,9 +5531,7 @@ comma
 op_amp
 id|actual_len
 comma
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 id|j
@@ -5570,9 +5568,7 @@ comma
 op_amp
 id|actual_len
 comma
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace
