@@ -944,9 +944,11 @@ mdefine_line|#define EHCI_ISOC_BABBLE        (1&lt;&lt;29)        /* babble dete
 DECL|macro|EHCI_ISOC_XACTERR
 mdefine_line|#define EHCI_ISOC_XACTERR       (1&lt;&lt;28)        /* XactErr - transaction error */
 DECL|macro|EHCI_ITD_LENGTH
-mdefine_line|#define&t;EHCI_ITD_LENGTH(tok)&t;(((tok)&gt;&gt;16) &amp; 0x7fff)
+mdefine_line|#define&t;EHCI_ITD_LENGTH(tok)&t;(((tok)&gt;&gt;16) &amp; 0x0fff)
 DECL|macro|EHCI_ITD_IOC
 mdefine_line|#define&t;EHCI_ITD_IOC&t;&t;(1 &lt;&lt; 15)&t;/* interrupt on complete */
+DECL|macro|ISO_ACTIVE
+mdefine_line|#define ISO_ACTIVE&t;__constant_cpu_to_le32(EHCI_ISOC_ACTIVE)
 DECL|member|hw_bufp
 id|u32
 id|hw_bufp
