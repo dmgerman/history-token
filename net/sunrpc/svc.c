@@ -1304,7 +1304,7 @@ multiline_comment|/*&n;&t; * Decode auth data, and add verifier to reply buffer.
 r_if
 c_cond
 (paren
-id|progp-&gt;pg_authenticate
+id|progp-&gt;pg_authenticate_obsolete
 op_ne
 l_int|NULL
 )paren
@@ -1312,7 +1312,7 @@ id|auth_res
 op_assign
 id|progp
 op_member_access_from_pointer
-id|pg_authenticate
+id|pg_authenticate_obsolete
 c_func
 (paren
 id|rqstp

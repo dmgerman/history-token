@@ -1474,7 +1474,7 @@ op_amp
 id|nfs4_callback_stats
 comma
 dot
-id|pg_authenticate
+id|pg_authenticate_obsolete
 op_assign
 id|nfs_callback_auth
 comma
