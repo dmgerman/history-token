@@ -12419,6 +12419,7 @@ suffix:semicolon
 DECL|function|pkt_init
 r_static
 r_int
+id|__init
 id|pkt_init
 c_func
 (paren
@@ -12568,6 +12569,7 @@ suffix:semicolon
 DECL|function|pkt_exit
 r_static
 r_void
+id|__exit
 id|pkt_exit
 c_func
 (paren
