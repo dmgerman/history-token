@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: platform.h,v 1.35 2003/12/05 18:45:05 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: platform.h,v 1.37 2004/03/20 17:44:29 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef&t;__PLATFORM_H__
 DECL|macro|__PLATFORM_H__
 mdefine_line|#define&t;__PLATFORM_H__
@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;cardtype.h&quot;
@@ -995,8 +996,6 @@ DECL|macro|NO_CORNETN
 mdefine_line|#define NO_CORNETN
 DECL|macro|IMPLEMENT_DTMF
 mdefine_line|#define IMPLEMENT_DTMF 1
-DECL|macro|IMPLEMENT_LINE_INTERCONNECT2
-mdefine_line|#define IMPLEMENT_LINE_INTERCONNECT2 1
 DECL|macro|IMPLEMENT_ECHO_CANCELLER
 mdefine_line|#define IMPLEMENT_ECHO_CANCELLER 1
 DECL|macro|IMPLEMENT_RTP
@@ -1021,8 +1020,6 @@ DECL|macro|IMPLEMENT_FAX_NONSTANDARD
 mdefine_line|#define IMPLEMENT_FAX_NONSTANDARD 1
 DECL|macro|VSWITCH_SUPPORT
 mdefine_line|#define VSWITCH_SUPPORT 1
-DECL|macro|IMPLEMENT_LINE_INTERCONNECT
-mdefine_line|#define IMPLEMENT_LINE_INTERCONNECT  0
 DECL|macro|IMPLEMENT_MARKED_OK_AFTER_FC
 mdefine_line|#define IMPLEMENT_MARKED_OK_AFTER_FC 1
 DECL|macro|DIVA_IDI_RX_DMA
