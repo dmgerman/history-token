@@ -3663,7 +3663,7 @@ op_assign
 id|ORB_SET_FUNCTION
 c_func
 (paren
-id|QUERY_LOGINS_REQUEST
+id|SBP2_QUERY_LOGINS_REQUEST
 )paren
 suffix:semicolon
 id|scsi_id-&gt;query_logins_orb-&gt;lun_misc
@@ -4157,7 +4157,7 @@ op_assign
 id|ORB_SET_FUNCTION
 c_func
 (paren
-id|LOGIN_REQUEST
+id|SBP2_LOGIN_REQUEST
 )paren
 suffix:semicolon
 id|scsi_id-&gt;login_orb-&gt;lun_misc
@@ -4616,7 +4616,7 @@ op_assign
 id|ORB_SET_FUNCTION
 c_func
 (paren
-id|LOGOUT_REQUEST
+id|SBP2_LOGOUT_REQUEST
 )paren
 suffix:semicolon
 id|scsi_id-&gt;logout_orb-&gt;login_ID_misc
@@ -4833,7 +4833,7 @@ op_assign
 id|ORB_SET_FUNCTION
 c_func
 (paren
-id|RECONNECT_REQUEST
+id|SBP2_RECONNECT_REQUEST
 )paren
 suffix:semicolon
 id|scsi_id-&gt;reconnect_orb-&gt;login_ID_misc
