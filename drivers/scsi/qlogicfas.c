@@ -5,9 +5,6 @@ multiline_comment|/* Configuration */
 multiline_comment|/* Set the following to 2 to use normal interrupt (active high/totempole-&n;   tristate), otherwise use 0 (REQUIRED FOR PCMCIA) for active low, open&n;   drain */
 DECL|macro|QL_INT_ACTIVE_HIGH
 mdefine_line|#define QL_INT_ACTIVE_HIGH 2
-multiline_comment|/* Set the following to 1 to enable the use of interrupts.  Note that 0 tends&n;   to be more stable, but slower (or ties up the system more) */
-DECL|macro|QL_USE_IRQ
-mdefine_line|#define QL_USE_IRQ 1
 multiline_comment|/* Set the following to max out the speed of the PIO PseudoDMA transfers,&n;   again, 0 tends to be slower, but more stable.  */
 DECL|macro|QL_TURBO_PDMA
 mdefine_line|#define QL_TURBO_PDMA 1
@@ -2022,7 +2019,6 @@ id|STATUS_MASK
 )paren
 suffix:semicolon
 )brace
-macro_line|#if QL_USE_IRQ
 multiline_comment|/*&n; *&t;Interrupt handler &n; */
 DECL|function|ql_ihandl
 r_static
@@ -2188,8 +2184,6 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if QL_USE_IRQ
 multiline_comment|/*&n; *&t;Queued command&n; */
 DECL|function|qlogicfas_queuecommand
 r_int
@@ -2269,32 +2263,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|qlogicfas_queuecommand
-r_int
-id|qlogicfas_queuecommand
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef PCMCIA
 multiline_comment|/*&n; *&t;Allow PCMCIA code to preset the port&n; *&t;port should be 0 and irq to -1 respectively for autoprobing &n; */
 DECL|function|qlogicfas_preset
@@ -2583,7 +2551,6 @@ suffix:semicolon
 id|REG0
 suffix:semicolon
 macro_line|#endif
-macro_line|#if QL_USE_IRQ
 multiline_comment|/*&n;&t; *&t;IRQ probe - toggle pin and check request pending &n;&t; */
 r_if
 c_cond
@@ -2782,7 +2749,6 @@ id|host-&gt;can_queue
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 id|hreg
 op_assign
 id|scsi_register
