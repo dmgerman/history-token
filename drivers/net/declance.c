@@ -1935,6 +1935,7 @@ id|dev-&gt;mem_start
 )paren
 suffix:semicolon
 macro_line|#ifdef TEST_HITS
+(brace
 r_int
 id|i
 suffix:semicolon
@@ -2014,6 +2015,7 @@ c_func
 l_string|&quot;]&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_for
 c_loop
@@ -2445,7 +2447,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Carrier Lost&quot;
+l_string|&quot;%s: Carrier Lost&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -2840,7 +2842,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Memory error, status %04x&quot;
+l_string|&quot;%s: Memory error, status %04x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -3011,39 +3013,6 @@ id|last_dev
 op_assign
 id|dev
 suffix:semicolon
-multiline_comment|/* Associate IRQ with lance_interrupt */
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|dev-&gt;irq
-comma
-op_amp
-id|lance_interrupt
-comma
-l_int|0
-comma
-id|lp-&gt;name
-comma
-id|dev
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Lance: Can&squot;t get irq %d&bslash;n&quot;
-comma
-id|dev-&gt;irq
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-)brace
 multiline_comment|/* Stop the Lance */
 id|writereg
 c_func
@@ -3100,6 +3069,39 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Associate IRQ with lance_interrupt */
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|dev-&gt;irq
+comma
+op_amp
+id|lance_interrupt
+comma
+l_int|0
+comma
+id|lp-&gt;name
+comma
+id|dev
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Lance: Can&squot;t get irq %d&bslash;n&quot;
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|init_restart_lance
@@ -4166,7 +4168,7 @@ op_assign
 id|KSEG1ADDR
 c_func
 (paren
-l_int|0x0020000
+l_int|0x00020000
 )paren
 suffix:semicolon
 id|dev-&gt;mem_end
@@ -4184,6 +4186,19 @@ op_assign
 id|system_base
 op_plus
 id|ESAR
+suffix:semicolon
+multiline_comment|/* Workaround crash with booting KN04 2.1k from Disk */
+id|memset
+c_func
+(paren
+id|dev-&gt;mem_start
+comma
+l_int|0
+comma
+id|dev-&gt;mem_end
+op_minus
+id|dev-&gt;mem_start
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * setup the pointer arrays, this sucks [tm] :-(&n;&t;&t; */
 r_for

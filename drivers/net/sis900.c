@@ -1134,32 +1134,6 @@ id|card_names
 id|pci_id-&gt;driver_data
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_dma_supported
-c_func
-(paren
-id|pci_dev
-comma
-id|SIS900_DMA_MASK
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;sis900.c: architecture does not support &quot;
-l_string|&quot;32bit PCI busmaster DMA&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 multiline_comment|/* setup various bits in PCI command register */
 id|ret
 op_assign
@@ -1176,6 +1150,34 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
+id|i
+op_assign
+id|pci_set_dma_mask
+c_func
+(paren
+id|pci_dev
+comma
+id|SIS900_DMA_MASK
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sis900.c: architecture does not support &quot;
+l_string|&quot;32bit PCI busmaster DMA&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
 id|pci_set_master
 c_func
 (paren
@@ -1445,10 +1447,6 @@ id|pci_dev
 comma
 id|net_dev
 )paren
-suffix:semicolon
-id|pci_dev-&gt;dma_mask
-op_assign
-id|SIS900_DMA_MASK
 suffix:semicolon
 multiline_comment|/* The SiS900-specific entries in the device structure. */
 id|net_dev-&gt;open

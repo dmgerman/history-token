@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Definitions for Belkin USB Serial Adapter Driver&n; *&n; *  Copyright (C) 2000&n; *      William Greathouse (wgreathouse@smva.com)&n; *&n; *  This program is largely derived from work by the linux-usb group&n; *  and associated source files.  Please see the usb/serial files for&n; *  individual credits and copyrights.&n; *  &n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * (11/06/2000) gkh&n; *&t;Added old Belkin and Peracom device ids, which this driver supports&n; *&n; * 12-Oct-2000 William Greathouse&n; *    First cut at supporting Belkin USB Serial Adapter F5U103&n; *    I did not have a copy of the original work to support this&n; *    adapter, so pardon any stupid mistakes.  All of the information&n; *    I am using to write this driver was acquired by using a modified&n; *    UsbSnoop on Windows2000.&n; *    &n; */
+multiline_comment|/*&n; * Definitions for Belkin USB Serial Adapter Driver&n; *&n; *  Copyright (C) 2000&n; *      William Greathouse (wgreathouse@smva.com)&n; *&n; *  This program is largely derived from work by the linux-usb group&n; *  and associated source files.  Please see the usb/serial files for&n; *  individual credits and copyrights.&n; *  &n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 12-Mar-2001 gkh&n; *&t;Added GoHubs GO-COM232 device id.&n; *&n; * 06-Nov-2000 gkh&n; *&t;Added old Belkin and Peracom device ids, which this driver supports&n; *&n; * 12-Oct-2000 William Greathouse&n; *    First cut at supporting Belkin USB Serial Adapter F5U103&n; *    I did not have a copy of the original work to support this&n; *    adapter, so pardon any stupid mistakes.  All of the information&n; *    I am using to write this driver was acquired by using a modified&n; *    UsbSnoop on Windows2000.&n; *    &n; */
 macro_line|#ifndef __LINUX_USB_SERIAL_BSA_H
 DECL|macro|__LINUX_USB_SERIAL_BSA_H
 mdefine_line|#define __LINUX_USB_SERIAL_BSA_H
@@ -14,6 +14,10 @@ DECL|macro|PERACOM_VID
 mdefine_line|#define PERACOM_VID&t;0x0565&t;/* Peracom&squot;s vendor id */
 DECL|macro|PERACOM_PID
 mdefine_line|#define PERACOM_PID&t;0x0001&t;/* Peracom&squot;s single port serial converter&squot;s id */
+DECL|macro|GOHUBS_VID
+mdefine_line|#define GOHUBS_VID&t;0x0921&t;/* GoHubs vendor id */
+DECL|macro|GOHUBS_PID
+mdefine_line|#define GOHUBS_PID&t;0x0100&t;/* GoHubs single port serial converter&squot;s id (identical to the Peracom device) */
 multiline_comment|/* Vendor Request Interface */
 DECL|macro|BELKIN_SA_SET_BAUDRATE_REQUEST
 mdefine_line|#define BELKIN_SA_SET_BAUDRATE_REQUEST&t;0  /* Set baud rate */

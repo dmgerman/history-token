@@ -2096,7 +2096,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: transmit timed out, %s?&quot;
+l_string|&quot;%s: transmit timed out, %s?&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

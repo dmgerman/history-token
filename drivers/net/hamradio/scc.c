@@ -1875,6 +1875,8 @@ id|skb
 suffix:semicolon
 id|scc-&gt;rx_buff
 op_assign
+id|skb
+op_assign
 l_int|NULL
 suffix:semicolon
 )brace

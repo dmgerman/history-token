@@ -2037,9 +2037,9 @@ id|adapter-&gt;current_dma.target
 op_assign
 l_int|NULL
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-r_else
-(brace
 id|skb_reserve
 c_func
 (paren
@@ -2087,7 +2087,6 @@ id|adapter-&gt;current_dma.target
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* if this happens, we die */
 r_if

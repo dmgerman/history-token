@@ -2909,7 +2909,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irtty_raw_read (self, buf, len)&n; *&n; *    Receive incomming data. This function sleeps, so it must only be&n; *    called with a process context. Timeout is currently defined to be&n; *    a multiple of 10 ms.&n; */
+multiline_comment|/*&n; * Function irtty_raw_read (self, buf, len)&n; *&n; *    Receive incoming data. This function sleeps, so it must only be&n; *    called with a process context. Timeout is currently defined to be&n; *    a multiple of 10 ms.&n; */
 DECL|function|irtty_raw_read
 r_static
 r_int

@@ -3360,7 +3360,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* ISA */
 macro_line|#ifdef&t;EISA
-multiline_comment|/*arrays with io adresses of dma controller length and adress registers*/
+multiline_comment|/*arrays with io addresses of dma controller length and address registers*/
 DECL|variable|cntr
 r_static
 r_const

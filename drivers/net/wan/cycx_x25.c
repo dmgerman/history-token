@@ -6195,6 +6195,11 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
+multiline_comment|/* timestamp */
 )brace
 multiline_comment|/* Convert line speed in bps to a number used by cyclom 2x code. */
 DECL|function|bps_to_speed_code

@@ -2509,7 +2509,7 @@ c_func
 id|pAC
 )paren
 suffix:semicolon
-multiline_comment|/* Set para to the most usefull setting:&n;&t; * The current sensor.&n;&t; */
+multiline_comment|/* Set para to the most useful setting:&n;&t; * The current sensor.&n;&t; */
 id|ParaLocal.Para64
 op_assign
 (paren

@@ -100,11 +100,11 @@ DECL|macro|POS2_EPROM
 mdefine_line|#define POS2_EPROM 0x0002              /* 1 = Boot EPROM off 0 = on */ 
 multiline_comment|/* &n; * SK_G16 Memory mapped Registers&n; * ------------------------------&n; *&n; */
 DECL|macro|SK_IOREG
-mdefine_line|#define SK_IOREG        (board-&gt;ioreg) /* LANCE data registers.     */ 
+mdefine_line|#define SK_IOREG        (&amp;board-&gt;ioreg) /* LANCE data registers.     */ 
 DECL|macro|SK_PORT
-mdefine_line|#define SK_PORT         (board-&gt;port)  /* Control, Status register  */
+mdefine_line|#define SK_PORT         (&amp;board-&gt;port)  /* Control, Status register  */
 DECL|macro|SK_IOCOM
-mdefine_line|#define SK_IOCOM        (board-&gt;iocom) /* I/O Command               */
+mdefine_line|#define SK_IOCOM        (&amp;board-&gt;iocom) /* I/O Command               */
 multiline_comment|/* &n; * SK_G16 Status/Control Register bits&n; * -----------------------------------&n; *&n; * (C) Controlreg (S) Statusreg &n; */
 multiline_comment|/* &n; * Register transfer: 0 = no transfer&n; *                    1 = transferring data between LANCE and I/O reg &n; */
 DECL|macro|SK_IORUN
@@ -2548,6 +2548,7 @@ id|TX_STP
 op_or
 id|TX_ENP
 comma
+op_amp
 id|tmdp-&gt;u.s.status
 )paren
 suffix:semicolon
@@ -2602,6 +2603,7 @@ c_func
 (paren
 id|RX_OWN
 comma
+op_amp
 id|rmdp-&gt;u.s.status
 )paren
 suffix:semicolon
@@ -2611,6 +2613,7 @@ c_func
 op_minus
 id|PKT_BUF_SZ
 comma
+op_amp
 id|rmdp-&gt;blen
 )paren
 suffix:semicolon
@@ -2620,6 +2623,7 @@ c_func
 (paren
 l_int|0
 comma
+op_amp
 id|rmdp-&gt;mlen
 )paren
 suffix:semicolon
@@ -2632,10 +2636,15 @@ c_func
 id|mode
 comma
 (paren
+op_amp
+(paren
+(paren
 id|p-&gt;ram
 )paren
 op_member_access_from_pointer
 id|ib.mode
+)paren
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Set operation mode */
@@ -2664,6 +2673,9 @@ id|i
 )braket
 comma
 (paren
+op_amp
+(paren
+(paren
 id|p-&gt;ram
 )paren
 op_member_access_from_pointer
@@ -2671,6 +2683,8 @@ id|ib.paddr
 (braket
 id|i
 )braket
+)paren
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2696,6 +2710,9 @@ c_func
 l_int|0
 comma
 (paren
+op_amp
+(paren
+(paren
 id|p-&gt;ram
 )paren
 op_member_access_from_pointer
@@ -2703,6 +2720,8 @@ id|ib.laddr
 (braket
 id|i
 )braket
+)paren
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* We do not use logical addressing */
@@ -2719,10 +2738,15 @@ op_or
 id|RMDNUMMASK
 comma
 (paren
+op_amp
+(paren
+(paren
 id|p-&gt;ram
 )paren
 op_member_access_from_pointer
 id|ib.rdrp
+)paren
+)paren
 )paren
 suffix:semicolon
 id|writel
@@ -2736,10 +2760,15 @@ op_or
 id|TMDNUMMASK
 comma
 (paren
+op_amp
+(paren
+(paren
 id|p-&gt;ram
 )paren
 op_member_access_from_pointer
 id|ib.tdrp
+)paren
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Prepare LANCE Control and Status Registers */
@@ -3105,6 +3134,7 @@ c_func
 op_minus
 id|len
 comma
+op_amp
 id|tmdp-&gt;blen
 )paren
 suffix:semicolon
@@ -3119,6 +3149,7 @@ id|TX_STP
 op_or
 id|TX_ENP
 comma
+op_amp
 id|tmdp-&gt;u.s.status
 )paren
 suffix:semicolon
@@ -3157,6 +3188,8 @@ op_logical_neg
 id|readb
 c_func
 (paren
+op_amp
+(paren
 (paren
 id|p-&gt;tmdhead
 op_plus
@@ -3164,6 +3197,7 @@ id|p-&gt;tmdnum
 )paren
 op_member_access_from_pointer
 id|u.s.status
+)paren
 )paren
 op_amp
 id|TX_OWN
@@ -3450,6 +3484,7 @@ op_assign
 id|readb
 c_func
 (paren
+op_amp
 id|tmdp-&gt;u.s.status
 )paren
 suffix:semicolon
@@ -3469,6 +3504,7 @@ op_assign
 id|readw
 c_func
 (paren
+op_amp
 id|tmdp-&gt;status2
 )paren
 suffix:semicolon
@@ -3565,6 +3601,7 @@ c_func
 (paren
 l_int|0
 comma
+op_amp
 id|tmdp-&gt;status2
 )paren
 suffix:semicolon
@@ -3669,6 +3706,7 @@ op_assign
 id|readb
 c_func
 (paren
+op_amp
 id|rmdp-&gt;u.s.status
 )paren
 )paren
@@ -3730,6 +3768,7 @@ c_func
 (paren
 id|RX_OWN
 comma
+op_amp
 id|rmdp-&gt;u.s.status
 )paren
 suffix:semicolon
@@ -3786,6 +3825,7 @@ c_func
 (paren
 id|RX_OWN
 comma
+op_amp
 id|rmdp-&gt;u.s.status
 )paren
 suffix:semicolon
@@ -3800,6 +3840,7 @@ op_assign
 id|readw
 c_func
 (paren
+op_amp
 id|rmdp-&gt;mlen
 )paren
 op_amp
@@ -3837,6 +3878,7 @@ c_func
 (paren
 id|RX_OWN
 comma
+op_amp
 id|rmdp-&gt;u.s.status
 )paren
 suffix:semicolon
@@ -3915,6 +3957,7 @@ c_func
 (paren
 id|RX_OWN
 comma
+op_amp
 id|rmdp-&gt;u.s.status
 )paren
 suffix:semicolon

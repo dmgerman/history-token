@@ -51,6 +51,7 @@ DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE&t;16
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536&t;/* Size of each temporary Rx buffer. */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
@@ -1662,7 +1663,7 @@ op_assign
 id|corkscrew_scan
 c_func
 (paren
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -2662,6 +2663,12 @@ id|root_corkscrew_dev
 op_assign
 id|dev
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2684,12 +2691,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 macro_line|#else&t;&t;&t;&t;/* not a MODULE */
 multiline_comment|/* Caution: quad-word alignment required for rings! */
 id|dev-&gt;priv

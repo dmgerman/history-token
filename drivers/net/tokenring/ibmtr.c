@@ -672,7 +672,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;ibmtr_probe():  Routine specified in the network device structure&n; *&t;to probe for an IBM Token Ring Adapter.  Routine outline:&n; *&t;I.    Interrogate hardware to determine if an adapter exists&n; *&t;      and what the speeds and feeds are&n; *&t;II.   Setup data structures to control execution based upon&n; *&t;      adapter characteristics.&n; *&t;III.  Initialize adapter operation&n; *&n; *&t;We expect ibmtr_probe to be called once for each device entry&n; *&t;which references it.&n; */
+multiline_comment|/*&n; *&t;ibmtr_probe():  Routine specified in the network device structure&n; *&t;to probe for an IBM Token Ring Adapter.  Routine outline:&n; *&t;I.    Interrogate hardware to determine if an adapter exists&n; *&t;      and what the speeds and feeds are&n; *&t;II.   Setup data structures to control execution based upon&n; *&t;      adapter characteristics.&n; *&t;III.  Initialize adapter operation&n; *&n; *&t;We expect ibmtr_probe to be called once for each device entry&n; *&t;which references it.&n; *&n; *&t;Argument &squot;dev&squot; should never be NULL.  If we are built into&n; *&t;the kernel, Space.c passed up a net_device.  If we are&n; *&t;-DMODULE, init_module allocates net_devices for us.&n; */
 DECL|function|ibmtr_probe
 r_int
 id|__init
@@ -691,12 +691,7 @@ suffix:semicolon
 r_int
 id|base_addr
 op_assign
-id|dev
-ques
-c_cond
 id|dev-&gt;base_addr
-suffix:colon
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -9443,10 +9438,21 @@ id|i
 op_eq
 l_int|NULL
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|0
+)paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|dev_ibmtr
 (braket
 id|i

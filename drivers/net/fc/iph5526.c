@@ -5783,9 +5783,9 @@ comma
 id|count
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

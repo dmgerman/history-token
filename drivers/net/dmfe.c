@@ -82,7 +82,7 @@ mdefine_line|#define DMFE_TIMER_WUT  (HZ)&t;/* timer wakeup time : 1 second */
 DECL|macro|DMFE_TX_TIMEOUT
 mdefine_line|#define DMFE_TX_TIMEOUT ((HZ*3)/2)&t;/* tx packet time-out time 1.5 s&quot; */
 DECL|macro|DMFE_DBUG
-mdefine_line|#define DMFE_DBUG(dbug_now, msg, vaule)&t;&bslash;&n;&t;if (dmfe_debug || dbug_now)&t;&bslash;&n;&t;&t;printk(&quot;DBUG: %s %x&bslash;n&quot;, msg, vaule)
+mdefine_line|#define DMFE_DBUG(dbug_now, msg, value)&t;&bslash;&n;&t;if (dmfe_debug || dbug_now)&t;&bslash;&n;&t;&t;printk(&quot;DBUG: %s %x&bslash;n&quot;, msg, value)
 DECL|macro|SHOW_MEDIA_TYPE
 mdefine_line|#define SHOW_MEDIA_TYPE(mode) &bslash;&n; &t;printk(KERN_WARNING &quot;dmfe: Change Speed to %sMhz %s duplex&bslash;n&quot;,&t;&bslash;&n;&t;       mode &amp; 1 ? &quot;100&quot; : &quot;10&quot;,&t;&t;&t;&t;&t;&bslash;&n;&t;       mode &amp; 4 ? &quot;full&quot;:&quot;half&quot;);
 multiline_comment|/* CR9 definition: SROM/MII */
@@ -4811,7 +4811,7 @@ id|db
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Update CR6 vaule&n;   Firstly stop DM910X , then written value and start&n; */
+multiline_comment|/*&n;   Update CR6 value&n;   Firstly stop DM910X , then written value and start&n; */
 DECL|function|update_cr6
 r_static
 r_void

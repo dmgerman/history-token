@@ -285,7 +285,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmSetRxCmd() - Modify the value of the XMACs Rx Command Register&n; *&n; * Description:&n; *&t;The features&n; *&t; o FCS stripping,&t;&t;&t;SK_STRIP_FCS_ON/OFF&n; *&t; o pad byte stripping,&t;&t;&t;SK_STRIP_PAD_ON/OFF&n; *&t; o don&squot;t set XMR_FS_ERR in frame&t;SK_LENERR_OK_ON/OFF&n; *&t;   status for inrange length error&n; *&t;   frames, and&n; *&t; o don&squot;t set XMR_FS_ERR in frame&t;SK_BIG_PK_OK_ON/OFF&n; *&t;   status for frames &gt; 1514 bytes&n; *&n; *&t;for incomming packets may be enabled/disabled by this function.&n; *&t;Additional modes may be added later.&n; *&t;Multiple modes can be enabled/disabled at the same time.&n; *&t;The new configuration is stored into the HWAC port configuration&n; *&t;and is written to the Receive Command register immediatlely.&n; *&t;The new configuration is saved over any SkGePortStop() and&n; *&t;SkGeInitPort() calls. The configured value will be overwritten&n; *&t;when SkGeInit(Level 0) is executed.&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmSetRxCmd() - Modify the value of the XMACs Rx Command Register&n; *&n; * Description:&n; *&t;The features&n; *&t; o FCS stripping,&t;&t;&t;SK_STRIP_FCS_ON/OFF&n; *&t; o pad byte stripping,&t;&t;&t;SK_STRIP_PAD_ON/OFF&n; *&t; o don&squot;t set XMR_FS_ERR in frame&t;SK_LENERR_OK_ON/OFF&n; *&t;   status for inrange length error&n; *&t;   frames, and&n; *&t; o don&squot;t set XMR_FS_ERR in frame&t;SK_BIG_PK_OK_ON/OFF&n; *&t;   status for frames &gt; 1514 bytes&n; *&n; *&t;for incoming packets may be enabled/disabled by this function.&n; *&t;Additional modes may be added later.&n; *&t;Multiple modes can be enabled/disabled at the same time.&n; *&t;The new configuration is stored into the HWAC port configuration&n; *&t;and is written to the Receive Command register immediatlely.&n; *&t;The new configuration is saved over any SkGePortStop() and&n; *&t;SkGeInitPort() calls. The configured value will be overwritten&n; *&t;when SkGeInit(Level 0) is executed.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmSetRxCmd
 r_void
 id|SkXmSetRxCmd
@@ -1731,7 +1731,7 @@ id|XM_HW_COM4SIG
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n;&t; * configure the XMACs Station Address&n;&t; * B2_MAC_2 = xx xx xx xx xx x1 is programed to XMAC A&n;&t; * B2_MAC_3 = xx xx xx xx xx x2 is programed to XMAC B&n;&t; */
+multiline_comment|/*&n;&t; * configure the XMACs Station Address&n;&t; * B2_MAC_2 = xx xx xx xx xx x1 is programmed to XMAC A&n;&t; * B2_MAC_3 = xx xx xx xx xx x2 is programmed to XMAC B&n;&t; */
 r_for
 c_loop
 (paren

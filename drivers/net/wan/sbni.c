@@ -1400,7 +1400,7 @@ c_cond
 (paren
 id|type
 op_eq
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_802_3
@@ -3502,7 +3502,7 @@ id|dev-&gt;name
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; *&t;We sucessfully sent current packet&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; *&t;We successfully sent current packet&n;&t;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4764,6 +4764,14 @@ comma
 id|SBNI_HH_SZ
 )paren
 suffix:semicolon
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
+id|lp-&gt;stats.rx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 id|netif_rx
 c_func
 (paren
@@ -5301,7 +5309,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;%s: queue dropping stoped&bslash;n&quot;
+l_string|&quot;%s: queue dropping stopped&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren

@@ -1,7 +1,7 @@
 macro_line|#ifndef TLAN_H
 DECL|macro|TLAN_H
 mdefine_line|#define TLAN_H
-multiline_comment|/********************************************************************&n; *&n; *  Linux ThunderLAN Driver&n; *&n; *  tlan.h&n; *  by James Banks&n; *&n; *  (C) 1997-1998 Caldera, Inc.&n; *  (C) 1999-2000 Torben Mathiasen&n; * &n; *  This software may be used and distributed according to the terms&n; *  of the GNU Public License, incorporated herein by reference.&n; *&n; ** This file is best viewed/edited with tabstop=4, colums&gt;=132&n; *&n; *  &n; *  Dec 10, 1999&t;Torben Mathiasen &lt;torben.mathiasen@compaq.com&gt;&n; *&t;&t;&t;New Maintainer&n; *&n; ********************************************************************/
+multiline_comment|/********************************************************************&n; *&n; *  Linux ThunderLAN Driver&n; *&n; *  tlan.h&n; *  by James Banks&n; *&n; *  (C) 1997-1998 Caldera, Inc.&n; *  (C) 1999-2001 Torben Mathiasen&n; * &n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; *&n; ** This file is best viewed/edited with tabstop=4, colums&gt;=132&n; *&n; *  &n; *  Dec 10, 1999&t;Torben Mathiasen &lt;torben.mathiasen@compaq.com&gt;&n; *&t;&t;&t;New Maintainer&n; *&n; ********************************************************************/
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -11,13 +11,13 @@ mdefine_line|#define FALSE&t;&t;&t;0
 DECL|macro|TRUE
 mdefine_line|#define TRUE&t;&t;&t;1
 DECL|macro|TLAN_MIN_FRAME_SIZE
-mdefine_line|#define TLAN_MIN_FRAME_SIZE&t;60
+mdefine_line|#define TLAN_MIN_FRAME_SIZE&t;64
 DECL|macro|TLAN_MAX_FRAME_SIZE
-mdefine_line|#define TLAN_MAX_FRAME_SIZE&t;1536
+mdefine_line|#define TLAN_MAX_FRAME_SIZE&t;1600
 DECL|macro|TLAN_NUM_RX_LISTS
-mdefine_line|#define TLAN_NUM_RX_LISTS&t;4
+mdefine_line|#define TLAN_NUM_RX_LISTS&t;32
 DECL|macro|TLAN_NUM_TX_LISTS
-mdefine_line|#define TLAN_NUM_TX_LISTS&t;8
+mdefine_line|#define TLAN_NUM_TX_LISTS&t;64
 DECL|macro|TLAN_IGNORE
 mdefine_line|#define TLAN_IGNORE&t;&t;0
 DECL|macro|TLAN_RECORD
@@ -36,6 +36,8 @@ DECL|macro|TLAN_DEBUG_PROBE
 mdefine_line|#define TLAN_DEBUG_PROBE&t;0x0010
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT&t;&t;(10*HZ)&t; /* We need time for auto-neg */
+DECL|macro|MAX_TLAN_BOARDS
+mdefine_line|#define MAX_TLAN_BOARDS&t;&t;8&t; /* Max number of boards installed at a time */
 multiline_comment|/*****************************************************************&n;&t; * Device Identification Definitions&n;&t; *&n;&t; ****************************************************************/
 DECL|macro|PCI_DEVICE_ID_NETELLIGENT_10
 mdefine_line|#define PCI_DEVICE_ID_NETELLIGENT_10&t;&t;&t;0xAE34
@@ -376,6 +378,15 @@ suffix:semicolon
 DECL|member|is_eisa
 id|u8
 id|is_eisa
+suffix:semicolon
+DECL|member|tlan_tqueue
+r_struct
+id|tq_struct
+id|tlan_tqueue
+suffix:semicolon
+DECL|member|neg_be_verbose
+id|u8
+id|neg_be_verbose
 suffix:semicolon
 DECL|typedef|TLanPrivateInfo
 )brace

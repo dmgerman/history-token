@@ -654,7 +654,7 @@ mdefine_line|#define RS_VERSION&t;(1&lt;&lt; 4)&t;&t;&t;/* SMT version mismatch 
 DECL|macro|RS_STUCKBYPASSS
 mdefine_line|#define RS_STUCKBYPASSS&t;(1&lt;&lt; 3)&t;&t;&t;/* stuck bypass */
 DECL|macro|RS_EVENT
-mdefine_line|#define RS_EVENT&t;(1&lt;&lt; 2)&t;&t;&t;/* FDDI event occured */
+mdefine_line|#define RS_EVENT&t;(1&lt;&lt; 2)&t;&t;&t;/* FDDI event occurred */
 DECL|macro|RS_RINGOPCHANGE
 mdefine_line|#define RS_RINGOPCHANGE&t;(1&lt;&lt; 1)&t;&t;&t;/* ring op changed */
 DECL|macro|RS_RES0

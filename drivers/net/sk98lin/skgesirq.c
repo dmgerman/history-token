@@ -1455,7 +1455,7 @@ dot
 id|PState
 )paren
 (brace
-multiline_comment|/* XMAC was not initialized but Packet timeout occured */
+multiline_comment|/* XMAC was not initialized but Packet timeout occurred */
 id|SK_ERR_LOG
 c_func
 (paren
@@ -1493,7 +1493,7 @@ dot
 id|PState
 )paren
 (brace
-multiline_comment|/* XMAC was not initialized but Packet timeout occured */
+multiline_comment|/* XMAC was not initialized but Packet timeout occurred */
 id|SK_ERR_LOG
 c_func
 (paren
@@ -2793,7 +2793,7 @@ id|pPrt-&gt;PPrevFcs
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Note: The compare with zero above has to be done&n;&t;&t;&t; * the way shown, otherwise the Linux driver will&n;&t;&t;&t; * have a problem.&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * we received a bunch of frames or no&n;&t;&t;&t; * CRC error occured on the network -&gt;&n;&t;&t;&t; * ok.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * we received a bunch of frames or no&n;&t;&t;&t; * CRC error occurred on the network -&gt;&n;&t;&t;&t; * ok.&n;&t;&t;&t; */
 id|pPrt-&gt;PPrevRx
 op_assign
 id|RxCts
@@ -3718,7 +3718,7 @@ op_ne
 id|SK_AND_OK
 )paren
 (brace
-multiline_comment|/* Get PHY parameters, for debuging only */
+multiline_comment|/* Get PHY parameters, for debugging only */
 id|PHY_READ
 c_func
 (paren
@@ -3873,7 +3873,7 @@ op_ge
 id|SK_AND_MAX_TO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Timeout occured.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Timeout occurred.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -3902,7 +3902,7 @@ op_ne
 id|SK_LIPA_AUTO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occured&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occurred&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
 id|SkHWSenseSetNext
 c_func
 (paren
@@ -4479,7 +4479,7 @@ op_ne
 id|SK_AND_OK
 )paren
 (brace
-multiline_comment|/* Get PHY parameters, for debuging only */
+multiline_comment|/* Get PHY parameters, for debugging only */
 id|PHY_READ
 c_func
 (paren
@@ -4997,7 +4997,7 @@ op_ne
 id|SK_AND_OK
 )paren
 (brace
-multiline_comment|/* Get PHY parameters, for debuging only */
+multiline_comment|/* Get PHY parameters, for debugging only */
 id|PHY_READ
 c_func
 (paren
@@ -5152,7 +5152,7 @@ op_ge
 id|SK_AND_MAX_TO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Timeout occured.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Timeout occurred.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -5181,7 +5181,7 @@ op_ne
 id|SK_LIPA_AUTO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occured&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occurred&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
 id|SkHWSenseSetNext
 c_func
 (paren

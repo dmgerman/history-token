@@ -181,7 +181,7 @@ macro_line|#else
 DECL|macro|MA
 mdefine_line|#define MA&t;smc-&gt;hw.fddi_home_addr
 macro_line|#endif
-multiline_comment|/*&n; * usefull interrupt bits&n; */
+multiline_comment|/*&n; * useful interrupt bits&n; */
 DECL|variable|mac_imsk1u
 r_static
 r_int
@@ -5791,7 +5791,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * wirte the multicast addres into the CAM&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * write the multicast address into the CAM&n;&t;&t;&t; */
 id|outpw
 c_func
 (paren

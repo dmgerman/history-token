@@ -1584,12 +1584,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|order
-)paren
 r_goto
 id|try_again
 suffix:semicolon

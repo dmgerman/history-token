@@ -4063,8 +4063,6 @@ op_plus
 id|MMU_CMD
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*************************************************************************&n; . smc_tx&n; .&n; . Purpose:  Handle a transmit error message.   This will only be called&n; .   when an error, because of the AUTO_RELEASE mode.&n; .&n; . Algorithm:&n; .&t;Save pointer and packet no&n; .&t;Get the packet no from the top of the queue&n; .&t;check if it&squot;s valid ( if not, is this an error??? )&n; .&t;read the status word&n; .&t;record the error&n; .&t;( resend?  Not really, since we don&squot;t want old packets around )&n; .&t;Restore saved values&n; ************************************************************************/
 DECL|function|smc_tx

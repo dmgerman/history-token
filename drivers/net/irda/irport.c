@@ -2139,7 +2139,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irport_hard_start_xmit (struct sk_buff *skb, struct net_device *dev)&n; *&n; *    Transmits the current frame until FIFO is full, then&n; *    waits until the next transmitt interrupt, and continues until the&n; *    frame is transmited.&n; */
+multiline_comment|/*&n; * Function irport_hard_start_xmit (struct sk_buff *skb, struct net_device *dev)&n; *&n; *    Transmits the current frame until FIFO is full, then&n; *    waits until the next transmitt interrupt, and continues until the&n; *    frame is transmitted.&n; */
 DECL|function|irport_hard_xmit
 r_int
 id|irport_hard_xmit
@@ -3564,7 +3564,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;Base I/O adresses&quot;
+l_string|&quot;Base I/O addresses&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

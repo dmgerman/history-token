@@ -2763,8 +2763,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pci_dma_supported
+id|pci_set_dma_mask
 c_func
 (paren
 id|pci_dev

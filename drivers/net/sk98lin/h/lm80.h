@@ -136,7 +136,7 @@ mdefine_line|#define LM80_IS_FAN1&t;&t;(1&lt;&lt;2)&t;/* count limit exceeded fo
 DECL|macro|LM80_IS_FAN2
 mdefine_line|#define LM80_IS_FAN2&t;&t;(1&lt;&lt;3)&t;/* count limit exceeded for Fan 2 */
 DECL|macro|LM80_IS_CI
-mdefine_line|#define LM80_IS_CI&t;&t;(1&lt;&lt;4)&t;/* Chassis Intrusion occured */
+mdefine_line|#define LM80_IS_CI&t;&t;(1&lt;&lt;4)&t;/* Chassis Intrusion occurred */
 DECL|macro|LM80_IS_OS
 mdefine_line|#define LM80_IS_OS&t;&t;(1&lt;&lt;5)&t;/* OS temperature limit exceeded */
 multiline_comment|/* bit 6 and 7 are reserved in LM80_ISRC_2 */

@@ -13287,9 +13287,6 @@ id|pm_dev
 op_star
 id|pmdev
 suffix:semicolon
-id|dma_addr_t
-id|dma_mask
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13344,29 +13341,19 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* Recording requires 24-bit DMA, so attempt to set dma mask&n;&t; * to 24 bits first, then 32 bits (playback only) if that fails.&n;&t; */
 r_if
 c_cond
 (paren
-id|pci_dma_supported
+id|pci_set_dma_mask
 c_func
 (paren
 id|pcidev
 comma
 l_int|0x00ffffff
 )paren
-)paren
-(brace
-id|dma_mask
-op_assign
-l_int|0x00ffffff
-suffix:semicolon
-multiline_comment|/* this enables playback and recording */
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|pci_dma_supported
+op_logical_and
+id|pci_set_dma_mask
 c_func
 (paren
 id|pcidev
@@ -13374,14 +13361,6 @@ comma
 l_int|0xffffffff
 )paren
 )paren
-(brace
-id|dma_mask
-op_assign
-l_int|0xffffffff
-suffix:semicolon
-multiline_comment|/* this enables only playback, as the recording BMDMA can handle only 24bits  */
-)brace
-r_else
 (brace
 id|printk
 c_func
@@ -13830,10 +13809,6 @@ id|pcidev
 comma
 id|s
 )paren
-suffix:semicolon
-id|pcidev-&gt;dma_mask
-op_assign
-id|dma_mask
 suffix:semicolon
 multiline_comment|/* put it into driver list */
 id|list_add_tail

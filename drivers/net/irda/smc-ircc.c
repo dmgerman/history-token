@@ -2268,7 +2268,7 @@ id|ircc_hard_xmit
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * Don&squot;t know why we have to do this, but FIR interrupts &n;&t;&t; * stops working if we remove it.&n;&t;&t; */
 multiline_comment|/* outb(UART_MCR_OUT2, self-&gt;io.sir_base + UART_MCR); */
-multiline_comment|/* Be ready for incomming frames */
+multiline_comment|/* Be ready for incoming frames */
 id|ircc_dma_receive
 c_func
 (paren

@@ -7171,7 +7171,7 @@ id|PL_EBUF_ERR
 )paren
 (brace
 multiline_comment|/* elastic buff. det. over-|underflow*/
-multiline_comment|/*&n;&t;&t; * Check whether the SRF Condition occured.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check whether the SRF Condition occurred.&n;&t;&t; */
 r_if
 c_cond
 (paren

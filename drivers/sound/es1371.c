@@ -14430,17 +14430,20 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_dma_supported
+id|i
+op_assign
+id|pci_set_dma_mask
 c_func
 (paren
 id|pcidev
 comma
 l_int|0xffffffff
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
 )paren
 (brace
 id|printk
@@ -14451,8 +14454,7 @@ l_string|&quot;es1371: architecture does not support 32bit PCI busmaster DMA&bsl
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|i
 suffix:semicolon
 )brace
 r_if
@@ -15370,10 +15372,6 @@ id|pcidev
 comma
 id|s
 )paren
-suffix:semicolon
-id|pcidev-&gt;dma_mask
-op_assign
-l_int|0xffffffff
 suffix:semicolon
 multiline_comment|/* put it into driver list */
 id|list_add_tail

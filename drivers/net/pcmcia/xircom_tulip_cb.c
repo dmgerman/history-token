@@ -2131,11 +2131,6 @@ id|pci_dev
 op_star
 id|pdev
 comma
-r_struct
-id|net_device
-op_star
-id|dev
-comma
 r_int
 id|ioaddr
 comma
@@ -2154,6 +2149,11 @@ r_int
 id|did_version
 suffix:semicolon
 multiline_comment|/* Already printed version info. */
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
 r_struct
 id|tulip_private
 op_star
@@ -2227,10 +2227,19 @@ op_assign
 id|init_etherdev
 c_func
 (paren
-id|dev
+l_int|NULL
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 id|pci_read_config_byte
 c_func
@@ -18802,8 +18811,6 @@ id|tulip_probe1
 c_func
 (paren
 id|pdev
-comma
-l_int|NULL
 comma
 id|pci_resource_start
 (paren

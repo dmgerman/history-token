@@ -5071,7 +5071,7 @@ id|BSR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function nsc_ircc_pio_xmit (self, iobase)&n; *&n; *    Transmit data using PIO. Returns the number of bytes that actually&n; *    got transfered&n; *&n; */
+multiline_comment|/*&n; * Function nsc_ircc_pio_xmit (self, iobase)&n; *&n; *    Transmit data using PIO. Returns the number of bytes that actually&n; *    got transferred&n; *&n; */
 DECL|function|nsc_ircc_pio_write
 r_static
 r_int

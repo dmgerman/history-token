@@ -224,7 +224,7 @@ DECL|macro|XM_RXF_MAX_SZ
 mdefine_line|#define XM_RXF_MAX_SZ&t;0x037c&t;/* 32 bit ro&t;1024-MaxSize Byte Rx Frame Cnt*/
 multiline_comment|/* 0x02e8 - 0x02fe:&t;reserved */
 multiline_comment|/*----------------------------------------------------------------------------*/
-multiline_comment|/*&n; * XMAC Bit Definitions&n; *&n; * If the bit access behaviour differs from the register access behaviour&n; * (r/w, ro) this is docomented after the bit number. The following bit&n; * access behaviours are used:&n; *&t;(sc)&t;self clearing&n; *&t;(ro)&t;read only&n; */
+multiline_comment|/*&n; * XMAC Bit Definitions&n; *&n; * If the bit access behaviour differs from the register access behaviour&n; * (r/w, ro) this is documented after the bit number. The following bit&n; * access behaviours are used:&n; *&t;(sc)&t;self clearing&n; *&t;(ro)&t;read only&n; */
 multiline_comment|/*&t;XM_MMU_CMD&t;16 bit r/w&t;MMU Comamnd Register */
 multiline_comment|/* Bit 15..13:&t;reserved */
 DECL|macro|XM_MMU_PHY_RDY
@@ -397,7 +397,7 @@ mdefine_line|#define XM_ST_MC&t;(1L&lt;&lt;6)&t;&t;/* Bit&t;6:&t;Multicast packe
 DECL|macro|XM_ST_UC
 mdefine_line|#define XM_ST_UC&t;(1L&lt;&lt;5)&t;&t;/* Bit&t;5:&t;Unicast packet */
 DECL|macro|XM_ST_TX_UR
-mdefine_line|#define XM_ST_TX_UR&t;(1L&lt;&lt;4)&t;&t;/* Bit&t;4:&t;FIFO Underrun occured */
+mdefine_line|#define XM_ST_TX_UR&t;(1L&lt;&lt;4)&t;&t;/* Bit&t;4:&t;FIFO Underrun occurred */
 DECL|macro|XM_ST_CS_ERR
 mdefine_line|#define XM_ST_CS_ERR&t;(1L&lt;&lt;3)&t;&t;/* Bit&t;3:&t;Carrier Sense Error */
 DECL|macro|XM_ST_LAT_COL

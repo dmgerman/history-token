@@ -956,10 +956,6 @@ l_string|&quot;(rcpci45 driver:) RCopen&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Request a shared interrupt line. */
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|request_irq
@@ -967,21 +963,19 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
-(paren
-r_void
-op_star
-)paren
 id|RCinterrupt
 comma
-id|SA_INTERRUPT
-op_or
 id|SA_SHIRQ
 comma
-l_string|&quot;RedCreek VPN Adapter&quot;
+id|dev-&gt;name
 comma
 id|dev
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 (brace
 id|printk

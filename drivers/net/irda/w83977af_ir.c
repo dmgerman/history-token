@@ -3542,7 +3542,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Check if we have transfered all data to memory */
+multiline_comment|/* Check if we have transferred all data to memory */
 id|switch_bank
 c_func
 (paren

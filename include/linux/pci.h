@@ -1897,7 +1897,7 @@ id|u8
 )paren
 suffix:semicolon
 DECL|macro|HAVE_PCI_REQ_REGIONS
-mdefine_line|#define HAVE_PCI_REQ_REGIONS 1
+mdefine_line|#define HAVE_PCI_REQ_REGIONS
 r_int
 id|pci_request_regions
 c_func

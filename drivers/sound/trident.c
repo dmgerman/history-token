@@ -16613,8 +16613,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pci_dma_supported
+id|pci_set_dma_mask
 c_func
 (paren
 id|pci_dev
@@ -17210,10 +17209,6 @@ id|pci_dev
 comma
 id|card
 )paren
-suffix:semicolon
-id|pci_dev-&gt;dma_mask
-op_assign
-id|TRIDENT_DMA_MASK
 suffix:semicolon
 multiline_comment|/* Enable Address Engine Interrupts */
 id|trident_enable_loop_interrupts

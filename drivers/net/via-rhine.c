@@ -1591,8 +1591,7 @@ multiline_comment|/* this should always be supported */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pci_dma_supported
+id|pci_set_dma_mask
 c_func
 (paren
 id|pdev

@@ -5532,7 +5532,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;???&quot;
+l_string|&quot;unknown&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6582,7 +6582,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Wavelan: wv_set_frequency : unable to write new frequency to EEprom (??)&bslash;n&quot;
+l_string|&quot;Wavelan: wv_set_frequency : unable to write new frequency to EEprom (?)&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7652,7 +7652,7 @@ suffix:semicolon
 r_case
 id|SIOCGIWFREQ
 suffix:colon
-multiline_comment|/* Attempt to recognise 2.00 cards (2.4 GHz frequency selectable)&n;       * (does it work for everybody ??? - especially old cards...) */
+multiline_comment|/* Attempt to recognise 2.00 cards (2.4 GHz frequency selectable)&n;       * (does it work for everybody XXX - especially old cards...) */
 r_if
 c_cond
 (paren
@@ -9848,6 +9848,17 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|lp
+op_eq
+l_int|NULL
+)paren
+multiline_comment|/* XXX will this ever occur? */
+r_return
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Disable interrupts &amp; save flags */
 id|spin_lock_irqsave
 (paren
@@ -9857,26 +9868,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lp
-op_eq
-(paren
-id|net_local
-op_star
-)paren
-l_int|NULL
-)paren
-(brace
-r_return
-(paren
-id|iw_stats
-op_star
-)paren
-l_int|NULL
-suffix:semicolon
-)brace
 id|wstats
 op_assign
 op_amp
@@ -12132,7 +12123,7 @@ id|m
 )paren
 suffix:semicolon
 multiline_comment|/* The following code start the modem of the 2.00 frequency&n;   * selectable cards at power on. It&squot;s not strictly needed for the&n;   * following boots...&n;   * The original patch was by Joe Finney for the PCMCIA driver, but&n;   * I&squot;ve cleaned it a bit and add documentation.&n;   * Thanks to Loeke Brederveld from Lucent for the info.&n;   */
-multiline_comment|/* Attempt to recognise 2.00 cards (2.4 GHz frequency selectable)&n;   * (does it work for everybody ??? - especially old cards...) */
+multiline_comment|/* Attempt to recognise 2.00 cards (2.4 GHz frequency selectable)&n;   * (does it work for everybody XXX - especially old cards...) */
 multiline_comment|/* Note : WFREQSEL verify that it is able to read from EEprom&n;   * a sensible frequency (address 0x00) + that MMR_FEE_STATUS_ID&n;   * is 0xA (Xilinx version) or 0xB (Ariadne version).&n;   * My test is more crude but do work... */
 r_if
 c_cond
@@ -14958,7 +14949,7 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/* ???? Could you explain me this, Dave ? */
+multiline_comment|/* XXX Could you explain me this, Dave ? */
 id|link-&gt;dev
 op_assign
 op_amp
@@ -17754,7 +17745,7 @@ suffix:semicolon
 r_case
 id|CS_EVENT_PM_SUSPEND
 suffix:colon
-multiline_comment|/* NB: wavelan_close will be called, but too late, so we are&n;&t; * obliged to close nicely the wavelan here. David, could you&n;&t; * close the device before suspending them ? And, by the way,&n;&t; * could you, on resume, add a &quot;route add -net ...&quot; after the&n;&t; * ifconfig up ??? Thanks... */
+multiline_comment|/* NB: wavelan_close will be called, but too late, so we are&n;&t; * obliged to close nicely the wavelan here. David, could you&n;&t; * close the device before suspending them ? And, by the way,&n;&t; * could you, on resume, add a &quot;route add -net ...&quot; after the&n;&t; * ifconfig up XXX Thanks... */
 multiline_comment|/* Stop receiving new messages and wait end of transmission */
 id|wv_ru_stop
 c_func
@@ -17853,7 +17844,7 @@ c_cond
 (paren
 id|link-&gt;open
 )paren
-multiline_comment|/* If RESET -&gt; True, If RESUME -&gt; False ??? */
+multiline_comment|/* If RESET -&gt; True, If RESUME -&gt; False XXX */
 (brace
 id|wv_hw_reset
 c_func

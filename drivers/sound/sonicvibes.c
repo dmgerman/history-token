@@ -13914,8 +13914,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pci_dma_supported
+id|pci_set_dma_mask
 c_func
 (paren
 id|pcidev
@@ -14974,10 +14973,6 @@ id|pcidev
 comma
 id|s
 )paren
-suffix:semicolon
-id|pcidev-&gt;dma_mask
-op_assign
-l_int|0x00ffffff
 suffix:semicolon
 multiline_comment|/* put it into driver list */
 id|list_add_tail

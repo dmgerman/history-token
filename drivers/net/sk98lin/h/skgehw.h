@@ -474,7 +474,7 @@ DECL|macro|B3_RAM_DATA_HI
 mdefine_line|#define B3_RAM_DATA_HI&t;0x0188&t;/* 32 bit&t;RAM Data Word (high dWord) */
 multiline_comment|/* 0x018c - 0x018f:&t;reserved */
 multiline_comment|/* RAM Interface Registers */
-multiline_comment|/*&n; * The HW-Spec. call this registers Timeout Value 0..11. But this names are&n; * not usable in SW. Please notice these are NOT real timeouts, these are&n; * the number of qWords transfered continously.&n; */
+multiline_comment|/*&n; * The HW-Spec. call this registers Timeout Value 0..11. But this names are&n; * not usable in SW. Please notice these are NOT real timeouts, these are&n; * the number of qWords transferred continously.&n; */
 DECL|macro|B3_RI_WTO_R1
 mdefine_line|#define B3_RI_WTO_R1&t;0x0190&t;/* 8 bit RAM Iface WR Timeout Queue R1&t;(TO0) */
 DECL|macro|B3_RI_WTO_XA1
@@ -1138,7 +1138,7 @@ mdefine_line|#define RI_RST_SET&t;(1&lt;&lt;0)&t;/* Bit&t;0:&t;Set RAM Interface
 multiline_comment|/*&t;B3_RI_TEST&t; 8 bit&t;RAM Iface Test Register */
 multiline_comment|/* Bit 15..4:&t;reserved */
 DECL|macro|RI_T_EV
-mdefine_line|#define RI_T_EV&t;&t;(1&lt;&lt;3)&t;/* Bit&t;3:&t;Timeout Event occured */
+mdefine_line|#define RI_T_EV&t;&t;(1&lt;&lt;3)&t;/* Bit&t;3:&t;Timeout Event occurred */
 DECL|macro|RI_T_ON
 mdefine_line|#define RI_T_ON&t;&t;(1&lt;&lt;2)&t;/* Bit&t;2:&t;Timeout Timer Test On */
 DECL|macro|RI_T_OFF
@@ -1213,7 +1213,7 @@ multiline_comment|/*&t;B3_MA_RC_TEST&t;16 bit&t;MAC Arbiter Recovery Test Reg */
 multiline_comment|/*&t;B3_PA_TEST&t;16 bit&t;Packet Arbiter Test Register */
 multiline_comment|/*&t;&t;&t;Bit 15, 11, 7, and 3 are reserved in B3_PA_TEST */
 DECL|macro|TX2_T_EV
-mdefine_line|#define TX2_T_EV&t;(1&lt;&lt;15)&t;/* Bit 15: &t;TX2 Timeout/Recv Event occured*/
+mdefine_line|#define TX2_T_EV&t;(1&lt;&lt;15)&t;/* Bit 15: &t;TX2 Timeout/Recv Event occurred*/
 DECL|macro|TX2_T_ON
 mdefine_line|#define TX2_T_ON&t;(1&lt;&lt;14)&t;/* Bit 14:&t;TX2 Timeout/Recv Timer Test On*/
 DECL|macro|TX2_T_OFF
@@ -1221,7 +1221,7 @@ mdefine_line|#define TX2_T_OFF&t;(1&lt;&lt;13)&t;/* Bit 13:&t;TX2 Timeout/Recv T
 DECL|macro|TX2_T_STEP
 mdefine_line|#define TX2_T_STEP&t;(1&lt;&lt;12)&t;/* Bit 12:&t;TX2 Timeout/Recv Timer Step */
 DECL|macro|TX1_T_EV
-mdefine_line|#define TX1_T_EV&t;(1&lt;&lt;11)&t;/* Bit 11:&t;TX1 Timeout/Recv Event occured*/
+mdefine_line|#define TX1_T_EV&t;(1&lt;&lt;11)&t;/* Bit 11:&t;TX1 Timeout/Recv Event occurred*/
 DECL|macro|TX1_T_ON
 mdefine_line|#define TX1_T_ON&t;(1&lt;&lt;10)&t;/* Bit 10:&t;TX1 Timeout/Recv Timer Test On*/
 DECL|macro|TX1_T_OFF
@@ -1229,7 +1229,7 @@ mdefine_line|#define TX1_T_OFF&t;(1&lt;&lt;9)&t;/* Bit&t;9:&t;TX1 Timeout/Recv T
 DECL|macro|TX1_T_STEP
 mdefine_line|#define TX1_T_STEP&t;(1&lt;&lt;8)&t;/* Bit&t;8:&t;TX1 Timeout/Recv Timer Step */
 DECL|macro|RX2_T_EV
-mdefine_line|#define RX2_T_EV&t;(1&lt;&lt;7)&t;/* Bit&t;7:&t;RX2 Timeout/Recv Event occured*/
+mdefine_line|#define RX2_T_EV&t;(1&lt;&lt;7)&t;/* Bit&t;7:&t;RX2 Timeout/Recv Event occurred*/
 DECL|macro|RX2_T_ON
 mdefine_line|#define RX2_T_ON&t;(1&lt;&lt;6)&t;/* Bit&t;6:&t;RX2 Timeout/Recv Timer Test On*/
 DECL|macro|RX2_T_OFF
@@ -1237,7 +1237,7 @@ mdefine_line|#define RX2_T_OFF&t;(1&lt;&lt;5)&t;/* Bit&t;5:&t;RX2 Timeout/Recv T
 DECL|macro|RX2_T_STEP
 mdefine_line|#define RX2_T_STEP&t;(1&lt;&lt;4)&t;/* Bit&t;4:&t;RX2 Timeout/Recv Timer Step */
 DECL|macro|RX1_T_EV
-mdefine_line|#define RX1_T_EV&t;(1&lt;&lt;3)&t;/* Bit&t;3:&t;RX1 Timeout/Recv Event occured*/
+mdefine_line|#define RX1_T_EV&t;(1&lt;&lt;3)&t;/* Bit&t;3:&t;RX1 Timeout/Recv Event occurred*/
 DECL|macro|RX1_T_ON
 mdefine_line|#define RX1_T_ON&t;(1&lt;&lt;2)&t;/* Bit&t;2:&t;RX1 Timeout/Recv Timer Test On*/
 DECL|macro|RX1_T_OFF

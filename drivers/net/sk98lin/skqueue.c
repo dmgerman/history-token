@@ -144,7 +144,7 @@ id|SKERR_Q_E001MSG
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * event dispatcher&n; *&t;while event queue is not empty&n; *&t;&t;get event from queue&n; *&t;&t;send command to state machine&n; *&t;end&n; *&t;return error reported by individual Event function&n; *&t;&t;0 if no error occured.&n; */
+multiline_comment|/*&n; * event dispatcher&n; *&t;while event queue is not empty&n; *&t;&t;get event from queue&n; *&t;&t;send command to state machine&n; *&t;end&n; *&t;return error reported by individual Event function&n; *&t;&t;0 if no error occurred.&n; */
 DECL|function|SkEventDispatcher
 r_int
 id|SkEventDispatcher

@@ -633,11 +633,28 @@ op_assign
 id|init_trdev
 c_func
 (paren
-id|dev
+l_int|NULL
 comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|olympic_priv
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif
 id|dev-&gt;priv
 op_assign
@@ -694,6 +711,7 @@ l_int|0
 dot
 id|name
 suffix:semicolon
+multiline_comment|/* FIXME: check ioremap return val, handle cleanup */
 id|olympic_priv-&gt;olympic_mmio
 op_assign
 id|ioremap
@@ -792,6 +810,20 @@ c_func
 id|dev-&gt;priv
 )paren
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -6829,6 +6861,27 @@ c_func
 id|frame_len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mac_frame
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Memory squeeze, dropping &quot;
+l_string|&quot;frame.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_goto
+id|drop_frame
+suffix:semicolon
+)brace
 multiline_comment|/* Walk the buffer chain, creating the frame */
 r_do
 (brace
@@ -7037,6 +7090,8 @@ id|dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
+id|drop_frame
+suffix:colon
 multiline_comment|/* Now tell the card we have dealt with the received frame */
 multiline_comment|/* Set LISR Bit 1 */
 id|writel
@@ -9416,10 +9471,21 @@ id|i
 op_eq
 l_int|NULL
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|0
+)paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|dev_olympic
 (braket
 id|i
