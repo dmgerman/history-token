@@ -237,12 +237,26 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|down
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
+)paren
+suffix:semicolon
 id|full_path
 op_assign
 id|build_path_from_dentry
 c_func
 (paren
 id|file-&gt;f_dentry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
 )paren
 suffix:semicolon
 r_if
@@ -1189,6 +1203,7 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
+multiline_comment|/* can not grab rename sem here because various ops, including&n;those that already have the rename sem can end up causing writepage&n;to get called and if the server was down that means we end up here,&n;and we can never tell if the caller already has the rename_sem */
 id|full_path
 op_assign
 id|build_path_from_dentry

@@ -1578,6 +1578,8 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
+multiline_comment|/* Unlink can be called from rename so we can not grab&n;&t;the sem here since we deadlock otherwise */
+multiline_comment|/*&t;down(&amp;direntry-&gt;d_sb-&gt;s_vfs_rename_sem);*/
 id|full_path
 op_assign
 id|build_path_from_dentry
@@ -1586,6 +1588,7 @@ c_func
 id|direntry
 )paren
 suffix:semicolon
+multiline_comment|/*&t;up(&amp;direntry-&gt;d_sb-&gt;s_vfs_rename_sem);*/
 r_if
 c_cond
 (paren
@@ -2070,12 +2073,26 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
+)paren
+suffix:semicolon
 id|full_path
 op_assign
 id|build_path_from_dentry
 c_func
 (paren
 id|direntry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
 )paren
 suffix:semicolon
 r_if
@@ -2341,12 +2358,26 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
+)paren
+suffix:semicolon
 id|full_path
 op_assign
 id|build_path_from_dentry
 c_func
 (paren
 id|direntry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
 )paren
 suffix:semicolon
 r_if
@@ -2551,6 +2582,7 @@ id|EXDEV
 suffix:semicolon
 multiline_comment|/* BB actually could be allowed if same server, but&n;                     different share. Might eventually add support for this */
 )brace
+multiline_comment|/* we already  have the rename sem so we do not need&n;&t;to grab it again here to protect the path integrity */
 id|fromName
 op_assign
 id|build_path_from_dentry
@@ -2875,6 +2907,7 @@ c_func
 id|direntry-&gt;d_sb
 )paren
 suffix:semicolon
+multiline_comment|/* can not safely grab the rename sem here if&n;&t;rename calls revalidate since that would deadlock */
 id|full_path
 op_assign
 id|build_path_from_dentry
@@ -3521,12 +3554,26 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|direntry-&gt;d_sb-&gt;s_vfs_rename_sem
+)paren
+suffix:semicolon
 id|full_path
 op_assign
 id|build_path_from_dentry
 c_func
 (paren
 id|direntry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|direntry-&gt;d_sb-&gt;s_vfs_rename_sem
 )paren
 suffix:semicolon
 r_if
