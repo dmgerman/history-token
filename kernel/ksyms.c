@@ -2601,6 +2601,15 @@ c_func
 id|do_settimeofday
 )paren
 suffix:semicolon
+macro_line|#if (BITS_PER_LONG &lt; 64)
+DECL|variable|get_jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_jiffies_64
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK_SLEEP
 DECL|variable|__might_sleep
 id|EXPORT_SYMBOL

@@ -1511,6 +1511,16 @@ id|user_struct
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|switch_uid
+c_func
+(paren
+r_struct
+id|user_struct
+op_star
+)paren
+suffix:semicolon
 macro_line|#include &lt;asm/current.h&gt;
 r_extern
 r_int
