@@ -4698,10 +4698,6 @@ id|tty3215_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
 suffix:semicolon
-id|tty3215_driver.name_base
-op_assign
-l_int|0
-suffix:semicolon
 id|tty3215_driver.major
 op_assign
 id|TTY_MAJOR
