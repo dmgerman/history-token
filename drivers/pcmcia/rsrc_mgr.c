@@ -1482,7 +1482,7 @@ id|s-&gt;cis_mem.sys_stop
 op_assign
 id|base
 op_plus
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 op_minus
 l_int|1
 suffix:semicolon
@@ -1493,7 +1493,7 @@ c_func
 (paren
 id|base
 comma
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 )paren
 suffix:semicolon
 id|ret
@@ -1542,7 +1542,7 @@ id|s-&gt;cis_mem.sys_start
 op_assign
 id|base
 op_plus
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 suffix:semicolon
 id|s-&gt;cis_mem.sys_stop
 op_assign
@@ -1550,7 +1550,7 @@ id|base
 op_plus
 l_int|2
 op_star
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 op_minus
 l_int|1
 suffix:semicolon
@@ -1561,9 +1561,9 @@ c_func
 (paren
 id|base
 op_plus
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 comma
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 )paren
 suffix:semicolon
 id|ret
@@ -1638,7 +1638,7 @@ id|s-&gt;cis_mem.sys_stop
 op_assign
 id|base
 op_plus
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 op_minus
 l_int|1
 suffix:semicolon
@@ -1649,7 +1649,7 @@ c_func
 (paren
 id|base
 comma
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 )paren
 suffix:semicolon
 id|s-&gt;cis_mem.card_start
@@ -1690,7 +1690,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 suffix:semicolon
 id|i
 op_add_assign
@@ -1776,7 +1776,7 @@ id|s
 comma
 id|base
 op_plus
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 )paren
 suffix:semicolon
 r_return
@@ -1876,13 +1876,13 @@ id|step
 OL
 l_int|2
 op_star
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 )paren
 id|step
 op_assign
 l_int|2
 op_star
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 suffix:semicolon
 r_for
 c_loop
@@ -1941,7 +1941,7 @@ id|j
 comma
 id|step
 comma
-id|s-&gt;cap.cb_dev
+id|s-&gt;cb_dev
 )paren
 op_eq
 l_int|0
@@ -2014,7 +2014,7 @@ l_int|2
 op_star
 id|step
 comma
-id|s-&gt;cap.cb_dev
+id|s-&gt;cb_dev
 )paren
 op_eq
 l_int|0
@@ -2262,7 +2262,7 @@ id|force_low
 op_assign
 op_logical_neg
 (paren
-id|s-&gt;cap.features
+id|s-&gt;features
 op_amp
 id|SS_CAP_PAGE_REGS
 )paren
@@ -2696,7 +2696,7 @@ id|num
 comma
 id|name
 comma
-id|s-&gt;cap.cb_dev
+id|s-&gt;cb_dev
 )paren
 op_eq
 l_int|0
@@ -2894,7 +2894,7 @@ id|num
 comma
 id|name
 comma
-id|s-&gt;cap.cb_dev
+id|s-&gt;cb_dev
 )paren
 op_eq
 l_int|0

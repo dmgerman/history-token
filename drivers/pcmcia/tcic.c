@@ -321,35 +321,6 @@ id|socket_table
 l_int|2
 )braket
 suffix:semicolon
-DECL|variable|tcic_cap
-r_static
-id|socket_cap_t
-id|tcic_cap
-op_assign
-(brace
-multiline_comment|/* only 16-bit cards, memory windows must be size-aligned */
-dot
-id|features
-op_assign
-id|SS_CAP_PCCARD
-op_or
-id|SS_CAP_MEM_ALIGN
-comma
-dot
-id|irq_mask
-op_assign
-l_int|0x4cf8
-comma
-multiline_comment|/* irq 14, 11, 10, 7, 6, 5, 4, 3 */
-dot
-id|map_size
-op_assign
-l_int|0x1000
-comma
-multiline_comment|/* 4K minimum window size */
-multiline_comment|/* No PCI or CardBus support */
-)brace
-suffix:semicolon
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Trick when selecting interrupts: the TCIC sktirq pin is supposed&n;   to map to irq 11, but is coded as 0 or 1 in the irq registers. */
 DECL|macro|TCIC_IRQ
@@ -1964,6 +1935,39 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* only 16-bit cards, memory windows must be size-aligned */
+multiline_comment|/* No PCI or CardBus support */
+id|socket_table
+(braket
+id|sockets
+)braket
+dot
+id|socket.features
+op_assign
+id|SS_CAP_PCCARD
+op_or
+id|SS_CAP_MEM_ALIGN
+suffix:semicolon
+multiline_comment|/* irq 14, 11, 10, 7, 6, 5, 4, 3 */
+id|socket_table
+(braket
+id|sockets
+)braket
+dot
+id|socket.irq_mask
+op_assign
+l_int|0x4cf8
+suffix:semicolon
+multiline_comment|/* 4K minimum window size */
+id|socket_table
+(braket
+id|sockets
+)braket
+dot
+id|socket.map_size
+op_assign
+l_int|0x1000
+suffix:semicolon
 id|sockets
 op_increment
 suffix:semicolon
@@ -2143,9 +2147,10 @@ id|i
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* irq 14, 11, 10, 7, 6, 5, 4, 3 */
 id|mask
 op_and_assign
-id|tcic_cap.irq_mask
+l_int|0x4cf8
 suffix:semicolon
 multiline_comment|/* Scan interrupts */
 id|mask
@@ -2156,7 +2161,26 @@ c_func
 id|mask
 )paren
 suffix:semicolon
-id|tcic_cap.irq_mask
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|sockets
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|socket_table
+(braket
+id|i
+)braket
+dot
+id|socket.irq_mask
 op_assign
 id|mask
 suffix:semicolon
@@ -2300,7 +2324,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcic_cap.irq_mask
+id|socket_table
+(braket
+l_int|0
+)braket
+dot
+id|socket.irq_mask
 op_amp
 (paren
 l_int|1
@@ -3402,33 +3431,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* tcic_get_status */
-multiline_comment|/*====================================================================*/
-DECL|function|tcic_inquire_socket
-r_static
-r_int
-id|tcic_inquire_socket
-c_func
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|sock
-comma
-id|socket_cap_t
-op_star
-id|cap
-)paren
-(brace
-op_star
-id|cap
-op_assign
-id|tcic_cap
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* tcic_inquire_socket */
 multiline_comment|/*====================================================================*/
 DECL|function|tcic_get_socket
 r_static
@@ -5064,11 +5066,6 @@ dot
 id|register_callback
 op_assign
 id|tcic_register_callback
-comma
-dot
-id|inquire_socket
-op_assign
-id|tcic_inquire_socket
 comma
 dot
 id|get_status

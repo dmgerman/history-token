@@ -152,7 +152,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|s-&gt;cap.features
+id|s-&gt;features
 op_amp
 id|SS_CAP_STATIC_MAP
 )paren
@@ -162,7 +162,7 @@ c_func
 (paren
 id|s-&gt;cis_mem.sys_start
 comma
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 )paren
 suffix:semicolon
 id|iounmap
@@ -216,7 +216,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|s-&gt;cap.features
+id|s-&gt;features
 op_amp
 id|SS_CAP_STATIC_MAP
 )paren
@@ -231,7 +231,7 @@ id|low
 op_assign
 op_logical_neg
 (paren
-id|s-&gt;cap.features
+id|s-&gt;features
 op_amp
 id|SS_CAP_PAGE_REGS
 )paren
@@ -255,9 +255,9 @@ c_func
 op_amp
 id|mem-&gt;sys_start
 comma
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 comma
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 comma
 id|low
 comma
@@ -282,7 +282,7 @@ id|mem-&gt;sys_stop
 op_assign
 id|mem-&gt;sys_start
 op_plus
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 op_minus
 l_int|1
 suffix:semicolon
@@ -293,7 +293,7 @@ c_func
 (paren
 id|mem-&gt;sys_start
 comma
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 )paren
 suffix:semicolon
 )brace
@@ -318,7 +318,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;cap.features
+id|s-&gt;features
 op_amp
 id|SS_CAP_STATIC_MAP
 )paren
@@ -341,7 +341,7 @@ c_func
 (paren
 id|mem-&gt;sys_start
 comma
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 )paren
 suffix:semicolon
 )brace
@@ -631,7 +631,7 @@ id|addr
 op_amp
 op_complement
 (paren
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 op_minus
 l_int|1
 )paren
@@ -680,7 +680,7 @@ id|end
 op_assign
 id|sys
 op_plus
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 suffix:semicolon
 id|sys
 op_assign
@@ -690,7 +690,7 @@ op_plus
 id|addr
 op_amp
 (paren
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 op_minus
 l_int|1
 )paren
@@ -736,7 +736,7 @@ suffix:semicolon
 )brace
 id|card_offset
 op_add_assign
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 suffix:semicolon
 id|addr
 op_assign
@@ -1065,7 +1065,7 @@ id|addr
 op_amp
 op_complement
 (paren
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 op_minus
 l_int|1
 )paren
@@ -1101,7 +1101,7 @@ id|end
 op_assign
 id|sys
 op_plus
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 suffix:semicolon
 id|sys
 op_assign
@@ -1111,7 +1111,7 @@ op_plus
 id|addr
 op_amp
 (paren
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 op_minus
 l_int|1
 )paren
@@ -1157,7 +1157,7 @@ suffix:semicolon
 )brace
 id|card_offset
 op_add_assign
-id|s-&gt;cap.map_size
+id|s-&gt;map_size
 suffix:semicolon
 id|addr
 op_assign
@@ -1854,7 +1854,7 @@ id|pci_dev
 op_star
 id|dev
 op_assign
-id|s-&gt;cap.cb_dev
+id|s-&gt;cb_dev
 suffix:semicolon
 id|u_int
 id|ptr
