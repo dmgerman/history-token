@@ -13190,6 +13190,11 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+id|disable_dev_on_err
+op_assign
+l_int|1
+suffix:semicolon
+r_int
 id|rc
 suffix:semicolon
 id|DPRINTK
@@ -13368,9 +13373,15 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|disable_dev_on_err
+op_assign
+l_int|0
+suffix:semicolon
 r_goto
 id|err_out
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -13444,6 +13455,11 @@ l_int|0
 )paren
 suffix:semicolon
 r_else
+(brace
+id|disable_dev_on_err
+op_assign
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -13451,6 +13467,7 @@ id|KERN_WARNING
 l_string|&quot;ata: 0x1f0 IDE port busy&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 id|legacy_mode
@@ -13528,6 +13545,11 @@ l_int|1
 )paren
 suffix:semicolon
 r_else
+(brace
+id|disable_dev_on_err
+op_assign
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -13535,6 +13557,7 @@ id|KERN_WARNING
 l_string|&quot;ata: 0x170 IDE port busy&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 id|legacy_mode
@@ -13779,6 +13802,11 @@ id|pdev
 suffix:semicolon
 id|err_out
 suffix:colon
+r_if
+c_cond
+(paren
+id|disable_dev_on_err
+)paren
 id|pci_disable_device
 c_func
 (paren
