@@ -68,7 +68,7 @@ suffix:semicolon
 r_extern
 id|xtalk_gains_t
 r_const
-id|asXtalkGainsAllChan
+id|vortex_asXtalkGainsAllChan
 suffix:semicolon
 r_static
 r_void
