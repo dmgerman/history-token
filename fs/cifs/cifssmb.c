@@ -588,6 +588,9 @@ id|TCP_Server_Info
 op_star
 id|server
 suffix:semicolon
+id|u16
+id|count
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -660,7 +663,7 @@ id|pSMB-&gt;hdr.Flags2
 op_or_assign
 id|SMBFLG2_EXT_SEC
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|count
 op_assign
 id|strlen
 c_func
@@ -693,14 +696,14 @@ suffix:semicolon
 multiline_comment|/* null guaranteed to be at end of source and target buffers anyway */
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|count
 )paren
 suffix:semicolon
 id|rc
@@ -888,14 +891,9 @@ id|CAP_EXTENDED_SECURITY
 )paren
 )paren
 (brace
-id|__u16
 id|count
 op_assign
-id|le16_to_cpu
-c_func
-(paren
 id|pSMBr-&gt;ByteCount
-)paren
 suffix:semicolon
 r_if
 c_cond

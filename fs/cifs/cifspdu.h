@@ -511,7 +511,7 @@ id|hdr
 suffix:semicolon
 multiline_comment|/* wct = 0 */
 DECL|member|ByteCount
-id|__u16
+id|__le16
 id|ByteCount
 suffix:semicolon
 DECL|member|DialectsArray
@@ -538,7 +538,7 @@ id|hdr
 suffix:semicolon
 multiline_comment|/* wct = 17 */
 DECL|member|DialectIndex
-id|__u16
+id|__le16
 id|DialectIndex
 suffix:semicolon
 DECL|member|SecurityMode
@@ -546,40 +546,40 @@ id|__u8
 id|SecurityMode
 suffix:semicolon
 DECL|member|MaxMpxCount
-id|__u16
+id|__le16
 id|MaxMpxCount
 suffix:semicolon
 DECL|member|MaxNumberVcs
-id|__u16
+id|__le16
 id|MaxNumberVcs
 suffix:semicolon
 DECL|member|MaxBufferSize
-id|__u32
+id|__le32
 id|MaxBufferSize
 suffix:semicolon
 DECL|member|MaxRawSize
-id|__u32
+id|__le32
 id|MaxRawSize
 suffix:semicolon
 DECL|member|SessionKey
-id|__u32
+id|__le32
 id|SessionKey
 suffix:semicolon
 DECL|member|Capabilities
-id|__u32
+id|__le32
 id|Capabilities
 suffix:semicolon
 multiline_comment|/* see below */
 DECL|member|SystemTimeLow
-id|__u32
+id|__le32
 id|SystemTimeLow
 suffix:semicolon
 DECL|member|SystemTimeHigh
-id|__u32
+id|__le32
 id|SystemTimeHigh
 suffix:semicolon
 DECL|member|ServerTimeZone
-id|__u16
+id|__le16
 id|ServerTimeZone
 suffix:semicolon
 DECL|member|EncryptionKeyLength
