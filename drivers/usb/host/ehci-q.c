@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this file is part of ehci-hcd.c */
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI hardware queue manipulation&n; *&n; * Control, bulk, and interrupt traffic all use &quot;qh&quot; lists.  They list &quot;qtd&quot;&n; * entries describing USB transactions, max 16-20kB/entry (with 4kB-aligned&n; * buffers needed for the larger number).  We use one QH per endpoint, queue&n; * multiple (bulk or control) urbs per endpoint.  URBs may need several qtds.&n; * A scheduled interrupt qh always has one qtd, one urb.&n; *&n; * ISO traffic uses &quot;ISO TD&quot; (itd, and sitd) records, and (along with&n; * interrupts) needs careful scheduling.  Performance improvements can be&n; * an ongoing challenge.&n; * &n; * USB 1.1 devices are handled (a) by &quot;companion&quot; OHCI or UHCI root hubs,&n; * or otherwise through transaction translators (TTs) in USB 2.0 hubs using&n; * (b) special fields in qh entries or (c) split iso entries.  TTs will&n; * buffer low/full speed data so the host collects it at high speed.&n; */
+multiline_comment|/*&n; * EHCI hardware queue manipulation ... the core.  QH/QTD manipulation.&n; *&n; * Control, bulk, and interrupt traffic all use &quot;qh&quot; lists.  They list &quot;qtd&quot;&n; * entries describing USB transactions, max 16-20kB/entry (with 4kB-aligned&n; * buffers needed for the larger number).  We use one QH per endpoint, queue&n; * multiple (bulk or control) urbs per endpoint.  URBs may need several qtds.&n; * A scheduled interrupt qh always (for now) has one qtd, one urb.&n; *&n; * ISO traffic uses &quot;ISO TD&quot; (itd, and sitd) records, and (along with&n; * interrupts) needs careful scheduling.  Performance improvements can be&n; * an ongoing challenge.  That&squot;s in &quot;ehci-sched.c&quot;.&n; * &n; * USB 1.1 devices are handled (a) by &quot;companion&quot; OHCI or UHCI root hubs,&n; * or otherwise through transaction translators (TTs) in USB 2.0 hubs using&n; * (b) special fields in qh entries or (c) split iso entries.  TTs will&n; * buffer low/full speed data so the host collects it at high speed.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* fill a qtd, returning how much of the buffer we were able to queue up */
 r_static
@@ -235,6 +235,10 @@ op_assign
 id|EHCI_LIST_END
 suffix:semicolon
 multiline_comment|/* HC must see latest qtd and qh data before we clear ACTIVE+HALT */
+id|wmb
+(paren
+)paren
+suffix:semicolon
 id|qh-&gt;hw_token
 op_and_assign
 id|__constant_cpu_to_le32
@@ -314,6 +318,7 @@ op_amp
 id|QTD_STS_BABBLE
 )paren
 (brace
+multiline_comment|/* FIXME &quot;must&quot; disable babbling device&squot;s port too */
 id|urb-&gt;status
 op_assign
 op_minus
@@ -324,13 +329,19 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|QTD_CERR
-(paren
 id|token
-)paren
+op_amp
+id|QTD_STS_MMF
 )paren
 (brace
+multiline_comment|/* fs/ls interrupt xfer missed the complete-split */
+id|urb-&gt;status
+op_assign
+op_minus
+id|EPROTO
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -338,6 +349,7 @@ id|token
 op_amp
 id|QTD_STS_DBE
 )paren
+(brace
 id|urb-&gt;status
 op_assign
 (paren
@@ -359,20 +371,7 @@ op_minus
 id|ECOMM
 suffix:semicolon
 multiline_comment|/* hc couldn&squot;t write data */
-r_else
-r_if
-c_cond
-(paren
-id|token
-op_amp
-id|QTD_STS_MMF
-)paren
-multiline_comment|/* missed tt uframe */
-id|urb-&gt;status
-op_assign
-op_minus
-id|EPROTO
-suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -382,10 +381,11 @@ op_amp
 id|QTD_STS_XACT
 )paren
 (brace
+multiline_comment|/* timeout, bad crc, wrong PID, etc; retried */
 r_if
 c_cond
 (paren
-id|QTD_LENGTH
+id|QTD_CERR
 (paren
 id|token
 )paren
@@ -408,21 +408,13 @@ op_minus
 id|EPROTO
 suffix:semicolon
 )brace
-)brace
-r_else
-multiline_comment|/* presumably a stall */
-id|urb-&gt;status
-op_assign
-op_minus
-id|EPIPE
-suffix:semicolon
-multiline_comment|/* CERR nonzero + data left + halt --&gt; stall */
+multiline_comment|/* CERR nonzero + no errors + halt --&gt; stall */
 )brace
 r_else
 r_if
 c_cond
 (paren
-id|QTD_LENGTH
+id|QTD_CERR
 (paren
 id|token
 )paren
@@ -774,9 +766,9 @@ op_star
 id|ehci
 comma
 r_struct
-id|list_head
+id|ehci_qh
 op_star
-id|qtd_list
+id|qh
 comma
 r_int
 id|freeing
@@ -794,13 +786,12 @@ r_struct
 id|list_head
 op_star
 id|next
-suffix:semicolon
-r_struct
-id|ehci_qh
+comma
 op_star
-id|qh
+id|qtd_list
 op_assign
-l_int|0
+op_amp
+id|qh-&gt;qtd_list
 suffix:semicolon
 r_int
 id|unlink
@@ -909,16 +900,6 @@ id|token
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* qh is non-null iff these qtds were queued to the HC */
-id|qh
-op_assign
-(paren
-r_struct
-id|ehci_qh
-op_star
-)paren
-id|urb-&gt;hcpriv
-suffix:semicolon
 multiline_comment|/* clean up any state from previous QTD ...*/
 r_if
 c_cond
@@ -991,8 +972,6 @@ multiline_comment|/* qh overlays can have HC&squot;s old cached copies of&n;&t;&
 r_if
 c_cond
 (paren
-id|qh
-op_logical_and
 id|cpu_to_le32
 (paren
 id|last-&gt;qtd_dma
@@ -1040,30 +1019,7 @@ id|next
 op_assign
 id|qtd-&gt;qtd_list.next
 suffix:semicolon
-multiline_comment|/* if these qtds were queued to the HC, some may be active.&n;&t;&t; * else we&squot;re cleaning up after a failed URB submission.&n;&t;&t; *&n;&t;&t; * FIXME can simplify: cleanup case is gone now.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|likely
-(paren
-id|qh
-op_ne
-l_int|0
-)paren
-)paren
-(brace
-r_int
-id|qh_halted
-suffix:semicolon
-id|qh_halted
-op_assign
-id|__constant_cpu_to_le32
-(paren
-id|QTD_STS_HALT
-)paren
-op_amp
-id|qh-&gt;hw_token
-suffix:semicolon
+multiline_comment|/* QTDs at tail may be active if QH+HC are running,&n;&t;&t; * or when unlinking some urbs queued to this QH&n;&t;&t; */
 id|token
 op_assign
 id|le32_to_cpu
@@ -1075,7 +1031,16 @@ id|halted
 op_assign
 id|halted
 op_logical_or
-id|qh_halted
+(paren
+id|__constant_cpu_to_le32
+(paren
+id|QTD_STS_HALT
+)paren
+op_amp
+id|qh-&gt;hw_token
+)paren
+op_ne
+l_int|0
 op_logical_or
 (paren
 id|ehci-&gt;hcd.state
@@ -1089,7 +1054,32 @@ op_eq
 id|QH_STATE_IDLE
 )paren
 suffix:semicolon
-multiline_comment|/* QH halts only because of fault or unlink; in both&n;&t;&t;&t; * cases, queued URBs get unlinked.  But for unlink,&n;&t;&t;&t; * URBs at the head of the queue can stay linked.&n;&t;&t;&t; */
+multiline_comment|/* fault: unlink the rest, since this qtd saw an error? */
+r_if
+c_cond
+(paren
+id|unlikely
+(paren
+(paren
+id|token
+op_amp
+id|QTD_STS_HALT
+)paren
+op_ne
+l_int|0
+)paren
+)paren
+(brace
+id|freeing
+op_assign
+id|unlink
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* status copied below */
+multiline_comment|/* QH halts only because of fault (above) or unlink (here). */
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -1101,7 +1091,7 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/* unlink everything because of HC shutdown? */
+multiline_comment|/* unlinking everything because of HC shutdown? */
 r_if
 c_cond
 (paren
@@ -1116,12 +1106,7 @@ id|unlink
 op_assign
 l_int|1
 suffix:semicolon
-id|urb-&gt;status
-op_assign
-op_minus
-id|ESHUTDOWN
-suffix:semicolon
-multiline_comment|/* explicit unlink, starting here? */
+multiline_comment|/* explicit unlink, maybe starting here? */
 )brace
 r_else
 r_if
@@ -1150,61 +1135,15 @@ id|unlink
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* unlink everything because of error? */
+multiline_comment|/* QH halted to unlink urbs _after_ this?  */
 )brace
 r_else
 r_if
 c_cond
 (paren
-id|qh_halted
-op_logical_and
 op_logical_neg
-(paren
-id|token
-op_amp
-id|QTD_STS_HALT
-)paren
-)paren
-(brace
-id|freeing
-op_assign
 id|unlink
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|urb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
-)paren
-id|urb-&gt;status
-op_assign
-op_minus
-id|ECONNRESET
-suffix:semicolon
-multiline_comment|/* unlink the rest? */
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|unlink
-)paren
-(brace
-id|urb-&gt;status
-op_assign
-op_minus
-id|ECONNRESET
-suffix:semicolon
-multiline_comment|/* QH halted to unlink urbs after this?  */
-)brace
-r_else
-r_if
-c_cond
-(paren
+op_logical_and
 (paren
 id|token
 op_amp
@@ -1221,7 +1160,23 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* Else QH is active, so we must not modify QTDs&n;&t;&t;&t; * that HC may be working on.  Break from loop.&n;&t;&t;&t; */
+multiline_comment|/* unlink the rest?  once we start unlinking, after&n;&t;&t;&t; * a fault or explicit unlink, we unlink all later&n;&t;&t;&t; * urbs.  usb spec requires that.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|unlink
+op_logical_and
+id|urb-&gt;status
+op_eq
+op_minus
+id|EINPROGRESS
+)paren
+id|urb-&gt;status
+op_assign
+op_minus
+id|ECONNRESET
+suffix:semicolon
+multiline_comment|/* Else QH is active, so we must not modify QTDs&n;&t;&t; * that HC may be working on.  No more qtds to check.&n;&t;&t; */
 )brace
 r_else
 r_if
@@ -1271,7 +1226,6 @@ op_amp
 id|urb-&gt;lock
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * NOTE:  this won&squot;t work right with interrupt urbs that&n;&t;&t; * need multiple qtds ... only the first scan of qh-&gt;qtd_list&n;&t;&t; * starts at the right qtd, yet multiple scans could happen&n;&t;&t; * for transfers that are scheduled across multiple uframes. &n;&t;&t; * (Such schedules are not currently allowed!)&n;&t;&t; */
 r_if
 c_cond
@@ -1422,8 +1376,6 @@ c_cond
 id|unlikely
 (paren
 id|halted
-op_logical_and
-id|qh
 op_logical_and
 op_logical_neg
 id|list_empty
@@ -2813,6 +2765,10 @@ id|qh-&gt;hw_next
 op_assign
 id|dma
 suffix:semicolon
+id|wmb
+(paren
+)paren
+suffix:semicolon
 id|ehci-&gt;async
 op_assign
 id|qh
@@ -2867,6 +2823,10 @@ suffix:semicolon
 id|qh-&gt;hw_next
 op_assign
 id|q-&gt;hw_next
+suffix:semicolon
+id|wmb
+(paren
+)paren
 suffix:semicolon
 id|q-&gt;qh_next.qh
 op_assign
@@ -3437,8 +3397,7 @@ id|qh_completions
 (paren
 id|ehci
 comma
-op_amp
-id|qh-&gt;qtd_list
+id|qh
 comma
 l_int|1
 )paren
@@ -3725,6 +3684,10 @@ id|prev-&gt;qh_next
 op_assign
 id|qh-&gt;qh_next
 suffix:semicolon
+id|wmb
+(paren
+)paren
+suffix:semicolon
 id|ehci-&gt;reclaim_ready
 op_assign
 l_int|0
@@ -3824,8 +3787,7 @@ id|qh_completions
 (paren
 id|ehci
 comma
-op_amp
-id|qh-&gt;qtd_list
+id|qh
 comma
 l_int|1
 )paren
