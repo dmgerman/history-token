@@ -3,6 +3,7 @@ macro_line|#ifndef _UDF_FS_H
 DECL|macro|_UDF_FS_H
 mdefine_line|#define _UDF_FS_H 1
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|UDF_PREALLOCATE
 mdefine_line|#define UDF_PREALLOCATE
 DECL|macro|UDF_DEFAULT_PREALLOC_BLOCKS
