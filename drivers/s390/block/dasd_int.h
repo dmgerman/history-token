@@ -1,11 +1,11 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.45 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.48 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* we keep old device allocation scheme; IOW, minors are still in 0..255 */
 DECL|macro|DASD_PER_MAJOR
-mdefine_line|#define DASD_PER_MAJOR ( 1U&lt;&lt;(8-DASD_PARTN_BITS))
+mdefine_line|#define DASD_PER_MAJOR (1U &lt;&lt; (MINORBITS - DASD_PARTN_BITS))
 DECL|macro|DASD_PARTN_MASK
 mdefine_line|#define DASD_PARTN_MASK ((1 &lt;&lt; DASD_PARTN_BITS) - 1)
 multiline_comment|/*&n; * States a dasd device can have:&n; *   new: the dasd_device structure is allocated.&n; *   known: the discipline for the device is identified.&n; *   basic: the device can do basic i/o.&n; *   accept: the device is analysed (format is known).&n; *   ready: partition detection is done and the device is can do block io.&n; *   online: the device accepts requests from the block device queue.&n; *&n; * Things to do for startup state transitions:&n; *   new -&gt; known: find discipline for the device and create devfs entries.&n; *   known -&gt; basic: request irq line for the device.&n; *   basic -&gt; ready: do the initial analysis, e.g. format detection,&n; *                   do block device setup and detect partitions.&n; *   ready -&gt; online: schedule the device tasklet.&n; * Things to do for shutdown state transitions:&n; *   online -&gt; ready: just set the new device state.&n; *   ready -&gt; basic: flush requests from the block device layer, clear&n; *                   partition information and reset format information.&n; *   basic -&gt; known: terminate all requests and free irq.&n; *   known -&gt; new: remove devfs entries and forget discipline.&n; */
@@ -1648,21 +1648,21 @@ r_void
 )paren
 suffix:semicolon
 r_int
-id|dasd_add_range
+id|dasd_add_busid
 c_func
 (paren
-r_int
-comma
-r_int
+r_char
+op_star
 comma
 r_int
 )paren
 suffix:semicolon
 r_int
-id|dasd_devno_in_range
+id|dasd_busid_known
 c_func
 (paren
-r_int
+r_char
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* externals in dasd_gendisk.c */
