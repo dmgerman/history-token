@@ -5520,14 +5520,9 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_MULTICAST
-id|proc_net_create
+id|igmp_mc_proc_init
 c_func
 (paren
-l_string|&quot;igmp&quot;
-comma
-l_int|0
-comma
-id|ip_mc_procinfo
 )paren
 suffix:semicolon
 macro_line|#endif
