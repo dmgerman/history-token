@@ -95,13 +95,6 @@ id|u32
 id|iCacheL1LinesPerPage
 suffix:semicolon
 multiline_comment|/* L1 i-cache lines / page   0x6c */
-DECL|member|smt_state
-id|u8
-id|smt_state
-suffix:semicolon
-multiline_comment|/* 0 = SMT off               0x70 */
-multiline_comment|/* 1 = SMT on                     */
-multiline_comment|/* 2 = SMT dynamic                */
 DECL|member|resv0
 id|u8
 id|resv0

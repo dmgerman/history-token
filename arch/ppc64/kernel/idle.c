@@ -645,21 +645,12 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Low power mode */
-multiline_comment|/* If the SMT mode is system controlled &amp; the &n;&t;&t;&t;&t; * partner thread is doing work, switch into&n;&t;&t;&t;&t; * ST mode.&n;&t;&t;&t;&t; */
 r_if
 c_cond
-(paren
-(paren
-id|naca-&gt;smt_state
-op_eq
-id|SMT_DYNAMIC
-)paren
-op_logical_and
 (paren
 op_logical_neg
 (paren
 id|ppaca-&gt;lppaca.xIdle
-)paren
 )paren
 )paren
 (brace
