@@ -884,6 +884,11 @@ op_amp
 id|pvec
 )paren
 suffix:semicolon
+id|lru_add_drain
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -1291,6 +1296,11 @@ suffix:semicolon
 r_struct
 id|pagevec
 id|pvec
+suffix:semicolon
+id|lru_add_drain
+c_func
+(paren
+)paren
 suffix:semicolon
 id|spin_lock_irq
 c_func
