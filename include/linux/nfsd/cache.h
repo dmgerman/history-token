@@ -77,10 +77,10 @@ id|c_timestamp
 suffix:semicolon
 r_union
 (brace
-DECL|member|u_buffer
+DECL|member|u_vec
 r_struct
-id|svc_buf
-id|u_buffer
+id|iovec
+id|u_vec
 suffix:semicolon
 DECL|member|u_status
 id|u32
@@ -92,8 +92,8 @@ id|c_u
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|c_replbuf
-mdefine_line|#define c_replbuf&t;&t;c_u.u_buffer
+DECL|macro|c_replvec
+mdefine_line|#define c_replvec&t;&t;c_u.u_vec
 DECL|macro|c_replstat
 mdefine_line|#define c_replstat&t;&t;c_u.u_status
 multiline_comment|/* cache entry states */

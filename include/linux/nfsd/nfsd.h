@@ -369,8 +369,11 @@ op_star
 comma
 id|loff_t
 comma
-r_char
+r_struct
+id|iovec
 op_star
+comma
+r_int
 comma
 r_int
 r_int
@@ -391,8 +394,11 @@ op_star
 comma
 id|loff_t
 comma
-r_char
+r_struct
+id|iovec
 op_star
+comma
+r_int
 comma
 r_int
 r_int
