@@ -18,8 +18,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|macro|kdebug
-mdefine_line|#define kdebug 0
 multiline_comment|/* =====================================================================&n; *    ERROR HANDLING&n; */
 macro_line|#ifdef&t;DEBUG
 macro_line|#ifdef&t;ERROR_DEBUG
@@ -482,168 +480,6 @@ comma
 l_int|0
 comma
 id|space_v
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
-DECL|macro|device_desc
-mdefine_line|#define&t;device_desc&t;device_bits
-DECL|variable|device_bits
-r_static
-r_struct
-id|reg_desc
-id|device_bits
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|BRIDGE_DEV_ERR_LOCK_EN
-comma
-l_int|0
-comma
-l_string|&quot;ERR_LOCK_EN&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_PAGE_CHK_DIS
-comma
-l_int|0
-comma
-l_string|&quot;PAGE_CHK_DIS&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_FORCE_PCI_PAR
-comma
-l_int|0
-comma
-l_string|&quot;FORCE_PCI_PAR&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_VIRTUAL_EN
-comma
-l_int|0
-comma
-l_string|&quot;VIRTUAL_EN&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_PMU_WRGA_EN
-comma
-l_int|0
-comma
-l_string|&quot;PMU_WRGA_EN&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_DIR_WRGA_EN
-comma
-l_int|0
-comma
-l_string|&quot;DIR_WRGA_EN&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_DEV_SIZE
-comma
-l_int|0
-comma
-l_string|&quot;DEV_SIZE&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_RT
-comma
-l_int|0
-comma
-l_string|&quot;RT&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_SWAP_PMU
-comma
-l_int|0
-comma
-l_string|&quot;SWAP_PMU&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_SWAP_DIR
-comma
-l_int|0
-comma
-l_string|&quot;SWAP_DIR&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_PREF
-comma
-l_int|0
-comma
-l_string|&quot;PREF&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_PRECISE
-comma
-l_int|0
-comma
-l_string|&quot;PRECISE&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_COH
-comma
-l_int|0
-comma
-l_string|&quot;COH&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_BARRIER
-comma
-l_int|0
-comma
-l_string|&quot;BARRIER&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_GBR
-comma
-l_int|0
-comma
-l_string|&quot;GBR&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_DEV_SWAP
-comma
-l_int|0
-comma
-l_string|&quot;DEV_SWAP&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_DEV_IO_MEM
-comma
-l_int|0
-comma
-l_string|&quot;DEV_IO_MEM&quot;
-)brace
-comma
-(brace
-id|BRIDGE_DEV_OFF_MASK
-comma
-id|BRIDGE_DEV_OFF_ADDR_SHFT
-comma
-l_string|&quot;DEV_OFF&quot;
-comma
-l_string|&quot;%x&quot;
 )brace
 comma
 (brace
@@ -1398,7 +1234,7 @@ multiline_comment|/* XXX: should breakdown meaning of bits in reg */
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;t&t;Arbitration Reg: 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;t&t;Arbitration Reg: 0x%lx&bslash;n&quot;
 comma
 id|bridge-&gt;b_arb
 )paren
@@ -2172,7 +2008,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * PCI Bridge Error interrupt handler.&n; *      This gets invoked, whenever a PCI bridge sends an error interrupt.&n; *      Primarily this servers two purposes.&n; *              - If an error can be handled (typically a PIO read/write&n; *                error, we try to do it silently.&n; *              - If an error cannot be handled, we die violently.&n; *      Interrupt due to PIO errors:&n; *              - Bridge sends an interrupt, whenever a PCI operation&n; *                done by the bridge as the master fails. Operations could&n; *                be either a PIO read or a PIO write.&n; *                PIO Read operation also triggers a bus error, and it&squot;s&n; *                We primarily ignore this interrupt in that context..&n; *                For PIO write errors, this is the only indication.&n; *                and we have to handle with the info from here.&n; *&n; *                So, there is no way to distinguish if an interrupt is&n; *                due to read or write error!.&n; */
-r_void
+id|irqreturn_t
 DECL|function|pcibr_error_intr_handler
 id|pcibr_error_intr_handler
 c_func
@@ -2248,13 +2084,19 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|panic
+id|printk
 c_func
 (paren
-l_string|&quot;pcibr_error_intr_handler:&bslash;tmy parameter (0x%p) is not a pcibr_soft!&quot;
+l_string|&quot;pcibr_error_intr_handler: (0x%lx) is not a pcibr_soft!&quot;
 comma
+(paren
+r_uint64
+)paren
 id|arg
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -2370,7 +2212,7 @@ id|PCIBR_DEBUG_INTR_ERROR
 comma
 id|pcibr_soft-&gt;bs_conn
 comma
-l_string|&quot;pcibr_error_intr_handler: int_status=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_error_intr_handler: int_status=0x%lx&bslash;n&quot;
 comma
 id|int_status
 )paren
@@ -2398,6 +2240,7 @@ id|BRIDGE_ISR_INT_MSK
 (brace
 multiline_comment|/*&n;&t; * No error bit set!!.&n;&t; */
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     * If we have a PCIBUS_PIOERR, hand it to the logger.&n;     */
@@ -2751,6 +2594,7 @@ id|disable_errintr_mask
 )paren
 (brace
 r_int
+r_int
 id|s
 suffix:semicolon
 multiline_comment|/*&n;&t; * Disable some high frequency errors as they&n;&t; * could eat up too much cpu time.&n;&t; */
@@ -3000,6 +2844,9 @@ id|pcibr_soft-&gt;bs_errinfo.bserr_intstat
 op_assign
 l_int|0
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_void
 DECL|function|pcibr_error_cleanup
@@ -3095,12 +2942,6 @@ id|pcibr_vhdl
 op_assign
 id|pcibr_soft-&gt;bs_vhdl
 suffix:semicolon
-id|bridge_t
-op_star
-id|bridge
-op_assign
-id|pcibr_soft-&gt;bs_base
-suffix:semicolon
 id|iopaddr_t
 id|bad_xaddr
 suffix:semicolon
@@ -3166,7 +3007,7 @@ id|PCIBR_DEBUG_ERROR_HDLR
 comma
 id|pcibr_soft-&gt;bs_conn
 comma
-l_string|&quot;pcibr_pioerror: pcibr_soft=0x%x, bad_xaddr=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_pioerror: pcibr_soft=0x%lx, bad_xaddr=0x%lx&bslash;n&quot;
 comma
 id|pcibr_soft
 comma
@@ -4291,7 +4132,6 @@ comma
 id|pcibr_soft-&gt;bs_name
 )paren
 suffix:semicolon
-multiline_comment|/* this decodes part of the ioe; our caller&n;&t;     * will dump the raw details in DEBUG and&n;&t;     * kdebug kernels.&n;&t;     */
 id|BEM_ADD_IOE
 c_func
 (paren
@@ -4299,142 +4139,6 @@ id|ioe
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(FORCE_ERRORS)
-r_if
-c_cond
-(paren
-l_int|0
-)paren
-(brace
-macro_line|#elif !DEBUG
-r_if
-c_cond
-(paren
-id|kdebug
-)paren
-(brace
-macro_line|#endif
-multiline_comment|/*&n;&t;     * Dump raw data from Bridge/PCI layer.&n;&t;     */
-id|BEM_ADD_STR
-c_func
-(paren
-l_string|&quot;Raw info from Bridge/PCI layer:&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bridge-&gt;p_int_status_64
-op_amp
-(paren
-id|picreg_t
-)paren
-id|BRIDGE_ISR_PCIBUS_PIOERR
-)paren
-id|pcibr_error_dump
-c_func
-(paren
-id|pcibr_soft
-)paren
-suffix:semicolon
-id|BEM_ADD_SPC
-c_func
-(paren
-id|raw_space
-)paren
-suffix:semicolon
-id|BEM_ADD_VAR
-c_func
-(paren
-id|raw_paddr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IOERROR_FIELDVALID
-c_func
-(paren
-id|ioe
-comma
-id|widgetdev
-)paren
-)paren
-(brace
-r_int
-id|widdev
-suffix:semicolon
-id|IOERROR_GETVALUE
-c_func
-(paren
-id|widdev
-comma
-id|ioe
-comma
-id|widgetdev
-)paren
-suffix:semicolon
-id|slot
-op_assign
-id|pciio_widgetdev_slot_get
-c_func
-(paren
-id|widdev
-)paren
-suffix:semicolon
-id|func
-op_assign
-id|pciio_widgetdev_func_get
-c_func
-(paren
-id|widdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-OL
-id|PCIBR_NUM_SLOTS
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
-id|bridgereg_t
-id|device
-op_assign
-id|bridge-&gt;b_device
-(braket
-id|slot
-)braket
-dot
-id|reg
-suffix:semicolon
-id|BEM_ADD_VAR
-c_func
-(paren
-id|slot
-)paren
-suffix:semicolon
-id|BEM_ADD_VAR
-c_func
-(paren
-id|func
-)paren
-suffix:semicolon
-id|BEM_ADD_REG
-c_func
-(paren
-id|device
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#if !DEBUG || defined(FORCE_ERRORS)
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Since error could not be handled at lower level,&n;&t; * error data logged has not  been cleared.&n;&t; * Clean up errors, and&n;&t; * re-enable bridge to interrupt on error conditions.&n;&t; * NOTE: Wheather we get the interrupt on PCI_ABORT or not is&n;&t; * dependent on INT_ENABLE register. This write just makes sure&n;&t; * that if the interrupt was enabled, we do get the interrupt.&n;&t; *&n;&t; * CAUTION: Resetting bit BRIDGE_IRR_PCI_GRP_CLR, acknowledges&n;&t; *      a group of interrupts. If while handling this error,&n;&t; *      some other error has occurred, that would be&n;&t; *      implicitly cleared by this write.&n;&t; *      Need a way to ensure we don&squot;t inadvertently clear some&n;&t; *      other errors.&n;&t; */
 r_if
 c_cond
@@ -4562,12 +4266,6 @@ id|pcibr_soft-&gt;bs_xid
 )paren
 suffix:semicolon
 )brace
-id|ASSERT
-c_func
-(paren
-id|bridge
-)paren
-suffix:semicolon
 multiline_comment|/*&n;     * read error log registers&n;     */
 id|bus_lowaddr
 op_assign
@@ -4871,7 +4569,7 @@ id|PCIBR_DEBUG_ERROR_HDLR
 comma
 id|pcibr_soft-&gt;bs_conn
 comma
-l_string|&quot;pcibr_error_handler: pcibr_soft=0x%x, error_code=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_error_handler: pcibr_soft=0x%lx, error_code=0x%x&bslash;n&quot;
 comma
 id|pcibr_soft
 comma
@@ -5027,7 +4725,7 @@ id|PCIBR_DEBUG_ERROR_HDLR
 comma
 id|pcibr_soft-&gt;bs_conn
 comma
-l_string|&quot;pcibr_error_handler_wrapper: pcibr_soft=0x%x, &quot;
+l_string|&quot;pcibr_error_handler_wrapper: pcibr_soft=0x%lx, &quot;
 l_string|&quot;error_code=0x%x&bslash;n&quot;
 comma
 id|pcibr_soft
@@ -5159,7 +4857,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;pcibr_error_handler: &quot;
-l_string|&quot;bs_peers_soft==NULL. bad_xaddr= 0x%x mode= 0x%x&bslash;n&quot;
+l_string|&quot;bs_peers_soft==NULL. bad_xaddr= 0x%lx mode= 0x%lx&bslash;n&quot;
 comma
 id|bad_xaddr
 comma
