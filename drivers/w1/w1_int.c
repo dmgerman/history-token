@@ -222,13 +222,6 @@ op_amp
 id|dev-&gt;mutex
 )paren
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|dev-&gt;kwait
-)paren
-suffix:semicolon
 id|init_completion
 c_func
 (paren
