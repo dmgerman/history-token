@@ -31,6 +31,11 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
