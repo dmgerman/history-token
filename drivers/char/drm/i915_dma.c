@@ -491,10 +491,10 @@ c_cond
 id|dev_priv-&gt;hw_status_page
 )paren
 (brace
-id|pci_free_consistent
+id|drm_pci_free
 c_func
 (paren
-id|dev-&gt;pdev
+id|dev
 comma
 id|PAGE_SIZE
 comma
@@ -784,12 +784,16 @@ suffix:semicolon
 multiline_comment|/* Program Hardware Status Page */
 id|dev_priv-&gt;hw_status_page
 op_assign
-id|pci_alloc_consistent
+id|drm_pci_alloc
 c_func
 (paren
-id|dev-&gt;pdev
+id|dev
 comma
 id|PAGE_SIZE
+comma
+id|PAGE_SIZE
+comma
+l_int|0xffffffff
 comma
 op_amp
 id|dev_priv-&gt;dma_status_page
