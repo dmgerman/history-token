@@ -285,7 +285,6 @@ c_func
 (paren
 r_int
 r_int
-op_star
 id|val
 comma
 r_char
