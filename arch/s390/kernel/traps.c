@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/mathemu.h&gt;
 macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
+macro_line|#include &lt;asm/debug.h&gt;
 multiline_comment|/* Called from entry.S only */
 r_extern
 r_void
@@ -1450,6 +1451,11 @@ id|err
 r_static
 r_int
 id|die_counter
+suffix:semicolon
+id|debug_stop_all
+c_func
+(paren
+)paren
 suffix:semicolon
 id|console_verbose
 c_func
