@@ -32,6 +32,12 @@ id|PAGE_SHIFT
 op_minus
 l_int|1
 comma
+DECL|enumerator|VSYSCALL_HPET
+id|VSYSCALL_HPET
+comma
+DECL|enumerator|FIX_HPET_BASE
+id|FIX_HPET_BASE
+comma
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|enumerator|FIX_APIC_BASE
 id|FIX_APIC_BASE
