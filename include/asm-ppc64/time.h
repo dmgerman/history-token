@@ -234,7 +234,7 @@ c_func
 suffix:semicolon
 )brace
 r_else
-macro_line|#else
+macro_line|#endif
 id|mtspr
 c_func
 (paren
@@ -243,7 +243,6 @@ comma
 id|val
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|tb_ticks_since
 r_extern
