@@ -3431,7 +3431,7 @@ id|d_hash
 )paren
 )paren
 (brace
-id|dget
+id|__dget_locked
 c_func
 (paren
 id|dentry
