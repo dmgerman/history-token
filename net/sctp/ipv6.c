@@ -233,6 +233,12 @@ id|fl.fl6_dst
 )paren
 )paren
 suffix:semicolon
+id|SCTP_INC_STATS
+c_func
+(paren
+id|SctpOutSCTPPacks
+)paren
+suffix:semicolon
 r_return
 id|ip6_xmit
 c_func

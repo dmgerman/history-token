@@ -3375,6 +3375,19 @@ id|offset
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|whole
+op_logical_and
+id|over
+)paren
+id|SCTP_INC_STATS_USER
+c_func
+(paren
+id|SctpFragUsrMsgs
+)paren
+suffix:semicolon
 multiline_comment|/* Create chunks for all the full sized DATA chunks. */
 r_for
 c_loop

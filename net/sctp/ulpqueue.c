@@ -821,6 +821,12 @@ op_star
 )paren
 id|f_frag-&gt;cb
 suffix:semicolon
+id|SCTP_INC_STATS
+c_func
+(paren
+id|SctpReasmUsrMsgs
+)paren
+suffix:semicolon
 r_return
 id|event
 suffix:semicolon

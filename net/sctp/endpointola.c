@@ -1053,6 +1053,13 @@ id|asoc-&gt;peer.last_data_from
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
+r_else
+id|SCTP_INC_STATS
+c_func
+(paren
+id|SctpInCtrlChunks
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
