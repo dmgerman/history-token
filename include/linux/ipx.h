@@ -53,7 +53,6 @@ mdefine_line|#define IPX_DLTITF&t;0
 DECL|macro|IPX_CRTITF
 mdefine_line|#define IPX_CRTITF&t;1
 DECL|struct|ipx_route_definition
-r_typedef
 r_struct
 id|ipx_route_definition
 (brace
@@ -73,12 +72,9 @@ id|ipx_router_node
 id|IPX_NODE_LEN
 )braket
 suffix:semicolon
-DECL|typedef|ipx_route_definition
 )brace
-id|ipx_route_definition
 suffix:semicolon
 DECL|struct|ipx_interface_definition
-r_typedef
 r_struct
 id|ipx_interface_definition
 (brace
@@ -130,12 +126,9 @@ id|ipx_node
 id|IPX_NODE_LEN
 )braket
 suffix:semicolon
-DECL|typedef|ipx_interface_definition
 )brace
-id|ipx_interface_definition
 suffix:semicolon
 DECL|struct|ipx_config_data
-r_typedef
 r_struct
 id|ipx_config_data
 (brace
@@ -149,9 +142,7 @@ r_int
 r_char
 id|ipxcfg_auto_create_interfaces
 suffix:semicolon
-DECL|typedef|ipx_config_data
 )brace
-id|ipx_config_data
 suffix:semicolon
 multiline_comment|/*&n; * OLD Route Definition for backward compatibility.&n; */
 DECL|struct|ipx_route_def
@@ -207,39 +198,5 @@ DECL|macro|SIOCIPXCFGDATA
 mdefine_line|#define SIOCIPXCFGDATA&t;&t;(SIOCPROTOPRIVATE+2)
 DECL|macro|SIOCIPXNCPCONN
 mdefine_line|#define SIOCIPXNCPCONN&t;&t;(SIOCPROTOPRIVATE+3)
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/skbuff.h&gt;
-r_extern
-r_int
-id|ipxrtr_route_skb
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ipx_if_offset
-c_func
-(paren
-r_int
-r_int
-id|ipx_net_number
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ipx_remove_socket
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-suffix:semicolon
-macro_line|#endif /* def __KERNEL__ */
 macro_line|#endif /* def _IPX_H_ */
 eof

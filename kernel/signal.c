@@ -984,6 +984,7 @@ macro_line|#if DEBUG_SIG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;SIG dequeue (%s:%d): %d &quot;
 comma
 id|current-&gt;comm
@@ -1086,6 +1087,7 @@ macro_line|#if DEBUG_SIG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; %d -&gt; %d&bslash;n&quot;
 comma
 id|signal_pending
@@ -1942,6 +1944,7 @@ macro_line|#if DEBUG_SIG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;SIG queue (%s:%d): %d &quot;
 comma
 id|t-&gt;comm
@@ -2109,6 +2112,7 @@ macro_line|#if DEBUG_SIG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; %d -&gt; %d&bslash;n&quot;
 comma
 id|signal_pending

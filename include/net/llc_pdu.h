@@ -203,7 +203,6 @@ DECL|macro|FRMR_INFO_SET_PDU_INVALID_Ns_IND
 mdefine_line|#define FRMR_INFO_SET_PDU_INVALID_Ns_IND(info, ind) &bslash;&n;       (info-&gt;ind_bits = ( (info-&gt;ind_bits &amp; 0xEF) | (((u8) ind) &amp; 0x10)))
 multiline_comment|/* Sequence-numbered PDU format (4 bytes in length) */
 DECL|struct|llc_pdu_sn
-r_typedef
 r_struct
 id|llc_pdu_sn
 (brace
@@ -223,13 +222,10 @@ DECL|member|ctrl_2
 id|u8
 id|ctrl_2
 suffix:semicolon
-DECL|typedef|llc_pdu_sn_t
 )brace
-id|llc_pdu_sn_t
 suffix:semicolon
 multiline_comment|/* Un-numbered PDU format (3 bytes in length) */
 DECL|struct|llc_pdu_un
-r_typedef
 r_struct
 id|llc_pdu_un
 (brace
@@ -245,13 +241,10 @@ DECL|member|ctrl_1
 id|u8
 id|ctrl_1
 suffix:semicolon
-DECL|typedef|llc_pdu_un_t
 )brace
-id|llc_pdu_un_t
 suffix:semicolon
 multiline_comment|/* LLC Type 1 XID command/response information fields format */
 DECL|struct|llc_xid_info
-r_typedef
 r_struct
 id|llc_xid_info
 (brace
@@ -270,13 +263,10 @@ id|u8
 id|rw
 suffix:semicolon
 multiline_comment|/* sender receive window */
-DECL|typedef|llc_xid_info_t
 )brace
-id|llc_xid_info_t
 suffix:semicolon
 multiline_comment|/* LLC Type 2 FRMR response information field format */
 DECL|struct|llc_frmr_info
-r_typedef
 r_struct
 id|llc_frmr_info
 (brace
@@ -300,9 +290,7 @@ id|u8
 id|ind_bits
 suffix:semicolon
 multiline_comment|/* indicator bits set with macro */
-DECL|typedef|llc_frmr_info_t
 )brace
-id|llc_frmr_info_t
 suffix:semicolon
 r_extern
 r_void
@@ -655,7 +643,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|llc_pdu_sn_t
+r_struct
+id|llc_pdu_sn
 op_star
 id|prev_pdu
 comma

@@ -760,7 +760,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;bug: kernel timer added twice at %p.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;BUG: kernel timer added twice at %p.&bslash;n&quot;
 comma
 id|__builtin_return_address
 c_func

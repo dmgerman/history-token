@@ -252,6 +252,12 @@ comma
 DECL|enumerator|RTL8129
 id|RTL8129
 comma
+DECL|enumerator|FNW3603TX
+id|FNW3603TX
+comma
+DECL|enumerator|FNW3800TX
+id|FNW3800TX
+comma
 DECL|typedef|board_t
 )brace
 id|board_t
@@ -337,6 +343,18 @@ comma
 l_string|&quot;RealTek RTL8129&quot;
 comma
 id|RTL8129_CAPS
+)brace
+comma
+(brace
+l_string|&quot;Planex FNW-3603-TX 10/100 CardBus&quot;
+comma
+id|RTL8139_CAPS
+)brace
+comma
+(brace
+l_string|&quot;Planex FNW-3800-TX 10/100 CardBus&quot;
+comma
+id|RTL8139_CAPS
 )brace
 comma
 )brace
@@ -494,6 +512,38 @@ comma
 l_int|0
 comma
 id|ALLIED8139
+)brace
+comma
+(brace
+l_int|0x14ea
+comma
+l_int|0xab06
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|FNW3603TX
+)brace
+comma
+(brace
+l_int|0x14ea
+comma
+l_int|0xab07
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|FNW3800TX
 )brace
 comma
 macro_line|#ifdef CONFIG_8139TOO_8129

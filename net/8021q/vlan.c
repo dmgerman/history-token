@@ -228,8 +228,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s %s: can&squot;t create entry in proc filesystem!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;%s: can&squot;t create entry in proc filesystem!&bslash;n&quot;
 comma
 id|VLAN_NAME
 )paren
@@ -595,8 +596,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: VID: %i&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: VID: %i&bslash;n&quot;
 comma
 id|vlan_id
 )paren
@@ -921,9 +923,10 @@ id|printk
 c_func
 (paren
 id|VLAN_ERR
-id|__FUNCTION__
-l_string|&quot;: ERROR:&t;Tried to remove a non-vlan device &quot;
+l_string|&quot;%s: ERROR:&t;Tried to remove a non-vlan device &quot;
 l_string|&quot;with VLAN code, name: %s  priv_flags: %hX&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|dev-&gt;name
 comma
@@ -950,8 +953,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: WARNING: Could not find dev.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: WARNING: Could not find dev.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1013,8 +1017,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: if_name -:%s:-&t;vid: %i&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: if_name -:%s:-&t;vid: %i&bslash;n&quot;
 comma
 id|eth_IF_name
 comma
@@ -1062,8 +1067,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: VLANs not supported on %s.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: VLANs not supported on %s.&bslash;n&quot;
 comma
 id|real_dev-&gt;name
 )paren
@@ -1096,8 +1102,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: Device %s has buggy VLAN hw accel.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Device %s has buggy VLAN hw accel.&bslash;n&quot;
 comma
 id|real_dev-&gt;name
 )paren
@@ -1130,8 +1137,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: Device %s has buggy VLAN hw accel.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Device %s has buggy VLAN hw accel.&bslash;n&quot;
 comma
 id|real_dev-&gt;name
 )paren
@@ -1199,8 +1207,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: ALREADY had VLAN registered&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: ALREADY had VLAN registered&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2210,8 +2219,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: args.cmd: %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: args.cmd: %x&bslash;n&quot;
 comma
 id|args.cmd
 )paren
@@ -2365,8 +2375,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: Unknown VLAN CMD: %x &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Unknown VLAN CMD: %x &bslash;n&quot;
 comma
 id|args.cmd
 )paren

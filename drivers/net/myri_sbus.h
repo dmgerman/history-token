@@ -715,6 +715,10 @@ r_struct
 id|myri_eth
 (brace
 multiline_comment|/* These are frequently accessed, keep together&n;&t; * to obtain good cache hit rates.&n;&t; */
+DECL|member|irq_lock
+id|spinlock_t
+id|irq_lock
+suffix:semicolon
 DECL|member|shmem
 r_struct
 id|myri_shmem

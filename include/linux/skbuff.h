@@ -237,12 +237,6 @@ id|iphdr
 op_star
 id|ipiph
 suffix:semicolon
-DECL|member|spxh
-r_struct
-id|spxhdr
-op_star
-id|spxh
-suffix:semicolon
 DECL|member|raw
 r_int
 r_char
@@ -272,12 +266,6 @@ r_struct
 id|arphdr
 op_star
 id|arph
-suffix:semicolon
-DECL|member|ipxh
-r_struct
-id|ipxhdr
-op_star
-id|ipxh
 suffix:semicolon
 DECL|member|raw
 r_int

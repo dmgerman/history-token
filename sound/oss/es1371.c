@@ -15825,6 +15825,27 @@ comma
 id|JOY_EXTENT
 )paren
 suffix:semicolon
+macro_line|#ifdef ES1371_DEBUG
+r_if
+c_cond
+(paren
+id|s-&gt;ps
+)paren
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;es1371&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+macro_line|#endif
+id|unregister_sound_midi
+c_func
+(paren
+id|s-&gt;dev_midi
+)paren
+suffix:semicolon
 id|err_dev4
 suffix:colon
 id|unregister_sound_dsp
