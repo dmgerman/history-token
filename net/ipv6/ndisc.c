@@ -6548,7 +6548,7 @@ suffix:semicolon
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|buff
 comma
 (paren
 id|dev-&gt;hard_header_len
@@ -6580,7 +6580,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|skb-&gt;h.raw
+id|buff-&gt;h.raw
 op_assign
 (paren
 r_int
@@ -6763,7 +6763,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|skb-&gt;dst
+id|buff-&gt;dst
 op_assign
 id|dst
 suffix:semicolon
@@ -6778,7 +6778,7 @@ suffix:semicolon
 id|dst_output
 c_func
 (paren
-id|skb
+id|buff
 )paren
 suffix:semicolon
 id|ICMP6_INC_STATS
