@@ -62,15 +62,6 @@ id|swapper_space.clean_pages
 )paren
 comma
 dot
-id|locked_pages
-op_assign
-id|LIST_HEAD_INIT
-c_func
-(paren
-id|swapper_space.locked_pages
-)paren
-comma
-dot
 id|a_ops
 op_assign
 op_amp

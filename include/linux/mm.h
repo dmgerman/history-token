@@ -342,8 +342,7 @@ id|mapping
 suffix:semicolon
 multiline_comment|/* The inode (or ...) we belong to. */
 DECL|member|index
-r_int
-r_int
+id|pgoff_t
 id|index
 suffix:semicolon
 multiline_comment|/* Our offset within mapping. */

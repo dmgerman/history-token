@@ -766,12 +766,6 @@ id|list_head
 id|clean_pages
 suffix:semicolon
 multiline_comment|/* list of clean pages */
-DECL|member|locked_pages
-r_struct
-id|list_head
-id|locked_pages
-suffix:semicolon
-multiline_comment|/* list of locked pages */
 DECL|member|nrpages
 r_int
 r_int
