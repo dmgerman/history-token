@@ -4464,7 +4464,6 @@ id|p_s_search_path
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|decrement_bcount
 (paren
@@ -5058,7 +5057,6 @@ id|sd_attrs
 )paren
 suffix:semicolon
 multiline_comment|/* namei.c */
-r_inline
 r_void
 id|set_de_name_and_namelen
 (paren
@@ -5823,7 +5821,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* do_balance.c */
-r_inline
 r_void
 id|do_balance_mark_leaf_dirty
 (paren
