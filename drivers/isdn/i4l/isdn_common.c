@@ -36,36 +36,28 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|dev
-id|isdn_dev
-op_star
-id|dev
-suffix:semicolon
+DECL|variable|isdndev
 r_static
-r_void
-id|isdn_lock_driver
+id|isdn_dev_t
+op_star
+id|isdndev
+suffix:semicolon
+id|isdn_dev_t
+op_star
+DECL|function|get_isdn_dev
+id|get_isdn_dev
 c_func
 (paren
-r_struct
-id|isdn_driver
-op_star
-id|drv
-)paren
-suffix:semicolon
-r_static
 r_void
-id|isdn_unlock_driver
-c_func
-(paren
-r_struct
-id|isdn_driver
-op_star
-id|drv
 )paren
+(brace
+r_return
+id|isdndev
 suffix:semicolon
-multiline_comment|/* ====================================================================== */
+)brace
 multiline_comment|/* Description of hardware-level-driver */
 DECL|struct|isdn_driver
+r_typedef
 r_struct
 id|isdn_driver
 (brace
@@ -147,10 +139,49 @@ r_struct
 id|fsm_inst
 id|fi
 suffix:semicolon
-DECL|variable|driver
+DECL|typedef|isdn_driver_t
 )brace
-id|driver
+id|isdn_driver_t
 suffix:semicolon
+DECL|variable|drivers_lock
+r_static
+id|spinlock_t
+id|drivers_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|drivers
+r_static
+id|isdn_driver_t
+op_star
+id|drivers
+(braket
+id|ISDN_MAX_DRIVERS
+)braket
+suffix:semicolon
+r_static
+r_void
+id|isdn_lock_driver
+c_func
+(paren
+r_struct
+id|isdn_driver
+op_star
+id|drv
+)paren
+suffix:semicolon
+r_static
+r_void
+id|isdn_unlock_driver
+c_func
+(paren
+r_struct
+id|isdn_driver
+op_star
+id|drv
+)paren
+suffix:semicolon
+multiline_comment|/* ====================================================================== */
 r_static
 r_void
 id|drv_destroy
@@ -1382,7 +1413,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;global_flags
+id|isdndev-&gt;global_flags
 op_amp
 id|ISDN_GLOBAL_STOPPED
 )paren
@@ -2011,23 +2042,6 @@ op_star
 id|cmd
 )paren
 suffix:semicolon
-DECL|variable|drivers_lock
-r_static
-id|spinlock_t
-id|drivers_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|variable|drivers
-r_static
-r_struct
-id|isdn_driver
-op_star
-id|drivers
-(braket
-id|ISDN_MAX_DRIVERS
-)braket
-suffix:semicolon
 r_static
 r_int
 DECL|function|isdn_writebuf_skb
@@ -2442,7 +2456,7 @@ suffix:semicolon
 r_int
 id|drvidx
 suffix:semicolon
-id|dev-&gt;global_features
+id|isdndev-&gt;global_features
 op_assign
 l_int|0
 suffix:semicolon
@@ -2495,7 +2509,7 @@ id|ST_DRV_RUNNING
 )paren
 r_continue
 suffix:semicolon
-id|dev-&gt;global_features
+id|isdndev-&gt;global_features
 op_or_assign
 id|drivers
 (braket
@@ -2785,7 +2799,7 @@ c_func
 id|drv
 )paren
 suffix:semicolon
-id|dev-&gt;channels
+id|isdndev-&gt;channels
 op_sub_assign
 id|drv-&gt;channels
 suffix:semicolon
@@ -3656,6 +3670,7 @@ id|c
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#warning FIXME divert interface
 macro_line|#if 0
 r_case
 id|ISDN_STAT_ICALL
@@ -3878,19 +3893,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ISDN_STAT_BCONN
-suffix:colon
-r_break
-suffix:semicolon
-r_case
-id|ISDN_STAT_BHUP
-suffix:colon
-r_break
-suffix:semicolon
-macro_line|#endif
-macro_line|#if 0 
-singleline_comment|// FIXME
-r_case
 id|ISDN_STAT_DISCH
 suffix:colon
 id|save_flags
@@ -4086,7 +4088,7 @@ op_star
 id|drv
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -5896,7 +5898,7 @@ id|infostruct
 op_star
 id|p
 op_assign
-id|dev-&gt;infochain
+id|isdndev-&gt;infochain
 suffix:semicolon
 r_while
 c_loop
@@ -5927,7 +5929,7 @@ c_func
 (paren
 op_amp
 (paren
-id|dev-&gt;info_waitq
+id|isdndev-&gt;info_waitq
 )paren
 )paren
 suffix:semicolon
@@ -5982,7 +5984,7 @@ op_assign
 r_char
 op_star
 )paren
-id|dev-&gt;infochain
+id|isdndev-&gt;infochain
 suffix:semicolon
 id|p
 op_member_access_from_pointer
@@ -5997,7 +5999,7 @@ op_amp
 id|filep-&gt;private_data
 )paren
 suffix:semicolon
-id|dev-&gt;infochain
+id|isdndev-&gt;infochain
 op_assign
 id|p
 suffix:semicolon
@@ -6035,7 +6037,7 @@ id|infostruct
 op_star
 id|p
 op_assign
-id|dev-&gt;infochain
+id|isdndev-&gt;infochain
 suffix:semicolon
 id|infostruct
 op_star
@@ -6081,7 +6083,7 @@ op_assign
 id|p-&gt;next
 suffix:semicolon
 r_else
-id|dev-&gt;infochain
+id|isdndev-&gt;infochain
 op_assign
 (paren
 id|infostruct
@@ -6204,7 +6206,7 @@ c_func
 (paren
 op_amp
 (paren
-id|dev-&gt;info_waitq
+id|isdndev-&gt;info_waitq
 )paren
 )paren
 suffix:semicolon
@@ -6354,7 +6356,7 @@ id|file
 comma
 op_amp
 (paren
-id|dev-&gt;info_waitq
+id|isdndev-&gt;info_waitq
 )paren
 comma
 id|wait
@@ -6754,11 +6756,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;profd
+id|isdndev-&gt;profd
 op_eq
 id|current
 )paren
-id|dev-&gt;profd
+id|isdndev-&gt;profd
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -7317,7 +7319,7 @@ suffix:semicolon
 r_case
 id|IIOCSETVER
 suffix:colon
-id|dev-&gt;net_verbose
+id|isdndev-&gt;net_verbose
 op_assign
 id|arg
 suffix:semicolon
@@ -7327,7 +7329,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;isdn: Verbose-Level is %d&bslash;n&quot;
 comma
-id|dev-&gt;net_verbose
+id|isdndev-&gt;net_verbose
 )paren
 suffix:semicolon
 r_return
@@ -7342,7 +7344,7 @@ c_cond
 id|arg
 )paren
 (brace
-id|dev-&gt;global_flags
+id|isdndev-&gt;global_flags
 op_or_assign
 id|ISDN_GLOBAL_STOPPED
 suffix:semicolon
@@ -7354,7 +7356,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|dev-&gt;global_flags
+id|isdndev-&gt;global_flags
 op_and_assign
 op_complement
 id|ISDN_GLOBAL_STOPPED
@@ -7493,7 +7495,7 @@ suffix:semicolon
 r_case
 id|IIOCSIGPRF
 suffix:colon
-id|dev-&gt;profd
+id|isdndev-&gt;profd
 op_assign
 id|current
 suffix:semicolon
@@ -8182,7 +8184,7 @@ r_char
 op_star
 )paren
 op_amp
-id|dev
+id|isdndev
 comma
 r_sizeof
 (paren
@@ -9129,7 +9131,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;channels
+id|isdndev-&gt;channels
 op_plus
 id|n
 OG
@@ -9150,7 +9152,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|dev-&gt;channels
+id|isdndev-&gt;channels
 op_add_assign
 id|n
 suffix:semicolon
@@ -9167,7 +9169,7 @@ id|isdn_slot
 op_star
 id|n
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -9179,6 +9181,22 @@ id|drv-&gt;slots
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|drv-&gt;slots
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|isdn_slot
+)paren
+op_star
+id|n
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -9253,6 +9271,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Low-level-driver registration&n; */
 macro_line|#if defined(CONFIG_ISDN_DIVERSION) || defined(CONFIG_ISDN_DIVERSION_MODULE)
+multiline_comment|/*&n; * map_drvname&n; */
 DECL|function|map_drvname
 r_static
 r_char
@@ -9283,14 +9302,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 r_return
-id|dev-&gt;drvid
+id|isdndev-&gt;drvid
 (braket
 id|di
 )braket
 suffix:semicolon
 multiline_comment|/* driver name */
 )brace
-multiline_comment|/* map_drvname */
+multiline_comment|/*&n; * map_namedrv&n; */
 DECL|function|map_namedrv
 r_static
 r_int
@@ -9344,7 +9363,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* map_namedrv */
+multiline_comment|/*&n; * DIVERT_REG_NAME&n; */
 DECL|function|DIVERT_REG_NAME
 r_int
 id|DIVERT_REG_NAME
@@ -9435,7 +9454,6 @@ id|DIVERT_CMD_ERR
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* DIVERT_REG_NAME */
 DECL|variable|DIVERT_REG_NAME
 id|EXPORT_SYMBOL
 c_func
@@ -9581,7 +9599,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|dev-&gt;global_flags
+id|isdndev-&gt;global_flags
 op_amp
 id|ISDN_GLOBAL_STOPPED
 )paren
@@ -10232,7 +10250,7 @@ id|retval
 r_goto
 id|err_slot_fsm
 suffix:semicolon
-id|dev
+id|isdndev
 op_assign
 id|vmalloc
 c_func
@@ -10240,7 +10258,7 @@ c_func
 r_sizeof
 (paren
 op_star
-id|dev
+id|isdndev
 )paren
 )paren
 suffix:semicolon
@@ -10248,7 +10266,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev
+id|isdndev
 )paren
 (brace
 id|retval
@@ -10263,14 +10281,14 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|dev
+id|isdndev
 comma
 l_int|0
 comma
 r_sizeof
 (paren
 op_star
-id|dev
+id|isdndev
 )paren
 )paren
 suffix:semicolon
@@ -10278,14 +10296,14 @@ id|init_MUTEX
 c_func
 (paren
 op_amp
-id|dev-&gt;sem
+id|isdndev-&gt;sem
 )paren
 suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
 op_amp
-id|dev-&gt;info_waitq
+id|isdndev-&gt;info_waitq
 )paren
 suffix:semicolon
 id|retval
@@ -10424,7 +10442,7 @@ suffix:colon
 id|vfree
 c_func
 (paren
-id|dev
+id|isdndev
 )paren
 suffix:semicolon
 id|err_drv_fsm
@@ -10495,7 +10513,7 @@ suffix:semicolon
 id|vfree
 c_func
 (paren
-id|dev
+id|isdndev
 )paren
 suffix:semicolon
 id|fsm_free

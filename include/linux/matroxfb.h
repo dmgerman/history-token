@@ -33,9 +33,9 @@ mdefine_line|#define MATROXFB_OUTPUT_MODE_MONITOR&t;0x0080
 )brace
 suffix:semicolon
 DECL|macro|MATROXFB_SET_OUTPUT_MODE
-mdefine_line|#define MATROXFB_SET_OUTPUT_MODE&t;_IOW(&squot;n&squot;,0xFA,sizeof(struct matroxioc_output_mode))
+mdefine_line|#define MATROXFB_SET_OUTPUT_MODE&t;_IOW(&squot;n&squot;,0xFA,size_t)
 DECL|macro|MATROXFB_GET_OUTPUT_MODE
-mdefine_line|#define MATROXFB_GET_OUTPUT_MODE&t;_IOWR(&squot;n&squot;,0xFA,sizeof(struct matroxioc_output_mode))
+mdefine_line|#define MATROXFB_GET_OUTPUT_MODE&t;_IOWR(&squot;n&squot;,0xFA,size_t)
 multiline_comment|/* bitfield */
 DECL|macro|MATROXFB_OUTPUT_CONN_PRIMARY
 mdefine_line|#define MATROXFB_OUTPUT_CONN_PRIMARY&t;(1 &lt;&lt; MATROXFB_OUTPUT_PRIMARY)
@@ -45,16 +45,16 @@ DECL|macro|MATROXFB_OUTPUT_CONN_DFP
 mdefine_line|#define MATROXFB_OUTPUT_CONN_DFP&t;(1 &lt;&lt; MATROXFB_OUTPUT_DFP)
 multiline_comment|/* connect these outputs to this framebuffer */
 DECL|macro|MATROXFB_SET_OUTPUT_CONNECTION
-mdefine_line|#define MATROXFB_SET_OUTPUT_CONNECTION&t;_IOW(&squot;n&squot;,0xF8,sizeof(__u32))
+mdefine_line|#define MATROXFB_SET_OUTPUT_CONNECTION&t;_IOW(&squot;n&squot;,0xF8,size_t)
 multiline_comment|/* which outputs are connected to this framebuffer */
 DECL|macro|MATROXFB_GET_OUTPUT_CONNECTION
-mdefine_line|#define MATROXFB_GET_OUTPUT_CONNECTION&t;_IOR(&squot;n&squot;,0xF8,sizeof(__u32))
+mdefine_line|#define MATROXFB_GET_OUTPUT_CONNECTION&t;_IOR(&squot;n&squot;,0xF8,size_t)
 multiline_comment|/* which outputs are available for this framebuffer */
 DECL|macro|MATROXFB_GET_AVAILABLE_OUTPUTS
-mdefine_line|#define MATROXFB_GET_AVAILABLE_OUTPUTS&t;_IOR(&squot;n&squot;,0xF9,sizeof(__u32))
+mdefine_line|#define MATROXFB_GET_AVAILABLE_OUTPUTS&t;_IOR(&squot;n&squot;,0xF9,size_t)
 multiline_comment|/* which outputs exist on this framebuffer */
 DECL|macro|MATROXFB_GET_ALL_OUTPUTS
-mdefine_line|#define MATROXFB_GET_ALL_OUTPUTS&t;_IOR(&squot;n&squot;,0xFB,sizeof(__u32))
+mdefine_line|#define MATROXFB_GET_ALL_OUTPUTS&t;_IOR(&squot;n&squot;,0xFB,size_t)
 DECL|enum|matroxfb_ctrl_id
 r_enum
 id|matroxfb_ctrl_id

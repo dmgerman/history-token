@@ -11,17 +11,17 @@ mdefine_line|#define I8K_BIOS_VERSION&t;_IOR (&squot;i&squot;, 0x80, 4)
 DECL|macro|I8K_MACHINE_ID
 mdefine_line|#define I8K_MACHINE_ID&t;&t;_IOR (&squot;i&squot;, 0x81, 16)
 DECL|macro|I8K_POWER_STATUS
-mdefine_line|#define I8K_POWER_STATUS&t;_IOR (&squot;i&squot;, 0x82, sizeof(int))
+mdefine_line|#define I8K_POWER_STATUS&t;_IOR (&squot;i&squot;, 0x82, size_t)
 DECL|macro|I8K_FN_STATUS
-mdefine_line|#define I8K_FN_STATUS&t;&t;_IOR (&squot;i&squot;, 0x83, sizeof(int))
+mdefine_line|#define I8K_FN_STATUS&t;&t;_IOR (&squot;i&squot;, 0x83, size_t)
 DECL|macro|I8K_GET_TEMP
-mdefine_line|#define I8K_GET_TEMP&t;&t;_IOR (&squot;i&squot;, 0x84, sizeof(int))
+mdefine_line|#define I8K_GET_TEMP&t;&t;_IOR (&squot;i&squot;, 0x84, size_t)
 DECL|macro|I8K_GET_SPEED
-mdefine_line|#define I8K_GET_SPEED&t;&t;_IOWR(&squot;i&squot;, 0x85, sizeof(int))
+mdefine_line|#define I8K_GET_SPEED&t;&t;_IOWR(&squot;i&squot;, 0x85, size_t)
 DECL|macro|I8K_GET_FAN
-mdefine_line|#define I8K_GET_FAN&t;&t;_IOWR(&squot;i&squot;, 0x86, sizeof(int))
+mdefine_line|#define I8K_GET_FAN&t;&t;_IOWR(&squot;i&squot;, 0x86, size_t)
 DECL|macro|I8K_SET_FAN
-mdefine_line|#define I8K_SET_FAN&t;&t;_IOWR(&squot;i&squot;, 0x87, sizeof(int)*2)
+mdefine_line|#define I8K_SET_FAN&t;&t;_IOWR(&squot;i&squot;, 0x87, size_t)
 DECL|macro|I8K_FAN_LEFT
 mdefine_line|#define I8K_FAN_LEFT&t;&t;1
 DECL|macro|I8K_FAN_RIGHT

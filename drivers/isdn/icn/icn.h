@@ -379,13 +379,13 @@ r_struct
 id|timer_list
 id|st_timer
 suffix:semicolon
-multiline_comment|/* Timer for Status-Polls           */
+multiline_comment|/* Timer for Status-Polls     */
 DECL|member|rb_timer
 r_struct
 id|timer_list
 id|rb_timer
 suffix:semicolon
-multiline_comment|/* Timer for B-Channel-Polls        */
+multiline_comment|/* Timer for B-Channel-Polls  */
 DECL|member|rcvbuf
 id|u_char
 id|rcvbuf
@@ -396,7 +396,7 @@ id|ICN_BCH
 l_int|4096
 )braket
 suffix:semicolon
-multiline_comment|/* B-Channel-Receive-Buffers        */
+multiline_comment|/* B-Channel-Receive-Buffers  */
 DECL|member|rcvidx
 r_int
 id|rcvidx
@@ -482,16 +482,16 @@ id|xskb
 id|ICN_BCH
 )braket
 suffix:semicolon
-multiline_comment|/* Current transmitted skb          */
+multiline_comment|/* Current transmitted skb   */
+DECL|member|spqueue
 r_struct
 id|sk_buff_head
-DECL|member|spqueue
 id|spqueue
 (braket
 id|ICN_BCH
 )braket
 suffix:semicolon
-multiline_comment|/* Sendqueue                        */
+multiline_comment|/* Sendqueue         */
 DECL|member|regname
 r_char
 id|regname
@@ -507,7 +507,12 @@ id|xmit_lock
 id|ICN_BCH
 )braket
 suffix:semicolon
-multiline_comment|/* Semaphore for pollbchan_send()   */
+multiline_comment|/* Semaphore for pollbchan_send()*/
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* protect critical operations      */
 DECL|typedef|icn_card
 )brace
 id|icn_card
@@ -518,6 +523,11 @@ r_typedef
 r_struct
 id|icn_dev
 (brace
+DECL|member|devlock
+id|spinlock_t
+id|devlock
+suffix:semicolon
+multiline_comment|/* spinlock to protect this struct  */
 DECL|member|memaddr
 r_int
 r_int
