@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  ATI Mach64 GX Support&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &quot;mach64.h&quot;
