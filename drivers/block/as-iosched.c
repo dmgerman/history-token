@@ -25,10 +25,10 @@ DECL|macro|default_write_expire
 mdefine_line|#define default_write_expire (HZ / 4)
 multiline_comment|/*&n; * read_batch_expire describes how long we will allow a stream of reads to&n; * persist before looking to see whether it is time to switch over to writes.&n; */
 DECL|macro|default_read_batch_expire
-mdefine_line|#define default_read_batch_expire (HZ / 4)
+mdefine_line|#define default_read_batch_expire (HZ / 2)
 multiline_comment|/*&n; * write_batch_expire describes how long we want a stream of writes to run for.&n; * This is not a hard limit, but a target we set for the auto-tuning thingy.&n; * See, the problem is: we can send a lot of writes to disk cache / TCQ in&n; * a short amount of time...&n; */
 DECL|macro|default_write_batch_expire
-mdefine_line|#define default_write_batch_expire (HZ / 16)
+mdefine_line|#define default_write_batch_expire (HZ / 8)
 multiline_comment|/*&n; * max time we may wait to anticipate a read (default around 6ms)&n; */
 DECL|macro|default_antic_expire
 mdefine_line|#define default_antic_expire ((HZ / 150) ? HZ / 150 : 1)
