@@ -657,13 +657,6 @@ id|flags.donotify
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Get device online again. */
-id|ccw_device_online
-c_func
-(paren
-id|cdev
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * The machine won&squot;t give us any notification by machine check if a chpid has&n; * been varied online on the SE so we have to find out by magic (i. e. driving&n; * the channel subsystem to device selection and updating our path masks).&n; */
 r_static
@@ -931,11 +924,18 @@ id|state
 op_eq
 id|DEV_STATE_DISCONNECTED_SENSE_ID
 )paren
+(brace
+id|ccw_device_handle_oper
+c_func
+(paren
+id|cdev
+)paren
+suffix:semicolon
 id|notify
 op_assign
 l_int|1
 suffix:semicolon
-r_else
+)brace
 multiline_comment|/* fill out sense information */
 id|cdev-&gt;id
 op_assign
@@ -982,6 +982,33 @@ id|senseid.dev_model
 comma
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|notify
+)paren
+(brace
+multiline_comment|/* Get device online again. */
+id|ccw_device_online
+c_func
+(paren
+id|cdev
+)paren
+suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|wait_q
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Issue device info message. */
 id|CIO_DEBUG
 c_func
@@ -1043,22 +1070,6 @@ id|state
 op_assign
 id|state
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|notify
-op_logical_and
-id|state
-op_eq
-id|DEV_STATE_OFFLINE
-)paren
-id|ccw_device_handle_oper
-c_func
-(paren
-id|cdev
-)paren
-suffix:semicolon
-r_else
 id|io_subchannel_recog_done
 c_func
 (paren
