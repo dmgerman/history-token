@@ -1491,7 +1491,7 @@ multiline_comment|/* IRQ10 PCI */
 id|PIRQ_PENALTY_PCI_AVAILABLE
 comma
 multiline_comment|/* IRQ11 PCI */
-id|PIRQ_PENALTY_ISA_TYPICAL
+id|PIRQ_PENALTY_ISA_USED
 comma
 multiline_comment|/* IRQ12 mouse */
 id|PIRQ_PENALTY_ISA_USED
@@ -1733,13 +1733,41 @@ id|i
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * if active found, use it; else pick entry from end of possible list.&n;&t; */
+multiline_comment|/*&n;&t; * forget active IRQ that is not in possible list&n;&t; */
 r_if
 c_cond
 (paren
 id|i
-op_ne
+op_eq
 id|link-&gt;irq.possible_count
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|acpi_strict
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;_CRS %d not found&quot;
+l_string|&quot; in _PRS&bslash;n&quot;
+comma
+id|link-&gt;irq.active
+)paren
+suffix:semicolon
+id|link-&gt;irq.active
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * if active found, use it; else pick entry from end of possible list.&n;&t; */
+r_if
+c_cond
+(paren
+id|link-&gt;irq.active
 )paren
 (brace
 id|irq
@@ -1757,22 +1785,6 @@ id|link-&gt;irq.possible_count
 op_minus
 l_int|1
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|acpi_strict
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|PREFIX
-l_string|&quot;_CRS %d not found&quot;
-l_string|&quot; in _PRS&bslash;n&quot;
-comma
-id|link-&gt;irq.active
-)paren
 suffix:semicolon
 )brace
 r_if
