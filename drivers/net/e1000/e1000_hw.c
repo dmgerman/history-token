@@ -389,7 +389,7 @@ id|e1000_82540
 )paren
 (brace
 multiline_comment|/* Wait for reset to complete */
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|10
@@ -2398,7 +2398,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|10
@@ -3138,7 +3138,7 @@ op_minus
 id|E1000_ERR_PHY
 suffix:semicolon
 )brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|1
@@ -5249,7 +5249,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|2
@@ -5296,7 +5296,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|2
@@ -5402,7 +5402,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|2
@@ -5720,7 +5720,7 @@ id|i
 op_increment
 )paren
 (brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|10
@@ -5984,7 +5984,7 @@ id|i
 op_increment
 )paren
 (brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|10
@@ -6262,7 +6262,7 @@ id|hw
 )paren
 suffix:semicolon
 )brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|150
@@ -6349,7 +6349,7 @@ op_minus
 id|E1000_ERR_PHY
 suffix:semicolon
 )brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|1
@@ -6427,7 +6427,7 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|2
@@ -7114,7 +7114,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -7165,7 +7165,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -7264,7 +7264,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -7554,7 +7554,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -7581,7 +7581,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -7608,7 +7608,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -7636,7 +7636,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -7690,7 +7690,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -7718,7 +7718,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -7893,7 +7893,7 @@ l_int|100
 id|i
 op_increment
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|5
@@ -8399,7 +8399,7 @@ l_int|100
 id|i
 op_increment
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|5
@@ -8603,7 +8603,7 @@ id|E1000_EECD_DO
 r_break
 suffix:semicolon
 )brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50

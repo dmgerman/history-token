@@ -8,8 +8,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-DECL|macro|usec_delay
-mdefine_line|#define usec_delay(x) udelay(x)
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#ifndef msec_delay
 DECL|macro|msec_delay
 mdefine_line|#define msec_delay(x)&t;do { if(in_interrupt()) { &bslash;&n;&t;&t;&t;&t;/* Don&squot;t mdelay in interrupt context! */ &bslash;&n;&t;                &t;BUG(); &bslash;&n;&t;&t;&t;} else { &bslash;&n;&t;&t;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE); &bslash;&n;&t;&t;&t;&t;schedule_timeout((x * HZ)/1000); &bslash;&n;&t;&t;&t;} } while(0)
