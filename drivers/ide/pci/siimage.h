@@ -1,12 +1,9 @@
 macro_line|#ifndef SIIMAGE_H
 DECL|macro|SIIMAGE_H
 mdefine_line|#define SIIMAGE_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|DISPLAY_SIIMAGE_TIMINGS
-mdefine_line|#define DISPLAY_SIIMAGE_TIMINGS
 DECL|macro|SIIMAGE_VIRTUAL_DMAPIO
 macro_line|#undef SIIMAGE_VIRTUAL_DMAPIO
 DECL|macro|SIIMAGE_BUFFERED_TASKFILE
