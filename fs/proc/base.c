@@ -4201,7 +4201,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* dentry stuff */
-multiline_comment|/*&n; *&t;Exceptional case: normally we are not allowed to unhash a busy&n; * directory. In this case, however, we can do it - no aliasing problems&n; * due to the way we treat inodes.&n; */
+multiline_comment|/*&n; *&t;Exceptional case: normally we are not allowed to unhash a busy&n; * directory. In this case, however, we can do it - no aliasing problems&n; * due to the way we treat inodes.&n; *&n; * Rewrite the inode&squot;s ownerships here because the owning task may have&n; * performed a setuid(), etc.&n; */
 DECL|function|pid_revalidate
 r_static
 r_int
@@ -4232,9 +4232,30 @@ id|dentry-&gt;d_inode
 )paren
 )paren
 )paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|task
+op_assign
+id|proc_task
+c_func
+(paren
+id|dentry-&gt;d_inode
+)paren
+suffix:semicolon
+id|dentry-&gt;d_inode-&gt;i_uid
+op_assign
+id|task-&gt;euid
+suffix:semicolon
+id|dentry-&gt;d_inode-&gt;i_gid
+op_assign
+id|task-&gt;egid
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 id|d_drop
 c_func
 (paren
@@ -4354,6 +4375,14 @@ c_func
 (paren
 id|files
 )paren
+suffix:semicolon
+id|dentry-&gt;d_inode-&gt;i_uid
+op_assign
+id|task-&gt;euid
+suffix:semicolon
+id|dentry-&gt;d_inode-&gt;i_gid
+op_assign
+id|task-&gt;egid
 suffix:semicolon
 r_return
 l_int|1
