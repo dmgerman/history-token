@@ -2444,19 +2444,6 @@ id|short_name
 )paren
 )paren
 suffix:semicolon
-op_star
-(paren
-id|short_name
-op_plus
-id|strlen
-c_func
-(paren
-id|short_name
-)paren
-)paren
-op_assign
-l_char|&squot; &squot;
-suffix:semicolon
 id|kobject_set_name
 c_func
 (paren
