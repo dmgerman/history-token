@@ -17,6 +17,8 @@ macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
@@ -3937,6 +3939,85 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+multiline_comment|/* It&squot;s optimal to keep kswapds on the same CPUs as their memory, but&n;   not required for correctness.  So if the last cpu in a node goes&n;   away, we get changed to run anywhere: as the first one comes back,&n;   restore their cpu bindings. */
+DECL|function|cpu_callback
+r_static
+r_int
+id|__devinit
+id|cpu_callback
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nfb
+comma
+r_int
+r_int
+id|action
+comma
+r_void
+op_star
+id|hcpu
+)paren
+(brace
+id|pg_data_t
+op_star
+id|pgdat
+suffix:semicolon
+id|cpumask_t
+id|mask
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|action
+op_eq
+id|CPU_ONLINE
+)paren
+(brace
+id|for_each_pgdat
+c_func
+(paren
+id|pgdat
+)paren
+(brace
+id|mask
+op_assign
+id|node_to_cpumask
+c_func
+(paren
+id|pgdat-&gt;node_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|any_online_cpu
+c_func
+(paren
+id|mask
+)paren
+op_ne
+id|NR_CPUS
+)paren
+multiline_comment|/* One of our CPUs online: restore mask */
+id|set_cpus_allowed
+c_func
+(paren
+id|pgdat-&gt;kswapd
+comma
+id|mask
+)paren
+suffix:semicolon
+)brace
+)brace
+r_return
+id|NOTIFY_OK
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_HOTPLUG_CPU */
 DECL|function|kswapd_init
 r_static
 r_int
@@ -3961,6 +4042,11 @@ c_func
 (paren
 id|pgdat
 )paren
+id|pgdat-&gt;kswapd
+op_assign
+id|find_task_by_pid
+c_func
+(paren
 id|kernel_thread
 c_func
 (paren
@@ -3970,12 +4056,21 @@ id|pgdat
 comma
 id|CLONE_KERNEL
 )paren
+)paren
 suffix:semicolon
 id|total_memory
 op_assign
 id|nr_free_pagecache_pages
 c_func
 (paren
+)paren
+suffix:semicolon
+id|hotcpu_notifier
+c_func
+(paren
+id|cpu_callback
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
