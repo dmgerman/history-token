@@ -5368,7 +5368,6 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 r_int
-r_int
 id|amount
 op_assign
 l_int|0

@@ -10,8 +10,9 @@ r_int
 r_int
 id|cycles_t
 suffix:semicolon
+multiline_comment|/*&n; * Something low processor frequency like 100Mhz but &n; * yet multiple of HZ to avoid truncation in some formulas.&n; */
 DECL|macro|CLOCK_TICK_RATE
-mdefine_line|#define CLOCK_TICK_RATE&t;&t;100000000
+mdefine_line|#define CLOCK_TICK_RATE&t;&t;(HZ * 100000UL)
 r_static
 r_inline
 id|cycles_t

@@ -366,6 +366,16 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_possible
+c_func
+(paren
+id|i
+)paren
+)paren
 id|cpu_rq
 c_func
 (paren
@@ -384,6 +394,7 @@ id|i
 )paren
 )braket
 suffix:semicolon
+)brace
 )brace
 macro_line|#else /* !CONFIG_NUMA */
 DECL|macro|nr_running_init

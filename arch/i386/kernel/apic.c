@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
@@ -548,6 +547,11 @@ l_int|0x23
 )paren
 suffix:semicolon
 )brace
+id|enable_apic_mode
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|disconnect_bsp_APIC
 r_void

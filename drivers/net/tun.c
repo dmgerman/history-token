@@ -561,8 +561,8 @@ r_sizeof
 id|pi
 )paren
 )paren
-OL
-l_int|0
+OG
+id|len
 )paren
 r_return
 op_minus

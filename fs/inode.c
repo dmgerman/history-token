@@ -59,14 +59,6 @@ id|hlist_head
 op_star
 id|inode_hashtable
 suffix:semicolon
-r_static
-id|HLIST_HEAD
-c_func
-(paren
-id|anon_hash_chain
-)paren
-suffix:semicolon
-multiline_comment|/* for inodes with NULL i_sb */
 multiline_comment|/*&n; * A simple spinlock to protect the list manipulations.&n; *&n; * NOTE! You also have to own the lock if you change&n; * the i_state of an inode while it is in use..&n; */
 DECL|variable|inode_lock
 id|spinlock_t
@@ -3114,7 +3106,7 @@ c_func
 id|iget_locked
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;__insert_inode_hash - hash an inode&n; *&t;@inode: unhashed inode&n; *&t;@hashval: unsigned long value used to locate this object in the&n; *&t;&t;inode_hashtable.&n; *&n; *&t;Add an inode to the inode hash for this superblock. If the inode&n; *&t;has no superblock it is added to a separate anonymous chain.&n; */
+multiline_comment|/**&n; *&t;__insert_inode_hash - hash an inode&n; *&t;@inode: unhashed inode&n; *&t;@hashval: unsigned long value used to locate this object in the&n; *&t;&t;inode_hashtable.&n; *&n; *&t;Add an inode to the inode hash for this superblock.&n; */
 DECL|function|__insert_inode_hash
 r_void
 id|__insert_inode_hash
@@ -3133,16 +3125,6 @@ id|hashval
 r_struct
 id|hlist_head
 op_star
-id|head
-op_assign
-op_amp
-id|anon_hash_chain
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|inode-&gt;i_sb
-)paren
 id|head
 op_assign
 id|inode_hashtable
@@ -3179,7 +3161,7 @@ id|inode_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;remove_inode_hash - remove an inode from the hash&n; *&t;@inode: inode to unhash&n; *&n; *&t;Remove an inode from the superblock or anonymous hash.&n; */
+multiline_comment|/**&n; *&t;remove_inode_hash - remove an inode from the hash&n; *&t;@inode: inode to unhash&n; *&n; *&t;Remove an inode from the superblock.&n; */
 DECL|function|remove_inode_hash
 r_void
 id|remove_inode_hash

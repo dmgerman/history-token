@@ -40,6 +40,11 @@ id|sk_buff
 op_star
 id|skb
 comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_int
 r_int
 id|type
@@ -462,6 +467,11 @@ id|sk_buff
 op_star
 id|skb
 comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_int
 r_int
 id|type
@@ -470,13 +480,6 @@ r_uint8
 id|daddr
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-id|skb-&gt;dev
-suffix:semicolon
 r_int
 id|hdr_size
 op_assign

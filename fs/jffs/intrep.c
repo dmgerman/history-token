@@ -7721,9 +7721,9 @@ id|iovec_cnt
 comma
 id|pos
 )paren
+)paren
 OL
 l_int|0
-)paren
 )paren
 (brace
 id|jffs_fmfree_partly

@@ -338,13 +338,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-r_extern
-r_struct
-id|sys_device
-id|device_lapic
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|check_nmi_watchdog
