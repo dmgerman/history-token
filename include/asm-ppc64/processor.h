@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
@@ -1052,8 +1053,9 @@ id|last_task_used_math
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* 64-bit user address space is 41-bits (2TBs user VM) */
+multiline_comment|/* Subtract PGDIR_SIZE to work around a bug in free_pgtables */
 DECL|macro|TASK_SIZE_USER64
-mdefine_line|#define TASK_SIZE_USER64 (0x0000020000000000UL)
+mdefine_line|#define TASK_SIZE_USER64 (0x0000020000000000UL - PGDIR_SIZE)
 multiline_comment|/* &n; * 32-bit user address space is 4GB - 1 page &n; * (this 1 page is needed so referencing of 0xFFFFFFFF generates EFAULT&n; */
 DECL|macro|TASK_SIZE_USER32
 mdefine_line|#define TASK_SIZE_USER32 (0x0000000100000000UL - (1*PAGE_SIZE))
