@@ -4,6 +4,7 @@ macro_line|#include &lt;ctype.h&gt;
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;string.h&gt;
+macro_line|#include &lt;time.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 DECL|macro|LKC_DIRECT_LINK
 mdefine_line|#define LKC_DIRECT_LINK
@@ -1294,6 +1295,9 @@ r_char
 op_star
 id|str
 suffix:semicolon
+id|time_t
+id|now
+suffix:semicolon
 id|dirname
 (braket
 l_int|0
@@ -1500,6 +1504,29 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|sym
+op_assign
+id|sym_lookup
+c_func
+(paren
+l_string|&quot;KERNELRELEASE&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|sym_calc_value
+c_func
+(paren
+id|sym
+)paren
+suffix:semicolon
+id|time
+c_func
+(paren
+op_amp
+id|now
+)paren
+suffix:semicolon
 id|fprintf
 c_func
 (paren
@@ -1507,7 +1534,22 @@ id|out
 comma
 l_string|&quot;#&bslash;n&quot;
 l_string|&quot;# Automatically generated make config: don&squot;t edit&bslash;n&quot;
+l_string|&quot;# Linux kernel version: %s&bslash;n&quot;
+l_string|&quot;# %s&quot;
 l_string|&quot;#&bslash;n&quot;
+comma
+id|sym_get_string_value
+c_func
+(paren
+id|sym
+)paren
+comma
+id|ctime
+c_func
+(paren
+op_amp
+id|now
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1522,8 +1564,23 @@ id|out_h
 comma
 l_string|&quot;/*&bslash;n&quot;
 l_string|&quot; * Automatically generated C config: don&squot;t edit&bslash;n&quot;
+l_string|&quot; * Linux kernel version: %s&bslash;n&quot;
+l_string|&quot; * %s&quot;
 l_string|&quot; */&bslash;n&quot;
 l_string|&quot;#define AUTOCONF_INCLUDED&bslash;n&quot;
+comma
+id|sym_get_string_value
+c_func
+(paren
+id|sym
+)paren
+comma
+id|ctime
+c_func
+(paren
+op_amp
+id|now
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -30,6 +30,7 @@ id|inputfd
 suffix:semicolon
 DECL|variable|bix
 r_int
+r_int
 id|bix
 suffix:semicolon
 multiline_comment|/* buf index */
@@ -115,7 +116,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|get_pattern
-r_int
+r_void
 id|get_pattern
 (paren
 r_int
@@ -253,7 +254,7 @@ id|pat_count
 suffix:semicolon
 )brace
 DECL|function|search_pattern
-r_int
+r_void
 id|search_pattern
 (paren
 r_void
@@ -392,13 +393,16 @@ id|fprintf
 (paren
 id|stderr
 comma
-l_string|&quot;filesize: %d&bslash;n&quot;
+l_string|&quot;filesize: %ld&bslash;n&quot;
 comma
 id|err
 OL
 l_int|0
 ques
 c_cond
+(paren
+r_int
+)paren
 id|err
 suffix:colon
 id|stat.st_size
@@ -625,7 +629,7 @@ l_int|0
 suffix:semicolon
 id|printf
 (paren
-l_string|&quot;%d&bslash;n&quot;
+l_string|&quot;%ld&bslash;n&quot;
 comma
 id|firstloc
 )paren
@@ -634,7 +638,7 @@ id|fprintf
 (paren
 id|stderr
 comma
-l_string|&quot;%d&bslash;n&quot;
+l_string|&quot;%ld&bslash;n&quot;
 comma
 id|firstloc
 )paren

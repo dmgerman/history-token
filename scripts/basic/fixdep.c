@@ -9,7 +9,7 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;limits.h&gt;
 macro_line|#include &lt;ctype.h&gt;
-macro_line|#include &lt;netinet/in.h&gt;
+macro_line|#include &lt;arpa/inet.h&gt;
 DECL|macro|INT_CONF
 mdefine_line|#define INT_CONF ntohl(0x434f4e46)
 DECL|macro|INT_ONFI
