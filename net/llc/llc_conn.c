@@ -2751,10 +2751,10 @@ id|atomic_t
 id|llc_sock_nr
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/**&n; *&t;llc_release_conns - releases all connections of a sap&n; *&t;@sap: sap to release its connections&n; *&n; *&t;Releases all connections of a sap. Returns 0 if all actions complete&n; *&t;successfully, nonzero otherwise&n; */
-DECL|function|llc_release_connections
+multiline_comment|/**&n; *&t;llc_release_sockets - releases all sockets in a sap&n; *&t;@sap: sap to release its sockets&n; *&n; *&t;Releases all connections of a sap. Returns 0 if all actions complete&n; *&t;successfully, nonzero otherwise&n; */
+DECL|function|llc_release_sockets
 r_int
-id|llc_release_connections
+id|llc_release_sockets
 c_func
 (paren
 r_struct

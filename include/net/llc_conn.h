@@ -510,5 +510,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|llc_release_sockets
+c_func
+(paren
+r_struct
+id|llc_sap
+op_star
+id|sap
+)paren
+suffix:semicolon
 macro_line|#endif /* LLC_CONN_H */
 eof
