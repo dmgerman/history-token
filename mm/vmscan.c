@@ -903,6 +903,23 @@ op_minus
 id|nr_pages
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_KSWAPD
+)paren
+id|mod_page_state
+c_func
+(paren
+id|kswapd_steal
+comma
+id|nr_pages_in
+op_minus
+id|nr_pages
+)paren
+suffix:semicolon
 id|mod_page_state
 c_func
 (paren
@@ -1963,7 +1980,7 @@ suffix:semicolon
 id|mod_page_state
 c_func
 (paren
-id|pgscan
+id|pgrefill
 comma
 id|nr_pages_in
 op_minus
@@ -2739,6 +2756,8 @@ multiline_comment|/*&n;&t; * Tell the memory management that we&squot;re a &quot
 id|tsk-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
+op_or
+id|PF_KSWAPD
 suffix:semicolon
 multiline_comment|/*&n;&t; * Kswapd main loop.&n;&t; */
 r_for

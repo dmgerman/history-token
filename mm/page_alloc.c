@@ -4726,7 +4726,11 @@ l_string|&quot;pgmajfault&quot;
 comma
 l_string|&quot;pgscan&quot;
 comma
+l_string|&quot;pgrefill&quot;
+comma
 l_string|&quot;pgsteal&quot;
+comma
+l_string|&quot;kswapd_steal&quot;
 comma
 l_string|&quot;pageoutrun&quot;
 comma
