@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;drivers/pci/setup-bus.c&n; *&n; * Extruded from code
 multiline_comment|/*&n; * Nov 2000, Ivan Kokshaysky &lt;ink@jurassic.park.msu.ru&gt;&n; *&t;     PCI-PCI bridges cleanup, sorted resource allocation.&n; * Feb 2002, Ivan Kokshaysky &lt;ink@jurassic.park.msu.ru&gt;&n; *&t;     Converted to allocation in 3 passes, which gives&n; *&t;     tighter packing. Prefetchable range support.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -20,7 +21,7 @@ DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x, a)&t;&t;(((x) + (a) - 1) &amp; ~((a) - 1))
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|pbus_assign_resources_sorted
 id|pbus_assign_resources_sorted
 c_func
@@ -227,7 +228,7 @@ suffix:semicolon
 multiline_comment|/* Initialize bridges with base/limit values we have collected.&n;   PCI-to-PCI Bridge Architecture Specification rev. 1.1 (1998)&n;   requires that if there is no I/O ports or memory behind the&n;   bridge, corresponding range must be turned off by writing base&n;   value greater than limit to the bridge&squot;s base/limit registers.  */
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|pci_setup_bridge
 id|pci_setup_bridge
 c_func
@@ -661,7 +662,7 @@ suffix:semicolon
 multiline_comment|/* Check whether the bridge supports optional I/O and&n;   prefetchable memory ranges. If not, the respective&n;   base/limit registers must be read-only and read as 0. */
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|pci_bridge_check_ranges
 id|pci_bridge_check_ranges
 c_func
@@ -873,7 +874,7 @@ suffix:semicolon
 multiline_comment|/* Sizing the IO windows of the PCI-PCI bridge is trivial,&n;   since these windows have 4K granularity and the IO ranges&n;   of non-bridge PCI devices are limited to 256 bytes.&n;   We must be careful with the ISA aliasing though. */
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|pbus_size_io
 id|pbus_size_io
 c_func
@@ -1108,7 +1109,7 @@ suffix:semicolon
 multiline_comment|/* Calculate the size of the bus and minimal alignment which&n;   guarantees that all child resources fit in this size. */
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|pbus_size_mem
 id|pbus_size_mem
 c_func
@@ -1525,7 +1526,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_void
-id|__init
+id|__devinit
 DECL|function|pbus_size_bridges
 id|pbus_size_bridges
 c_func
@@ -1646,8 +1647,15 @@ id|type
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pbus_size_bridges
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pbus_size_bridges
+)paren
+suffix:semicolon
 r_void
-id|__init
+id|__devinit
 DECL|function|pbus_assign_resources
 id|pbus_assign_resources
 c_func
@@ -1751,6 +1759,13 @@ id|b
 suffix:semicolon
 )brace
 )brace
+DECL|variable|pbus_assign_resources
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pbus_assign_resources
+)paren
+suffix:semicolon
 r_void
 id|__init
 DECL|function|pci_assign_unassigned_resources

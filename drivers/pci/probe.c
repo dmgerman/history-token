@@ -1327,7 +1327,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * If it&squot;s a bridge, configure it and scan the bus behind it.&n; * For CardBus bridges, we don&squot;t scan behind as the devices will&n; * be handled by the bridge driver itself.&n; *&n; * We need to process bridges in two passes -- first we scan those&n; * already configured by the BIOS and after we are done with all of&n; * them, we proceed to assigning numbers to the remaining buses in&n; * order to avoid overlaps between old and new bus numbers.&n; */
 DECL|function|pci_scan_bridge
-r_static
 r_int
 id|__devinit
 id|pci_scan_bridge
@@ -2358,7 +2357,7 @@ op_assign
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Link the device to both the global PCI device chain and&n;&t;&t; * the per-bus list of devices and call /sbin/hotplug if we&n;&t;&t; * should.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Link the device to both the global PCI device chain and&n;&t;&t; * the per-bus list of devices and add the /proc entry.&n;&t;&t; */
 id|pci_insert_device
 (paren
 id|dev
@@ -2913,6 +2912,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_scan_bus
+)paren
+suffix:semicolon
+DECL|variable|pci_scan_bridge
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_scan_bridge
 )paren
 suffix:semicolon
 macro_line|#endif
