@@ -1176,7 +1176,7 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;%08x  %08x %08x %08x %08x %08x %08x %08x  %08x %08x %08x %08x %08x %08x %08x &bslash;n&quot;
+l_string|&quot;%08x  %08x %08x %08x %08x %08x %08x %08x  %08x %08x %08x %08x %08x %08x %08x %08x %08x &bslash;n&quot;
 comma
 id|dst_entries
 comma
@@ -1319,6 +1319,26 @@ id|i
 )paren
 op_member_access_from_pointer
 id|gc_dst_overflow
+comma
+id|per_cpu_ptr
+c_func
+(paren
+id|rt_cache_stat
+comma
+id|i
+)paren
+op_member_access_from_pointer
+id|in_hlist_search
+comma
+id|per_cpu_ptr
+c_func
+(paren
+id|rt_cache_stat
+comma
+id|i
+)paren
+op_member_access_from_pointer
+id|out_hlist_search
 )paren
 suffix:semicolon
 )brace
@@ -7906,6 +7926,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|RT_CACHE_STAT_INC
+c_func
+(paren
+id|in_hlist_search
+)paren
+suffix:semicolon
 )brace
 id|rcu_read_unlock
 c_func
@@ -9394,6 +9420,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|RT_CACHE_STAT_INC
+c_func
+(paren
+id|out_hlist_search
+)paren
+suffix:semicolon
 )brace
 id|rcu_read_unlock
 c_func
