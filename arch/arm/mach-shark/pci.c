@@ -49,6 +49,17 @@ r_return
 l_int|255
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|__init
+id|via82c505_preinit
+c_func
+(paren
+r_void
+op_star
+id|sysdata
+)paren
+suffix:semicolon
 DECL|variable|__initdata
 r_struct
 id|hw_pci
