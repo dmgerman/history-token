@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -13,9 +14,6 @@ macro_line|#include &lt;sound/mpu401.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
-macro_line|#ifndef LINUX_2_2
-macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t es1938_t
@@ -555,7 +553,7 @@ id|snd_info_entry_t
 op_star
 id|proc_entry
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 DECL|member|gameport
 r_struct
 id|gameport
@@ -6571,7 +6569,7 @@ op_star
 id|chip
 )paren
 (brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_if
 c_cond
 (paren
@@ -8364,7 +8362,7 @@ l_string|&quot;es1938: unable to initialize MPU-401&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 id|chip-&gt;gameport.io
 op_assign
 id|chip-&gt;game_port

@@ -6,13 +6,11 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/cs46xx.h&gt;
-macro_line|#ifndef LINUX_2_2
-macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;cs46xx_lib.h&quot;
 macro_line|#include &quot;dsp_spos.h&quot;
@@ -11797,7 +11795,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * gameport interface&n; */
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 DECL|struct|snd_cs46xx_gameport
 r_typedef
 r_struct
@@ -12302,7 +12300,7 @@ id|gp-&gt;info
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* LINUX_2_2 */
+macro_line|#else
 DECL|function|snd_cs46xx_gameport
 r_void
 id|__devinit
@@ -12315,7 +12313,7 @@ id|chip
 )paren
 (brace
 )brace
-macro_line|#endif /* !LINUX_2_2 */
+macro_line|#endif /* CONFIG_GAMEPORT */
 multiline_comment|/*&n; *  proc interface&n; */
 DECL|function|snd_cs46xx_io_read
 r_static
@@ -12906,7 +12904,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_if
 c_cond
 (paren

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -15,9 +16,6 @@ macro_line|#include &lt;sound/opl3.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
-macro_line|#ifndef LINUX_2_2
-macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -4852,7 +4850,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * joystick support&n; */
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 DECL|struct|snd_cs4281_gameport
 r_typedef
 r_struct
@@ -5363,7 +5361,10 @@ id|gp-&gt;info
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* !LINUX_2_2 */
+macro_line|#else
+DECL|macro|snd_cs4281_gameport
+mdefine_line|#define snd_cs4281_gameport(chip) /*NOP*/
+macro_line|#endif /* CONFIG_GAMEPORT || CONFIG_GAMEPORT_MODULE */
 multiline_comment|/*&n;&n; */
 DECL|function|snd_cs4281_free
 r_static
@@ -5376,7 +5377,7 @@ op_star
 id|chip
 )paren
 (brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_if
 c_cond
 (paren
@@ -8675,14 +8676,12 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_2
 id|snd_cs4281_gameport
 c_func
 (paren
 id|chip
 )paren
 suffix:semicolon
-macro_line|#endif
 id|strcpy
 c_func
 (paren

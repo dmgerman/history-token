@@ -754,10 +754,6 @@ id|rfile-&gt;output
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|rmidi
 op_assign
 id|snd_rawmidi_devices
@@ -1596,10 +1592,6 @@ id|rmidi-&gt;open_mutex
 suffix:semicolon
 id|__error1
 suffix:colon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -2450,10 +2442,6 @@ c_func
 id|rmidi-&gt;card-&gt;module
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

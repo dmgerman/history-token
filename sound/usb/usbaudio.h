@@ -404,5 +404,9 @@ macro_line|#ifndef usb_pipe_needs_resubmit
 DECL|macro|usb_pipe_needs_resubmit
 mdefine_line|#define usb_pipe_needs_resubmit(pipe) 1
 macro_line|#endif
+macro_line|#ifndef snd_usb_complete_callback
+DECL|macro|snd_usb_complete_callback
+mdefine_line|#define snd_usb_complete_callback(x) (x)
+macro_line|#endif
 macro_line|#endif /* __USBAUDIO_H */
 eof

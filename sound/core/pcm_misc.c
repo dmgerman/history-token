@@ -1616,6 +1616,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
+r_break
+suffix:semicolon
 )brace
 r_case
 l_int|32

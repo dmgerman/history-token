@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -14,9 +15,6 @@ macro_line|#include &lt;sound/opl3.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
-macro_line|#ifndef LINUX_2_2
-macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -726,7 +724,7 @@ id|snd_kcontrol_t
 op_star
 id|master_volume
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 DECL|member|gameport
 r_struct
 id|gameport
@@ -6996,7 +6994,7 @@ op_star
 id|sonic
 )paren
 (brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_if
 c_cond
 (paren
@@ -9136,7 +9134,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 id|sonic-&gt;gameport.io
 op_assign
 id|sonic-&gt;game_port

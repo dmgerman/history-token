@@ -8074,10 +8074,6 @@ id|dsp_map
 id|cardnum
 )braket
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|pcm
 op_assign
 id|snd_pcm_devices
@@ -8480,10 +8476,6 @@ id|file
 suffix:semicolon
 id|__error1
 suffix:colon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -8615,10 +8607,6 @@ comma
 id|file
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

@@ -1150,6 +1150,8 @@ r_struct
 id|module
 op_star
 id|module
+op_assign
+id|card-&gt;module
 suffix:semicolon
 r_if
 c_cond
@@ -1159,8 +1161,6 @@ id|try_module_get
 c_func
 (paren
 id|module
-op_assign
-id|card-&gt;module
 )paren
 )paren
 (brace

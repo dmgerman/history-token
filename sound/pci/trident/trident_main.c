@@ -6,14 +6,12 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/trident.h&gt;
 macro_line|#include &lt;sound/asoundef.h&gt;
-macro_line|#ifndef LINUX_2_2
-macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t trident_t
@@ -12889,7 +12887,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * gameport interface&n; */
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 DECL|struct|snd_trident_gameport
 r_typedef
 r_struct
@@ -13407,7 +13405,7 @@ id|chip
 )paren
 (brace
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_GAMEPORT */
 multiline_comment|/*&n; *  SiS reset routine&n; */
 DECL|function|snd_trident_sis_reset
 r_static
@@ -15619,7 +15617,7 @@ op_star
 id|trident
 )paren
 (brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_if
 c_cond
 (paren

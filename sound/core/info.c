@@ -1137,10 +1137,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1706,10 +1702,6 @@ id|entry-&gt;module
 suffix:semicolon
 id|__error1
 suffix:colon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|up
 c_func
 (paren
@@ -1898,10 +1890,6 @@ c_func
 id|entry-&gt;module
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|snd_magic_kfree
 c_func
 (paren
