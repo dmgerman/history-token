@@ -95,10 +95,6 @@ op_assign
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|bmiba
 op_plus
 l_int|0x02
@@ -109,10 +105,6 @@ op_assign
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|bmiba
 op_plus
 l_int|0x0a
@@ -746,7 +738,8 @@ op_star
 id|hwif
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|bmide
 op_assign
 id|pci_resource_start
