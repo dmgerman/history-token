@@ -19,6 +19,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -42,6 +43,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -152,6 +154,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -621,6 +624,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -1105,9 +1109,9 @@ r_return
 id|i
 suffix:semicolon
 )brace
-DECL|function|proc_readlink
 r_static
 r_int
+DECL|function|proc_readlink
 id|proc_readlink
 c_func
 (paren
@@ -1117,6 +1121,7 @@ op_star
 id|dentry
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma

@@ -931,7 +931,7 @@ id|cpufreq_gov_performance
 suffix:semicolon
 DECL|macro|CPUFREQ_DEFAULT_GOVERNOR
 mdefine_line|#define CPUFREQ_DEFAULT_GOVERNOR&t;&amp;cpufreq_gov_performance
-macro_line|#elif CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE
+macro_line|#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE)
 r_extern
 r_struct
 id|cpufreq_governor
