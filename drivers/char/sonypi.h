@@ -15,7 +15,8 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
-macro_line|#include &quot;linux/sonypi.h&quot;
+macro_line|#include &lt;linux/kfifo.h&gt;
+macro_line|#include &lt;linux/sonypi.h&gt;
 multiline_comment|/* type1 models use those */
 DECL|macro|SONYPI_IRQ_PORT
 mdefine_line|#define SONYPI_IRQ_PORT&t;&t;&t;0x8034
@@ -1211,49 +1212,6 @@ l_int|0
 suffix:semicolon
 DECL|macro|SONYPI_BUF_SIZE
 mdefine_line|#define SONYPI_BUF_SIZE&t;128
-DECL|struct|sonypi_queue
-r_struct
-id|sonypi_queue
-(brace
-DECL|member|head
-r_int
-r_int
-id|head
-suffix:semicolon
-DECL|member|tail
-r_int
-r_int
-id|tail
-suffix:semicolon
-DECL|member|len
-r_int
-r_int
-id|len
-suffix:semicolon
-DECL|member|s_lock
-id|spinlock_t
-id|s_lock
-suffix:semicolon
-DECL|member|proc_list
-id|wait_queue_head_t
-id|proc_list
-suffix:semicolon
-DECL|member|fasync
-r_struct
-id|fasync_struct
-op_star
-id|fasync
-suffix:semicolon
-DECL|member|buf
-r_int
-r_char
-id|buf
-(braket
-id|SONYPI_BUF_SIZE
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* We enable input subsystem event forwarding if the input &n; * subsystem is compiled in, but only if sonypi is not into the&n; * kernel and input as a module... */
 macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
 macro_line|#if ! (defined(CONFIG_SONYPI) &amp;&amp; defined(CONFIG_INPUT_MODULE))
@@ -1311,10 +1269,25 @@ r_struct
 id|semaphore
 id|lock
 suffix:semicolon
-DECL|member|queue
+DECL|member|fifo
 r_struct
-id|sonypi_queue
-id|queue
+id|kfifo
+op_star
+id|fifo
+suffix:semicolon
+DECL|member|fifo_lock
+id|spinlock_t
+id|fifo_lock
+suffix:semicolon
+DECL|member|fifo_proc_list
+id|wait_queue_head_t
+id|fifo_proc_list
+suffix:semicolon
+DECL|member|fifo_async
+r_struct
+id|fasync_struct
+op_star
+id|fifo_async
 suffix:semicolon
 DECL|member|open_count
 r_int
