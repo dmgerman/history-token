@@ -10319,14 +10319,14 @@ id|err
 suffix:semicolon
 )brace
 )def_block
-DECL|variable|matroxfb_list
+r_static
 id|LIST_HEAD
 c_func
 (paren
 id|matroxfb_list
 )paren
 suffix:semicolon
-DECL|variable|matroxfb_driver_list
+r_static
 id|LIST_HEAD
 c_func
 (paren
@@ -12958,6 +12958,7 @@ suffix:semicolon
 macro_line|#ifndef MODULE
 multiline_comment|/* ************************* init in-kernel code ************************** */
 DECL|function|matroxfb_setup
+r_static
 r_int
 id|__init
 id|matroxfb_setup
@@ -14189,6 +14190,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|matroxfb_init
+r_static
 r_int
 id|__init
 id|matroxfb_init

@@ -52,10 +52,6 @@ id|cap_user_data_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/spinlock.h&gt;
-r_extern
-id|spinlock_t
-id|task_capability_lock
-suffix:semicolon
 multiline_comment|/* #define STRICT_CAP_T_TYPECHECKS */
 macro_line|#ifdef STRICT_CAP_T_TYPECHECKS
 DECL|struct|kernel_cap_struct

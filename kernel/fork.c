@@ -126,6 +126,43 @@ op_star
 id|task_struct_cachep
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* SLAB cache for signal_struct structures (tsk-&gt;signal) */
+DECL|variable|signal_cachep
+id|kmem_cache_t
+op_star
+id|signal_cachep
+suffix:semicolon
+multiline_comment|/* SLAB cache for sighand_struct structures (tsk-&gt;sighand) */
+DECL|variable|sighand_cachep
+id|kmem_cache_t
+op_star
+id|sighand_cachep
+suffix:semicolon
+multiline_comment|/* SLAB cache for files_struct structures (tsk-&gt;files) */
+DECL|variable|files_cachep
+id|kmem_cache_t
+op_star
+id|files_cachep
+suffix:semicolon
+multiline_comment|/* SLAB cache for fs_struct structures (tsk-&gt;fs) */
+DECL|variable|fs_cachep
+id|kmem_cache_t
+op_star
+id|fs_cachep
+suffix:semicolon
+multiline_comment|/* SLAB cache for vm_area_struct structures */
+DECL|variable|vm_area_cachep
+id|kmem_cache_t
+op_star
+id|vm_area_cachep
+suffix:semicolon
+multiline_comment|/* SLAB cache for mm_struct structures (tsk-&gt;mm) */
+DECL|variable|mm_cachep
+r_static
+id|kmem_cache_t
+op_star
+id|mm_cachep
+suffix:semicolon
 DECL|function|free_task
 r_void
 id|free_task
@@ -4983,42 +5020,6 @@ r_return
 id|pid
 suffix:semicolon
 )brace
-multiline_comment|/* SLAB cache for signal_struct structures (tsk-&gt;signal) */
-DECL|variable|signal_cachep
-id|kmem_cache_t
-op_star
-id|signal_cachep
-suffix:semicolon
-multiline_comment|/* SLAB cache for sighand_struct structures (tsk-&gt;sighand) */
-DECL|variable|sighand_cachep
-id|kmem_cache_t
-op_star
-id|sighand_cachep
-suffix:semicolon
-multiline_comment|/* SLAB cache for files_struct structures (tsk-&gt;files) */
-DECL|variable|files_cachep
-id|kmem_cache_t
-op_star
-id|files_cachep
-suffix:semicolon
-multiline_comment|/* SLAB cache for fs_struct structures (tsk-&gt;fs) */
-DECL|variable|fs_cachep
-id|kmem_cache_t
-op_star
-id|fs_cachep
-suffix:semicolon
-multiline_comment|/* SLAB cache for vm_area_struct structures */
-DECL|variable|vm_area_cachep
-id|kmem_cache_t
-op_star
-id|vm_area_cachep
-suffix:semicolon
-multiline_comment|/* SLAB cache for mm_struct structures (tsk-&gt;mm) */
-DECL|variable|mm_cachep
-id|kmem_cache_t
-op_star
-id|mm_cachep
-suffix:semicolon
 DECL|function|proc_caches_init
 r_void
 id|__init

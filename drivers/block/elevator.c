@@ -222,6 +222,7 @@ id|elv_try_last_merge
 )paren
 suffix:semicolon
 DECL|function|elevator_find
+r_static
 r_struct
 id|elevator_type
 op_star
@@ -752,6 +753,7 @@ id|e
 suffix:semicolon
 )brace
 DECL|function|elevator_global_init
+r_static
 r_int
 id|elevator_global_init
 c_func

@@ -49,6 +49,7 @@ op_or
 id|CLONE_UNTRACED
 suffix:semicolon
 DECL|variable|hlt_counter
+r_static
 id|atomic_t
 id|hlt_counter
 op_assign

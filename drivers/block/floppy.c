@@ -18938,6 +18938,7 @@ id|drive
 suffix:semicolon
 )brace
 DECL|function|floppy_init
+r_static
 r_int
 id|__init
 id|floppy_init
@@ -20626,6 +20627,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
 DECL|variable|floppy
+r_static
 r_char
 op_star
 id|floppy

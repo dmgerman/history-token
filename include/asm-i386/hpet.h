@@ -98,12 +98,6 @@ mdefine_line|#define HPET_MIN_PERIOD (100000UL)
 r_extern
 r_int
 r_int
-id|hpet_period
-suffix:semicolon
-multiline_comment|/* fsecs / HPET clock */
-r_extern
-r_int
-r_int
 id|hpet_tick
 suffix:semicolon
 multiline_comment|/* hpet clks count per tick */
@@ -158,20 +152,6 @@ r_int
 id|hpet_readl
 c_func
 (paren
-r_int
-r_int
-id|a
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|hpet_writel
-c_func
-(paren
-r_int
-r_int
-id|d
-comma
 r_int
 r_int
 id|a

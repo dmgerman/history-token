@@ -1330,6 +1330,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|isiloader_device
+r_static
 r_struct
 id|miscdevice
 id|isiloader_device

@@ -670,6 +670,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|qnx4_getblk
+r_static
 r_struct
 id|buffer_head
 op_star
@@ -911,6 +912,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|qnx4_get_block
+r_static
 r_int
 id|qnx4_get_block
 c_func
@@ -2188,6 +2190,7 @@ id|qnx4_get_block
 suffix:semicolon
 )brace
 DECL|variable|qnx4_aops
+r_static
 r_struct
 id|address_space_operations
 id|qnx4_aops

@@ -2294,6 +2294,7 @@ multiline_comment|/*&n; * This function sets up the local APIC timer, with a tim
 DECL|macro|APIC_DIVISOR
 mdefine_line|#define APIC_DIVISOR 16
 DECL|function|__setup_APIC_LVTT
+r_static
 r_void
 id|__setup_APIC_LVTT
 c_func
@@ -2575,6 +2576,7 @@ multiline_comment|/*&n; * In this function we calibrate APIC bus clocks to the e
 DECL|macro|TICK_COUNT
 mdefine_line|#define TICK_COUNT 100000000
 DECL|function|calibrate_APIC_clock
+r_static
 r_int
 id|__init
 id|calibrate_APIC_clock

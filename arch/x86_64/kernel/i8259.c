@@ -326,6 +326,7 @@ suffix:semicolon
 )brace
 DECL|macro|shutdown_8259A_irq
 mdefine_line|#define shutdown_8259A_irq&t;disable_8259A_irq
+r_static
 r_void
 id|mask_and_ack_8259A
 c_func
@@ -766,6 +767,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Careful! The 8259A is a fragile beast, it pretty&n; * much _has_ to be done exactly like this (mask it&n; * first, _then_ send the EOI, and the order of EOI&n; * to the two 8259s is important!&n; */
 DECL|function|mask_and_ack_8259A
+r_static
 r_void
 id|mask_and_ack_8259A
 c_func

@@ -408,6 +408,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * Callback function pointers for show and store&n; */
 DECL|variable|seclvlfs_sysfs_ops
+r_static
 r_struct
 id|sysfs_ops
 id|seclvlfs_sysfs_ops
@@ -820,6 +821,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generate sysfs_attr_seclvl */
 DECL|variable|sysfs_attr_seclvl
+r_static
 r_struct
 id|seclvl_attribute
 id|sysfs_attr_seclvl
@@ -1340,6 +1342,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generate sysfs_attr_passwd */
 DECL|variable|sysfs_attr_passwd
+r_static
 r_struct
 id|seclvl_attribute
 id|sysfs_attr_passwd

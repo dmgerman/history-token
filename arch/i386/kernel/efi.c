@@ -48,6 +48,7 @@ id|efi
 )paren
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|efi
 id|efi_phys
@@ -523,6 +524,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
+r_static
 id|efi_status_t
 DECL|function|phys_efi_get_time
 id|phys_efi_get_time
@@ -877,7 +879,9 @@ l_string|&quot;Could not remap the EFI memmap!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#if EFI_DEBUG
 DECL|function|print_efi_memmap
+r_static
 r_void
 id|__init
 id|print_efi_memmap
@@ -952,6 +956,7 @@ id|EFI_PAGE_SHIFT
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif  /*  EFI_DEBUG  */
 multiline_comment|/*&n; * Walks the EFI memory map and calls CALLBACK once for each EFI&n; * memory descriptor that has memory that is available for kernel use.&n; */
 DECL|function|efi_memmap_walk
 r_void

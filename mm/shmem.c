@@ -9995,6 +9995,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|variable|shmem_xattr_security_handler
+r_static
 r_struct
 id|xattr_handler
 id|shmem_xattr_security_handler

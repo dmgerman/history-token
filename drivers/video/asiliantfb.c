@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Built in clock of the 69030 */
 DECL|variable|Fref
+r_static
 r_const
 r_int
 id|Fref
@@ -232,14 +233,6 @@ suffix:semicolon
 )brace
 DECL|macro|write_ar
 mdefine_line|#define write_ar(num, val)&t;mm_write_ar(p, num, val)
-multiline_comment|/*&n; * Exported functions&n; */
-r_int
-id|asiliantfb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|asiliantfb_pci_init
@@ -3389,6 +3382,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|asiliantfb_init
+r_static
 r_int
 id|__init
 id|asiliantfb_init

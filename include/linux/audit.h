@@ -519,28 +519,6 @@ id|ab
 suffix:semicolon
 r_extern
 r_void
-id|audit_log_end_fast
-c_func
-(paren
-r_struct
-id|audit_buffer
-op_star
-id|ab
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|audit_log_end_irq
-c_func
-(paren
-r_struct
-id|audit_buffer
-op_star
-id|ab
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|audit_log_d_path
 c_func
 (paren
@@ -563,42 +541,6 @@ r_struct
 id|vfsmount
 op_star
 id|vfsmnt
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|audit_set_rate_limit
-c_func
-(paren
-r_int
-id|limit
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|audit_set_backlog_limit
-c_func
-(paren
-r_int
-id|limit
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|audit_set_enabled
-c_func
-(paren
-r_int
-id|state
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|audit_set_failure
-c_func
-(paren
-r_int
-id|state
 )paren
 suffix:semicolon
 multiline_comment|/* Private API (for auditsc.c only) */
@@ -652,20 +594,8 @@ DECL|macro|audit_log_format
 mdefine_line|#define audit_log_format(b,f,...) do { ; } while (0)
 DECL|macro|audit_log_end
 mdefine_line|#define audit_log_end(b) do { ; } while (0)
-DECL|macro|audit_log_end_fast
-mdefine_line|#define audit_log_end_fast(b) do { ; } while (0)
-DECL|macro|audit_log_end_irq
-mdefine_line|#define audit_log_end_irq(b) do { ; } while (0)
 DECL|macro|audit_log_d_path
 mdefine_line|#define audit_log_d_path(b,p,d,v) do { ; } while (0)
-DECL|macro|audit_set_rate_limit
-mdefine_line|#define audit_set_rate_limit(l) do { ; } while (0)
-DECL|macro|audit_set_backlog_limit
-mdefine_line|#define audit_set_backlog_limit(l) do { ; } while (0)
-DECL|macro|audit_set_enabled
-mdefine_line|#define audit_set_enabled(s) do { ; } while (0)
-DECL|macro|audit_set_failure
-mdefine_line|#define audit_set_failure(s) do { ; } while (0)
 macro_line|#endif
 macro_line|#endif
 macro_line|#endif

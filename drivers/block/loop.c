@@ -5458,6 +5458,7 @@ id|loop_unregister_transfer
 )paren
 suffix:semicolon
 DECL|function|loop_init
+r_static
 r_int
 id|__init
 id|loop_init
@@ -5877,6 +5878,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 DECL|function|loop_exit
+r_static
 r_void
 id|loop_exit
 c_func

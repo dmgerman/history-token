@@ -341,19 +341,9 @@ suffix:semicolon
 multiline_comment|/* estimated error */
 r_extern
 r_int
-id|time_phase
-suffix:semicolon
-multiline_comment|/* phase offset (scaled us) */
-r_extern
-r_int
 id|time_freq
 suffix:semicolon
 multiline_comment|/* frequency offset (scaled ppm) */
-r_extern
-r_int
-id|time_adj
-suffix:semicolon
-multiline_comment|/* tick adjust (scaled 1 / HZ) */
 r_extern
 r_int
 id|time_reftime

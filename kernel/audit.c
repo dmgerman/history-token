@@ -252,6 +252,28 @@ id|rule
 suffix:semicolon
 )brace
 suffix:semicolon
+r_static
+r_void
+id|audit_log_end_irq
+c_func
+(paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+)paren
+suffix:semicolon
+r_static
+r_void
+id|audit_log_end_fast
+c_func
+(paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+)paren
+suffix:semicolon
 DECL|function|audit_panic
 r_static
 r_void
@@ -575,6 +597,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|audit_set_rate_limit
+r_static
 r_int
 id|audit_set_rate_limit
 c_func
@@ -609,6 +632,7 @@ id|old
 suffix:semicolon
 )brace
 DECL|function|audit_set_backlog_limit
+r_static
 r_int
 id|audit_set_backlog_limit
 c_func
@@ -643,6 +667,7 @@ id|old
 suffix:semicolon
 )brace
 DECL|function|audit_set_enabled
+r_static
 r_int
 id|audit_set_enabled
 c_func
@@ -692,6 +717,7 @@ id|old
 suffix:semicolon
 )brace
 DECL|function|audit_set_failure
+r_static
 r_int
 id|audit_set_failure
 c_func
@@ -2097,6 +2123,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize audit support at boot time. */
 DECL|function|audit_init
+r_static
 r_int
 id|__init
 id|audit_init
@@ -3067,6 +3094,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* The netlink_* functions cannot be called inside an irq context, so&n; * the audit buffer is places on a queue and a tasklet is scheduled to&n; * remove them from the queue outside the irq context.  May be called in&n; * any context. */
 DECL|function|audit_log_end_irq
+r_static
 r_void
 id|audit_log_end_irq
 c_func
@@ -3127,6 +3155,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Send the message in the audit buffer directly to user space.  May not&n; * be called in an irq context. */
 DECL|function|audit_log_end_fast
+r_static
 r_void
 id|audit_log_end_fast
 c_func

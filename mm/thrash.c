@@ -17,6 +17,7 @@ r_int
 id|swap_token_timeout
 suffix:semicolon
 DECL|variable|swap_token_check
+r_static
 r_int
 r_int
 id|swap_token_check

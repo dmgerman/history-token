@@ -1190,6 +1190,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* NULL returned = something went wrong, inform userspace */
 DECL|function|nbd_read_stat
+r_static
 r_struct
 id|request
 op_star
@@ -1497,6 +1498,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|nbd_do_it
+r_static
 r_void
 id|nbd_do_it
 c_func
@@ -1545,6 +1547,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|nbd_clear_que
+r_static
 r_void
 id|nbd_clear_que
 c_func

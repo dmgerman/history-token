@@ -167,7 +167,7 @@ suffix:semicolon
 macro_line|#endif /* PREEMPT &amp;&amp; __smp_processor_id &amp;&amp; DEBUG_PREEMPT */
 macro_line|#ifdef CONFIG_PREEMPT_BKL
 multiline_comment|/*&n; * The &squot;big kernel semaphore&squot;&n; *&n; * This mutex is taken and released recursively by lock_kernel()&n; * and unlock_kernel().  It is transparently dropped and reaquired&n; * over schedule().  It is used to protect legacy code that hasn&squot;t&n; * been migrated to a proper locking design yet.&n; *&n; * Note: code locked by this semaphore will only be serialized against&n; * other code using the same locking facility. The code guarantees that&n; * the task remains on the same CPU.&n; *&n; * Don&squot;t use in new code.&n; */
-DECL|variable|kernel_sem
+r_static
 id|DECLARE_MUTEX
 c_func
 (paren

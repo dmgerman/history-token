@@ -4967,6 +4967,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n;-----------------------------------------------------------------------------------&n;--                               mm_init&n;-----------------------------------------------------------------------------------&n;*/
 DECL|function|mm_init
+r_static
 r_int
 id|__init
 id|mm_init
@@ -5237,6 +5238,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;-----------------------------------------------------------------------------------&n;--                             mm_cleanup&n;-----------------------------------------------------------------------------------&n;*/
 DECL|function|mm_cleanup
+r_static
 r_void
 id|__exit
 id|mm_cleanup

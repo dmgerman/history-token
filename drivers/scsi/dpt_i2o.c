@@ -144,7 +144,7 @@ l_string|&quot;Adaptec Linux I2O RAID Driver&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*============================================================================&n; * Globals&n; *============================================================================&n; */
-DECL|variable|adpt_configuration_lock
+r_static
 id|DECLARE_MUTEX
 c_func
 (paren
