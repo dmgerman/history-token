@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -1784,16 +1785,10 @@ id|DEFAULT_BAUD_RATE
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout before it is safe to send the first HCI packet */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Register HCI device */

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -2808,18 +2809,10 @@ l_int|0x30
 )paren
 suffix:semicolon
 multiline_comment|/* Wait some time */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* Turn FPGA on */
@@ -3028,25 +3021,12 @@ id|REG_RX_CONTROL
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout before it is safe to send the first HCI packet */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+l_int|1250
 )paren
 suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_star
-l_int|5
-)paren
-op_div
-l_int|4
-)paren
-suffix:semicolon
-singleline_comment|// or set it to 3/2
 multiline_comment|/* Register HCI device */
 r_if
 c_cond
