@@ -548,17 +548,6 @@ suffix:semicolon
 multiline_comment|/* descriptor index in the superblock */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * disk operations in a working array:&n; */
-DECL|macro|DISKOP_SPARE_INACTIVE
-mdefine_line|#define DISKOP_SPARE_INACTIVE&t;0
-DECL|macro|DISKOP_SPARE_WRITE
-mdefine_line|#define DISKOP_SPARE_WRITE&t;1
-DECL|macro|DISKOP_SPARE_ACTIVE
-mdefine_line|#define DISKOP_SPARE_ACTIVE&t;2
-DECL|macro|DISKOP_HOT_REMOVE_DISK
-mdefine_line|#define DISKOP_HOT_REMOVE_DISK&t;3
-DECL|macro|DISKOP_HOT_ADD_DISK
-mdefine_line|#define DISKOP_HOT_ADD_DISK&t;4
 DECL|typedef|mdk_personality_t
 r_typedef
 r_struct
@@ -754,12 +743,73 @@ op_star
 id|bdev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Some personalities (RAID-1, RAID-5) can have disks hot-added and&n; * hot-removed. Hot removal is different from failure. (failure marks&n; * a disk inactive, but the disk is still part of the array) The interface&n; * to such operations is the &squot;pers-&gt;diskop()&squot; function, can be NULL.&n; *&n; * the diskop function can change the pointer pointing to the incoming&n; * descriptor, but must do so very carefully. (currently only&n; * SPARE_ACTIVE expects such a change)&n; */
-DECL|member|diskop
+DECL|member|hot_add_disk
 r_int
 (paren
 op_star
-id|diskop
+id|hot_add_disk
+)paren
+(paren
+id|mddev_t
+op_star
+id|mddev
+comma
+id|mdp_disk_t
+op_star
+id|descriptor
+comma
+id|mdk_rdev_t
+op_star
+id|rdev
+)paren
+suffix:semicolon
+DECL|member|hot_remove_disk
+r_int
+(paren
+op_star
+id|hot_remove_disk
+)paren
+(paren
+id|mddev_t
+op_star
+id|mddev
+comma
+r_int
+id|number
+)paren
+suffix:semicolon
+DECL|member|spare_write
+r_int
+(paren
+op_star
+id|spare_write
+)paren
+(paren
+id|mddev_t
+op_star
+id|mddev
+comma
+r_int
+id|number
+)paren
+suffix:semicolon
+DECL|member|spare_inactive
+r_int
+(paren
+op_star
+id|spare_inactive
+)paren
+(paren
+id|mddev_t
+op_star
+id|mddev
+)paren
+suffix:semicolon
+DECL|member|spare_active
+r_int
+(paren
+op_star
+id|spare_active
 )paren
 (paren
 id|mddev_t
@@ -770,9 +820,6 @@ id|mdp_disk_t
 op_star
 op_star
 id|descriptor
-comma
-r_int
-id|state
 )paren
 suffix:semicolon
 DECL|member|sync_request
