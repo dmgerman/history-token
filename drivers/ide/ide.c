@@ -637,10 +637,18 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_IDE_ARM
+id|initializing
+op_assign
+l_int|1
+suffix:semicolon
 id|ide_arm_init
 c_func
 (paren
 )paren
+suffix:semicolon
+id|initializing
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
