@@ -3855,7 +3855,7 @@ id|xprt
 )paren
 )paren
 (brace
-id|spin_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -3878,7 +3878,7 @@ c_func
 id|xprt-&gt;snd_task
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp

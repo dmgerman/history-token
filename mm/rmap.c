@@ -448,11 +448,10 @@ r_int
 r_int
 id|pfn
 op_assign
-id|pte_pfn
+id|page_to_pfn
 c_func
 (paren
-op_star
-id|ptep
+id|page
 )paren
 suffix:semicolon
 r_if
