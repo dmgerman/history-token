@@ -3419,10 +3419,12 @@ comma
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* Position reply write pointer immediately args,&n;&t; * allowing for record length */
+multiline_comment|/* Position reply write pointer immediately after args,&n;&t; * allowing for record length */
 id|rqstp-&gt;rq_resbuf.base
 op_assign
 id|rqstp-&gt;rq_argbuf.base
+op_plus
+l_int|1
 op_plus
 (paren
 id|len
@@ -3475,6 +3477,8 @@ id|len
 op_rshift
 l_int|2
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 id|rqstp-&gt;rq_prot
 op_assign
