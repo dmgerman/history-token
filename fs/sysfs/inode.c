@@ -4,6 +4,7 @@ macro_line|#undef DEBUG
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &quot;sysfs.h&quot;
 r_extern
 r_struct
 id|super_block
@@ -399,6 +400,11 @@ id|dentry
 op_star
 id|victim
 suffix:semicolon
+r_struct
+id|sysfs_dirent
+op_star
+id|sd
+suffix:semicolon
 id|down
 c_func
 (paren
@@ -455,6 +461,10 @@ id|victim-&gt;d_count
 )paren
 )paren
 suffix:semicolon
+id|sd
+op_assign
+id|victim-&gt;d_fsdata
+suffix:semicolon
 id|d_drop
 c_func
 (paren
@@ -474,7 +484,14 @@ id|victim-&gt;d_inode-&gt;i_mode
 id|kobject_put
 c_func
 (paren
-id|victim-&gt;d_fsdata
+id|sd-&gt;s_element
+)paren
+suffix:semicolon
+id|list_del_init
+c_func
+(paren
+op_amp
+id|sd-&gt;s_sibling
 )paren
 suffix:semicolon
 id|simple_unlink
@@ -486,6 +503,13 @@ id|victim
 )paren
 suffix:semicolon
 )brace
+r_else
+id|d_drop
+c_func
+(paren
+id|victim
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Drop reference from sysfs_get_dentry() above.&n;&t;&t; */
 id|dput
 c_func
