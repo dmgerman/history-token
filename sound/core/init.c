@@ -1065,7 +1065,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|snd_info_free_entry
+id|snd_info_unregister
 c_func
 (paren
 id|card-&gt;proc_id
