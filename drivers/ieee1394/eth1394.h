@@ -19,8 +19,8 @@ DECL|macro|ETHER1394_GASP_SPECIFIER_ID_LO
 mdefine_line|#define ETHER1394_GASP_SPECIFIER_ID_LO&t;(ETHER1394_GASP_SPECIFIER_ID &amp; 0xff)
 DECL|macro|ETHER1394_GASP_VERSION
 mdefine_line|#define ETHER1394_GASP_VERSION&t;&t;1
-DECL|macro|ETHER1394_OVERHEAD
-mdefine_line|#define ETHER1394_OVERHEAD (2 * sizeof(quadlet_t))  /* GASP header overhead */
+DECL|macro|ETHER1394_GASP_OVERHEAD
+mdefine_line|#define ETHER1394_GASP_OVERHEAD (2 * sizeof(quadlet_t))  /* GASP header overhead */
 multiline_comment|/* Node set == 64 */
 DECL|macro|NODE_SET
 mdefine_line|#define NODE_SET&t;&t;&t;(ALL_NODES + 1)
@@ -79,10 +79,9 @@ op_star
 id|host
 suffix:semicolon
 multiline_comment|/* The card for this dev&t; */
-DECL|member|max_rec
-r_int
-r_char
-id|max_rec
+DECL|member|maxpayload
+id|u16
+id|maxpayload
 (braket
 id|NODE_SET
 )braket
@@ -97,22 +96,14 @@ id|NODE_SET
 )braket
 suffix:semicolon
 multiline_comment|/* Max speed per node&t;&t; */
-DECL|member|fifo_hi
-id|u16
-id|fifo_hi
+DECL|member|fifo
+id|u64
+id|fifo
 (braket
 id|ALL_NODES
 )braket
 suffix:semicolon
-multiline_comment|/* 16bit hi fifo offset per node */
-DECL|member|fifo_lo
-id|u32
-id|fifo_lo
-(braket
-id|ALL_NODES
-)braket
-suffix:semicolon
-multiline_comment|/* 32bit lo fifo offset per node */
+multiline_comment|/* FIFO offset per node&t;&t; */
 DECL|member|eui
 id|u64
 id|eui
@@ -180,6 +171,39 @@ op_star
 id|dev
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/* Define a fake hardware header format for the networking core.  Note that&n; * header size cannot exceed 16 bytes as that is the size of the header cache.&n; * Also, we do not need the source address in the header so we omit it and&n; * keep the header to under 16 bytes */
+DECL|macro|ETH1394_ALEN
+mdefine_line|#define ETH1394_ALEN (8)
+DECL|macro|ETH1394_HLEN
+mdefine_line|#define ETH1394_HLEN (10)
+DECL|struct|eth1394hdr
+r_struct
+id|eth1394hdr
+(brace
+DECL|member|h_dest
+r_int
+r_char
+id|h_dest
+(braket
+id|ETH1394_ALEN
+)braket
+suffix:semicolon
+multiline_comment|/* destination eth1394 addr&t;*/
+DECL|member|h_proto
+r_int
+r_int
+id|h_proto
+suffix:semicolon
+multiline_comment|/* packet type ID field&t;*/
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|enumerator|ETH1394_GASP
 DECL|enumerator|ETH1394_WRREQ
