@@ -897,7 +897,14 @@ id|bitmap_bh-&gt;b_data
 )paren
 )paren
 (brace
+id|jbd_unlock_bh_state
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
 id|ext3_error
+c_func
 (paren
 id|sb
 comma
@@ -908,6 +915,12 @@ comma
 id|block
 op_plus
 id|i
+)paren
+suffix:semicolon
+id|jbd_lock_bh_state
+c_func
+(paren
+id|bitmap_bh
 )paren
 suffix:semicolon
 id|BUFFER_TRACE
