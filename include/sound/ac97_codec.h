@@ -1638,6 +1638,12 @@ r_int
 id|mask
 suffix:semicolon
 multiline_comment|/* device id bit mask, 0 = accept all */
+DECL|member|codec_id
+r_int
+r_int
+id|codec_id
+suffix:semicolon
+multiline_comment|/* codec id (if any), 0 = accept all */
 DECL|member|name
 r_const
 r_char

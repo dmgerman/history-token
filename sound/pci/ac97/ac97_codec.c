@@ -15065,6 +15065,17 @@ id|ac97-&gt;subsystem_device
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|quirk-&gt;codec_id
+op_logical_and
+id|quirk-&gt;codec_id
+op_ne
+id|ac97-&gt;id
+)paren
+r_continue
+suffix:semicolon
 id|snd_printdd
 c_func
 (paren
