@@ -2514,6 +2514,13 @@ c_func
 id|jiffies
 )paren
 suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
+suffix:semicolon
 DECL|variable|xtime
 id|EXPORT_SYMBOL
 c_func
