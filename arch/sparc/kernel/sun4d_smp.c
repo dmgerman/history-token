@@ -2412,7 +2412,7 @@ multiline_comment|/* And set btfixup... */
 id|BTFIXUPSET_BLACKBOX
 c_func
 (paren
-id|smp_processor_id
+id|hard_smp_processor_id
 comma
 id|smp4d_blackbox_id
 )paren
@@ -2448,7 +2448,7 @@ suffix:semicolon
 id|BTFIXUPSET_CALL
 c_func
 (paren
-id|__smp_processor_id
+id|__hard_smp_processor_id
 comma
 id|__smp4d_processor_id
 comma
