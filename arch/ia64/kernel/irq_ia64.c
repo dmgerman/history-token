@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#ifdef CONFIG_PERFMON
 macro_line|# include &lt;asm/perfmon.h&gt;
 macro_line|#endif
@@ -161,24 +162,20 @@ comma
 id|sp
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Note: if the interrupt happened while executing in&n;&t;&t; * the context switch routine (ia64_switch_to), we may&n;&t;&t; * get a spurious stack overflow here.  This is&n;&t;&t; * because the register and the memory stack are not&n;&t;&t; * switched atomically.&n;&t;&t; */
-id|asm
-(paren
-l_string|&quot;mov %0=ar.bsp&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|bsp
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_BSP
 )paren
 suffix:semicolon
-id|asm
-(paren
-l_string|&quot;mov %0=sp&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|sp
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_SP
 )paren
 suffix:semicolon
 r_if
@@ -249,9 +246,10 @@ macro_line|#endif /* IRQ_DEBUG */
 multiline_comment|/*&n;&t; * Always set TPR to limit maximum interrupt nesting depth to&n;&t; * 16 (without this, it would be ~240, which could easily lead&n;&t; * to kernel stack overflows).&n;&t; */
 id|saved_tpr
 op_assign
-id|ia64_get_tpr
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_TPR
 )paren
 suffix:semicolon
 id|ia64_srlz_d
@@ -278,9 +276,11 @@ id|vector
 )paren
 )paren
 (brace
-id|ia64_set_tpr
+id|ia64_setreg
 c_func
 (paren
+id|_IA64_REG_CR_TPR
+comma
 id|vector
 )paren
 suffix:semicolon
@@ -307,9 +307,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ia64_set_tpr
+id|ia64_setreg
 c_func
 (paren
+id|_IA64_REG_CR_TPR
+comma
 id|saved_tpr
 )paren
 suffix:semicolon
@@ -545,9 +547,10 @@ macro_line|#else
 id|phys_cpu_id
 op_assign
 (paren
-id|ia64_get_lid
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_LID
 )paren
 op_rshift
 l_int|16

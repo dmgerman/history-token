@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &quot;ia32priv.h&quot;
 r_extern
 r_void
@@ -251,71 +252,45 @@ op_star
 id|t
 )paren
 (brace
-r_int
-r_int
-id|eflag
-comma
-id|fsr
-comma
-id|fcr
-comma
-id|fir
-comma
-id|fdr
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;mov %0=ar.eflag;&quot;
-l_string|&quot;mov %1=ar.fsr;&quot;
-l_string|&quot;mov %2=ar.fcr;&quot;
-l_string|&quot;mov %3=ar.fir;&quot;
-l_string|&quot;mov %4=ar.fdr;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|eflag
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|fsr
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|fcr
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|fir
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|fdr
-)paren
-)paren
-suffix:semicolon
 id|t-&gt;thread.eflag
 op_assign
-id|eflag
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_EFLAG
+)paren
 suffix:semicolon
 id|t-&gt;thread.fsr
 op_assign
-id|fsr
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FSR
+)paren
 suffix:semicolon
 id|t-&gt;thread.fcr
 op_assign
-id|fcr
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FCR
+)paren
 suffix:semicolon
 id|t-&gt;thread.fir
 op_assign
-id|fir
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FIR
+)paren
 suffix:semicolon
 id|t-&gt;thread.fdr
 op_assign
-id|fdr
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FDR
+)paren
 suffix:semicolon
 id|ia64_set_kr
 c_func
@@ -411,39 +386,44 @@ id|nr
 )paren
 suffix:semicolon
 multiline_comment|/* TSSD */
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.eflag=%0;&quot;
-l_string|&quot;mov ar.fsr=%1;&quot;
-l_string|&quot;mov ar.fcr=%2;&quot;
-l_string|&quot;mov ar.fir=%3;&quot;
-l_string|&quot;mov ar.fdr=%4;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_EFLAG
+comma
 id|eflag
 )paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+id|ia64_setreg
+c_func
 (paren
+id|_IA64_REG_AR_FSR
+comma
 id|fsr
 )paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+id|ia64_setreg
+c_func
 (paren
+id|_IA64_REG_AR_FCR
+comma
 id|fcr
 )paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+id|ia64_setreg
+c_func
 (paren
+id|_IA64_REG_AR_FIR
+comma
 id|fir
 )paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+id|ia64_setreg
+c_func
 (paren
+id|_IA64_REG_AR_FDR
+comma
 id|fdr
-)paren
 )paren
 suffix:semicolon
 id|current-&gt;thread.old_iob
@@ -856,12 +836,11 @@ r_void
 )paren
 (brace
 multiline_comment|/* initialize global ia32 state - CR0 and CR4 */
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.cflg = %0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
+id|_IA64_REG_AR_CFLAG
+comma
 (paren
 (paren
 (paren

@@ -1,5 +1,18 @@
 multiline_comment|/*&n; * Architecture-specific trap handling.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 05/12/00 grao &lt;goutham.rao@intel.com&gt; : added isr in siginfo for SIGFPE&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
+macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/fpswa.h&gt;
 multiline_comment|/*&n; * fp_emulate() needs to be able to access and update all floating point registers.  Those&n; * saved in pt_regs can be accessed through that structure, but those not saved, will be&n; * accessed directly.  To make this work, we need to ensure that the compiler does not end&n; * up using a preserved floating point register on its own.  The following achieves this&n; * by declaring preserved registers that are not marked as &quot;fixed&quot; as global register&n; * variables.&n; */
+macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#ifdef ASM_SUPPORTED
 r_register
 r_float
 id|f2
@@ -160,17 +173,7 @@ id|asm
 l_string|&quot;f31&quot;
 )paren
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
-macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/fpswa.h&gt;
+macro_line|#endif
 r_extern
 id|spinlock_t
 id|timerlist_lock

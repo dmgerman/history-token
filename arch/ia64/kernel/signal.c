@@ -35,6 +35,8 @@ macro_line|# define PUT_SIGSET(k,u)&t;__put_user((k)-&gt;sig[0], &amp;(u)-&gt;si
 DECL|macro|GET_SIGSET
 macro_line|# define GET_SIGSET(k,u)&t;__get_user((k)-&gt;sig[0], &amp;(u)-&gt;sig[0])
 macro_line|#endif
+macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#ifdef ASM_SUPPORTED
 r_register
 r_float
 id|f16
@@ -163,6 +165,7 @@ id|asm
 l_string|&quot;f31&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_int
 DECL|function|ia64_rt_sigsuspend
 id|ia64_rt_sigsuspend
@@ -1080,10 +1083,10 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|from-&gt;si_value
+id|from-&gt;si_value.sival_ptr
 comma
 op_amp
-id|to-&gt;si_value
+id|to-&gt;si_value.sival_ptr
 )paren
 suffix:semicolon
 r_break

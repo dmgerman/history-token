@@ -1713,9 +1713,10 @@ r_int
 id|dest
 op_assign
 (paren
-id|ia64_get_lid
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_LID
 )paren
 op_rshift
 l_int|16
@@ -2025,9 +2026,10 @@ r_int
 id|dest
 op_assign
 (paren
-id|ia64_get_lid
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_LID
 )paren
 op_rshift
 l_int|16
@@ -2410,9 +2412,10 @@ multiline_comment|/*&n;&t;&t; * Direct the interrupt vector to the current cpu, 
 id|dest
 op_assign
 (paren
-id|ia64_get_lid
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_LID
 )paren
 op_rshift
 l_int|16
@@ -2426,9 +2429,10 @@ multiline_comment|/* direct the interrupt vector to the running cpu id */
 id|dest
 op_assign
 (paren
-id|ia64_get_lid
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_LID
 )paren
 op_rshift
 l_int|16

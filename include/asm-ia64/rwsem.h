@@ -4,6 +4,7 @@ DECL|macro|_ASM_IA64_RWSEM_H
 mdefine_line|#define _ASM_IA64_RWSEM_H
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 multiline_comment|/*&n; * the semaphore definition&n; */
 DECL|struct|rw_semaphore
 r_struct
@@ -160,23 +161,20 @@ id|sem
 r_int
 id|result
 suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;fetchadd4.acq %0=[%1],1&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|result
-)paren
-suffix:colon
-l_string|&quot;r&quot;
+op_assign
+id|ia64_fetchadd4_acq
+c_func
 (paren
+(paren
+r_int
+r_int
+op_star
+)paren
 op_amp
 id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -271,23 +269,21 @@ id|sem
 r_int
 id|result
 suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;fetchadd4.rel %0=[%1],-1&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|result
-)paren
-suffix:colon
-l_string|&quot;r&quot;
+op_assign
+id|ia64_fetchadd4_rel
+c_func
 (paren
+(paren
+r_int
+r_int
+op_star
+)paren
 op_amp
 id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
+comma
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if

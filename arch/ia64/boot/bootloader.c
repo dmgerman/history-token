@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 multiline_comment|/* Simulator system calls: */
 DECL|macro|SSC_CONSOLE_INIT
 mdefine_line|#define SSC_CONSOLE_INIT&t;&t;20
@@ -77,10 +78,27 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#include &quot;../kernel/fw-emu.c&quot;
-multiline_comment|/* This needs to be defined because lib/string.c:strlcat() calls it in case of error... */
-id|asm
+r_extern
+r_void
+id|jmp_to_kernel
+c_func
 (paren
-l_string|&quot;.global printk; printk = 0&quot;
+id|ulong
+id|sp
+comma
+id|ulong
+id|bp
+comma
+id|ulong
+id|e_entry
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__bsw1
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Set a break point on this function so that symbols are available to set breakpoints in&n; * the kernel being debugged.&n; */
@@ -252,32 +270,44 @@ id|arglen
 op_assign
 l_int|0
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;movl gp=__gp;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
+r_extern
+id|__u64
+id|__gp
 suffix:semicolon
-id|asm
-r_volatile
+r_register
+r_int
+r_int
+id|tmp
+op_assign
 (paren
-l_string|&quot;mov sp=%0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+r_int
+r_int
+)paren
+op_amp
 id|stack
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|ia64_setreg
+c_func
+(paren
+id|_IA64_REG_GP
+comma
+id|__gp
 )paren
 suffix:semicolon
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;bsw.1;;&quot;
+id|_IA64_REG_SP
+comma
+id|tmp
+)paren
+suffix:semicolon
+id|__bsw1
+c_func
+(paren
 )paren
 suffix:semicolon
 id|ssc
@@ -810,15 +840,12 @@ l_string|&quot;starting kernel...&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* fake an I/O base address: */
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.k0=%0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_KR0
+comma
 l_int|0xffffc000000UL
-)paren
 )paren
 suffix:semicolon
 id|bp
@@ -853,30 +880,27 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov sp=%2; mov r28=%1; br.sptk.few %0&quot;
-op_scope_resolution
-l_string|&quot;b&quot;
-(paren
-id|e_entry
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|bp
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
+id|tmp
+op_assign
 id|__pa
 c_func
 (paren
 op_amp
 id|stack
 )paren
+suffix:semicolon
+id|jmp_to_kernel
+c_func
+(paren
+id|tmp
+comma
+(paren
+r_int
+r_int
 )paren
+id|bp
+comma
+id|e_entry
 )paren
 suffix:semicolon
 id|cons_write

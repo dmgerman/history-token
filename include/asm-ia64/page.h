@@ -4,6 +4,7 @@ mdefine_line|#define _ASM_IA64_PAGE_H
 multiline_comment|/*&n; * Pagetable related stuff.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 multiline_comment|/*&n; * PAGE_SHIFT determines the actual kernel page size.&n; */
 macro_line|#if defined(CONFIG_IA64_PAGE_SIZE_4KB)
 DECL|macro|PAGE_SHIFT
@@ -232,19 +233,12 @@ suffix:semicolon
 r_int
 id|order
 suffix:semicolon
-id|__asm__
-(paren
-l_string|&quot;getf.exp %0=%1&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|order
-)paren
-suffix:colon
-l_string|&quot;f&quot;
+op_assign
+id|ia64_getf_exp
+c_func
 (paren
 id|d
-)paren
 )paren
 suffix:semicolon
 id|order

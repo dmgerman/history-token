@@ -4,6 +4,7 @@ mdefine_line|#define _ASM_IA64_TIMEX_H
 multiline_comment|/*&n; * Copyright (C) 1998-2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 multiline_comment|/*&n; * 2001/01/18 davidm&t;Removed CLOCK_TICK_RATE.  It makes no sense on IA-64.&n; *&t;&t;&t;Also removed cacheflush_time as it&squot;s entirely unused.&n; */
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 DECL|typedef|cycles_t
 r_typedef
 r_int
@@ -25,15 +26,12 @@ r_void
 id|cycles_t
 id|ret
 suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;mov %0=ar.itc&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|ret
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_ITC
 )paren
 suffix:semicolon
 r_return
