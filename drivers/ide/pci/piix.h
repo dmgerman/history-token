@@ -33,13 +33,13 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 id|ide_pci_host_proc_t
 id|piix_procs
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace
@@ -80,7 +80,7 @@ suffix:semicolon
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|init_chipset_piix
 c_func
 (paren
@@ -115,13 +115,13 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Table of the various PIIX capability blocks&n; *&n; */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 id|ide_pci_device_t
 id|piix_pci_info
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace

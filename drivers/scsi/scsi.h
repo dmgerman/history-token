@@ -1467,13 +1467,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Expecting a CHECK_CONDITION/UNIT_ATTN&n;&t;&t;&t;&t;&t; * because we did a bus reset. */
-DECL|member|device_blocked
-r_int
-id|device_blocked
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Device returned QUEUE_FULL. */
 DECL|member|ten
 r_int
 id|ten
@@ -1495,6 +1488,21 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* unable to process commands because&n;&t;&t;&t;&t;   host busy */
+DECL|member|device_blocked
+r_int
+r_int
+id|device_blocked
+suffix:semicolon
+multiline_comment|/* Device returned QUEUE_FULL. */
+DECL|member|max_device_blocked
+r_int
+r_int
+id|max_device_blocked
+suffix:semicolon
+multiline_comment|/* what device_blocked counts down from  */
+multiline_comment|/* default value if the device doesn&squot;t override */
+DECL|macro|SCSI_DEFAULT_DEVICE_BLOCKED
+mdefine_line|#define SCSI_DEFAULT_DEVICE_BLOCKED&t;3
 singleline_comment|// Flag to allow revalidate to succeed in sd_open
 DECL|member|allow_revalidate
 r_int

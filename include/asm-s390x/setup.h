@@ -26,13 +26,15 @@ r_int
 id|machine_flags
 suffix:semicolon
 DECL|macro|MACHINE_IS_VM
-mdefine_line|#define MACHINE_IS_VM    (machine_flags &amp; 1)
+mdefine_line|#define MACHINE_IS_VM&t;&t;(machine_flags &amp; 1)
 DECL|macro|MACHINE_IS_P390
-mdefine_line|#define MACHINE_IS_P390  (machine_flags &amp; 4)
+mdefine_line|#define MACHINE_IS_P390&t;&t;(machine_flags &amp; 4)
 DECL|macro|MACHINE_HAS_MVPG
-mdefine_line|#define MACHINE_HAS_MVPG (machine_flags &amp; 16)
+mdefine_line|#define MACHINE_HAS_MVPG&t;(machine_flags &amp; 16)
+DECL|macro|MACHINE_HAS_DIAG44
+mdefine_line|#define MACHINE_HAS_DIAG44&t;(machine_flags &amp; 32)
 DECL|macro|MACHINE_HAS_HWC
-mdefine_line|#define MACHINE_HAS_HWC  (!MACHINE_IS_P390)
+mdefine_line|#define MACHINE_HAS_HWC&t;&t;(!MACHINE_IS_P390)
 multiline_comment|/*&n; * Console mode. Override with conmode=&n; */
 r_extern
 r_int

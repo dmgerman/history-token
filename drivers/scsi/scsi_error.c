@@ -3710,6 +3710,10 @@ r_case
 id|QUEUE_FULL
 suffix:colon
 multiline_comment|/*&n;&t;&t; * the case of trying to send too many commands to a&n;&t;&t; * tagged queueing device.&n;&t;&t; */
+r_case
+id|BUSY
+suffix:colon
+multiline_comment|/*&n;&t;&t; * device can&squot;t talk to us at the moment.  Should only&n;&t;&t; * occur (SAM-3) when the task queue is empty, so will cause&n;&t;&t; * the empty queue handling to trigger a stall in the&n;&t;&t; * device.&n;&t;&t; */
 r_return
 id|ADD_TO_MLQUEUE
 suffix:semicolon
@@ -3760,12 +3764,6 @@ suffix:colon
 multiline_comment|/*&n;&t;&t; * who knows?  FIXME(eric)&n;&t;&t; */
 r_return
 id|SUCCESS
-suffix:semicolon
-r_case
-id|BUSY
-suffix:colon
-r_goto
-id|maybe_retry
 suffix:semicolon
 r_case
 id|RESERVATION_CONFLICT

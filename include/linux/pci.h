@@ -490,12 +490,6 @@ DECL|macro|DEVICE_COUNT_RESOURCE
 mdefine_line|#define DEVICE_COUNT_RESOURCE&t;12
 DECL|macro|PCI_ANY_ID
 mdefine_line|#define PCI_ANY_ID (~0)
-DECL|macro|pci_present
-mdefine_line|#define pci_present pcibios_present
-DECL|macro|pci_for_each_dev_reverse
-mdefine_line|#define pci_for_each_dev_reverse(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.prev); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.prev))
-DECL|macro|pci_for_each_bus
-mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
 multiline_comment|/*&n; * The pci_dev structure is used to describe both PCI and ISAPnP devices.&n; */
 DECL|struct|pci_dev
 r_struct
@@ -1209,8 +1203,32 @@ DECL|macro|to_pci_driver
 mdefine_line|#define&t;to_pci_driver(drv) container_of(drv,struct pci_driver, driver)
 multiline_comment|/* these external functions are only available when PCI support is enabled */
 macro_line|#ifdef CONFIG_PCI
+DECL|function|pci_present
+r_static
+r_inline
+r_int
+id|pci_present
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|pci_devices
+)paren
+suffix:semicolon
+)brace
 DECL|macro|pci_for_each_dev
 mdefine_line|#define pci_for_each_dev(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.next); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.next))
+DECL|macro|pci_for_each_dev_reverse
+mdefine_line|#define pci_for_each_dev_reverse(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.prev); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.prev))
+DECL|macro|pci_for_each_bus
+mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;&t;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
 r_void
 id|pcibios_fixup_bus
 c_func
@@ -1305,13 +1323,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Backward compatibility, don&squot;t use in new code! */
-r_int
-id|pcibios_present
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_int
 id|pcibios_read_config_byte
 (paren
@@ -1433,54 +1444,6 @@ comma
 r_int
 r_int
 id|val
-)paren
-suffix:semicolon
-r_int
-id|pcibios_find_class
-(paren
-r_int
-r_int
-id|class_code
-comma
-r_int
-r_int
-id|index
-comma
-r_int
-r_char
-op_star
-id|bus
-comma
-r_int
-r_char
-op_star
-id|dev_fn
-)paren
-suffix:semicolon
-r_int
-id|pcibios_find_device
-(paren
-r_int
-r_int
-id|vendor
-comma
-r_int
-r_int
-id|dev_id
-comma
-r_int
-r_int
-id|index
-comma
-r_int
-r_char
-op_star
-id|bus
-comma
-r_int
-r_char
-op_star
-id|dev_fn
 )paren
 suffix:semicolon
 multiline_comment|/* Generic PCI functions used internally */
@@ -2522,11 +2485,11 @@ multiline_comment|/* Include architecture-dependent settings and functions */
 macro_line|#include &lt;asm/pci.h&gt;
 multiline_comment|/*&n; *  If the system does not have PCI, clearly these return errors.  Define&n; *  these as simple inline functions to avoid hair in drivers.&n; */
 macro_line|#ifndef CONFIG_PCI
-DECL|function|pcibios_present
+DECL|function|pci_present
 r_static
 r_inline
 r_int
-id|pcibios_present
+id|pci_present
 c_func
 (paren
 r_void
@@ -2534,35 +2497,6 @@ r_void
 (brace
 r_return
 l_int|0
-suffix:semicolon
-)brace
-DECL|function|pcibios_find_class
-r_static
-r_inline
-r_int
-id|pcibios_find_class
-(paren
-r_int
-r_int
-id|class_code
-comma
-r_int
-r_int
-id|index
-comma
-r_int
-r_char
-op_star
-id|bus
-comma
-r_int
-r_char
-op_star
-id|dev_fn
-)paren
-(brace
-r_return
-id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 )brace
 DECL|macro|_PCI_NOP

@@ -640,9 +640,18 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Who we notify when we exit. */
+id|retval-&gt;max_host_blocked
+op_assign
+id|tpnt-&gt;max_host_blocked
+ques
+c_cond
+id|tpnt-&gt;max_host_blocked
+suffix:colon
+id|SCSI_DEFAULT_HOST_BLOCKED
+suffix:semicolon
 id|retval-&gt;host_blocked
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|retval-&gt;host_self_blocked
 op_assign

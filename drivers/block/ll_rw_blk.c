@@ -3554,9 +3554,6 @@ id|elevator_exit
 c_func
 (paren
 id|q
-comma
-op_amp
-id|q-&gt;elevator
 )paren
 suffix:semicolon
 id|memset
@@ -3834,8 +3831,6 @@ c_func
 id|q
 comma
 op_amp
-id|q-&gt;elevator
-comma
 id|iosched_deadline
 )paren
 )paren

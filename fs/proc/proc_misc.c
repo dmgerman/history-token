@@ -2041,6 +2041,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
+macro_line|#if !defined(CONFIG_ARCH_S390)
 r_extern
 r_int
 id|show_interrupts
@@ -2181,6 +2182,7 @@ id|single_release
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|function|filesystems_read_proc
 r_static
 r_int
@@ -3285,6 +3287,7 @@ op_amp
 id|proc_partitions_operations
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_ARCH_S390)
 id|create_seq_entry
 c_func
 (paren
@@ -3296,6 +3299,7 @@ op_amp
 id|proc_interrupts_operations
 )paren
 suffix:semicolon
+macro_line|#endif
 id|create_seq_entry
 c_func
 (paren

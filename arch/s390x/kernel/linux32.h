@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/export.h&gt;
-macro_line|#ifdef CONFIG_S390_SUPPORT
 multiline_comment|/* Macro that masks the high order bit of an 32 bit pointer and converts it*/
 multiline_comment|/*       to a 64 bit pointer */
 DECL|macro|A
@@ -618,6 +617,44 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
+DECL|macro|PSW32_MASK_PER
+mdefine_line|#define PSW32_MASK_PER&t;&t;0x40000000UL
+DECL|macro|PSW32_MASK_DAT
+mdefine_line|#define PSW32_MASK_DAT&t;&t;0x04000000UL
+DECL|macro|PSW32_MASK_IO
+mdefine_line|#define PSW32_MASK_IO&t;&t;0x02000000UL
+DECL|macro|PSW32_MASK_EXT
+mdefine_line|#define PSW32_MASK_EXT&t;&t;0x01000000UL
+DECL|macro|PSW32_MASK_KEY
+mdefine_line|#define PSW32_MASK_KEY&t;&t;0x00F00000UL
+DECL|macro|PSW32_MASK_MCHECK
+mdefine_line|#define PSW32_MASK_MCHECK&t;0x00040000UL
+DECL|macro|PSW32_MASK_WAIT
+mdefine_line|#define PSW32_MASK_WAIT&t;&t;0x00020000UL
+DECL|macro|PSW32_MASK_PSTATE
+mdefine_line|#define PSW32_MASK_PSTATE&t;0x00010000UL
+DECL|macro|PSW32_MASK_ASC
+mdefine_line|#define PSW32_MASK_ASC&t;&t;0x0000C000UL
+DECL|macro|PSW32_MASK_CC
+mdefine_line|#define PSW32_MASK_CC&t;&t;0x00003000UL
+DECL|macro|PSW32_MASK_PM
+mdefine_line|#define PSW32_MASK_PM&t;&t;0x00000f00UL
+DECL|macro|PSW32_ADDR_AMODE31
+mdefine_line|#define PSW32_ADDR_AMODE31&t;0x80000000UL
+DECL|macro|PSW32_ADDR_INSN
+mdefine_line|#define PSW32_ADDR_INSN&t;&t;0x7FFFFFFFUL
+DECL|macro|PSW32_BASE_BITS
+mdefine_line|#define PSW32_BASE_BITS&t;&t;0x00080000UL
+DECL|macro|PSW32_ASC_PRIMARY
+mdefine_line|#define PSW32_ASC_PRIMARY&t;0x00000000UL
+DECL|macro|PSW32_ASC_ACCREG
+mdefine_line|#define PSW32_ASC_ACCREG&t;0x00004000UL
+DECL|macro|PSW32_ASC_SECONDARY
+mdefine_line|#define PSW32_ASC_SECONDARY&t;0x00008000UL
+DECL|macro|PSW32_ASC_HOME
+mdefine_line|#define PSW32_ASC_HOME&t;&t;0x0000C000UL
+DECL|macro|PSW32_USER_BITS
+mdefine_line|#define PSW32_USER_BITS&t;(PSW32_BASE_BITS | PSW32_MASK_DAT | PSW32_ASC_HOME | &bslash;&n;&t;&t;&t; PSW32_MASK_IO | PSW32_MASK_EXT | PSW32_MASK_MCHECK | &bslash;&n;&t;&t;&t; PSW32_MASK_PSTATE)
 r_typedef
 r_struct
 (brace
@@ -759,6 +796,5 @@ suffix:semicolon
 multiline_comment|/* mask last for extensibility */
 )brace
 suffix:semicolon
-macro_line|#endif /* !CONFIG_S390_SUPPORT */
 macro_line|#endif /* _ASM_S390X_S390_H */
 eof

@@ -931,12 +931,12 @@ suffix:semicolon
 multiline_comment|/*&n; * fs3270_bh(tubp) -- Perform back-half processing&n; */
 r_static
 r_void
-DECL|function|fs3270_bh
-id|fs3270_bh
+DECL|function|fs3270_tasklet
+id|fs3270_tasklet
 c_func
 (paren
-r_void
-op_star
+r_int
+r_int
 id|data
 )paren
 (brace
@@ -949,6 +949,10 @@ id|tubp
 suffix:semicolon
 id|tubp
 op_assign
+(paren
+id|tub_t
+op_star
+)paren
 id|data
 suffix:semicolon
 id|TUBLOCK

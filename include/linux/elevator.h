@@ -373,8 +373,6 @@ op_star
 comma
 id|elevator_t
 op_star
-comma
-id|elevator_t
 )paren
 suffix:semicolon
 r_extern
@@ -383,9 +381,6 @@ id|elevator_exit
 c_func
 (paren
 id|request_queue_t
-op_star
-comma
-id|elevator_t
 op_star
 )paren
 suffix:semicolon

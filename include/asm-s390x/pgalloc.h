@@ -5,6 +5,8 @@ mdefine_line|#define _S390_PGALLOC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/gfp.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 multiline_comment|/*&n; * Allocate and free page tables. The xxx_kernel() versions are&n; * used to allocate a kernel page table - this turns on ASN bits&n; * if any.&n; */

@@ -2446,7 +2446,7 @@ DECL|function|init_chipset_piix
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|init_chipset_piix
 (paren
 r_struct
@@ -2939,6 +2939,8 @@ id|dev
 comma
 id|d
 )paren
+suffix:semicolon
+id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -22,6 +23,9 @@ DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY     ((unsigned long) 1000000/HZ)
 DECL|macro|CLK_TICKS_PER_JIFFY
 mdefine_line|#define CLK_TICKS_PER_JIFFY ((unsigned long) USECS_PER_JIFFY &lt;&lt; 12)
+multiline_comment|/*&n; * Create a small time difference between the timer interrupts&n; * on the different cpus to avoid lock contention.&n; */
+DECL|macro|CPU_DEVIATION
+mdefine_line|#define CPU_DEVIATION       (smp_processor_id() &lt;&lt; 12)
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE tick
 DECL|variable|jiffies_64
@@ -32,6 +36,11 @@ DECL|variable|ext_int_info_timer
 r_static
 id|ext_int_info_t
 id|ext_int_info_timer
+suffix:semicolon
+DECL|variable|xtime_cc
+r_static
+r_uint64
+id|xtime_cc
 suffix:semicolon
 DECL|variable|init_timer_cc
 r_static
@@ -56,86 +65,54 @@ id|__u64
 id|todval
 comma
 r_struct
-id|timeval
+id|timespec
 op_star
 id|xtime
 )paren
 (brace
-r_const
 r_int
-id|high_bit
-op_assign
-l_int|0x80000000L
-suffix:semicolon
-r_const
 r_int
-id|c_f4240
-op_assign
-l_int|0xf4240L
-suffix:semicolon
-r_const
 r_int
-id|c_7a120
-op_assign
-l_int|0x7a120
+id|sec
 suffix:semicolon
-multiline_comment|/* We have to divide the 64 bit value todval by 4096&n;&t; * (because the 2^12 bit is the one that changes every &n;         * microsecond) and then split it into seconds and&n;         * microseconds. A value of max (2^52-1) divided by&n;         * the value 0xF4240 can yield a max result of approx&n;         * (2^32.068). Thats to big to fit into a signed int&n;&t; *   ... hacking time!&n;         */
-id|asm
-r_volatile
+id|sec
+op_assign
+id|todval
+op_rshift
+l_int|12
+suffix:semicolon
+id|do_div
+c_func
 (paren
-l_string|&quot;L     2,%1&bslash;n&bslash;t&quot;
-l_string|&quot;LR    3,2&bslash;n&bslash;t&quot;
-l_string|&quot;SRL   2,12&bslash;n&bslash;t&quot;
-l_string|&quot;SLL   3,20&bslash;n&bslash;t&quot;
-l_string|&quot;L     4,%O1+4(%R1)&bslash;n&bslash;t&quot;
-l_string|&quot;SRL   4,12&bslash;n&bslash;t&quot;
-l_string|&quot;OR    3,4&bslash;n&bslash;t&quot;
-multiline_comment|/* now R2/R3 contain (todval &gt;&gt; 12) */
-l_string|&quot;SR    4,4&bslash;n&bslash;t&quot;
-l_string|&quot;CL    2,%2&bslash;n&bslash;t&quot;
-l_string|&quot;JL    .+12&bslash;n&bslash;t&quot;
-l_string|&quot;S     2,%2&bslash;n&bslash;t&quot;
-l_string|&quot;L     4,%3&bslash;n&bslash;t&quot;
-l_string|&quot;D     2,%4&bslash;n&bslash;t&quot;
-l_string|&quot;OR    3,4&bslash;n&bslash;t&quot;
-l_string|&quot;ST    2,%O0+4(%R0)&bslash;n&bslash;t&quot;
-l_string|&quot;ST    3,%0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
-op_star
-id|xtime
+id|sec
+comma
+l_int|1000000
 )paren
-suffix:colon
-l_string|&quot;m&quot;
+suffix:semicolon
+id|xtime-&gt;tv_sec
+op_assign
+id|sec
+suffix:semicolon
+id|todval
+op_sub_assign
+(paren
+id|sec
+op_star
+l_int|1000000
+)paren
+op_lshift
+l_int|12
+suffix:semicolon
+id|xtime-&gt;tv_nsec
+op_assign
+(paren
 (paren
 id|todval
+op_star
+l_int|1000
 )paren
-comma
-l_string|&quot;m&quot;
-(paren
-id|c_7a120
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-id|high_bit
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-id|c_f4240
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;3&quot;
-comma
-l_string|&quot;4&quot;
+op_rshift
+l_int|12
 )paren
 suffix:semicolon
 )brace
@@ -154,6 +131,7 @@ id|__u64
 id|now
 suffix:semicolon
 id|asm
+r_volatile
 (paren
 l_string|&quot;STCK 0(%0)&quot;
 suffix:colon
@@ -234,7 +212,9 @@ id|xtime.tv_sec
 suffix:semicolon
 id|usec
 op_assign
-id|xtime.tv_usec
+id|xtime.tv_nsec
+op_div
+l_int|1000
 op_plus
 id|do_gettimeoffset
 c_func
@@ -293,7 +273,7 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-multiline_comment|/* This is revolting. We need to set the xtime.tv_usec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
+multiline_comment|/* This is revolting. We need to set the xtime.tv_nsec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
 id|tv-&gt;tv_usec
 op_sub_assign
 id|do_gettimeoffset
@@ -317,10 +297,15 @@ id|tv-&gt;tv_sec
 op_decrement
 suffix:semicolon
 )brace
-id|xtime
+id|xtime.tv_sec
 op_assign
+id|tv-&gt;tv_sec
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+id|tv-&gt;tv_usec
 op_star
-id|tv
+l_int|1000
 suffix:semicolon
 id|time_adjust
 op_assign
@@ -347,13 +332,47 @@ id|xtime_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
-macro_line|#ifdef CONFIG_SMP
-r_extern
-id|__u16
-id|boot_cpu_addr
+DECL|function|div64_32
+r_static
+r_inline
+id|__u32
+id|div64_32
+c_func
+(paren
+id|__u64
+id|dividend
+comma
+id|__u32
+id|divisor
+)paren
+(brace
+id|register_pair
+id|rp
 suffix:semicolon
-macro_line|#endif
+id|rp.pair
+op_assign
+id|dividend
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;dr %0,%1&quot;
+suffix:colon
+l_string|&quot;+d&quot;
+(paren
+id|rp
+)paren
+suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|divisor
+)paren
+)paren
+suffix:semicolon
+r_return
+id|rp.subreg.odd
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
 DECL|function|do_comparator_interrupt
 r_static
 r_void
@@ -377,18 +396,90 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|irq_enter
-c_func
+id|__u64
+id|tmp
+suffix:semicolon
+id|__u32
+id|ticks
+suffix:semicolon
+multiline_comment|/* Calculate how many ticks have passed. */
+id|asm
+r_volatile
 (paren
-id|cpu
+l_string|&quot;STCK 0(%0)&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 comma
-l_int|0
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * set clock comparator for next tick&n;&t; */
+id|tmp
+op_assign
+id|tmp
+op_minus
+id|S390_lowcore.jiffy_timer
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_ge
+l_int|2
+op_star
+id|CLK_TICKS_PER_JIFFY
+)paren
+(brace
+multiline_comment|/* more than one tick ? */
+id|ticks
+op_assign
+id|div64_32
+c_func
+(paren
+id|tmp
+op_rshift
+l_int|1
+comma
+id|CLK_TICKS_PER_JIFFY
+op_rshift
+l_int|1
+)paren
+suffix:semicolon
 id|S390_lowcore.jiffy_timer
 op_add_assign
 id|CLK_TICKS_PER_JIFFY
+op_star
+(paren
+id|__u64
+)paren
+id|ticks
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ticks
+op_assign
+l_int|1
+suffix:semicolon
+id|S390_lowcore.jiffy_timer
+op_add_assign
+id|CLK_TICKS_PER_JIFFY
+suffix:semicolon
+)brace
+multiline_comment|/* set clock comparator for next tick */
+id|tmp
+op_assign
+id|S390_lowcore.jiffy_timer
+op_plus
+id|CLK_TICKS_PER_JIFFY
+op_plus
+id|CPU_DEVIATION
 suffix:semicolon
 id|asm
 r_volatile
@@ -398,18 +489,17 @@ suffix:colon
 suffix:colon
 l_string|&quot;m&quot;
 (paren
-id|S390_lowcore.jiffy_timer
+id|tmp
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_if
-c_cond
+id|irq_enter
+c_func
 (paren
-id|S390_lowcore.cpu_data.cpu_addr
-op_eq
-id|boot_cpu_addr
 )paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/*&n;&t; * Do not rely on the boot cpu to do the calls to do_timer.&n;&t; * Spread it over all cpus instead.&n;&t; */
 id|write_lock
 c_func
 (paren
@@ -417,6 +507,94 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|S390_lowcore.jiffy_timer
+OG
+id|xtime_cc
+)paren
+(brace
+id|__u32
+id|xticks
+suffix:semicolon
+id|tmp
+op_assign
+id|S390_lowcore.jiffy_timer
+op_minus
+id|xtime_cc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_ge
+l_int|2
+op_star
+id|CLK_TICKS_PER_JIFFY
+)paren
+(brace
+id|xticks
+op_assign
+id|div64_32
+c_func
+(paren
+id|tmp
+op_rshift
+l_int|1
+comma
+id|CLK_TICKS_PER_JIFFY
+op_rshift
+l_int|1
+)paren
+suffix:semicolon
+id|xtime_cc
+op_add_assign
+(paren
+id|__u64
+)paren
+id|xticks
+op_star
+id|CLK_TICKS_PER_JIFFY
+suffix:semicolon
+)brace
+r_else
+(brace
+id|xticks
+op_assign
+l_int|1
+suffix:semicolon
+id|xtime_cc
+op_add_assign
+id|CLK_TICKS_PER_JIFFY
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|xticks
+op_decrement
+)paren
+id|do_timer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|ticks
+op_decrement
+)paren
 id|update_process_times
 c_func
 (paren
@@ -427,29 +605,13 @@ id|regs
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|S390_lowcore.cpu_data.cpu_addr
-op_eq
-id|boot_cpu_addr
-)paren
-(brace
-id|do_timer
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-id|write_unlock
-c_func
-(paren
-op_amp
-id|xtime_lock
-)paren
-suffix:semicolon
-)brace
 macro_line|#else
+r_while
+c_loop
+(paren
+id|ticks
+op_decrement
+)paren
 id|do_timer
 c_func
 (paren
@@ -460,13 +622,10 @@ macro_line|#endif
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start the clock comparator on the current CPU&n; */
+multiline_comment|/*&n; * Start the clock comparator on the current CPU.&n; */
 DECL|function|init_cpu_timer
 r_void
 id|init_cpu_timer
@@ -478,6 +637,9 @@ r_void
 r_int
 r_int
 id|cr0
+suffix:semicolon
+id|__u64
+id|timer
 suffix:semicolon
 multiline_comment|/* allow clock comparator timer interrupt */
 id|asm
@@ -512,20 +674,23 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|S390_lowcore.jiffy_timer
+id|timer
 op_assign
-(paren
-id|__u64
-)paren
-id|jiffies
+id|init_timer_cc
+op_plus
+id|jiffies_64
 op_star
 id|CLK_TICKS_PER_JIFFY
 suffix:semicolon
 id|S390_lowcore.jiffy_timer
+op_assign
+id|timer
+suffix:semicolon
+id|timer
 op_add_assign
-id|init_timer_cc
-op_plus
 id|CLK_TICKS_PER_JIFFY
+op_plus
+id|CPU_DEVIATION
 suffix:semicolon
 id|asm
 r_volatile
@@ -535,7 +700,7 @@ suffix:colon
 suffix:colon
 l_string|&quot;m&quot;
 (paren
-id|S390_lowcore.jiffy_timer
+id|timer
 )paren
 )paren
 suffix:semicolon
@@ -630,6 +795,10 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* set xtime */
+id|xtime_cc
+op_assign
+id|init_timer_cc
+suffix:semicolon
 id|set_time_cc
 op_assign
 id|init_timer_cc

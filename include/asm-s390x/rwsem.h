@@ -22,7 +22,6 @@ c_func
 r_struct
 id|rw_semaphore
 op_star
-id|sem
 )paren
 suffix:semicolon
 r_extern
@@ -35,7 +34,6 @@ c_func
 r_struct
 id|rw_semaphore
 op_star
-id|sem
 )paren
 suffix:semicolon
 r_extern
@@ -43,6 +41,30 @@ r_struct
 id|rw_semaphore
 op_star
 id|rwsem_wake
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+op_star
+id|rwsem_downgrade_wake
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+op_star
+id|rwsem_downgrade_write
 c_func
 (paren
 r_struct
@@ -190,6 +212,75 @@ id|sem
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * trylock for reading -- returns 1 if successful, 0 if contention&n; */
+DECL|function|__down_read_trylock
+r_static
+r_inline
+r_int
+id|__down_read_trylock
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+r_int
+id|old
+comma
+r_new
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: ltgr %1,%0&bslash;n&quot;
+l_string|&quot;   jm   1f&bslash;n&quot;
+l_string|&quot;   aghi %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&bslash;n&quot;
+l_string|&quot;1:&quot;
+suffix:colon
+l_string|&quot;=&amp;d&quot;
+(paren
+id|old
+)paren
+comma
+l_string|&quot;=&amp;d&quot;
+(paren
+r_new
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|RWSEM_ACTIVE_READ_BIAS
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|old
+op_ge
+l_int|0
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * lock for writing&n; */
 DECL|function|__down_write
 r_static
@@ -264,6 +355,69 @@ c_func
 (paren
 id|sem
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * trylock for writing -- returns 1 if successful, 0 if contention&n; */
+DECL|function|__down_write_trylock
+r_static
+r_inline
+r_int
+id|__down_write_trylock
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+r_int
+id|old
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;   lg   %0,0(%1)&bslash;n&quot;
+l_string|&quot;0: ltgr %0,%0&bslash;n&quot;
+l_string|&quot;   jnz  1f&bslash;n&quot;
+l_string|&quot;   csg  %0,%2,0(%1)&bslash;n&quot;
+l_string|&quot;   jl   0b&bslash;n&quot;
+l_string|&quot;1:&quot;
+suffix:colon
+l_string|&quot;=&amp;d&quot;
+(paren
+id|old
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;d&quot;
+(paren
+id|RWSEM_ACTIVE_WRITE_BIAS
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+id|old
+op_eq
+id|RWSEM_UNLOCKED_VALUE
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * unlock after reading&n; */
@@ -430,6 +584,84 @@ op_eq
 l_int|0
 )paren
 id|rwsem_wake
+c_func
+(paren
+id|sem
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * downgrade write lock to read lock&n; */
+DECL|function|__downgrade_write
+r_static
+r_inline
+r_void
+id|__downgrade_write
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+r_int
+id|old
+comma
+r_new
+comma
+id|tmp
+suffix:semicolon
+id|tmp
+op_assign
+op_minus
+id|RWSEM_WAITING_BIAS
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
+l_string|&quot;   ag   %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&quot;
+suffix:colon
+l_string|&quot;=&amp;d&quot;
+(paren
+id|old
+)paren
+comma
+l_string|&quot;=&amp;d&quot;
+(paren
+r_new
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+r_new
+OG
+l_int|1
+)paren
+singleline_comment|// FIXME: is this correct ?!?
+id|rwsem_downgrade_wake
 c_func
 (paren
 id|sem

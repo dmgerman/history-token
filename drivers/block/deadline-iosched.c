@@ -525,11 +525,6 @@ op_star
 id|sort_list
 suffix:semicolon
 r_struct
-id|deadline_rq
-op_star
-id|drq
-suffix:semicolon
-r_struct
 id|request
 op_star
 id|__rq
@@ -652,14 +647,6 @@ c_func
 id|entry
 )paren
 suffix:semicolon
-id|drq
-op_assign
-id|RQ_DATA
-c_func
-(paren
-id|__rq
-)paren
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -680,6 +667,7 @@ id|REQ_CMD
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * it&squot;s not necessary to break here, and in fact it could make&n;&t;&t; * us loose a front merge. emperical evidence shows this to&n;&t;&t; * be a big waste of cycles though, so quit scanning&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -697,12 +685,16 @@ comma
 id|sort_list
 )paren
 )paren
+(brace
 op_star
 id|insert
 op_assign
 op_amp
 id|__rq-&gt;queuelist
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2393,7 +2385,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|deadline_slab_setup
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|deadline_slab_setup

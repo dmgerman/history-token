@@ -1663,6 +1663,31 @@ id|devindex
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Find the devmap for a device corresponding to a block_device.&n; */
+id|dasd_devmap_t
+op_star
+DECL|function|dasd_devmap_from_bdev
+id|dasd_devmap_from_bdev
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+)paren
+(brace
+r_return
+id|dasd_devmap_from_kdev
+c_func
+(paren
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Find the device structure for device number devno. If it does not&n; * exists yet, allocate it. Increase the reference counter in the device&n; * structure and return a pointer to it.&n; */
 id|dasd_device_t
 op_star

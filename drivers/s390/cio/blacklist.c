@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/blacklist.c&n; *   S/390 common I/O routines -- blacklisting of specific devices&n; *   $Revision: 1.5 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; * &t;&t; 15/04/2002 Arnd Bergmann check ranges of user input&n; * &t;&t; 18/04/2002 Arnd Bergmann remove bogus optimization and&n; * &t;&t; &t;&t;&t;  now unnecessary locking&n; * &t;&t; 19/04/2002 Arnd Bergmann cleanup parameter parsing&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/blacklist.c&n; *   S/390 common I/O routines -- blacklisting of specific devices&n; *   $Revision: 1.7 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; * &t;&t; 15/04/2002 Arnd Bergmann check ranges of user input&n; * &t;&t; 18/04/2002 Arnd Bergmann remove bogus optimization and&n; * &t;&t; &t;&t;&t;  now unnecessary locking&n; * &t;&t; 19/04/2002 Arnd Bergmann cleanup parameter parsing&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -371,14 +371,12 @@ id|devno
 )paren
 (brace
 r_return
-(paren
 id|test_bit
 (paren
 id|devno
 comma
 op_amp
 id|bl_dev
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -864,6 +862,7 @@ id|user_len
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
+macro_line|#if 0
 id|CIO_DEBUG
 c_func
 (paren
@@ -876,6 +875,7 @@ comma
 id|buf
 )paren
 suffix:semicolon
+macro_line|#endif
 id|blacklist_parse_proc_parameters
 (paren
 id|buf

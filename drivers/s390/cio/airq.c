@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/airq.c&n; *   S/390 common I/O routines -- special interrupt registration&n; *   currently used only by qdio&n; *&n; *   $Revision: 1.2 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/airq.c&n; *   S/390 common I/O routines -- special interrupt registration&n; *   currently used only by qdio&n; *&n; *   $Revision: 1.3 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -102,9 +102,7 @@ id|dbf_txt
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 r_int
@@ -192,9 +190,7 @@ id|dbf_txt
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 r_void

@@ -1174,7 +1174,7 @@ id|PCI_CLASS_STORAGE_IDE
 )paren
 )paren
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 multiline_comment|/* IT8172 is more than only a IDE controller */
 id|ide_setup_pci_device
@@ -1184,6 +1184,8 @@ id|dev
 comma
 id|d
 )paren
+suffix:semicolon
+id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

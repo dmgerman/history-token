@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/proc.c&n; *   S/390 common I/O routines -- proc file system entries&n; *   $Revision: 1.4 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/03/2002 Cornelia Huck  removed /proc/deviceinfo/&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/proc.c&n; *   S/390 common I/O routines -- proc file system entries&n; *   $Revision: 1.5 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/03/2002 Cornelia Huck  removed /proc/deviceinfo/&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -1165,4 +1165,14 @@ id|__initcall
 id|cio_irq_proc_init
 )paren
 suffix:semicolon
+r_void
+DECL|function|init_irq_proc
+id|init_irq_proc
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* For now, nothing... */
+)brace
 eof

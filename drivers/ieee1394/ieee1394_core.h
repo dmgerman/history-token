@@ -153,7 +153,8 @@ id|semaphore
 id|state_change
 suffix:semicolon
 DECL|member|complete_tq
-id|task_queue
+r_struct
+id|list_head
 id|complete_tq
 suffix:semicolon
 multiline_comment|/* Store jiffies for implementing bus timeouts. */
@@ -170,6 +171,22 @@ l_int|5
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/* add a new task for when a packet completes */
+r_void
+id|hpsb_add_packet_complete_task
+c_func
+(paren
+r_struct
+id|hpsb_packet
+op_star
+id|packet
+comma
+r_struct
+id|tq_struct
+op_star
+id|tq
+)paren
 suffix:semicolon
 DECL|function|driver_packet
 r_static

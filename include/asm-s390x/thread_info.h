@@ -38,13 +38,12 @@ suffix:semicolon
 multiline_comment|/* current CPU */
 DECL|member|preempt_count
 r_int
+r_int
 id|preempt_count
 suffix:semicolon
-multiline_comment|/* 0 =&gt; preemptable, &lt;0 =&gt; BUG */
+multiline_comment|/* 0 =&gt; preemptable */
 )brace
 suffix:semicolon
-DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
 DECL|macro|INIT_THREAD_INFO
 mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;&t;flags:&t;&t;0,&t;&t;&t;&bslash;&n;&t;cpu:&t;&t;0,&t;&t;&t;&bslash;&n;}
@@ -125,5 +124,7 @@ mdefine_line|#define _TIF_USEDFPU&t;&t;(1&lt;&lt;TIF_USEDFPU)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
 macro_line|#endif /* __KERNEL__ */
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 macro_line|#endif /* _ASM_THREAD_INFO_H */
 eof

@@ -4,8 +4,11 @@ mdefine_line|#define _S390_CHECKSUM_H
 multiline_comment|/*&n; *  include/asm-s390/checksum.h&n; *    S390 fast network checksum routines&n; *    see also arch/S390/lib/checksum.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Ulrich Hild        (first version)&n; *               Martin Schwidefsky (heavily optimized CKSM version)&n; *               D.J. Barrow        (third attempt) &n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
+r_static
+r_inline
 r_int
 r_int
+DECL|function|csum_partial
 id|csum_partial
 c_func
 (paren
@@ -22,9 +25,54 @@ r_int
 r_int
 id|sum
 )paren
+(brace
+id|register_pair
+id|rp
 suffix:semicolon
+multiline_comment|/*&n;&t; * Experiments with ethernet and slip connections show that buf&n;&t; * is aligned on either a 2-byte or 4-byte boundary.&n;&t; */
+id|rp.subreg.even
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|buff
+suffix:semicolon
+id|rp.subreg.odd
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|len
+suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;0:  cksm %0,%1&bslash;n&quot;
+multiline_comment|/* do checksum on longs */
+l_string|&quot;    jo   0b&bslash;n&quot;
+suffix:colon
+l_string|&quot;+&amp;d&quot;
+(paren
+id|sum
+)paren
+comma
+l_string|&quot;+&amp;a&quot;
+(paren
+id|rp
+)paren
+suffix:colon
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+r_return
+id|sum
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * csum_partial as an inline function&n; */
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -91,7 +139,7 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * the same as csum_partial, but copies from src while it&n; * checksums&n; *&n; * here even more important to align src and dst on a 32-bit (or even&n; * better 64-bit) boundary&n; */
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -139,7 +187,7 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * the same as csum_partial_copy, but copies from user space.&n; *&n; * here even more important to align src and dst on a 32-bit (or even&n; * better 64-bit) boundary&n; *&n; * Copy from userspace and compute checksum.  If we catch an exception&n; * then zero the rest of the buffer.&n; */
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -221,7 +269,7 @@ id|sum
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -268,19 +316,7 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *      Fold a partial checksum without adding pseudo headers&n; */
-macro_line|#if 1
-r_int
-r_int
-id|csum_fold
-c_func
-(paren
-r_int
-r_int
-id|sum
-)paren
-suffix:semicolon
-macro_line|#else
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -337,9 +373,8 @@ id|sum
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; *&n; */
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -414,7 +449,7 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * computes the checksum of the TCP/UDP pseudo-header&n; * returns a 32-bit checksum&n; */
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -531,7 +566,7 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * computes the checksum of the TCP/UDP pseudo-header&n; * returns a 16-bit checksum, already complemented&n; */
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -582,7 +617,7 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * this routine is used for miscellaneous IP-like checksums, mainly&n; * in icmp.c&n; */
-r_extern
+r_static
 r_inline
 r_int
 r_int

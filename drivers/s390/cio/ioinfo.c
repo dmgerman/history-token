@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/ioinfo.c&n; *   S/390 common I/O routines -- the ioinfo structure&n; *   $Revision: 1.3 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/ioinfo.c&n; *   S/390 common I/O routines -- the ioinfo structure&n; *   $Revision: 1.4 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -299,14 +299,10 @@ id|irq
 OL
 l_int|0
 )paren
-"&bslash;"
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
-"&bslash;"
 r_if
 c_cond
 (paren
@@ -317,14 +313,10 @@ id|irq
 op_eq
 id|INVALID_STORAGE_AREA
 )paren
-"&bslash;"
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
-"&bslash;"
 r_if
 c_cond
 (paren
@@ -335,12 +327,10 @@ id|irq
 op_member_access_from_pointer
 id|st
 )paren
-"&bslash;"
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-"&bslash;"
 r_if
 c_cond
 (paren
@@ -721,9 +711,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-(paren
 id|rc
-)paren
 suffix:semicolon
 )brace
 r_int
@@ -821,9 +809,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-(paren
 id|rc
-)paren
 suffix:semicolon
 )brace
 r_int
@@ -891,14 +877,12 @@ op_member_access_from_pointer
 id|schib.pmcw.dnv
 )paren
 r_return
-(paren
 id|ioinfo
 (braket
 id|irq
 )braket
 op_member_access_from_pointer
 id|schib.pmcw.dev
-)paren
 suffix:semicolon
 r_else
 r_return
@@ -995,10 +979,8 @@ OL
 l_int|0
 )paren
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1011,10 +993,8 @@ op_eq
 id|INVALID_STORAGE_AREA
 )paren
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 r_if
 c_cond

@@ -331,7 +331,7 @@ r_int
 id|stack
 )paren
 op_amp
-id|PSW_ADDR_MASK
+id|PSW_ADDR_INSN
 suffix:semicolon
 id|high_addr
 op_assign
@@ -359,7 +359,7 @@ op_star
 id|low_addr
 )paren
 op_amp
-id|PSW_ADDR_MASK
+id|PSW_ADDR_INSN
 suffix:semicolon
 multiline_comment|/* Print up to 8 lines */
 r_for
@@ -406,7 +406,7 @@ l_int|56
 )paren
 )paren
 op_amp
-id|PSW_ADDR_MASK
+id|PSW_ADDR_INSN
 suffix:semicolon
 r_if
 c_cond
@@ -465,7 +465,7 @@ op_star
 id|backchain
 )paren
 op_amp
-id|PSW_ADDR_MASK
+id|PSW_ADDR_INSN
 suffix:semicolon
 )brace
 id|printk
@@ -632,6 +632,22 @@ id|sp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The architecture-independent dump_stack generator&n; */
+DECL|function|dump_stack
+r_void
+id|dump_stack
+c_func
+(paren
+r_void
+)paren
+(brace
+id|show_stack
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
 DECL|function|show_registers
 r_void
 id|show_registers
@@ -658,7 +674,7 @@ op_assign
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 ques
 c_cond
@@ -911,7 +927,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 id|set_fs
 c_func
@@ -1432,7 +1448,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 id|local_irq_enable
 c_func
@@ -1444,7 +1460,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 (brace
 r_struct
@@ -1578,12 +1594,14 @@ r_return
 r_void
 op_star
 )paren
-id|ADDR_BITS_REMOVE
-c_func
+(paren
 (paren
 id|regs-&gt;psw.addr
 op_minus
 id|S390_lowcore.pgm_ilc
+)paren
+op_amp
+id|PSW_ADDR_INSN
 )paren
 suffix:semicolon
 )brace
@@ -1606,7 +1624,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 (brace
 r_if
@@ -1985,7 +2003,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 id|local_irq_enable
 c_func
@@ -1997,7 +2015,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 id|get_user
 c_func
@@ -2073,7 +2091,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 (brace
 r_if
@@ -2416,7 +2434,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 id|local_irq_enable
 c_func
@@ -2428,7 +2446,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 (brace
 id|get_user
@@ -2770,7 +2788,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 id|local_irq_enable
 c_func
@@ -2800,7 +2818,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 (brace
 id|__u8
@@ -3572,7 +3590,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 (brace
 id|per_struct
@@ -3630,7 +3648,7 @@ multiline_comment|/* Hopefully switching off per tracing will help us survive */
 id|regs-&gt;psw.mask
 op_and_assign
 op_complement
-id|PSW_PER_MASK
+id|PSW_MASK_PER
 suffix:semicolon
 )brace
 )brace

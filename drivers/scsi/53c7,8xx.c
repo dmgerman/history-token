@@ -4213,19 +4213,13 @@ r_int
 id|count
 suffix:semicolon
 multiline_comment|/* Number of boards detected */
-r_int
-r_char
-id|pci_bus
-comma
-id|pci_device_fn
-suffix:semicolon
-r_static
-r_int
-id|pci_index
+r_struct
+id|pci_dev
+op_star
+id|pdev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
-multiline_comment|/* Device index to PCI BIOS calls */
 id|tpnt-&gt;proc_name
 op_assign
 l_string|&quot;ncr53c7xx&quot;
@@ -4420,15 +4414,13 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-r_for
+r_while
 c_loop
 (paren
-id|pci_index
+(paren
+id|pdev
 op_assign
-l_int|0
-suffix:semicolon
-op_logical_neg
-id|pcibios_find_device
+id|pci_find_device
 (paren
 id|PCI_VENDOR_ID_NCR
 comma
@@ -4439,17 +4431,9 @@ id|i
 dot
 id|pci_device_id
 comma
-id|pci_index
-comma
-op_amp
-id|pci_bus
-comma
-op_amp
-id|pci_device_fn
+id|pdev
 )paren
-suffix:semicolon
-op_increment
-id|pci_index
+)paren
 )paren
 r_if
 c_cond
@@ -4468,9 +4452,9 @@ id|i
 dot
 id|chip
 comma
-id|pci_bus
+id|pdev-&gt;bus-&gt;number
 comma
-id|pci_device_fn
+id|pdev-&gt;devfn
 comma
 multiline_comment|/* no options */
 l_int|0

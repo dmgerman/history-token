@@ -2,13 +2,13 @@ macro_line|#ifndef S390_DEBUG_H
 DECL|macro|S390_DEBUG_H
 mdefine_line|#define S390_DEBUG_H
 DECL|macro|SANITY_CHECK
-mdefine_line|#define SANITY_CHECK(irq) do { &bslash;&n;if (irq &gt; highest_subchannel || irq &lt; 0) &bslash;&n;&t;&t;return (-ENODEV); &bslash;&n;&t;if (ioinfo[irq] == INVALID_STORAGE_AREA) &bslash;&n;&t;&t;return (-ENODEV); &bslash;&n;        if (ioinfo[irq]-&gt;st) &bslash;&n;                return -ENODEV; &bslash;&n;&t;} while(0)
+mdefine_line|#define SANITY_CHECK(irq) do { &bslash;&n;if (irq &gt; highest_subchannel || irq &lt; 0) &bslash;&n;&t;&t;return -ENODEV; &bslash;&n;&t;if (ioinfo[irq] == INVALID_STORAGE_AREA) &bslash;&n;&t;&t;return -ENODEV; &bslash;&n;        if (ioinfo[irq]-&gt;st) &bslash;&n;                return -ENODEV; &bslash;&n;&t;} while(0)
 DECL|macro|CIO_TRACE_EVENT
 mdefine_line|#define CIO_TRACE_EVENT(imp, txt) do { &bslash;&n;&t;if (cio_debug_initialized) &bslash;&n;&t;&t;debug_text_event(cio_debug_trace_id, &bslash;&n;&t;&t;&t;&t; imp, &bslash;&n;&t;&t;&t;&t; txt); &bslash;&n;        }while (0)
 DECL|macro|CIO_MSG_EVENT
-mdefine_line|#define CIO_MSG_EVENT(imp, args...) do { &bslash;&n;        if (cio_debug_initialized) &bslash;&n;                debug_sprintf_event(cio_debug_msg_id, &bslash;&n;                                    imp, &bslash;&n;                                    ##args); &bslash;&n;        } while (0)
+mdefine_line|#define CIO_MSG_EVENT(imp, args...) do { &bslash;&n;        if (cio_debug_initialized) &bslash;&n;                debug_sprintf_event(cio_debug_msg_id, &bslash;&n;                                    imp , &bslash;&n;                                    ##args); &bslash;&n;        } while (0)
 DECL|macro|CIO_CRW_EVENT
-mdefine_line|#define CIO_CRW_EVENT(imp, args...) do { &bslash;&n;        if (cio_debug_initialized) &bslash;&n;                debug_sprintf_event(cio_debug_crw_id, &bslash;&n;                                    imp, &bslash;&n;                                    ##args); &bslash;&n;        } while (0)
+mdefine_line|#define CIO_CRW_EVENT(imp, args...) do { &bslash;&n;        if (cio_debug_initialized) &bslash;&n;                debug_sprintf_event(cio_debug_crw_id, &bslash;&n;                                    imp , &bslash;&n;                                    ##args); &bslash;&n;        } while (0)
 DECL|macro|CONFIG_DEBUG_IO
 macro_line|#undef  CONFIG_DEBUG_IO
 DECL|macro|CONFIG_DEBUG_CRW

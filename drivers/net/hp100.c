@@ -1208,7 +1208,7 @@ macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
-id|pcibios_present
+id|pci_present
 c_func
 (paren
 )paren
@@ -12730,7 +12730,7 @@ op_logical_neg
 id|EISA_bus
 op_logical_and
 op_logical_neg
-id|pcibios_present
+id|pci_present
 c_func
 (paren
 )paren

@@ -39,6 +39,20 @@ id|has_been_registered
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|WCE
+r_int
+id|WCE
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* state of disk WCE bit */
+DECL|member|RCD
+r_int
+id|RCD
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* state of disk RCD bit */
 DECL|typedef|Scsi_Disk
 )brace
 id|Scsi_Disk

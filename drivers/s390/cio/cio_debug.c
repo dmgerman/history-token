@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio_debug.c&n; *   S/390 common I/O routines -- message ids for debugging&n; *   $Revision: 1.4 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio_debug.c&n; *   S/390 common I/O routines -- message ids for debugging&n; *   $Revision: 1.5 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
@@ -211,7 +211,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|cio_debug_init
-id|__initcall
+id|arch_initcall
 (paren
 id|cio_debug_init
 )paren
