@@ -1009,6 +1009,9 @@ id|irq_interval
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;(mdc800_usb_probe) called.&quot;
@@ -1261,6 +1264,8 @@ op_amp
 id|mdc800-&gt;io_lock
 )paren
 suffix:semicolon
+id|retval
+op_assign
 id|usb_register_dev
 (paren
 op_amp
@@ -1272,6 +1277,28 @@ op_amp
 id|mdc800-&gt;minor
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_logical_and
+(paren
+id|retval
+op_ne
+op_minus
+id|ENODEV
+)paren
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;Not able to get a minor for this device.&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|mdc800-&gt;dev
 op_assign
 id|dev

@@ -1520,6 +1520,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 r_char
 id|name
 (braket
@@ -1553,9 +1556,8 @@ op_amp
 id|minor_table_mutex
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|usb_register_dev
 (paren
 op_amp
@@ -1566,8 +1568,32 @@ comma
 op_amp
 id|minor
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+op_minus
+id|ENODEV
+)paren
+(brace
+multiline_comment|/* something prevented us from registering this driver */
+id|err
+(paren
+l_string|&quot;Not able to get a minor for this device.&quot;
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
 multiline_comment|/* we could not get a dynamic minor, so lets find one of our own */
 r_for
 c_loop
@@ -1605,7 +1631,7 @@ op_ge
 id|MAX_DEVICES
 )paren
 (brace
-id|info
+id|err
 (paren
 l_string|&quot;Too many devices plugged in, can not handle this device.&quot;
 )paren
