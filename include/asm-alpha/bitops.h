@@ -3,6 +3,7 @@ DECL|macro|_ALPHA_BITOPS_H
 mdefine_line|#define _ALPHA_BITOPS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;asm/compiler.h&gt;
 multiline_comment|/*&n; * Copyright 1994, Linus Torvalds.&n; */
 multiline_comment|/*&n; * These have to be done with inline assembly: that way the bit-setting&n; * is guaranteed to be atomic. All bit operations return 0 if the bit&n; * was cleared before the operation and != 0 if it was not.&n; *&n; * To get proper branch prediction for the main line, we must branch&n; * forward to code at the end of this object&squot;s .text section, then&n; * branch back to restart the operation.&n; *&n; * bit 0 is the LSB of addr; bit 64 is the LSB of (addr+1).&n; */
 r_static
@@ -182,7 +183,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;1:&t;ldl_l %0,%3&bslash;n&quot;
-l_string|&quot;&t;and %0,%2,%0&bslash;n&quot;
+l_string|&quot;&t;bic %0,%2,%0&bslash;n&quot;
 l_string|&quot;&t;stl_c %0,%1&bslash;n&quot;
 l_string|&quot;&t;beq %0,2f&bslash;n&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
@@ -202,15 +203,12 @@ id|m
 suffix:colon
 l_string|&quot;Ir&quot;
 (paren
-op_complement
-(paren
 l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
 l_int|31
-)paren
 )paren
 )paren
 comma
@@ -986,8 +984,12 @@ id|x
 r_int
 r_int
 id|sum
-op_assign
-l_int|0
+comma
+id|x1
+comma
+id|x2
+comma
+id|x4
 suffix:semicolon
 id|x
 op_assign
@@ -999,38 +1001,50 @@ op_complement
 id|x
 suffix:semicolon
 multiline_comment|/* set first 0 bit, clear others */
-r_if
-c_cond
-(paren
-id|x
-op_amp
-l_int|0xF0
-)paren
-id|sum
-op_add_assign
-l_int|4
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|x
-op_amp
-l_int|0xCC
-)paren
-id|sum
-op_add_assign
-l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
+id|x1
+op_assign
 id|x
 op_amp
 l_int|0xAA
-)paren
+suffix:semicolon
+id|x2
+op_assign
+id|x
+op_amp
+l_int|0xCC
+suffix:semicolon
+id|x4
+op_assign
+id|x
+op_amp
+l_int|0xF0
+suffix:semicolon
+id|sum
+op_assign
+id|x2
+ques
+c_cond
+l_int|2
+suffix:colon
+l_int|0
+suffix:semicolon
 id|sum
 op_add_assign
-l_int|1
+(paren
+id|x4
+op_ne
+l_int|0
+)paren
+op_star
+l_int|4
+suffix:semicolon
+id|sum
+op_add_assign
+(paren
+id|x1
+op_ne
+l_int|0
+)paren
 suffix:semicolon
 r_return
 id|sum
@@ -1114,25 +1128,14 @@ c_func
 id|bits
 )paren
 suffix:semicolon
-id|__asm__
+id|bits
+op_assign
+id|__kernel_extbl
 c_func
 (paren
-l_string|&quot;extbl %1,%2,%0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|bits
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
 id|word
-)paren
 comma
-l_string|&quot;r&quot;
-(paren
 id|qofs
-)paren
 )paren
 suffix:semicolon
 id|bofs
@@ -1224,25 +1227,14 @@ c_func
 id|bits
 )paren
 suffix:semicolon
-id|__asm__
+id|bits
+op_assign
+id|__kernel_extbl
 c_func
 (paren
-l_string|&quot;extbl %1,%2,%0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|bits
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
 id|word
-)paren
 comma
-l_string|&quot;r&quot;
-(paren
 id|qofs
-)paren
 )paren
 suffix:semicolon
 id|bofs
@@ -1439,6 +1431,48 @@ mdefine_line|#define hweight16(x) hweight64((x) &amp; 0xfffful)
 DECL|macro|hweight8
 mdefine_line|#define hweight8(x)  hweight64((x) &amp; 0xfful)
 macro_line|#else
+DECL|function|hweight64
+r_static
+r_inline
+r_int
+r_int
+id|hweight64
+c_func
+(paren
+r_int
+r_int
+id|w
+)paren
+(brace
+r_int
+r_int
+id|result
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|result
+op_assign
+l_int|0
+suffix:semicolon
+id|w
+suffix:semicolon
+id|w
+op_rshift_assign
+l_int|1
+)paren
+id|result
+op_add_assign
+(paren
+id|w
+op_amp
+l_int|1
+)paren
+suffix:semicolon
+r_return
+id|result
+suffix:semicolon
+)brace
 DECL|macro|hweight32
 mdefine_line|#define hweight32(x) generic_hweight32(x)
 DECL|macro|hweight16
