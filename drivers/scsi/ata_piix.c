@@ -765,9 +765,9 @@ macro_line|#endif
 dot
 id|udma_mask
 op_assign
-id|ATA_UDMA_MASK_40C
+l_int|0x3f
 comma
-multiline_comment|/* FIXME: cbl det */
+multiline_comment|/* udma0-5 */
 dot
 id|port_ops
 op_assign
@@ -862,7 +862,6 @@ id|udma_mask
 op_assign
 id|ATA_UDMA_MASK_40C
 comma
-multiline_comment|/* FIXME: cbl det */
 dot
 id|port_ops
 op_assign
@@ -1028,7 +1027,7 @@ comma
 id|piix_pci_tbl
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;piix_pata_cbl_detect - Probe host controller cable detect info&n; *&t;@ap: Port for which cable detect info is desired&n; *&n; *&t;Read 80c cable indicator from SATA PCI device&squot;s PCI config&n; *&t;register.  This register is normally set by firmware (BIOS).&n; *&n; *&t;LOCKING:&n; *&t;None (inherited from caller).&n; */
+multiline_comment|/**&n; *&t;piix_pata_cbl_detect - Probe host controller cable detect info&n; *&t;@ap: Port for which cable detect info is desired&n; *&n; *&t;Read 80c cable indicator from ATA PCI device&squot;s PCI config&n; *&t;register.  This register is normally set by firmware (BIOS).&n; *&n; *&t;LOCKING:&n; *&t;None (inherited from caller).&n; */
 DECL|function|piix_pata_cbl_detect
 r_static
 r_void
