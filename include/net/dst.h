@@ -535,6 +535,11 @@ OL
 l_int|1
 )paren
 suffix:semicolon
+id|smp_mb__before_atomic_dec
+c_func
+(paren
+)paren
+suffix:semicolon
 id|atomic_dec
 c_func
 (paren

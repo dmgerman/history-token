@@ -347,6 +347,12 @@ id|SIL_QUIRK_MOD15WRITE
 )brace
 comma
 (brace
+l_string|&quot;ST380013AS&quot;
+comma
+id|SIL_QUIRK_MOD15WRITE
+)brace
+comma
+(brace
 l_string|&quot;ST380023AS&quot;
 comma
 id|SIL_QUIRK_MOD15WRITE

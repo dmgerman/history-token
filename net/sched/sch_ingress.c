@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv6.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
@@ -870,6 +871,42 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+DECL|variable|ing6_ops
+r_static
+r_struct
+id|nf_hook_ops
+id|ing6_ops
+op_assign
+(brace
+dot
+id|hook
+op_assign
+id|ing_hook
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|pf
+op_assign
+id|PF_INET6
+comma
+dot
+id|hooknum
+op_assign
+id|NF_IP6_PRE_ROUTING
+comma
+dot
+id|priority
+op_assign
+id|NF_IP6_PRI_FILTER
+op_plus
+l_int|1
+comma
+)brace
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 DECL|function|ingress_init
@@ -955,6 +992,32 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|nf_registered
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nf_register_hook
+c_func
+(paren
+op_amp
+id|ing6_ops
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IPv6 ingress qdisc registration error, &quot;
+"&bslash;"
+l_string|&quot;disabling IPv6 support.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
 id|nf_registered
 op_increment
 suffix:semicolon
@@ -1390,6 +1453,7 @@ c_cond
 (paren
 id|nf_registered
 )paren
+(brace
 id|nf_unregister_hook
 c_func
 (paren
@@ -1397,6 +1461,21 @@ op_amp
 id|ing_ops
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nf_registered
+OG
+l_int|1
+)paren
+id|nf_unregister_hook
+c_func
+(paren
+op_amp
+id|ing6_ops
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#endif
 )brace

@@ -754,6 +754,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;&t;membar&t;#StoreLoad | #LoadLoad&bslash;n&quot;
 l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;
 l_string|&quot;&t;sub&t;%%g5, 1, %%g7&bslash;n&quot;
 l_string|&quot;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
@@ -1225,6 +1226,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;&t;membar&t;#StoreLoad | #LoadLoad&bslash;n&quot;
 l_string|&quot;&t;mov&t;1, %%g3&bslash;n&quot;
 l_string|&quot;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
 l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;

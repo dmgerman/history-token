@@ -8750,6 +8750,16 @@ c_cond
 (paren
 id|iattr-&gt;ia_valid
 op_amp
+id|ATTR_FORCE
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iattr-&gt;ia_valid
+op_amp
 (paren
 id|ATTR_MODE
 op_or

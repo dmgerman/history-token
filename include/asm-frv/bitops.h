@@ -786,7 +786,9 @@ r_static
 r_inline
 r_int
 id|find_next_zero_bit
+c_func
 (paren
+r_const
 r_void
 op_star
 id|addr
@@ -798,6 +800,7 @@ r_int
 id|offset
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
@@ -805,6 +808,7 @@ id|p
 op_assign
 (paren
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -1186,6 +1190,7 @@ r_int
 id|ext2_find_next_zero_bit
 c_func
 (paren
+r_const
 r_void
 op_star
 id|addr
@@ -1199,6 +1204,7 @@ r_int
 id|offset
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
@@ -1206,6 +1212,7 @@ id|p
 op_assign
 (paren
 (paren
+r_const
 r_int
 r_int
 op_star

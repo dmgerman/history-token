@@ -512,19 +512,12 @@ op_amp
 id|t-&gt;parms
 )paren
 suffix:semicolon
-id|write_lock_bh
-c_func
-(paren
-op_amp
-id|ip6ip6_lock
-)paren
-suffix:semicolon
 id|t-&gt;next
 op_assign
 op_star
 id|tp
 suffix:semicolon
-id|write_unlock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -535,6 +528,13 @@ op_star
 id|tp
 op_assign
 id|t
+suffix:semicolon
+id|write_unlock_bh
+c_func
+(paren
+op_amp
+id|ip6ip6_lock
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_tnl_unlink - remove tunnel from hash table&n; *   @t: tunnel to be removed&n; **/
