@@ -898,12 +898,6 @@ id|vmidi-&gt;port
 op_assign
 id|rdev-&gt;port
 suffix:semicolon
-id|snd_midi_event_init
-c_func
-(paren
-id|vmidi-&gt;parser
-)paren
-suffix:semicolon
 id|snd_virmidi_init_event
 c_func
 (paren

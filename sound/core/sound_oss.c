@@ -980,9 +980,9 @@ c_func
 (paren
 id|THIS_MODULE
 comma
-l_string|&quot;oss-devices&quot;
+l_string|&quot;devices&quot;
 comma
-l_int|NULL
+id|snd_oss_root
 )paren
 suffix:semicolon
 r_if

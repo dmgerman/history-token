@@ -270,30 +270,6 @@ comma
 l_string|&quot;how many seconds to wait for the ICS2115 OS&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;This sucks, hopefully it&squot;ll get standardised&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,18) &amp;&amp; LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-DECL|macro|loops_per_sec
-mdefine_line|#define loops_per_sec loops_per_jiffy*HZ
-macro_line|#elif LINUX_VERSION_CODE == KERNEL_VERSION(2,4,0) &amp;&amp; defined(I_DIRTY_PAGES) /* linux/fs.h */
-DECL|macro|loops_per_sec
-mdefine_line|#define loops_per_sec loops_per_jiffy*HZ
-macro_line|#elif LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,4,0)
-DECL|macro|loops_per_sec
-mdefine_line|#define loops_per_sec loops_per_jiffy*HZ
-macro_line|#endif
-macro_line|#if defined(__alpha__) || defined(__powerpc__)
-macro_line|#ifdef __SMP__
-DECL|macro|LOOPS_PER_SEC
-mdefine_line|#define LOOPS_PER_SEC&t;(cpu_data[smp_processor_id()].loops_per_sec)
-macro_line|#else
-DECL|macro|LOOPS_PER_SEC
-mdefine_line|#define LOOPS_PER_SEC&t;(loops_per_sec)
-macro_line|#endif
-macro_line|#endif
-macro_line|#if defined(__i386__)
-DECL|macro|LOOPS_PER_SEC
-mdefine_line|#define LOOPS_PER_SEC&t;(current_cpu_data.loops_per_sec)
-macro_line|#endif
 multiline_comment|/* if WF_DEBUG not defined, no run-time debugging messages will&n;   be available via the debug flag setting. Given the current&n;   beta state of the driver, this will remain set until a future &n;   version.&n;*/
 DECL|macro|WF_DEBUG
 mdefine_line|#define WF_DEBUG 1
@@ -1167,32 +1143,6 @@ id|mask
 r_int
 id|i
 suffix:semicolon
-r_static
-r_int
-id|short_loop_cnt
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Compute the loop count that lets us sleep for about the&n;&t;   right amount of time, cache issues, bus speeds and all&n;&t;   other issues being unequal but largely irrelevant.&n;&t;*/
-r_if
-c_cond
-(paren
-id|short_loop_cnt
-op_eq
-l_int|0
-)paren
-(brace
-id|short_loop_cnt
-op_assign
-id|wait_usecs
-op_star
-(paren
-id|LOOPS_PER_SEC
-op_div
-l_int|1000000
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Spin for a short period of time, because &gt;99% of all&n;&t;   requests to the WaveFront can be serviced inline like this.&n;&t;*/
 r_for
 c_loop
@@ -1203,10 +1153,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|short_loop_cnt
+id|wait_usecs
 suffix:semicolon
 id|i
-op_increment
+op_add_assign
+l_int|5
 )paren
 (brace
 r_if
@@ -1224,6 +1175,12 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
 )brace
 r_for
 c_loop
@@ -4823,46 +4780,50 @@ id|d
 l_int|2
 )braket
 suffix:semicolon
+r_int
+id|val
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
+id|val
+op_assign
+id|wavefront_read
+(paren
+id|dev
+)paren
+)paren
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|snd_printk
+(paren
+l_string|&quot;upload multisample failed &quot;
+l_string|&quot;during sample loop.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+(paren
+id|EIO
+)paren
+suffix:semicolon
+)brace
 id|d
 (braket
 l_int|0
 )braket
 op_assign
-id|wavefront_read
-(paren
-id|dev
-)paren
-)paren
-op_eq
-op_minus
-l_int|1
-)paren
-(brace
-id|snd_printk
-(paren
-l_string|&quot;upload multisample failed &quot;
-l_string|&quot;during sample loop.&bslash;n&quot;
-)paren
+id|val
 suffix:semicolon
-r_return
-op_minus
-(paren
-id|EIO
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 (paren
-id|d
-(braket
-l_int|1
-)braket
+id|val
 op_assign
 id|wavefront_read
 (paren
@@ -4887,6 +4848,13 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
+id|d
+(braket
+l_int|1
+)braket
+op_assign
+id|val
+suffix:semicolon
 id|header-&gt;hdr.ms.SampleNumber
 (braket
 id|i

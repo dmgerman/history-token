@@ -688,6 +688,10 @@ id|dev-&gt;bufsize
 op_assign
 id|bufsize
 suffix:semicolon
+id|dev-&gt;lastcmd
+op_assign
+l_int|0xff
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren

@@ -5,6 +5,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu8000.h&gt;
 macro_line|#include &lt;sound/emu8000_reg.h&gt;

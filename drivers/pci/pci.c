@@ -8346,6 +8346,7 @@ c_func
 id|pci_scan_slot
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|pci_proc_attach_device
 id|EXPORT_SYMBOL
 c_func
@@ -8374,6 +8375,7 @@ c_func
 id|pci_proc_detach_bus
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 DECL|variable|pci_set_power_state
 id|EXPORT_SYMBOL

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Driver for SoundBlaster 1.0/2.0/Pro soundcards and co
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 macro_line|#include &lt;sound/opl3.h&gt;

@@ -828,15 +828,15 @@ mdefine_line|#define snd_sb16_csp_playback_prepare(chip, runtime)&t;/*nop*/
 DECL|macro|snd_sb16_csp_capture_prepare
 mdefine_line|#define snd_sb16_csp_capture_prepare(chip, runtime)&t;/*nop*/
 DECL|macro|snd_sb16_csp_update
-mdefine_line|#define snd_sb16_csp_update(chip)&t;&t;/*nop*/
+mdefine_line|#define snd_sb16_csp_update(chip)&t;&t;&t;/*nop*/
 DECL|macro|snd_sb16_csp_playback_open
 mdefine_line|#define snd_sb16_csp_playback_open(chip, runtime)&t;/*nop*/
 DECL|macro|snd_sb16_csp_playback_close
-mdefine_line|#define snd_sb16_csp_playback_close(chip)&t;/*nop*/
+mdefine_line|#define snd_sb16_csp_playback_close(chip)&t;&t;/*nop*/
 DECL|macro|snd_sb16_csp_capture_open
 mdefine_line|#define snd_sb16_csp_capture_open(chip, runtime)&t;/*nop*/
 DECL|macro|snd_sb16_csp_capture_close
-mdefine_line|#define snd_sb16_csp_capture_close(chip)       &t;/*nop*/
+mdefine_line|#define snd_sb16_csp_capture_close(chip)      &t; &t;/*nop*/
 macro_line|#endif
 DECL|function|snd_sb16_setup_rate
 r_static
