@@ -578,13 +578,6 @@ op_star
 id|parent
 )paren
 (brace
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|dir-&gt;files
-)paren
-suffix:semicolon
 id|dir-&gt;mode
 op_assign
 (paren

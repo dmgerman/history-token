@@ -21,11 +21,6 @@ DECL|member|mode
 id|mode_t
 id|mode
 suffix:semicolon
-DECL|member|files
-r_struct
-id|list_head
-id|files
-suffix:semicolon
 )brace
 suffix:semicolon
 r_struct

@@ -3060,13 +3060,6 @@ id|dentry
 )paren
 )paren
 (brace
-r_struct
-id|driver_file_entry
-op_star
-id|entry
-op_assign
-id|dentry-&gt;d_fsdata
-suffix:semicolon
 multiline_comment|/* make sure dentry is really there */
 r_if
 c_cond
@@ -3184,13 +3177,6 @@ id|dentry
 comma
 id|d_child
 )paren
-suffix:semicolon
-r_struct
-id|driver_file_entry
-op_star
-id|entry
-op_assign
-id|d-&gt;d_fsdata
 suffix:semicolon
 id|node
 op_assign
