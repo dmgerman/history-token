@@ -523,10 +523,10 @@ comma
 l_int|0x0f78
 )brace
 suffix:semicolon
-DECL|function|crc_calc
+DECL|function|irda_calc_crc16
 r_int
 r_int
-id|crc_calc
+id|irda_calc_crc16
 c_func
 (paren
 id|__u16
