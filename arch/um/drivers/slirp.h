@@ -1,39 +1,45 @@
-macro_line|#ifndef __UM_SLIP_H
-DECL|macro|__UM_SLIP_H
-mdefine_line|#define __UM_SLIP_H
+macro_line|#ifndef __UM_SLIRP_H
+DECL|macro|__UM_SLIRP_H
+mdefine_line|#define __UM_SLIRP_H
 DECL|macro|BUF_SIZE
 mdefine_line|#define BUF_SIZE 1500
 multiline_comment|/* two bytes each for a (pathological) max packet of escaped chars +  * &n;  * terminating END char + initial END char                            */
 DECL|macro|ENC_BUF_SIZE
 mdefine_line|#define ENC_BUF_SIZE (2 * BUF_SIZE + 2)
-DECL|struct|slip_data
+DECL|macro|SLIRP_MAX_ARGS
+mdefine_line|#define SLIRP_MAX_ARGS 100
+multiline_comment|/*&n; * XXX this next definition is here because I don&squot;t understand why this&n; * initializer doesn&squot;t work in slirp_kern.c:&n; *&n; *   argv :  { init-&gt;argv[ 0 ... SLIRP_MAX_ARGS-1 ] },&n; *&n; * or why I can&squot;t typecast like this:&n; *&n; *   argv :  (char* [SLIRP_MAX_ARGS])(init-&gt;argv), &n; */
+DECL|struct|arg_list_dummy_wrapper
+DECL|member|argv
 r_struct
-id|slip_data
+id|arg_list_dummy_wrapper
+(brace
+r_char
+op_star
+id|argv
+(braket
+id|SLIRP_MAX_ARGS
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|slirp_data
+r_struct
+id|slirp_data
 (brace
 DECL|member|dev
 r_void
 op_star
 id|dev
 suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-r_sizeof
-(paren
-l_string|&quot;slnnnnn&bslash;0&quot;
-)paren
-)braket
+DECL|member|argw
+r_struct
+id|arg_list_dummy_wrapper
+id|argw
 suffix:semicolon
-DECL|member|addr
-r_char
-op_star
-id|addr
-suffix:semicolon
-DECL|member|gate_addr
-r_char
-op_star
-id|gate_addr
+DECL|member|pid
+r_int
+id|pid
 suffix:semicolon
 DECL|member|slave
 r_int
@@ -71,7 +77,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|net_user_info
-id|slip_user_info
+id|slirp_user_info
 suffix:semicolon
 r_extern
 r_int
@@ -92,7 +98,7 @@ id|ptp_addr
 suffix:semicolon
 r_extern
 r_int
-id|slip_user_read
+id|slirp_user_read
 c_func
 (paren
 r_int
@@ -106,14 +112,14 @@ r_int
 id|len
 comma
 r_struct
-id|slip_data
+id|slirp_data
 op_star
 id|pri
 )paren
 suffix:semicolon
 r_extern
 r_int
-id|slip_user_write
+id|slirp_user_write
 c_func
 (paren
 r_int
@@ -127,7 +133,7 @@ r_int
 id|len
 comma
 r_struct
-id|slip_data
+id|slirp_data
 op_star
 id|pri
 )paren
