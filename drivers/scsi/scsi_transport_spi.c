@@ -1968,6 +1968,8 @@ r_if
 c_cond
 (paren
 id|i-&gt;f-&gt;set_width
+op_logical_and
+id|sdev-&gt;wdtr
 )paren
 (brace
 id|i-&gt;f
@@ -2029,6 +2031,20 @@ id|i-&gt;f-&gt;set_period
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* device can&squot;t handle synchronous */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sdev-&gt;ppr
+op_logical_and
+op_logical_neg
+id|sdev-&gt;sdtr
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* now set up to the maximum */
 id|DV_SET
 c_func
