@@ -450,6 +450,21 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;maxinefb&quot;
+comma
+l_int|NULL
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/* Validate we&squot;re on the proper machine type */
 r_if
 c_cond

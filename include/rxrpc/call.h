@@ -183,15 +183,15 @@ id|call_link
 suffix:semicolon
 multiline_comment|/* master call list link */
 DECL|member|chan_ix
-r_uint32
+id|__be32
 id|chan_ix
 suffix:semicolon
-multiline_comment|/* connection channel index (net order) */
+multiline_comment|/* connection channel index  */
 DECL|member|call_id
-r_uint32
+id|__be32
 id|call_id
 suffix:semicolon
-multiline_comment|/* call ID on connection (net order) */
+multiline_comment|/* call ID on connection  */
 DECL|member|cjif
 r_int
 r_int
@@ -297,7 +297,7 @@ id|ackr_high_seq
 suffix:semicolon
 multiline_comment|/* highest seqno yet received */
 DECL|member|ackr_prev_seq
-id|rxrpc_seq_t
+id|rxrpc_seq_net_t
 id|ackr_prev_seq
 suffix:semicolon
 multiline_comment|/* previous seqno received */

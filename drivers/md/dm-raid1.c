@@ -4171,7 +4171,7 @@ r_return
 id|dl
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Construct a mirror mapping:&n; *&n; * log_type #log_params &lt;log_params&gt;&n; * #mirrors [mirror_path offset]{2,}&n; *&n; * For now, #log_params = 1, log_type = &quot;core&quot;&n; *&n; */
+multiline_comment|/*&n; * Construct a mirror mapping:&n; *&n; * log_type #log_params &lt;log_params&gt;&n; * #mirrors [mirror_path offset]{2,}&n; *&n; * log_type is &quot;core&quot; or &quot;disk&quot;&n; * #log_params is between 1 and 3&n; */
 DECL|macro|DM_IO_PAGES
 mdefine_line|#define DM_IO_PAGES 64
 DECL|function|mirror_ctr
@@ -5028,8 +5028,6 @@ r_int
 id|m
 comma
 id|sz
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|mirror_set
@@ -5045,8 +5043,22 @@ id|ti
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-DECL|macro|EMIT
-mdefine_line|#define EMIT(x...) sz += ((sz &gt;= maxlen) ? &bslash;&n;&t;&t;&t;  0 : scnprintf(result + sz, maxlen - sz, x))
+id|sz
+op_assign
+id|ms-&gt;rh.log-&gt;type
+op_member_access_from_pointer
+id|status
+c_func
+(paren
+id|ms-&gt;rh.log
+comma
+id|type
+comma
+id|result
+comma
+id|maxlen
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -5056,7 +5068,7 @@ id|type
 r_case
 id|STATUSTYPE_INFO
 suffix:colon
-id|EMIT
+id|DMEMIT
 c_func
 (paren
 l_string|&quot;%d &quot;
@@ -5092,7 +5104,7 @@ dot
 id|dev-&gt;bdev-&gt;bd_dev
 )paren
 suffix:semicolon
-id|EMIT
+id|DMEMIT
 c_func
 (paren
 l_string|&quot;%s &quot;
@@ -5101,7 +5113,7 @@ id|buffer
 )paren
 suffix:semicolon
 )brace
-id|EMIT
+id|DMEMIT
 c_func
 (paren
 id|SECTOR_FORMAT
@@ -5124,16 +5136,10 @@ suffix:semicolon
 r_case
 id|STATUSTYPE_TABLE
 suffix:colon
-id|EMIT
+id|DMEMIT
 c_func
 (paren
-l_string|&quot;%s 1 &quot;
-id|SECTOR_FORMAT
-l_string|&quot; %d &quot;
-comma
-id|ms-&gt;rh.log-&gt;type-&gt;name
-comma
-id|ms-&gt;rh.region_size
+l_string|&quot;%d &quot;
 comma
 id|ms-&gt;nr_mirrors
 )paren
@@ -5166,7 +5172,7 @@ dot
 id|dev-&gt;bdev-&gt;bd_dev
 )paren
 suffix:semicolon
-id|EMIT
+id|DMEMIT
 c_func
 (paren
 l_string|&quot;%s &quot;

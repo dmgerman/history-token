@@ -3905,7 +3905,7 @@ id|mode2-&gt;vmode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * fb_find_best_mode - find best matching videomode&n; * @var: pointer to struct fb_var_screeninfo&n; * @head: pointer to struct list_head of modelist&n; *&n; * RETURNS:&n; * struct fb_videomode, NULL if none found&n; *&n; * IMPORTANT:&n; * This function assumes that all modelist entries in&n; * info-&gt;monspecs.modelist are valid.&n; *&n; * NOTES:&n; * Finds best matching videomode which has an equal or greater dimension than&n; * var-&gt;xres and var-&gt;yres.  If more than 1 videomode is found, will return&n; * the videomode with the highest refresh rate&n; */
+multiline_comment|/**&n; * fb_find_best_mode - find best matching videomode&n; * @var: pointer to struct fb_var_screeninfo&n; * @head: pointer to struct list_head of modelist&n; *&n; * RETURNS:&n; * struct fb_videomode, NULL if none found&n; *&n; * IMPORTANT:&n; * This function assumes that all modelist entries in&n; * info-&gt;modelist are valid.&n; *&n; * NOTES:&n; * Finds best matching videomode which has an equal or greater dimension than&n; * var-&gt;xres and var-&gt;yres.  If more than 1 videomode is found, will return&n; * the videomode with the highest refresh rate&n; */
 DECL|function|fb_find_best_mode
 r_struct
 id|fb_videomode

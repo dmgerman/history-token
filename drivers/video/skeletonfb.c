@@ -831,14 +831,32 @@ r_void
 (brace
 multiline_comment|/*&n;     *  For kernel boot options (in &squot;video=xxxfb:&lt;options&gt;&squot; format)&n;     */
 macro_line|#ifndef MODULE
-id|xxxfb_setup
-c_func
+r_char
+op_star
+id|option
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|fb_get_options
 c_func
 (paren
 l_string|&quot;xxxfb&quot;
+comma
+op_amp
+id|option
 )paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|xxxfb_setup
+c_func
+(paren
+id|option
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -328,7 +328,7 @@ id|sysv_sb_info
 op_star
 id|sbi
 comma
-id|u32
+id|sysv_zone_t
 id|nr
 )paren
 (brace
@@ -348,12 +348,12 @@ r_typedef
 r_struct
 (brace
 DECL|member|p
-id|u32
+id|sysv_zone_t
 op_star
 id|p
 suffix:semicolon
 DECL|member|key
-id|u32
+id|sysv_zone_t
 id|key
 suffix:semicolon
 DECL|member|bh
@@ -389,7 +389,7 @@ id|buffer_head
 op_star
 id|bh
 comma
-id|u32
+id|sysv_zone_t
 op_star
 id|v
 )paren
@@ -450,7 +450,7 @@ suffix:semicolon
 DECL|function|block_end
 r_static
 r_inline
-id|u32
+id|sysv_zone_t
 op_star
 id|block_end
 c_func
@@ -463,7 +463,7 @@ id|bh
 (brace
 r_return
 (paren
-id|u32
+id|sysv_zone_t
 op_star
 )paren
 (paren
@@ -624,7 +624,7 @@ comma
 id|bh
 comma
 (paren
-id|u32
+id|sysv_zone_t
 op_star
 )paren
 id|bh-&gt;b_data
@@ -852,7 +852,7 @@ dot
 id|p
 op_assign
 (paren
-id|u32
+id|sysv_zone_t
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1454,11 +1454,11 @@ r_int
 id|all_zeroes
 c_func
 (paren
-id|u32
+id|sysv_zone_t
 op_star
 id|p
 comma
-id|u32
+id|sysv_zone_t
 op_star
 id|q
 )paren
@@ -1509,7 +1509,7 @@ id|chain
 (braket
 )braket
 comma
-id|u32
+id|sysv_zone_t
 op_star
 id|top
 )paren
@@ -1629,7 +1629,7 @@ id|all_zeroes
 c_func
 (paren
 (paren
-id|u32
+id|sysv_zone_t
 op_star
 )paren
 id|p-&gt;bh-&gt;b_data
@@ -1719,11 +1719,11 @@ id|inode
 op_star
 id|inode
 comma
-id|u32
+id|sysv_zone_t
 op_star
 id|p
 comma
-id|u32
+id|sysv_zone_t
 op_star
 id|q
 )paren
@@ -1740,7 +1740,7 @@ id|p
 op_increment
 )paren
 (brace
-id|u32
+id|sysv_zone_t
 id|nr
 op_assign
 op_star
@@ -1785,11 +1785,11 @@ id|inode
 op_star
 id|inode
 comma
-id|u32
+id|sysv_zone_t
 op_star
 id|p
 comma
-id|u32
+id|sysv_zone_t
 op_star
 id|q
 comma
@@ -1831,7 +1831,7 @@ op_increment
 r_int
 id|block
 suffix:semicolon
-id|u32
+id|sysv_zone_t
 id|nr
 op_assign
 op_star
@@ -1888,7 +1888,7 @@ c_func
 id|inode
 comma
 (paren
-id|u32
+id|sysv_zone_t
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1946,7 +1946,7 @@ op_star
 id|inode
 )paren
 (brace
-id|u32
+id|sysv_zone_t
 op_star
 id|i_data
 op_assign
@@ -1974,7 +1974,7 @@ id|Indirect
 op_star
 id|partial
 suffix:semicolon
-r_int
+id|sysv_zone_t
 id|nr
 op_assign
 l_int|0

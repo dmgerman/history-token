@@ -2005,7 +2005,7 @@ id|diov
 l_int|3
 )braket
 suffix:semicolon
-r_int
+id|__be32
 id|aux
 (braket
 l_int|4
@@ -3503,7 +3503,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|u32
+id|__be32
 id|_error
 suffix:semicolon
 id|_enter
@@ -4078,7 +4078,7 @@ r_case
 id|RXRPC_PACKET_TYPE_ABORT
 suffix:colon
 (brace
-r_uint32
+id|__be32
 id|_dbuf
 comma
 op_star
@@ -4302,7 +4302,7 @@ id|hi
 comma
 id|rmtimo
 suffix:semicolon
-id|u32
+id|__be32
 id|opid
 suffix:semicolon
 id|_enter
@@ -5154,7 +5154,7 @@ comma
 op_star
 id|ap
 suffix:semicolon
-id|rxrpc_serial_t
+id|rxrpc_serial_net_t
 id|serial
 suffix:semicolon
 id|rxrpc_seq_t

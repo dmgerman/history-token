@@ -642,7 +642,7 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-id|u16
+id|sysv_ino_t
 id|ino
 suffix:semicolon
 r_int

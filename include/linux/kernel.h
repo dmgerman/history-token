@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
 DECL|macro|INT_MAX
@@ -595,6 +596,34 @@ op_increment
 suffix:semicolon
 r_return
 id|r
+suffix:semicolon
+)brace
+DECL|function|roundup_pow_of_two
+r_static
+r_inline
+r_int
+r_int
+id|__attribute_const__
+id|roundup_pow_of_two
+c_func
+(paren
+r_int
+r_int
+id|x
+)paren
+(brace
+r_return
+(paren
+l_int|1UL
+op_lshift
+id|fls
+c_func
+(paren
+id|x
+op_minus
+l_int|1
+)paren
+)paren
 suffix:semicolon
 )brace
 r_extern

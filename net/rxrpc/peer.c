@@ -124,7 +124,7 @@ id|rxrpc_transport
 op_star
 id|trans
 comma
-r_uint32
+id|__be32
 id|addr
 comma
 r_struct
@@ -351,7 +351,7 @@ id|rxrpc_transport
 op_star
 id|trans
 comma
-r_uint32
+id|__be32
 id|addr
 comma
 r_struct

@@ -1011,6 +1011,12 @@ r_int
 r_int
 id|dpy
 suffix:semicolon
+r_char
+op_star
+id|option
+op_assign
+l_int|NULL
+suffix:semicolon
 macro_line|#if defined(CONFIG_BOOTX_TEXT) &amp;&amp; defined(CONFIG_PPC32)
 r_struct
 id|device_node
@@ -1030,6 +1036,23 @@ id|macos_display
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;offb&quot;
+comma
+l_int|NULL
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+macro_line|#if defined(CONFIG_BOOTX_TEXT) &amp;&amp; defined(CONFIG_PPC32)
 multiline_comment|/* If we&squot;re booted from BootX... */
 r_if
 c_cond

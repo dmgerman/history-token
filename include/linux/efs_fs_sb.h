@@ -22,52 +22,52 @@ r_struct
 id|efs_super
 (brace
 DECL|member|fs_size
-r_int32
+id|__be32
 id|fs_size
 suffix:semicolon
 multiline_comment|/* size of filesystem, in sectors */
 DECL|member|fs_firstcg
-r_int32
+id|__be32
 id|fs_firstcg
 suffix:semicolon
 multiline_comment|/* bb offset to first cg */
 DECL|member|fs_cgfsize
-r_int32
+id|__be32
 id|fs_cgfsize
 suffix:semicolon
 multiline_comment|/* size of cylinder group in bb&squot;s */
 DECL|member|fs_cgisize
-r_int
+id|__be16
 id|fs_cgisize
 suffix:semicolon
 multiline_comment|/* bb&squot;s of inodes per cylinder group */
 DECL|member|fs_sectors
-r_int
+id|__be16
 id|fs_sectors
 suffix:semicolon
 multiline_comment|/* sectors per track */
 DECL|member|fs_heads
-r_int
+id|__be16
 id|fs_heads
 suffix:semicolon
 multiline_comment|/* heads per cylinder */
 DECL|member|fs_ncg
-r_int
+id|__be16
 id|fs_ncg
 suffix:semicolon
 multiline_comment|/* # of cylinder groups in filesystem */
 DECL|member|fs_dirty
-r_int
+id|__be16
 id|fs_dirty
 suffix:semicolon
 multiline_comment|/* fs needs to be fsck&squot;d */
 DECL|member|fs_time
-r_int32
+id|__be32
 id|fs_time
 suffix:semicolon
 multiline_comment|/* last super-block update */
 DECL|member|fs_magic
-r_int32
+id|__be32
 id|fs_magic
 suffix:semicolon
 multiline_comment|/* magic number */
@@ -88,32 +88,32 @@ l_int|6
 suffix:semicolon
 multiline_comment|/* file system pack name */
 DECL|member|fs_bmsize
-r_int32
+id|__be32
 id|fs_bmsize
 suffix:semicolon
 multiline_comment|/* size of bitmap in bytes */
 DECL|member|fs_tfree
-r_int32
+id|__be32
 id|fs_tfree
 suffix:semicolon
 multiline_comment|/* total free data blocks */
 DECL|member|fs_tinode
-r_int32
+id|__be32
 id|fs_tinode
 suffix:semicolon
 multiline_comment|/* total free inodes */
 DECL|member|fs_bmblock
-r_int32
+id|__be32
 id|fs_bmblock
 suffix:semicolon
 multiline_comment|/* bitmap location. */
 DECL|member|fs_replsb
-r_int32
+id|__be32
 id|fs_replsb
 suffix:semicolon
 multiline_comment|/* Location of replicated superblock. */
 DECL|member|fs_lastialloc
-r_int32
+id|__be32
 id|fs_lastialloc
 suffix:semicolon
 multiline_comment|/* last allocated inode */
@@ -126,7 +126,7 @@ l_int|20
 suffix:semicolon
 multiline_comment|/* space for expansion - MUST BE ZERO */
 DECL|member|fs_checksum
-r_int32
+id|__be32
 id|fs_checksum
 suffix:semicolon
 multiline_comment|/* checksum of volume portion of fs */
@@ -138,47 +138,47 @@ r_struct
 id|efs_sb_info
 (brace
 DECL|member|fs_magic
-r_int32
+id|__u32
 id|fs_magic
 suffix:semicolon
 multiline_comment|/* superblock magic number */
 DECL|member|fs_start
-r_int32
+id|__u32
 id|fs_start
 suffix:semicolon
 multiline_comment|/* first block of filesystem */
 DECL|member|first_block
-r_int32
+id|__u32
 id|first_block
 suffix:semicolon
 multiline_comment|/* first data block in filesystem */
 DECL|member|total_blocks
-r_int32
+id|__u32
 id|total_blocks
 suffix:semicolon
 multiline_comment|/* total number of blocks in filesystem */
 DECL|member|group_size
-r_int32
+id|__u32
 id|group_size
 suffix:semicolon
 multiline_comment|/* # of blocks a group consists of */
 DECL|member|data_free
-r_int32
+id|__u32
 id|data_free
 suffix:semicolon
 multiline_comment|/* # of free data blocks */
 DECL|member|inode_free
-r_int32
+id|__u32
 id|inode_free
 suffix:semicolon
 multiline_comment|/* # of free inodes */
 DECL|member|inode_blocks
-r_int
+id|__u16
 id|inode_blocks
 suffix:semicolon
 multiline_comment|/* # of blocks used for inodes in every grp */
 DECL|member|total_groups
-r_int
+id|__u16
 id|total_groups
 suffix:semicolon
 multiline_comment|/* # of groups */

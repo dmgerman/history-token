@@ -14,6 +14,8 @@ DECL|macro|DMERR
 mdefine_line|#define DMERR(f, x...) printk(KERN_ERR DM_NAME &quot;: &quot; f &quot;&bslash;n&quot; , ## x)
 DECL|macro|DMINFO
 mdefine_line|#define DMINFO(f, x...) printk(KERN_INFO DM_NAME &quot;: &quot; f &quot;&bslash;n&quot; , ## x)
+DECL|macro|DMEMIT
+mdefine_line|#define DMEMIT(x...) sz += ((sz &gt;= maxlen) ? &bslash;&n;&t;&t;&t;  0 : scnprintf(result + sz, maxlen - sz, x))
 multiline_comment|/*&n; * FIXME: I think this should be with the definition of sector_t&n; * in types.h.&n; */
 macro_line|#ifdef CONFIG_LBD
 DECL|macro|SECTOR_FORMAT

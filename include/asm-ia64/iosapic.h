@@ -293,6 +293,19 @@ id|iosapic_pci_fixup
 r_int
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+r_extern
+r_void
+id|__init
+id|map_iosapic_to_node
+(paren
+r_int
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#else
 DECL|macro|iosapic_system_init
 mdefine_line|#define iosapic_system_init(pcat_compat)&t;&t;&t;do { } while (0)

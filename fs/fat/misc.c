@@ -288,7 +288,7 @@ l_int|1
 )paren
 id|fsinfo-&gt;free_clusters
 op_assign
-id|CF_LE_L
+id|cpu_to_le32
 c_func
 (paren
 id|sbi-&gt;free_clusters
@@ -304,7 +304,7 @@ l_int|1
 )paren
 id|fsinfo-&gt;next_cluster
 op_assign
-id|CF_LE_L
+id|cpu_to_le32
 c_func
 (paren
 id|sbi-&gt;prev_free
@@ -1275,13 +1275,11 @@ c_func
 r_int
 id|unix_date
 comma
-r_int
-r_int
+id|__le16
 op_star
 id|time
 comma
-r_int
-r_int
+id|__le16
 op_star
 id|date
 )paren

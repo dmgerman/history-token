@@ -27,22 +27,22 @@ r_struct
 id|ext3_xattr_header
 (brace
 DECL|member|h_magic
-id|__u32
+id|__le32
 id|h_magic
 suffix:semicolon
 multiline_comment|/* magic number for identification */
 DECL|member|h_refcount
-id|__u32
+id|__le32
 id|h_refcount
 suffix:semicolon
 multiline_comment|/* reference count */
 DECL|member|h_blocks
-id|__u32
+id|__le32
 id|h_blocks
 suffix:semicolon
 multiline_comment|/* number of disk blocks used */
 DECL|member|h_hash
-id|__u32
+id|__le32
 id|h_hash
 suffix:semicolon
 multiline_comment|/* hash value of all attributes */
@@ -71,22 +71,22 @@ id|e_name_index
 suffix:semicolon
 multiline_comment|/* attribute name index */
 DECL|member|e_value_offs
-id|__u16
+id|__le16
 id|e_value_offs
 suffix:semicolon
 multiline_comment|/* offset in disk block of value */
 DECL|member|e_value_block
-id|__u32
+id|__le32
 id|e_value_block
 suffix:semicolon
 multiline_comment|/* disk block attribute is stored on (n/i) */
 DECL|member|e_value_size
-id|__u32
+id|__le32
 id|e_value_size
 suffix:semicolon
 multiline_comment|/* size of attribute value */
 DECL|member|e_hash
-id|__u32
+id|__le32
 id|e_hash
 suffix:semicolon
 multiline_comment|/* hash value of name and value */

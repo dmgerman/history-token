@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Intel Multimedia Timer device implementation for SGI SN platforms.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2003 Silicon Graphics, Inc.  All rights reserved.&n; *&n; * This driver implements a subset of the interface required by the&n; * IA-PC Multimedia Timers Draft Specification (rev. 0.97) from Intel.&n; *&n; * 11/01/01 - jbarnes - initial revision&n; * 9/10/04 - Christoph Lameter - remove interrupt support for kernel inclusion&n; */
+multiline_comment|/*&n; * Intel Multimedia Timer device implementation for SGI SN platforms.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2004 Silicon Graphics, Inc.  All rights reserved.&n; *&n; * This driver exports an API that should be supportable by any HPET or IA-PC&n; * multimedia timer.  The code below is currently specific to the SGI Altix&n; * SHub RTC, however.&n; *&n; * 11/01/01 - jbarnes - initial revision&n; * 9/10/04 - Christoph Lameter - remove interrupt support for kernel inclusion&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
@@ -30,6 +30,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* name of the device, usually in /dev */
+DECL|macro|MMTIMER_NAME
+mdefine_line|#define MMTIMER_NAME &quot;mmtimer&quot;
+DECL|macro|MMTIMER_DESC
+mdefine_line|#define MMTIMER_DESC &quot;IA-PC Multimedia Timer&quot;
+DECL|macro|MMTIMER_VERSION
+mdefine_line|#define MMTIMER_VERSION &quot;1.0&quot;
 DECL|macro|RTC_BITS
 mdefine_line|#define RTC_BITS 55 /* 55 bits for this implementation */
 r_static
@@ -105,10 +112,10 @@ id|mmtimer_ioctl
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * mmtimer_ioctl - ioctl interface for /dev/mmtimer&n; * @inode: inode of the device&n; * @file: file structure for the device&n; * @cmd: command to execute&n; * @arg: optional argument to command&n; *&n; * Executes the command specified by @cmd.  Returns 0 for success, &lt;0 for failure.&n; * Valid commands are&n; *&n; * %MMTIMER_GETOFFSET - Should return the offset (relative to the start&n; * of the page where the registers are mapped) for the counter in question.&n; *&n; * %MMTIMER_GETRES - Returns the resolution of the clock in femto (10^-15)&n; * seconds&n; *&n; * %MMTIMER_GETFREQ - Copies the frequency of the clock in Hz to the address&n; * specified by @arg&n; *&n; * %MMTIMER_GETBITS - Returns the number of bits in the clock&squot;s counter&n; *&n; * %MMTIMER_MMAPAVAIL - Returns 1 if the registers can be mmap&squot;d into userspace&n; *&n; * %MMTIMER_GETCOUNTER - Gets the current value in the counter and places it&n; * in the address specified by @arg.&n; */
+multiline_comment|/**&n; * mmtimer_ioctl - ioctl interface for /dev/mmtimer&n; * @inode: inode of the device&n; * @file: file structure for the device&n; * @cmd: command to execute&n; * @arg: optional argument to command&n; *&n; * Executes the command specified by @cmd.  Returns 0 for success, &lt; 0 for&n; * failure.&n; *&n; * Valid commands:&n; *&n; * %MMTIMER_GETOFFSET - Should return the offset (relative to the start&n; * of the page where the registers are mapped) for the counter in question.&n; *&n; * %MMTIMER_GETRES - Returns the resolution of the clock in femto (10^-15)&n; * seconds&n; *&n; * %MMTIMER_GETFREQ - Copies the frequency of the clock in Hz to the address&n; * specified by @arg&n; *&n; * %MMTIMER_GETBITS - Returns the number of bits in the clock&squot;s counter&n; *&n; * %MMTIMER_MMAPAVAIL - Returns 1 if the registers can be mmap&squot;d into userspace&n; *&n; * %MMTIMER_GETCOUNTER - Gets the current value in the counter and places it&n; * in the address specified by @arg.&n; */
+DECL|function|mmtimer_ioctl
 r_static
 r_int
-DECL|function|mmtimer_ioctl
 id|mmtimer_ioctl
 c_func
 (paren
@@ -342,9 +349,9 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * mmtimer_mmap - maps the clock&squot;s registers into userspace&n; * @file: file structure for the device&n; * @vma: VMA to map the registers into&n; *&n; * Calls remap_page_range() to map the clock&squot;s registers into&n; * the calling process&squot; address space.&n; */
+DECL|function|mmtimer_mmap
 r_static
 r_int
-DECL|function|mmtimer_mmap
 id|mmtimer_mmap
 c_func
 (paren
@@ -491,10 +498,10 @@ id|mmtimer_fops
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * mmtimer_init - device initialization routine&n; *&n; * Does initial setup for the mmtimer device.&n; */
+DECL|function|mmtimer_init
 r_static
 r_int
 id|__init
-DECL|function|mmtimer_init
 id|mmtimer_init
 c_func
 (paren

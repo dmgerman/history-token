@@ -60,7 +60,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|rxrpc_epoch
-r_uint32
+id|__be32
 id|rxrpc_epoch
 suffix:semicolon
 multiline_comment|/*****************************************************************************/

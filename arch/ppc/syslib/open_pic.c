@@ -1651,8 +1651,6 @@ id|openpic_set_spurious
 c_func
 (paren
 id|OPENPIC_VEC_SPURIOUS
-op_plus
-id|offset
 )paren
 suffix:semicolon
 id|openpic_disable_8259_pass_through
@@ -3292,8 +3290,6 @@ c_cond
 id|irq
 op_eq
 id|OPENPIC_VEC_SPURIOUS
-op_plus
-id|open_pic_irq_offset
 )paren
 id|irq
 op_assign
@@ -3805,8 +3801,6 @@ id|openpic_set_spurious
 c_func
 (paren
 id|OPENPIC_VEC_SPURIOUS
-op_plus
-id|open_pic_irq_offset
 )paren
 suffix:semicolon
 )brace
@@ -3822,11 +3816,7 @@ comma
 id|OPENPIC_VECTOR_MASK
 )paren
 op_ne
-(paren
 id|OPENPIC_VEC_SPURIOUS
-op_plus
-id|open_pic_irq_offset
-)paren
 )paren
 (brace
 suffix:semicolon
