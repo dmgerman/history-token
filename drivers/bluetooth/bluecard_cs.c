@@ -1646,7 +1646,8 @@ id|len
 suffix:semicolon
 )brace
 DECL|function|bluecard_interrupt
-r_void
+r_static
+id|irqreturn_t
 id|bluecard_interrupt
 c_func
 (paren
@@ -1694,6 +1695,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -1712,6 +1714,7 @@ id|info-&gt;hw_state
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|iobase
 op_assign
@@ -1938,6 +1941,9 @@ op_amp
 id|info-&gt;lock
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* ======================== Device specific HCI commands ======================== */
