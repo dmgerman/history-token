@@ -1137,6 +1137,12 @@ c_func
 id|transport
 comma
 l_int|NULL
+comma
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
 )paren
 suffix:semicolon
 )brace
