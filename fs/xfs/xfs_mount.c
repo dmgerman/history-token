@@ -3466,44 +3466,6 @@ id|error1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Disallow mount attempts with (IRIX) project quota enabled&n;&t; */
-r_if
-c_cond
-(paren
-id|XFS_SB_VERSION_HASQUOTA
-c_func
-(paren
-op_amp
-id|mp-&gt;m_sb
-)paren
-op_logical_and
-(paren
-id|mp-&gt;m_sb.sb_qflags
-op_amp
-id|XFS_PQUOTA_ACCT
-)paren
-)paren
-(brace
-id|cmn_err
-c_func
-(paren
-id|CE_WARN
-comma
-l_string|&quot;XFS: IRIX project quota are enabled&quot;
-)paren
-suffix:semicolon
-id|error
-op_assign
-id|XFS_ERROR
-c_func
-(paren
-id|ENOSYS
-)paren
-suffix:semicolon
-r_goto
-id|error1
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Initialize realtime fields in the mount structure&n;&t; */
 r_if
 c_cond

@@ -82,12 +82,10 @@ id|s1
 op_ge
 id|BASE
 )paren
-(brace
 id|s1
 op_sub_assign
 id|BASE
 suffix:semicolon
-)brace
 multiline_comment|/* s2 = (s2 + s1) % BASE */
 multiline_comment|/* first we add */
 id|s2

@@ -295,12 +295,6 @@ macro_line|#ifdef CONFIG_MODULES
 r_extern
 r_struct
 id|module
-op_star
-id|module_list
-suffix:semicolon
-r_extern
-r_struct
-id|module
 id|kernel_module
 suffix:semicolon
 DECL|function|kernel_text_address
@@ -466,9 +460,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Call Trace: &quot;
+l_string|&quot;Call Trace:&quot;
 )paren
 suffix:semicolon
+macro_line|#if CONFIG_KALLSYMS
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|i
 op_assign
 l_int|1
@@ -508,37 +510,21 @@ id|addr
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|i
-op_logical_and
-(paren
-(paren
-id|i
-op_mod
-l_int|6
-)paren
-op_eq
-l_int|0
-)paren
-)paren
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n   &quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;[&lt;%08lx&gt;] &quot;
+l_string|&quot; [&lt;%08lx&gt;]&quot;
 comma
 id|addr
 )paren
 suffix:semicolon
-id|i
-op_increment
+id|print_symbol
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|addr
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -805,6 +791,11 @@ op_amp
 l_int|0xffff
 suffix:semicolon
 )brace
+id|print_modules
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -827,6 +818,14 @@ c_func
 )paren
 comma
 id|regs-&gt;eflags
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;EIP is at %s&bslash;n&quot;
+comma
+id|regs-&gt;eip
 )paren
 suffix:semicolon
 id|printk
@@ -917,7 +916,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nCode: &quot;
+l_string|&quot;Code: &quot;
 )paren
 suffix:semicolon
 r_if
@@ -1149,6 +1148,12 @@ id|file
 id|file
 op_assign
 l_string|&quot;&lt;bad filename&gt;&quot;
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;------------[ cut here ]------------&bslash;n&quot;
+)paren
 suffix:semicolon
 id|printk
 c_func

@@ -1,7 +1,6 @@
 macro_line|#ifndef _NET_P8022_H
 DECL|macro|_NET_P8022_H
 mdefine_line|#define _NET_P8022_H
-macro_line|#include &lt;net/llc_if.h&gt;
 r_extern
 r_struct
 id|datalink_proto
@@ -16,13 +15,23 @@ comma
 r_int
 (paren
 op_star
-id|indicate
+id|func
 )paren
 (paren
 r_struct
-id|llc_prim_if_block
+id|sk_buff
 op_star
-id|prim
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|packet_type
+op_star
+id|pt
 )paren
 )paren
 suffix:semicolon

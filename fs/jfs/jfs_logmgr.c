@@ -4670,13 +4670,34 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-m_assert
+r_if
+c_cond
 (paren
 id|i
-OL
+op_eq
 id|MAX_ACTIVE
 )paren
+(brace
+id|jERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Somebody stomped on the journal!&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
+id|lbmFree
+c_func
+(paren
+id|bpsuper
+)paren
+suffix:semicolon
+r_return
+id|EIO
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * synchronous write log superblock:&n;&t; *&n;&t; * write sidestream bypassing write queue:&n;&t; * at file system mount, log super block is updated for&n;&t; * activation of the file system before any log record&n;&t; * (MOUNT record) of the file system, and at file system&n;&t; * unmount, all meta data for the file system has been&n;&t; * flushed before log super block is updated for deactivation&n;&t; * of the file system.&n;&t; */
 id|lbmDirectWrite

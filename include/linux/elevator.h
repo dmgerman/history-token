@@ -12,7 +12,7 @@ id|request_queue_t
 op_star
 comma
 r_struct
-id|request
+id|list_head
 op_star
 op_star
 comma
@@ -246,7 +246,7 @@ id|request_queue_t
 op_star
 comma
 r_struct
-id|request
+id|list_head
 op_star
 op_star
 comma
@@ -445,11 +445,6 @@ id|elv_try_last_merge
 c_func
 (paren
 id|request_queue_t
-op_star
-comma
-r_struct
-id|request
-op_star
 op_star
 comma
 r_struct

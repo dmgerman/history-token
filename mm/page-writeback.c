@@ -1773,4 +1773,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|test_clear_page_dirty
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|test_clear_page_dirty
+)paren
+suffix:semicolon
 eof

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;support/debug.h&gt;
 macro_line|#include &quot;page_buf_internal.h&quot;
 macro_line|#ifndef EVMS_MAJOR
 DECL|macro|EVMS_MAJOR
@@ -29,7 +30,8 @@ id|pb
 r_int
 id|locked
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 id|pb-&gt;pb_flags
 op_amp
@@ -101,7 +103,8 @@ op_star
 id|pb
 )paren
 (brace
-m_assert
+id|ASSERT
+c_func
 (paren
 id|pb-&gt;pb_flags
 op_amp
@@ -134,7 +137,8 @@ op_star
 id|pb
 )paren
 (brace
-m_assert
+id|ASSERT
+c_func
 (paren
 id|pb-&gt;pb_flags
 op_amp
@@ -528,7 +532,8 @@ id|pb
 )paren
 multiline_comment|/* buffer to unlock&t;&t;*/
 (brace
-m_assert
+id|ASSERT
+c_func
 (paren
 id|pb-&gt;pb_flags
 op_amp

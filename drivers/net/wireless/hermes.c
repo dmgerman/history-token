@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -19,7 +18,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;hermes.c: 5 Apr 2002 David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
+l_string|&quot;hermes.c: 4 Jul 2002 David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -51,20 +50,20 @@ mdefine_line|#define CMD_COMPL_TIMEOUT (20000) /* in iterations of ~10us */
 DECL|macro|ALLOC_COMPL_TIMEOUT
 mdefine_line|#define ALLOC_COMPL_TIMEOUT (1000) /* in iterations of ~10us */
 multiline_comment|/*&n; * Debugging helpers&n; */
+DECL|macro|IO_TYPE
+mdefine_line|#define IO_TYPE(hw)&t;((hw)-&gt;io_space ? &quot;IO &quot; : &quot;MEM &quot;)
+DECL|macro|DMSG
+mdefine_line|#define DMSG(stuff...) do {printk(KERN_DEBUG &quot;hermes @ %s0x%x: &quot; , IO_TYPE(hw), hw-&gt;iobase); &bslash;&n;&t;&t;&t;printk(stuff);} while (0)
 DECL|macro|HERMES_DEBUG
 macro_line|#undef HERMES_DEBUG
 macro_line|#ifdef HERMES_DEBUG
 macro_line|#include &lt;stdarg.h&gt;
-DECL|macro|DMSG
-mdefine_line|#define DMSG(stuff...) do {printk(KERN_DEBUG &quot;hermes @ 0x%x: &quot; , hw-&gt;iobase); &bslash;&n;&t;&t;&t;printk(stuff);} while (0)
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(lvl, stuff...) if ( (lvl) &lt;= HERMES_DEBUG) DMSG(stuff)
 macro_line|#else /* ! HERMES_DEBUG */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(lvl, stuff...) do { } while (0)
 macro_line|#endif /* ! HERMES_DEBUG */
-DECL|macro|IO_TYPE
-mdefine_line|#define IO_TYPE(hw)&t;((hw)-&gt;io_space ? &quot;IO &quot; : &quot;MEM &quot;)
 multiline_comment|/*&n; * Internal functions&n; */
 multiline_comment|/* Issue a command to the chip. Waiting for it to complete is the caller&squot;s&n;   problem.&n;&n;   Returns -EBUSY if the command register is busy, 0 on success.&n;&n;   Callable from any context.&n;*/
 DECL|function|hermes_issue_cmd
@@ -135,18 +134,6 @@ id|CMD
 )paren
 suffix:semicolon
 )brace
-id|DEBUG
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;hermes_issue_cmd: did %d retries.&bslash;n&quot;
-comma
-id|CMD_BUSY_TIMEOUT
-op_minus
-id|k
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -275,9 +262,9 @@ id|hw-&gt;profile
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|hermes_reset
+DECL|function|hermes_init
 r_int
-id|hermes_reset
+id|hermes_init
 c_func
 (paren
 id|hermes_t
@@ -474,18 +461,6 @@ id|EVSTAT
 )paren
 suffix:semicolon
 )brace
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;Reset completed in %d iterations&bslash;n&quot;
-comma
-id|CMD_INIT_TIMEOUT
-op_minus
-id|k
-)paren
-suffix:semicolon
 id|hermes_write_regn
 c_func
 (paren
@@ -975,24 +950,6 @@ c_cond
 id|err
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;hermes @ %s0x%lx: &quot;
-l_string|&quot;Frame allocation command failed (0x%X).&bslash;n&quot;
-comma
-id|IO_TYPE
-c_func
-(paren
-id|hw
-)paren
-comma
-id|hw-&gt;iobase
-comma
-id|err
-)paren
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -1392,14 +1349,6 @@ op_amp
 id|HERMES_OFFSET_BUSY
 )paren
 (brace
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;hermes_bap_seek: timeout&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ETIMEDOUT
@@ -1413,14 +1362,6 @@ op_amp
 id|HERMES_OFFSET_ERR
 )paren
 (brace
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;hermes_bap_seek: BAP error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -1687,6 +1628,9 @@ id|rlength
 comma
 id|rtype
 suffix:semicolon
+r_int
+id|nwords
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1847,7 +1791,22 @@ comma
 id|rlength
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: we should read the min of the requested length and&n;           the actual record length */
+id|nwords
+op_assign
+id|min_t
+c_func
+(paren
+r_int
+comma
+id|rlength
+op_minus
+l_int|1
+comma
+id|bufsize
+op_div
+l_int|2
+)paren
+suffix:semicolon
 id|hermes_read_words
 c_func
 (paren
@@ -1857,9 +1816,7 @@ id|dreg
 comma
 id|buf
 comma
-id|bufsize
-op_div
-l_int|2
+id|nwords
 )paren
 suffix:semicolon
 id|out
@@ -1909,29 +1866,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|count
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;write_ltv(): bap=%d rid=0x%04x length=%d (value=0x%04x)&bslash;n&quot;
-comma
-id|bap
-comma
-id|rid
-comma
-id|length
-comma
-op_star
-(paren
-(paren
-id|u16
-op_star
-)paren
-id|value
-)paren
-)paren
 suffix:semicolon
 id|err
 op_assign
@@ -2022,11 +1956,11 @@ c_func
 id|hermes_struct_init
 )paren
 suffix:semicolon
-DECL|variable|hermes_reset
+DECL|variable|hermes_init
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hermes_reset
+id|hermes_init
 )paren
 suffix:semicolon
 DECL|variable|hermes_docmd_wait

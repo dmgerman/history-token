@@ -1561,6 +1561,7 @@ op_assign
 id|mx
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_FB_MATROX_G450
 DECL|function|g450_set_plls
 r_static
 r_void
@@ -2159,6 +2160,7 @@ multiline_comment|/* 170-204 */
 )brace
 )brace
 )brace
+macro_line|#endif
 DECL|function|DAC1064_global_init
 r_void
 id|DAC1064_global_init
@@ -2204,6 +2206,7 @@ id|M1064_XPIXCLKCTRL_EN
 op_or
 id|M1064_XPIXCLKCTRL_SRC_PLL
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_MATROX_G450
 r_if
 c_cond
 (paren
@@ -2430,6 +2433,7 @@ id|PMINFO2
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 (brace
 r_if
 c_cond
@@ -3727,6 +3731,7 @@ id|m1064_compute
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_MATROX_G450
 DECL|function|g450_compute
 r_static
 r_int
@@ -3817,6 +3822,7 @@ id|g450_compute
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* NEED_DAC1064 */
 macro_line|#ifdef CONFIG_FB_MATROX_MYSTIQUE
 DECL|function|MGA1064_init
@@ -4894,6 +4900,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_MATROX_G100
+macro_line|#ifdef CONFIG_FB_MATROX_G450
 DECL|function|g450_mclk_init
 r_static
 r_void
@@ -5789,6 +5796,19 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|function|g450_preinit
+r_static
+r_inline
+r_void
+id|g450_preinit
+c_func
+(paren
+id|WPMINFO2
+)paren
+(brace
+)brace
+macro_line|#endif
 DECL|function|MGAG100_preinit
 r_static
 r_int
@@ -6016,6 +6036,7 @@ id|devflags.sgram
 suffix:colon
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_MATROX_G450
 r_if
 c_cond
 (paren
@@ -6042,6 +6063,7 @@ id|g450out
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 (brace
 id|ACCESS_FBINFO
 c_func

@@ -509,10 +509,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* Mark all the eligible packets on a transport for retransmission and force&n; * one packet out.&n; */
-DECL|function|sctp_retransmit
+multiline_comment|/* Mark all the eligible packets on a transport for retransmission.  */
+DECL|function|sctp_retransmit_mark
 r_void
-id|sctp_retransmit
+id|sctp_retransmit_mark
 c_func
 (paren
 id|sctp_outqueue_t
@@ -536,41 +536,10 @@ id|sctp_chunk_t
 op_star
 id|chunk
 suffix:semicolon
-r_int
-id|error
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|list_head
 id|tlist
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|fast_retransmit
-)paren
-(brace
-id|sctp_transport_lower_cwnd
-c_func
-(paren
-id|transport
-comma
-id|SCTP_LOWER_CWND_FAST_RTX
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|sctp_transport_lower_cwnd
-c_func
-(paren
-id|transport
-comma
-id|SCTP_LOWER_CWND_T3_RTX
-)paren
-suffix:semicolon
-)brace
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -747,6 +716,66 @@ comma
 id|transport-&gt;partial_bytes_acked
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Mark all the eligible packets on a transport for retransmission and force &n; * one packet out.&n; */
+DECL|function|sctp_retransmit
+r_void
+id|sctp_retransmit
+c_func
+(paren
+id|sctp_outqueue_t
+op_star
+id|q
+comma
+id|sctp_transport_t
+op_star
+id|transport
+comma
+id|__u8
+id|fast_retransmit
+)paren
+(brace
+r_int
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fast_retransmit
+)paren
+(brace
+id|sctp_transport_lower_cwnd
+c_func
+(paren
+id|transport
+comma
+id|SCTP_LOWER_CWND_FAST_RTX
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sctp_transport_lower_cwnd
+c_func
+(paren
+id|transport
+comma
+id|SCTP_LOWER_CWND_T3_RTX
+)paren
+suffix:semicolon
+)brace
+id|sctp_retransmit_mark
+c_func
+(paren
+id|q
+comma
+id|transport
+comma
+id|fast_retransmit
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|sctp_flush_outqueue
@@ -861,7 +890,7 @@ id|transmitted_list
 )paren
 suffix:semicolon
 macro_line|#if 0
-multiline_comment|/* If a chunk has been tried for more than SCTP_DEF_MAX_SEND&n;&t;&t; * times, discard it, and check the empty flag of the outqueue.&n;&t;&t; *&n;&t;&t; *&t;&t;--xguo&n;&t;&t; */
+multiline_comment|/* If a chunk has been tried for more than SCTP_DEF_MAX_SEND&n;&t;&t; * times, discard it, and check the empty flag of the outqueue.&n;&t;&t; *&n;&t;&t; * --xguo&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -902,7 +931,7 @@ id|status
 r_case
 id|SCTP_XMIT_PMTU_FULL
 suffix:colon
-multiline_comment|/* Send this packet. */
+multiline_comment|/* Send this packet.  */
 r_if
 c_cond
 (paren
@@ -1662,7 +1691,7 @@ id|frag
 r_goto
 id|err
 suffix:semicolon
-multiline_comment|/* Add the middle fragment to the first fragment&squot;s frag_list.  */
+multiline_comment|/* Add the middle fragment to the first fragment&squot;s &n;&t;&t; * frag_list.&n;&t;&t; */
 id|list_add_tail
 c_func
 (paren
@@ -2225,12 +2254,13 @@ id|asoc-&gt;state
 r_case
 id|SCTP_STATE_COOKIE_ECHOED
 suffix:colon
-multiline_comment|/* Only allow bundling, if this packet has a COOKIE-ECHO&n;&t;&t; * chunk.&n;&t;&t; */
+multiline_comment|/* Only allow bundling when this packet has a COOKIE-ECHO&n;&t;&t; * chunk.&n;&t;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|packet
-op_logical_and
+op_logical_or
 op_logical_neg
 id|packet-&gt;has_cookie_echo
 )paren
@@ -2342,6 +2372,15 @@ c_func
 (paren
 id|transport
 )paren
+suffix:semicolon
+multiline_comment|/* This can happen on COOKIE-ECHO resend.  Only&n;&t;&t;&t; * one chunk can get bundled with a COOKIE-ECHO.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|packet-&gt;has_cookie_echo
+)paren
+r_goto
+id|sctp_flush_out
 suffix:semicolon
 )brace
 multiline_comment|/* Finally, transmit new packets.  */
@@ -2690,7 +2729,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* BUG: We assume that the (*q-&gt;force_output())&n;&t;&t;&t; * call below will succeed all the time and add the&n;&t;&t;&t; * chunk to the transmitted list and restart the&n;&t;&t;&t; * timers.&n;&t;&t;&t; * It is possible that the call can fail under OOM&n;&t;&t;&t; * conditions.&n;&t;&t;&t; *&n;&t;&t;&t; * Is this really a problem?  Won&squot;t this behave&n;&t;&t;&t; * like a lost TSN?&n;&t;&t;&t; */
 id|list_add_tail
 c_func
@@ -2712,6 +2750,15 @@ id|q-&gt;empty
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Only let one DATA chunk get bundled with a&n;&t;&t;&t; * COOKIE-ECHO chunk.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|packet-&gt;has_cookie_echo
+)paren
+r_goto
+id|sctp_flush_out
+suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -2721,7 +2768,6 @@ multiline_comment|/* Do nothing.  */
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 id|sctp_flush_out
 suffix:colon
 multiline_comment|/* Before returning, examine all the transports touched in&n;&t; * this call.  Right now, we bluntly force clear all the&n;&t; * transports.  Things might change after we implement Nagle.&n;&t; * But such an examination is still required.&n;&t; *&n;&t; * --xguo&n;&t; */
@@ -3462,7 +3508,7 @@ c_cond
 id|transport
 )paren
 (brace
-multiline_comment|/* If this chunk is being used for RTT&n;&t;&t;&t;&t; * measurement, calculate the RTT and update&n;&t;&t;&t;&t; * the RTO using this value.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * 6.3.1 C5) Karn&squot;s algorithm: RTT measurements&n;&t;&t;&t;&t; * MUST NOT be made using packets that were&n;&t;&t;&t;&t; * retransmitted (and thus for which it is&n;&t;&t;&t;&t; * ambiguous whether the reply was for the first&n;&t;&t;&t;&t; * instance of the packet or a later instance).&n;&t;&t;&t;&t; */
+multiline_comment|/* If this chunk is being used for RTT&n;&t;&t;&t;&t; * measurement, calculate the RTT and update&n;&t;&t;&t;&t; * the RTO using this value.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * 6.3.1 C5) Karn&squot;s algorithm: RTT measurements&n;&t;&t;&t;&t; * MUST NOT be made using packets that were&n;&t;&t;&t;&t; * retransmitted (and thus for which it is&n;&t;&t;&t;&t; * ambiguous whether the reply was for the &n;&t;&t;&t;&t; * first instance of the packet or a later &n;&t;&t;&t;&t; * instance).&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3548,7 +3594,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* RFC2960 7.2.4, sctpimpguide-05 2.8.2&n;&t;&t;&t;&t; * M2) Each time a SACK arrives reporting&n;&t;&t;&t;&t; * &squot;Stray DATA chunk(s)&squot; record the highest TSN&n;&t;&t;&t;&t; * reported as newly acknowledged, call this&n;&t;&t;&t;&t; * value &squot;HighestTSNinSack&squot;. A newly&n;&t;&t;&t;&t; * acknowledged DATA chunk is one not previously&n;&t;&t;&t;&t; * acknowledged in a SACK.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * When the SCTP sender of data receives a SACK&n;&t;&t;&t;&t; * chunk that acknowledges, for the first time,&n;&t;&t;&t;&t; * the receipt of a DATA chunk, all the still&n;&t;&t;&t;&t; * unacknowledged DATA chunks whose TSN is older&n;&t;&t;&t;&t; * than that newly acknowledged DATA chunk, are&n;&t;&t;&t;&t; * qualified as &squot;Stray DATA chunks&squot;.&n;&t;&t;&t;&t; */
+multiline_comment|/* RFC2960 7.2.4, sctpimpguide-05 2.8.2&n;&t;&t;&t;&t; * M2) Each time a SACK arrives reporting&n;&t;&t;&t;&t; * &squot;Stray DATA chunk(s)&squot; record the highest TSN&n;&t;&t;&t;&t; * reported as newly acknowledged, call this&n;&t;&t;&t;&t; * value &squot;HighestTSNinSack&squot;. A newly&n;&t;&t;&t;&t; * acknowledged DATA chunk is one not &n;&t;&t;&t;&t; * previously acknowledged in a SACK.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * When the SCTP sender of data receives a SACK&n;&t;&t;&t;&t; * chunk that acknowledges, for the first time,&n;&t;&t;&t;&t; * the receipt of a DATA chunk, all the still&n;&t;&t;&t;&t; * unacknowledged DATA chunks whose TSN is &n;&t;&t;&t;&t; * older than that newly acknowledged DATA &n;&t;&t;&t;&t; * chunk, are qualified as &squot;Stray DATA chunks&squot;.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3722,8 +3768,8 @@ id|tchunk-&gt;tsn_gap_acked
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;%s: Receiver reneged on data &quot;
-l_string|&quot;TSN: 0x%x&bslash;n&quot;
+l_string|&quot;%s: Receiver reneged on &quot;
+l_string|&quot;data TSN: 0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3742,7 +3788,7 @@ c_func
 id|tchunk
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * R4) Whenever a SACK is received missing a TSN&n;&t;&t;&t;&t; * that was previously acknowledged via a Gap Ack&n;&t;&t;&t;&t; * Block, start T3-rtx for the destination&n;&t;&t;&t;&t; * address to which the DATA chunk was originally&n;&t;&t;&t;&t; * transmitted if it is not already running.&n;&t;&t;&t;&t; */
+multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * R4) Whenever a SACK is received missing a &n;&t;&t;&t;&t; * TSN that was previously acknowledged via a &n;&t;&t;&t;&t; * Gap Ack Block, start T3-rtx for the &n;&t;&t;&t;&t; * destination address to which the DATA &n;&t;&t;&t;&t; * chunk was originally&n;&t;&t;&t;&t; * transmitted if it is not already running.&n;&t;&t;&t;&t; */
 id|restart_timer
 op_assign
 l_int|1

@@ -3,7 +3,7 @@ DECL|macro|_IEEE802_11_H
 mdefine_line|#define _IEEE802_11_H
 DECL|macro|IEEE802_11_DATA_LEN
 mdefine_line|#define IEEE802_11_DATA_LEN&t;&t;2304
-multiline_comment|/* Actually, the standard seems to be inconsistent about what the&n;   maximum frame size really is.  S6.2.1.1.2 says 2304 octets, but the&n;   figure in section 7.1.2 says 2312 octects. */
+multiline_comment|/* Actually, the standard seems to be inconsistent about what the&n;   maximum frame size really is.  Section 6.2.1.1.2 says 2304 octets,&n;   but the figure in Section 7.1.2 says 2312 octects. */
 DECL|macro|IEEE802_11_HLEN
 mdefine_line|#define IEEE802_11_HLEN&t;&t;&t;30
 DECL|macro|IEEE802_11_FRAME_LEN
