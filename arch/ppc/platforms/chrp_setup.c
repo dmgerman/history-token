@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -41,6 +42,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
+macro_line|#include &lt;asm/xmon.h&gt;
 r_int
 r_int
 id|chrp_get_rtc_time
@@ -138,6 +140,22 @@ id|seq_file
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * XXX this should be in xmon.h, but putting it there means xmon.h&n; * has to include &lt;linux/interrupt.h&gt; (to get irqreturn_t), which&n; * causes all sorts of problems.  -- paulus&n; */
+r_extern
+id|irqreturn_t
+id|xmon_irq
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
 )paren
 suffix:semicolon
 r_extern
