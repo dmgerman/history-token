@@ -140,25 +140,6 @@ op_star
 id|pagedir_nosave
 id|__nosavedata
 suffix:semicolon
-multiline_comment|/* Communication between acpi and arch/i386/suspend.c */
-r_extern
-r_void
-id|do_suspend_lowlevel
-c_func
-(paren
-r_int
-id|resume
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|do_suspend_lowlevel_s4bios
-c_func
-(paren
-r_int
-id|resume
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_PM */
 macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_extern
