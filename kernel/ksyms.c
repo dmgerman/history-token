@@ -48,6 +48,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &lt;linux/percpu_counter.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -240,6 +241,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|kfree_percpu
+)paren
+suffix:semicolon
+DECL|variable|percpu_counter_mod
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|percpu_counter_mod
 )paren
 suffix:semicolon
 macro_line|#endif

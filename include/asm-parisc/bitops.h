@@ -1815,13 +1815,21 @@ multiline_comment|/*&n; * test_and_{set,clear}_bit guarantee atomicity without&n
 macro_line|#ifdef __LP64__
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit(nr, addr)&t;&t;test_and_set_bit((nr) ^ 0x38, addr)
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(l,nr,addr)  test_and_set_bit((nr) ^ 0x38, addr)
 DECL|macro|ext2_clear_bit
 mdefine_line|#define ext2_clear_bit(nr, addr)&t;test_and_clear_bit((nr) ^ 0x38, addr)
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(l,nr,addr) test_and_clear_bit((nr) ^ 0x38, addr)
 macro_line|#else
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit(nr, addr)&t;&t;test_and_set_bit((nr) ^ 0x18, addr)
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(l,nr,addr)  test_and_set_bit((nr) ^ 0x18, addr)
 DECL|macro|ext2_clear_bit
 mdefine_line|#define ext2_clear_bit(nr, addr)&t;test_and_clear_bit((nr) ^ 0x18, addr)
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(l,nr,addr) test_and_clear_bit((nr) ^ 0x18, addr)
 macro_line|#endif
 macro_line|#endif&t;/* __KERNEL__ */
 DECL|function|ext2_test_bit

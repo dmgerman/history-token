@@ -2622,6 +2622,12 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* lockd-&gt;nfsd callbacks */
+id|nfs4_state_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* NFSv4 State */
 r_if
 c_cond
 (paren
@@ -2715,6 +2721,11 @@ c_func
 )paren
 suffix:semicolon
 id|nfsd_lockd_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
+id|nfs4_state_shutdown
 c_func
 (paren
 )paren

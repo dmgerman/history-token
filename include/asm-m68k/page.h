@@ -244,9 +244,9 @@ DECL|macro|copy_page
 mdefine_line|#define copy_page(to,from)&t;memcpy((to), (from), PAGE_SIZE)
 macro_line|#endif
 DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
+mdefine_line|#define clear_user_page(addr, vaddr, page)&t;&bslash;&n;&t;do { &t;clear_page(addr);&t;&t;&bslash;&n;&t;&t;flush_dcache_page(page);&t;&bslash;&n;&t;} while (0)
 DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
+mdefine_line|#define copy_user_page(to, from, vaddr, page)&t;&bslash;&n;&t;do {&t;copy_page(to, from);&t;&t;&bslash;&n;&t;&t;flush_dcache_page(page);&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
 DECL|member|pte
 DECL|typedef|pte_t

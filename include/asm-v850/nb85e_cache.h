@@ -172,8 +172,6 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(x)&t;((void)0)
 DECL|macro|flush_cache_all
 mdefine_line|#define flush_cache_all&t;&t;nb85e_cache_flush_all
 DECL|macro|flush_cache_mm

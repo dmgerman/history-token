@@ -1519,6 +1519,10 @@ DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit(nr,addr) &bslash;&n;&t;__test_and_set_le_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_clear_bit
 mdefine_line|#define ext2_clear_bit(nr, addr) &bslash;&n;&t;__test_and_clear_le_bit((nr),(unsigned long*)addr)
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(lock, nr, addr)&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret = ext2_set_bit((nr), (addr));&t;&bslash;&n;&t;&t;spin_unlock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(lock, nr, addr)&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret = ext2_clear_bit((nr), (addr));&t;&bslash;&n;&t;&t;spin_unlock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 DECL|macro|ext2_test_bit
 mdefine_line|#define ext2_test_bit(nr, addr)      test_le_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_find_first_zero_bit

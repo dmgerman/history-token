@@ -15,15 +15,8 @@ DECL|macro|RTC_AIE
 mdefine_line|#define RTC_AIE 0x20&t;&t;/* alarm interrupt enable */
 DECL|macro|RTC_UIE
 mdefine_line|#define RTC_UIE 0x10&t;&t;/* update-finished interrupt enable */
-r_extern
-r_void
-id|gen_rtc_interrupt
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
+DECL|macro|RTC_BATT_BAD
+mdefine_line|#define RTC_BATT_BAD 0x100&t;/* battery bad */
 multiline_comment|/* some dummy definitions */
 DECL|macro|RTC_SQWE
 mdefine_line|#define RTC_SQWE 0x08&t;&t;/* enable square-wave output */
@@ -112,6 +105,8 @@ l_int|366
 suffix:semicolon
 DECL|function|get_rtc_time
 r_static
+r_inline
+r_int
 r_int
 id|get_rtc_time
 c_func
@@ -155,8 +150,9 @@ l_int|0
 )paren
 (brace
 r_return
-op_minus
-l_int|1
+id|RTC_24H
+op_or
+id|RTC_BATT_BAD
 suffix:semicolon
 )brace
 singleline_comment|// most of the remainder of this function is:
@@ -336,7 +332,7 @@ op_plus
 l_int|1
 suffix:semicolon
 r_return
-l_int|0
+id|RTC_24H
 suffix:semicolon
 )brace
 DECL|function|set_rtc_time

@@ -1589,8 +1589,12 @@ DECL|macro|__clear_bit
 mdefine_line|#define __clear_bit(nr, addr)        clear_bit(nr, addr)
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit                 test_and_set_bit
+DECL|macro|ext2_set_atomic
+mdefine_line|#define ext2_set_atomic(l,n,a)&t;     test_and_set_bit(n,a)
 DECL|macro|ext2_clear_bit
 mdefine_line|#define ext2_clear_bit               test_and_clear_bit
+DECL|macro|ext2_clear_atomic
+mdefine_line|#define ext2_clear_atomic(l,n,a)     test_and_clear_bit(n,a)
 DECL|macro|ext2_test_bit
 mdefine_line|#define ext2_test_bit                test_bit
 DECL|macro|ext2_find_first_zero_bit

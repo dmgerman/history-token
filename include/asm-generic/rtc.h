@@ -12,16 +12,9 @@ DECL|macro|RTC_AIE
 mdefine_line|#define RTC_AIE 0x20&t;&t;/* alarm interrupt enable */
 DECL|macro|RTC_UIE
 mdefine_line|#define RTC_UIE 0x10&t;&t;/* update-finished interrupt enable */
-r_extern
-r_void
-id|gen_rtc_interrupt
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* some dummy definitions */
+DECL|macro|RTC_BATT_BAD
+mdefine_line|#define RTC_BATT_BAD 0x100&t;/* battery bad */
 DECL|macro|RTC_SQWE
 mdefine_line|#define RTC_SQWE 0x08&t;&t;/* enable square-wave output */
 DECL|macro|RTC_DM_BINARY
@@ -79,7 +72,8 @@ suffix:semicolon
 DECL|function|get_rtc_time
 r_static
 r_inline
-r_void
+r_int
+r_int
 id|get_rtc_time
 c_func
 (paren
@@ -294,6 +288,9 @@ l_int|100
 suffix:semicolon
 id|time-&gt;tm_mon
 op_decrement
+suffix:semicolon
+r_return
+id|RTC_24H
 suffix:semicolon
 )brace
 multiline_comment|/* Set the current date and time in the real time clock. */

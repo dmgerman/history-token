@@ -1249,9 +1249,10 @@ c_func
 id|radix_tree_gang_lookup
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;radix_tree_delete    -    delete an item from a radix tree&n; *&t;@root:&t;&t;radix tree root&n; *&t;@index:&t;&t;index key&n; *&n; *&t;Remove the item at @index from the radix tree rooted at @root.&n; */
+multiline_comment|/**&n; *&t;radix_tree_delete    -    delete an item from a radix tree&n; *&t;@root:&t;&t;radix tree root&n; *&t;@index:&t;&t;index key&n; *&n; *&t;Remove the item at @index from the radix tree rooted at @root.&n; *&n; *&t;Returns the address of the deleted item, or NULL if it was not present.&n; */
 DECL|function|radix_tree_delete
-r_int
+r_void
+op_star
 id|radix_tree_delete
 c_func
 (paren
@@ -1283,6 +1284,12 @@ id|height
 comma
 id|shift
 suffix:semicolon
+r_void
+op_star
+id|ret
+op_assign
+l_int|NULL
+suffix:semicolon
 id|height
 op_assign
 id|root-&gt;height
@@ -1298,9 +1305,8 @@ c_func
 id|height
 )paren
 )paren
-r_return
-op_minus
-id|ENOENT
+r_goto
+id|out
 suffix:semicolon
 id|shift
 op_assign
@@ -1337,9 +1343,8 @@ id|pathp-&gt;slot
 op_eq
 l_int|NULL
 )paren
-r_return
-op_minus
-id|ENOENT
+r_goto
+id|out
 suffix:semicolon
 id|pathp
 (braket
@@ -1399,9 +1404,8 @@ id|height
 op_decrement
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 op_star
 id|pathp
 (braket
@@ -1409,12 +1413,16 @@ l_int|0
 )braket
 dot
 id|slot
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 op_eq
 l_int|NULL
 )paren
-r_return
-op_minus
-id|ENOENT
+r_goto
+id|out
 suffix:semicolon
 op_star
 id|pathp
@@ -1484,8 +1492,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Empty tree, we can reset the height */
+id|out
+suffix:colon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|radix_tree_delete
