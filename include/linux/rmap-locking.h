@@ -9,9 +9,9 @@ op_star
 id|pte_chain_cache
 suffix:semicolon
 DECL|macro|pte_chain_lock
-mdefine_line|#define pte_chain_lock(page)&t;bit_spin_lock(PG_chainlock, &amp;page-&gt;flags)
+mdefine_line|#define pte_chain_lock(page)&t;bit_spin_lock(PG_chainlock, (unsigned long *)&amp;page-&gt;flags)
 DECL|macro|pte_chain_unlock
-mdefine_line|#define pte_chain_unlock(page)&t;bit_spin_unlock(PG_chainlock, &amp;page-&gt;flags)
+mdefine_line|#define pte_chain_unlock(page)&t;bit_spin_unlock(PG_chainlock, (unsigned long *)&amp;page-&gt;flags)
 r_struct
 id|pte_chain
 op_star

@@ -10204,6 +10204,8 @@ id|set_fs
 id|old_fs
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_return

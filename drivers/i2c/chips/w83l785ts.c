@@ -1,9 +1,5 @@
-multiline_comment|/*&n; * w83l785ts.c - Part of lm_sensors, Linux kernel modules for hardware&n; *               monitoring&n; * Copyright (C) 2003-2004  Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * Inspired from the lm83 driver. The W83L785TS-S is a sensor chip made&n; * by Winbond. It reports a single external temperature with a 1 deg&n; * resolution and a 3 deg accuracy. Datasheet can be obtained from&n; * Winbond&squot;s website at:&n; *   http://www.winbond-usa.com/products/winbond_products/pdfs/PCIC/W83L785TS-S.pdf&n; *&n; * Ported to Linux 2.6 by Wolfgang Ziegler &lt;nuppla@gmx.at&gt; and Jean Delvare&n; * &lt;khali@linux-fr.org&gt;.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * w83l785ts.c - Part of lm_sensors, Linux kernel modules for hardware&n; *               monitoring&n; * Copyright (C) 2003-2004  Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * Inspired from the lm83 driver. The W83L785TS-S is a sensor chip made&n; * by Winbond. It reports a single external temperature with a 1 deg&n; * resolution and a 3 deg accuracy. Datasheet can be obtained from&n; * Winbond&squot;s website at:&n; *   http://www.winbond-usa.com/products/winbond_products/pdfs/PCIC/W83L785TS-S.pdf&n; *&n; * Ported to Linux 2.6 by Wolfgang Ziegler &lt;nuppla@gmx.at&gt; and Jean Delvare&n; * &lt;khali@linux-fr.org&gt;.&n; *&n; * Thanks to James Bolt &lt;james@evilpenguin.com&gt; for benchmarking the read&n; * error handling mechanism.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -147,14 +143,16 @@ id|defval
 )paren
 suffix:semicolon
 r_static
-r_void
-id|w83l785ts_update_client
+r_struct
+id|w83l785ts_data
+op_star
+id|w83l785ts_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Driver data (common to all clients)&n; */
@@ -254,31 +252,14 @@ id|buf
 )paren
 (brace
 r_struct
-id|i2c_client
-op_star
-id|client
-op_assign
-id|to_i2c_client
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|w83l785ts_data
 op_star
 id|data
 op_assign
-id|i2c_get_clientdata
+id|w83l785ts_update_device
 c_func
 (paren
-id|client
-)paren
-suffix:semicolon
-id|w83l785ts_update_client
-c_func
-(paren
-id|client
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -314,31 +295,14 @@ id|buf
 )paren
 (brace
 r_struct
-id|i2c_client
-op_star
-id|client
-op_assign
-id|to_i2c_client
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|w83l785ts_data
 op_star
 id|data
 op_assign
-id|i2c_get_clientdata
+id|w83l785ts_update_device
 c_func
 (paren
-id|client
-)paren
-suffix:semicolon
-id|w83l785ts_update_client
-c_func
-(paren
-id|client
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -361,7 +325,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input1
+id|temp1_input
 comma
 id|S_IRUGO
 comma
@@ -373,7 +337,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max1
+id|temp1_max
 comma
 id|S_IRUGO
 comma
@@ -455,13 +419,6 @@ r_int
 id|err
 op_assign
 l_int|0
-suffix:semicolon
-r_const
-r_char
-op_star
-id|name
-op_assign
-l_string|&quot;&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -714,10 +671,6 @@ id|kind
 op_assign
 id|w83l785ts
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;w83l785ts&quot;
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -754,7 +707,7 @@ c_func
 (paren
 id|new_client-&gt;name
 comma
-id|name
+l_string|&quot;w83l785ts&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
@@ -808,7 +761,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input1
+id|dev_attr_temp1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -818,7 +771,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max1
+id|dev_attr_temp1_max
 )paren
 suffix:semicolon
 r_return
@@ -982,18 +935,31 @@ r_return
 id|defval
 suffix:semicolon
 )brace
-DECL|function|w83l785ts_update_client
+DECL|function|w83l785ts_update_device
 r_static
-r_void
-id|w83l785ts_update_client
+r_struct
+id|w83l785ts_data
+op_star
+id|w83l785ts_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|w83l785ts_data
 op_star
@@ -1083,6 +1049,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_w83l785ts_init

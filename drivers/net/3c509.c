@@ -2601,7 +2601,7 @@ op_star
 id|device
 )paren
 (brace
-multiline_comment|/* Based on Erik Nygren&squot;s (nygren@mit.edu) 3c529 patch,&n;&t;&t; * heavily modified by Chris Beauregard&n;&t;&t; * (cpbeaure@csclub.uwaterloo.ca) to support standard MCA&n;&t;&t; * probing.&n;&t;&t; *&n;&t;&t; * redone for multi-card detection by ZP Gu (zpg@castle.net)&n;&t;&t; * now works as a module */
+multiline_comment|/* Based on Erik Nygren&squot;s (nygren@mit.edu) 3c529 patch,&n;&t; * heavily modified by Chris Beauregard&n;&t; * (cpbeaure@csclub.uwaterloo.ca) to support standard MCA&n;&t; * probing.&n;&t; *&n;&t; * redone for multi-card detection by ZP Gu (zpg@castle.net)&n;&t; * now works as a module */
 r_struct
 id|el3_private
 op_star
@@ -5449,7 +5449,7 @@ op_ne
 id|EL3_EISA
 )paren
 (brace
-multiline_comment|/* But we explicitly zero the IRQ line select anyway. Don&squot;t do&n;&t;     * it on EISA cards, it prevents the module from getting an&n;&t;     * IRQ after unload+reload... */
+multiline_comment|/* But we explicitly zero the IRQ line select anyway. Don&squot;t do&n;&t;&t; * it on EISA cards, it prevents the module from getting an&n;&t;&t; * IRQ after unload+reload... */
 id|outw
 c_func
 (paren
@@ -7645,7 +7645,7 @@ id|eisa_driver_register
 op_amp
 id|el3_eisa_driver
 )paren
-OL
+op_le
 l_int|0
 )paren
 (brace
@@ -7702,11 +7702,6 @@ id|el3_private
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|el3_private
-op_star
-)paren
 id|el3_root_dev-&gt;priv
 suffix:semicolon
 id|next_dev
@@ -7753,5 +7748,4 @@ id|module_exit
 id|el3_cleanup_module
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -DMODULE -D__KERNEL__ -Wall -Wstrict-prototypes -O6 -c 3c509.c&quot;&n; *  version-control: t&n; *  kept-new-versions: 5&n; *  tab-width: 4&n; * End:&n; */
 eof

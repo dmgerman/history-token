@@ -597,7 +597,7 @@ DECL|macro|pfn_to_nid
 mdefine_line|#define pfn_to_nid(pfn)&t;&t;(0)
 macro_line|#else /* CONFIG_DISCONTIGMEM */
 macro_line|#include &lt;asm/mmzone.h&gt;
-macro_line|#if BITS_PER_LONG == 32
+macro_line|#if BITS_PER_LONG == 32 || defined(ARCH_HAS_ATOMIC_UNSIGNED)
 multiline_comment|/*&n; * with 32 bit page-&gt;flags field, we reserve 8 bits for node/zone info.&n; * there are 3 zones (2 bits) and this leaves 8-2=6 bits for nodes.&n; */
 DECL|macro|MAX_NODES_SHIFT
 mdefine_line|#define MAX_NODES_SHIFT&t;&t;6

@@ -381,12 +381,14 @@ id|buf
 op_assign
 id|ptr
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|3
 comma
-l_string|&quot;cs: read_cis_mem(%d, %#x, %u)&bslash;n&quot;
+l_string|&quot;read_cis_mem(%d, %#x, %u)&bslash;n&quot;
 comma
 id|attr
 comma
@@ -734,12 +736,14 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|3
 comma
-l_string|&quot;cs:  %#2.2x %#2.2x %#2.2x %#2.2x ...&bslash;n&quot;
+l_string|&quot;  %#2.2x %#2.2x %#2.2x %#2.2x ...&bslash;n&quot;
 comma
 op_star
 (paren
@@ -826,12 +830,14 @@ id|buf
 op_assign
 id|ptr
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|3
 comma
-l_string|&quot;cs: write_cis_mem(%d, %#x, %u)&bslash;n&quot;
+l_string|&quot;write_cis_mem(%d, %#x, %u)&bslash;n&quot;
 comma
 id|attr
 comma
@@ -2890,14 +2896,14 @@ op_eq
 id|MAX_TUPLES
 )paren
 (brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|1
 comma
-l_string|&quot;cs: overrun in pcmcia_get_next_tuple for socket %d&bslash;n&quot;
-comma
-id|handle-&gt;Socket
+l_string|&quot;cs: overrun in pcmcia_get_next_tuple&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

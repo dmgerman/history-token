@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
@@ -2317,6 +2318,14 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_ALIAS_CHARDEV
+c_func
+(paren
+id|SERIAL_ANAKIN_MAJOR
+comma
+id|SERIAL_ANAKIN_MINOR
 )paren
 suffix:semicolon
 eof

@@ -121,17 +121,6 @@ id|traverse_func
 id|pre
 )paren
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|pci_find_dev_by_addr
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
 r_void
 id|pci_devs_phb_init
 c_func
@@ -160,5 +149,26 @@ id|dev
 suffix:semicolon
 DECL|macro|PCI_GET_PHB_PTR
 mdefine_line|#define PCI_GET_PHB_PTR(dev)    (((struct device_node *)(dev)-&gt;sysdata)-&gt;phb)
+multiline_comment|/* PCI address cache management routines */
+r_void
+id|pci_addr_cache_insert_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_void
+id|pci_addr_cache_remove_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif /* __PPC_KERNEL_PCI_H__ */
 eof

@@ -2,10 +2,6 @@ multiline_comment|/*&n;    i801.c - Part of lm_sensors, Linux kernel modules for
 multiline_comment|/*&n;    SUPPORTED DEVICES&t;PCI ID&n;    82801AA&t;&t;2413           &n;    82801AB&t;&t;2423           &n;    82801BA&t;&t;2443           &n;    82801CA/CAM&t;&t;2483           &n;    82801DB&t;&t;24C3   (HW PEC supported, 32 byte buffer not supported)&n;    82801EB&t;&t;24D3   (HW PEC supported, 32 byte buffer not supported)&n;&n;    This driver supports several versions of Intel&squot;s I/O Controller Hubs (ICH).&n;    For SMBus support, they are similar to the PIIX4 and are part&n;    of Intel&squot;s &squot;810&squot; and other chipsets.&n;    See the doc/busses/i2c-i801 file for details.&n;    I2C Block Read and Process Call are not supported.&n;*/
 multiline_comment|/* Note: we assume there can only be one I801, with one SMBus interface */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2648,6 +2644,21 @@ op_amp
 id|i801_adapter
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|i801_smba
+comma
+(paren
+id|isich4
+ques
+c_cond
+l_int|16
+suffix:colon
+l_int|8
+)paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|i801_driver
 r_static
@@ -2716,21 +2727,6 @@ c_func
 (paren
 op_amp
 id|i801_driver
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|i801_smba
-comma
-(paren
-id|isich4
-ques
-c_cond
-l_int|16
-suffix:colon
-l_int|8
-)paren
 )paren
 suffix:semicolon
 )brace

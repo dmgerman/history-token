@@ -2524,9 +2524,6 @@ r_int
 id|i
 suffix:semicolon
 r_int
-id|result
-suffix:semicolon
-r_int
 id|ep_out
 op_assign
 op_minus
@@ -2566,7 +2563,7 @@ id|interface_to_usbdev
 id|intf
 )paren
 suffix:semicolon
-multiline_comment|/* the altsettting 0 on the interface we&squot;re probing */
+multiline_comment|/* the current altsetting on the interface we&squot;re probing */
 r_struct
 id|usb_host_interface
 op_star
@@ -2647,16 +2644,10 @@ comma
 id|p-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* the altsettting 0 on the interface we&squot;re probing */
+multiline_comment|/* the current altsetting on the interface we&squot;re probing */
 id|altsetting
 op_assign
-op_amp
-(paren
-id|intf-&gt;altsetting
-(braket
-l_int|0
-)braket
-)paren
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 multiline_comment|/* Check if the config is sane */
 r_if
@@ -2813,56 +2804,6 @@ id|MTS_WARNING
 c_func
 (paren
 l_string|&quot;couldn&squot;t find an output bulk endpoint. Bailing out.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-id|result
-op_assign
-id|usb_set_interface
-c_func
-(paren
-id|dev
-comma
-id|altsetting-&gt;desc.bInterfaceNumber
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|MTS_DEBUG
-c_func
-(paren
-l_string|&quot;usb_set_interface returned %d.&bslash;n&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|result
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-multiline_comment|/* no error */
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|MTS_DEBUG
-c_func
-(paren
-l_string|&quot;unknown error %d from usb_set_interface&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|result
 )paren
 suffix:semicolon
 r_return

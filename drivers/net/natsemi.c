@@ -36,6 +36,8 @@ DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION&t;&quot;1.07+LK1.0.17&quot;
 DECL|macro|DRV_RELDATE
 mdefine_line|#define DRV_RELDATE&t;&quot;Sep 27, 2002&quot;
+DECL|macro|RX_OFFSET
+mdefine_line|#define RX_OFFSET&t;2
 multiline_comment|/* Updated to recommendations in pci-skeleton v2.03. */
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|macro|NATSEMI_DEF_MSG
@@ -5811,12 +5813,20 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_int
+r_int
+id|buflen
+op_assign
+id|np-&gt;rx_buf_sz
+op_plus
+id|RX_OFFSET
+suffix:semicolon
 id|skb
 op_assign
 id|dev_alloc_skb
 c_func
 (paren
-id|np-&gt;rx_buf_sz
+id|buflen
 )paren
 suffix:semicolon
 id|np-&gt;rx_skbuff
@@ -5851,9 +5861,9 @@ c_func
 (paren
 id|np-&gt;pci_dev
 comma
-id|skb-&gt;data
+id|skb-&gt;tail
 comma
-id|skb-&gt;len
+id|buflen
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6240,6 +6250,14 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 r_int
+r_int
+id|buflen
+op_assign
+id|np-&gt;rx_buf_sz
+op_plus
+id|RX_OFFSET
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Free all the skbuffs in the Rx queue. */
@@ -6296,12 +6314,7 @@ id|np-&gt;rx_dma
 id|i
 )braket
 comma
-id|np-&gt;rx_skbuff
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|len
+id|buflen
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -7246,6 +7259,14 @@ c_func
 id|np-&gt;rx_head_desc-&gt;cmd_status
 )paren
 suffix:semicolon
+r_int
+r_int
+id|buflen
+op_assign
+id|np-&gt;rx_buf_sz
+op_plus
+id|RX_OFFSET
+suffix:semicolon
 multiline_comment|/* If the driver owns the next entry it&squot;s a new packet. Send it up. */
 r_while
 c_loop
@@ -7436,7 +7457,7 @@ c_func
 (paren
 id|pkt_len
 op_plus
-l_int|2
+id|RX_OFFSET
 )paren
 )paren
 op_ne
@@ -7453,7 +7474,7 @@ c_func
 (paren
 id|skb
 comma
-l_int|2
+id|RX_OFFSET
 )paren
 suffix:semicolon
 id|pci_dma_sync_single_for_cpu
@@ -7466,12 +7487,7 @@ id|np-&gt;rx_dma
 id|entry
 )braket
 comma
-id|np-&gt;rx_skbuff
-(braket
-id|entry
-)braket
-op_member_access_from_pointer
-id|len
+id|buflen
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -7535,12 +7551,7 @@ id|np-&gt;rx_dma
 id|entry
 )braket
 comma
-id|np-&gt;rx_skbuff
-(braket
-id|entry
-)braket
-op_member_access_from_pointer
-id|len
+id|buflen
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -7558,12 +7569,7 @@ id|np-&gt;rx_dma
 id|entry
 )braket
 comma
-id|np-&gt;rx_skbuff
-(braket
-id|entry
-)braket
-op_member_access_from_pointer
-id|len
+id|buflen
 comma
 id|PCI_DMA_FROMDEVICE
 )paren

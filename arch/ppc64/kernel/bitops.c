@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * These are too big to be inlined.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|function|find_next_zero_bit
@@ -204,6 +205,13 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
+DECL|variable|find_next_zero_bit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_next_zero_bit
+)paren
+suffix:semicolon
 DECL|function|find_next_bit
 r_int
 r_int
@@ -407,9 +415,16 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
+DECL|variable|find_next_bit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_next_bit
+)paren
+suffix:semicolon
 DECL|function|ext2_ilog2
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|ext2_ilog2
@@ -447,7 +462,7 @@ suffix:semicolon
 )brace
 DECL|function|ext2_ffz
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|ext2_ffz
@@ -459,7 +474,7 @@ id|x
 )paren
 (brace
 id|u32
-id|tempRC
+id|rc
 suffix:semicolon
 r_if
 c_cond
@@ -476,7 +491,7 @@ l_int|0
 r_return
 l_int|32
 suffix:semicolon
-id|tempRC
+id|rc
 op_assign
 id|ext2_ilog2
 c_func
@@ -488,7 +503,7 @@ id|x
 )paren
 suffix:semicolon
 r_return
-id|tempRC
+id|rc
 suffix:semicolon
 )brace
 DECL|function|find_next_zero_le_bit
@@ -709,4 +724,11 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
+DECL|variable|find_next_zero_le_bit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_next_zero_le_bit
+)paren
+suffix:semicolon
 eof

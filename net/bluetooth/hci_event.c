@@ -799,7 +799,7 @@ l_string|&quot;%s READ_VOICE_SETTING failed %d&quot;
 comma
 id|hdev-&gt;name
 comma
-id|vc-&gt;status
+id|vs-&gt;status
 )paren
 suffix:semicolon
 r_break
@@ -1441,7 +1441,7 @@ id|batostr
 c_func
 (paren
 op_amp
-id|cc-&gt;bdaddr
+id|cp-&gt;bdaddr
 )paren
 comma
 id|conn

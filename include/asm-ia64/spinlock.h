@@ -95,7 +95,7 @@ l_string|&quot;  mov r30 = 1;;&bslash;n&bslash;t&quot;
 l_string|&quot;}&bslash;n&bslash;t&quot;
 l_string|&quot;cmpxchg4.acq r30 = [%1], r30, ar.ccv;;&bslash;n&bslash;t&quot;
 l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&quot;
-l_string|&quot;(p14) brl.cond.spnt.many ia64_spinlock_contention_pre3_4&quot;
+l_string|&quot;(p14) brl.cond.spnt.many ia64_spinlock_contention_pre3_4;;&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -147,7 +147,7 @@ l_string|&quot;mov r30 = 1&bslash;n&bslash;t&quot;
 l_string|&quot;mov ar.ccv = r0;;&bslash;n&bslash;t&quot;
 l_string|&quot;cmpxchg4.acq r30 = [%0], r30, ar.ccv;;&bslash;n&bslash;t&quot;
 l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&bslash;t&quot;
-l_string|&quot;(p14) brl.call.spnt.many b6=ia64_spinlock_contention&quot;
+l_string|&quot;(p14) brl.call.spnt.many b6=ia64_spinlock_contention;;&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

@@ -4,10 +4,6 @@ multiline_comment|/*   Copyright (C) 1995-99 Simon G. Vogl&n;&n;    This program
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;.&n;   All SMBus-related things are written by Frodo Looijaard &lt;frodol@dds.nl&gt;&n;   SMBus 2.0 support by Mark Studebaker &lt;mdsxyz123@yahoo.com&gt;                */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_CORE
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -657,7 +653,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;can&squot;t detach adapter&quot;
+l_string|&quot;can&squot;t detach adapter &quot;
 l_string|&quot;while detaching driver %s: driver not &quot;
 l_string|&quot;detached!&quot;
 comma
@@ -1727,19 +1723,24 @@ op_star
 id|client
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|i2c_inc_use_client
 c_func
 (paren
 id|client
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 r_return
-op_minus
-id|ENODEV
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -2513,7 +2514,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|client-&gt;dev
+id|client-&gt;adapter-&gt;dev
 comma
 l_string|&quot;i2c ioctl, cmd: 0x%x, arg: %#lx&bslash;n&quot;
 comma

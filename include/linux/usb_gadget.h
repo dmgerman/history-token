@@ -726,7 +726,7 @@ id|param
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct usb_gadget - represents a usb slave device&n; * @ops: Function pointers used to access hardware-specific operations.&n; * @ep0: Endpoint zero, used when reading or writing responses to&n; * &t;driver setup() requests&n; * @ep_list: List of other endpoints supported by the device.&n; * @speed: Speed of current connection to USB host.&n; * @name: Identifies the controller hardware type.  Used in diagnostics&n; * &t;and sometimes configuration.&n; * @dev: Driver model state for this abstract device.&n; *&n; * Gadgets have a mostly-portable &quot;gadget driver&quot; implementing device&n; * functions, handling all usb configurations and interfaces.  Gadget&n; * drivers talk to hardware-specific code indirectly, through ops vectors.&n; * That insulates the gadget driver from hardware details, and packages&n; * the hardware endpoints through generic i/o queues.  The &quot;usb_gadget&quot;&n; * and &quot;usb_ep&quot; interfaces provide that insulation from the hardware.&n; *&n; * Except for the driver data, all fields in this structure are&n; * read-only to the gadget driver.  That driver data is part of the&n; * &quot;driver model&quot; infrastructure in 2.5 (and later) kernels, and for&n; * earlier systems is grouped in a similar structure that&squot;s not known&n; * to the rest of the kernel.&n; */
+multiline_comment|/**&n; * struct usb_gadget - represents a usb slave device&n; * @ops: Function pointers used to access hardware-specific operations.&n; * @ep0: Endpoint zero, used when reading or writing responses to&n; * &t;driver setup() requests&n; * @ep_list: List of other endpoints supported by the device.&n; * @speed: Speed of current connection to USB host.&n; * @is_dualspeed: True if the controller supports both high and full speed&n; *&t;operation.  If it does, the gadget driver must also support both.&n; * @name: Identifies the controller hardware type.  Used in diagnostics&n; * &t;and sometimes configuration.&n; * @dev: Driver model state for this abstract device.&n; *&n; * Gadgets have a mostly-portable &quot;gadget driver&quot; implementing device&n; * functions, handling all usb configurations and interfaces.  Gadget&n; * drivers talk to hardware-specific code indirectly, through ops vectors.&n; * That insulates the gadget driver from hardware details, and packages&n; * the hardware endpoints through generic i/o queues.  The &quot;usb_gadget&quot;&n; * and &quot;usb_ep&quot; interfaces provide that insulation from the hardware.&n; *&n; * Except for the driver data, all fields in this structure are&n; * read-only to the gadget driver.  That driver data is part of the&n; * &quot;driver model&quot; infrastructure in 2.5 (and later) kernels, and for&n; * earlier systems is grouped in a similar structure that&squot;s not known&n; * to the rest of the kernel.&n; */
 DECL|struct|usb_gadget
 r_struct
 id|usb_gadget
@@ -755,6 +755,12 @@ DECL|member|speed
 r_enum
 id|usb_device_speed
 id|speed
+suffix:semicolon
+DECL|member|is_dualspeed
+r_int
+id|is_dualspeed
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|name
 r_const
@@ -1057,7 +1063,7 @@ id|driver
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* utility to simplify dealing with string descriptors */
-multiline_comment|/**&n; * struct usb_string - wraps a C string and its USB id&n; * @id:the (nonzero) ID for this string&n; * @s:the string, in ISO-8859/1 characters&n; *&n; * If you&squot;re using usb_gadget_get_string(), use this to wrap a string&n; * together with its ID.&n; */
+multiline_comment|/**&n; * struct usb_string - wraps a C string and its USB id&n; * @id:the (nonzero) ID for this string&n; * @s:the string, in UTF-8 encoding&n; *&n; * If you&squot;re using usb_gadget_get_string(), use this to wrap a string&n; * together with its ID.&n; */
 DECL|struct|usb_string
 r_struct
 id|usb_string
@@ -1107,6 +1113,51 @@ comma
 id|u8
 op_star
 id|buf
+)paren
+suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* utility to simplify managing config descriptors */
+multiline_comment|/* write vector of descriptors into buffer */
+r_int
+id|usb_descriptor_fillbuf
+c_func
+(paren
+r_void
+op_star
+comma
+r_int
+comma
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* build config descriptor from single descriptor vector */
+r_int
+id|usb_gadget_config_buf
+c_func
+(paren
+r_const
+r_struct
+id|usb_config_descriptor
+op_star
+id|config
+comma
+r_void
+op_star
+id|buf
+comma
+r_int
+id|buflen
+comma
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+op_star
+id|desc
 )paren
 suffix:semicolon
 macro_line|#endif  /* __KERNEL__ */

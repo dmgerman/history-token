@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&n; * Alchemy Semi Au1000 pcmcia driver&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * &n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -24,12 +25,27 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
 macro_line|#include &lt;asm/au1000_pcmcia.h&gt;
-macro_line|#ifdef PCMCIA_DEBUG
+macro_line|#ifdef DEBUG
 DECL|variable|pc_debug
 r_static
 r_int
 id|pc_debug
 suffix:semicolon
+id|module_param
+c_func
+(paren
+id|pc_debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+DECL|macro|debug
+mdefine_line|#define debug(lvl,fmt) do {&t;&t;&t;&bslash;&n;&t;if (pc_debug &gt; (lvl))&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG fmt);&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|debug
+mdefine_line|#define debug(lvl,fmt) do { } while (0)
 macro_line|#endif
 id|MODULE_LICENSE
 c_func
@@ -718,7 +734,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
@@ -818,7 +834,7 @@ id|virt_io
 )paren
 suffix:semicolon
 )brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
@@ -904,7 +920,7 @@ op_ne
 id|prev_state-&gt;detect
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
@@ -931,7 +947,7 @@ op_ne
 id|prev_state-&gt;ready
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
@@ -1545,7 +1561,7 @@ id|SS_XVCARD
 suffix:colon
 l_int|0
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
@@ -1702,7 +1718,7 @@ r_struct
 id|pcmcia_configure
 id|configure
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
@@ -1960,7 +1976,7 @@ op_star
 id|map
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
@@ -2140,7 +2156,7 @@ op_assign
 op_star
 id|map
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|3
@@ -2414,7 +2430,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|3

@@ -9175,7 +9175,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* __sparc__ */
 macro_line|#endif
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__arm__)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; &bslash;&n;    !defined(__arm__) &amp;&amp; !defined(__s390__)
 multiline_comment|/*&n; * For backwards compatibility.  Functionality superseded by sigprocmask.&n; */
 id|asmlinkage
 r_int

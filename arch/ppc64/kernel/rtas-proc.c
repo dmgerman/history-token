@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
-macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt; /* for ppc_md */
 macro_line|#include &lt;asm/time.h&gt;
 multiline_comment|/* Token for Sensors */
@@ -161,12 +160,6 @@ mdefine_line|#define SENSOR_PREFIX&t;&t;&quot;ibm,sensor-&quot;
 DECL|macro|cel_to_fahr
 mdefine_line|#define cel_to_fahr(x)&t;&t;((x*9/5)+32)
 multiline_comment|/* Globals */
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_rtas
-suffix:semicolon
 DECL|variable|sensors
 r_static
 r_struct
@@ -702,11 +695,10 @@ op_star
 id|buf
 )paren
 suffix:semicolon
-multiline_comment|/* ****************************************************************** */
-multiline_comment|/* MAIN                                                               */
-multiline_comment|/* ****************************************************************** */
 DECL|function|proc_rtas_init
-r_void
+r_static
+r_int
+id|__init
 id|proc_rtas_init
 c_func
 (paren
@@ -717,6 +709,19 @@ r_struct
 id|proc_dir_entry
 op_star
 id|entry
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|systemcfg-&gt;platform
+op_amp
+id|PLATFORM_PSERIES
+)paren
+)paren
+r_return
+l_int|1
 suffix:semicolon
 id|rtas_node
 op_assign
@@ -731,67 +736,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|rtas_node
 op_eq
 l_int|NULL
 )paren
-op_logical_or
-(paren
-id|systemcfg-&gt;platform
-op_eq
-id|PLATFORM_ISERIES_LPAR
-)paren
-)paren
-(brace
 r_return
+l_int|1
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|proc_ppc64.rtas
-op_eq
-l_int|NULL
-)paren
-(brace
-id|proc_ppc64_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|proc_ppc64.rtas
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Failed to create /proc/rtas in proc_rtas_init&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* /proc/rtas entries */
 id|entry
 op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;progress&quot;
+l_string|&quot;ppc64/rtas/progress&quot;
 comma
 id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|proc_ppc64.rtas
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -809,13 +772,13 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;clock&quot;
+l_string|&quot;ppc64/rtas/clock&quot;
 comma
 id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|proc_ppc64.rtas
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -833,13 +796,13 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;poweron&quot;
+l_string|&quot;ppc64/rtas/poweron&quot;
 comma
 id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
-id|proc_ppc64.rtas
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -855,11 +818,11 @@ suffix:semicolon
 id|create_proc_read_entry
 c_func
 (paren
-l_string|&quot;sensors&quot;
+l_string|&quot;ppc64/rtas/sensors&quot;
 comma
 id|S_IRUGO
 comma
-id|proc_ppc64.rtas
+l_int|NULL
 comma
 id|ppc_rtas_sensor_read
 comma
@@ -871,13 +834,13 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;frequency&quot;
+l_string|&quot;ppc64/rtas/frequency&quot;
 comma
 id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
-id|proc_ppc64.rtas
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -895,13 +858,13 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;volume&quot;
+l_string|&quot;ppc64/rtas/volume&quot;
 comma
 id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
-id|proc_ppc64.rtas
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -919,11 +882,11 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;rmo_buffer&quot;
+l_string|&quot;ppc64/rtas/rmo_buffer&quot;
 comma
 id|S_IRUSR
 comma
-id|proc_ppc64.rtas
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -936,7 +899,17 @@ op_assign
 op_amp
 id|ppc_rtas_rmo_buf_ops
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|proc_rtas_init
+id|__initcall
+c_func
+(paren
+id|proc_rtas_init
+)paren
+suffix:semicolon
 multiline_comment|/* ****************************************************************** */
 multiline_comment|/* POWER-ON-TIME                                                      */
 multiline_comment|/* ****************************************************************** */

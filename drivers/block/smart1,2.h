@@ -380,7 +380,7 @@ c_func
 (paren
 id|c-&gt;busaddr
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|COMMAND_FIFO
 )paren
@@ -406,7 +406,7 @@ c_func
 (paren
 id|val
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|INTR_MASK
 )paren
@@ -428,7 +428,7 @@ r_return
 id|inl
 c_func
 (paren
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|COMMAND_FIFO
 )paren
@@ -450,7 +450,7 @@ r_return
 id|inl
 c_func
 (paren
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|COMMAND_COMPLETE_FIFO
 )paren
@@ -472,7 +472,7 @@ r_return
 id|inl
 c_func
 (paren
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|INTR_PENDING
 )paren
@@ -547,7 +547,7 @@ c_func
 (paren
 id|CHANNEL_CLEAR
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_SYSTEM_DOORBELL
 )paren
@@ -557,7 +557,7 @@ c_func
 (paren
 id|c-&gt;busaddr
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_LISTADDR
 )paren
@@ -567,7 +567,7 @@ c_func
 (paren
 id|c-&gt;size
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_LISTLEN
 )paren
@@ -577,7 +577,7 @@ c_func
 (paren
 id|CHANNEL_BUSY
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_LOCAL_DOORBELL
 )paren
@@ -611,7 +611,7 @@ c_func
 (paren
 l_int|0xFD
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_SYSTEM_DOORBELL
 )paren
@@ -621,7 +621,7 @@ c_func
 (paren
 id|CHANNEL_BUSY
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_LOCAL_DOORBELL
 )paren
@@ -631,7 +631,7 @@ c_func
 (paren
 l_int|0x01
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_INTR_MASK
 )paren
@@ -641,7 +641,7 @@ c_func
 (paren
 l_int|0x01
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_SYSTEM_MASK
 )paren
@@ -654,7 +654,7 @@ c_func
 (paren
 l_int|0
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 l_int|0xC8E
 )paren
@@ -682,7 +682,7 @@ op_assign
 id|inb
 c_func
 (paren
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_SYSTEM_DOORBELL
 )paren
@@ -719,7 +719,7 @@ c_cond
 id|inb
 c_func
 (paren
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_SYSTEM_DOORBELL
 )paren
@@ -732,7 +732,7 @@ c_func
 (paren
 id|CHANNEL_BUSY
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_SYSTEM_DOORBELL
 )paren
@@ -742,7 +742,7 @@ op_assign
 id|inl
 c_func
 (paren
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_COMPLETE_ADDR
 )paren
@@ -752,7 +752,7 @@ op_assign
 id|inb
 c_func
 (paren
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_LISTSTATUS
 )paren
@@ -762,7 +762,7 @@ c_func
 (paren
 id|CHANNEL_CLEAR
 comma
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_LOCAL_DOORBELL
 )paren
@@ -822,7 +822,7 @@ op_assign
 id|inb
 c_func
 (paren
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 op_plus
 id|SMART1_SYSTEM_DOORBELL
 )paren

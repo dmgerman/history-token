@@ -1,9 +1,5 @@
 multiline_comment|/*&n; * lm83.c - Part of lm_sensors, Linux kernel modules for hardware&n; *          monitoring&n; * Copyright (C) 2003  Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * Heavily inspired from the lm78, lm75 and adm1021 drivers. The LM83 is&n; * a sensor chip made by National Semiconductor. It reports up to four&n; * temperatures (its own plus up to three external ones) with a 1 deg&n; * resolution and a 3-4 deg accuracy. Complete datasheet can be obtained&n; * from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM83.html&n; * Since the datasheet omits to give the chip stepping code, I give it&n; * here: 0x03 (at register 0xff).&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -219,14 +215,16 @@ id|client
 )paren
 suffix:semicolon
 r_static
-r_void
-id|lm83_update_client
+r_struct
+id|lm83_data
+op_star
+id|lm83_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Driver data (common to all clients)&n; */
@@ -326,7 +324,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_temp
-mdefine_line|#define show_temp(suffix, value) &bslash;&n;static ssize_t show_temp_##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm83_data *data = i2c_get_clientdata(client); &bslash;&n;&t;lm83_update_client(client); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP_FROM_REG(data-&gt;value)); &bslash;&n;}
+mdefine_line|#define show_temp(suffix, value) &bslash;&n;static ssize_t show_temp_##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm83_data *data = lm83_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP_FROM_REG(data-&gt;value)); &bslash;&n;}
 id|show_temp
 c_func
 (paren
@@ -504,31 +502,14 @@ id|buf
 )paren
 (brace
 r_struct
-id|i2c_client
-op_star
-id|client
-op_assign
-id|to_i2c_client
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|lm83_data
 op_star
 id|data
 op_assign
-id|i2c_get_clientdata
+id|lm83_update_device
 c_func
 (paren
-id|client
-)paren
-suffix:semicolon
-id|lm83_update_client
-c_func
-(paren
-id|client
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -547,7 +528,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input1
+id|temp1_input
 comma
 id|S_IRUGO
 comma
@@ -560,7 +541,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input2
+id|temp2_input
 comma
 id|S_IRUGO
 comma
@@ -573,7 +554,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input3
+id|temp3_input
 comma
 id|S_IRUGO
 comma
@@ -586,7 +567,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input4
+id|temp4_input
 comma
 id|S_IRUGO
 comma
@@ -599,7 +580,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max1
+id|temp1_max
 comma
 id|S_IWUSR
 op_or
@@ -614,7 +595,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max2
+id|temp2_max
 comma
 id|S_IWUSR
 op_or
@@ -629,7 +610,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max3
+id|temp3_max
 comma
 id|S_IWUSR
 op_or
@@ -644,7 +625,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max4
+id|temp4_max
 comma
 id|S_IWUSR
 op_or
@@ -1008,10 +989,6 @@ id|kind
 op_assign
 id|lm83
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;lm83&quot;
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -1041,6 +1018,19 @@ r_goto
 id|exit_free
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|kind
+op_eq
+id|lm83
+)paren
+(brace
+id|name
+op_assign
+l_string|&quot;lm83&quot;
+suffix:semicolon
 )brace
 multiline_comment|/* We can fill in the remaining client fields */
 id|strlcpy
@@ -1095,7 +1085,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input1
+id|dev_attr_temp1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1105,7 +1095,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input2
+id|dev_attr_temp2_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1115,7 +1105,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input3
+id|dev_attr_temp3_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1125,7 +1115,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input4
+id|dev_attr_temp4_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1135,7 +1125,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max1
+id|dev_attr_temp1_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1145,7 +1135,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max2
+id|dev_attr_temp2_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1155,7 +1145,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max3
+id|dev_attr_temp3_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1165,7 +1155,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max4
+id|dev_attr_temp4_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1257,18 +1247,31 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|lm83_update_client
+DECL|function|lm83_update_device
 r_static
-r_void
-id|lm83_update_client
+r_struct
+id|lm83_data
+op_star
+id|lm83_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|lm83_data
 op_star
@@ -1417,6 +1420,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_lm83_init

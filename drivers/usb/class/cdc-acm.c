@@ -2426,9 +2426,7 @@ suffix:semicolon
 multiline_comment|/* We know we&squot;re probe()d with the control interface.&n;&t;&t;&t; * FIXME ACM doesn&squot;t guarantee the data interface is&n;&t;&t;&t; * adjacent to the control interface, or that if one&n;&t;&t;&t; * is there it&squot;s not for call management ... so use&n;&t;&t;&t; * the cdc union descriptor whenever there is one.&n;&t;&t;&t; */
 id|ifcom
 op_assign
-id|intf-&gt;altsetting
-op_plus
-l_int|0
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 r_if
 c_cond
@@ -2450,9 +2448,7 @@ op_plus
 l_int|1
 )braket
 op_member_access_from_pointer
-id|altsetting
-op_plus
-l_int|0
+id|cur_altsetting
 suffix:semicolon
 id|data
 op_assign
@@ -2485,9 +2481,7 @@ id|cfacm-&gt;interface
 id|j
 )braket
 op_member_access_from_pointer
-id|altsetting
-op_plus
-l_int|0
+id|cur_altsetting
 suffix:semicolon
 id|data
 op_assign

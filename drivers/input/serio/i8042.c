@@ -186,6 +186,42 @@ comma
 l_string|&quot;Pretend that controller can only read data from keyboard&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_noaux&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_nomux&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_unlock&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_reset&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_direct&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_dumbkbd&quot;
+)paren
+suffix:semicolon
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &quot;i8042.h&quot;
@@ -1426,6 +1462,17 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+id|mod_timer
+c_func
+(paren
+op_amp
+id|i8042_timer
+comma
+id|jiffies
+op_plus
+id|I8042_POLL_PERIOD
+)paren
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1744,17 +1791,6 @@ l_int|1
 suffix:semicolon
 id|out
 suffix:colon
-id|mod_timer
-c_func
-(paren
-op_amp
-id|i8042_timer
-comma
-id|jiffies
-op_plus
-id|I8042_POLL_PERIOD
-)paren
-suffix:semicolon
 r_return
 id|IRQ_RETVAL
 c_func
@@ -2004,6 +2040,19 @@ comma
 op_amp
 id|mux_version
 )paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Workaround for broken chips which seem to support MUX, but in reality don&squot;t. */
+multiline_comment|/* They all report version 12.10 */
+r_if
+c_cond
+(paren
+id|mux_version
+op_eq
+l_int|0xCA
 )paren
 r_return
 op_minus
@@ -2540,19 +2589,6 @@ l_string|&quot;i8042.c: Warning: Keylock active.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * If the chip is configured into nontranslated mode by the BIOS, don&squot;t&n; * bother enabling translating and be happy.&n; */
-r_if
-c_cond
-(paren
-op_complement
-id|i8042_ctr
-op_amp
-id|I8042_CTR_XLATE
-)paren
-id|i8042_direct
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n; * Set nontranslated mode for the kbd interface if requested by an option.&n; * After this the kbd interface becomes a simple serial in/out, like the aux&n; * interface is. We don&squot;t do this by default, since it can confuse notebook&n; * BIOSes.&n; */
 r_if
 c_cond

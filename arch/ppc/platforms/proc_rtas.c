@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -666,7 +667,9 @@ multiline_comment|/* ***********************************************************
 multiline_comment|/* MAIN                                                               */
 multiline_comment|/* ****************************************************************** */
 DECL|function|proc_rtas_init
-r_void
+r_static
+r_int
+id|__init
 id|proc_rtas_init
 c_func
 (paren
@@ -703,6 +706,7 @@ id|_MACH_chrp
 )paren
 (brace
 r_return
+l_int|1
 suffix:semicolon
 )brace
 id|proc_rtas
@@ -723,6 +727,7 @@ op_eq
 l_int|0
 )paren
 r_return
+l_int|1
 suffix:semicolon
 multiline_comment|/* /proc/rtas entries */
 id|entry
@@ -859,7 +864,17 @@ op_assign
 op_amp
 id|ppc_rtas_tone_volume_operations
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|proc_rtas_init
+id|__initcall
+c_func
+(paren
+id|proc_rtas_init
+)paren
+suffix:semicolon
 multiline_comment|/* ****************************************************************** */
 multiline_comment|/* POWER-ON-TIME                                                      */
 multiline_comment|/* ****************************************************************** */

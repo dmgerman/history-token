@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_8250_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
@@ -9057,4 +9058,11 @@ l_string|&quot;Force I/O ports for RSA&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|TTY_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|TTY_MAJOR
+)paren
+suffix:semicolon
 eof

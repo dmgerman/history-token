@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
-macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;

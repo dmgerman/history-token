@@ -1,3 +1,4 @@
+multiline_comment|/*&n; *  carmel.c: Driver for Promise SATA SX8 looks-like-I2O hardware&n; *&n; *  Copyright 2004 Red Hat, Inc.&n; *&n; *  Author/maintainer:  Jeff Garzik &lt;jgarzik@pobox.com&gt;&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -32,7 +33,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Promise SX8 (carmel) block driver&quot;
+l_string|&quot;Promise SATA SX8 (carmel) block driver&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -6995,6 +6996,19 @@ op_star
 id|q
 op_assign
 id|disk-&gt;queue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|disk-&gt;flags
+op_amp
+id|GENHD_FL_UP
+)paren
+id|del_gendisk
+c_func
+(paren
+id|disk
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -1208,6 +1208,12 @@ comma
 id|MISC_MAJOR
 )paren
 suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|misc_class
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO

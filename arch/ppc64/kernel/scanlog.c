@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
-macro_line|#include &lt;asm/proc_fs.h&gt;
 DECL|macro|MODULE_VERS
 mdefine_line|#define MODULE_VERS &quot;1.0&quot;
 DECL|macro|MODULE_NAME
@@ -875,50 +874,16 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|proc_ppc64.rtas
-op_eq
-l_int|NULL
-)paren
-(brace
-id|proc_ppc64_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|proc_ppc64.rtas
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Failed to create /proc/rtas in scanlog_init&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 id|ent
 op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;scan-log-dump&quot;
+l_string|&quot;ppc64/rtas/scan-log-dump&quot;
 comma
 id|S_IRUSR
 comma
-id|proc_ppc64.rtas
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

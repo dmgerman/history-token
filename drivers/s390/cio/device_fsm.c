@@ -562,6 +562,14 @@ c_func
 id|cdev-&gt;dev.parent
 )paren
 suffix:semicolon
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|flags.recog_done
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Check if cu type and device type still match. If&n;&t; * not, it is certainly another device and we have to&n;&t; * de- and re-register.&n;&t; */
 r_if
 c_cond
@@ -849,6 +857,14 @@ op_eq
 id|DEV_STATE_NOT_OPER
 )paren
 (brace
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|flags.recog_done
+op_assign
+l_int|1
+suffix:semicolon
 id|cdev
 op_member_access_from_pointer
 r_private
@@ -1596,6 +1612,14 @@ id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We used to start here with a sense pgid to find out whether a device&n;&t; * is locked by someone else. Unfortunately, the sense pgid command&n;&t; * code has other meanings on devices predating the path grouping&n;&t; * algorithm, so we start with sense id and box the device after an&n;&t; * timeout (or if sense pgid during path verification detects the device&n;&t; * is locked, as may happen on newer devices).&n;&t; */
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|flags.recog_done
+op_assign
+l_int|0
+suffix:semicolon
 id|cdev
 op_member_access_from_pointer
 r_private

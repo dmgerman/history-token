@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#if 0
 mdefine_line|#define DEBUG(A...)&t;printk(KERN_ERR A)
 macro_line|#else
@@ -79,10 +78,6 @@ r_static
 r_int
 r_int
 id|rtas_error_log_buffer_max
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|proc_ppc64_lock
 suffix:semicolon
 r_extern
 r_volatile
@@ -1755,38 +1750,36 @@ id|proc_dir_entry
 op_star
 id|entry
 suffix:semicolon
+multiline_comment|/* No RTAS, only warn if we are on a pSeries box  */
 r_if
 c_cond
 (paren
-id|proc_ppc64.rtas
-op_eq
-l_int|NULL
-)paren
-(brace
-id|proc_ppc64_init
+id|rtas_token
 c_func
 (paren
+l_string|&quot;event-scan&quot;
 )paren
-suffix:semicolon
-)brace
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|proc_ppc64.rtas
-op_eq
-l_int|NULL
+id|systemcfg-&gt;platform
+op_amp
+id|PLATFORM_PSERIES
 )paren
-(brace
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;rtas_init: /proc/ppc64/rtas does not exist.&quot;
+l_string|&quot;rtasd: no RTAS on system&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EIO
+l_int|1
 suffix:semicolon
 )brace
 id|entry
@@ -1794,11 +1787,11 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;error_log&quot;
+l_string|&quot;ppc64/error_log&quot;
 comma
 id|S_IRUSR
 comma
-id|proc_ppc64.rtas
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1816,7 +1809,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to create rtas/error_log proc entry&bslash;n&quot;
+l_string|&quot;Failed to create error_log proc entry&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

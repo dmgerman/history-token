@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
 macro_line|#include &quot;hci_usb.h&quot;
-macro_line|#ifndef HCI_USB_DEBUG
+macro_line|#ifndef CONFIG_BT_HCIUSB_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -3720,11 +3720,11 @@ suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;udev %p ifnum %d&quot;
+l_string|&quot;udev %p intf %p&quot;
 comma
 id|udev
 comma
-id|ifnum
+id|intf
 )paren
 suffix:semicolon
 r_if
@@ -4624,7 +4624,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|hci_usb_init
+r_static
 r_int
+id|__init
 id|hci_usb_init
 c_func
 (paren
@@ -4668,9 +4670,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|hci_usb_cleanup
+DECL|function|hci_usb_exit
+r_static
 r_void
-id|hci_usb_cleanup
+id|__exit
+id|hci_usb_exit
 c_func
 (paren
 r_void
@@ -4691,11 +4695,11 @@ c_func
 id|hci_usb_init
 )paren
 suffix:semicolon
-DECL|variable|hci_usb_cleanup
+DECL|variable|hci_usb_exit
 id|module_exit
 c_func
 (paren
-id|hci_usb_cleanup
+id|hci_usb_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -4708,6 +4712,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Bluetooth HCI USB driver ver &quot;
+id|VERSION
+)paren
+suffix:semicolon
+DECL|variable|VERSION
+id|MODULE_VERSION
+c_func
+(paren
 id|VERSION
 )paren
 suffix:semicolon

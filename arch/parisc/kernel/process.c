@@ -745,7 +745,7 @@ l_int|21
 )braket
 op_amp
 (paren
-id|INIT_THREAD_SIZE
+id|THREAD_SIZE
 op_minus
 l_int|1
 )paren

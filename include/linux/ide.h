@@ -1818,16 +1818,6 @@ id|u64
 id|capacity64
 suffix:semicolon
 multiline_comment|/* total number of sectors */
-DECL|member|last_lun
-r_int
-id|last_lun
-suffix:semicolon
-multiline_comment|/* last logical unit */
-DECL|member|forced_lun
-r_int
-id|forced_lun
-suffix:semicolon
-multiline_comment|/* if hdxlun was given at boot */
 DECL|member|lun
 r_int
 id|lun
@@ -2972,11 +2962,6 @@ r_int
 id|irq
 suffix:semicolon
 multiline_comment|/* our irq number */
-DECL|member|initializing
-r_int
-id|initializing
-suffix:semicolon
-multiline_comment|/* set while initializing self */
 DECL|member|dma_master
 r_int
 r_int
@@ -5952,6 +5937,24 @@ id|drive
 comma
 id|u8
 id|rate
+)paren
+suffix:semicolon
+r_extern
+id|byte
+id|ide_dump_atapi_status
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_const
+r_char
+op_star
+id|msg
+comma
+id|byte
+id|stat
 )paren
 suffix:semicolon
 DECL|struct|ide_pio_timings_s

@@ -2810,7 +2810,11 @@ id|cachep
 suffix:semicolon
 id|size
 op_assign
-id|cachep-&gt;objsize
+id|obj_reallen
+c_func
+(paren
+id|cachep
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -11613,10 +11617,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;struct page at %p, flags %lxh.&bslash;n&quot;
+l_string|&quot;struct page at %p, flags %08lx&bslash;n&quot;
 comma
 id|page
 comma
+(paren
+r_int
+r_int
+)paren
 id|page-&gt;flags
 )paren
 suffix:semicolon

@@ -726,6 +726,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|consistent_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|consistent_alloc
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Since we have the DMA mask available to us here, we could try to do&n; * a normal allocation, and only fall back to a &quot;DMA&quot; allocation if the&n; * resulting bus address does not satisfy the dma_mask requirements.&n; */
 r_void
 op_star
@@ -1078,6 +1085,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|consistent_free
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|consistent_free
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initialise the consistent memory allocation.&n; */
 DECL|function|consistent_init
 r_static
@@ -1329,4 +1343,11 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|variable|consistent_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|consistent_sync
+)paren
+suffix:semicolon
 eof

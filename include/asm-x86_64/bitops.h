@@ -1453,6 +1453,8 @@ mdefine_line|#define minix_find_first_zero_bit(addr,size) &bslash;&n;&t;find_fir
 multiline_comment|/* find last set bit */
 DECL|macro|fls
 mdefine_line|#define fls(x) generic_fls(x)
+DECL|macro|ARCH_HAS_ATOMIC_UNSIGNED
+mdefine_line|#define ARCH_HAS_ATOMIC_UNSIGNED 1
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _X86_64_BITOPS_H */
 eof

@@ -1255,7 +1255,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|dev-&gt;dev_data
+id|dev-&gt;phy_data
 op_assign
 id|kmalloc
 c_func

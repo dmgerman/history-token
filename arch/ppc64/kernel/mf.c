@@ -5,13 +5,13 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/iSeries/ItSpCommArea.h&gt;
-macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
@@ -2075,6 +2075,13 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+DECL|variable|mf_allocateLpEvents
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mf_allocateLpEvents
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Global kernel interface to unseed and deallocate events already in&n; * Hypervisor.&n; */
 DECL|function|mf_deallocateLpEvents
 r_void
@@ -2206,6 +2213,13 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+DECL|variable|mf_deallocateLpEvents
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mf_deallocateLpEvents
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Global kernel interface to tell the VSP object in the primary&n; * partition to power this partition off.&n; */
 DECL|function|mf_powerOff
 r_void
@@ -2579,13 +2593,6 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;mf.c: iSeries Linux LPAR Machine Facilities initialized&bslash;n&quot;
-)paren
-suffix:semicolon
-id|iSeries_proc_callback
-c_func
-(paren
-op_amp
-id|mf_proc_init
 )paren
 suffix:semicolon
 )brace

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -566,7 +567,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;REGS: %p TRAP: %04lx    %s&bslash;n&quot;
+l_string|&quot;REGS: %p TRAP: %04lx   %s  (%s)&bslash;n&quot;
 comma
 id|regs
 comma
@@ -576,6 +577,8 @@ id|print_tainted
 c_func
 (paren
 )paren
+comma
+id|UTS_RELEASE
 )paren
 suffix:semicolon
 id|printk

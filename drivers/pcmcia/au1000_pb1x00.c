@@ -22,6 +22,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
 macro_line|#include &lt;asm/au1000_pcmcia.h&gt;
+DECL|macro|debug
+mdefine_line|#define debug(fmt, arg...) do { } while (0)
 macro_line|#ifdef CONFIG_MIPS_PB1000
 macro_line|#include &lt;asm/pb1000.h&gt;
 DECL|macro|PCMCIA_IRQ
@@ -664,10 +666,9 @@ op_and_assign
 op_complement
 id|PCR_SLOT_0_RST
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;Vcc %dV Vpp %dV, pcr %x&bslash;n&quot;
 comma
 id|configure-&gt;vcc
@@ -1109,10 +1110,9 @@ op_amp
 op_complement
 l_int|0xf
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;Vcc %dV Vpp %dV, pcr %x, reset %d&bslash;n&quot;
 comma
 id|configure-&gt;vcc

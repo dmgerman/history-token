@@ -787,7 +787,9 @@ id|th
 comma
 id|s
 comma
-id|len
+id|JOURNAL_PER_BALANCE_CNT
+op_star
+l_int|6
 )paren
 suffix:semicolon
 id|reiserfs_update_inode_transaction
@@ -1696,7 +1698,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* make sure future calls to the direct io funcs for this offset&n;        ** in the file fail by unmapping the buffer&n;        */
-id|reiserfs_unmap_buffer
+id|clear_buffer_mapped
 c_func
 (paren
 id|bh_result

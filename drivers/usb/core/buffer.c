@@ -44,7 +44,7 @@ multiline_comment|/* bigger --&gt; allocate pages */
 )brace
 suffix:semicolon
 multiline_comment|/* SETUP primitives */
-multiline_comment|/**&n; * hcd_buffer_create - initialize buffer pools&n; * @hcd: the bus whose buffer pools are to be initialized&n; * Context: !in_interrupt()&n; *&n; * Call this as part of initializing a host controller that uses the pci dma&n; * memory allocators.  It initializes some pools of dma-consistent memory that&n; * will be shared by all drivers using that controller, or returns a negative&n; * errno value on error.&n; *&n; * Call hcd_buffer_destroy() to clean up after using those pools.&n; */
+multiline_comment|/**&n; * hcd_buffer_create - initialize buffer pools&n; * @hcd: the bus whose buffer pools are to be initialized&n; * Context: !in_interrupt()&n; *&n; * Call this as part of initializing a host controller that uses the dma&n; * memory allocators.  It initializes some pools of dma-coherent memory that&n; * will be shared by all drivers using that controller, or returns a negative&n; * errno value on error.&n; *&n; * Call hcd_buffer_destroy() to clean up after using those pools.&n; */
 DECL|function|hcd_buffer_create
 r_int
 id|hcd_buffer_create
@@ -255,6 +255,32 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* some USB hosts just use PIO */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus-&gt;controller-&gt;dma_mask
+)paren
+(brace
+op_star
+id|dma
+op_assign
+op_complement
+(paren
+id|dma_addr_t
+)paren
+l_int|0
+suffix:semicolon
+r_return
+id|kmalloc
+(paren
+id|size
+comma
+id|mem_flags
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -345,6 +371,21 @@ id|addr
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus-&gt;controller-&gt;dma_mask
+)paren
+(brace
+id|kfree
+(paren
+id|addr
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren

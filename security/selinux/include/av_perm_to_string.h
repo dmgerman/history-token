@@ -629,6 +629,14 @@ l_string|&quot;setenforce&quot;
 )brace
 comma
 (brace
+id|SECCLASS_SECURITY
+comma
+id|SECURITY__SETBOOL
+comma
+l_string|&quot;setbool&quot;
+)brace
+comma
+(brace
 id|SECCLASS_SYSTEM
 comma
 id|SYSTEM__IPC_INFO

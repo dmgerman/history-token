@@ -39,7 +39,11 @@ id|in_le32
 comma
 l_int|0
 )paren
-multiline_comment|/*&n; * Read the memory controller registers to determine the amount of memory in&n; * the system.  This assumes that the firmware has correctly set up the memory&n; * controller registers.  On CONFIG_PPC_PREP, we know we are being called&n; * under a PReP memory map. On all other machines, we assume we are under&n; * a CHRP memory map.&n; */
+multiline_comment|/*&n; * Read the memory controller registers to determine the amount of memory in&n; * the system.  This assumes that the firmware has correctly set up the memory&n; * controller registers.  On CONFIG_PPC_PREP, we know we are being called&n; * under a PReP memory map. On all other machines, we assume we are under&n; * a CHRP memory map.  Further, on CONFIG_PPC_MULTIPLATFORM we must rename&n; * this function.&n; */
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
+DECL|macro|get_mem_size
+mdefine_line|#define get_mem_size mpc10x_get_mem_size
+macro_line|#endif
 r_int
 r_int
 DECL|function|get_mem_size

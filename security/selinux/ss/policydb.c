@@ -1,10 +1,12 @@
 multiline_comment|/*&n; * Implementation of the policy database.&n; *&n; * Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; */
+multiline_comment|/* Updated: Frank Mayer &lt;mayerf@tresys.com&gt; and Karl MacMillan &lt;kmacmillan@tresys.com&gt;&n; *&n; * &t;Added conditional policy language extensions&n; *&n; * Copyright (C) 2003 - 2004 Tresys Technology, LLC&n; *&t;This program is free software; you can redistribute it and/or modify&n; *  &t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation, version 2.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;security.h&quot;
 macro_line|#include &quot;policydb.h&quot;
+macro_line|#include &quot;conditional.h&quot;
 macro_line|#include &quot;mls.h&quot;
 DECL|macro|_DEBUG_HASHES
 mdefine_line|#define _DEBUG_HASHES
@@ -28,7 +30,9 @@ comma
 l_string|&quot;types&quot;
 comma
 l_string|&quot;users&quot;
+comma
 id|mls_symtab_names
+l_string|&quot;bools&quot;
 )brace
 suffix:semicolon
 macro_line|#endif
@@ -51,7 +55,9 @@ comma
 l_int|512
 comma
 l_int|128
+comma
 id|mls_symtab_sizes
+l_int|16
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Initialize the role table.&n; */
@@ -323,6 +329,22 @@ suffix:semicolon
 id|rc
 op_assign
 id|roles_init
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|out_free_avtab
+suffix:semicolon
+id|rc
+op_assign
+id|cond_policydb_init
 c_func
 (paren
 id|p
@@ -770,7 +792,9 @@ comma
 id|type_index
 comma
 id|user_index
+comma
 id|mls_index_f
+id|cond_index_bool
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Define the common val_to_name array and the class&n; * val_to_name and val_to_struct arrays in a policy&n; * database structure.&n; *&n; * Caller must clean up upon failure.&n; */
@@ -1027,13 +1051,15 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;security:  %d users, %d roles, %d types&quot;
+l_string|&quot;security:  %d users, %d roles, %d types, %d bools&quot;
 comma
 id|p-&gt;p_users.nprim
 comma
 id|p-&gt;p_roles.nprim
 comma
 id|p-&gt;p_types.nprim
+comma
+id|p-&gt;p_bools.nprim
 )paren
 suffix:semicolon
 id|mls_policydb_index_others
@@ -1133,6 +1159,25 @@ c_cond
 (paren
 op_logical_neg
 id|p-&gt;user_val_to_struct
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|cond_init_bool_indexes
+c_func
+(paren
+id|p
+)paren
 )paren
 (brace
 id|rc
@@ -1656,7 +1701,9 @@ comma
 id|type_destroy
 comma
 id|user_destroy
+comma
 id|mls_destroy_f
+id|cond_destroy_bool
 )brace
 suffix:semicolon
 DECL|function|ocontext_destroy
@@ -1978,6 +2025,12 @@ id|gtmp
 )paren
 suffix:semicolon
 )brace
+id|cond_policydb_destroy
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4897,7 +4950,9 @@ comma
 id|type_read
 comma
 id|user_read
+comma
 id|mls_read_f
+id|cond_read_bool
 )brace
 suffix:semicolon
 DECL|macro|mls_config
@@ -4962,6 +5017,10 @@ comma
 id|j
 comma
 id|rc
+comma
+id|policy_ver
+comma
+id|num_syms
 suffix:semicolon
 id|u32
 op_star
@@ -5317,15 +5376,23 @@ id|i
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|policy_ver
+op_assign
 id|buf
 (braket
 l_int|0
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|policy_ver
 op_ne
 id|POLICYDB_VERSION
+op_logical_and
+id|policy_ver
+op_ne
+id|POLICYDB_VERSION_COMPAT
 )paren
 (brace
 id|printk
@@ -5388,6 +5455,71 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|policy_ver
+op_eq
+id|POLICYDB_VERSION_COMPAT
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|buf
+(braket
+l_int|2
+)braket
+op_ne
+(paren
+id|SYM_NUM
+op_minus
+l_int|1
+)paren
+op_logical_or
+id|buf
+(braket
+l_int|3
+)braket
+op_ne
+id|OCON_NUM
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;security:  policydb table sizes (%d,%d) do &quot;
+l_string|&quot;not match mine (%d,%d)&bslash;n&quot;
+comma
+id|buf
+(braket
+l_int|2
+)braket
+comma
+id|buf
+(braket
+l_int|3
+)braket
+comma
+id|SYM_NUM
+comma
+id|OCON_NUM
+)paren
+suffix:semicolon
+r_goto
+id|bad
+suffix:semicolon
+)brace
+id|num_syms
+op_assign
+id|SYM_NUM
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
 id|buf
 (braket
 l_int|2
@@ -5429,6 +5561,11 @@ r_goto
 id|bad
 suffix:semicolon
 )brace
+id|num_syms
+op_assign
+id|SYM_NUM
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|mls_read_nlevels
@@ -5456,7 +5593,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|SYM_NUM
+id|num_syms
 suffix:semicolon
 id|i
 op_increment
@@ -5589,6 +5726,33 @@ id|rc
 r_goto
 id|bad
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|policy_ver
+op_eq
+id|POLICYDB_VERSION
+)paren
+(brace
+id|rc
+op_assign
+id|cond_read_list
+c_func
+(paren
+id|p
+comma
+id|fp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|bad
+suffix:semicolon
+)brace
 id|buf
 op_assign
 id|next_entry

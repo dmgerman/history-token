@@ -3,10 +3,6 @@ multiline_comment|/* Note: we assume there can only be one SIS5595 with one SMBu
 multiline_comment|/*&n;   Note: all have mfr. ID 0x1039.&n;   SUPPORTED&t;&t;PCI ID&t;&t;&n;&t;5595&t;&t;0008&n;&n;   Note: these chips contain a 0008 device which is incompatible with the&n;         5595. We recognize these by the presence of the listed&n;         &quot;blacklist&quot; PCI ID and refuse to load.&n;&n;   NOT SUPPORTED&t;PCI ID&t;&t;BLACKLIST PCI ID&t;&n;&t; 540&t;&t;0008&t;&t;0540&n;&t; 550&t;&t;0008&t;&t;0550&n;&t;5513&t;&t;0008&t;&t;5511&n;&t;5581&t;&t;0008&t;&t;5597&n;&t;5582&t;&t;0008&t;&t;5597&n;&t;5597&t;&t;0008&t;&t;5597&n;&t;5598&t;&t;0008&t;&t;5597/5598&n;&t; 630&t;&t;0008&t;&t;0630&n;&t; 645&t;&t;0008&t;&t;0645&n;&t; 646&t;&t;0008&t;&t;0646&n;&t; 648&t;&t;0008&t;&t;0648&n;&t; 650&t;&t;0008&t;&t;0650&n;&t; 651&t;&t;0008&t;&t;0651&n;&t; 730&t;&t;0008&t;&t;0730&n;&t; 735&t;&t;0008&t;&t;0735&n;&t; 745&t;&t;0008&t;&t;0745&n;&t; 746&t;&t;0008&t;&t;0746&n;*/
 multiline_comment|/* TO DO: &n; * Add Block Transfers (ugly, but supported by the adapter)&n; * Add adapter resets&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1414,6 +1410,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_SMBUS
+comma
+dot
 id|name
 op_assign
 l_string|&quot;unset&quot;
@@ -1542,6 +1543,16 @@ op_amp
 id|sis5595_adapter
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|sis5595_base
+op_plus
+id|SMB_INDEX
+comma
+l_int|2
+)paren
+suffix:semicolon
 )brace
 DECL|variable|sis5595_driver
 r_static
@@ -1610,16 +1621,6 @@ c_func
 (paren
 op_amp
 id|sis5595_driver
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|sis5595_base
-op_plus
-id|SMB_INDEX
-comma
-l_int|2
 )paren
 suffix:semicolon
 )brace

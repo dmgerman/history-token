@@ -959,7 +959,7 @@ suffix:semicolon
 id|u32
 id|loggroups
 (braket
-id|NGROUPS_MAX
+id|NGROUPS_SMALL
 )braket
 suffix:semicolon
 r_int
@@ -1121,7 +1121,7 @@ id|rec
 id|__u32
 id|groups
 (braket
-id|NGROUPS_MAX
+id|NGROUPS_SMALL
 )braket
 suffix:semicolon
 r_int
@@ -1137,7 +1137,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 suffix:semicolon
 id|i
 op_increment
@@ -1147,13 +1147,13 @@ id|groups
 id|i
 )braket
 op_assign
+id|GROUP_AT
+c_func
 (paren
-id|__u32
-)paren
-id|current-&gt;groups
-(braket
+id|current-&gt;group_info
+comma
 id|i
-)braket
+)paren
 suffix:semicolon
 r_return
 id|journal_log_prefix_with_groups_and_ids
@@ -1168,7 +1168,7 @@ comma
 (paren
 id|__u32
 )paren
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 comma
 id|groups
 comma
@@ -5539,7 +5539,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -6592,7 +6592,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -7204,7 +7204,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -7589,7 +7589,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -8002,7 +8002,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -8428,7 +8428,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -8826,7 +8826,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -9268,7 +9268,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -9734,7 +9734,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -10140,7 +10140,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -10549,7 +10549,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren
@@ -10898,7 +10898,7 @@ suffix:semicolon
 id|__u32
 id|open_groups
 (braket
-id|NGROUPS_MAX
+id|NGROUPS_SMALL
 )braket
 suffix:semicolon
 id|__u32
@@ -11027,7 +11027,7 @@ r_else
 (brace
 id|open_ngroups
 op_assign
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 suffix:semicolon
 r_for
 c_loop
@@ -11038,7 +11038,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 suffix:semicolon
 id|i
 op_increment
@@ -11051,10 +11051,13 @@ op_assign
 (paren
 id|__u32
 )paren
-id|current-&gt;groups
-(braket
+id|GROUP_AT
+c_func
+(paren
+id|current-&gt;group_info
+comma
 id|i
-)braket
+)paren
 suffix:semicolon
 id|open_mode
 op_assign
@@ -11740,7 +11743,7 @@ id|fset
 id|__u32
 id|groups
 (braket
-id|NGROUPS_MAX
+id|NGROUPS_SMALL
 )braket
 suffix:semicolon
 id|loff_t
@@ -12486,7 +12489,7 @@ r_sizeof
 id|__u32
 )paren
 op_star
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 op_plus
 r_sizeof
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Security server interface.&n; *&n; * Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; */
+multiline_comment|/*&n; * Security server interface.&n; *&n; * Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; *&n; */
 macro_line|#ifndef _SELINUX_SECURITY_H_
 DECL|macro|_SELINUX_SECURITY_H_
 mdefine_line|#define _SELINUX_SECURITY_H_
@@ -12,7 +12,9 @@ mdefine_line|#define SECCLASS_NULL&t;&t;&t;0x0000 /* no class */
 DECL|macro|SELINUX_MAGIC
 mdefine_line|#define SELINUX_MAGIC 0xf97cff8c
 DECL|macro|POLICYDB_VERSION
-mdefine_line|#define POLICYDB_VERSION 15
+mdefine_line|#define POLICYDB_VERSION 16
+DECL|macro|POLICYDB_VERSION_COMPAT
+mdefine_line|#define POLICYDB_VERSION_COMPAT 15
 macro_line|#ifdef CONFIG_SECURITY_SELINUX_BOOTPARAM
 r_extern
 r_int
@@ -21,6 +23,13 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|selinux_enabled
 mdefine_line|#define selinux_enabled 1
+macro_line|#endif
+macro_line|#ifdef CONFIG_SECURITY_SELINUX_MLS
+DECL|macro|selinux_mls_enabled
+mdefine_line|#define selinux_mls_enabled 1
+macro_line|#else
+DECL|macro|selinux_mls_enabled
+mdefine_line|#define selinux_mls_enabled 0
 macro_line|#endif
 r_int
 id|security_load_policy

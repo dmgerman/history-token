@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kthread.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|struct|kthread_create_info
 r_struct
@@ -97,6 +98,67 @@ id|current
 )paren
 suffix:semicolon
 )brace
+DECL|function|kthread_exit_files
+r_static
+r_void
+id|kthread_exit_files
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|fs_struct
+op_star
+id|fs
+suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|tsk
+op_assign
+id|current
+suffix:semicolon
+id|exit_fs
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+multiline_comment|/* current-&gt;fs-&gt;count--; */
+id|fs
+op_assign
+id|init_task.fs
+suffix:semicolon
+id|tsk-&gt;fs
+op_assign
+id|fs
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|fs-&gt;count
+)paren
+suffix:semicolon
+id|exit_files
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+id|current-&gt;files
+op_assign
+id|init_task.files
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tsk-&gt;files-&gt;count
+)paren
+suffix:semicolon
+)brace
 DECL|function|kthread
 r_static
 r_int
@@ -143,6 +205,11 @@ id|cpumask_t
 id|mask
 op_assign
 id|CPU_MASK_ALL
+suffix:semicolon
+id|kthread_exit_files
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Copy data: it&squot;s on keventd&squot;s stack */
 id|threadfn

@@ -1236,8 +1236,8 @@ id|cr0
 comma
 id|cr0_sync
 suffix:semicolon
-multiline_comment|/* Need to irq_enter() to prevent BH from executing. */
-id|irq_enter
+multiline_comment|/* Prevent BH from executing. */
+id|local_bh_disable
 c_func
 (paren
 )paren
@@ -1347,7 +1347,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|irq_exit
+id|__local_bh_enable
 c_func
 (paren
 )paren

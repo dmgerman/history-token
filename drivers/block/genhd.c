@@ -835,7 +835,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * add_gendisk - add partitioning information to kernel list&n; * @disk: per-device partitioning information&n; *&n; * This function registers the partitioning information in @disk&n; * with the kernel.&n; */
+multiline_comment|/**&n; * add_disk - add partitioning information to kernel list&n; * @disk: per-device partitioning information&n; *&n; * This function registers the partitioning information in @disk&n; * with the kernel.&n; */
 DECL|function|add_disk
 r_void
 id|add_disk

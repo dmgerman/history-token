@@ -546,8 +546,6 @@ id|UPF_SKIP_TEST
 op_or
 id|UPF_BOOT_AUTOCONF
 op_or
-id|UPF_AUTO_IRQ
-op_or
 id|UPF_RESOURCES
 suffix:semicolon
 id|priv-&gt;line

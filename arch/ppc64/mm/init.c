@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
@@ -106,20 +105,6 @@ r_int
 r_int
 )paren
 id|_end
-suffix:semicolon
-DECL|variable|Hash
-id|HPTE
-op_star
-id|Hash
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|Hash_size
-r_int
-r_int
-id|Hash_size
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|_SDR1
 r_int
