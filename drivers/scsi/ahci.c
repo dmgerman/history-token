@@ -1109,6 +1109,7 @@ comma
 id|board_ahci
 )brace
 comma
+multiline_comment|/* ICH6 */
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
@@ -1125,6 +1126,41 @@ comma
 id|board_ahci
 )brace
 comma
+multiline_comment|/* ICH6M */
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+l_int|0x27c1
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|board_ahci
+)brace
+comma
+multiline_comment|/* ICH7 */
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+l_int|0x27c5
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|board_ahci
+)brace
+comma
+multiline_comment|/* ICH7M */
 (brace
 )brace
 multiline_comment|/* terminate list */

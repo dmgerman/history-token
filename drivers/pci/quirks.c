@@ -4893,6 +4893,18 @@ l_int|6
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|0x27c0
+suffix:colon
+r_case
+l_int|0x27c4
+suffix:colon
+id|ich
+op_assign
+l_int|7
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* we do not handle this PCI device */
@@ -4970,9 +4982,17 @@ r_else
 id|WARN_ON
 c_func
 (paren
+(paren
 id|ich
 op_ne
 l_int|6
+)paren
+op_logical_and
+(paren
+id|ich
+op_ne
+l_int|7
+)paren
 )paren
 suffix:semicolon
 id|tmp
