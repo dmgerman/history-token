@@ -1313,7 +1313,7 @@ r_sizeof
 id|sl-&gt;dev.bus_id
 )paren
 comma
-l_string|&quot;%x-%llx&quot;
+l_string|&quot;%02x-%012llx&quot;
 comma
 (paren
 r_int
@@ -1342,7 +1342,7 @@ r_sizeof
 id|sl-&gt;name
 )paren
 comma
-l_string|&quot;%x-%llx&quot;
+l_string|&quot;%02x-%012llx&quot;
 comma
 (paren
 r_int
