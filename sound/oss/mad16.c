@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;ad1848.h&quot;
 macro_line|#include &quot;sb.h&quot;
@@ -22,6 +23,13 @@ r_static
 r_struct
 id|gameport
 id|gameport
+suffix:semicolon
+DECL|variable|lock
+r_static
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|already_initialized
 r_static
@@ -129,15 +137,13 @@ r_int
 r_char
 id|tmp
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_switch
@@ -279,9 +285,12 @@ op_minus
 l_int|0x80
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -306,15 +315,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_switch
@@ -484,9 +491,12 @@ op_minus
 l_int|0x80
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
