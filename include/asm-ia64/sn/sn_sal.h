@@ -89,6 +89,9 @@ mdefine_line|#define  SN_SAL_SYSCTL_IOBRICK_PCI_OP&t;&t;   0x02000042&t;
 singleline_comment|// reentrant
 DECL|macro|SN_SAL_IROUTER_OP
 mdefine_line|#define&t; SN_SAL_IROUTER_OP&t;&t;&t;   0x02000043
+DECL|macro|SN_SAL_HWPERF_OP
+mdefine_line|#define  SN_SAL_HWPERF_OP&t;&t;&t;   0x02000050   
+singleline_comment|// lock
 multiline_comment|/*&n; * Service-specific constants&n; */
 multiline_comment|/* Console interrupt manipulation */
 multiline_comment|/* action codes */
@@ -2592,6 +2595,89 @@ l_int|0
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_return
+(paren
+r_int
+)paren
+id|rv.status
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This is the access point to the Altix PROM hardware performance&n; * and status monitoring interface. For info on using this, see&n; * include/asm-ia64/sn/sn2/sn_hwperf.h&n; */
+r_static
+r_inline
+r_int
+DECL|function|ia64_sn_hwperf_op
+id|ia64_sn_hwperf_op
+c_func
+(paren
+id|nasid_t
+id|nasid
+comma
+id|u64
+id|opcode
+comma
+id|u64
+id|a0
+comma
+id|u64
+id|a1
+comma
+id|u64
+id|a2
+comma
+id|u64
+id|a3
+comma
+id|u64
+id|a4
+comma
+r_int
+op_star
+id|v0
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|rv
+suffix:semicolon
+id|SAL_CALL_NOLOCK
+c_func
+(paren
+id|rv
+comma
+id|SN_SAL_HWPERF_OP
+comma
+(paren
+id|u64
+)paren
+id|nasid
+comma
+id|opcode
+comma
+id|a0
+comma
+id|a1
+comma
+id|a2
+comma
+id|a3
+comma
+id|a4
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|v0
+)paren
+op_star
+id|v0
+op_assign
+(paren
+r_int
+)paren
+id|rv.v0
 suffix:semicolon
 r_return
 (paren
