@@ -221,12 +221,6 @@ r_struct
 id|hdlc_device_struct
 (brace
 multiline_comment|/* To be initialized by hardware driver */
-DECL|member|netdev
-r_struct
-id|net_device
-id|netdev
-suffix:semicolon
-multiline_comment|/* master net device - must be first */
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -692,26 +686,6 @@ op_star
 id|priv
 )paren
 suffix:semicolon
-DECL|function|free_hdlcdev
-r_static
-r_inline
-r_void
-id|free_hdlcdev
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
 DECL|function|dev_to_hdlc
 r_static
 id|__inline__
@@ -727,11 +701,11 @@ id|dev
 )paren
 (brace
 r_return
+id|netdev_priv
+c_func
 (paren
-id|hdlc_device
-op_star
-)paren
 id|dev
+)paren
 suffix:semicolon
 )brace
 DECL|function|dev_to_pvc

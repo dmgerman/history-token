@@ -2572,7 +2572,7 @@ id|i
 dot
 id|dev
 )paren
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|card-&gt;__ports

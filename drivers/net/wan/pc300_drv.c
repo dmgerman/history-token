@@ -20608,7 +20608,7 @@ comma
 id|card-&gt;hw.ramphys
 )paren
 suffix:semicolon
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -21743,7 +21743,7 @@ dot
 id|d.dev
 )paren
 suffix:semicolon
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|card-&gt;chan

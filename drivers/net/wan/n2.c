@@ -1205,7 +1205,7 @@ l_int|0
 dot
 id|dev
 )paren
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|card-&gt;ports
@@ -1226,7 +1226,7 @@ l_int|1
 dot
 id|dev
 )paren
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|card-&gt;ports

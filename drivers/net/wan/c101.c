@@ -1119,7 +1119,7 @@ id|C101_MAPPED_RAM_SIZE
 )paren
 suffix:semicolon
 )brace
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|card-&gt;dev

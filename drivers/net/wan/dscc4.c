@@ -2699,7 +2699,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|root
@@ -3740,7 +3740,7 @@ c_loop
 id|i
 op_decrement
 )paren
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|root
@@ -4098,7 +4098,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|root

@@ -4789,7 +4789,7 @@ id|j
 op_increment
 )paren
 (brace
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|card-&gt;ports
@@ -5098,7 +5098,7 @@ c_loop
 id|i
 op_decrement
 )paren
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|card-&gt;ports
@@ -5553,7 +5553,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|card-&gt;ports
@@ -5698,7 +5698,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|free_hdlcdev
+id|free_netdev
 c_func
 (paren
 id|card-&gt;ports
