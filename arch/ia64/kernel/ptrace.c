@@ -2424,12 +2424,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|ia64_drop_fpu
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Sync the fph state of the task so that it can be manipulated&n; * through thread.fph.  If necessary, f32-f127 are written back to&n; * thread.fph or, if the fph state hasn&squot;t been used before, thread.fph&n; * is cleared to zeroes.  Also, access to f32-f127 is disabled to&n; * ensure that the task picks up the state from thread.fph when it&n; * executes again.&n; */
 r_void
@@ -2493,6 +2487,12 @@ id|task-&gt;thread.fph
 )paren
 suffix:semicolon
 )brace
+id|ia64_drop_fpu
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
 id|psr-&gt;dfh
 op_assign
 l_int|1

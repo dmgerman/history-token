@@ -3147,6 +3147,14 @@ id|pt_regs
 )paren
 )paren
 suffix:semicolon
+id|ia64_set_kr
+c_func
+(paren
+id|IA64_KR_FPU_OWNER
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize default control register to defer all speculative faults.  The&n;&t; * kernel MUST NOT depend on a particular setting of these bits (in other words,&n;&t; * the kernel must have recovery code for all speculative accesses).  Turn on&n;&t; * dcr.lc as per recommendation by the architecture team.  Most IA-32 apps&n;&t; * shouldn&squot;t be affected by this (moral: keep your ia32 locks aligned and you&squot;ll&n;&t; * be fine).&n;&t; */
 id|ia64_set_dcr
 c_func

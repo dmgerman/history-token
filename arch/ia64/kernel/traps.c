@@ -957,9 +957,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fpu_owner
-op_eq
+id|ia64_is_local_fpu_owner
+c_func
+(paren
 id|current
+)paren
 )paren
 r_return
 suffix:semicolon
