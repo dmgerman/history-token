@@ -545,6 +545,7 @@ id|ipip_lock
 suffix:semicolon
 )brace
 DECL|function|ipip_tunnel_locate
+r_static
 r_struct
 id|ip_tunnel
 op_star
@@ -1011,6 +1012,7 @@ id|dev
 suffix:semicolon
 )brace
 DECL|function|ipip_err
+r_static
 r_void
 id|ipip_err
 c_func
@@ -1781,6 +1783,7 @@ id|inner_iph
 suffix:semicolon
 )brace
 DECL|function|ipip_rcv
+r_static
 r_int
 id|ipip_rcv
 c_func
@@ -3643,6 +3646,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ipip_fb_tunnel_init
+r_static
 r_int
 id|__init
 id|ipip_fb_tunnel_init
