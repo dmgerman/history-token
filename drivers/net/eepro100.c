@@ -3619,6 +3619,14 @@ l_int|6
 op_amp
 l_int|0x1f
 suffix:semicolon
+id|sp-&gt;mii_if.phy_id_mask
+op_assign
+l_int|0x1f
+suffix:semicolon
+id|sp-&gt;mii_if.reg_num_mask
+op_assign
+l_int|0x1f
+suffix:semicolon
 id|sp-&gt;mii_if.dev
 op_assign
 id|dev
