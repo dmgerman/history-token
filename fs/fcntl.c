@@ -190,8 +190,9 @@ macro_line|#ifdef FDSET_DEBUG&t;
 id|printk
 (paren
 id|KERN_ERR
+l_string|&quot;%s %d: nr = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; %d: nr = %d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -276,8 +277,9 @@ id|err
 id|printk
 (paren
 id|KERN_ERR
+l_string|&quot;%s %d: return %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; %d: return %d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma

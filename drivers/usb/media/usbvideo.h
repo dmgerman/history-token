@@ -76,8 +76,9 @@ DECL|macro|RING_QUEUE_DEQUEUE_BYTES
 mdefine_line|#define&t;RING_QUEUE_DEQUEUE_BYTES(rq,n) RING_QUEUE_ADVANCE_INDEX(rq,ri,n)
 DECL|macro|RING_QUEUE_PEEK
 mdefine_line|#define&t;RING_QUEUE_PEEK(rq,ofs) ((rq)-&gt;queue[((ofs) + (rq)-&gt;ri) &amp; ((rq)-&gt;length-1)])
-r_typedef
+DECL|struct|RingQueue
 r_struct
+id|RingQueue
 (brace
 DECL|member|queue
 r_int
@@ -106,9 +107,7 @@ id|wait_queue_head_t
 id|wqh
 suffix:semicolon
 multiline_comment|/* Processes waiting */
-DECL|typedef|RingQueue_t
 )brace
-id|RingQueue_t
 suffix:semicolon
 r_typedef
 r_enum
@@ -196,16 +195,14 @@ DECL|typedef|Deinterlace_t
 )brace
 id|Deinterlace_t
 suffix:semicolon
-r_struct
-id|usb_device
-suffix:semicolon
 DECL|macro|USBVIDEO_NUMFRAMES
 mdefine_line|#define USBVIDEO_NUMFRAMES&t;2&t;/* How many frames we work with */
 DECL|macro|USBVIDEO_NUMSBUF
 mdefine_line|#define USBVIDEO_NUMSBUF&t;2&t;/* How many URBs linked in a ring */
 multiline_comment|/* This structure represents one Isoc request - URB and buffer */
-r_typedef
+DECL|struct|usbvideo_sbuf
 r_struct
+id|usbvideo_sbuf
 (brace
 DECL|member|data
 r_char
@@ -218,12 +215,11 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
-DECL|typedef|usbvideo_sbuf_t
 )brace
-id|usbvideo_sbuf_t
 suffix:semicolon
-r_typedef
+DECL|struct|usbvideo_frame
 r_struct
+id|usbvideo_frame
 (brace
 DECL|member|data
 r_char
@@ -293,13 +289,12 @@ op_star
 id|user
 suffix:semicolon
 multiline_comment|/* Additional data that user may need */
-DECL|typedef|usbvideo_frame_t
 )brace
-id|usbvideo_frame_t
 suffix:semicolon
 multiline_comment|/* Statistics that can be overlaid on screen */
-r_typedef
+DECL|struct|usbvideo_statistics
 r_struct
+id|usbvideo_statistics
 (brace
 DECL|member|frame_num
 r_int
@@ -343,9 +338,7 @@ r_int
 id|iso_err_count
 suffix:semicolon
 multiline_comment|/* How many bad ISO packets received */
-DECL|typedef|usbvideo_statistics_t
 )brace
-id|usbvideo_statistics_t
 suffix:semicolon
 r_struct
 id|s_usbvideo_t
@@ -500,19 +493,22 @@ id|iso_packet_len
 suffix:semicolon
 multiline_comment|/* Videomode-dependent, saves bus bandwidth */
 DECL|member|dp
-id|RingQueue_t
+r_struct
+id|RingQueue
 id|dp
 suffix:semicolon
 multiline_comment|/* Isoc data pump */
 DECL|member|frame
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 id|frame
 (braket
 id|USBVIDEO_NUMFRAMES
 )braket
 suffix:semicolon
 DECL|member|sbuf
-id|usbvideo_sbuf_t
+r_struct
+id|usbvideo_sbuf
 id|sbuf
 (braket
 id|USBVIDEO_NUMSBUF
@@ -546,7 +542,8 @@ id|vchan
 suffix:semicolon
 multiline_comment|/* May be used for tuner support */
 DECL|member|stats
-id|usbvideo_statistics_t
+r_struct
+id|usbvideo_statistics
 id|stats
 suffix:semicolon
 DECL|member|procfs_vEntry
@@ -567,8 +564,9 @@ multiline_comment|/* Holds name like &quot;video7&quot; */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * usbvideo callbacks (virtual methods). They are set when usbvideo&n; * services are registered. All of these default to NULL, except those&n; * that default to usbvideo-provided methods.&n; */
-r_typedef
+DECL|struct|usbvideo_cb
 r_struct
+id|usbvideo_cb
 (brace
 DECL|member|probe
 r_void
@@ -665,7 +663,8 @@ r_struct
 id|uvd
 op_star
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 )paren
 suffix:semicolon
@@ -680,7 +679,8 @@ r_struct
 id|uvd
 op_star
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 )paren
 suffix:semicolon
@@ -719,7 +719,8 @@ r_struct
 id|uvd
 op_star
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 )paren
 suffix:semicolon
@@ -838,9 +839,7 @@ op_star
 id|vw
 )paren
 suffix:semicolon
-DECL|typedef|usbvideo_cb_t
 )brace
-id|usbvideo_cb_t
 suffix:semicolon
 DECL|struct|s_usbvideo_t
 r_struct
@@ -872,7 +871,8 @@ id|lock
 suffix:semicolon
 multiline_comment|/* Mutex protecting camera structures */
 DECL|member|cb
-id|usbvideo_cb_t
+r_struct
+id|usbvideo_cb
 id|cb
 suffix:semicolon
 multiline_comment|/* Table of callbacks (virtual methods) */
@@ -926,7 +926,8 @@ r_int
 id|RingQueue_Dequeue
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 comma
@@ -943,7 +944,8 @@ r_int
 id|RingQueue_Enqueue
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 comma
@@ -961,7 +963,8 @@ r_void
 id|RingQueue_WakeUpInterruptible
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -970,7 +973,8 @@ r_void
 id|RingQueue_Flush
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -983,7 +987,8 @@ id|RingQueue_GetLength
 c_func
 (paren
 r_const
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -1012,7 +1017,8 @@ id|RingQueue_GetFreeSpace
 c_func
 (paren
 r_const
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -1031,7 +1037,8 @@ r_void
 id|usbvideo_DrawLine
 c_func
 (paren
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 comma
@@ -1134,7 +1141,8 @@ op_star
 id|driverName
 comma
 r_const
-id|usbvideo_cb_t
+r_struct
+id|usbvideo_cb
 op_star
 id|cbTable
 comma
@@ -1200,7 +1208,8 @@ id|uvd
 op_star
 id|uvd
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 )paren
@@ -1213,7 +1222,8 @@ r_void
 id|RGB24_PUTPIXEL
 c_func
 (paren
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|fr
 comma

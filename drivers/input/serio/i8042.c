@@ -1324,7 +1324,7 @@ op_assign
 dot
 id|irq
 op_assign
-id|I8042_KBD_IRQ
+l_int|0
 comma
 dot
 id|irqen
@@ -1403,7 +1403,7 @@ op_assign
 dot
 id|irq
 op_assign
-id|I8042_AUX_IRQ
+l_int|0
 comma
 dot
 id|irqen
@@ -2466,12 +2466,20 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;serio: i8042 %s port at %#x,%#x irq %d&bslash;n&quot;
+l_string|&quot;serio: i8042 %s port at %#lx,%#lx irq %d&bslash;n&quot;
 comma
 id|values-&gt;name
 comma
+(paren
+r_int
+r_int
+)paren
 id|I8042_DATA_REG
 comma
+(paren
+r_int
+r_int
+)paren
 id|I8042_COMMAND_REG
 comma
 id|values-&gt;irq
@@ -2744,6 +2752,14 @@ c_func
 r_return
 op_minus
 id|EBUSY
+suffix:semicolon
+id|i8042_kbd_values.irq
+op_assign
+id|I8042_KBD_IRQ
+suffix:semicolon
+id|i8042_aux_values.irq
+op_assign
+id|I8042_AUX_IRQ
 suffix:semicolon
 r_if
 c_cond

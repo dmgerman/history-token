@@ -6044,8 +6044,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero control read status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero control read status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -7365,8 +7366,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -7523,8 +7525,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - exited&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; exited&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7740,8 +7743,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|result
 )paren
@@ -7801,6 +7805,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -7829,8 +7835,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -7850,8 +7857,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - returns %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - returns %d&quot;
 comma
 id|room
 )paren
@@ -7895,6 +7903,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -8138,8 +8148,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -8505,8 +8516,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - parity = odd&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - parity = odd&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8523,8 +8535,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - parity = even&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - parity = even&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8538,8 +8551,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - parity = none&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - parity = none&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8558,8 +8572,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - stop bits = 2&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - stop bits = 2&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8572,8 +8587,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - stop bits = 1&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - stop bits = 1&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8597,8 +8613,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - RTS/CTS is enabled&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - RTS/CTS is enabled&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8607,8 +8624,9 @@ r_else
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - RTS/CTS is disabled&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - RTS/CTS is disabled&quot;
 )paren
 suffix:semicolon
 )brace
@@ -9435,8 +9453,9 @@ multiline_comment|/* 0x100 */
 id|dbg
 c_func
 (paren
+l_string|&quot;%s -- %x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; -- %x&quot;
 comma
 id|result
 )paren
@@ -9632,8 +9651,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d, cmd = 0x%x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d, cmd = 0x%x&quot;
 comma
 id|port-&gt;number
 comma
@@ -9652,8 +9672,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - (%d) TIOCINQ&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; (%d) TIOCINQ&quot;
 comma
 id|port-&gt;number
 )paren
@@ -9667,8 +9688,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - (%d) TIOCSERGETLSR&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; (%d) TIOCSERGETLSR&quot;
 comma
 id|port-&gt;number
 )paren
@@ -9688,8 +9710,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - (%d) TIOCMSET/TIOCMBIC/TIOCMSET&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; (%d) TIOCMSET/TIOCMBIC/TIOCMSET&quot;
 comma
 id|port-&gt;number
 )paren
@@ -9718,8 +9741,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - (%d) TIOCMGET&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; (%d) TIOCMGET&quot;
 comma
 id|port-&gt;number
 )paren
@@ -9746,8 +9770,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - (%d) TIOCGSERIAL&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; (%d) TIOCGSERIAL&quot;
 comma
 id|port-&gt;number
 )paren
@@ -9774,8 +9799,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - (%d) TIOCSSERIAL&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; (%d) TIOCSSERIAL&quot;
 comma
 id|port-&gt;number
 )paren
@@ -9788,8 +9814,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - (%d) TIOCMIWAIT&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; (%d) TIOCMIWAIT&quot;
 comma
 id|port-&gt;number
 )paren
@@ -10128,8 +10155,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s - Out of memory&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - Out of memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10222,8 +10250,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s - Out of memory&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - Out of memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10286,6 +10315,8 @@ id|i
 suffix:semicolon
 id|dbg
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon

@@ -5,6 +5,7 @@ mdefine_line|#define _SPARC64_PGALLOC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;

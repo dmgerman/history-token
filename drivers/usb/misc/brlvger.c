@@ -702,7 +702,7 @@ mdefine_line|#define info(args...) &bslash;&n;    ({ printk(KERN_INFO &quot;Voya
 DECL|macro|err
 mdefine_line|#define err(args...) &bslash;&n;    ({ printk(KERN_ERR &quot;Voyager: &quot; args); &bslash;&n;       printk(&quot;&bslash;n&quot;); })
 DECL|macro|dbgprint
-mdefine_line|#define dbgprint(args...) &bslash;&n;    ({ printk(KERN_DEBUG &quot;Voyager: &quot; __FUNCTION__ &quot;: &quot; args); &bslash;&n;       printk(&quot;&bslash;n&quot;); })
+mdefine_line|#define dbgprint(fmt, args...) &bslash;&n;    ({ printk(KERN_DEBUG &quot;Voyager: %s: &quot; fmt, __FUNCTION__ , ##args); &bslash;&n;       printk(&quot;&bslash;n&quot;); })
 DECL|macro|dbg
 mdefine_line|#define dbg(args...) &bslash;&n;    ({ if(debug &gt;= 1) dbgprint(args); })
 DECL|macro|dbg2

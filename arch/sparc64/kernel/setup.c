@@ -2903,32 +2903,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-multiline_comment|/* Because we use the generic input layer keyboard drivers for&n; * everything, this PC sysrq translation table is all we need.&n; */
-DECL|variable|kbd_sysrq_xlate
-r_int
-r_char
-id|kbd_sysrq_xlate
-(braket
-l_int|128
-)braket
-op_assign
-l_string|&quot;&bslash;000&bslash;0331234567890-=&bslash;177&bslash;t&quot;
-multiline_comment|/* 0x00 - 0x0f */
-l_string|&quot;qwertyuiop[]&bslash;r&bslash;000as&quot;
-multiline_comment|/* 0x10 - 0x1f */
-l_string|&quot;dfghjkl;&squot;`&bslash;000&bslash;&bslash;zxcv&quot;
-multiline_comment|/* 0x20 - 0x2f */
-l_string|&quot;bnm,./&bslash;000*&bslash;000 &bslash;000&bslash;201&bslash;202&bslash;203&bslash;204&bslash;205&quot;
-multiline_comment|/* 0x30 - 0x3f */
-l_string|&quot;&bslash;206&bslash;207&bslash;210&bslash;211&bslash;212&bslash;000&bslash;000789-456+1&quot;
-multiline_comment|/* 0x40 - 0x4f */
-l_string|&quot;230&bslash;177&bslash;000&bslash;000&bslash;213&bslash;214&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
-multiline_comment|/* 0x50 - 0x5f */
-l_string|&quot;&bslash;r&bslash;000/&quot;
-suffix:semicolon
-multiline_comment|/* 0x60 - 0x6f */
-macro_line|#endif
 DECL|variable|serial_console
 r_int
 id|serial_console

@@ -5,6 +5,8 @@ multiline_comment|/*&n; *  Copyright (c) 1999-2002 Vojtech Pavlik&n; *&n; * This
 multiline_comment|/*&n; * Arch-dependent inline functions and defines.&n; */
 macro_line|#if defined(CONFIG_PPC)
 macro_line|#include &quot;i8042-ppcio.h&quot;
+macro_line|#elif defined(CONFIG_SPARC32) || defined(CONFIG_SPARC64)
+macro_line|#include &quot;i8042-sparcio.h&quot;
 macro_line|#else
 macro_line|#include &quot;i8042-io.h&quot;
 macro_line|#endif

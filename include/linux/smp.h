@@ -168,10 +168,6 @@ DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id()&t;&t;&t;0
 DECL|macro|smp_threads_ready
 mdefine_line|#define smp_threads_ready&t;&t;&t;1
-macro_line|#ifndef CONFIG_PREEMPT
-DECL|macro|kernel_lock
-mdefine_line|#define kernel_lock()
-macro_line|#endif
 DECL|macro|smp_call_function
 mdefine_line|#define smp_call_function(func,info,retry,wait)&t;({ 0; })
 DECL|function|smp_send_reschedule

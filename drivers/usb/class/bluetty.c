@@ -731,6 +731,8 @@ id|status
 suffix:semicolon
 id|dbg
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -793,8 +795,9 @@ l_int|NULL
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - no free urbs&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - no free urbs&quot;
 )paren
 suffix:semicolon
 r_return
@@ -830,8 +833,9 @@ l_int|NULL
 (brace
 id|err
 (paren
+l_string|&quot;%s - out of memory&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - out of memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -872,8 +876,9 @@ l_int|NULL
 (brace
 id|err
 (paren
+l_string|&quot;%s - out of memory&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - out of memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -981,8 +986,9 @@ id|status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(control) failed with status = %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(control) failed with status = %d&quot;
 comma
 id|status
 )paren
@@ -1019,6 +1025,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -1138,8 +1146,9 @@ id|result
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(read bulk) failed with status %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(read bulk) failed with status %d&quot;
 comma
 id|result
 )paren
@@ -1188,8 +1197,9 @@ id|result
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(interrupt in) failed with status %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(interrupt in) failed with status %d&quot;
 comma
 id|result
 )paren
@@ -1255,6 +1265,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -1267,8 +1279,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not opened&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not opened&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1432,8 +1445,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - %d byte(s)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - %d byte(s)&quot;
 comma
 id|count
 )paren
@@ -1447,8 +1461,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not opened&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not opened&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1467,8 +1482,9 @@ l_int|0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - write request of 0 bytes&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write request of 0 bytes&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1486,8 +1502,9 @@ l_int|1
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - write request only included type %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write request only included type %d&quot;
 comma
 id|buf
 (braket
@@ -1504,9 +1521,9 @@ id|printk
 (paren
 id|KERN_DEBUG
 id|__FILE__
-l_string|&quot;: &quot;
+l_string|&quot;: %s - length = %d, data = &quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - length = %d, data = &quot;
 comma
 id|count
 )paren
@@ -1568,8 +1585,9 @@ l_int|NULL
 (brace
 id|err
 (paren
+l_string|&quot;%s - out of memory.&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;- out of memory.&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -1626,7 +1644,7 @@ multiline_comment|/* First byte indicates the type of packet */
 r_case
 id|CMD_PKT
 suffix:colon
-multiline_comment|/* dbg(__FUNCTION__ &quot;- Send cmd_pkt len:%d&quot;, count);*/
+multiline_comment|/* dbg(&quot;%s- Send cmd_pkt len:%d&quot;, __FUNCTION__, count);*/
 id|retval
 op_assign
 id|bluetooth_ctrl_msg
@@ -1744,8 +1762,9 @@ l_int|NULL
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - no free urbs&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - no free urbs&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -1818,8 +1837,9 @@ id|retval
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(write bulk) failed with error = %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(write bulk) failed with error = %d&quot;
 comma
 id|retval
 )paren
@@ -1873,8 +1893,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - unsupported (at this time) write type&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - unsupported (at this time) write type&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -1954,6 +1975,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -1966,8 +1989,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not open&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not open&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2013,8 +2037,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - returns %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - returns %d&quot;
 comma
 id|room
 )paren
@@ -2080,8 +2105,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not open&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not open&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2131,8 +2157,9 @@ suffix:semicolon
 )brace
 id|dbg
 (paren
+l_string|&quot;%s - returns %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - returns %d&quot;
 comma
 id|chars
 )paren
@@ -2182,6 +2209,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2194,8 +2223,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not open&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not open&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2204,8 +2234,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s unsupported (at this time)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; unsupported (at this time)&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2252,6 +2283,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2264,8 +2297,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not open&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not open&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2274,8 +2308,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s unsupported (at this time)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; unsupported (at this time)&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2335,8 +2370,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - cmd 0x%.4x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - cmd 0x%.4x&quot;
 comma
 id|cmd
 )paren
@@ -2350,8 +2386,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not open&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not open&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2411,6 +2448,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2423,8 +2462,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not open&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not open&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2480,6 +2520,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2492,8 +2534,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not open&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not open&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2546,8 +2589,9 @@ id|result
 )paren
 id|err
 (paren
+l_string|&quot;%s - failed submitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -2597,6 +2641,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2609,8 +2655,9 @@ id|bluetooth-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not open&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not open&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2689,6 +2736,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2702,8 +2751,9 @@ id|bluetooth
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad bluetooth pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad bluetooth pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2718,8 +2768,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero int status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero int status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -2737,8 +2788,9 @@ id|count
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - zero length int&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - zero length int&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2755,9 +2807,9 @@ id|printk
 (paren
 id|KERN_DEBUG
 id|__FILE__
-l_string|&quot;: &quot;
+l_string|&quot;: %s- length = %d, data = &quot;
+comma
 id|__FUNCTION__
-l_string|&quot;- length = %d, data = &quot;
 comma
 id|count
 )paren
@@ -2881,8 +2933,9 @@ id|EVENT_BUFFER_SIZE
 id|err
 c_func
 (paren
+l_string|&quot;%s - exceeded EVENT_BUFFER_SIZE&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - exceeded EVENT_BUFFER_SIZE&quot;
 )paren
 suffix:semicolon
 id|bluetooth-&gt;int_packet_pos
@@ -2943,8 +2996,9 @@ id|bluetooth-&gt;int_packet_pos
 id|err
 c_func
 (paren
+l_string|&quot;%s - packet was too long&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - packet was too long&quot;
 )paren
 suffix:semicolon
 id|bluetooth-&gt;int_packet_pos
@@ -3052,6 +3106,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -3065,8 +3121,9 @@ id|bluetooth
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad bluetooth pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad bluetooth pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3081,8 +3138,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero read bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero read bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -3146,6 +3204,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -3159,8 +3219,9 @@ id|bluetooth
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad bluetooth pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad bluetooth pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3175,8 +3236,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero read bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero read bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -3193,8 +3255,9 @@ id|ENOENT
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - URB canceled, won&squot;t reschedule&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - URB canceled, won&squot;t reschedule&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3214,8 +3277,9 @@ id|count
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - zero length read bulk&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - zero length read bulk&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3233,9 +3297,9 @@ id|printk
 (paren
 id|KERN_DEBUG
 id|__FILE__
-l_string|&quot;: &quot;
+l_string|&quot;: %s- length = %d, data = &quot;
+comma
 id|__FUNCTION__
-l_string|&quot;- length = %d, data = &quot;
 comma
 id|count
 )paren
@@ -3365,8 +3429,9 @@ id|result
 )paren
 id|err
 (paren
+l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -3407,8 +3472,9 @@ id|ACL_BUFFER_SIZE
 id|err
 c_func
 (paren
+l_string|&quot;%s - exceeded ACL_BUFFER_SIZE&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - exceeded ACL_BUFFER_SIZE&quot;
 )paren
 suffix:semicolon
 id|bluetooth-&gt;bulk_packet_pos
@@ -3484,8 +3550,9 @@ id|bluetooth-&gt;bulk_packet_pos
 id|err
 c_func
 (paren
+l_string|&quot;%s - packet was too long&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - packet was too long&quot;
 )paren
 suffix:semicolon
 id|bluetooth-&gt;bulk_packet_pos
@@ -3616,8 +3683,9 @@ id|result
 )paren
 id|err
 (paren
+l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -3656,6 +3724,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -3669,8 +3739,9 @@ id|bluetooth
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad bluetooth pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad bluetooth pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3685,8 +3756,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero write bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero write bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -3750,6 +3822,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -3786,8 +3860,9 @@ id|tty-&gt;ldisc.write_wakeup
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - write wakeup call.&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write wakeup call.&quot;
 )paren
 suffix:semicolon
 (paren
@@ -4082,8 +4157,9 @@ l_int|1
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - improper number of endpoints. Bluetooth driver not bound.&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - improper number of endpoints. Bluetooth driver not bound.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5240,8 +5316,9 @@ id|bluetooth_tty_driver
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed to register tty driver&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed to register tty driver&quot;
 )paren
 suffix:semicolon
 r_return
