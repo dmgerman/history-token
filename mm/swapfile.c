@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2723,10 +2724,25 @@ id|page
 )paren
 )paren
 (brace
+r_struct
+id|writeback_control
+id|wbc
+op_assign
+(brace
+dot
+id|sync_mode
+op_assign
+id|WB_SYNC_NONE
+comma
+)brace
+suffix:semicolon
 id|swap_writepage
 c_func
 (paren
 id|page
+comma
+op_amp
+id|wbc
 )paren
 suffix:semicolon
 id|lock_page

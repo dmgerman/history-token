@@ -676,6 +676,12 @@ c_func
 r_struct
 id|page
 op_star
+id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 suffix:semicolon
 r_extern

@@ -190,7 +190,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * filemap_fdatawrite - start writeback against all of a mapping&squot;s dirty pages&n; * @mapping: address space structure to write&n; *&n; * This is a &quot;data integrity&quot; operation, as opposed to a regular memory&n; * cleansing writeback.  The difference between these two operations is that&n; * if a dirty page/buffer is encountered, it must be waited upon, and not just&n; * skipped over.&n; *&n; * The PF_SYNC flag is set across this operation and the various functions&n; * which care about this distinction must use called_for_sync() to find out&n; * which behaviour they should implement.&n; */
+multiline_comment|/**&n; * filemap_fdatawrite - start writeback against all of a mapping&squot;s dirty pages&n; * @mapping: address space structure to write&n; *&n; * This is a &quot;data integrity&quot; operation, as opposed to a regular memory&n; * cleansing writeback.  The difference between these two operations is that&n; * if a dirty page/buffer is encountered, it must be waited upon, and not just&n; * skipped over.&n; */
 DECL|function|filemap_fdatawrite
 r_int
 id|filemap_fdatawrite
@@ -232,10 +232,6 @@ id|mapping-&gt;backing_dev_info-&gt;memory_backed
 r_return
 l_int|0
 suffix:semicolon
-id|current-&gt;flags
-op_or_assign
-id|PF_SYNC
-suffix:semicolon
 id|write_lock
 c_func
 (paren
@@ -270,11 +266,6 @@ comma
 op_amp
 id|wbc
 )paren
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_SYNC
 suffix:semicolon
 r_return
 id|ret

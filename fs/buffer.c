@@ -5404,6 +5404,11 @@ comma
 id|get_block_t
 op_star
 id|get_block
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_int
@@ -5673,10 +5678,9 @@ id|bh
 r_if
 c_cond
 (paren
-id|called_for_sync
-c_func
-(paren
-)paren
+id|wbc-&gt;sync_mode
+op_ne
+id|WB_SYNC_NONE
 )paren
 (brace
 id|lock_buffer
@@ -9530,6 +9534,11 @@ comma
 id|get_block_t
 op_star
 id|get_block
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_struct
@@ -9573,6 +9582,8 @@ comma
 id|page
 comma
 id|get_block
+comma
+id|wbc
 )paren
 suffix:semicolon
 multiline_comment|/* Is the page fully outside i_size? (truncate in progress) */
@@ -9658,6 +9669,8 @@ comma
 id|page
 comma
 id|get_block
+comma
+id|wbc
 )paren
 suffix:semicolon
 )brace
