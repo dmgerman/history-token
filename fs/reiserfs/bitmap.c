@@ -617,18 +617,11 @@ r_int
 id|block
 )paren
 (brace
-r_struct
-id|super_block
-op_star
-id|s
-op_assign
-id|th-&gt;t_super
-suffix:semicolon
 id|RFALSE
 c_func
 (paren
 op_logical_neg
-id|s
+id|th-&gt;t_super
 comma
 l_string|&quot;vs-4060: trying to free block on nonexistent device&quot;
 )paren
@@ -638,7 +631,7 @@ c_func
 (paren
 id|is_reusable
 (paren
-id|s
+id|th-&gt;t_super
 comma
 id|block
 comma
