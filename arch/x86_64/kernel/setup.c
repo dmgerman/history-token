@@ -92,6 +92,11 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+DECL|variable|__initdata
+r_int
+id|acpi_numa
+id|__initdata
+suffix:semicolon
 multiline_comment|/* For PCI or other memory-mapped resources */
 DECL|variable|pci_mem_start
 r_int
@@ -2167,6 +2172,14 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_NUMA
+multiline_comment|/*&n;&t; * Parse SRAT to discover nodes.&n;&t; */
+id|acpi_numa_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 id|numa_initmem_init
 c_func
@@ -2923,6 +2936,9 @@ suffix:semicolon
 r_int
 id|level
 suffix:semicolon
+r_int
+id|cpu
+suffix:semicolon
 multiline_comment|/* Bit 31 in normal CPUID used for nonstandard 3DNow ID;&n;&t;   3DNow is IDd by bit 31 in extended CPUID (1*32+31) anyway */
 id|clear_bit
 c_func
@@ -3057,20 +3073,23 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
-multiline_comment|/* On a dual core setup the lower bits of apic id&n;&t;&t;   distingush the cores. Fix up the CPU&lt;-&gt;node mappings&n;&t;&t;   here based on that.&n;&t;&t;   Assumes number of cores is a power of two. */
+multiline_comment|/* On a dual core setup the lower bits of apic id&n;&t;&t;   distingush the cores. Fix up the CPU&lt;-&gt;node mappings&n;&t;&t;   here based on that.&n;&t;&t;   Assumes number of cores is a power of two.&n;&t;&t;   When using SRAT use mapping from SRAT. */
+id|cpu
+op_assign
+id|c-&gt;x86_apicid
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|acpi_numa
+op_le
+l_int|0
+op_logical_and
 id|c-&gt;x86_num_cores
 OG
 l_int|1
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|c-&gt;x86_apicid
-suffix:semicolon
 id|cpu_to_node
 (braket
 id|cpu
@@ -3086,13 +3105,16 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;CPU %d -&gt; Node %d&bslash;n&quot;
+l_string|&quot;CPU %d(%d) -&gt; Node %d&bslash;n&quot;
 comma
 id|cpu
+comma
+id|c-&gt;x86_num_cores
 comma
 id|cpu_to_node
 (braket
@@ -3100,7 +3122,6 @@ id|cpu
 )braket
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 )brace
 r_return

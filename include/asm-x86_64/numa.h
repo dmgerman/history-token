@@ -51,5 +51,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|numa_off
+suffix:semicolon
 macro_line|#endif
 eof
