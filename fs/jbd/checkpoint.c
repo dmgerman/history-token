@@ -1713,7 +1713,7 @@ comma
 l_string|&quot;transaction has no more buffers&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* There is one special case to worry about: if we have just&n;           pulled the buffer off a committing transaction&squot;s forget list,&n;           then even if the checkpoint list is empty, the transaction&n;           obviously cannot be dropped! */
+multiline_comment|/*&n;&t; * There is one special case to worry about: if we have just pulled the&n;&t; * buffer off a committing transaction&squot;s forget list, then even if the&n;&t; * checkpoint list is empty, the transaction obviously cannot be&n;&t; * dropped!&n;&t; *&n;&t; * AKPM2: locking here around j_committing_transaction is a bit flakey.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1924,6 +1924,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 id|J_ASSERT
+c_func
 (paren
 id|transaction-&gt;t_buffers
 op_eq
@@ -1931,6 +1932,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|transaction-&gt;t_sync_datalist
 op_eq
@@ -1938,6 +1940,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|transaction-&gt;t_forget
 op_eq
@@ -1945,6 +1948,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|transaction-&gt;t_iobuf_list
 op_eq
@@ -1952,6 +1956,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|transaction-&gt;t_shadow_list
 op_eq
@@ -1959,6 +1964,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|transaction-&gt;t_log_list
 op_eq
@@ -1966,6 +1972,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|transaction-&gt;t_checkpoint_list
 op_eq
@@ -1973,6 +1980,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|transaction-&gt;t_updates
 op_eq
@@ -1980,6 +1988,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|list_empty
 c_func
@@ -1990,13 +1999,15 @@ id|transaction-&gt;t_jcb
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
-id|transaction-&gt;t_journal-&gt;j_committing_transaction
+id|journal-&gt;j_committing_transaction
 op_ne
 id|transaction
 )paren
 suffix:semicolon
 id|jbd_debug
+c_func
 (paren
 l_int|1
 comma
@@ -2006,6 +2017,7 @@ id|transaction-&gt;t_tid
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|transaction
 )paren

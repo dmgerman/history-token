@@ -2823,6 +2823,7 @@ multiline_comment|/** &n; * int journal_dirty_data() -  mark a buffer as contain
 DECL|function|journal_dirty_data
 r_int
 id|journal_dirty_data
+c_func
 (paren
 id|handle_t
 op_star
@@ -3551,6 +3552,7 @@ multiline_comment|/** &n; * void journal_forget() - bforget() for potentially-jo
 DECL|function|journal_forget
 r_void
 id|journal_forget
+c_func
 (paren
 id|handle_t
 op_star
