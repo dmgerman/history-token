@@ -8413,7 +8413,10 @@ l_int|1
 )braket
 op_assign
 (paren
-op_star
+(paren
+r_int
+r_int
+)paren
 id|state-&gt;pri_unat_loc
 op_minus
 id|s

@@ -812,7 +812,9 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;Unable to handle kernel NULL pointer dereference&quot;
+l_string|&quot;Unable to handle kernel NULL pointer dereference (address %016lx)&bslash;n&quot;
+comma
+id|address
 )paren
 suffix:semicolon
 r_else
