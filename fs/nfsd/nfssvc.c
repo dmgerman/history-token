@@ -890,7 +890,7 @@ id|KERN_WARNING
 l_string|&quot;nfsd: unexporting all filesystems&bslash;n&quot;
 )paren
 suffix:semicolon
-id|nfsd_export_shutdown
+id|nfsd_export_flush
 c_func
 (paren
 )paren
