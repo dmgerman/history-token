@@ -38,14 +38,6 @@ mdefine_line|#define DRV_RELDATE&t;&quot;Aug 28, 2002&quot;
 multiline_comment|/* Updated to recommendations in pci-skeleton v2.03. */
 multiline_comment|/* Automatically extracted configuration info:&n;probe-func: natsemi_probe&n;config-in: tristate &squot;National Semiconductor DP8381x series PCI Ethernet support&squot; CONFIG_NATSEMI&n;&n;c-help-name: National Semiconductor DP8381x series PCI Ethernet support&n;c-help-symbol: CONFIG_NATSEMI&n;c-help: This driver is for the National Semiconductor DP8381x series,&n;c-help: including the 8381[56] chips.&n;c-help: More specific information and updates are available from &n;c-help: http://www.scyld.com/network/natsemi.html&n;*/
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* 1 normal messages, 0 quiet .. 7 verbose. */
 DECL|macro|NATSEMI_DEF_MSG
 mdefine_line|#define NATSEMI_DEF_MSG&t;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_WOL&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_TX_ERR)
 DECL|variable|debug
