@@ -480,7 +480,6 @@ l_int|3
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/**&n; *&t;cs5530_config_dma&t;-&t;select/set DMA and UDMA modes&n; *&t;@drive: drive to tune&n; *&n; *&t;cs5530_config_dma() handles selection/setting of DMA/UDMA modes&n; *&t;for both the chipset and drive. The CS5530 has limitations about&n; *&t;mixing DMA/UDMA on the same cable.&n; */
 DECL|function|cs5530_config_dma
 r_static
@@ -998,7 +997,6 @@ id|drive
 suffix:semicolon
 multiline_comment|/* success */
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/**&n; *&t;init_chipset_5530&t;-&t;set up 5530 bridge&n; *&t;@dev: PCI device&n; *&t;@name: device name&n; *&n; *&t;Initialize the cs5530 bridge for reliable IDE DMA operation.&n; */
 DECL|function|init_chipset_cs5530
 r_static
@@ -1435,7 +1433,6 @@ id|hwif-&gt;mwdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_check
 op_assign
 op_amp
@@ -1469,7 +1466,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 multiline_comment|/**&n; *&t;init_dma_cs5530&t;&t;-&t;set up for DMA&n; *&t;@hwif: interface&n; *&t;@dmabase: DMA base address&n; *&n; *&t;FIXME: this can go away&n; */
 DECL|function|init_dma_cs5530
