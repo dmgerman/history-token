@@ -148,7 +148,6 @@ c_func
 id|journal
 )paren
 suffix:semicolon
-multiline_comment|/* Protect journal-&gt;j_running_transaction */
 macro_line|#ifdef COMMIT_STATS
 id|spin_lock
 c_func
@@ -177,6 +176,7 @@ c_func
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|journal-&gt;j_running_transaction
 op_ne
@@ -184,6 +184,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|journal-&gt;j_committing_transaction
 op_eq
@@ -195,6 +196,7 @@ op_assign
 id|journal-&gt;j_running_transaction
 suffix:semicolon
 id|J_ASSERT
+c_func
 (paren
 id|commit_transaction-&gt;t_state
 op_eq
@@ -202,6 +204,7 @@ id|T_RUNNING
 )paren
 suffix:semicolon
 id|jbd_debug
+c_func
 (paren
 l_int|1
 comma
@@ -380,16 +383,16 @@ id|commit_transaction
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now that we have built the revoke records, we can start&n;&t; * reusing the revoke list for a new running transaction.  We&n;&t; * can now safely start committing the old transaction: time to&n;&t; * get a new running transaction for incoming filesystem updates&n;&t; */
-id|commit_transaction-&gt;t_state
-op_assign
-id|T_FLUSH
-suffix:semicolon
-id|wake_up
+id|spin_lock
 c_func
 (paren
 op_amp
-id|journal-&gt;j_wait_transaction_locked
+id|journal-&gt;j_state_lock
 )paren
+suffix:semicolon
+id|commit_transaction-&gt;t_state
+op_assign
+id|T_FLUSH
 suffix:semicolon
 id|journal-&gt;j_committing_transaction
 op_assign
@@ -402,6 +405,20 @@ suffix:semicolon
 id|commit_transaction-&gt;t_log_start
 op_assign
 id|journal-&gt;j_head
+suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|journal-&gt;j_wait_transaction_locked
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
 suffix:semicolon
 id|unlock_kernel
 c_func

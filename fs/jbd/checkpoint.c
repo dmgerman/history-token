@@ -1295,7 +1295,13 @@ comma
 id|freed
 suffix:semicolon
 multiline_comment|/* OK, work out the oldest transaction remaining in the log, and&n;&t; * the log block it starts at. &n;&t; * &n;&t; * If the log is now empty, we need to work out which is the&n;&t; * next transaction ID we will write, and where it will&n;&t; * start. */
-multiline_comment|/* j_checkpoint_transactions needs locking */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1382,6 +1388,13 @@ c_func
 (paren
 op_amp
 id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 id|J_ASSERT

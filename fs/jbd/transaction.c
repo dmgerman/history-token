@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-multiline_comment|/*&n; * get_transaction: obtain a new transaction_t object.&n; *&n; * Simply allocate and initialise a new transaction.  Create it in&n; * RUNNING state and add it to the current journal (which should not&n; * have an existing running transaction: we only make a new transaction&n; * once we have started to commit the old one).&n; *&n; * Preconditions:&n; *&t;The journal MUST be locked.  We don&squot;t perform atomic mallocs on the&n; *&t;new transaction&t;and we can&squot;t block without protecting against other&n; *&t;processes trying to touch the journal while it is in transition.&n; */
+multiline_comment|/*&n; * get_transaction: obtain a new transaction_t object.&n; *&n; * Simply allocate and initialise a new transaction.  Create it in&n; * RUNNING state and add it to the current journal (which should not&n; * have an existing running transaction: we only make a new transaction&n; * once we have started to commit the old one).&n; *&n; * Preconditions:&n; *&t;The journal MUST be locked.  We don&squot;t perform atomic mallocs on the&n; *&t;new transaction&t;and we can&squot;t block without protecting against other&n; *&t;processes trying to touch the journal while it is in transition.&n; *&n; * Called under j_state_lock&n; */
 r_static
 id|transaction_t
 op_star
@@ -1237,13 +1237,6 @@ suffix:semicolon
 op_increment
 id|journal-&gt;j_barrier_count
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_state_lock
-)paren
-suffix:semicolon
 multiline_comment|/* Wait until there are no running updates */
 r_while
 c_loop
@@ -1308,6 +1301,13 @@ op_amp
 id|transaction-&gt;t_handle_lock
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|unlock_journal
 c_func
 (paren
@@ -1335,7 +1335,21 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|unlock_journal
 c_func
 (paren
@@ -5148,6 +5162,13 @@ id|bh
 r_goto
 id|zap_buffer_unlocked
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|jbd_lock_bh_state
 c_func
 (paren
@@ -5256,6 +5277,13 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -5298,6 +5326,13 @@ id|jbd_unlock_bh_state
 c_func
 (paren
 id|bh
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 r_return
@@ -5375,6 +5410,13 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5416,6 +5458,13 @@ id|jbd_unlock_bh_state
 c_func
 (paren
 id|bh
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 id|zap_buffer_unlocked

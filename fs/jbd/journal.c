@@ -1335,9 +1335,11 @@ id|left
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function must be non-allocating for PF_MEMALLOC tasks&n; */
-DECL|function|log_start_commit
+DECL|function|__log_start_commit
+r_static
 id|tid_t
-id|log_start_commit
+id|__log_start_commit
+c_func
 (paren
 id|journal_t
 op_star
@@ -1349,14 +1351,6 @@ id|transaction
 )paren
 (brace
 id|tid_t
-id|target
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Protect journal-&gt;j_running_transaction */
 id|target
 op_assign
 id|journal-&gt;j_commit_request
@@ -1432,13 +1426,53 @@ id|journal-&gt;j_wait_commit
 suffix:semicolon
 id|out
 suffix:colon
-id|unlock_kernel
+r_return
+id|target
+suffix:semicolon
+)brace
+DECL|function|log_start_commit
+id|tid_t
+id|log_start_commit
 c_func
 (paren
+id|journal_t
+op_star
+id|journal
+comma
+id|transaction_t
+op_star
+id|transaction
+)paren
+(brace
+id|tid_t
+id|ret
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|__log_start_commit
+c_func
+(paren
+id|journal
+comma
+id|transaction
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 r_return
-id|target
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait for a specified commit to complete.&n; * The caller may not hold the journal lock.&n; */
@@ -3924,6 +3958,7 @@ multiline_comment|/**&n; * int journal_flush () - Flush journal&n; * @journal: J
 DECL|function|journal_flush
 r_int
 id|journal_flush
+c_func
 (paren
 id|journal_t
 op_star
@@ -3945,9 +3980,11 @@ r_int
 r_int
 id|old_tail
 suffix:semicolon
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Force everything buffered to the log... */
@@ -3961,7 +3998,7 @@ id|transaction
 op_assign
 id|journal-&gt;j_running_transaction
 suffix:semicolon
-id|log_start_commit
+id|__log_start_commit
 c_func
 (paren
 id|journal
@@ -3986,14 +4023,38 @@ c_cond
 (paren
 id|transaction
 )paren
+(brace
+id|tid_t
+id|tid
+op_assign
+id|transaction-&gt;t_tid
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|log_wait_commit
 c_func
 (paren
 id|journal
 comma
-id|transaction-&gt;t_tid
+id|tid
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* ...and flush everything in the log out to disk. */
 id|lock_journal
 c_func
@@ -4089,11 +4150,6 @@ c_func
 id|journal-&gt;j_tail_sequence
 op_eq
 id|journal-&gt;j_transaction_sequence
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -4248,10 +4304,11 @@ id|buffer
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Journal abort has very specific semantics, which we describe&n; * for journal abort. &n; *&n; * Two internal function, which provide abort to te jbd layer&n; * itself are here.&n; */
-multiline_comment|/* Quick version for internal journal use (doesn&squot;t lock the journal).&n; * Aborts hard --- we mark the abort as occurred, but do _nothing_ else,&n; * and don&squot;t attempt to make any other journal updates. */
+multiline_comment|/*&n; * Quick version for internal journal use (doesn&squot;t lock the journal).&n; * Aborts hard --- we mark the abort as occurred, but do _nothing_ else,&n; * and don&squot;t attempt to make any other journal updates.&n; */
 DECL|function|__journal_abort_hard
 r_void
 id|__journal_abort_hard
+c_func
 (paren
 id|journal_t
 op_star
@@ -4278,6 +4335,7 @@ id|JFS_ABORT
 r_return
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Aborting journal on device %s.&bslash;n&quot;
@@ -4291,9 +4349,11 @@ id|b
 )paren
 )paren
 suffix:semicolon
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 id|journal-&gt;j_flags
@@ -4309,7 +4369,7 @@ c_cond
 (paren
 id|transaction
 )paren
-id|log_start_commit
+id|__log_start_commit
 c_func
 (paren
 id|journal
@@ -4317,9 +4377,11 @@ comma
 id|transaction
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 )brace
