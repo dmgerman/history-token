@@ -2354,9 +2354,12 @@ comma
 id|ATKBD_CMD_RESET_DIS
 )paren
 )paren
-r_return
-op_minus
-l_int|1
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;atkbd.c: keyboard reset failed&bslash;n&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Next, we check if it&squot;s a keyboard. It should send 0xab83&n; * (0xab84 on IBM ThinkPad, and 0xaca1 on a NCD Sun layout keyboard,&n; * 0xab02 on unxlated i8042 and 0xab03 on unxlated ThinkPad, 0xab7f&n; * on Fujitsu Lifebook).&n; * If it&squot;s a mouse, it&squot;ll only send 0x00 (0x03 if it&squot;s MS mouse),&n; * and we&squot;ll time out here, and report an error.&n; */
 id|param

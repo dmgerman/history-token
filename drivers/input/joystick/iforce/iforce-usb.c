@@ -814,8 +814,9 @@ suffix:semicolon
 r_int
 id|open
 op_assign
-id|iforce-&gt;dev.handle-&gt;open
+l_int|0
 suffix:semicolon
+multiline_comment|/* FIXME! iforce-&gt;dev.handle-&gt;open; */
 id|iforce-&gt;usbdev
 op_assign
 l_int|NULL
