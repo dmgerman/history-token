@@ -238,6 +238,11 @@ r_struct
 id|device
 id|device
 suffix:semicolon
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
 multiline_comment|/* Means this node is not attached anymore */
 DECL|member|in_limbo
 r_int
