@@ -33,13 +33,6 @@ suffix:semicolon
 id|acpi_size
 id|segment_size
 suffix:semicolon
-r_struct
-id|acpi_resource_ext_irq
-op_star
-id|ex_irq
-op_assign
-l_int|NULL
-suffix:semicolon
 id|u8
 id|done
 op_assign
@@ -71,7 +64,7 @@ id|linked_list-&gt;id
 r_case
 id|ACPI_RSTYPE_IRQ
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * IRQ Resource&n;&t;&t;&t; * For an IRQ Resource, Byte 3, although optional, will&n;&t;&t;&t; * always be created - it holds IRQ information.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * IRQ Resource&n;&t;&t;&t; * For an IRQ Resource, Byte 3, although optional, will always be&n;&t;&t;&t; * created - it holds IRQ information.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|4
@@ -91,7 +84,7 @@ suffix:semicolon
 r_case
 id|ACPI_RSTYPE_START_DPF
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t; * For a start_dependent_functions Resource, Byte 1,&n;&t;&t;&t; * although optional, will always be created.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t; * For a start_dependent_functions Resource, Byte 1, although&n;&t;&t;&t; * optional, will always be created.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|2
@@ -131,7 +124,7 @@ suffix:semicolon
 r_case
 id|ACPI_RSTYPE_VENDOR
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t; * For a Vendor Specific resource, if the Length is&n;&t;&t;&t; * between 1 and 7 it will be created as a Small&n;&t;&t;&t; * Resource data type, otherwise it is a Large&n;&t;&t;&t; * Resource data type.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t; * For a Vendor Specific resource, if the Length is between 1 and 7&n;&t;&t;&t; * it will be created as a Small Resource data type, otherwise it&n;&t;&t;&t; * is a Large Resource data type.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -205,7 +198,7 @@ suffix:semicolon
 r_case
 id|ACPI_RSTYPE_ADDRESS16
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * 16-Bit Address Resource&n;&t;&t;&t; * The base size of this byte stream is 16. If a&n;&t;&t;&t; * Resource Source string is not NULL, add 1 for&n;&t;&t;&t; * the Index + the length of the null terminated&n;&t;&t;&t; * string Resource Source + 1 for the null.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 16-Bit Address Resource&n;&t;&t;&t; * The base size of this byte stream is 16. If a Resource Source&n;&t;&t;&t; * string is not NULL, add 1 for the Index + the length of the null&n;&t;&t;&t; * terminated string Resource Source + 1 for the null.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|16
@@ -253,7 +246,7 @@ suffix:semicolon
 r_case
 id|ACPI_RSTYPE_ADDRESS64
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * 64-Bit Address Resource&n;&t;&t;&t; * The base size of this byte stream is 46. If a Resource&n;&t;&t;&t; * Source string is not NULL, add 1 for the Index + the&n;&t;&t;&t; * length of the null terminated string Resource Source +&n;&t;&t;&t; * 1 for the null.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 64-Bit Address Resource&n;&t;&t;&t; * The base size of this byte stream is 46. If a resource_source&n;&t;&t;&t; * string is not NULL, add 1 for the Index + the length of the null&n;&t;&t;&t; * terminated string Resource Source + 1 for the null.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|46
@@ -277,7 +270,7 @@ suffix:semicolon
 r_case
 id|ACPI_RSTYPE_EXT_IRQ
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Extended IRQ Resource&n;&t;&t;&t; * The base size of this byte stream is 9. This is for an&n;&t;&t;&t; * Interrupt table length of 1.  For each additional&n;&t;&t;&t; * interrupt, add 4.&n;&t;&t;&t; * If a Resource Source string is not NULL, add 1 for the&n;&t;&t;&t; * Index + the length of the null terminated string&n;&t;&t;&t; * Resource Source + 1 for the null.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Extended IRQ Resource&n;&t;&t;&t; * The base size of this byte stream is 9. This is for an Interrupt&n;&t;&t;&t; * table length of 1.  For each additional interrupt, add 4.&n;&t;&t;&t; * If a Resource Source string is not NULL, add 1 for the&n;&t;&t;&t; * Index + the length of the null terminated string&n;&t;&t;&t; * Resource Source + 1 for the null.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|9
@@ -298,9 +291,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ex_irq
-op_logical_and
-id|ex_irq-&gt;resource_source.string_ptr
+id|linked_list-&gt;data.extended_irq.resource_source.string_ptr
 )paren
 (brace
 id|segment_size
@@ -315,7 +306,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t; * so exit with an error&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync, exit with error&n;&t;&t;&t; */
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_INVALID_RESOURCE_TYPE
@@ -578,7 +569,7 @@ id|temp16
 op_plus
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t; * optional elements.  Check the length of the&n;&t;&t;&t; * Bytestream.  If it is greater than 43, that&n;&t;&t;&t; * means that an Index exists and is followed by&n;&t;&t;&t; * a null termininated string.  Therefore, set&n;&t;&t;&t; * the temp variable to the length minus the minimum&n;&t;&t;&t; * byte stream length plus the byte for the Index to&n;&t;&t;&t; * determine the size of the NULL terminiated string.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are optional elements.&n;&t;&t;&t; * Check the length of the Bytestream.  If it is greater than 43,&n;&t;&t;&t; * that means that an Index exists and is followed by a null&n;&t;&t;&t; * terminated string.  Therefore, set the temp variable to the&n;&t;&t;&t; * length minus the minimum byte stream length plus the byte for&n;&t;&t;&t; * the Index to determine the size of the NULL terminated string.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -661,7 +652,7 @@ id|temp16
 op_plus
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t; * optional elements.  Check the length of the&n;&t;&t;&t; * Bytestream.  If it is greater than 23, that&n;&t;&t;&t; * means that an Index exists and is followed by&n;&t;&t;&t; * a null termininated string.  Therefore, set&n;&t;&t;&t; * the temp variable to the length minus the minimum&n;&t;&t;&t; * byte stream length plus the byte for the Index to&n;&t;&t;&t; * determine the size of the NULL terminiated string.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are optional elements.&n;&t;&t;&t; * Check the length of the Bytestream.  If it is greater than 23,&n;&t;&t;&t; * that means that an Index exists and is followed by a null&n;&t;&t;&t; * terminated string.  Therefore, set the temp variable to the&n;&t;&t;&t; * length minus the minimum byte stream length plus the byte for&n;&t;&t;&t; * the Index to determine the size of the NULL terminated string.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -744,7 +735,7 @@ id|temp16
 op_plus
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t; * optional elements.  Check the length of the&n;&t;&t;&t; * Bytestream.  If it is greater than 13, that&n;&t;&t;&t; * means that an Index exists and is followed by&n;&t;&t;&t; * a null termininated string.  Therefore, set&n;&t;&t;&t; * the temp variable to the length minus the minimum&n;&t;&t;&t; * byte stream length plus the byte for the Index to&n;&t;&t;&t; * determine the size of the NULL terminiated string.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are optional elements.&n;&t;&t;&t; * Check the length of the Bytestream.  If it is greater than 13,&n;&t;&t;&t; * that means that an Index exists and is followed by a null&n;&t;&t;&t; * terminated string.  Therefore, set the temp variable to the&n;&t;&t;&t; * length minus the minimum byte stream length plus the byte for&n;&t;&t;&t; * the Index to determine the size of the NULL terminated string.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -827,7 +818,7 @@ id|temp16
 op_plus
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Point past the length field and the&n;&t;&t;&t; * Interrupt vector flags to save off the&n;&t;&t;&t; * Interrupt table length to the Temp8 variable.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Point past the length field and the Interrupt vector flags to&n;&t;&t;&t; * save off the Interrupt table length to the Temp8 variable.&n;&t;&t;&t; */
 id|buffer
 op_add_assign
 l_int|3
@@ -853,7 +844,7 @@ op_star
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t; * optional elements.  Check the length of the&n;&t;&t;&t; * Bytestream.  If it is greater than 9, that&n;&t;&t;&t; * means that an Index exists and is followed by&n;&t;&t;&t; * a null termininated string.  Therefore, set&n;&t;&t;&t; * the temp variable to the length minus the minimum&n;&t;&t;&t; * byte stream length plus the byte for the Index to&n;&t;&t;&t; * determine the size of the NULL terminiated string.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are optional elements.&n;&t;&t;&t; * Check the length of the Bytestream.  If it is greater than 9,&n;&t;&t;&t; * that means that an Index exists and is followed by a null&n;&t;&t;&t; * terminated string.  Therefore, set the temp variable to the&n;&t;&t;&t; * length minus the minimum byte stream length plus the byte for&n;&t;&t;&t; * the Index to determine the size of the NULL terminated string.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -959,7 +950,7 @@ op_assign
 l_int|3
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Point past the descriptor&n;&t;&t;&t; */
+multiline_comment|/* Point past the descriptor */
 op_increment
 id|buffer
 suffix:semicolon
@@ -1035,7 +1026,7 @@ id|bytes_consumed
 op_assign
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Point past the descriptor&n;&t;&t;&t; */
+multiline_comment|/* Point past the descriptor */
 op_increment
 id|buffer
 suffix:semicolon

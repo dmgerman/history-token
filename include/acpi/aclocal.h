@@ -18,7 +18,7 @@ id|acpi_mutex_handle
 suffix:semicolon
 multiline_comment|/* Total number of aml opcodes defined */
 DECL|macro|AML_NUM_OPCODES
-mdefine_line|#define AML_NUM_OPCODES                 0x7E
+mdefine_line|#define AML_NUM_OPCODES                 0x7F
 multiline_comment|/*****************************************************************************&n; *&n; * Mutex typedefs and structs&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; * Predefined handles for the mutex objects used within the subsystem&n; * All mutex objects are automatically created by acpi_ut_mutex_initialize.&n; *&n; * The acquire/release ordering protocol is implied via this list.  Mutexes&n; * with a lower value must be acquired before mutexes with a higher value.&n; *&n; * NOTE: any changes here must be reflected in the acpi_gbl_mutex_names table also!&n; */
 DECL|macro|ACPI_MTX_EXECUTE

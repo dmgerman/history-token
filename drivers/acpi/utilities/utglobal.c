@@ -2327,6 +2327,10 @@ id|acpi_gbl_device_notify.handler
 op_assign
 l_int|NULL
 suffix:semicolon
+id|acpi_gbl_exception_handler
+op_assign
+l_int|NULL
+suffix:semicolon
 id|acpi_gbl_init_handler
 op_assign
 l_int|NULL

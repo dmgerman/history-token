@@ -478,7 +478,7 @@ mdefine_line|#define ACPI_INTEGER_MAX                ACPI_UINT32_MAX
 DECL|macro|ACPI_INTEGER_BIT_SIZE
 mdefine_line|#define ACPI_INTEGER_BIT_SIZE           32
 DECL|macro|ACPI_MAX_DECIMAL_DIGITS
-mdefine_line|#define ACPI_MAX_DECIMAL_DIGITS         10
+mdefine_line|#define ACPI_MAX_DECIMAL_DIGITS         10  /* 2^32 = 4,294,967,296 */
 DECL|macro|ACPI_USE_NATIVE_DIVIDE
 mdefine_line|#define ACPI_USE_NATIVE_DIVIDE          /* Use compiler native 32-bit divide */
 macro_line|#else
@@ -493,12 +493,20 @@ mdefine_line|#define ACPI_INTEGER_MAX                ACPI_UINT64_MAX
 DECL|macro|ACPI_INTEGER_BIT_SIZE
 mdefine_line|#define ACPI_INTEGER_BIT_SIZE           64
 DECL|macro|ACPI_MAX_DECIMAL_DIGITS
-mdefine_line|#define ACPI_MAX_DECIMAL_DIGITS         19
+mdefine_line|#define ACPI_MAX_DECIMAL_DIGITS         20  /* 2^64 = 18,446,744,073,709,551,616 */
 macro_line|#if ACPI_MACHINE_WIDTH == 64
 DECL|macro|ACPI_USE_NATIVE_DIVIDE
 mdefine_line|#define ACPI_USE_NATIVE_DIVIDE          /* Use compiler native 64-bit divide */
 macro_line|#endif
 macro_line|#endif
+DECL|macro|ACPI_MAX64_DECIMAL_DIGITS
+mdefine_line|#define ACPI_MAX64_DECIMAL_DIGITS       20
+DECL|macro|ACPI_MAX32_DECIMAL_DIGITS
+mdefine_line|#define ACPI_MAX32_DECIMAL_DIGITS       10
+DECL|macro|ACPI_MAX16_DECIMAL_DIGITS
+mdefine_line|#define ACPI_MAX16_DECIMAL_DIGITS        5
+DECL|macro|ACPI_MAX8_DECIMAL_DIGITS
+mdefine_line|#define ACPI_MAX8_DECIMAL_DIGITS         3
 multiline_comment|/*&n; * Constants with special meanings&n; */
 DECL|macro|ACPI_ROOT_OBJECT
 mdefine_line|#define ACPI_ROOT_OBJECT                (acpi_handle) ACPI_PTR_ADD (char, NULL, ACPI_MAX_PTR)
@@ -1289,6 +1297,31 @@ id|function
 suffix:semicolon
 DECL|macro|ACPI_INIT_DEVICE_INI
 mdefine_line|#define ACPI_INIT_DEVICE_INI        1
+r_typedef
+DECL|typedef|acpi_exception_handler
+id|acpi_status
+(paren
+op_star
+id|acpi_exception_handler
+)paren
+(paren
+id|acpi_status
+id|aml_status
+comma
+id|acpi_name
+id|name
+comma
+id|u16
+id|opcode
+comma
+id|u32
+id|aml_offset
+comma
+r_void
+op_star
+id|context
+)paren
+suffix:semicolon
 multiline_comment|/* Address Spaces (For Operation Regions) */
 r_typedef
 DECL|typedef|acpi_adr_space_handler

@@ -140,9 +140,7 @@ id|acpi_ut_short_divide
 (paren
 (paren
 id|acpi_integer
-op_star
 )paren
-op_amp
 id|address
 comma
 id|length

@@ -542,7 +542,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;acpi_ds_clear_operands&quot;
+l_string|&quot;ds_clear_operands&quot;
 comma
 id|walk_state
 )paren

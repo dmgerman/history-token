@@ -685,11 +685,7 @@ l_char|&squot;9&squot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_strtoul64&n; *&n; * PARAMETERS:  String          - Null terminated string&n; *              Terminater      - Where a pointer to the terminating byte is returned&n; *              Base            - Radix of the string&n; *&n; * RETURN:      Converted value&n; *&n; * DESCRIPTION: Convert a string into an unsigned value.&n; *&n; ******************************************************************************/
-DECL|macro|NEGATIVE
-mdefine_line|#define NEGATIVE    1
-DECL|macro|POSITIVE
-mdefine_line|#define POSITIVE    0
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_strtoul64&n; *&n; * PARAMETERS:  String          - Null terminated string&n; *              Base            - Radix of the string: 10, 16, or ACPI_ANY_BASE&n; *              ret_integer     - Where the converted integer is returned&n; *&n; * RETURN:      Status and Converted value&n; *&n; * DESCRIPTION: Convert a string into an unsigned value.&n; *              NOTE: Does not support Octal strings, not needed.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_strtoul64
 id|acpi_ut_strtoul64
@@ -707,28 +703,20 @@ id|ret_integer
 )paren
 (brace
 id|u32
-id|index
+id|this_digit
 suffix:semicolon
 id|acpi_integer
 id|return_value
 op_assign
 l_int|0
 suffix:semicolon
-id|acpi_status
-id|status
-op_assign
-id|AE_OK
-suffix:semicolon
-id|acpi_integer
-id|dividend
-suffix:semicolon
 id|acpi_integer
 id|quotient
 suffix:semicolon
-op_star
-id|ret_integer
-op_assign
-l_int|0
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;ut_stroul64&quot;
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -737,10 +725,7 @@ id|base
 )paren
 (brace
 r_case
-l_int|0
-suffix:colon
-r_case
-l_int|8
+id|ACPI_ANY_BASE
 suffix:colon
 r_case
 l_int|10
@@ -752,14 +737,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t; * The specified Base parameter is not in the domain of&n;&t;&t; * this function:&n;&t;&t; */
-r_return
+multiline_comment|/* Invalid Base */
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * skip over any white space in the buffer:&n;&t; */
+multiline_comment|/* Skip over any white space in the buffer */
 r_while
 c_loop
 (paren
@@ -779,7 +764,7 @@ op_increment
 id|string
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If the input parameter Base is zero, then we need to&n;&t; * determine if it is octal, decimal, or hexadecimal:&n;&t; */
+multiline_comment|/*&n;&t; * If the input parameter Base is zero, then we need to&n;&t; * determine if it is decimal or hexadecimal:&n;&t; */
 r_if
 c_cond
 (paren
@@ -791,14 +776,13 @@ l_int|0
 r_if
 c_cond
 (paren
+(paren
 op_star
 id|string
 op_eq
 l_char|&squot;0&squot;
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 id|ACPI_TOLOWER
 (paren
@@ -811,6 +795,7 @@ id|string
 op_eq
 l_char|&squot;x&squot;
 )paren
+)paren
 (brace
 id|base
 op_assign
@@ -819,14 +804,6 @@ suffix:semicolon
 op_increment
 id|string
 suffix:semicolon
-)brace
-r_else
-(brace
-id|base
-op_assign
-l_int|8
-suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -836,24 +813,7 @@ l_int|10
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * For octal and hexadecimal bases, skip over the leading&n;&t; * 0 or 0x, if they are present.&n;&t; */
-r_if
-c_cond
-(paren
-id|base
-op_eq
-l_int|8
-op_logical_and
-op_star
-id|string
-op_eq
-l_char|&squot;0&squot;
-)paren
-(brace
-id|string
-op_increment
-suffix:semicolon
-)brace
+multiline_comment|/*&n;&t; * For hexadecimal base, skip over the leading&n;&t; * 0 or 0x, if they are present.&n;&t; */
 r_if
 c_cond
 (paren
@@ -882,7 +842,7 @@ id|string
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* Main loop: convert the string to an unsigned long */
+multiline_comment|/* Main loop: convert the string to a 64-bit integer */
 r_while
 c_loop
 (paren
@@ -900,7 +860,8 @@ id|string
 )paren
 )paren
 (brace
-id|index
+multiline_comment|/* Convert ASCII 0-9 to Decimal value */
+id|this_digit
 op_assign
 (paren
 (paren
@@ -915,7 +876,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|index
+id|this_digit
 op_assign
 (paren
 id|u8
@@ -934,13 +895,14 @@ id|ACPI_IS_UPPER
 (paren
 r_char
 )paren
-id|index
+id|this_digit
 )paren
 )paren
 (brace
-id|index
+multiline_comment|/* Convert ASCII Hex char to value */
+id|this_digit
 op_assign
-id|index
+id|this_digit
 op_minus
 l_char|&squot;A&squot;
 op_plus
@@ -954,10 +916,11 @@ id|error_exit
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Check to see if digit is out of range */
 r_if
 c_cond
 (paren
-id|index
+id|this_digit
 op_ge
 id|base
 )paren
@@ -966,23 +929,20 @@ r_goto
 id|error_exit
 suffix:semicolon
 )brace
-multiline_comment|/* Check to see if value is out of range: */
-id|dividend
-op_assign
-id|ACPI_INTEGER_MAX
-op_minus
-(paren
-id|acpi_integer
-)paren
-id|index
-suffix:semicolon
+multiline_comment|/* Divide the digit into the correct position */
 (paren
 r_void
 )paren
 id|acpi_ut_short_divide
 (paren
-op_amp
-id|dividend
+(paren
+id|ACPI_INTEGER_MAX
+op_minus
+(paren
+id|acpi_integer
+)paren
+id|this_digit
+)paren
 comma
 id|base
 comma
@@ -1010,7 +970,7 @@ id|base
 suffix:semicolon
 id|return_value
 op_add_assign
-id|index
+id|this_digit
 suffix:semicolon
 op_increment
 id|string
@@ -1021,57 +981,36 @@ id|ret_integer
 op_assign
 id|return_value
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
-id|status
+id|AE_OK
 )paren
 suffix:semicolon
 id|error_exit
 suffix:colon
-r_switch
+multiline_comment|/* Base was set/validated above */
+r_if
 c_cond
 (paren
 id|base
+op_eq
+l_int|10
 )paren
 (brace
-r_case
-l_int|8
-suffix:colon
-id|status
-op_assign
-id|AE_BAD_OCTAL_CONSTANT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|10
-suffix:colon
-id|status
-op_assign
-id|AE_BAD_DECIMAL_CONSTANT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|16
-suffix:colon
-id|status
-op_assign
-id|AE_BAD_HEX_CONSTANT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* Base validated above */
-r_break
-suffix:semicolon
-)brace
-r_return
+id|return_ACPI_STATUS
 (paren
-id|status
+id|AE_BAD_DECIMAL_CONSTANT
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_BAD_HEX_CONSTANT
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_strupr&n; *&n; * PARAMETERS:  src_string      - The source string to convert to&n; *&n; * RETURN:      src_string&n; *&n; * DESCRIPTION: Convert string to uppercase&n; *&n; ******************************************************************************/
 r_char

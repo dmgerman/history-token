@@ -242,7 +242,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Opcode %X [%s] operand_types=%X &bslash;n&quot;
+l_string|&quot;Opcode %X [%s] required_operand_types=%8.8X &bslash;n&quot;
 comma
 id|opcode
 comma
@@ -432,9 +432,16 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Reference Opcode: %s&bslash;n&quot;
+l_string|&quot;Operand is a Reference, ref_opcode [%s]&bslash;n&quot;
 comma
-id|op_info-&gt;name
+(paren
+id|acpi_ps_get_opcode_info
+(paren
+id|obj_desc-&gt;reference.opcode
+)paren
+)paren
+op_member_access_from_pointer
+id|name
 )paren
 )paren
 )paren
@@ -448,7 +455,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown Reference Opcode %X [%s]&bslash;n&quot;
+l_string|&quot;Operand is a Reference, Unknown Reference Opcode %X [%s]&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.opcode
 comma
@@ -798,7 +805,7 @@ id|obj_desc
 comma
 id|stack_ptr
 comma
-id|walk_state
+l_int|16
 )paren
 suffix:semicolon
 r_if
@@ -860,8 +867,6 @@ id|acpi_ex_convert_to_buffer
 id|obj_desc
 comma
 id|stack_ptr
-comma
-id|walk_state
 )paren
 suffix:semicolon
 r_if
@@ -924,11 +929,7 @@ id|obj_desc
 comma
 id|stack_ptr
 comma
-l_int|16
-comma
-id|ACPI_UINT32_MAX
-comma
-id|walk_state
+id|ACPI_IMPLICIT_CONVERT_HEX
 )paren
 suffix:semicolon
 r_if
@@ -1064,8 +1065,6 @@ id|acpi_ex_convert_to_buffer
 id|obj_desc
 comma
 id|stack_ptr
-comma
-id|walk_state
 )paren
 suffix:semicolon
 r_if
