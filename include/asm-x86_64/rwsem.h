@@ -289,11 +289,6 @@ l_string|&quot;  jmp       1b&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;# ending __up_read&bslash;n&quot;
 suffix:colon
-l_string|&quot;+m&quot;
-(paren
-id|sem-&gt;count
-)paren
-comma
 l_string|&quot;+d&quot;
 (paren
 id|tmp
@@ -305,8 +300,6 @@ id|sem
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -329,7 +322,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;# beginning __up_write&bslash;n&bslash;t&quot;
-l_string|&quot;  movl      %2,%%edx&bslash;n&bslash;t&quot;
+l_string|&quot;  movl      %1,%%edx&bslash;n&bslash;t&quot;
 id|LOCK_PREFIX
 l_string|&quot;  xaddl     %%edx,(%%rax)&bslash;n&bslash;t&quot;
 multiline_comment|/* tries to transition 0xffff0001 -&gt; 0x00000000 */
@@ -347,10 +340,6 @@ l_string|&quot;  jmp       1b&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;# ending __up_write&bslash;n&quot;
 suffix:colon
-l_string|&quot;+m&quot;
-(paren
-id|sem-&gt;count
-)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren

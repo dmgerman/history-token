@@ -6167,6 +6167,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|self-&gt;netdev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Restore bank register */

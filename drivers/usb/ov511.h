@@ -9,7 +9,7 @@ DECL|macro|OV511_DEBUG
 mdefine_line|#define OV511_DEBUG&t;/* Turn on debug messages */
 macro_line|#ifdef OV511_DEBUG
 DECL|macro|PDEBUG
-mdefine_line|#define PDEBUG(level, fmt, args...) &bslash;&n;&t;&t;if (debug &gt;= (level)) info(&quot;[&quot; __PRETTY_FUNCTION__ &quot;:%d] &quot; fmt,&bslash;&n;&t;&t;__LINE__ , ## args)
+mdefine_line|#define PDEBUG(level, fmt, args...) &bslash;&n;&t;&t;if (debug &gt;= (level)) info(&quot;[%s:%d] &quot; fmt, &bslash;&n;&t;&t;__PRETTY_FUNCTION__, __LINE__ , ## args)
 macro_line|#else
 DECL|macro|PDEBUG
 mdefine_line|#define PDEBUG(level, fmt, args...) do {} while(0)
@@ -368,6 +368,16 @@ DECL|macro|PIXELS_PER_SEG
 mdefine_line|#define PIXELS_PER_SEG&t;&t;256&t;/* Pixels per segment */
 DECL|macro|OV511_ENDPOINT_ADDRESS
 mdefine_line|#define OV511_ENDPOINT_ADDRESS&t;1&t;/* Isoc endpoint number */
+DECL|macro|OV511_NUMFRAMES
+mdefine_line|#define OV511_NUMFRAMES&t;2
+macro_line|#if OV511_NUMFRAMES &gt; VIDEO_MAX_FRAME
+macro_line|#error &quot;OV511_NUMFRAMES is too high&quot;
+macro_line|#endif
+DECL|macro|OV511_NUMSBUF
+mdefine_line|#define OV511_NUMSBUF&t;&t;2
+multiline_comment|/* Control transfers use up to 4 bytes */
+DECL|macro|OV511_CBUF_SIZE
+mdefine_line|#define OV511_CBUF_SIZE&t;&t;4
 multiline_comment|/* Bridge types */
 r_enum
 (brace
@@ -662,11 +672,22 @@ mdefine_line|#define OV511IOC_WI2C     _IOW(&squot;v&squot;, BASE_VIDIOCPRIVATE 
 DECL|macro|OV511IOC_RI2C
 mdefine_line|#define OV511IOC_RI2C    _IOWR(&squot;v&squot;, BASE_VIDIOCPRIVATE + 6, &bslash;&n;&t;&t;&t;       struct ov511_i2c_struct)
 multiline_comment|/* ------------- End IOCTL interface -------------- */
+r_struct
+id|usb_ov511
+suffix:semicolon
+multiline_comment|/* Forward declaration */
 DECL|struct|ov511_sbuf
 r_struct
 id|ov511_sbuf
 (brace
+DECL|member|ov
+r_struct
+id|usb_ov511
+op_star
+id|ov
+suffix:semicolon
 DECL|member|data
+r_int
 r_char
 op_star
 id|data
@@ -676,6 +697,14 @@ r_struct
 id|urb
 op_star
 id|urb
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|n
+r_int
+id|n
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -744,23 +773,33 @@ id|framenum
 suffix:semicolon
 multiline_comment|/* Index of this frame */
 DECL|member|data
+r_int
 r_char
 op_star
 id|data
 suffix:semicolon
 multiline_comment|/* Frame buffer */
 DECL|member|tempdata
+r_int
 r_char
 op_star
 id|tempdata
 suffix:semicolon
 multiline_comment|/* Temp buffer for multi-stage conversions */
 DECL|member|rawdata
+r_int
 r_char
 op_star
 id|rawdata
 suffix:semicolon
 multiline_comment|/* Raw camera data buffer */
+DECL|member|compbuf
+r_int
+r_char
+op_star
+id|compbuf
+suffix:semicolon
+multiline_comment|/* Temp buffer for decompressor */
 DECL|member|depth
 r_int
 id|depth
@@ -836,7 +875,7 @@ multiline_comment|/* True if frame was a snapshot */
 )brace
 suffix:semicolon
 DECL|macro|DECOMP_INTERFACE_VER
-mdefine_line|#define DECOMP_INTERFACE_VER 2
+mdefine_line|#define DECOMP_INTERFACE_VER 3
 multiline_comment|/* Compression module operations */
 DECL|struct|ov51x_decomp_ops
 r_struct
@@ -849,6 +888,10 @@ op_star
 id|decomp_400
 )paren
 (paren
+r_int
+r_char
+op_star
+comma
 r_int
 r_char
 op_star
@@ -880,6 +923,10 @@ r_char
 op_star
 comma
 r_int
+r_char
+op_star
+comma
+r_int
 comma
 r_int
 comma
@@ -893,6 +940,10 @@ op_star
 id|decomp_422
 )paren
 (paren
+r_int
+r_char
+op_star
+comma
 r_int
 r_char
 op_star
@@ -930,16 +981,6 @@ r_void
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|OV511_NUMFRAMES
-mdefine_line|#define OV511_NUMFRAMES&t;2
-macro_line|#if OV511_NUMFRAMES &gt; VIDEO_MAX_FRAME
-macro_line|#error &quot;OV511_NUMFRAMES is too high&quot;
-macro_line|#endif
-DECL|macro|OV511_NUMSBUF
-mdefine_line|#define OV511_NUMSBUF&t;&t;2
-multiline_comment|/* Control transfers use up to 4 bytes */
-DECL|macro|OV511_CBUF_SIZE
-mdefine_line|#define OV511_CBUF_SIZE&t;&t;4
 DECL|struct|usb_ov511
 r_struct
 id|usb_ov511
@@ -961,7 +1002,8 @@ r_int
 id|customid
 suffix:semicolon
 DECL|member|desc
-r_int
+r_char
+op_star
 id|desc
 suffix:semicolon
 DECL|member|iface
@@ -1077,18 +1119,21 @@ id|bandfilt
 suffix:semicolon
 multiline_comment|/* Banding filter enabled flag */
 DECL|member|fbuf
+r_int
 r_char
 op_star
 id|fbuf
 suffix:semicolon
 multiline_comment|/* Videodev buffer area */
 DECL|member|tempfbuf
+r_int
 r_char
 op_star
 id|tempfbuf
 suffix:semicolon
 multiline_comment|/* Temporary (intermediate) buffer area */
 DECL|member|rawfbuf
+r_int
 r_char
 op_star
 id|rawfbuf
@@ -1315,24 +1360,10 @@ id|cbuf_lock
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|cam_list
+multiline_comment|/* Used to represent a list of values and their respective symbolic names */
+DECL|struct|symbolic_list
 r_struct
-id|cam_list
-(brace
-DECL|member|id
-r_int
-id|id
-suffix:semicolon
-DECL|member|description
-r_char
-op_star
-id|description
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|palette_list
-r_struct
-id|palette_list
+id|symbolic_list
 (brace
 DECL|member|num
 r_int
@@ -1345,6 +1376,77 @@ id|name
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|NOT_DEFINED_STR
+mdefine_line|#define NOT_DEFINED_STR &quot;Unknown&quot;
+multiline_comment|/* Returns the name of the matching element in the symbolic_list array. The&n; * end of the list must be marked with an element that has a NULL name.&n; */
+r_static
+r_inline
+r_char
+op_star
+DECL|function|symbolic
+id|symbolic
+c_func
+(paren
+r_struct
+id|symbolic_list
+id|list
+(braket
+)braket
+comma
+r_int
+id|num
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|list
+(braket
+id|i
+)braket
+dot
+id|name
+op_ne
+l_int|NULL
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|list
+(braket
+id|i
+)braket
+dot
+id|num
+op_eq
+id|num
+)paren
+r_return
+(paren
+id|list
+(braket
+id|i
+)braket
+dot
+id|name
+)paren
+suffix:semicolon
+r_return
+(paren
+id|NOT_DEFINED_STR
+)paren
+suffix:semicolon
+)brace
 DECL|struct|mode_list_518
 r_struct
 id|mode_list_518

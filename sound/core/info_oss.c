@@ -505,7 +505,7 @@ id|THIS_MODULE
 comma
 l_string|&quot;sndstat&quot;
 comma
-l_int|NULL
+id|snd_oss_root
 )paren
 )paren
 op_ne

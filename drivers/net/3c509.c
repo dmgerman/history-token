@@ -5377,7 +5377,7 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;EtherLink III debug level (0-6)&quot;
+l_string|&quot;debug level (0-6)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5385,7 +5385,7 @@ c_func
 (paren
 id|irq
 comma
-l_string|&quot;EtherLink III IRQ number(s) (assigned)&quot;
+l_string|&quot;IRQ number(s) (assigned)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5393,7 +5393,7 @@ c_func
 (paren
 id|xcvr
 comma
-l_string|&quot;EtherLink III tranceiver(s) (0=internal, 1=external)&quot;
+l_string|&quot;tranceiver(s) (0=internal, 1=external)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5401,7 +5401,7 @@ c_func
 (paren
 id|max_interrupt_work
 comma
-l_string|&quot;EtherLink III maximum events handled per interrupt&quot;
+l_string|&quot;maximum events handled per interrupt&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef __ISAPNP__
@@ -5418,10 +5418,16 @@ c_func
 (paren
 id|nopnp
 comma
-l_string|&quot;EtherLink III disable ISA PnP support (0-1)&quot;
+l_string|&quot;disable ISA PnP support (0-1)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* __ISAPNP__ */
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;3Com Etherlink III (3c509, 3c509B) ISA/PnP ethernet driver&quot;
+)paren
+suffix:semicolon
 r_int
 DECL|function|init_module
 id|init_module

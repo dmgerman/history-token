@@ -194,7 +194,7 @@ id|kdev_t
 id|f_rdev
 suffix:semicolon
 DECL|member|f_size
-id|off_t
+id|loff_t
 id|f_size
 suffix:semicolon
 DECL|member|f_atime

@@ -333,7 +333,7 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;eepro100 debug level (0-6)&quot;
+l_string|&quot;debug level (0-6)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -341,7 +341,7 @@ c_func
 (paren
 id|options
 comma
-l_string|&quot;eepro100: Bits 0-3: tranceiver type, bit 4: full duplex, bit 5: 100Mbps&quot;
+l_string|&quot;Bits 0-3: tranceiver type, bit 4: full duplex, bit 5: 100Mbps&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -349,7 +349,7 @@ c_func
 (paren
 id|full_duplex
 comma
-l_string|&quot;eepro100 full duplex setting(s) (1)&quot;
+l_string|&quot;full duplex setting(s) (1)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -357,7 +357,7 @@ c_func
 (paren
 id|congenb
 comma
-l_string|&quot;eepro100  Enable congestion control (1)&quot;
+l_string|&quot;Enable congestion control (1)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -365,7 +365,7 @@ c_func
 (paren
 id|txfifo
 comma
-l_string|&quot;eepro100 Tx FIFO threshold in 4 byte units, (0-15)&quot;
+l_string|&quot;Tx FIFO threshold in 4 byte units, (0-15)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -373,7 +373,7 @@ c_func
 (paren
 id|rxfifo
 comma
-l_string|&quot;eepro100 Rx FIFO threshold in 4 byte units, (0-15)&quot;
+l_string|&quot;Rx FIFO threshold in 4 byte units, (0-15)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -381,7 +381,7 @@ c_func
 (paren
 id|txdmaccount
 comma
-l_string|&quot;eepro100 Tx DMA burst length; 128 - disable (0-128)&quot;
+l_string|&quot;Tx DMA burst length; 128 - disable (0-128)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -389,7 +389,7 @@ c_func
 (paren
 id|rxdmaccount
 comma
-l_string|&quot;eepro100 Rx DMA burst length; 128 - disable (0-128)&quot;
+l_string|&quot;Rx DMA burst length; 128 - disable (0-128)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -397,7 +397,7 @@ c_func
 (paren
 id|rx_copybreak
 comma
-l_string|&quot;eepro100 copy breakpoint for copy-only-tiny-frames&quot;
+l_string|&quot;copy breakpoint for copy-only-tiny-frames&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -405,7 +405,7 @@ c_func
 (paren
 id|max_interrupt_work
 comma
-l_string|&quot;eepro100 maximum events handled per interrupt&quot;
+l_string|&quot;maximum events handled per interrupt&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -413,7 +413,7 @@ c_func
 (paren
 id|multicast_filter_limit
 comma
-l_string|&quot;eepro100 maximum number of filtered multicast addresses&quot;
+l_string|&quot;maximum number of filtered multicast addresses&quot;
 )paren
 suffix:semicolon
 DECL|macro|RUN_AT

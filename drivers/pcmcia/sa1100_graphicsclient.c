@@ -2,9 +2,11 @@ multiline_comment|/*&n; * drivers/pcmcia/sa1100_graphicsclient.c&n; *&n; * PCMCI
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/arch/pcmcia.h&gt;
+macro_line|#include &quot;sa1100_generic.h&quot;
+macro_line|#error This is broken!
 DECL|macro|S0_CD_IRQ
 mdefine_line|#define&t;S0_CD_IRQ&t;&t;60&t;&t;&t;&t;
 singleline_comment|// Socket 0 Card Detect IRQ
@@ -139,16 +141,17 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Request for IRQ %lu failed&bslash;n&quot;
+l_string|&quot;%s: request for IRQ%d failed (%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|irq
+comma
+id|res
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|res
 suffix:semicolon
 )brace
 r_return
@@ -399,7 +402,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -479,7 +482,7 @@ comma
 id|configure-&gt;vcc
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -515,7 +518,7 @@ c_func
 l_int|30
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -525,21 +528,122 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|gcplus_pcmcia_socket_init
+r_static
+r_int
+id|gcplus_pcmcia_socket_init
+c_func
+(paren
+r_int
+id|sock
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|gcplus_pcmcia_socket_suspend
+r_static
+r_int
+id|gcplus_pcmcia_socket_suspend
+c_func
+(paren
+r_int
+id|sock
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|gcplus_pcmcia_ops
+r_static
 r_struct
 id|pcmcia_low_level
 id|gcplus_pcmcia_ops
 op_assign
 (brace
+id|init
+suffix:colon
 id|gcplus_pcmcia_init
 comma
+id|shutdown
+suffix:colon
 id|gcplus_pcmcia_shutdown
 comma
+id|socket_state
+suffix:colon
 id|gcplus_pcmcia_socket_state
 comma
+id|get_irq_info
+suffix:colon
 id|gcplus_pcmcia_get_irq_info
 comma
+id|configure_socket
+suffix:colon
 id|gcplus_pcmcia_configure_socket
+comma
+id|socket_init
+suffix:colon
+id|gcplus_pcmcia_socket_init
+comma
+id|socket_suspend
+suffix:colon
+id|gcplus_pcmcia_socket_suspend
+comma
 )brace
 suffix:semicolon
+DECL|function|pcmcia_gcplus_init
+r_int
+id|__init
+id|pcmcia_gcplus_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|machine_is_gcplus
+c_func
+(paren
+)paren
+)paren
+id|ret
+op_assign
+id|sa1100_register_pcmcia
+c_func
+(paren
+op_amp
+id|gcplus_pcmcia_ops
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|pcmcia_gcplus_exit
+r_void
+id|__exit
+id|pcmcia_gcplus_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|sa1100_unregister_pcmcia
+c_func
+(paren
+op_amp
+id|gcplus_pcmcia_ops
+)paren
+suffix:semicolon
+)brace
 eof

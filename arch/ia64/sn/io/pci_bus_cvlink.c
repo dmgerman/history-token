@@ -271,7 +271,7 @@ op_logical_neg
 id|pci_bus
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * During probing, the Linux pci code invents non existant&n;&t;&t; * bus numbers and pci_dev structures and tries to access&n;&t;&t; * them to determine existance. Don&squot;t crib during probing.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * During probing, the Linux pci code invents non-existent&n;&t;&t; * bus numbers and pci_dev structures and tries to access&n;&t;&t; * them to determine existence. Don&squot;t crib during probing.&n;&t;&t; */
 r_if
 c_cond
 (paren

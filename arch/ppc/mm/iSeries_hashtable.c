@@ -13,10 +13,10 @@ DECL|variable|iSeries_hpt_loaded
 r_int
 id|iSeries_hpt_loaded
 suffix:semicolon
-DECL|variable|hash_table_lock
+DECL|variable|mmu_hash_lock
 r_static
 id|spinlock_t
-id|hash_table_lock
+id|mmu_hash_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -594,7 +594,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|hash_table_lock
+id|mmu_hash_lock
 )paren
 suffix:semicolon
 singleline_comment|// check if pte is in the required state
@@ -620,7 +620,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|hash_table_lock
+id|mmu_hash_lock
 )paren
 suffix:semicolon
 r_return
@@ -678,7 +678,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|hash_table_lock
+id|mmu_hash_lock
 )paren
 suffix:semicolon
 r_return
@@ -706,7 +706,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|hash_table_lock
+id|mmu_hash_lock
 )paren
 suffix:semicolon
 id|pte_update
@@ -744,7 +744,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|hash_table_lock
+id|mmu_hash_lock
 )paren
 suffix:semicolon
 )brace
@@ -846,7 +846,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|hash_table_lock
+id|mmu_hash_lock
 )paren
 suffix:semicolon
 id|rtnIndex
@@ -900,7 +900,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|hash_table_lock
+id|mmu_hash_lock
 )paren
 suffix:semicolon
 r_return

@@ -38,7 +38,7 @@ id|MB1
 comma
 id|DOMAIN_IO
 comma
-l_int|1
+l_int|0
 comma
 l_int|1
 comma
@@ -56,7 +56,7 @@ id|MB1
 comma
 id|DOMAIN_IO
 comma
-l_int|1
+l_int|0
 comma
 l_int|1
 comma
@@ -77,7 +77,7 @@ l_int|8
 comma
 id|DOMAIN_KERNEL
 comma
-l_int|1
+l_int|0
 comma
 l_int|1
 comma
@@ -97,7 +97,7 @@ l_int|8
 comma
 id|DOMAIN_KERNEL
 comma
-l_int|1
+l_int|0
 comma
 l_int|1
 comma

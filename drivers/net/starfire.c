@@ -1,11 +1,11 @@
 multiline_comment|/* starfire.c: Linux device driver for the Adaptec Starfire network adapter. */
-multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been modified quite a bit from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;&t;LK1.3.3 (Ion Badulescu)&n;&t;- Initialize the TxMode register properly&n;&t;- Don&squot;t dereference dev-&gt;priv after freeing it&n;&n;&t;LK1.3.4 (Ion Badulescu)&n;&t;- Fixed initialization timing problems&n;&t;- Fixed interrupt mask definitions&n;&n;&t;LK1.3.5 (jgarzik)&n;&t;- ethtool NWAY_RST, GLINK, [GS]MSGLVL support&n;&n;TODO:&n;&t;- implement tx_timeout() properly&n;*/
+multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been modified quite a bit from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;&t;LK1.3.3 (Ion Badulescu)&n;&t;- Initialize the TxMode register properly&n;&t;- Don&squot;t dereference dev-&gt;priv after freeing it&n;&n;&t;LK1.3.4 (Ion Badulescu)&n;&t;- Fixed initialization timing problems&n;&t;- Fixed interrupt mask definitions&n;&n;&t;LK1.3.5 (jgarzik)&n;&t;- ethtool NWAY_RST, GLINK, [GS]MSGLVL support&n;&n;&t;LK1.3.6:&n;&t;- Sparc64 support and fixes (Ion Badulescu)&n;&t;- Better stats and error handling (Ion Badulescu)&n;&t;- Use new pci_set_mwi() PCI API function (jgarzik)&n;&n;TODO:&n;&t;- implement tx_timeout() properly&n;&t;- VLAN support&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;starfire&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.3.5&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.3.6&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;November 17, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;March 7, 2002&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/*&n; * Adaptec&squot;s license for their Novell drivers (which is where I got the&n; * firmware files) does not allow one to redistribute them. Thus, we can&squot;t&n; * include the firmware with this driver.&n; *&n; * However, an end-user is allowed to download and use it, after&n; * converting it to C header files using starfire_firmware.pl.&n; * Once that&squot;s done, the #undef below must be changed into a #define&n; * for this driver to really use the firmware. Note that Rx/Tx&n; * hardware TCP checksumming is not possible without the firmware.&n; *&n; * I&squot;m currently [Feb 2001] talking to Adaptec about this redistribution&n; * issue. Stay tuned...&n; */
+multiline_comment|/*&n; * Adaptec&squot;s license for their Novell drivers (which is where I got the&n; * firmware files) does not allow one to redistribute them. Thus, we can&squot;t&n; * include the firmware with this driver.&n; *&n; * However, an end-user is allowed to download and use it, after&n; * converting it to C header files using starfire_firmware.pl.&n; * Once that&squot;s done, the #undef below must be changed into a #define&n; * for this driver to really use the firmware. Note that Rx/Tx&n; * hardware TCP checksumming is not possible without the firmware.&n; *&n; * If Adaptec could allow redistribution of the firmware (even in binary&n; * format), life would become a lot easier. Unfortunately, I&squot;ve lost my&n; * Adaptec contacts, so progress on this front is rather unlikely to&n; * occur. If anybody from Adaptec reads this and can help with this matter,&n; * please let me know...&n; */
 DECL|macro|HAS_FIRMWARE
 macro_line|#undef HAS_FIRMWARE
 multiline_comment|/*&n; * The current frame processor firmware fails to checksum a fragment&n; * of length 1. If and when this is fixed, the #define below can be removed.&n; */
@@ -1700,9 +1700,14 @@ suffix:semicolon
 r_int
 id|boguscnt
 suffix:semicolon
+macro_line|#ifndef HAVE_PCI_SET_MWI
+id|u16
+id|cmd
+suffix:semicolon
 id|u8
 id|cache
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* when built into the kernel, we only print version if device is found */
 macro_line|#ifndef MODULE
 r_static
@@ -1862,12 +1867,15 @@ r_goto
 id|err_out_free_netdev
 suffix:semicolon
 )brace
+multiline_comment|/* ioremap is borken in Linux-2.2.x/sparc64 */
+macro_line|#if !defined(CONFIG_SPARC64) || LINUX_VERSION_CODE &gt; 0x20300
 id|ioaddr
 op_assign
 (paren
 r_int
 )paren
 id|ioremap
+c_func
 (paren
 id|ioaddr
 comma
@@ -1898,9 +1906,45 @@ r_goto
 id|err_out_free_res
 suffix:semicolon
 )brace
+macro_line|#endif /* !CONFIG_SPARC64 || Linux 2.3.0+ */
 id|pci_set_master
+c_func
 (paren
 id|pdev
+)paren
+suffix:semicolon
+macro_line|#ifdef HAVE_PCI_SET_MWI
+id|pci_set_mwi
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* enable MWI -- it vastly improves Rx performance on sparc64 */
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_COMMAND
+comma
+op_amp
+id|cmd
+)paren
+suffix:semicolon
+id|cmd
+op_or_assign
+id|PCI_COMMAND_INVALIDATE
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_COMMAND
+comma
+id|cmd
 )paren
 suffix:semicolon
 multiline_comment|/* set PCI cache size */
@@ -1956,6 +2000,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef ZEROCOPY
 multiline_comment|/* Starfire can do SG and TCP/UDP checksumming */
 id|dev-&gt;features
@@ -3645,14 +3690,10 @@ op_increment
 id|writel
 c_func
 (paren
-id|cpu_to_le32
-c_func
-(paren
 id|firmware_rx
 (braket
 id|i
 )braket
-)paren
 comma
 id|ioaddr
 op_plus
@@ -3682,14 +3723,10 @@ op_increment
 id|writel
 c_func
 (paren
-id|cpu_to_le32
-c_func
-(paren
 id|firmware_tx
 (braket
 id|i
 )braket
-)paren
 comma
 id|ioaddr
 op_plus
@@ -4615,7 +4652,7 @@ id|entry
 dot
 id|first_len
 op_assign
-id|cpu_to_le32
+id|cpu_to_le16
 c_func
 (paren
 id|skb_first_frag_len
@@ -4632,7 +4669,7 @@ id|entry
 dot
 id|total_len
 op_assign
-id|cpu_to_le32
+id|cpu_to_le16
 c_func
 (paren
 id|skb-&gt;len
@@ -4732,6 +4769,7 @@ id|skb-&gt;ip_summed
 op_eq
 id|CHECKSUM_HW
 )paren
+(brace
 id|np-&gt;tx_ring
 (braket
 id|entry
@@ -4745,6 +4783,10 @@ c_func
 id|TxCalTCP
 )paren
 suffix:semicolon
+id|np-&gt;stats.tx_compressed
+op_increment
+suffix:semicolon
+)brace
 macro_line|#endif /* ZEROCOPY */
 r_if
 c_cond
@@ -6229,6 +6271,9 @@ id|skb-&gt;ip_summed
 op_assign
 id|CHECKSUM_UNNECESSARY
 suffix:semicolon
+id|np-&gt;stats.rx_compressed
+op_increment
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * This feature doesn&squot;t seem to be working, at least&n;&t;&t; * with the two firmware versions I have. If the GFP sees&n;&t;&t; * a fragment, it either ignores it completely, or reports&n;&t;&t; * &quot;bad checksum&quot; on it.&n;&t;&t; *&n;&t;&t; * Maybe I missed something -- corrections are welcome.&n;&t;&t; * Until then, the printk stays. :-) -Ion&n;&t;&t; */
 r_else
@@ -6915,6 +6960,40 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|intr_status
+op_amp
+id|IntrRxGFPDead
+)paren
+(brace
+id|np-&gt;stats.rx_fifo_errors
+op_increment
+suffix:semicolon
+id|np-&gt;stats.rx_errors
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|intr_status
+op_amp
+(paren
+id|IntrNoTxCsum
+op_or
+id|IntrDMAErr
+)paren
+)paren
+(brace
+id|np-&gt;stats.tx_fifo_errors
+op_increment
+suffix:semicolon
+id|np-&gt;stats.tx_errors
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|intr_status
 op_amp
@@ -6929,6 +7008,10 @@ op_or
 id|IntrStatsMax
 op_or
 id|IntrTxDataLow
+op_or
+id|IntrRxGFPDead
+op_or
+id|IntrNoTxCsum
 op_or
 id|IntrPCIPad
 )paren
@@ -6946,17 +7029,6 @@ id|dev-&gt;name
 comma
 id|intr_status
 )paren
-suffix:semicolon
-multiline_comment|/* Hmmmmm, it&squot;s not clear how to recover from DMA faults. */
-r_if
-c_cond
-(paren
-id|intr_status
-op_amp
-id|IntrDMAErr
-)paren
-id|np-&gt;stats.tx_fifo_errors
-op_increment
 suffix:semicolon
 )brace
 DECL|function|get_stats

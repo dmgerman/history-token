@@ -1008,7 +1008,7 @@ suffix:semicolon
 id|u16
 id|master_data
 suffix:semicolon
-id|byte
+id|u8
 id|slave_data
 suffix:semicolon
 r_int

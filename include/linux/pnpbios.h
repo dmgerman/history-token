@@ -336,7 +336,7 @@ id|f
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|pnpbios_init
 (paren
 r_void

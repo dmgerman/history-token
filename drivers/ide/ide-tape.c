@@ -3045,7 +3045,8 @@ suffix:semicolon
 macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|bio-&gt;bi_size
 op_minus
@@ -3160,7 +3161,8 @@ suffix:semicolon
 macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|pc-&gt;b_count
 comma
@@ -3292,7 +3294,8 @@ suffix:semicolon
 macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|bio-&gt;bi_size
 comma
@@ -4016,7 +4019,7 @@ id|increase
 suffix:semicolon
 id|tape-&gt;max_stages
 op_assign
-id|IDE_MAX
+id|max
 c_func
 (paren
 id|tape-&gt;max_stages
@@ -4026,7 +4029,7 @@ id|tape-&gt;min_pipeline
 suffix:semicolon
 id|tape-&gt;max_stages
 op_assign
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|tape-&gt;max_stages
@@ -5263,7 +5266,7 @@ id|HZ
 suffix:semicolon
 id|tape-&gt;max_cmd_time
 op_assign
-id|IDE_MAX
+id|max
 c_func
 (paren
 id|cmd_time
@@ -7039,7 +7042,7 @@ suffix:semicolon
 )brace
 id|tape-&gt;pipeline_head_speed
 op_assign
-id|IDE_MAX
+id|max
 c_func
 (paren
 id|tape-&gt;uncontrolled_pipeline_head_speed
@@ -7176,7 +7179,7 @@ id|tape-&gt;speed_control
 suffix:semicolon
 id|tape-&gt;max_insert_speed
 op_assign
-id|IDE_MAX
+id|max
 c_func
 (paren
 id|tape-&gt;max_insert_speed
@@ -9441,7 +9444,8 @@ suffix:semicolon
 macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|bio-&gt;bi_size
 op_minus
@@ -9563,7 +9567,8 @@ suffix:semicolon
 macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|tape-&gt;b_count
 comma
@@ -13938,7 +13943,7 @@ suffix:semicolon
 )brace
 id|min
 op_assign
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|i
@@ -15249,7 +15254,8 @@ id|tape-&gt;merge_stage-&gt;bio
 suffix:semicolon
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|tape-&gt;stage_size
 comma
@@ -15278,7 +15284,8 @@ c_func
 op_amp
 id|bio-&gt;bi_cnt
 comma
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|count
 comma
@@ -17337,7 +17344,8 @@ id|tape-&gt;merge_stage_size
 (brace
 id|actually_read
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|tape-&gt;merge_stage_size
 comma
@@ -17446,7 +17454,8 @@ id|finish
 suffix:semicolon
 id|temp
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|count
 comma
@@ -18919,7 +18928,8 @@ suffix:semicolon
 macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|actually_written
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|tape-&gt;stage_size
 op_minus
@@ -25563,7 +25573,8 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Select the &quot;best&quot; DSC read/write polling frequency&n;&t; *&t;and pipeline size.&n;&t; */
 id|speed
 op_assign
-id|IDE_MAX
+id|max
+c_func
 (paren
 id|tape-&gt;capabilities.speed
 comma
@@ -25686,9 +25697,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Ensure that the number we got makes sense; limit&n;&t; *&t;it within IDETAPE_DSC_RW_MIN and IDETAPE_DSC_RW_MAX.&n;&t; */
 id|tape-&gt;best_dsc_rw_frequency
 op_assign
-id|IDE_MAX
+id|max
+c_func
 (paren
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|t
 comma
@@ -26031,16 +26044,19 @@ macro_line|#else
 DECL|macro|idetape_proc
 mdefine_line|#define&t;idetape_proc&t;NULL
 macro_line|#endif
+DECL|function|idetape_revalidate
 r_static
-r_int
-id|idetape_reinit
+r_void
+id|idetape_revalidate
 c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
+id|_dummy
 )paren
-suffix:semicolon
+(brace
+multiline_comment|/* We don&squot;t have to handle any partition information here, which is the&n;&t; * default behaviour of this method.&n;&t; */
+)brace
 multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; */
 DECL|variable|idetape_driver
 r_static
@@ -26058,10 +26074,6 @@ suffix:colon
 id|idetape_cleanup
 comma
 id|standby
-suffix:colon
-l_int|NULL
-comma
-id|flushcache
 suffix:colon
 l_int|NULL
 comma
@@ -26085,13 +26097,13 @@ id|release
 suffix:colon
 id|idetape_blkdev_release
 comma
-id|media_change
+id|check_media_change
 suffix:colon
 l_int|NULL
 comma
 id|revalidate
 suffix:colon
-l_int|NULL
+id|idetape_revalidate
 comma
 id|pre_reset
 suffix:colon
@@ -26104,11 +26116,6 @@ comma
 id|proc
 suffix:colon
 id|idetape_proc
-comma
-id|driver_reinit
-suffix:colon
-id|idetape_reinit
-comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Our character device supporting functions, passed to register_chrdev.&n; */
@@ -26145,21 +26152,6 @@ id|idetape_chrdev_release
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* This will propably just go entierly away... */
-DECL|function|idetape_reinit
-r_static
-r_int
-id|idetape_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 id|MODULE_DESCRIPTION
 c_func
 (paren

@@ -55,6 +55,8 @@ DECL|macro|SMB_MOUNT_DIRATTR
 mdefine_line|#define SMB_MOUNT_DIRATTR&t;0x0004&t;/* Use find_first for getattr */
 DECL|macro|SMB_MOUNT_CASE
 mdefine_line|#define SMB_MOUNT_CASE&t;&t;0x0008&t;/* Be case sensitive */
+DECL|macro|SMB_MOUNT_UNICODE
+mdefine_line|#define SMB_MOUNT_UNICODE&t;0x0010&t;/* Server talks unicode */
 DECL|struct|smb_mount_data_kernel
 r_struct
 id|smb_mount_data_kernel

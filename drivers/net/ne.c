@@ -3461,7 +3461,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;NEx000 I/O base address(es),required&quot;
+l_string|&quot;I/O base address(es),required&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -3469,7 +3469,7 @@ c_func
 (paren
 id|irq
 comma
-l_string|&quot;NEx000 IRQ number(s)&quot;
+l_string|&quot;IRQ number(s)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -3477,7 +3477,19 @@ c_func
 (paren
 id|bad
 comma
-l_string|&quot;NEx000 accept bad clone(s)&quot;
+l_string|&quot;Accept card(s) with bad signatures&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;NE1000/NE2000 ISA/PnP Ethernet driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* This is set up so that no ISA autoprobe takes place. We can&squot;t guarantee&n;that the ne2k probe is the last 8390 based probe to take place (as it&n;is at boot) and so the probe will get confused by any other 8390 cards.&n;ISA device autoprobes on a running machine are not recommended anyway. */
@@ -3725,12 +3737,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* MODULE */
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -DKERNEL -Wall -O6 -fomit-frame-pointer -I/usr/src/linux/net/tcp -c ne.c&quot;&n; *  version-control: t&n; *  kept-new-versions: 5&n; * End:&n; */
 eof

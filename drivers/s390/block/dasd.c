@@ -9314,7 +9314,7 @@ id|rc
 op_assign
 id|blk_ioctl
 (paren
-id|inp-&gt;i_rdev
+id|inp-&gt;i_bdev
 comma
 id|no
 comma
@@ -9362,7 +9362,7 @@ suffix:colon
 r_return
 id|blk_ioctl
 (paren
-id|inp-&gt;i_rdev
+id|inp-&gt;i_bdev
 comma
 id|no
 comma

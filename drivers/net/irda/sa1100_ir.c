@@ -268,7 +268,7 @@ id|si-&gt;hscr0
 op_or
 id|HSCR0_HSSP
 suffix:semicolon
-multiline_comment|/*&n;&t; * Enable the DMA, receiver and recieve interrupt.&n;&t; */
+multiline_comment|/*&n;&t; * Enable the DMA, receiver and receive interrupt.&n;&t; */
 id|sa1100_dma_flush_all
 c_func
 (paren

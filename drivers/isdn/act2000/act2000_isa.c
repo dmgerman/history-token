@@ -678,6 +678,9 @@ id|ISA_REGION
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|request_region
 c_func
 (paren
@@ -687,6 +690,12 @@ id|ACT2000_PORTLEN
 comma
 id|card-&gt;regname
 )paren
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 id|card-&gt;port
 op_assign

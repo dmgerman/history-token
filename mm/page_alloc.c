@@ -3497,10 +3497,12 @@ op_plus
 id|j
 )paren
 suffix:semicolon
-id|init_page_count
+id|set_page_count
 c_func
 (paren
 id|page
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|__SetPageReserved

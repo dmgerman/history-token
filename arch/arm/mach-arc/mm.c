@@ -185,7 +185,7 @@ id|no_pmd
 suffix:semicolon
 id|new_pte
 op_assign
-id|pte_alloc
+id|pte_alloc_map
 c_func
 (paren
 id|mm
@@ -224,7 +224,7 @@ l_int|0
 suffix:semicolon
 id|init_pte
 op_assign
-id|pte_offset
+id|pte_offset_map_nested
 c_func
 (paren
 id|init_pmd
@@ -239,6 +239,18 @@ id|new_pte
 comma
 op_star
 id|init_pte
+)paren
+suffix:semicolon
+id|pte_unmap_nested
+c_func
+(paren
+id|init_pte
+)paren
+suffix:semicolon
+id|pte_unmap
+c_func
+(paren
+id|new_pte
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * most of the page table entries are zeroed&n;&t; * wne the table is created.&n;&t; */

@@ -9,8 +9,10 @@ DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffff
 DECL|macro|XQUAD_PORTIO_BASE
 mdefine_line|#define XQUAD_PORTIO_BASE 0xfe400000
+DECL|macro|XQUAD_PORTIO_QUAD
+mdefine_line|#define XQUAD_PORTIO_QUAD 0x40000  /* 256k per quad. */
 DECL|macro|XQUAD_PORTIO_LEN
-mdefine_line|#define XQUAD_PORTIO_LEN  0x40000   /* 256k per quad. Only remapping 1st */
+mdefine_line|#define XQUAD_PORTIO_LEN  0x80000  /* Only remapping first 2 quads */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/vmalloc.h&gt;
 multiline_comment|/*&n; * Temporary debugging check to catch old code using&n; * unmapped ISA addresses. Will be removed in 2.4.&n; */
@@ -503,29 +505,30 @@ mdefine_line|#define __OUT1(s,x) &bslash;&n;static inline void out##s(unsigned x
 DECL|macro|__OUT2
 mdefine_line|#define __OUT2(s,s1,s2) &bslash;&n;__asm__ __volatile__ (&quot;out&quot; #s &quot; %&quot; s1 &quot;0,%&quot; s2 &quot;1&quot;
 macro_line|#ifdef CONFIG_MULTIQUAD
-multiline_comment|/* Make the default portio routines operate on quad 0 for now */
-DECL|macro|__OUT
-mdefine_line|#define __OUT(s,s1,x) &bslash;&n;__OUT1(s##_local,x) __OUT2(s,s1,&quot;w&quot;) : : &quot;a&quot; (value), &quot;Nd&quot; (port)); } &bslash;&n;__OUT1(s##_p_local,x) __OUT2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : : &quot;a&quot; (value), &quot;Nd&quot; (port));} &bslash;&n;__OUTQ0(s,s,x) &bslash;&n;__OUTQ0(s,s##_p,x) 
-macro_line|#else
+DECL|macro|__OUTQ
+mdefine_line|#define __OUTQ(s,ss,x)    /* Do the equivalent of the portio op on quads */ &bslash;&n;static inline void out##ss(unsigned x value, unsigned short port) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;write##s(value, (unsigned long) xquad_portio + port); &bslash;&n;&t;else               /* We&squot;re still in early boot, running on quad 0 */ &bslash;&n;&t;&t;out##ss##_local(value, port); &bslash;&n;} &bslash;&n;static inline void out##ss##_quad(unsigned x value, unsigned short port, int quad) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;write##s(value, (unsigned long) xquad_portio + (XQUAD_PORTIO_QUAD*quad)&bslash;&n;&t;&t;&t;+ port); &bslash;&n;}
+DECL|macro|__INQ
+mdefine_line|#define __INQ(s,ss)       /* Do the equivalent of the portio op on quads */ &bslash;&n;static inline RETURN_TYPE in##ss(unsigned short port) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;return read##s((unsigned long) xquad_portio + port); &bslash;&n;&t;else               /* We&squot;re still in early boot, running on quad 0 */ &bslash;&n;&t;&t;return in##ss##_local(port); &bslash;&n;} &bslash;&n;static inline RETURN_TYPE in##ss##_quad(unsigned short port, int quad) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;return read##s((unsigned long) xquad_portio + (XQUAD_PORTIO_QUAD*quad)&bslash;&n;&t;&t;&t;+ port); &bslash;&n;&t;else&bslash;&n;&t;&t;return 0;&bslash;&n;}
+macro_line|#endif /* CONFIG_MULTIQUAD */
+macro_line|#ifndef CONFIG_MULTIQUAD
 DECL|macro|__OUT
 mdefine_line|#define __OUT(s,s1,x) &bslash;&n;__OUT1(s,x) __OUT2(s,s1,&quot;w&quot;) : : &quot;a&quot; (value), &quot;Nd&quot; (port)); } &bslash;&n;__OUT1(s##_p,x) __OUT2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : : &quot;a&quot; (value), &quot;Nd&quot; (port));} 
-macro_line|#endif /* CONFIG_MULTIQUAD */
-macro_line|#ifdef CONFIG_MULTIQUAD
-DECL|macro|__OUTQ0
-mdefine_line|#define __OUTQ0(s,ss,x)    /* Do the equivalent of the portio op on quad 0 */ &bslash;&n;static inline void out##ss(unsigned x value, unsigned short port) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;write##s(value, (unsigned long) xquad_portio + port); &bslash;&n;&t;else               /* We&squot;re still in early boot, running on quad 0 */ &bslash;&n;&t;&t;out##ss##_local(value, port); &bslash;&n;} 
-DECL|macro|__INQ0
-mdefine_line|#define __INQ0(s,ss)       /* Do the equivalent of the portio op on quad 0 */ &bslash;&n;static inline RETURN_TYPE in##ss(unsigned short port) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;return read##s((unsigned long) xquad_portio + port); &bslash;&n;&t;else               /* We&squot;re still in early boot, running on quad 0 */ &bslash;&n;&t;&t;return in##ss##_local(port); &bslash;&n;}
+macro_line|#else
+multiline_comment|/* Make the default portio routines operate on quad 0 */
+DECL|macro|__OUT
+mdefine_line|#define __OUT(s,s1,x) &bslash;&n;__OUT1(s##_local,x) __OUT2(s,s1,&quot;w&quot;) : : &quot;a&quot; (value), &quot;Nd&quot; (port)); } &bslash;&n;__OUT1(s##_p_local,x) __OUT2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : : &quot;a&quot; (value), &quot;Nd&quot; (port));} &bslash;&n;__OUTQ(s,s,x) &bslash;&n;__OUTQ(s,s##_p,x) 
 macro_line|#endif /* CONFIG_MULTIQUAD */
 DECL|macro|__IN1
 mdefine_line|#define __IN1(s) &bslash;&n;static inline RETURN_TYPE in##s(unsigned short port) { RETURN_TYPE _v;
 DECL|macro|__IN2
 mdefine_line|#define __IN2(s,s1,s2) &bslash;&n;__asm__ __volatile__ (&quot;in&quot; #s &quot; %&quot; s2 &quot;1,%&quot; s1 &quot;0&quot;
-macro_line|#ifdef CONFIG_MULTIQUAD
-DECL|macro|__IN
-mdefine_line|#define __IN(s,s1,i...) &bslash;&n;__IN1(s##_local) __IN2(s,s1,&quot;w&quot;) : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } &bslash;&n;__IN1(s##_p_local) __IN2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } &bslash;&n;__INQ0(s,s) &bslash;&n;__INQ0(s,s##_p) 
-macro_line|#else
+macro_line|#ifndef CONFIG_MULTIQUAD
 DECL|macro|__IN
 mdefine_line|#define __IN(s,s1,i...) &bslash;&n;__IN1(s) __IN2(s,s1,&quot;w&quot;) : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } &bslash;&n;__IN1(s##_p) __IN2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } 
+macro_line|#else
+multiline_comment|/* Make the default portio routines operate on quad 0 */
+DECL|macro|__IN
+mdefine_line|#define __IN(s,s1,i...) &bslash;&n;__IN1(s##_local) __IN2(s,s1,&quot;w&quot;) : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } &bslash;&n;__IN1(s##_p_local) __IN2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } &bslash;&n;__INQ(s,s) &bslash;&n;__INQ(s,s##_p) 
 macro_line|#endif /* CONFIG_MULTIQUAD */
 DECL|macro|__INS
 mdefine_line|#define __INS(s) &bslash;&n;static inline void ins##s(unsigned short port, void * addr, unsigned long count) &bslash;&n;{ __asm__ __volatile__ (&quot;rep ; ins&quot; #s &bslash;&n;: &quot;=D&quot; (addr), &quot;=c&quot; (count) : &quot;d&quot; (port),&quot;0&quot; (addr),&quot;1&quot; (count)); }

@@ -218,10 +218,11 @@ id|u8
 id|stat
 suffix:semicolon
 multiline_comment|/* Status */
-DECL|member|unused2
+DECL|member|unused
 id|u8
-id|unused2
+id|unused
 suffix:semicolon
+multiline_comment|/* pads to 2-byte boundary */
 DECL|typedef|pkt_desc
 )brace
 id|__attribute__
@@ -298,8 +299,16 @@ DECL|macro|MD0_CRC_ITU_0
 mdefine_line|#define MD0_CRC_ITU_0 0x06
 DECL|macro|MD0_CRC_ITU
 mdefine_line|#define MD0_CRC_ITU   0x07
+DECL|macro|MD2_NRZ
+mdefine_line|#define MD2_NRZ&t;      0x00
 DECL|macro|MD2_NRZI
-mdefine_line|#define MD2_NRZI      0x20&t;/* NRZI mode */
+mdefine_line|#define MD2_NRZI      0x20
+DECL|macro|MD2_MANCHESTER
+mdefine_line|#define MD2_MANCHESTER 0x80
+DECL|macro|MD2_FM_MARK
+mdefine_line|#define MD2_FM_MARK   0xA0
+DECL|macro|MD2_FM_SPACE
+mdefine_line|#define MD2_FM_SPACE  0xC0
 DECL|macro|MD2_LOOPBACK
 mdefine_line|#define MD2_LOOPBACK  0x03      /* Local data Loopback */
 DECL|macro|CTL_NORTS

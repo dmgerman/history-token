@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   3w-xxxx.h -- 3ware Storage Controller device driver for Linux.&n;   &n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;                     Brad Strand &lt;linux@3ware.com&gt;&n;&n;   Copyright (C) 1999-2001 3ware Inc.&n;&n;   Kernel compatablity By:&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;   &n;   For more information, goto:&n;   http://www.3ware.com&n;*/
+multiline_comment|/* &n;   3w-xxxx.h -- 3ware Storage Controller device driver for Linux.&n;   &n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;                     Brad Strand &lt;linux@3ware.com&gt;&n;&n;   Copyright (C) 1999-2002 3ware Inc.&n;&n;   Kernel compatablity By:&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;   &n;   For more information, goto:&n;   http://www.3ware.com&n;*/
 macro_line|#ifndef _3W_XXXX_H
 DECL|macro|_3W_XXXX_H
 mdefine_line|#define _3W_XXXX_H
@@ -21,7 +21,7 @@ singleline_comment|// 0x000
 l_string|&quot;Soft reset occurred&quot;
 comma
 singleline_comment|// 0x001
-l_string|&quot;Mirorr degraded: Unit #&quot;
+l_string|&quot;Unit degraded: Unit #&quot;
 comma
 singleline_comment|// 0x002
 l_string|&quot;Controller error&quot;
@@ -129,11 +129,156 @@ l_string|&quot;Verify failed: Port #&quot;
 comma
 singleline_comment|// 0x02A
 l_string|&quot;Verify complete: Unit #&quot;
+comma
 singleline_comment|// 0x02B
+l_string|&quot;Overwrote bad sector during rebuild: Port #&quot;
+comma
+singleline_comment|//0x2C
+l_string|&quot;Encountered bad sector during rebuild: Port #&quot;
+singleline_comment|//0x2D
 )brace
 suffix:semicolon
 DECL|macro|TW_AEN_STRING_MAX
-mdefine_line|#define TW_AEN_STRING_MAX                      0x02C
+mdefine_line|#define TW_AEN_STRING_MAX                      0x02E
+multiline_comment|/*&n;   Sense key lookup table&n;   Format: ESDC/flags,SenseKey,AdditionalSenseCode,AdditionalSenseCodeQualifier&n;*/
+DECL|variable|tw_sense_table
+r_static
+r_int
+r_char
+id|tw_sense_table
+(braket
+)braket
+(braket
+l_int|4
+)braket
+op_assign
+(brace
+multiline_comment|/* Codes for newer firmware */
+singleline_comment|// ATA Error                    SCSI Error
+(brace
+l_int|0x01
+comma
+l_int|0x03
+comma
+l_int|0x13
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// Address mark not found       Address mark not found for data field
+(brace
+l_int|0x04
+comma
+l_int|0x0b
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// Aborted command              Aborted command
+(brace
+l_int|0x10
+comma
+l_int|0x0b
+comma
+l_int|0x14
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// ID not found                 Recorded entity not found
+(brace
+l_int|0x40
+comma
+l_int|0x03
+comma
+l_int|0x11
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// Uncorrectable ECC error      Unrecovered read error
+(brace
+l_int|0x61
+comma
+l_int|0x04
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// Device fault                 Hardware error
+(brace
+l_int|0x84
+comma
+l_int|0x0b
+comma
+l_int|0x47
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// Data CRC error               SCSI parity error
+(brace
+l_int|0xd0
+comma
+l_int|0x0b
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// Device busy                  Aborted command
+(brace
+l_int|0xd1
+comma
+l_int|0x0b
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// Device busy                  Aborted command
+multiline_comment|/* Codes for older firmware */
+singleline_comment|// 3ware Error                  SCSI Error
+(brace
+l_int|0x09
+comma
+l_int|0x0b
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// Unrecovered disk error       Aborted command
+(brace
+l_int|0x37
+comma
+l_int|0x0b
+comma
+l_int|0x04
+comma
+l_int|0x00
+)brace
+comma
+singleline_comment|// Unit offline                 Logical unit not ready
+(brace
+l_int|0x51
+comma
+l_int|0x0b
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+singleline_comment|// Unspecified                  Aborted command
+)brace
+suffix:semicolon
 multiline_comment|/* Control register bit definitions */
 DECL|macro|TW_CONTROL_CLEAR_HOST_INTERRUPT
 mdefine_line|#define TW_CONTROL_CLEAR_HOST_INTERRUPT&t;       0x00080000
@@ -159,6 +304,8 @@ DECL|macro|TW_CONTROL_ISSUE_HOST_INTERRUPT
 mdefine_line|#define TW_CONTROL_ISSUE_HOST_INTERRUPT&t;       0x00000020
 DECL|macro|TW_CONTROL_CLEAR_PARITY_ERROR
 mdefine_line|#define TW_CONTROL_CLEAR_PARITY_ERROR          0x00800000
+DECL|macro|TW_CONTROL_CLEAR_PCI_ABORT
+mdefine_line|#define TW_CONTROL_CLEAR_PCI_ABORT             0x00100000
 multiline_comment|/* Status register bit definitions */
 DECL|macro|TW_STATUS_MAJOR_VERSION_MASK
 mdefine_line|#define TW_STATUS_MAJOR_VERSION_MASK&t;       0xF0000000
@@ -214,6 +361,8 @@ DECL|macro|TW_NUMDEVICES
 mdefine_line|#define TW_NUMDEVICES 2
 DECL|macro|TW_PCI_CLEAR_PARITY_ERRORS
 mdefine_line|#define TW_PCI_CLEAR_PARITY_ERRORS 0xc100
+DECL|macro|TW_PCI_CLEAR_PCI_ABORT
+mdefine_line|#define TW_PCI_CLEAR_PCI_ABORT     0x2000
 multiline_comment|/* Command packet opcodes */
 DECL|macro|TW_OP_NOP
 mdefine_line|#define TW_OP_NOP&t;      0x0
@@ -237,6 +386,8 @@ DECL|macro|TW_CMD_PACKET
 mdefine_line|#define TW_CMD_PACKET         0x1d
 DECL|macro|TW_ATA_PASSTHRU
 mdefine_line|#define TW_ATA_PASSTHRU       0x1e
+DECL|macro|TW_CMD_PACKET_WITH_DATA
+mdefine_line|#define TW_CMD_PACKET_WITH_DATA 0x1f
 multiline_comment|/* Asynchronous Event Notification (AEN) Codes */
 DECL|macro|TW_AEN_QUEUE_EMPTY
 mdefine_line|#define TW_AEN_QUEUE_EMPTY       0x0000
@@ -263,8 +414,10 @@ mdefine_line|#define TW_AEN_SMART_FAIL        0x000F
 DECL|macro|TW_AEN_SBUF_FAIL
 mdefine_line|#define TW_AEN_SBUF_FAIL         0x0024
 multiline_comment|/* Misc defines */
-DECL|macro|TW_ALIGNMENT
-mdefine_line|#define TW_ALIGNMENT&t;&t;&t;      0x200 /* 16 D-WORDS */
+DECL|macro|TW_ALIGNMENT_6000
+mdefine_line|#define TW_ALIGNMENT_6000&t;&t;      64 /* 64 bytes */
+DECL|macro|TW_ALIGNMENT_7000
+mdefine_line|#define TW_ALIGNMENT_7000                     4  /* 4 bytes */
 DECL|macro|TW_MAX_UNITS
 mdefine_line|#define TW_MAX_UNITS&t;&t;&t;      16
 DECL|macro|TW_COMMAND_ALIGNMENT_MASK
@@ -283,8 +436,6 @@ DECL|macro|TW_MAX_PASSTHRU_BYTES
 mdefine_line|#define TW_MAX_PASSTHRU_BYTES                 4096
 DECL|macro|TW_Q_LENGTH
 mdefine_line|#define TW_Q_LENGTH&t;&t;&t;      256
-DECL|macro|TW_MAX_BOUNCEBUF
-mdefine_line|#define TW_MAX_BOUNCEBUF                      16
 DECL|macro|TW_Q_START
 mdefine_line|#define TW_Q_START&t;&t;&t;      0
 DECL|macro|TW_MAX_SLOT
@@ -307,15 +458,12 @@ DECL|macro|TW_UNIT_ONLINE
 mdefine_line|#define TW_UNIT_ONLINE                        1
 DECL|macro|TW_IN_INTR
 mdefine_line|#define TW_IN_INTR                            1
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,7)
 DECL|macro|TW_MAX_SECTORS
 mdefine_line|#define TW_MAX_SECTORS                        256
-macro_line|#else
-DECL|macro|TW_MAX_SECTORS
-mdefine_line|#define TW_MAX_SECTORS                        128
-macro_line|#endif 
 DECL|macro|TW_AEN_WAIT_TIME
 mdefine_line|#define TW_AEN_WAIT_TIME                      1000
+DECL|macro|TW_IOCTL_WAIT_TIME
+mdefine_line|#define TW_IOCTL_WAIT_TIME                    (1 * HZ) /* 1 second */
 multiline_comment|/* Macros */
 DECL|macro|TW_STATUS_ERRORS
 mdefine_line|#define TW_STATUS_ERRORS(x) &bslash;&n;&t;(((x &amp; TW_STATUS_PCI_ABORT) || &bslash;&n;&t;(x &amp; TW_STATUS_PCI_PARITY_ERROR) || &bslash;&n;&t;(x &amp; TW_STATUS_QUEUE_ERROR) || &bslash;&n;&t;(x &amp; TW_STATUS_MICROCONTROLLER_ERROR)) &amp;&amp; &bslash;&n;&t;(x &amp; TW_STATUS_MICROCONTROLLER_READY))
@@ -536,10 +684,6 @@ r_typedef
 r_struct
 id|TAG_TW_Ioctl
 (brace
-DECL|member|buffer
-r_int
-id|buffer
-suffix:semicolon
 DECL|member|opcode
 r_int
 r_char
@@ -873,14 +1017,6 @@ id|alignment_physical_address
 id|TW_Q_LENGTH
 )braket
 suffix:semicolon
-DECL|member|bounce_buffer
-id|u32
-op_star
-id|bounce_buffer
-(braket
-id|TW_Q_LENGTH
-)braket
-suffix:semicolon
 DECL|member|is_unit_present
 r_int
 id|is_unit_present
@@ -888,20 +1024,9 @@ id|is_unit_present
 id|TW_MAX_UNITS
 )braket
 suffix:semicolon
-DECL|member|is_raid_five
-r_int
-id|is_raid_five
-(braket
-id|TW_MAX_UNITS
-)braket
-suffix:semicolon
 DECL|member|num_units
 r_int
 id|num_units
-suffix:semicolon
-DECL|member|num_raid_five
-r_int
-id|num_raid_five
 suffix:semicolon
 DECL|member|command_packet_virtual_address
 id|u32
@@ -1068,6 +1193,14 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* long req&squot;d for set_bit --RR */
+DECL|member|ioctl_data
+r_char
+op_star
+id|ioctl_data
+(braket
+id|TW_Q_LENGTH
+)braket
+suffix:semicolon
 DECL|typedef|TW_Device_Extension
 )brace
 id|TW_Device_Extension
@@ -1113,9 +1246,6 @@ c_func
 id|TW_Device_Extension
 op_star
 id|tw_dev
-comma
-r_int
-id|request_id
 comma
 r_int
 id|size
@@ -1172,7 +1302,7 @@ id|status_reg_value
 )paren
 suffix:semicolon
 r_void
-id|tw_decode_error
+id|tw_decode_sense
 c_func
 (paren
 id|TW_Device_Extension
@@ -1180,16 +1310,10 @@ op_star
 id|tw_dev
 comma
 r_int
-r_char
-id|status
+id|request_id
 comma
 r_int
-r_char
-id|flags
-comma
-r_int
-r_char
-id|unit
+id|fill_sense
 )paren
 suffix:semicolon
 r_void
@@ -1212,6 +1336,15 @@ id|tw_dev
 suffix:semicolon
 r_void
 id|tw_enable_interrupts
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+)paren
+suffix:semicolon
+r_void
+id|tw_enable_and_clear_interrupts
 c_func
 (paren
 id|TW_Device_Extension

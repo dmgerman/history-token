@@ -556,7 +556,7 @@ id|journal_head
 op_star
 id|t_async_datalist
 suffix:semicolon
-multiline_comment|/* Doubly-linked circular list of all forget buffers (superceded&n;           buffers which we can un-checkpoint once this transaction&n;           commits) */
+multiline_comment|/* Doubly-linked circular list of all forget buffers (superseded&n;           buffers which we can un-checkpoint once this transaction&n;           commits) */
 DECL|member|t_forget
 r_struct
 id|journal_head
@@ -2036,7 +2036,7 @@ mdefine_line|#define BJ_AsyncData&t;2&t;/* writepage data: wait on it before com
 DECL|macro|BJ_Metadata
 mdefine_line|#define BJ_Metadata&t;3&t;/* Normal journaled metadata */
 DECL|macro|BJ_Forget
-mdefine_line|#define BJ_Forget&t;4&t;/* Buffer superceded by this transaction */
+mdefine_line|#define BJ_Forget&t;4&t;/* Buffer superseded by this transaction */
 DECL|macro|BJ_IO
 mdefine_line|#define BJ_IO&t;&t;5&t;/* Buffer is for temporary IO use */
 DECL|macro|BJ_Shadow

@@ -140,14 +140,6 @@ suffix:semicolon
 multiline_comment|/* global variables */
 r_extern
 r_int
-id|coda_debug
-suffix:semicolon
-r_extern
-r_int
-id|coda_print_entry
-suffix:semicolon
-r_extern
-r_int
 id|coda_access_cache
 suffix:semicolon
 r_extern
@@ -332,37 +324,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* debugging masks */
-DECL|macro|D_SUPER
-mdefine_line|#define D_SUPER     1   /* print results returned by Venus */ 
-DECL|macro|D_INODE
-mdefine_line|#define D_INODE     2   /* print entry and exit into procedure */
-DECL|macro|D_FILE
-mdefine_line|#define D_FILE      4   
-DECL|macro|D_CACHE
-mdefine_line|#define D_CACHE     8   /* cache debugging */
-DECL|macro|D_MALLOC
-mdefine_line|#define D_MALLOC    16  /* print malloc, de-alloc information */
-DECL|macro|D_CNODE
-mdefine_line|#define D_CNODE     32
-DECL|macro|D_UPCALL
-mdefine_line|#define D_UPCALL    64  /* up and downcall debugging */
-DECL|macro|D_PSDEV
-mdefine_line|#define D_PSDEV    128  
-DECL|macro|D_PIOCTL
-mdefine_line|#define D_PIOCTL   256
-DECL|macro|D_SPECIAL
-mdefine_line|#define D_SPECIAL  512
-DECL|macro|D_TIMING
-mdefine_line|#define D_TIMING  1024
-DECL|macro|D_DOWNCALL
-mdefine_line|#define D_DOWNCALL 2048
-DECL|macro|CDEBUG
-mdefine_line|#define CDEBUG(mask, format, a...)                                &bslash;&n;  do {                                                            &bslash;&n;  if (coda_debug &amp; mask) {                                        &bslash;&n;    printk(&quot;(%s,l. %d): &quot;,  __FUNCTION__, __LINE__);              &bslash;&n;    printk(format, ## a); }                                       &bslash;&n;} while (0)
 DECL|macro|CODA_ALLOC
-mdefine_line|#define CODA_ALLOC(ptr, cast, size)                                       &bslash;&n;do {                                                                      &bslash;&n;    if (size &lt; PAGE_SIZE) {                                               &bslash;&n;        ptr = (cast)kmalloc((unsigned long) size, GFP_KERNEL);            &bslash;&n;        CDEBUG(D_MALLOC, &quot;kmalloced: %lx at %p.&bslash;n&quot;, (long)size, ptr);     &bslash;&n;     }  else {                                                            &bslash;&n;        ptr = (cast)vmalloc((unsigned long) size);                        &bslash;&n;&t;CDEBUG(D_MALLOC, &quot;vmalloced: %lx at %p .&bslash;n&quot;, (long)size, ptr);}   &bslash;&n;    if (ptr == 0) {                                                       &bslash;&n;        printk(&quot;kernel malloc returns 0 at %s:%d&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;    }                                                                     &bslash;&n;    else memset( ptr, 0, size );                                          &bslash;&n;} while (0)
+mdefine_line|#define CODA_ALLOC(ptr, cast, size) do { &bslash;&n;    if (size &lt; PAGE_SIZE) &bslash;&n;        ptr = (cast)kmalloc((unsigned long) size, GFP_KERNEL); &bslash;&n;    else &bslash;&n;        ptr = (cast)vmalloc((unsigned long) size); &bslash;&n;    if (!ptr) &bslash;&n;        printk(&quot;kernel malloc returns 0 at %s:%d&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;    else memset( ptr, 0, size ); &bslash;&n;} while (0)
 DECL|macro|CODA_FREE
-mdefine_line|#define CODA_FREE(ptr,size) do {if (size &lt; PAGE_SIZE) { kfree((ptr)); CDEBUG(D_MALLOC, &quot;kfreed: %lx at %p.&bslash;n&quot;, (long) size, ptr); } else { vfree((ptr)); CDEBUG(D_MALLOC, &quot;vfreed: %lx at %p.&bslash;n&quot;, (long) size, ptr);} } while (0)
+mdefine_line|#define CODA_FREE(ptr,size) &bslash;&n;    do { if (size &lt; PAGE_SIZE) kfree((ptr)); else vfree((ptr)); } while (0)
 multiline_comment|/* inode to cnode access functions */
 DECL|function|ITOC
 r_static

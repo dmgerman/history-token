@@ -1,7 +1,8 @@
-multiline_comment|/*&n; *  RTC based high-frequency timer&n; *&n; *  Copyright (C) 2000 Takashi Iwai&n; *&t;based on rtctimer.c by Steve Ratcliffe&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; * &n; *================================================================&n; * For enabling this timer, apply the patch file to your kernel.&n; * The configure script checks the patch automatically.&n; * The patches, rtc-xxx.dif, are found under utils/patches, where&n; * xxx is the kernel version.&n; *================================================================&n; *&n; */
+multiline_comment|/*&n; *  RTC based high-frequency timer&n; *&n; *  Copyright (C) 2000 Takashi Iwai&n; *&t;based on rtctimer.c by Steve Ratcliffe&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/timer.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -59,7 +60,7 @@ op_star
 id|t
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The harware depenant description for this timer.&n; */
+multiline_comment|/*&n; * The hardware dependent description for this timer.&n; */
 DECL|variable|rtc_hw
 r_static
 r_struct
@@ -111,11 +112,14 @@ id|rtctimer
 suffix:semicolon
 DECL|variable|rtc_inc
 r_static
-r_volatile
-r_int
+id|atomic_t
 id|rtc_inc
 op_assign
+id|ATOMIC_INIT
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 DECL|variable|rtc_task
 r_static
@@ -142,6 +146,30 @@ op_star
 id|t
 )paren
 (brace
+id|err
+op_assign
+id|rtc_register
+c_func
+(paren
+op_amp
+id|rtc_task
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+id|t-&gt;private_data
+op_assign
+op_amp
+id|rtc_task
+suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
@@ -159,6 +187,29 @@ op_star
 id|t
 )paren
 (brace
+id|rtc_task_t
+op_star
+id|rtc
+op_assign
+id|t-&gt;private_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rtc
+)paren
+(brace
+id|rtc_unregister
+c_func
+(paren
+id|rtc
+)paren
+suffix:semicolon
+id|t-&gt;private_data
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
@@ -214,9 +265,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
 id|rtc_inc
-op_assign
+comma
 l_int|0
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -277,8 +333,12 @@ op_star
 id|private_data
 )paren
 (brace
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|rtc_inc
-op_increment
+)paren
 suffix:semicolon
 macro_line|#ifdef USE_TASKLET
 id|tasklet_hi_schedule
@@ -289,6 +349,17 @@ id|rtc_tq
 )paren
 suffix:semicolon
 macro_line|#else
+(brace
+r_int
+id|ticks
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|rtc_inc
+)paren
+suffix:semicolon
 id|snd_timer_interrupt
 c_func
 (paren
@@ -298,13 +369,19 @@ op_star
 )paren
 id|private_data
 comma
+id|ticks
+)paren
+suffix:semicolon
+id|atomic_sub
+c_func
+(paren
+id|ticks
+comma
+op_amp
 id|rtc_inc
 )paren
 suffix:semicolon
-id|rtc_inc
-op_assign
-l_int|0
-suffix:semicolon
+)brace
 macro_line|#endif /* USE_TASKLET */
 )brace
 macro_line|#ifdef USE_TASKLET
@@ -329,6 +406,9 @@ op_star
 )paren
 id|private_data
 suffix:semicolon
+r_int
+id|ticks
+suffix:semicolon
 id|snd_assert
 c_func
 (paren
@@ -341,55 +421,40 @@ r_return
 suffix:semicolon
 r_do
 (brace
+id|ticks
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|rtc_inc
+)paren
+suffix:semicolon
 id|snd_timer_interrupt
 c_func
 (paren
 id|timer
 comma
-l_int|1
+id|ticks
 )paren
 suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
-op_decrement
+op_logical_neg
+id|atomic_sub_and_test
+c_func
+(paren
+id|ticks
+comma
+op_amp
 id|rtc_inc
-OG
-l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif /* USE_TASKLET */
-DECL|function|rtctimer_private_free
-r_static
-r_void
-id|rtctimer_private_free
-c_func
-(paren
-id|snd_timer_t
-op_star
-id|timer
-)paren
-(brace
-id|rtc_task_t
-op_star
-id|rtc
-op_assign
-id|timer-&gt;private_data
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rtc
-)paren
-id|rtc_unregister
-c_func
-(paren
-id|rtc
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *  ENTRY functions&n; */
 DECL|function|rtctimer_init
 r_static
@@ -529,7 +594,7 @@ id|NANO_SEC
 op_div
 id|rtctimer_freq
 suffix:semicolon
-multiline_comment|/* register RTC callback */
+multiline_comment|/* set up RTC callback */
 id|rtc_task.func
 op_assign
 id|rtctimer_interrupt
@@ -537,42 +602,6 @@ suffix:semicolon
 id|rtc_task.private_data
 op_assign
 id|timer
-suffix:semicolon
-id|err
-op_assign
-id|rtc_register
-c_func
-(paren
-op_amp
-id|rtc_task
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-OL
-l_int|0
-)paren
-(brace
-id|snd_timer_global_free
-c_func
-(paren
-id|timer
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-id|timer-&gt;private_data
-op_assign
-op_amp
-id|rtc_task
-suffix:semicolon
-id|timer-&gt;private_free
-op_assign
-id|rtctimer_private_free
 suffix:semicolon
 id|err
 op_assign
@@ -604,6 +633,7 @@ id|rtctimer
 op_assign
 id|timer
 suffix:semicolon
+multiline_comment|/* remember this */
 r_return
 l_int|0
 suffix:semicolon
@@ -636,7 +666,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * exported stuffs&n; */
+multiline_comment|/*&n; * exported stuff&n; */
 id|module_init
 c_func
 (paren
