@@ -10845,7 +10845,7 @@ macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;uhci&quot;
+l_string|&quot;driver/uhci&quot;
 comma
 l_int|0
 )paren
@@ -10907,7 +10907,7 @@ macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;uhci&quot;
+l_string|&quot;driver/uhci&quot;
 comma
 l_int|0
 )paren
