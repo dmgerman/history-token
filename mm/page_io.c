@@ -57,6 +57,17 @@ suffix:semicolon
 id|swp_entry_t
 id|entry
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
 id|entry.val
 op_assign
 id|page-&gt;index

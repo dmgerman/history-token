@@ -2293,6 +2293,7 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * At this point we hold neither mapping-&gt;page_lock nor&n;&t;&t; * lock on the page itself: the page may be truncated or&n;&t;&t; * invalidated (changing page-&gt;mapping to NULL), or even&n;&t;&t; * swizzled back from swapper_space to tmpfs file mapping.&n;&t;&t; */
 id|lock_page
 c_func
 (paren
@@ -2314,6 +2315,8 @@ r_if
 c_cond
 (paren
 id|page-&gt;mapping
+op_eq
+id|mapping
 op_logical_and
 op_logical_neg
 id|PageWriteback
