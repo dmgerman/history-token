@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;MKISS Driver&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * &t;&t;This module implements the AX.25 protocol for kernel-based&n; *&t;&t;devices like TTYs. It interfaces between a raw TTY, and the&n; *&t;&t;kernel&squot;s AX.25 protocol layers, just like slip.c.&n; *&t;&t;AX.25 needs to be separated from slip.c while slip.c is no&n; *&t;&t;longer a static kernel device since it is a module.&n; *&t;&t;This method clears the way to implement other kiss protocols&n; *&t;&t;like mkiss smack g8bpq ..... so far only mkiss is implemented.&n; *&n; * Hans Alblas &lt;hans@esrac.ele.tue.nl&gt;&n; *&n; *&t;History&n; *&t;Jonathan (G4KLX)&t;Fixed to match Linux networking changes - 2.1.15.&n; *&t;Matthias (DG2FEF)       Added support for FlexNet CRC (on special request)&n; *                              Fixed bug in ax25_close(): dev_lock_wait() was&n; *                              called twice, causing a deadlock.&n; *&t;Jeroen (PE1RXQ)&t;&t;Removed old MKISS_MAGIC stuff and calls to&n; *&t;&t;&t;&t;MOD_*_USE_COUNT&n; */
+multiline_comment|/*&n; *&t;MKISS Driver&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * &t;&t;This module implements the AX.25 protocol for kernel-based&n; *&t;&t;devices like TTYs. It interfaces between a raw TTY, and the&n; *&t;&t;kernel&squot;s AX.25 protocol layers, just like slip.c.&n; *&t;&t;AX.25 needs to be separated from slip.c while slip.c is no&n; *&t;&t;longer a static kernel device since it is a module.&n; *&t;&t;This method clears the way to implement other kiss protocols&n; *&t;&t;like mkiss smack g8bpq ..... so far only mkiss is implemented.&n; *&n; * Hans Alblas &lt;hans@esrac.ele.tue.nl&gt;&n; *&n; *&t;History&n; *&t;Jonathan (G4KLX)&t;Fixed to match Linux networking changes - 2.1.15.&n; *&t;Matthias (DG2FEF)       Added support for FlexNet CRC (on special request)&n; *                              Fixed bug in ax25_close(): dev_lock_wait() was&n; *                              called twice, causing a deadlock.&n; *&t;Jeroen (PE1RXQ)&t;&t;Removed old MKISS_MAGIC stuff and calls to&n; *&t;&t;&t;&t;MOD_*_USE_COUNT&n; *&t;&t;&t;&t;Remove cli() and fix rtnl lock usage.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -918,6 +918,7 @@ id|ax25_ctrls
 id|i
 )braket
 suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -977,7 +978,6 @@ id|axp-&gt;dev.init
 op_assign
 id|ax25_init
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1157,10 +1157,6 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|len
 op_assign
 id|dev-&gt;mtu
@@ -1261,15 +1257,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_bh
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|ax-&gt;buflock
 )paren
 suffix:semicolon
 id|oxbuff
@@ -1383,10 +1374,10 @@ id|ax-&gt;buffsize
 op_assign
 id|len
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_bh
 c_func
 (paren
-id|flags
+id|ax-&gt;buflock
 )paren
 suffix:semicolon
 r_if
@@ -1479,6 +1470,12 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+id|ax-&gt;buflock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1538,6 +1535,12 @@ l_int|0x20
 suffix:semicolon
 )brace
 )brace
+id|spin_unlock_bh
+c_func
+(paren
+id|ax-&gt;buflock
+)paren
+suffix:semicolon
 id|count
 op_assign
 id|ax-&gt;rcount
@@ -1577,6 +1580,12 @@ id|skb-&gt;dev
 op_assign
 id|ax-&gt;dev
 suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+id|ax-&gt;buflock
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -1591,6 +1600,12 @@ comma
 id|ax-&gt;rbuff
 comma
 id|count
+)paren
+suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+id|ax-&gt;buflock
 )paren
 suffix:semicolon
 id|skb-&gt;mac.raw
@@ -1707,6 +1722,12 @@ suffix:semicolon
 id|p
 op_assign
 id|icp
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+id|ax-&gt;buflock
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -1827,6 +1848,12 @@ op_assign
 id|ax-&gt;xbuff
 op_plus
 id|actual
+suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+id|ax-&gt;buflock
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called by the driver when there&squot;s room for more data.  If we have&n; * more packets to send, we send them here.&n; */
@@ -2323,6 +2350,10 @@ id|AXF_INUSE
 )paren
 suffix:semicolon
 multiline_comment|/* Clear ESCAPE &amp; ERROR flags */
+id|ax-&gt;buflock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 id|netif_start_queue
 c_func
 (paren
@@ -3234,6 +3265,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|spin_lock_bh
+c_func
+(paren
+id|ax-&gt;buflock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3264,6 +3301,12 @@ op_increment
 op_assign
 id|s
 suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+id|ax-&gt;buflock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3280,6 +3323,12 @@ id|ax-&gt;flags
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_bh
+c_func
+(paren
+id|ax-&gt;buflock
+)paren
+suffix:semicolon
 )brace
 DECL|function|ax_set_mac_address
 r_static
