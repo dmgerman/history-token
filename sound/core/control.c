@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Routines for driver control interface&n; *  Copyright
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
