@@ -3978,7 +3978,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 (paren
@@ -3986,6 +3987,17 @@ id|cs-&gt;hw.avm.cfg_reg
 )paren
 comma
 l_int|32
+comma
+(paren
+id|cs-&gt;subtyp
+op_eq
+id|AVM_FRITZ_PCI
+)paren
+ques
+c_cond
+l_string|&quot;avm PCI&quot;
+suffix:colon
+l_string|&quot;avm PnP&quot;
 )paren
 )paren
 (brace
@@ -4010,28 +4022,6 @@ suffix:semicolon
 r_return
 (paren
 l_int|0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.avm.cfg_reg
-comma
-l_int|32
-comma
-(paren
-id|cs-&gt;subtyp
-op_eq
-id|AVM_FRITZ_PCI
-)paren
-ques
-c_cond
-l_string|&quot;avm PCI&quot;
-suffix:colon
-l_string|&quot;avm PnP&quot;
 )paren
 suffix:semicolon
 )brace
