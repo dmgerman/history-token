@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|variable|usbfs_ops
 r_static
 r_struct
@@ -1425,6 +1426,11 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1484,6 +1490,11 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

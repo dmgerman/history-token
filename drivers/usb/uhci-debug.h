@@ -2,6 +2,7 @@ multiline_comment|/*&n; * UHCI-specific debugging code. Invaluable when somethin
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;uhci.h&quot;
 multiline_comment|/* Handle REALLY large printk&squot;s so we don&squot;t overflow buffers */
@@ -2749,11 +2750,21 @@ r_struct
 id|uhci_proc
 op_star
 id|up
-op_assign
-id|file-&gt;private_data
 suffix:semicolon
 id|loff_t
 r_new
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|up
+op_assign
+id|file-&gt;private_data
 suffix:semicolon
 r_switch
 c_cond
@@ -2781,15 +2792,6 @@ id|off
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2798,9 +2800,21 @@ r_new
 template_param
 id|up-&gt;size
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+)brace
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 (paren

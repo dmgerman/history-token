@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/raw.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -1977,6 +1978,14 @@ r_int
 id|orig
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1990,8 +1999,11 @@ id|file-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|1
@@ -2000,16 +2012,28 @@ id|file-&gt;f_pos
 op_add_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|open_port
 r_static
