@@ -38,11 +38,17 @@ mdefine_line|#define IPR_SUBS_DEV_ID_5702&t;0x0266
 DECL|macro|IPR_SUBS_DEV_ID_5703
 mdefine_line|#define IPR_SUBS_DEV_ID_5703&t;0x0278
 DECL|macro|IPR_SUBS_DEV_ID_572E
-mdefine_line|#define IPR_SUBS_DEV_ID_572E  0x02D3
+mdefine_line|#define IPR_SUBS_DEV_ID_572E  0x028D
+DECL|macro|IPR_SUBS_DEV_ID_573E
+mdefine_line|#define IPR_SUBS_DEV_ID_573E  0x02D3
 DECL|macro|IPR_SUBS_DEV_ID_573D
 mdefine_line|#define IPR_SUBS_DEV_ID_573D  0x02D4
+DECL|macro|IPR_SUBS_DEV_ID_571A
+mdefine_line|#define IPR_SUBS_DEV_ID_571A&t;0x02C0
 DECL|macro|IPR_SUBS_DEV_ID_571B
 mdefine_line|#define IPR_SUBS_DEV_ID_571B&t;0x02BE
+DECL|macro|IPR_SUBS_DEV_ID_571E
+mdefine_line|#define IPR_SUBS_DEV_ID_571E  0x02BF
 DECL|macro|IPR_NAME
 mdefine_line|#define IPR_NAME&t;&t;&t;&t;&quot;ipr&quot;
 multiline_comment|/*&n; * Return codes&n; */
