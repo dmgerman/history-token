@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/super.c&n; *&n; *  Copyright (C) 1991, 1992 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -12,6 +13,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;&t;&t;/* for the emergency remount stuff */
+macro_line|#include &lt;linux/idr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_void
 id|get_filesystem
@@ -2093,32 +2095,11 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Unnamed block devices are dummy devices used by virtual&n; * filesystems which don&squot;t use real block-devices.  -- jrs&n; */
-DECL|enumerator|Max_anon
-r_enum
-(brace
-id|Max_anon
-op_assign
-l_int|256
-)brace
-suffix:semicolon
-DECL|variable|unnamed_dev_in_use
+DECL|variable|unnamed_dev_idr
 r_static
-r_int
-r_int
-id|unnamed_dev_in_use
-(braket
-id|Max_anon
-op_div
-(paren
-l_int|8
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-)braket
+r_struct
+id|idr
+id|unnamed_dev_idr
 suffix:semicolon
 DECL|variable|unnamed_dev_lock
 r_static
@@ -2153,22 +2134,19 @@ op_amp
 id|unnamed_dev_lock
 )paren
 suffix:semicolon
-id|dev
-op_assign
-id|find_first_zero_bit
-c_func
-(paren
-id|unnamed_dev_in_use
-comma
-id|Max_anon
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev
+id|idr_pre_get
+c_func
+(paren
+op_amp
+id|unnamed_dev_idr
+comma
+id|GFP_ATOMIC
+)paren
 op_eq
-id|Max_anon
+l_int|0
 )paren
 (brace
 id|spin_unlock
@@ -2180,15 +2158,18 @@ id|unnamed_dev_lock
 suffix:semicolon
 r_return
 op_minus
-id|EMFILE
+id|ENOMEM
 suffix:semicolon
 )brace
-id|set_bit
+id|dev
+op_assign
+id|idr_get_new
 c_func
 (paren
-id|dev
+op_amp
+id|unnamed_dev_idr
 comma
-id|unnamed_dev_in_use
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -2198,6 +2179,36 @@ op_amp
 id|unnamed_dev_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|dev
+op_amp
+id|MAX_ID_MASK
+)paren
+op_eq
+(paren
+l_int|1
+op_lshift
+id|MINORBITS
+)paren
+)paren
+(brace
+id|idr_remove
+c_func
+(paren
+op_amp
+id|unnamed_dev_idr
+comma
+id|dev
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EMFILE
+suffix:semicolon
+)brace
 id|s-&gt;s_dev
 op_assign
 id|MKDEV
@@ -2206,6 +2217,8 @@ c_func
 l_int|0
 comma
 id|dev
+op_amp
+id|MINORMASK
 )paren
 suffix:semicolon
 r_return
@@ -2252,12 +2265,13 @@ op_amp
 id|unnamed_dev_lock
 )paren
 suffix:semicolon
-id|clear_bit
+id|idr_remove
 c_func
 (paren
-id|slot
+op_amp
+id|unnamed_dev_idr
 comma
-id|unnamed_dev_in_use
+id|slot
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -2275,6 +2289,23 @@ c_func
 id|kill_anon_super
 )paren
 suffix:semicolon
+DECL|function|unnamed_dev_init
+r_void
+id|__init
+id|unnamed_dev_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|idr_init
+c_func
+(paren
+op_amp
+id|unnamed_dev_idr
+)paren
+suffix:semicolon
+)brace
 DECL|function|kill_litter_super
 r_void
 id|kill_litter_super

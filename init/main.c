@@ -1575,6 +1575,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|unnamed_dev_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|security_scaffolding_startup
 c_func
 (paren

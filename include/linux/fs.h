@@ -4450,6 +4450,13 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_void
+id|unnamed_dev_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */
 DECL|macro|fops_get
 mdefine_line|#define fops_get(fops) &bslash;&n;&t;(((fops) &amp;&amp; try_module_get((fops)-&gt;owner) ? (fops) : NULL))
