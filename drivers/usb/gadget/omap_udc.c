@@ -8065,7 +8065,7 @@ id|usb_gadget_unregister_driver
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef CONFIG_USB_OMAP_PROC
+macro_line|#ifdef CONFIG_USB_GADGET_DEBUG_FILES
 macro_line|#include &lt;linux/seq_file.h&gt;
 DECL|variable|proc_filename
 r_static
