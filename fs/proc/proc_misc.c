@@ -28,7 +28,6 @@ macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2076,52 +2075,6 @@ id|sum
 )paren
 suffix:semicolon
 macro_line|#if !defined(CONFIG_PPC64) &amp;&amp; !defined(CONFIG_ALPHA)
-(brace
-r_static
-r_int
-id|last_irq
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|last_irq
-suffix:semicolon
-id|i
-OL
-id|NR_IRQS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|action
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|i
-OG
-id|last_irq
-)paren
-id|last_irq
-op_assign
-id|i
-suffix:semicolon
-)brace
-)brace
 r_for
 c_loop
 (paren
@@ -2131,7 +2084,7 @@ l_int|0
 suffix:semicolon
 id|i
 op_le
-id|last_irq
+id|NR_IRQS
 suffix:semicolon
 id|i
 op_increment
@@ -2150,7 +2103,6 @@ id|i
 )paren
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 id|seq_printf
 c_func
