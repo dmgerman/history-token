@@ -55,11 +55,11 @@ id|RW_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* ovewrride the defaults */
 DECL|macro|tcf_st
-mdefine_line|#define tcf_st  tcf_ipt
+mdefine_line|#define tcf_st&t;&t;tcf_ipt
 DECL|macro|tcf_t_lock
-mdefine_line|#define tcf_t_lock   ipt_lock
+mdefine_line|#define tcf_t_lock&t;ipt_lock
 DECL|macro|tcf_ht
-mdefine_line|#define tcf_ht tcf_ipt_ht
+mdefine_line|#define tcf_ht&t;&t;tcf_ipt_ht
 macro_line|#include &lt;net/pkt_act.h&gt;
 r_static
 r_inline
@@ -253,15 +253,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|a
-op_logical_or
-l_int|NULL
 op_eq
-id|rta
+l_int|NULL
 op_logical_or
-(paren
+id|rta
+op_eq
+l_int|NULL
+op_logical_or
 id|rtattr_parse
 c_func
 (paren
@@ -284,13 +283,10 @@ id|rta
 OL
 l_int|0
 )paren
-)paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -382,11 +378,9 @@ c_cond
 (paren
 id|ovr
 )paren
-(brace
 r_goto
 id|override
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -401,30 +395,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|tb
 (braket
 id|TCA_IPT_TARG
 op_minus
 l_int|1
 )braket
-op_logical_or
-l_int|NULL
 op_eq
+l_int|NULL
+op_logical_or
 id|tb
 (braket
 id|TCA_IPT_HOOK
 op_minus
 l_int|1
 )braket
+op_eq
+l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|p
 op_assign
 id|kmalloc
@@ -804,13 +796,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-OG
 id|init_targ
 c_func
 (paren
 id|p
 )paren
+OL
+l_int|0
 )paren
 (brace
 r_if
@@ -957,10 +949,6 @@ id|ipt_lock
 suffix:semicolon
 id|a-&gt;priv
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|p
 suffix:semicolon
 r_return
@@ -985,8 +973,6 @@ id|bind
 r_struct
 id|tcf_ipt
 op_star
-id|p
-suffix:semicolon
 id|p
 op_assign
 id|PRIV
@@ -1070,16 +1056,6 @@ r_struct
 id|tcf_ipt
 op_star
 id|p
-suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-op_assign
-op_star
-id|pskb
-suffix:semicolon
-id|p
 op_assign
 id|PRIV
 c_func
@@ -1089,23 +1065,29 @@ comma
 id|ipt
 )paren
 suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+op_assign
+op_star
+id|pskb
+suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
-op_logical_or
-l_int|NULL
 op_eq
+l_int|NULL
+op_logical_or
 id|skb
+op_eq
+l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|spin_lock
 c_func
 (paren
@@ -1149,12 +1131,10 @@ comma
 id|GFP_ATOMIC
 )paren
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* yes, we have to worry about both in and out dev&n;&t; worry later - danger - this API seems to have changed&n;&t; from earlier kernels */
 id|ret
@@ -1175,10 +1155,6 @@ id|p-&gt;hook
 comma
 id|p-&gt;t-&gt;data
 comma
-(paren
-r_void
-op_star
-)paren
 l_int|NULL
 )paren
 suffix:semicolon
@@ -1303,8 +1279,6 @@ r_struct
 id|tcf_ipt
 op_star
 id|p
-suffix:semicolon
-id|p
 op_assign
 id|PRIV
 c_func
@@ -1317,9 +1291,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -1346,9 +1320,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|t
+op_eq
+l_int|NULL
 )paren
 r_goto
 id|rtattr_failure
@@ -1398,8 +1372,10 @@ id|p-&gt;tname
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;&bslash;tdump target name %s size %d size user %d data[0] %x data[1] %x&bslash;n&quot;
+l_string|&quot;&bslash;tdump target name %s size %d size user %d &quot;
+l_string|&quot;data[0] %x data[1] %x&bslash;n&quot;
 comma
 id|p-&gt;t-&gt;u.kernel.target-&gt;name
 comma
@@ -1556,11 +1532,6 @@ id|tc_action_ops
 id|act_ipt_ops
 op_assign
 (brace
-dot
-id|next
-op_assign
-l_int|NULL
-comma
 dot
 id|kind
 op_assign

@@ -54,13 +54,13 @@ id|RW_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* ovewrride the defaults */
 DECL|macro|tcf_st
-mdefine_line|#define tcf_st  tcf_mirred
+mdefine_line|#define tcf_st&t;&t;tcf_mirred
 DECL|macro|tc_st
-mdefine_line|#define tc_st  tc_mirred
+mdefine_line|#define tc_st&t;&t;tc_mirred
 DECL|macro|tcf_t_lock
-mdefine_line|#define tcf_t_lock   mirred_lock
+mdefine_line|#define tcf_t_lock&t;mirred_lock
 DECL|macro|tcf_ht
-mdefine_line|#define tcf_ht tcf_mirred_ht
+mdefine_line|#define tcf_ht&t;&t;tcf_mirred_ht
 DECL|macro|CONFIG_NET_ACT_INIT
 mdefine_line|#define CONFIG_NET_ACT_INIT 1
 macro_line|#include &lt;net/pkt_act.h&gt;
@@ -91,11 +91,9 @@ c_cond
 (paren
 id|bind
 )paren
-(brace
 id|p-&gt;bindcnt
 op_decrement
 suffix:semicolon
-)brace
 id|p-&gt;refcnt
 op_decrement
 suffix:semicolon
@@ -226,7 +224,8 @@ l_int|0
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;tcf_mirred_init BUG in user space couldnt parse properly&bslash;n&quot;
+l_string|&quot;tcf_mirred_init BUG in user space couldnt parse &quot;
+l_string|&quot;properly&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -237,18 +236,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|a
-op_logical_or
-l_int|NULL
 op_eq
+l_int|NULL
+op_logical_or
 id|tb
 (braket
 id|TCA_MIRRED_PARMS
 op_minus
 l_int|1
 )braket
+op_eq
+l_int|NULL
 )paren
 (brace
 id|DPRINTK
@@ -292,9 +291,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* new */
@@ -316,19 +315,19 @@ comma
 id|bind
 )paren
 suffix:semicolon
-r_new
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 r_return
 op_minus
+l_int|1
+suffix:semicolon
+r_new
+op_assign
 l_int|1
 suffix:semicolon
 )brace
@@ -349,9 +348,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|dev
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -485,7 +484,8 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot; tcf_mirred_init index %d action %d eaction %d device %s ifndex %d&bslash;n&quot;
+l_string|&quot;tcf_mirred_init index %d action %d eaction %d device %s &quot;
+l_string|&quot;ifindex %d&bslash;n&quot;
 comma
 id|parm-&gt;index
 comma
@@ -521,8 +521,6 @@ r_struct
 id|tcf_mirred
 op_star
 id|p
-suffix:semicolon
-id|p
 op_assign
 id|PRIV
 c_func
@@ -535,9 +533,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|p
+op_ne
+l_int|NULL
 )paren
 r_return
 id|tcf_mirred_release
@@ -574,6 +572,14 @@ r_struct
 id|tcf_mirred
 op_star
 id|p
+op_assign
+id|PRIV
+c_func
+(paren
+id|a
+comma
+id|mirred
+)paren
 suffix:semicolon
 r_struct
 id|net_device
@@ -595,7 +601,7 @@ op_assign
 op_star
 id|pskb
 suffix:semicolon
-id|__u32
+id|u32
 id|at
 op_assign
 id|G_TC_AT
@@ -607,9 +613,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|a
+op_eq
+l_int|NULL
 )paren
 (brace
 r_if
@@ -631,22 +637,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|p
-op_assign
-id|PRIV
-c_func
-(paren
-id|a
-comma
-id|mirred
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 r_if
@@ -686,9 +682,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|dev
+op_eq
+l_int|NULL
 op_logical_or
 op_logical_neg
 (paren
@@ -724,9 +720,9 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|skb2
+op_ne
+l_int|NULL
 )paren
 id|kfree_skb
 c_func
@@ -751,7 +747,7 @@ op_amp
 id|p-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* should we be asking for packet to be dropped?&n;&t;&t; * may make sense for redirect case only &n;&t;&t;*/
+multiline_comment|/* should we be asking for packet to be dropped?&n;&t;&t; * may make sense for redirect case only&n;&t;&t;*/
 r_return
 id|TC_ACT_SHOT
 suffix:semicolon
@@ -773,21 +769,19 @@ id|skb2
 op_eq
 l_int|NULL
 )paren
-(brace
 r_goto
 id|bad_mirred
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
+id|p-&gt;eaction
+op_ne
 id|TCA_EGRESS_MIRROR
-op_ne
-id|p-&gt;eaction
 op_logical_and
-id|TCA_EGRESS_REDIR
-op_ne
 id|p-&gt;eaction
+op_ne
+id|TCA_EGRESS_REDIR
 )paren
 (brace
 r_if
@@ -827,13 +821,11 @@ op_amp
 id|AT_EGRESS
 )paren
 )paren
-(brace
 r_if
 c_cond
 (paren
 id|p-&gt;ok_push
 )paren
-(brace
 id|skb_push
 c_func
 (paren
@@ -842,15 +834,13 @@ comma
 id|skb2-&gt;dev-&gt;hard_header_len
 )paren
 suffix:semicolon
-)brace
-)brace
 multiline_comment|/* mirror is always swallowed */
 r_if
 c_cond
 (paren
-id|TCA_EGRESS_MIRROR
-op_ne
 id|p-&gt;eaction
+op_ne
+id|TCA_EGRESS_MIRROR
 )paren
 id|skb2-&gt;tc_verd
 op_assign
@@ -925,12 +915,6 @@ r_struct
 id|tcf_mirred
 op_star
 id|p
-suffix:semicolon
-r_struct
-id|tcf_t
-id|t
-suffix:semicolon
-id|p
 op_assign
 id|PRIV
 c_func
@@ -940,12 +924,16 @@ comma
 id|mirred
 )paren
 suffix:semicolon
+r_struct
+id|tcf_t
+id|t
+suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -989,7 +977,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot; tcf_mirred_dump index %d action %d eaction %d ifndex %d&bslash;n&quot;
+l_string|&quot;tcf_mirred_dump index %d action %d eaction %d ifindex %d&bslash;n&quot;
 comma
 id|p-&gt;index
 comma
@@ -1087,11 +1075,6 @@ id|tc_action_ops
 id|act_mirred_ops
 op_assign
 (brace
-dot
-id|next
-op_assign
-l_int|NULL
-comma
 dot
 id|kind
 op_assign

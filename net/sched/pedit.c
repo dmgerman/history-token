@@ -53,13 +53,13 @@ op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|tcf_st
-mdefine_line|#define tcf_st  tcf_pedit
+mdefine_line|#define tcf_st&t;&t;tcf_pedit
 DECL|macro|tc_st
-mdefine_line|#define tc_st  tc_pedit
+mdefine_line|#define tc_st&t;&t;tc_pedit
 DECL|macro|tcf_t_lock
-mdefine_line|#define tcf_t_lock   pedit_lock
+mdefine_line|#define tcf_t_lock&t;pedit_lock
 DECL|macro|tcf_ht
-mdefine_line|#define tcf_ht tcf_pedit_ht
+mdefine_line|#define tcf_ht&t;&t;tcf_pedit_ht
 DECL|macro|CONFIG_NET_ACT_INIT
 mdefine_line|#define CONFIG_NET_ACT_INIT 1
 macro_line|#include &lt;net/pkt_act.h&gt;
@@ -118,8 +118,6 @@ r_struct
 id|tcf_pedit
 op_star
 id|p
-op_assign
-l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -153,18 +151,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|a
-op_logical_or
-l_int|NULL
 op_eq
+l_int|NULL
+op_logical_or
 id|tb
 (braket
 id|TCA_PEDIT_PARMS
 op_minus
 l_int|1
 )braket
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -208,9 +206,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* new */
@@ -232,14 +230,12 @@ op_star
 id|p
 )paren
 op_plus
-(paren
 id|parm-&gt;nkeys
 op_star
 r_sizeof
 (paren
 r_struct
 id|tc_pedit_key
-)paren
 )paren
 suffix:semicolon
 id|p
@@ -263,9 +259,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 r_return
 op_minus
@@ -308,12 +304,10 @@ id|parm-&gt;keys
 comma
 id|parm-&gt;nkeys
 op_star
-(paren
 r_sizeof
 (paren
 r_struct
 id|tc_pedit_key
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -340,8 +334,6 @@ id|bind
 r_struct
 id|tcf_pedit
 op_star
-id|p
-suffix:semicolon
 id|p
 op_assign
 id|PRIV
@@ -372,7 +364,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;**&n;*/
 r_static
 r_int
 DECL|function|tcf_pedit
@@ -395,6 +386,14 @@ r_struct
 id|tcf_pedit
 op_star
 id|p
+op_assign
+id|PRIV
+c_func
+(paren
+id|a
+comma
+id|pedit
+)paren
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -415,22 +414,12 @@ id|u8
 op_star
 id|pptr
 suffix:semicolon
-id|p
-op_assign
-id|PRIV
-c_func
-(paren
-id|a
-comma
-id|pedit
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -496,9 +485,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-OL
 id|p-&gt;nkeys
+OG
+l_int|0
 )paren
 (brace
 r_struct
@@ -751,15 +740,6 @@ r_struct
 id|tcf_pedit
 op_star
 id|p
-suffix:semicolon
-r_struct
-id|tcf_t
-id|t
-suffix:semicolon
-r_int
-id|s
-suffix:semicolon
-id|p
 op_assign
 id|PRIV
 c_func
@@ -769,12 +749,19 @@ comma
 id|pedit
 )paren
 suffix:semicolon
+r_struct
+id|tcf_t
+id|t
+suffix:semicolon
+r_int
+id|s
+suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -795,7 +782,6 @@ op_star
 id|opt
 )paren
 op_plus
-(paren
 id|p-&gt;nkeys
 op_star
 r_sizeof
@@ -803,9 +789,8 @@ r_sizeof
 r_struct
 id|tc_pedit_key
 )paren
-)paren
 suffix:semicolon
-multiline_comment|/* netlink spinlocks held above us - must use ATOMIC&n;&t; * */
+multiline_comment|/* netlink spinlocks held above us - must use ATOMIC */
 id|opt
 op_assign
 id|kmalloc
@@ -846,12 +831,10 @@ id|p-&gt;keys
 comma
 id|p-&gt;nkeys
 op_star
-(paren
 r_sizeof
 (paren
 r_struct
 id|tc_pedit_key
-)paren
 )paren
 )paren
 suffix:semicolon

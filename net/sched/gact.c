@@ -52,34 +52,20 @@ id|RW_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* ovewrride the defaults */
 DECL|macro|tcf_st
-mdefine_line|#define tcf_st  tcf_gact
+mdefine_line|#define tcf_st&t;&t;tcf_gact
 DECL|macro|tc_st
-mdefine_line|#define tc_st  tc_gact
+mdefine_line|#define tc_st&t;&t;tc_gact
 DECL|macro|tcf_t_lock
-mdefine_line|#define tcf_t_lock   gact_lock
+mdefine_line|#define tcf_t_lock&t;gact_lock
 DECL|macro|tcf_ht
-mdefine_line|#define tcf_ht tcf_gact_ht
+mdefine_line|#define tcf_ht&t;&t;tcf_gact_ht
 DECL|macro|CONFIG_NET_ACT_INIT
 mdefine_line|#define CONFIG_NET_ACT_INIT 1
 macro_line|#include &lt;net/pkt_act.h&gt;
 macro_line|#ifdef CONFIG_GACT_PROB
-DECL|typedef|g_rand
-r_typedef
-r_int
-(paren
-op_star
-id|g_rand
-)paren
-(paren
-r_struct
-id|tcf_gact
-op_star
-id|p
-)paren
-suffix:semicolon
+DECL|function|gact_net_rand
 r_static
 r_int
-DECL|function|gact_net_rand
 id|gact_net_rand
 c_func
 (paren
@@ -106,9 +92,9 @@ r_return
 id|p-&gt;paction
 suffix:semicolon
 )brace
+DECL|function|gact_determ
 r_static
 r_int
-DECL|function|gact_determ
 id|gact_determ
 c_func
 (paren
@@ -132,6 +118,20 @@ r_return
 id|p-&gt;paction
 suffix:semicolon
 )brace
+DECL|typedef|g_rand
+r_typedef
+r_int
+(paren
+op_star
+id|g_rand
+)paren
+(paren
+r_struct
+id|tcf_gact
+op_star
+id|p
+)paren
+suffix:semicolon
 DECL|variable|gact_rand
 r_static
 id|g_rand
@@ -149,9 +149,9 @@ id|gact_determ
 )brace
 suffix:semicolon
 macro_line|#endif
+DECL|function|tcf_gact_init
 r_static
 r_int
-DECL|function|tcf_gact_init
 id|tcf_gact_init
 c_func
 (paren
@@ -213,15 +213,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|size
-op_assign
-r_sizeof
-(paren
-op_star
-id|p
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -254,18 +245,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|a
-op_logical_or
-l_int|NULL
 op_eq
+l_int|NULL
+op_logical_or
 id|tb
 (braket
 id|TCA_GACT_PARMS
 op_minus
 l_int|1
 )braket
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -296,16 +287,15 @@ macro_line|#ifdef CONFIG_GACT_PROB
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|tb
 (braket
 id|TCA_GACT_PROB
 op_minus
 l_int|1
 )braket
+op_ne
+l_int|NULL
 )paren
-(brace
 id|p_parm
 op_assign
 id|RTA_DATA
@@ -319,7 +309,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 id|p
 op_assign
@@ -338,9 +327,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 id|p
@@ -354,7 +343,11 @@ id|est
 comma
 id|a
 comma
-id|size
+r_sizeof
+(paren
+op_star
+id|p
+)paren
 comma
 id|ovr
 comma
@@ -364,16 +357,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_else
 (brace
 id|p-&gt;refcnt
@@ -405,9 +396,9 @@ macro_line|#ifdef CONFIG_GACT_PROB
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|p_parm
+op_ne
+l_int|NULL
 )paren
 (brace
 id|p-&gt;paction
@@ -459,8 +450,6 @@ r_struct
 id|tcf_gact
 op_star
 id|p
-suffix:semicolon
-id|p
 op_assign
 id|PRIV
 c_func
@@ -473,9 +462,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|p
+op_ne
+l_int|NULL
 )paren
 r_return
 id|tcf_hash_release
@@ -512,6 +501,14 @@ r_struct
 id|tcf_gact
 op_star
 id|p
+op_assign
+id|PRIV
+c_func
+(paren
+id|a
+comma
+id|gact
+)paren
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -526,22 +523,12 @@ id|action
 op_assign
 id|TC_ACT_SHOT
 suffix:semicolon
-id|p
-op_assign
-id|PRIV
-c_func
-(paren
-id|a
-comma
-id|gact
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 r_if
@@ -576,12 +563,12 @@ c_cond
 (paren
 id|p-&gt;ptype
 op_logical_and
-l_int|NULL
-op_ne
 id|gact_rand
 (braket
 id|p-&gt;ptype
 )braket
+op_ne
+l_int|NULL
 )paren
 id|action
 op_assign
@@ -614,9 +601,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|TC_ACT_SHOT
-op_eq
 id|action
+op_eq
+id|TC_ACT_SHOT
 )paren
 id|p-&gt;qstats.drops
 op_increment
@@ -670,21 +657,9 @@ r_struct
 id|tc_gact
 id|opt
 suffix:semicolon
-macro_line|#ifdef CONFIG_GACT_PROB
-r_struct
-id|tc_gact_p
-id|p_opt
-suffix:semicolon
-macro_line|#endif
 r_struct
 id|tcf_gact
 op_star
-id|p
-suffix:semicolon
-r_struct
-id|tcf_t
-id|t
-suffix:semicolon
 id|p
 op_assign
 id|PRIV
@@ -695,12 +670,16 @@ comma
 id|gact
 )paren
 suffix:semicolon
+r_struct
+id|tcf_t
+id|t
+suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|p
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -756,6 +735,10 @@ c_cond
 id|p-&gt;ptype
 )paren
 (brace
+r_struct
+id|tc_gact_p
+id|p_opt
+suffix:semicolon
 id|p_opt.paction
 op_assign
 id|p-&gt;paction
@@ -857,11 +840,6 @@ id|tc_action_ops
 id|act_gact_ops
 op_assign
 (brace
-dot
-id|next
-op_assign
-l_int|NULL
-comma
 dot
 id|kind
 op_assign
