@@ -3127,7 +3127,7 @@ id|skb
 )paren
 suffix:semicolon
 r_else
-id|kfree_skb
+id|dev_kfree_skb
 (paren
 id|skb
 )paren
@@ -3257,7 +3257,7 @@ id|skb
 )paren
 suffix:semicolon
 r_else
-id|kfree_skb
+id|dev_kfree_skb
 (paren
 id|skb
 )paren
@@ -3320,7 +3320,7 @@ id|skb
 )paren
 suffix:semicolon
 r_else
-id|kfree_skb
+id|dev_kfree_skb
 (paren
 id|skb
 )paren
@@ -4174,7 +4174,7 @@ c_cond
 (paren
 id|vcc_data-&gt;skb
 )paren
-id|kfree_skb
+id|dev_kfree_skb
 (paren
 id|vcc_data-&gt;skb
 )paren
@@ -5296,7 +5296,7 @@ c_cond
 (paren
 id|rcv-&gt;skb
 )paren
-id|kfree_skb
+id|dev_kfree_skb
 (paren
 id|rcv-&gt;skb
 )paren
@@ -5609,7 +5609,7 @@ id|usb_free_urb
 id|rcv-&gt;urb
 )paren
 suffix:semicolon
-id|kfree_skb
+id|dev_kfree_skb
 (paren
 id|rcv-&gt;skb
 )paren
