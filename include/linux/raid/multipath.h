@@ -111,6 +111,10 @@ r_struct
 id|bio
 id|bio
 suffix:semicolon
+DECL|member|path
+r_int
+id|path
+suffix:semicolon
 DECL|member|next_mp
 r_struct
 id|multipath_bh

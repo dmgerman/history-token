@@ -1775,7 +1775,12 @@ c_func
 (paren
 id|conf-&gt;mddev
 comma
-id|bi-&gt;bi_bdev
+id|conf-&gt;disks
+(braket
+id|i
+)braket
+dot
+id|bdev
 )paren
 suffix:semicolon
 id|clear_bit
@@ -1990,7 +1995,12 @@ c_func
 (paren
 id|conf-&gt;mddev
 comma
-id|bi-&gt;bi_bdev
+id|conf-&gt;disks
+(braket
+id|i
+)braket
+dot
+id|bdev
 )paren
 suffix:semicolon
 id|clear_bit
