@@ -16205,6 +16205,16 @@ r_int
 id|kind
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tp-&gt;tg3_flags2
+op_amp
+id|TG3_FLG2_SUN_570X
+)paren
+)paren
 id|tg3_write_mem
 c_func
 (paren
@@ -16930,6 +16940,17 @@ c_func
 l_int|40
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tp-&gt;tg3_flags2
+op_amp
+id|TG3_FLG2_SUN_570X
+)paren
+)paren
+(brace
 multiline_comment|/* Wait for firmware initialization to complete. */
 r_for
 c_loop
@@ -16980,13 +17001,6 @@ c_cond
 id|i
 op_ge
 l_int|100000
-op_logical_and
-op_logical_neg
-(paren
-id|tp-&gt;tg3_flags2
-op_amp
-id|TG3_FLG2_SUN_570X
-)paren
 )paren
 (brace
 id|printk
@@ -17006,6 +17020,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
