@@ -366,6 +366,23 @@ id|u32
 id|width
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Interim function needed for PCI IRQ routing&n; */
+r_void
+id|acpi_os_derive_pci_id
+c_func
+(paren
+id|acpi_handle
+id|rhandle
+comma
+id|acpi_handle
+id|chandle
+comma
+id|acpi_pci_id
+op_star
+op_star
+id|pci_id
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Miscellaneous&n; */
 id|u8
 id|acpi_os_readable
