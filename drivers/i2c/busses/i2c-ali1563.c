@@ -1465,7 +1465,7 @@ suffix:semicolon
 DECL|function|ali1563_setup
 r_static
 r_int
-id|__init
+id|__devinit
 id|ali1563_setup
 c_func
 (paren
@@ -1721,7 +1721,7 @@ suffix:semicolon
 DECL|function|ali1563_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|ali1563_probe
 c_func
 (paren
@@ -1808,7 +1808,7 @@ suffix:semicolon
 DECL|function|ali1563_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|ali1563_remove
 c_func
 (paren
@@ -1889,7 +1889,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|ali1563_remove
+)paren
 comma
 )brace
 suffix:semicolon
