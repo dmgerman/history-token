@@ -13,7 +13,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|MAX_LMB_REGIONS
-mdefine_line|#define MAX_LMB_REGIONS 32
+mdefine_line|#define MAX_LMB_REGIONS 64
 DECL|union|lmb_reg_property
 r_union
 id|lmb_reg_property
