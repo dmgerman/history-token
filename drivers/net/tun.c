@@ -1569,6 +1569,10 @@ id|tun-&gt;dev.priv
 op_assign
 id|tun
 suffix:semicolon
+id|tun-&gt;dev.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -1663,8 +1667,6 @@ id|tun-&gt;dev
 )paren
 r_goto
 id|failed
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|tun-&gt;name
 op_assign
@@ -2281,8 +2283,6 @@ c_func
 (paren
 id|tun
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 id|rtnl_unlock
