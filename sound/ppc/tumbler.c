@@ -2157,8 +2157,9 @@ id|get
 op_assign
 id|tumbler_get_master_volume
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|tumbler_put_master_volume
 )brace
 comma
@@ -2183,8 +2184,9 @@ id|get
 op_assign
 id|tumbler_get_master_switch
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|tumbler_put_master_switch
 )brace
 comma
@@ -2234,8 +2236,9 @@ id|get
 op_assign
 id|tumbler_get_drc_switch
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|tumbler_put_drc_switch
 )brace
 comma
@@ -2260,8 +2263,9 @@ id|get
 op_assign
 id|tumbler_get_drc_value
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|tumbler_put_drc_value
 )brace
 comma

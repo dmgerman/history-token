@@ -136,7 +136,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|TEA6330T_MASTER_VOLUME
-mdefine_line|#define TEA6330T_MASTER_VOLUME(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_tea6330t_info_master_volume, &bslash;&n;  .get = snd_tea6330t_get_master_volume, put: snd_tea6330t_put_master_volume }
+mdefine_line|#define TEA6330T_MASTER_VOLUME(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_tea6330t_info_master_volume, &bslash;&n;  .get = snd_tea6330t_get_master_volume, .put = snd_tea6330t_put_master_volume }
 DECL|function|snd_tea6330t_info_master_volume
 r_static
 r_int
@@ -446,7 +446,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|TEA6330T_MASTER_SWITCH
-mdefine_line|#define TEA6330T_MASTER_SWITCH(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_tea6330t_info_master_switch, &bslash;&n;  .get = snd_tea6330t_get_master_switch, put: snd_tea6330t_put_master_switch }
+mdefine_line|#define TEA6330T_MASTER_SWITCH(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_tea6330t_info_master_switch, &bslash;&n;  .get = snd_tea6330t_get_master_switch, .put = snd_tea6330t_put_master_switch }
 DECL|function|snd_tea6330t_info_master_switch
 r_static
 r_int
@@ -751,7 +751,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|TEA6330T_BASS
-mdefine_line|#define TEA6330T_BASS(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_tea6330t_info_bass, &bslash;&n;  .get = snd_tea6330t_get_bass, put: snd_tea6330t_put_bass }
+mdefine_line|#define TEA6330T_BASS(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_tea6330t_info_bass, &bslash;&n;  .get = snd_tea6330t_get_bass, .put = snd_tea6330t_put_bass }
 DECL|function|snd_tea6330t_info_bass
 r_static
 r_int
@@ -968,7 +968,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|TEA6330T_TREBLE
-mdefine_line|#define TEA6330T_TREBLE(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_tea6330t_info_treble, &bslash;&n;  .get = snd_tea6330t_get_treble, put: snd_tea6330t_put_treble }
+mdefine_line|#define TEA6330T_TREBLE(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_tea6330t_info_treble, &bslash;&n;  .get = snd_tea6330t_get_treble, .put = snd_tea6330t_put_treble }
 DECL|function|snd_tea6330t_info_treble
 r_static
 r_int

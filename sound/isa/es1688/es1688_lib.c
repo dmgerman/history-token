@@ -4433,7 +4433,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|ES1688_SINGLE
-mdefine_line|#define ES1688_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_es1688_info_single, &bslash;&n;  .get = snd_es1688_get_single, put: snd_es1688_put_single, &bslash;&n;  private_value: reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
+mdefine_line|#define ES1688_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_es1688_info_single, &bslash;&n;  .get = snd_es1688_get_single, .put = snd_es1688_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
 DECL|function|snd_es1688_info_single
 r_static
 r_int
@@ -4787,7 +4787,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|ES1688_DOUBLE
-mdefine_line|#define ES1688_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_es1688_info_double, &bslash;&n;  .get = snd_es1688_get_double, put: snd_es1688_put_double, &bslash;&n;  private_value: left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
+mdefine_line|#define ES1688_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_es1688_info_double, &bslash;&n;  .get = snd_es1688_get_double, .put = snd_es1688_put_double, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
 DECL|function|snd_es1688_info_double
 r_static
 r_int

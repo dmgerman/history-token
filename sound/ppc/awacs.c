@@ -597,7 +597,7 @@ id|reg
 suffix:semicolon
 )brace
 DECL|macro|AWACS_VOLUME
-mdefine_line|#define AWACS_VOLUME(xname, xreg, xshift) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: 0, &bslash;&n;  .info = snd_pmac_awacs_info_volume, &bslash;&n;  .get = snd_pmac_awacs_get_volume, &bslash;&n;  .put = snd_pmac_awacs_put_volume, &bslash;&n;  private_value: (xreg) | ((xshift) &lt;&lt; 8) }
+mdefine_line|#define AWACS_VOLUME(xname, xreg, xshift) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = 0, &bslash;&n;  .info = snd_pmac_awacs_info_volume, &bslash;&n;  .get = snd_pmac_awacs_get_volume, &bslash;&n;  .put = snd_pmac_awacs_put_volume, &bslash;&n;  .private_value = (xreg) | ((xshift) &lt;&lt; 8) }
 multiline_comment|/*&n; * mute master/ogain for AWACS: mono&n; */
 DECL|function|snd_pmac_awacs_get_switch
 r_static
@@ -854,7 +854,7 @@ id|changed
 suffix:semicolon
 )brace
 DECL|macro|AWACS_SWITCH
-mdefine_line|#define AWACS_SWITCH(xname, xreg, xshift, xinvert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: 0, &bslash;&n;  .info = snd_pmac_boolean_mono_info, &bslash;&n;  .get = snd_pmac_awacs_get_switch, &bslash;&n;  .put = snd_pmac_awacs_put_switch, &bslash;&n;  private_value: (xreg) | ((xshift) &lt;&lt; 8) | ((xinvert) &lt;&lt; 16) }
+mdefine_line|#define AWACS_SWITCH(xname, xreg, xshift, xinvert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = 0, &bslash;&n;  .info = snd_pmac_boolean_mono_info, &bslash;&n;  .get = snd_pmac_awacs_get_switch, &bslash;&n;  .put = snd_pmac_awacs_put_switch, &bslash;&n;  .private_value = (xreg) | ((xshift) &lt;&lt; 8) | ((xinvert) &lt;&lt; 16) }
 macro_line|#ifdef PMAC_AMP_AVAIL
 multiline_comment|/*&n; * controls for perch/whisper extension cards, e.g. G3 desktop&n; *&n; * TDA7433 connected via i2c address 0x45 (= 0x8a),&n; * accessed through cuda&n; */
 DECL|function|awacs_set_cuda

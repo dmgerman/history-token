@@ -1647,7 +1647,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  MIXER&n; */
 DECL|macro|CS4236_SINGLE
-mdefine_line|#define CS4236_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_cs4236_info_single, &bslash;&n;  .get = snd_cs4236_get_single, put: snd_cs4236_put_single, &bslash;&n;  private_value: reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
+mdefine_line|#define CS4236_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4236_info_single, &bslash;&n;  .get = snd_cs4236_get_single, .put = snd_cs4236_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
 DECL|function|snd_cs4236_info_single
 r_static
 r_int
@@ -1999,7 +1999,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|CS4236_SINGLEC
-mdefine_line|#define CS4236_SINGLEC(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_cs4236_info_single, &bslash;&n;  .get = snd_cs4236_get_singlec, put: snd_cs4236_put_singlec, &bslash;&n;  private_value: reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
+mdefine_line|#define CS4236_SINGLEC(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4236_info_single, &bslash;&n;  .get = snd_cs4236_get_singlec, .put = snd_cs4236_put_singlec, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
 DECL|function|snd_cs4236_get_singlec
 r_static
 r_int
@@ -2286,7 +2286,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|CS4236_DOUBLE
-mdefine_line|#define CS4236_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_cs4236_info_double, &bslash;&n;  .get = snd_cs4236_get_double, put: snd_cs4236_put_double, &bslash;&n;  private_value: left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
+mdefine_line|#define CS4236_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4236_info_double, &bslash;&n;  .get = snd_cs4236_get_double, .put = snd_cs4236_put_double, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
 DECL|function|snd_cs4236_info_double
 r_static
 r_int
@@ -2847,7 +2847,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|CS4236_DOUBLE1
-mdefine_line|#define CS4236_DOUBLE1(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_cs4236_info_double, &bslash;&n;  .get = snd_cs4236_get_double1, put: snd_cs4236_put_double1, &bslash;&n;  private_value: left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
+mdefine_line|#define CS4236_DOUBLE1(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4236_info_double, &bslash;&n;  .get = snd_cs4236_get_double1, .put = snd_cs4236_put_double1, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
 DECL|function|snd_cs4236_get_double1
 r_static
 r_int
@@ -3276,7 +3276,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|CS4236_MASTER_DIGITAL
-mdefine_line|#define CS4236_MASTER_DIGITAL(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_cs4236_info_double, &bslash;&n;  .get = snd_cs4236_get_master_digital, put: snd_cs4236_put_master_digital, &bslash;&n;  private_value: 71 &lt;&lt; 24 }
+mdefine_line|#define CS4236_MASTER_DIGITAL(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4236_info_double, &bslash;&n;  .get = snd_cs4236_get_master_digital, .put = snd_cs4236_put_master_digital, &bslash;&n;  .private_value = 71 &lt;&lt; 24 }
 DECL|function|snd_cs4236_mixer_master_digital_invert_volume
 r_static
 r_inline
@@ -3567,7 +3567,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|CS4235_OUTPUT_ACCU
-mdefine_line|#define CS4235_OUTPUT_ACCU(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_cs4236_info_double, &bslash;&n;  .get = snd_cs4235_get_output_accu, put: snd_cs4235_put_output_accu, &bslash;&n;  private_value: 3 &lt;&lt; 24 }
+mdefine_line|#define CS4235_OUTPUT_ACCU(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4236_info_double, &bslash;&n;  .get = snd_cs4235_get_output_accu, .put = snd_cs4235_put_output_accu, &bslash;&n;  .private_value = 3 &lt;&lt; 24 }
 DECL|function|snd_cs4235_mixer_output_accu_get_volume
 r_static
 r_inline
@@ -5155,7 +5155,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|CS4236_IEC958_ENABLE
-mdefine_line|#define CS4236_IEC958_ENABLE(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_cs4236_info_single, &bslash;&n;  .get = snd_cs4236_get_iec958_switch, put: snd_cs4236_put_iec958_switch, &bslash;&n;  private_value: 1 &lt;&lt; 16 }
+mdefine_line|#define CS4236_IEC958_ENABLE(xname, xindex) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4236_info_single, &bslash;&n;  .get = snd_cs4236_get_iec958_switch, .put = snd_cs4236_put_iec958_switch, &bslash;&n;  .private_value = 1 &lt;&lt; 16 }
 DECL|function|snd_cs4236_get_iec958_switch
 r_static
 r_int

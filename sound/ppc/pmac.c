@@ -1723,8 +1723,9 @@ id|snd_pcm_hardware_t
 id|snd_pmac_playback
 op_assign
 (brace
+dot
 id|info
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
@@ -1800,8 +1801,9 @@ id|snd_pcm_hardware_t
 id|snd_pmac_capture
 op_assign
 (brace
+dot
 id|info
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or

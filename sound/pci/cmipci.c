@@ -11581,8 +11581,9 @@ id|snd_device_ops_t
 id|ops
 op_assign
 (brace
+dot
 id|dev_free
-suffix:colon
+op_assign
 id|snd_cmipci_dev_free
 comma
 )brace

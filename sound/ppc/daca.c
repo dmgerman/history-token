@@ -789,8 +789,9 @@ id|get
 op_assign
 id|daca_get_deemphasis
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|daca_put_deemphasis
 )brace
 comma
@@ -815,8 +816,9 @@ id|get
 op_assign
 id|daca_get_volume
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|daca_put_volume
 )brace
 comma
@@ -841,8 +843,9 @@ id|get
 op_assign
 id|daca_get_amp
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|daca_put_amp
 )brace
 comma
