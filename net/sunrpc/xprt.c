@@ -382,6 +382,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|task-&gt;tk_rqstp
+op_logical_and
 id|task-&gt;tk_rqstp-&gt;rq_nresend
 )paren
 id|rpc_sleep_on
