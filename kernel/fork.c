@@ -4082,8 +4082,6 @@ id|sched_fork
 c_func
 (paren
 id|p
-comma
-id|clone_flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, make it visible to the rest of the system.&n;&t; * We dont wake it up yet.&n;&t; */

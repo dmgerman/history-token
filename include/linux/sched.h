@@ -1597,16 +1597,14 @@ DECL|macro|SD_BALANCE_NEWIDLE
 mdefine_line|#define SD_BALANCE_NEWIDLE&t;1&t;/* Balance when about to become idle */
 DECL|macro|SD_BALANCE_EXEC
 mdefine_line|#define SD_BALANCE_EXEC&t;&t;2&t;/* Balance on exec */
-DECL|macro|SD_BALANCE_CLONE
-mdefine_line|#define SD_BALANCE_CLONE&t;4&t;/* Balance on clone */
 DECL|macro|SD_WAKE_IDLE
-mdefine_line|#define SD_WAKE_IDLE&t;&t;8&t;/* Wake to idle CPU on task wakeup */
+mdefine_line|#define SD_WAKE_IDLE&t;&t;4&t;/* Wake to idle CPU on task wakeup */
 DECL|macro|SD_WAKE_AFFINE
-mdefine_line|#define SD_WAKE_AFFINE&t;&t;16&t;/* Wake task to waking CPU */
+mdefine_line|#define SD_WAKE_AFFINE&t;&t;8&t;/* Wake task to waking CPU */
 DECL|macro|SD_WAKE_BALANCE
-mdefine_line|#define SD_WAKE_BALANCE&t;&t;32&t;/* Perform balancing at task wakeup */
+mdefine_line|#define SD_WAKE_BALANCE&t;&t;16&t;/* Perform balancing at task wakeup */
 DECL|macro|SD_SHARE_CPUPOWER
-mdefine_line|#define SD_SHARE_CPUPOWER&t;64&t;/* Domain members share cpu power */
+mdefine_line|#define SD_SHARE_CPUPOWER&t;32&t;/* Domain members share cpu power */
 DECL|struct|sched_group
 r_struct
 id|sched_group
@@ -2172,10 +2170,6 @@ c_func
 id|task_t
 op_star
 id|p
-comma
-r_int
-r_int
-id|clone_flags
 )paren
 )paren
 suffix:semicolon
