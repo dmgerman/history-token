@@ -9,8 +9,6 @@ DECL|macro|__HAVE_ARCH_MEMSET
 mdefine_line|#define __HAVE_ARCH_MEMSET&t;1 /* see arch/ia64/lib/memset.S */
 DECL|macro|__HAVE_ARCH_MEMCPY
 mdefine_line|#define __HAVE_ARCH_MEMCPY&t;1 /* see arch/ia64/lib/memcpy.S */
-DECL|macro|__HAVE_ARCH_BCOPY
-mdefine_line|#define __HAVE_ARCH_BCOPY&t;1 /* see arch/ia64/lib/memcpy.S */
 r_extern
 id|__kernel_size_t
 id|strlen

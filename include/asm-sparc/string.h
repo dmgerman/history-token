@@ -50,8 +50,6 @@ id|__kernel_size_t
 suffix:semicolon
 macro_line|#ifndef EXPORT_SYMTAB_STROPS
 multiline_comment|/* First the mem*() things. */
-DECL|macro|__HAVE_ARCH_BCOPY
-mdefine_line|#define __HAVE_ARCH_BCOPY
 DECL|macro|__HAVE_ARCH_MEMMOVE
 mdefine_line|#define __HAVE_ARCH_MEMMOVE
 DECL|macro|memmove

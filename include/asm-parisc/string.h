@@ -37,24 +37,5 @@ r_int
 id|count
 )paren
 suffix:semicolon
-DECL|macro|__HAVE_ARCH_BCOPY
-mdefine_line|#define __HAVE_ARCH_BCOPY
-r_void
-id|bcopy
-c_func
-(paren
-r_const
-r_void
-op_star
-id|srcp
-comma
-r_void
-op_star
-id|destp
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

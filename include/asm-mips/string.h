@@ -390,9 +390,6 @@ r_int
 id|__n
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t build bcopy at all ...  */
-DECL|macro|__HAVE_ARCH_BCOPY
-mdefine_line|#define __HAVE_ARCH_BCOPY
 macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|__HAVE_ARCH_MEMSCAN
 mdefine_line|#define __HAVE_ARCH_MEMSCAN

@@ -14,8 +14,6 @@ DECL|macro|__HAVE_ARCH_STRCAT
 mdefine_line|#define __HAVE_ARCH_STRCAT
 DECL|macro|__HAVE_ARCH_MEMSET
 mdefine_line|#define __HAVE_ARCH_MEMSET
-DECL|macro|__HAVE_ARCH_BCOPY
-mdefine_line|#define __HAVE_ARCH_BCOPY
 DECL|macro|__HAVE_ARCH_MEMCPY
 mdefine_line|#define __HAVE_ARCH_MEMCPY
 DECL|macro|__HAVE_ARCH_MEMMOVE

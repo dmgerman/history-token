@@ -218,20 +218,6 @@ id|__kernel_size_t
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|bcopy
-(paren
-r_const
-r_char
-op_star
-comma
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|__ashrdi3
 c_func
@@ -1211,13 +1197,6 @@ id|__prom_getsibling
 )paren
 suffix:semicolon
 multiline_comment|/* sparc library symbols */
-DECL|variable|bcopy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|bcopy
-)paren
-suffix:semicolon
 DECL|variable|memchr
 id|EXPORT_SYMBOL
 c_func
