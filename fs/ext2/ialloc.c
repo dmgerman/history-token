@@ -2705,9 +2705,6 @@ id|bitmap_bh
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|lock_super
 (paren
 id|sb
@@ -2815,8 +2812,9 @@ l_int|8
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
-l_string|&quot;group %d: stored = %d, counted = %lu&bslash;n&quot;
+l_string|&quot;group %d: stored = %d, counted = %u&bslash;n&quot;
 comma
 id|i
 comma

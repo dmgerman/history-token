@@ -2326,6 +2326,11 @@ id|bitmap_count
 comma
 id|x
 suffix:semicolon
+r_struct
+id|ext2_super_block
+op_star
+id|es
+suffix:semicolon
 id|lock_super
 (paren
 id|sb
@@ -2465,6 +2470,9 @@ c_func
 (paren
 l_string|&quot;ext2_count_free_blocks: stored = %lu, computed = %lu, %lu&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|le32_to_cpu
 c_func
 (paren
