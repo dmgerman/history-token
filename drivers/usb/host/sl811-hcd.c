@@ -131,7 +131,7 @@ id|SL11H_INTMASK_INSRMV
 suffix:semicolon
 id|hcd-&gt;self.controller-&gt;power.power_state
 op_assign
-id|PM_SUSPEND_ON
+id|PMSG_ON
 suffix:semicolon
 )brace
 r_else
@@ -150,7 +150,7 @@ id|USB_STATE_HALT
 suffix:semicolon
 id|hcd-&gt;self.controller-&gt;power.power_state
 op_assign
-id|PM_SUSPEND_DISK
+id|PMSG_SUSPEND
 suffix:semicolon
 )brace
 id|sl811-&gt;ctrl1
@@ -7593,7 +7593,7 @@ id|device
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 comma
 id|u32

@@ -6141,7 +6141,7 @@ id|usb_device
 op_star
 id|udev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -7352,7 +7352,7 @@ id|usb_device
 op_star
 id|udev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
