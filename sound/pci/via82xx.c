@@ -4575,8 +4575,13 @@ r_if
 c_cond
 (paren
 id|chip-&gt;dxs_fixed
+op_logical_and
+id|viadev-&gt;direction
+op_eq
+l_int|0
 )paren
 (brace
+multiline_comment|/* fixed playback rate */
 id|runtime-&gt;hw.rates
 op_assign
 id|SNDRV_PCM_RATE_48000
@@ -9917,7 +9922,7 @@ id|dxs_support
 id|dev
 )braket
 op_eq
-l_int|3
+id|VIA_DXS_48K
 )paren
 id|chip-&gt;dxs_fixed
 op_assign
