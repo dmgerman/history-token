@@ -661,6 +661,93 @@ id|TCP_BIC
 comma
 )brace
 suffix:semicolon
+DECL|struct|tcp_options_received
+r_struct
+id|tcp_options_received
+(brace
+multiline_comment|/*&t;PAWS/RTTM data&t;*/
+DECL|member|ts_recent_stamp
+r_int
+id|ts_recent_stamp
+suffix:semicolon
+multiline_comment|/* Time we stored ts_recent (for aging) */
+DECL|member|ts_recent
+id|__u32
+id|ts_recent
+suffix:semicolon
+multiline_comment|/* Time stamp to echo next&t;&t;*/
+DECL|member|rcv_tsval
+id|__u32
+id|rcv_tsval
+suffix:semicolon
+multiline_comment|/* Time stamp value             &t;*/
+DECL|member|rcv_tsecr
+id|__u32
+id|rcv_tsecr
+suffix:semicolon
+multiline_comment|/* Time stamp echo reply        &t;*/
+DECL|member|saw_tstamp
+r_char
+id|saw_tstamp
+suffix:semicolon
+multiline_comment|/* Saw TIMESTAMP on last packet&t;&t;*/
+DECL|member|tstamp_ok
+r_char
+id|tstamp_ok
+suffix:semicolon
+multiline_comment|/* TIMESTAMP seen on SYN packet&t;&t;*/
+DECL|member|sack_ok
+r_char
+id|sack_ok
+suffix:semicolon
+multiline_comment|/* SACK seen on SYN packet&t;&t;*/
+DECL|member|wscale_ok
+r_char
+id|wscale_ok
+suffix:semicolon
+multiline_comment|/* Wscale seen on SYN packet&t;&t;*/
+DECL|member|snd_wscale
+id|__u8
+id|snd_wscale
+suffix:semicolon
+multiline_comment|/* Window scaling received from sender&t;*/
+DECL|member|rcv_wscale
+id|__u8
+id|rcv_wscale
+suffix:semicolon
+multiline_comment|/* Window scaling to send to receiver&t;*/
+multiline_comment|/*&t;SACKs data&t;*/
+DECL|member|dsack
+id|__u8
+id|dsack
+suffix:semicolon
+multiline_comment|/* D-SACK is scheduled&t;&t;&t;*/
+DECL|member|eff_sacks
+id|__u8
+id|eff_sacks
+suffix:semicolon
+multiline_comment|/* Size of SACK array to send with next packet */
+DECL|member|num_sacks
+id|__u8
+id|num_sacks
+suffix:semicolon
+multiline_comment|/* Number of SACK blocks&t;&t;*/
+DECL|member|__pad
+id|__u8
+id|__pad
+suffix:semicolon
+DECL|member|user_mss
+id|__u16
+id|user_mss
+suffix:semicolon
+multiline_comment|/* mss requested by user in ioctl */
+DECL|member|mss_clamp
+id|__u16
+id|mss_clamp
+suffix:semicolon
+multiline_comment|/* Maximal mss, negotiated at connection setup */
+)brace
+suffix:semicolon
 DECL|struct|tcp_sock
 r_struct
 id|tcp_sock
@@ -833,11 +920,6 @@ id|__u16
 id|mss_cache_std
 suffix:semicolon
 multiline_comment|/* Like mss_cache, but without TSO */
-DECL|member|mss_clamp
-id|__u16
-id|mss_clamp
-suffix:semicolon
-multiline_comment|/* Maximal mss, negotiated at connection setup */
 DECL|member|ext_header_len
 id|__u16
 id|ext_header_len
@@ -858,6 +940,11 @@ id|__u8
 id|retransmits
 suffix:semicolon
 multiline_comment|/* Number of unrecovered RTO timeouts.&t;*/
+DECL|member|frto_highmark
+id|__u32
+id|frto_highmark
+suffix:semicolon
+multiline_comment|/* snd_nxt when RTO occurred */
 DECL|member|reordering
 id|__u8
 id|reordering
@@ -868,11 +955,6 @@ id|__u8
 id|frto_counter
 suffix:semicolon
 multiline_comment|/* Number of new acks after RTO */
-DECL|member|frto_highmark
-id|__u32
-id|frto_highmark
-suffix:semicolon
-multiline_comment|/* snd_nxt when RTO occurred */
 DECL|member|adv_cong
 id|__u8
 id|adv_cong
@@ -883,13 +965,7 @@ id|__u8
 id|defer_accept
 suffix:semicolon
 multiline_comment|/* User waits for some data after accept() */
-multiline_comment|/* one byte hole, try to pack */
 multiline_comment|/* RTT measurement */
-DECL|member|backoff
-id|__u8
-id|backoff
-suffix:semicolon
-multiline_comment|/* backoff&t;&t;&t;&t;*/
 DECL|member|srtt
 id|__u32
 id|srtt
@@ -935,6 +1011,32 @@ id|__u32
 id|retrans_out
 suffix:semicolon
 multiline_comment|/* Retransmitted packets out&t;&t;*/
+DECL|member|backoff
+id|__u8
+id|backoff
+suffix:semicolon
+multiline_comment|/* backoff&t;&t;&t;&t;*/
+multiline_comment|/*&n; *      Options received (usually on last packet, some only on SYN packets).&n; */
+DECL|member|nonagle
+id|__u8
+id|nonagle
+suffix:semicolon
+multiline_comment|/* Disable Nagle algorithm?             */
+DECL|member|keepalive_probes
+id|__u8
+id|keepalive_probes
+suffix:semicolon
+multiline_comment|/* num of allowed keep alive probes&t;*/
+DECL|member|probes_out
+id|__u8
+id|probes_out
+suffix:semicolon
+multiline_comment|/* unanswered 0 window probes&t;&t;*/
+DECL|member|rx_opt
+r_struct
+id|tcp_options_received
+id|rx_opt
+suffix:semicolon
 multiline_comment|/*&n; *&t;Slow start and congestion control (see also Nagle, and Karn &amp; Partridge)&n; */
 DECL|member|snd_ssthresh
 id|__u32
@@ -1020,82 +1122,7 @@ id|__u32
 id|copied_seq
 suffix:semicolon
 multiline_comment|/* Head of yet unread data&t;&t;*/
-multiline_comment|/*&n; *      Options received (usually on last packet, some only on SYN packets).&n; */
-DECL|member|tstamp_ok
-r_char
-id|tstamp_ok
-comma
-multiline_comment|/* TIMESTAMP seen on SYN packet&t;&t;*/
-DECL|member|wscale_ok
-id|wscale_ok
-comma
-multiline_comment|/* Wscale seen on SYN packet&t;&t;*/
-DECL|member|sack_ok
-id|sack_ok
-suffix:semicolon
-multiline_comment|/* SACK seen on SYN packet&t;&t;*/
-DECL|member|saw_tstamp
-r_char
-id|saw_tstamp
-suffix:semicolon
-multiline_comment|/* Saw TIMESTAMP on last packet&t;&t;*/
-DECL|member|snd_wscale
-id|__u8
-id|snd_wscale
-suffix:semicolon
-multiline_comment|/* Window scaling received from sender&t;*/
-DECL|member|rcv_wscale
-id|__u8
-id|rcv_wscale
-suffix:semicolon
-multiline_comment|/* Window scaling to send to receiver&t;*/
-DECL|member|nonagle
-id|__u8
-id|nonagle
-suffix:semicolon
-multiline_comment|/* Disable Nagle algorithm?             */
-DECL|member|keepalive_probes
-id|__u8
-id|keepalive_probes
-suffix:semicolon
-multiline_comment|/* num of allowed keep alive probes&t;*/
-multiline_comment|/*&t;PAWS/RTTM data&t;*/
-DECL|member|rcv_tsval
-id|__u32
-id|rcv_tsval
-suffix:semicolon
-multiline_comment|/* Time stamp value             &t;*/
-DECL|member|rcv_tsecr
-id|__u32
-id|rcv_tsecr
-suffix:semicolon
-multiline_comment|/* Time stamp echo reply        &t;*/
-DECL|member|ts_recent
-id|__u32
-id|ts_recent
-suffix:semicolon
-multiline_comment|/* Time stamp to echo next&t;&t;*/
-DECL|member|ts_recent_stamp
-r_int
-id|ts_recent_stamp
-suffix:semicolon
-multiline_comment|/* Time we stored ts_recent (for aging) */
 multiline_comment|/*&t;SACKs data&t;*/
-DECL|member|user_mss
-id|__u16
-id|user_mss
-suffix:semicolon
-multiline_comment|/* mss requested by user in ioctl */
-DECL|member|dsack
-id|__u8
-id|dsack
-suffix:semicolon
-multiline_comment|/* D-SACK is scheduled&t;&t;&t;*/
-DECL|member|eff_sacks
-id|__u8
-id|eff_sacks
-suffix:semicolon
-multiline_comment|/* Size of SACK array to send with next packet */
 DECL|member|duplicate_sack
 r_struct
 id|tcp_sack_block
@@ -1124,16 +1151,6 @@ id|__u32
 id|rcv_ssthresh
 suffix:semicolon
 multiline_comment|/* Current window clamp&t;&t;&t;*/
-DECL|member|probes_out
-id|__u8
-id|probes_out
-suffix:semicolon
-multiline_comment|/* unanswered 0 window probes&t;&t;*/
-DECL|member|num_sacks
-id|__u8
-id|num_sacks
-suffix:semicolon
-multiline_comment|/* Number of SACK blocks&t;&t;*/
 DECL|member|advmss
 id|__u16
 id|advmss
@@ -1154,6 +1171,10 @@ id|__u16
 id|prior_ssthresh
 suffix:semicolon
 multiline_comment|/* ssthresh saved at recovery start&t;*/
+DECL|member|__pad1
+id|__u16
+id|__pad1
+suffix:semicolon
 DECL|member|lost_out
 id|__u32
 id|lost_out
