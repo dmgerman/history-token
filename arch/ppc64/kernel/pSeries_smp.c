@@ -6,9 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -26,7 +24,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
@@ -140,15 +137,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* FIXME: go put this in a header somewhere */
-r_extern
-r_void
-id|xics_migrate_irqs_away
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|systemcfg-&gt;processorCount
 op_decrement
 suffix:semicolon
@@ -791,14 +779,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_extern
-r_void
-id|xics_request_IPIs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|smp_xics_probe
 r_static
 r_int
@@ -845,6 +825,32 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;firmware_features
+op_amp
+id|FW_FEATURE_SPLPAR
+)paren
+id|vpa_init
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
+multiline_comment|/*&n;&t; * Put the calling processor into the GIQ.  This is really only&n;&t; * necessary from a secondary thread as the OF start-cpu interface&n;&t; * performs this function for us on primary threads.&n;&t; */
+id|rtas_set_indicator
+c_func
+(paren
+id|GLOBAL_INTERRUPT_QUEUE
+comma
+id|default_distrib_server
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|timebase_lock
 r_static
@@ -987,53 +993,8 @@ id|timebase_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|pSeries_late_setup_cpu
-r_static
-r_void
-id|__devinit
-id|pSeries_late_setup_cpu
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-r_extern
-r_int
-r_int
-id|default_distrib_server
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cur_cpu_spec-&gt;firmware_features
-op_amp
-id|FW_FEATURE_SPLPAR
-)paren
-(brace
-id|vpa_init
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
-multiline_comment|/* Put the calling processor into the GIQ.  This is really only&n;&t; * necessary from a secondary thread as the OF start-cpu interface&n;&t; * performs this function for us on primary threads.&n;&t; */
-multiline_comment|/* TODO: 9005 is #defined in rtas-proc.c -- move to a header */
-id|rtas_set_indicator
-c_func
-(paren
-l_int|9005
-comma
-id|default_distrib_server
-comma
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 DECL|function|smp_pSeries_kick_cpu
+r_static
 r_void
 id|__devinit
 id|smp_pSeries_kick_cpu
@@ -1105,11 +1066,6 @@ id|setup_cpu
 op_assign
 id|smp_mpic_setup_cpu
 comma
-dot
-id|late_setup_cpu
-op_assign
-id|pSeries_late_setup_cpu
-comma
 )brace
 suffix:semicolon
 DECL|variable|pSeries_xics_smp_ops
@@ -1138,11 +1094,6 @@ dot
 id|setup_cpu
 op_assign
 id|smp_xics_setup_cpu
-comma
-dot
-id|late_setup_cpu
-op_assign
-id|pSeries_late_setup_cpu
 comma
 )brace
 suffix:semicolon
@@ -1278,19 +1229,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec-&gt;firmware_features
-op_amp
-id|FW_FEATURE_SPLPAR
-)paren
-id|vpa_init
-c_func
-(paren
-id|boot_cpuid
-)paren
-suffix:semicolon
 multiline_comment|/* Non-lpar has additional take/give timebase */
 r_if
 c_cond

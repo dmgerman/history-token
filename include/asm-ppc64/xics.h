@@ -34,6 +34,20 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+r_void
+id|xics_request_IPIs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|xics_migrate_irqs_away
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* first argument is ignored for now*/
 r_void
 id|pSeriesLP_cppr_info
@@ -68,6 +82,11 @@ id|xics_ipi_message
 id|NR_CPUS
 )braket
 id|__cacheline_aligned
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|default_distrib_server
 suffix:semicolon
 macro_line|#endif /* _PPC64_KERNEL_XICS_H */
 eof

@@ -74,17 +74,6 @@ r_int
 id|nr
 )paren
 suffix:semicolon
-DECL|member|late_setup_cpu
-r_void
-(paren
-op_star
-id|late_setup_cpu
-)paren
-(paren
-r_int
-id|nr
-)paren
-suffix:semicolon
 DECL|member|take_timebase
 r_void
 (paren

@@ -2911,26 +2911,7 @@ r_void
 )paren
 (brace
 r_int
-id|set_indicator
-op_assign
-id|rtas_token
-c_func
-(paren
-l_string|&quot;set-indicator&quot;
-)paren
-suffix:semicolon
-r_const
-r_int
-r_int
-id|giqs
-op_assign
-l_int|9005UL
-suffix:semicolon
-multiline_comment|/* Global Interrupt Queue Server */
-r_int
 id|status
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -2943,14 +2924,6 @@ op_assign
 id|smp_processor_id
 c_func
 (paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|set_indicator
-op_eq
-id|RTAS_UNKNOWN_SERVICE
 )paren
 suffix:semicolon
 multiline_comment|/* Reject any interrupt that was queued to us... */
@@ -2970,19 +2943,12 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Refuse any new interrupts... */
-id|rtas_call
+id|status
+op_assign
+id|rtas_set_indicator
 c_func
 (paren
-id|set_indicator
-comma
-l_int|3
-comma
-l_int|1
-comma
-op_amp
-id|status
-comma
-id|giqs
+id|GLOBAL_INTERRUPT_QUEUE
 comma
 id|hard_smp_processor_id
 c_func
