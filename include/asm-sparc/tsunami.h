@@ -31,8 +31,8 @@ mdefine_line|#define TSUNAMI_NF        0x00000002
 DECL|macro|TSUNAMI_ME
 mdefine_line|#define TSUNAMI_ME        0x00000001
 DECL|function|tsunami_flush_icache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|tsunami_flush_icache
 c_func
@@ -46,6 +46,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%%g0] %0&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;i&quot;
 (paren
@@ -57,8 +58,8 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|function|tsunami_flush_dcache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|tsunami_flush_dcache
 c_func
@@ -72,6 +73,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%%g0] %0&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;i&quot;
 (paren

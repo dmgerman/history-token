@@ -90,8 +90,8 @@ DECL|macro|SUN4C_PAGE_KERNEL
 mdefine_line|#define SUN4C_PAGE_KERNEL&t;__pgprot(_SUN4C_READABLE|_SUN4C_WRITEABLE|&bslash;&n;&t;&t;&t;&t;&t; _SUN4C_PAGE_DIRTY|_SUN4C_PAGE_PRIV)
 macro_line|#ifndef __ASSEMBLY__
 DECL|function|sun4c_get_synchronous_error
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|sun4c_get_synchronous_error
@@ -131,8 +131,8 @@ id|sync_err
 suffix:semicolon
 )brace
 DECL|function|sun4c_get_synchronous_address
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|sun4c_get_synchronous_address
@@ -173,8 +173,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* SUN4C pte, segmap, and context manipulation */
 DECL|function|sun4c_get_segmap
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|sun4c_get_segmap
@@ -217,8 +217,8 @@ id|entry
 suffix:semicolon
 )brace
 DECL|function|sun4c_put_segmap
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sun4c_put_segmap
 c_func
@@ -253,12 +253,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_SEGMAP
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|sun4c_get_pte
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|sun4c_get_pte
@@ -301,8 +303,8 @@ id|entry
 suffix:semicolon
 )brace
 DECL|function|sun4c_put_pte
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sun4c_put_pte
 c_func
@@ -344,12 +346,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_PTE
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|sun4c_get_context
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|sun4c_get_context
 c_func
@@ -388,8 +392,8 @@ id|ctx
 suffix:semicolon
 )brace
 DECL|function|sun4c_set_context
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|sun4c_set_context
 c_func
@@ -419,6 +423,8 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_CONTROL
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return

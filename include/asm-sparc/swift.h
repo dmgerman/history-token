@@ -36,8 +36,8 @@ DECL|macro|SWIFT_EN
 mdefine_line|#define SWIFT_EN       0x00000001   /* MMU enable */
 multiline_comment|/* Bits [13:5] select one of 512 instruction cache tags */
 DECL|function|swift_inv_insn_tag
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|swift_inv_insn_tag
 c_func
@@ -53,6 +53,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -63,13 +64,15 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_TXTC_TAG
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* Bits [12:4] select one of 512 data cache tags */
 DECL|function|swift_inv_data_tag
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|swift_inv_data_tag
 c_func
@@ -85,6 +88,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -95,12 +99,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_DATAC_TAG
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|swift_flush_dcache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|swift_flush_dcache
 c_func
@@ -127,7 +133,6 @@ id|addr
 op_add_assign
 l_int|0x10
 )paren
-(brace
 id|swift_inv_data_tag
 c_func
 (paren
@@ -135,10 +140,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-)brace
 DECL|function|swift_flush_icache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|swift_flush_icache
 c_func
@@ -165,7 +169,6 @@ id|addr
 op_add_assign
 l_int|0x20
 )paren
-(brace
 id|swift_inv_insn_tag
 c_func
 (paren
@@ -173,10 +176,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-)brace
 DECL|function|swift_idflash_clear
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|swift_idflash_clear
 c_func
@@ -222,8 +224,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Swift is so broken, it isn&squot;t even safe to use the following. */
 DECL|function|swift_flush_page
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|swift_flush_page
 c_func
@@ -239,6 +241,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -249,12 +252,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_FLUSH_PAGE
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|swift_flush_segment
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|swift_flush_segment
 c_func
@@ -270,6 +275,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -280,12 +286,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_FLUSH_SEG
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|swift_flush_region
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|swift_flush_region
 c_func
@@ -301,6 +309,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -311,12 +320,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_FLUSH_REGION
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|swift_flush_context
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|swift_flush_context
 c_func
@@ -330,11 +341,14 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%%g0] %0&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;i&quot;
 (paren
 id|ASI_M_FLUSH_CTX
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
