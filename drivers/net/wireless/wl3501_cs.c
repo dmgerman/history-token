@@ -10487,7 +10487,7 @@ c_func
 (paren
 id|wl3501_irq_mask
 comma
-r_int
+id|uint
 comma
 l_int|0
 )paren

@@ -4324,6 +4324,44 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling receive - used by netconsole and other diagnostic tools&n; * to allow network i/o with interrupts disabled.&n; */
+DECL|function|smc_poll_controller
+r_static
+r_void
+id|smc_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|smc_interrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Our watchdog timed out. Called by the networking layer */
 DECL|function|smc_timeout
 r_static
@@ -6243,6 +6281,12 @@ op_assign
 op_amp
 id|smc_ethtool_ops
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|smc_poll_controller
+suffix:semicolon
+macro_line|#endif
 id|tasklet_init
 c_func
 (paren
