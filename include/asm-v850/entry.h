@@ -47,12 +47,12 @@ mdefine_line|#define RESET_GUARD&t;&t;KERNEL_VAR (RESET_GUARD_ADDR)
 DECL|macro|RESET_GUARD_ACTIVE
 mdefine_line|#define RESET_GUARD_ACTIVE&t;0xFAB4BEEF
 macro_line|#endif /* CONFIG_RESET_GUARD */
-macro_line|#ifdef CONFIG_V850E_MA1_HIGHRES_TIMER
+macro_line|#ifdef CONFIG_V850E_HIGHRES_TIMER
 DECL|macro|HIGHRES_TIMER_SLOW_TICKS_ADDR
 mdefine_line|#define HIGHRES_TIMER_SLOW_TICKS_ADDR (KERNEL_VAR_SPACE_ADDR + 32)
 DECL|macro|HIGHRES_TIMER_SLOW_TICKS
 mdefine_line|#define HIGHRES_TIMER_SLOW_TICKS     KERNEL_VAR (HIGHRES_TIMER_SLOW_TICKS_ADDR)
-macro_line|#endif /* CONFIG_V850E_MA1_HIGHRES_TIMER */
+macro_line|#endif /* CONFIG_V850E_HIGHRES_TIMER */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_RESET_GUARD
 multiline_comment|/* Turn off reset guard, so that resetting the machine works normally.&n;   This should be called in the various machine_halt, etc., functions.  */

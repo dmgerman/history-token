@@ -170,7 +170,7 @@ mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread_info-&gt;kregs-&gt;tpc)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread_info-&gt;kregs-&gt;u_regs[UREG_FP])
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;do { udelay(1 + smp_processor_id()); barrier(); } while  (0)
+mdefine_line|#define cpu_relax()&t;barrier()
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__ASM_SPARC64_PROCESSOR_H) */
 eof

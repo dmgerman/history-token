@@ -44,6 +44,8 @@ DECL|macro|fp_set_ovrflw
 mdefine_line|#define fp_set_ovrflw(dest) ({&t;&t;&t;&t;&t;&bslash;&n;&t;fp_set_sr(FPSR_EXC_OVFL);&t;&t;&t;&t;&bslash;&n;&t;dest-&gt;exp = 0x7fff;&t;&t;&t;&t;&t;&bslash;&n;&t;dest-&gt;mant.m64 = 0;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|fp_conv_ext2long
 mdefine_line|#define fp_conv_ext2long(src) ({&t;&t;&t;&t;&bslash;&n;&t;register struct fp_ext *__src asm (&quot;a0&quot;) = src;&t;&t;&bslash;&n;&t;register int __res asm (&quot;d0&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;jsr fp_conv_ext2long&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=d&quot; (__res) : &quot;a&quot; (__src)&t;&t;&bslash;&n;&t;&t;&t;: &quot;a1&quot;, &quot;d1&quot;, &quot;d2&quot;, &quot;memory&quot;);&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|fp_conv_long2ext
+mdefine_line|#define fp_conv_long2ext(dest, src) ({&t;&t;&t;&t;&bslash;&n;&t;register struct fp_ext *__dest asm (&quot;a0&quot;) = dest;&t;&bslash;&n;&t;register int __src asm (&quot;d0&quot;) = src;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;jsr fp_conv_ext2long&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;d&quot; (__src), &quot;a&quot; (__dest)&t;&t;&bslash;&n;&t;&t;&t;: &quot;a1&quot;, &quot;d1&quot;, &quot;d2&quot;, &quot;memory&quot;);&t;&t;&bslash;&n;})
 macro_line|#else /* __ASSEMBLY__ */
 multiline_comment|/*&n; * set, reset or clear a bit in the fp status register&n; */
 dot

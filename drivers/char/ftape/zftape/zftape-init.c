@@ -369,7 +369,7 @@ id|ENXIO
 comma
 id|ft_t_err
 comma
-l_string|&quot;failed: illegal unit nr&quot;
+l_string|&quot;failed: invalid unit nr&quot;
 )paren
 suffix:semicolon
 )brace

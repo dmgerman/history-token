@@ -675,6 +675,14 @@ id|mp_bh-&gt;bio.bi_bdev
 op_assign
 id|multipath-&gt;rdev-&gt;bdev
 suffix:semicolon
+id|mp_bh-&gt;bio.bi_flags
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|BIO_RW_FAILFAST
+)paren
+suffix:semicolon
 id|mp_bh-&gt;bio.bi_end_io
 op_assign
 id|multipath_end_request

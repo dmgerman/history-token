@@ -706,12 +706,12 @@ comma
 (paren
 r_int
 )paren
-id|match_len
+id|rep_len
 op_minus
 (paren
 r_int
 )paren
-id|rep_len
+id|match_len
 comma
 id|ct
 comma

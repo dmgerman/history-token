@@ -41,7 +41,7 @@ id|lapb_list_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n; *&t;Free an allocated lapb control block. This is done to centralise&n; *&t;the MOD count code.&n; */
+multiline_comment|/*&n; *&t;Free an allocated lapb control block. &n; */
 DECL|function|lapb_free_cb
 r_static
 r_void
@@ -59,8 +59,6 @@ c_func
 (paren
 id|lapb
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|lapb_hold
@@ -341,8 +339,6 @@ id|lapb
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|memset
 c_func
@@ -1656,6 +1652,29 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|lapb_exit
+r_static
+r_void
+id|__exit
+id|lapb_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|WARN_ON
+c_func
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|lapb_list
+)paren
+)paren
+suffix:semicolon
+)brace
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1679,6 +1698,13 @@ id|module_init
 c_func
 (paren
 id|lapb_init
+)paren
+suffix:semicolon
+DECL|variable|lapb_exit
+id|module_exit
+c_func
+(paren
+id|lapb_exit
 )paren
 suffix:semicolon
 eof

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; * HDLC support&n; *&n; * Copyright (C) 1999 - 2003 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -246,23 +245,25 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|hdlc-&gt;open
-op_assign
-l_int|NULL
+id|memset
+c_func
+(paren
+op_amp
+id|hdlc-&gt;proto
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|hdlc-&gt;proto
+)paren
+)paren
 suffix:semicolon
-id|hdlc-&gt;stop
-op_assign
-l_int|NULL
-suffix:semicolon
-id|hdlc-&gt;netif_rx
-op_assign
-l_int|NULL
-suffix:semicolon
-id|hdlc-&gt;type_trans
+id|hdlc-&gt;proto.type_trans
 op_assign
 id|raw_type_trans
 suffix:semicolon
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_assign
 id|IF_PROTO_HDLC
 suffix:semicolon

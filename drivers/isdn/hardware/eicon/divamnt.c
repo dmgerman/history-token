@@ -1797,8 +1797,6 @@ id|buffer
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|do_gettimeofday
 c_func
 (paren
@@ -1982,8 +1980,6 @@ l_string|&quot;external&quot;
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 (paren
 id|ret

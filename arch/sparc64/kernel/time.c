@@ -30,6 +30,7 @@ macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 DECL|variable|mostek_lock
 id|spinlock_t
 id|mostek_lock
@@ -1350,10 +1351,6 @@ suffix:semicolon
 (brace
 r_extern
 r_int
-id|_stext
-suffix:semicolon
-r_extern
-r_int
 id|rwlock_impl_begin
 comma
 id|rwlock_impl_end
@@ -1495,7 +1492,6 @@ op_sub_assign
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|pc
@@ -3088,6 +3084,14 @@ c_func
 (paren
 id|model
 comma
+l_string|&quot;m5819p&quot;
+)paren
+op_logical_and
+id|strcmp
+c_func
+(paren
+id|model
+comma
 l_string|&quot;ds1287&quot;
 )paren
 )paren
@@ -3386,6 +3390,15 @@ id|model
 comma
 l_string|&quot;m5819&quot;
 )paren
+op_logical_or
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|model
+comma
+l_string|&quot;m5819p&quot;
+)paren
 )paren
 (brace
 id|ds1287_regs
@@ -3490,6 +3503,15 @@ c_func
 id|model
 comma
 l_string|&quot;m5819&quot;
+)paren
+op_logical_or
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|model
+comma
+l_string|&quot;m5819p&quot;
 )paren
 )paren
 (brace

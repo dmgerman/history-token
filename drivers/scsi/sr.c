@@ -2008,7 +2008,7 @@ suffix:semicolon
 id|disk-&gt;driverfs_dev
 op_assign
 op_amp
-id|sdev-&gt;sdev_driverfs_dev
+id|sdev-&gt;sdev_gendev
 suffix:semicolon
 id|register_cdrom
 c_func

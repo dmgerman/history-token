@@ -1,4 +1,4 @@
-multiline_comment|/* b44.c: Broadcom 4400 device driver.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* b44.c: Broadcom 4400 device driver.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; * Fixed by Pekka Pietikainen (pp@ee.oulu.fi)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -19,9 +20,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;b44&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.6&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.9&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Nov 11, 2002&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Jul 14, 2003&quot;
 DECL|macro|B44_DEF_MSG_ENABLE
 mdefine_line|#define B44_DEF_MSG_ENABLE&t;  &bslash;&n;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t; NETIF_MSG_PROBE&t;| &bslash;&n;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t; NETIF_MSG_TIMER&t;| &bslash;&n;&t; NETIF_MSG_IFDOWN&t;| &bslash;&n;&t; NETIF_MSG_IFUP&t;&t;| &bslash;&n;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t; NETIF_MSG_TX_ERR)
 multiline_comment|/* length of time before we decide the hardware is borked,&n; * and dev-&gt;tx_timeout() should be called to fix the problem&n; */
@@ -113,6 +114,16 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* -1 == use B44_DEF_MSG_ENABLE as value */
+macro_line|#ifndef PCI_DEVICE_ID_BCM4401
+DECL|macro|PCI_DEVICE_ID_BCM4401
+mdefine_line|#define PCI_DEVICE_ID_BCM4401      0x4401
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+DECL|macro|IRQ_RETVAL
+mdefine_line|#define IRQ_RETVAL(x) 
+DECL|macro|irqreturn_t
+mdefine_line|#define irqreturn_t void
+macro_line|#endif
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -939,6 +950,7 @@ id|b44
 op_star
 id|bp
 comma
+r_int
 r_char
 op_star
 id|data
@@ -2393,6 +2405,13 @@ c_func
 (paren
 id|bp-&gt;dev
 )paren
+op_logical_and
+op_logical_neg
+(paren
+id|bmsr
+op_amp
+id|BMSR_LSTATUS
+)paren
 )paren
 (brace
 multiline_comment|/* Link now down */
@@ -3002,11 +3021,7 @@ r_struct
 id|rx_header
 op_star
 )paren
-(paren
 id|src_map-&gt;skb-&gt;data
-op_minus
-id|bp-&gt;rx_offset
-)paren
 suffix:semicolon
 id|rh-&gt;len
 op_assign
@@ -3055,6 +3070,16 @@ c_func
 id|DESC_CTRL_EOT
 )paren
 suffix:semicolon
+r_else
+id|ctrl
+op_and_assign
+id|cpu_to_le32
+c_func
+(paren
+op_complement
+id|DESC_CTRL_EOT
+)paren
+suffix:semicolon
 id|dest_desc-&gt;ctrl
 op_assign
 id|ctrl
@@ -3062,6 +3087,10 @@ suffix:semicolon
 id|dest_desc-&gt;addr
 op_assign
 id|src_desc-&gt;addr
+suffix:semicolon
+id|src_map-&gt;skb
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|b44_rx
@@ -3181,11 +3210,7 @@ r_struct
 id|rx_header
 op_star
 )paren
-(paren
 id|skb-&gt;data
-op_minus
-id|bp-&gt;rx_offset
-)paren
 suffix:semicolon
 id|len
 op_assign
@@ -3349,12 +3374,23 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
+multiline_comment|/* Leave out rx_header */
 id|skb_put
 c_func
 (paren
 id|skb
 comma
 id|len
+op_plus
+id|bp-&gt;rx_offset
+)paren
+suffix:semicolon
+id|skb_pull
+c_func
+(paren
+id|skb
+comma
+id|bp-&gt;rx_offset
 )paren
 suffix:semicolon
 )brace
@@ -3415,13 +3451,15 @@ comma
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* DMA sync done above */
+multiline_comment|/* DMA sync done above, copy just the actual packet */
 id|memcpy
 c_func
 (paren
 id|copy_skb-&gt;data
 comma
 id|skb-&gt;data
+op_plus
+id|bp-&gt;rx_offset
 comma
 id|len
 )paren
@@ -3496,6 +3534,20 @@ id|bp-&gt;rx_cons
 op_assign
 id|cons
 suffix:semicolon
+id|bw32
+c_func
+(paren
+id|B44_DMARX_PTR
+comma
+id|cons
+op_star
+r_sizeof
+(paren
+r_struct
+id|dma_desc
+)paren
+)paren
+suffix:semicolon
 r_return
 id|received
 suffix:semicolon
@@ -3554,6 +3606,13 @@ id|bp
 suffix:semicolon
 multiline_comment|/* spin_unlock(&amp;bp-&gt;tx_lock); */
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|bp-&gt;lock
+)paren
+suffix:semicolon
 id|done
 op_assign
 l_int|1
@@ -3625,6 +3684,13 @@ op_amp
 id|ISTAT_ERRORS
 )paren
 (brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|bp-&gt;lock
+)paren
+suffix:semicolon
 id|b44_halt
 c_func
 (paren
@@ -3647,6 +3713,13 @@ id|netif_wake_queue
 c_func
 (paren
 id|bp-&gt;dev
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|bp-&gt;lock
 )paren
 suffix:semicolon
 id|done
@@ -3673,13 +3746,6 @@ id|bp
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|bp-&gt;lock
-)paren
-suffix:semicolon
 r_return
 (paren
 id|done
@@ -4107,6 +4173,8 @@ c_func
 id|u32
 )paren
 id|mapping
+op_plus
+id|bp-&gt;dma_offset
 )paren
 suffix:semicolon
 id|entry
@@ -5358,7 +5426,7 @@ id|ETH_HLEN
 op_plus
 l_int|8
 op_plus
-l_int|24
+id|RX_HEADER_LEN
 )paren
 suffix:semicolon
 id|bw32
@@ -5372,7 +5440,7 @@ id|ETH_HLEN
 op_plus
 l_int|8
 op_plus
-l_int|24
+id|RX_HEADER_LEN
 )paren
 suffix:semicolon
 id|bw32
@@ -5435,6 +5503,10 @@ id|B44_DMARX_PTR
 comma
 id|bp-&gt;rx_pending
 )paren
+suffix:semicolon
+id|bp-&gt;rx_prod
+op_assign
+id|bp-&gt;rx_pending
 suffix:semicolon
 id|bw32
 c_func
@@ -6094,6 +6166,24 @@ c_func
 id|B44_RXCONFIG
 comma
 id|val
+)paren
+suffix:semicolon
+id|val
+op_assign
+id|br32
+c_func
+(paren
+id|B44_CAM_CTRL
+)paren
+suffix:semicolon
+id|bw32
+c_func
+(paren
+id|B44_CAM_CTRL
+comma
+id|val
+op_or
+id|CAM_CTRL_ENABLE
 )paren
 suffix:semicolon
 )brace
@@ -7662,10 +7752,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|bp-&gt;flags
-op_or_assign
-id|B44_FLAG_BUGGY_TXPTR
-suffix:semicolon
+multiline_comment|/* XXX - really required? &n;&t;   bp-&gt;flags |= B44_FLAG_BUGGY_TXPTR;&n;         */
 id|out
 suffix:colon
 r_return

@@ -304,6 +304,8 @@ r_struct
 id|sonic_local
 op_star
 id|lp
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|i

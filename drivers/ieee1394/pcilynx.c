@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -6908,6 +6909,42 @@ comma
 id|lynx
 )paren
 suffix:semicolon
+multiline_comment|/* Disable IRM Contender */
+r_if
+c_cond
+(paren
+id|lynx-&gt;phyic.reg_1394a
+)paren
+id|set_phy_reg
+c_func
+(paren
+id|lynx
+comma
+l_int|4
+comma
+op_complement
+l_int|0xc0
+op_amp
+id|get_phy_reg
+c_func
+(paren
+id|lynx
+comma
+l_int|4
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Let all other nodes know to ignore us */
+id|lynx_devctl
+c_func
+(paren
+id|lynx-&gt;host
+comma
+id|RESET_BUS
+comma
+id|LONG_RESET_NO_FORCE_ROOT
+)paren
+suffix:semicolon
 r_case
 id|have_iomappings
 suffix:colon
@@ -7090,6 +7127,12 @@ id|devid_is_unused
 (brace
 DECL|macro|FAIL
 mdefine_line|#define FAIL(fmt, args...) do { &bslash;&n;        PRINT_G(KERN_ERR, fmt , ## args); &bslash;&n;        remove_card(dev); &bslash;&n;        return error; &bslash;&n;        } while (0)
+r_char
+id|irq_buf
+(braket
+l_int|16
+)braket
+suffix:semicolon
 r_struct
 id|hpsb_host
 op_star
@@ -7538,6 +7581,31 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#ifndef __sparc__
+id|sprintf
+(paren
+id|irq_buf
+comma
+l_string|&quot;%d&quot;
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+macro_line|#else
+id|sprintf
+(paren
+id|irq_buf
+comma
+l_string|&quot;%s&quot;
+comma
+id|__irq_itoa
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7564,9 +7632,9 @@ id|KERN_INFO
 comma
 id|lynx-&gt;id
 comma
-l_string|&quot;allocated interrupt %d&quot;
+l_string|&quot;allocated interrupt %s&quot;
 comma
-id|dev-&gt;irq
+id|irq_buf
 )paren
 suffix:semicolon
 id|lynx-&gt;state
@@ -7579,9 +7647,9 @@ r_else
 id|FAIL
 c_func
 (paren
-l_string|&quot;failed to allocate shared interrupt %d&quot;
+l_string|&quot;failed to allocate shared interrupt %s&quot;
 comma
-id|dev-&gt;irq
+id|irq_buf
 )paren
 suffix:semicolon
 )brace
@@ -8601,8 +8669,7 @@ id|i2c_adapter_data.data
 op_assign
 id|lynx
 suffix:semicolon
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
-id|PRINT
+id|PRINTD
 c_func
 (paren
 id|KERN_DEBUG
@@ -8620,7 +8687,6 @@ id|SERIAL_EEPROM_CONTROL
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* reset hardware to sane state */
 id|lynx-&gt;i2c_driven_state
 op_assign
@@ -8849,11 +8915,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
 r_int
 id|i
 suffix:semicolon
-macro_line|#endif
 id|PRINT
 c_func
 (paren
@@ -8864,8 +8928,7 @@ comma
 l_string|&quot;got bus info block from serial eeprom&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: probably we shoud rewrite the max_rec, max_ROM(1394a), generation(1394a) and link_spd(1394a) field&n;                                   and recalculate the CRC */
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
+multiline_comment|/* FIXME: probably we shoud rewrite the max_rec, max_ROM(1394a),&n;&t;&t;&t;&t; * generation(1394a) and link_spd(1394a) field and recalculate&n;&t;&t;&t;&t; * the CRC */
 r_for
 c_loop
 (paren
@@ -8880,7 +8943,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|PRINT
+id|PRINTD
 c_func
 (paren
 id|KERN_DEBUG
@@ -8901,7 +8964,6 @@ id|i
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* info_length, crc_length and 1394 magic number to check, if it is really a bus info block */
 r_if
 c_cond

@@ -48,7 +48,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|DEBUG_MSG
-mdefine_line|#define DEBUG_MSG(...) if (debug) printk (KERN_DEBUG &quot;ebt_vlan: &quot; __VA_ARGS__)
+mdefine_line|#define DEBUG_MSG(args...) if (debug) printk (KERN_DEBUG &quot;ebt_vlan: &quot; args)
 DECL|macro|INV_FLAG
 mdefine_line|#define INV_FLAG(_inv_flag_) (info-&gt;invflags &amp; _inv_flag_) ? &quot;!&quot; : &quot;&quot;
 DECL|macro|GET_BITMASK
@@ -284,10 +284,14 @@ c_cond
 (paren
 id|datalen
 op_ne
+id|EBT_ALIGN
+c_func
+(paren
 r_sizeof
 (paren
 r_struct
 id|ebt_vlan_info
+)paren
 )paren
 )paren
 (brace

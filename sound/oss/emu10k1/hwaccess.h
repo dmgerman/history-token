@@ -70,42 +70,49 @@ r_struct
 id|emu10k1_waveout
 (brace
 DECL|member|send_routing
-id|u16
+id|u32
 id|send_routing
 (braket
 l_int|3
 )braket
 suffix:semicolon
-DECL|member|send_a
-id|u8
-id|send_a
+singleline_comment|// audigy only:
+DECL|member|send_routing2
+id|u32
+id|send_routing2
 (braket
 l_int|3
 )braket
 suffix:semicolon
-DECL|member|send_b
-id|u8
-id|send_b
+DECL|member|send_dcba
+id|u32
+id|send_dcba
 (braket
 l_int|3
 )braket
 suffix:semicolon
-DECL|member|send_c
-id|u8
-id|send_c
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|send_d
-id|u8
-id|send_d
+singleline_comment|// audigy only:
+DECL|member|send_hgfe
+id|u32
+id|send_hgfe
 (braket
 l_int|3
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|ROUTE_PCM
+mdefine_line|#define ROUTE_PCM 0
+DECL|macro|ROUTE_PT
+mdefine_line|#define ROUTE_PT 1
+DECL|macro|ROUTE_PCM1
+mdefine_line|#define ROUTE_PCM1 2
+DECL|macro|SEND_MONO
+mdefine_line|#define SEND_MONO 0
+DECL|macro|SEND_LEFT
+mdefine_line|#define SEND_LEFT 1
+DECL|macro|SEND_RIGHT
+mdefine_line|#define SEND_RIGHT 2
 DECL|struct|emu10k1_wavein
 r_struct
 id|emu10k1_wavein
@@ -204,7 +211,7 @@ DECL|macro|CMD_AC97_BOOST
 mdefine_line|#define CMD_AC97_BOOST&t;&t;_IOW(&squot;D&squot;, 20, struct mixer_private_ioctl)
 singleline_comment|//up this number when breaking compatibility
 DECL|macro|PRIVATE3_VERSION
-mdefine_line|#define PRIVATE3_VERSION 1
+mdefine_line|#define PRIVATE3_VERSION 2
 DECL|struct|emu10k1_card
 r_struct
 id|emu10k1_card
@@ -379,6 +386,10 @@ id|u8
 id|chiprev
 suffix:semicolon
 multiline_comment|/* Chip revision                */
+DECL|member|is_audigy
+id|u8
+id|is_audigy
+suffix:semicolon
 DECL|member|is_aps
 id|u8
 id|is_aps
@@ -503,6 +514,21 @@ comma
 id|u32
 comma
 id|u32
+)paren
+suffix:semicolon
+r_void
+id|emu10k1_writefn0_2
+c_func
+(paren
+r_struct
+id|emu10k1_card
+op_star
+comma
+id|u32
+comma
+id|u32
+comma
+r_int
 )paren
 suffix:semicolon
 id|u32

@@ -323,14 +323,20 @@ DECL|macro|ST0_RXRDY
 mdefine_line|#define ST0_RXRDY     0x01&t;/* RX ready */
 DECL|macro|ST1_UDRN
 mdefine_line|#define ST1_UDRN      0x80&t;/* MSCI TX underrun */
+DECL|macro|ST1_CDCD
+mdefine_line|#define ST1_CDCD      0x04&t;/* DCD level changed */
 DECL|macro|ST3_CTS
 mdefine_line|#define ST3_CTS       0x08&t;/* modem input - /CTS */
 DECL|macro|ST3_DCD
 mdefine_line|#define ST3_DCD       0x04&t;/* modem input - /DCD */
 DECL|macro|IE0_TXINT
 mdefine_line|#define IE0_TXINT     0x80&t;/* TX INT MSCI interrupt enable */
+DECL|macro|IE0_RXINTA
+mdefine_line|#define IE0_RXINTA    0x40&t;/* RX INT A MSCI interrupt enable */
 DECL|macro|IE1_UDRN
 mdefine_line|#define IE1_UDRN      0x80&t;/* TX underrun MSCI interrupt enable */
+DECL|macro|IE1_CDCD
+mdefine_line|#define IE1_CDCD      0x04&t;/* DCD level changed */
 DECL|macro|DCR_ABORT
 mdefine_line|#define DCR_ABORT     0x01&t;/* Software abort command */
 DECL|macro|DCR_CLEAR_EOF

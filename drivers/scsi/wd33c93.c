@@ -7125,9 +7125,9 @@ l_int|128
 )braket
 suffix:semicolon
 r_struct
-id|Scsi_Host
+id|WD33C93_hostdata
 op_star
-id|instance
+id|hd
 suffix:semicolon
 id|Scsi_Cmnd
 op_star

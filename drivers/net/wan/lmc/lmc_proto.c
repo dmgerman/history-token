@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/processor.h&gt;             /* Processor type for ca
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &quot;lmc.h&quot;
 macro_line|#include &quot;lmc_var.h&quot;
 macro_line|#include &quot;lmc_debug.h&quot;

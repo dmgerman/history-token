@@ -78,6 +78,12 @@ id|split_timeout_hi
 comma
 id|split_timeout_lo
 suffix:semicolon
+DECL|member|expire
+r_int
+r_int
+id|expire
+suffix:semicolon
+singleline_comment|// Calculated from split_timeout
 DECL|member|cycle_time
 id|quadlet_t
 id|cycle_time

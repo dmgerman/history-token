@@ -1872,20 +1872,6 @@ id|drive
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEFAULT
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_queued_on
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

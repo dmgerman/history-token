@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/nb85e_uart.h&gt;
+macro_line|#include &lt;asm/v850e_uart.h&gt;
 macro_line|#include &quot;mach.h&quot;
 r_static
 r_void
@@ -63,7 +63,7 @@ id|rte_cb_early_init
 r_void
 )paren
 (brace
-id|nb85e_intc_disable_irqs
+id|v850e_intc_disable_irqs
 (paren
 )paren
 suffix:semicolon
@@ -85,6 +85,7 @@ op_star
 id|cmdline
 )paren
 (brace
+macro_line|#ifdef CONFIG_RTE_MB_A_PCI
 multiline_comment|/* Probe for Mother-A, and print a message if we find it.  */
 op_star
 (paren
@@ -145,35 +146,12 @@ l_string|&quot; RTE-MOTHER-A motherboard&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined (CONFIG_V850E_NB85E_UART_CONSOLE) &amp;&amp; !defined (CONFIG_TIME_BOOTUP)
-id|nb85e_uart_cons_init
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_RTE_MB_A_PCI */
 id|mach_tick
 op_assign
 id|led_tick
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_TIME_BOOTUP
-DECL|function|initial_boot_done
-r_void
-id|initial_boot_done
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_V850E_NB85E_UART_CONSOLE
-id|nb85e_uart_cons_init
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#endif
 DECL|function|machine_restart
 r_void
 id|machine_restart

@@ -81,19 +81,6 @@ mdefine_line|#define S508_MINMEM&t;0x20000L
 DECL|macro|NO_PORT
 mdefine_line|#define NO_PORT         -1
 multiline_comment|/****** Function Prototypes *************************************************/
-multiline_comment|/* Module entry points. These are called by the OS and must be public. */
-r_int
-id|init_module
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Hardware-specific functions */
 r_static
 r_int
@@ -1281,21 +1268,13 @@ id|MAX_S514_CARDS
 suffix:semicolon
 multiline_comment|/******* Kernel Loadable Module Entry Points ********************************/
 multiline_comment|/*============================================================================&n; * Module &squot;insert&squot; entry point.&n; * o print announcement&n; * o initialize static data&n; * o calibrate SDLA shared memory access delay.&n; *&n; * Return:&t;0&t;Ok&n; *&t;&t;&lt; 0&t;error.&n; * Context:&t;process&n; */
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|function|sdladrv_init
 r_int
 id|sdladrv_init
 c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_int
 id|i
@@ -1366,14 +1345,30 @@ suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
 multiline_comment|/*============================================================================&n; * Module &squot;remove&squot; entry point.&n; * o release all remaining system resources&n; */
-DECL|function|cleanup_module
+DECL|function|sdladrv_cleanup
+r_static
 r_void
-id|cleanup_module
+id|sdladrv_cleanup
+c_func
 (paren
 r_void
 )paren
 (brace
 )brace
+DECL|variable|sdladrv_init
+id|module_init
+c_func
+(paren
+id|sdladrv_init
+)paren
+suffix:semicolon
+DECL|variable|sdladrv_cleanup
+id|module_cleanup
+c_func
+(paren
+id|sdladrv_cleanup
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/******* Kernel APIs ********************************************************/
 multiline_comment|/*============================================================================&n; * Set up adapter.&n; * o detect adapter type&n; * o verify hardware configuration options&n; * o check for hardware conflicts&n; * o set up adapter shared memory&n; * o test adapter memory&n; * o load firmware&n; * Return:&t;0&t;ok.&n; *&t;&t;&lt; 0&t;error&n; */

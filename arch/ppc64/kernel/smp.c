@@ -698,11 +698,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|function|smp_chrp_probe
+DECL|function|smp_openpic_probe
 r_static
 r_int
 id|__init
-id|smp_chrp_probe
+id|smp_openpic_probe
 c_func
 (paren
 r_void
@@ -1081,6 +1081,21 @@ id|nr_cpus
 op_increment
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_void
+id|xics_request_IPIs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|xics_request_IPIs
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|nr_cpus
 suffix:semicolon
@@ -1255,7 +1270,7 @@ id|smp_openpic_message_pass
 suffix:semicolon
 id|smp_ops-&gt;probe
 op_assign
-id|smp_chrp_probe
+id|smp_openpic_probe
 suffix:semicolon
 )brace
 r_else

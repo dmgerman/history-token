@@ -242,7 +242,7 @@ id|ier
 suffix:semicolon
 DECL|member|rev
 r_int
-r_char
+r_int
 id|rev
 suffix:semicolon
 DECL|member|lcr

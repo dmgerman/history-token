@@ -415,6 +415,8 @@ c_func
 (paren
 op_amp
 id|src
+comma
+l_int|NULL
 )paren
 op_logical_or
 op_logical_neg
@@ -425,6 +427,8 @@ c_func
 (paren
 op_amp
 id|dest
+comma
+l_int|NULL
 )paren
 )paren
 r_goto

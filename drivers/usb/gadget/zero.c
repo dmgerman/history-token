@@ -29,7 +29,7 @@ macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;19 Feb 2003&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;Bastille Day 2003&quot;
 DECL|variable|shortname
 r_static
 r_const
@@ -146,10 +146,10 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * PXA-250 UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * This has fifteen fixed-function full speed endpoints, and it&n; * can support all USB transfer types.&n; *&n; * It only supports three configurations (numbered 1, 2, or 3)&n; * with two interfaces each ... there&squot;s partial hardware support&n; * for set_configuration and set_interface, preventing some more&n; * interesting config/interface/endpoint arrangements.&n; */
-macro_line|#ifdef&t;CONFIG_USB_ZERO_PXA250
+multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * This has fifteen fixed-function full speed endpoints, and it&n; * can support all USB transfer types.&n; *&n; * These supports three or four configurations, with fixed numbers.&n; * The hardware interprets SET_INTERFACE, net effect is that you&n; * can&squot;t use altsettings or reset the interfaces independently.&n; * So stick to a single interface.&n; */
+macro_line|#ifdef&t;CONFIG_USB_ZERO_PXA2XX
 DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;pxa250&quot;
+mdefine_line|#define CHIP&t;&t;&t;&quot;pxa2xx&quot;
 DECL|macro|DRIVER_VERSION_NUM
 mdefine_line|#define DRIVER_VERSION_NUM&t;0x0103
 DECL|macro|EP0_MAXPACKET
@@ -329,6 +329,13 @@ id|qlen
 op_assign
 l_int|32
 suffix:semicolon
+DECL|variable|pattern
+r_static
+r_int
+id|pattern
+op_assign
+l_int|0
+suffix:semicolon
 id|module_param
 (paren
 id|buflen
@@ -343,6 +350,17 @@ suffix:semicolon
 id|module_param
 (paren
 id|qlen
+comma
+id|uint
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+)paren
+suffix:semicolon
+id|module_param
+(paren
+id|pattern
 comma
 id|uint
 comma
@@ -957,7 +975,7 @@ id|strings
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * config descriptors are also handcrafted.  these must agree with code&n; * that sets configurations, and with code managing interface altsettings.&n; * other complexity may come from:&n; *&n; *  - high speed support, including &quot;other speed config&quot; rules&n; *  - multiple configurations&n; *  - interfaces with alternate settings&n; *  - embedded class or vendor-specific descriptors&n; *&n; * this handles high speed, and has a second config that could as easily&n; * have been an alternate interface setting.&n; *&n; * NOTE:  to demonstrate (and test) more USB capabilities, this driver&n; * should include an altsetting to test interrupt transfers, including&n; * high bandwidth modes at high speed.  (Maybe work like Intel&squot;s test&n; * device?)&n; */
+multiline_comment|/*&n; * config descriptors are also handcrafted.  these must agree with code&n; * that sets configurations, and with code managing interfaces and their&n; * altsettings.  other complexity may come from:&n; *&n; *  - high speed support, including &quot;other speed config&quot; rules&n; *  - multiple configurations&n; *  - interfaces with alternate settings&n; *  - embedded class or vendor-specific descriptors&n; *&n; * this handles high speed, and has a second config that could as easily&n; * have been an alternate interface setting (on most hardware).&n; *&n; * NOTE:  to demonstrate (and test) more USB capabilities, this driver&n; * should include an altsetting to test interrupt transfers, including&n; * high bandwidth modes at high speed.  (Maybe work like Intel&squot;s test&n; * device?)&n; */
 r_static
 r_int
 DECL|function|config_buf
@@ -1362,6 +1380,12 @@ id|req
 r_int
 id|i
 suffix:semicolon
+id|u8
+op_star
+id|buf
+op_assign
+id|req-&gt;buf
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1375,44 +1399,67 @@ id|req-&gt;actual
 suffix:semicolon
 id|i
 op_increment
+comma
+id|buf
+op_increment
 )paren
 (brace
+r_switch
+c_cond
+(paren
+id|pattern
+)paren
+(brace
+multiline_comment|/* all-zeroes has no synchronization issues */
+r_case
+l_int|0
+suffix:colon
 r_if
 c_cond
 (paren
-(paren
-(paren
-id|u8
 op_star
-)paren
-id|req-&gt;buf
-)paren
-(braket
-id|i
-)braket
-op_ne
+id|buf
+op_eq
 l_int|0
 )paren
-(brace
+r_continue
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* mod63 stays in sync with short-terminated transfers,&n;&t;&t; * or otherwise when host and gadget agree on how large&n;&t;&t; * each usb transfer request should be.  resync is done&n;&t;&t; * with set_interface or set_config.&n;&t;&t; */
+r_case
+l_int|1
+suffix:colon
+r_if
+c_cond
+(paren
+op_star
+id|buf
+op_eq
+(paren
+id|u8
+)paren
+(paren
+id|i
+op_mod
+l_int|63
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|ERROR
 (paren
 id|dev
 comma
-l_string|&quot;nonzero OUT byte from host, &quot;
-l_string|&quot;buf [%d] = %d&bslash;n&quot;
+l_string|&quot;bad OUT byte, buf [%d] = %d&bslash;n&quot;
 comma
 id|i
 comma
-(paren
-(paren
-id|u8
 op_star
-)paren
-id|req-&gt;buf
-)paren
-(braket
-id|i
-)braket
+id|buf
 )paren
 suffix:semicolon
 id|usb_ep_set_halt
@@ -1424,7 +1471,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0
@@ -1452,6 +1498,24 @@ op_star
 id|req
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+id|u8
+op_star
+id|buf
+op_assign
+id|req-&gt;buf
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|pattern
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
 id|memset
 (paren
 id|req-&gt;buf
@@ -1461,6 +1525,41 @@ comma
 id|req-&gt;length
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|req-&gt;length
+suffix:semicolon
+id|i
+op_increment
+)paren
+op_star
+id|buf
+op_increment
+op_assign
+(paren
+id|u8
+)paren
+(paren
+id|i
+op_mod
+l_int|63
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* if there is only one request in the queue, there&squot;ll always be an&n; * irq delay between end of one request and start of the next.&n; * that prevents using hardware dma queues.&n; */
 DECL|function|source_sink_complete
@@ -1532,6 +1631,11 @@ suffix:semicolon
 multiline_comment|/* this endpoint is normally active while we&squot;re configured */
 r_case
 op_minus
+id|ECONNABORTED
+suffix:colon
+multiline_comment|/* hardware forced ep reset */
+r_case
+op_minus
 id|ECONNRESET
 suffix:colon
 multiline_comment|/* request dequeued */
@@ -1553,6 +1657,22 @@ comma
 id|req-&gt;actual
 comma
 id|req-&gt;length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ep
+op_eq
+id|dev-&gt;out_ep
+)paren
+id|check_read_data
+(paren
+id|dev
+comma
+id|ep
+comma
+id|req
 )paren
 suffix:semicolon
 id|free_ep_req
@@ -1688,6 +1808,27 @@ suffix:semicolon
 id|req-&gt;complete
 op_assign
 id|source_sink_complete
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|strcmp
+(paren
+id|ep-&gt;name
+comma
+id|EP_IN_NAME
+)paren
+op_eq
+l_int|0
+)paren
+id|reinit_write_data
+(paren
+id|ep-&gt;driver_data
+comma
+id|ep
+comma
+id|req
+)paren
 suffix:semicolon
 id|status
 op_assign
@@ -2128,6 +2269,16 @@ multiline_comment|/* FALLTHROUGH */
 multiline_comment|/* NOTE:  since this driver doesn&squot;t maintain an explicit record&n;&t; * of requests it submitted (just maintains qlen count), we&n;&t; * rely on the hardware driver to clean up on disconnect or&n;&t; * endpoint disable.&n;&t; */
 r_case
 op_minus
+id|ECONNABORTED
+suffix:colon
+multiline_comment|/* hardware forced ep reset */
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+multiline_comment|/* request dequeued */
+r_case
+op_minus
 id|ESHUTDOWN
 suffix:colon
 multiline_comment|/* disconnect from host */
@@ -2502,7 +2653,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* change our operational config.  this code must agree with the code&n; * that returns config descriptors, and altsetting code.&n; *&n; * it&squot;s also responsible for power management interactions. some&n; * configurations might not work with our current power sources.&n; *&n; * note that some device controller hardware will constrain what this&n; * code can do, perhaps by disallowing more than one configuration or&n; * by limiting configuration choices (like the pxa250).&n; */
+multiline_comment|/* change our operational config.  this code must agree with the code&n; * that returns config descriptors, and altsetting code.&n; *&n; * it&squot;s also responsible for power management interactions. some&n; * configurations might not work with our current power sources.&n; *&n; * note that some device controller hardware will constrain what this&n; * code can do, perhaps by disallowing more than one configuration or&n; * by limiting configuration choices (like the pxa2xx).&n; */
 r_static
 r_int
 DECL|function|zero_set_config
@@ -3061,7 +3212,7 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* until we add altsetting support, or other interfaces,&n;&t; * only 0/0 are possible.&n;&t; */
+multiline_comment|/* until we add altsetting support, or other interfaces,&n;&t; * only 0/0 are possible.  pxa2xx only supports 0/0 (poorly)&n;&t; * and already killed pending endpoint I/O.&n;&t; */
 r_case
 id|USB_REQ_SET_INTERFACE
 suffix:colon

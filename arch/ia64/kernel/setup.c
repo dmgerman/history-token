@@ -22,16 +22,13 @@ macro_line|#include &lt;asm/patch.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; (IA64_CPU_SIZE &gt; PAGE_SIZE)
 macro_line|# error &quot;struct cpuinfo_ia64 too big!&quot;
 macro_line|#endif
-r_extern
-r_char
-id|_end
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|__per_cpu_offset
 r_int
@@ -910,8 +907,6 @@ id|find_memory
 r_void
 )paren
 (brace
-DECL|macro|KERNEL_END
-macro_line|#&t;define KERNEL_END&t;(&amp;_end)
 r_int
 r_int
 id|bootmap_size
@@ -1077,7 +1072,7 @@ r_int
 id|ia64_imva
 c_func
 (paren
-id|KERNEL_END
+id|_end
 )paren
 suffix:semicolon
 id|n
@@ -1326,19 +1321,6 @@ id|cmdline_p
 r_extern
 r_int
 r_int
-op_star
-id|__start___vtop_patchlist
-(braket
-)braket
-comma
-op_star
-id|__end____vtop_patchlist
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|ia64_iobase
 suffix:semicolon
 r_int
@@ -1361,7 +1343,7 @@ comma
 (paren
 id|u64
 )paren
-id|__end____vtop_patchlist
+id|__end___vtop_patchlist
 )paren
 suffix:semicolon
 op_star
@@ -1421,85 +1403,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* XXX fix me */
-id|init_mm.start_code
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_stext
-suffix:semicolon
-id|init_mm.end_code
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_etext
-suffix:semicolon
-id|init_mm.end_data
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_edata
-suffix:semicolon
-id|init_mm.brk
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_end
-suffix:semicolon
-id|code_resource.start
-op_assign
-id|virt_to_bus
-c_func
-(paren
-op_amp
-id|_text
-)paren
-suffix:semicolon
-id|code_resource.end
-op_assign
-id|virt_to_bus
-c_func
-(paren
-op_amp
-id|_etext
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-id|data_resource.start
-op_assign
-id|virt_to_bus
-c_func
-(paren
-op_amp
-id|_etext
-)paren
-suffix:semicolon
-id|data_resource.end
-op_assign
-id|virt_to_bus
-c_func
-(paren
-op_amp
-id|_edata
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* process SAL system table: */
 id|ia64_sal_init
 c_func
@@ -2645,16 +2548,6 @@ r_void
 )paren
 (brace
 r_extern
-r_char
-id|__per_cpu_start
-(braket
-)braket
-comma
-id|__phys_per_cpu_start
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|__init
 id|ia64_mmu_init
@@ -2684,12 +2577,6 @@ op_star
 id|cpu_data
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-r_extern
-r_char
-id|__per_cpu_end
-(braket
-)braket
-suffix:semicolon
 r_int
 id|cpu
 suffix:semicolon
@@ -3189,18 +3076,6 @@ id|check_bugs
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|__start___mckinley_e9_bundles
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_char
-id|__end___mckinley_e9_bundles
-(braket
-)braket
-suffix:semicolon
 id|ia64_patch_mckinley_e9
 c_func
 (paren

@@ -114,6 +114,12 @@ id|error
 r_goto
 id|fail
 suffix:semicolon
+id|scsi_scan_host
+c_func
+(paren
+id|shost
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0

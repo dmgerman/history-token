@@ -5812,8 +5812,8 @@ c_func
 id|objp
 )paren
 suffix:semicolon
-id|BUG_ON
-c_func
+r_if
+c_cond
 (paren
 id|GET_PAGE_CACHE
 c_func
@@ -5823,7 +5823,61 @@ id|page
 op_ne
 id|cachep
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mismatch in kmem_cache_free: expected cache %p, got %p&bslash;n&quot;
+comma
+id|GET_PAGE_CACHE
+c_func
+(paren
+id|page
+)paren
+comma
+id|cachep
+)paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%p is %s.&bslash;n&quot;
+comma
+id|cachep
+comma
+id|cachep-&gt;name
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%p is %s.&bslash;n&quot;
+comma
+id|GET_PAGE_CACHE
+c_func
+(paren
+id|page
+)paren
+comma
+id|GET_PAGE_CACHE
+c_func
+(paren
+id|page
+)paren
+op_member_access_from_pointer
+id|name
+)paren
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|slabp
 op_assign
 id|GET_PAGE_SLAB
@@ -9625,7 +9679,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : tunables &lt;batchcount&gt; &lt;limit &lt;sharedfactor&gt;&quot;
+l_string|&quot; : tunables &lt;batchcount&gt; &lt;limit&gt; &lt;sharedfactor&gt;&quot;
 )paren
 suffix:semicolon
 id|seq_puts
@@ -9650,7 +9704,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : cpustat &lt;allochit &lt;allocmiss &lt;freehit &lt;freemiss&gt;&quot;
+l_string|&quot; : cpustat &lt;allochit&gt; &lt;allocmiss&gt; &lt;freehit &lt;freemiss&gt;&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -139,9 +139,9 @@ multiline_comment|/* thread information allocation */
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(tsk) ((struct thread_info *) __get_free_pages(GFP_KERNEL,1))
+mdefine_line|#define alloc_thread_info(task) ((struct thread_info *)kmalloc(THREAD_SIZE, GFP_KERNEL))
 DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), 1)
+mdefine_line|#define free_thread_info(info)&t;kfree(info)
 DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info

@@ -5,7 +5,6 @@ macro_line|#include &quot;hisax.h&quot;
 DECL|macro|FSM_TIMER_DEBUG
 mdefine_line|#define FSM_TIMER_DEBUG 0
 r_int
-id|__init
 DECL|function|FsmNew
 id|FsmNew
 c_func

@@ -4206,7 +4206,7 @@ l_int|8
 op_or
 id|cmd
 (braket
-l_int|6
+l_int|8
 )braket
 )paren
 suffix:semicolon
@@ -9677,6 +9677,13 @@ id|hpnt
 )paren
 suffix:semicolon
 )brace
+r_else
+id|scsi_scan_host
+c_func
+(paren
+id|hpnt
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

@@ -826,20 +826,11 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 macro_line|#ifdef MODULE
-multiline_comment|/*&n; * pcxe_init() is our init_module():&n; */
-DECL|macro|pcxe_init
-mdefine_line|#define pcxe_init init_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*****************************************************************************/
-DECL|function|cleanup_module
+DECL|function|pcxe_cleanup
+r_static
 r_void
-id|cleanup_module
+id|pcxe_cleanup
 c_func
 (paren
 )paren
@@ -931,6 +922,21 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * pcxe_init() is our init_module():&n; */
+DECL|variable|pcxe_init
+id|module_init
+c_func
+(paren
+id|pcxe_init
+)paren
+suffix:semicolon
+DECL|variable|pcxe_cleanup
+id|module_cleanup
+c_func
+(paren
+id|pcxe_cleanup
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|function|chan
 r_static

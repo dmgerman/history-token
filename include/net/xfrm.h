@@ -79,6 +79,10 @@ suffix:semicolon
 multiline_comment|/* Parameters of this state. */
 r_struct
 (brace
+DECL|member|reqid
+id|u32
+id|reqid
+suffix:semicolon
 DECL|member|mode
 id|u8
 id|mode
@@ -96,10 +100,6 @@ comma
 id|ealgo
 comma
 id|calgo
-suffix:semicolon
-DECL|member|reqid
-id|u16
-id|reqid
 suffix:semicolon
 DECL|member|family
 id|u16
@@ -498,7 +498,7 @@ id|find_acq
 id|u8
 id|mode
 comma
-id|u16
+id|u32
 id|reqid
 comma
 id|u8
@@ -789,7 +789,7 @@ id|xfrm_address_t
 id|saddr
 suffix:semicolon
 DECL|member|reqid
-id|__u16
+id|__u32
 id|reqid
 suffix:semicolon
 multiline_comment|/* Mode: transport/tunnel */
@@ -3867,7 +3867,7 @@ c_func
 id|u8
 id|mode
 comma
-id|u16
+id|u32
 id|reqid
 comma
 id|u8

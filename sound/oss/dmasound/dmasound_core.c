@@ -3492,6 +3492,18 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|SOUND_PCM_READ_RATE
+suffix:colon
+r_return
+id|IOCTL_OUT
+c_func
+(paren
+id|arg
+comma
+id|dmasound.soft.speed
+)paren
+suffix:semicolon
+r_case
 id|SNDCTL_DSP_SPEED
 suffix:colon
 multiline_comment|/* changing this on the fly will have weird effects on the sound.&n;&t;&t;   Where there are rate conversions implemented in soft form - it&n;&t;&t;   will cause the _ctx_xxx() functions to be substituted.&n;&t;&t;   However, there doesn&squot;t appear to be any reason to dis-allow it from&n;&t;&t;   a driver pov.&n;&t;&t;*/
@@ -5233,7 +5245,7 @@ id|MAX_CATCH_RADIUS
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal catch radius, using default = %d&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid catch radius, using default = %d&bslash;n&quot;
 comma
 id|catchRadius
 )paren
@@ -5263,7 +5275,7 @@ id|MIN_BUFFERS
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal number of read buffers, using default = %d&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid number of read buffers, using default = %d&bslash;n&quot;
 comma
 id|numReadBufs
 )paren
@@ -5309,7 +5321,7 @@ id|MAX_BUFSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal read buffer size, using default = %d&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid read buffer size, using default = %d&bslash;n&quot;
 comma
 id|readBufSize
 )paren
@@ -5348,7 +5360,7 @@ id|MAX_CATCH_RADIUS
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal catch radius, using default = %d&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid catch radius, using default = %d&bslash;n&quot;
 comma
 id|catchRadius
 )paren
@@ -5379,7 +5391,7 @@ id|MIN_BUFFERS
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal number of buffers, using default = %d&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid number of buffers, using default = %d&bslash;n&quot;
 comma
 id|numWriteBufs
 )paren
@@ -5425,7 +5437,7 @@ id|MAX_BUFSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal write buffer size, using default = %d&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid write buffer size, using default = %d&bslash;n&quot;
 comma
 id|writeBufSize
 )paren
@@ -5445,7 +5457,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal number of arguments&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid number of arguments&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

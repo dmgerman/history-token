@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 r_void
 id|smp_local_timer_interrupt
 c_func
@@ -177,10 +178,6 @@ r_int
 r_int
 id|prof_cpu_mask
 suffix:semicolon
-r_extern
-r_char
-id|_stext
-suffix:semicolon
 id|profile_hook
 c_func
 (paren
@@ -240,7 +237,6 @@ op_sub_assign
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|nip

@@ -3417,6 +3417,10 @@ l_string|&quot;acm&quot;
 comma
 id|acm_tty_driver-&gt;name
 op_assign
+l_string|&quot;ttyACM&quot;
+comma
+id|acm_tty_driver-&gt;devfs_name
+op_assign
 l_string|&quot;usb/acm/&quot;
 comma
 id|acm_tty_driver-&gt;major

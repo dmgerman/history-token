@@ -145,10 +145,10 @@ DECL|struct|msdos_sb_info
 r_struct
 id|msdos_sb_info
 (brace
-DECL|member|cluster_size
+DECL|member|sec_per_clus
 r_int
 r_int
-id|cluster_size
+id|sec_per_clus
 suffix:semicolon
 multiline_comment|/* sectors/cluster */
 DECL|member|cluster_bits
@@ -156,7 +156,13 @@ r_int
 r_int
 id|cluster_bits
 suffix:semicolon
-multiline_comment|/* sectors/cluster */
+multiline_comment|/* log2(cluster_size) */
+DECL|member|cluster_size
+r_int
+r_int
+id|cluster_size
+suffix:semicolon
+multiline_comment|/* cluster size */
 DECL|member|fats
 DECL|member|fat_bits
 r_int

@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * Hardware-level driver for the COMX and HICOMX cards&n; * for Linux kernel 2.2.X&n; *&n; * Original authors:  Arpad Bakay &lt;bakay.arpad@synergon.hu&gt;,&n; *                    Peter Bajan &lt;bajan.peter@synergon.hu&gt;,&n; * Rewritten by: Tivadar Szemethy &lt;tiv@itc.hu&gt;&n; * Currently maintained by: Gergely Madarasz &lt;gorgo@itc.hu&gt;&n; *&n; * Copyright (C) 1995-2000 ITConsult-Pro Co. &lt;info@itc.hu&gt;&n; *&n; * Contributors:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 0.86&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Version 0.80 (99/06/11):&n; *&t;&t;- port back to kernel, add support builtin driver &n; *&t;&t;- cleaned up the source code a bit&n; *&n; * Version 0.81 (99/06/22):&n; *&t;&t;- cleaned up the board load functions, no more long reset&n; *&t;&t;  timeouts&n; *&t;&t;- lower modem lines on close&n; *&t;&t;- some interrupt handling fixes&n; *&n; * Version 0.82 (99/08/24):&n; *&t;&t;- fix multiple board support&n; *&n; * Version 0.83 (99/11/30):&n; *&t;&t;- interrupt handling and locking fixes during initalization&n; *&t;&t;- really fix multiple board support&n; * &n; * Version 0.84 (99/12/02):&n; *&t;&t;- some workarounds for problematic hardware/firmware&n; *&n; * Version 0.85 (00/01/14):&n; *&t;&t;- some additional workarounds :/&n; *&t;&t;- printk cleanups&n; * Version 0.86 (00/08/15):&n; * &t;&t;- resource release on failure at COMX_init&n; */
+multiline_comment|/*&n; * Hardware-level driver for the COMX and HICOMX cards&n; * for Linux kernel 2.2.X&n; *&n; * Original authors:  Arpad Bakay &lt;bakay.arpad@synergon.hu&gt;,&n; *                    Peter Bajan &lt;bajan.peter@synergon.hu&gt;,&n; * Rewritten by: Tivadar Szemethy &lt;tiv@itc.hu&gt;&n; * Currently maintained by: Gergely Madarasz &lt;gorgo@itc.hu&gt;&n; *&n; * Copyright (C) 1995-2000 ITConsult-Pro Co. &lt;info@itc.hu&gt;&n; *&n; * Contributors:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 0.86&n; * Daniele Bellucci         &lt;bellucda@tiscali.it&gt;   - 0.87&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Version 0.80 (99/06/11):&n; *&t;&t;- port back to kernel, add support builtin driver &n; *&t;&t;- cleaned up the source code a bit&n; *&n; * Version 0.81 (99/06/22):&n; *&t;&t;- cleaned up the board load functions, no more long reset&n; *&t;&t;  timeouts&n; *&t;&t;- lower modem lines on close&n; *&t;&t;- some interrupt handling fixes&n; *&n; * Version 0.82 (99/08/24):&n; *&t;&t;- fix multiple board support&n; *&n; * Version 0.83 (99/11/30):&n; *&t;&t;- interrupt handling and locking fixes during initalization&n; *&t;&t;- really fix multiple board support&n; * &n; * Version 0.84 (99/12/02):&n; *&t;&t;- some workarounds for problematic hardware/firmware&n; *&n; * Version 0.85 (00/01/14):&n; *&t;&t;- some additional workarounds :/&n; *&t;&t;- printk cleanups&n; * Version 0.86 (00/08/15):&n; * &t;&t;- resource release on failure at COMX_init&n; *&n; * Version 0.87 (03/07/09)&n; *              - audit copy_from_user in comxhw_write_proc&n; */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;0.86&quot;
+mdefine_line|#define VERSION &quot;0.87&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -5494,6 +5494,9 @@ id|hw-&gt;firmware-&gt;data
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -5505,6 +5508,10 @@ id|buffer
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|hw-&gt;firmware-&gt;len
 op_assign

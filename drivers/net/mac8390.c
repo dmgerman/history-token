@@ -1488,7 +1488,7 @@ c_func
 l_string|&quot;Macintosh NS8390-based Nubus Ethernet driver&quot;
 )paren
 suffix:semicolon
-id|MODUEL_LICENSE
+id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;

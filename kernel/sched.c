@@ -3773,6 +3773,13 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+DECL|variable|kstat
+id|EXPORT_PER_CPU_SYMBOL
+c_func
+(paren
+id|kstat
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks:&n; */
 DECL|macro|EXPIRED_STARVING
 mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;&t;(STARVATION_LIMIT &amp;&amp; ((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1)))
@@ -6948,7 +6955,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sys_sched_get_priority_mix - return minimum RT priority.&n; * @policy: scheduling class.&n; *&n; * this syscall returns the minimum rt_priority that can be used&n; * by a given scheduling class.&n; */
+multiline_comment|/**&n; * sys_sched_get_priority_min - return minimum RT priority.&n; * @policy: scheduling class.&n; *&n; * this syscall returns the minimum rt_priority that can be used&n; * by a given scheduling class.&n; */
 DECL|function|sys_sched_get_priority_min
 id|asmlinkage
 r_int
@@ -8887,7 +8894,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Debug: sleeping function called from illegal&quot;
+l_string|&quot;Debug: sleeping function called from invalid&quot;
 l_string|&quot; context at %s:%d&bslash;n&quot;
 comma
 id|file

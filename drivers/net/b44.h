@@ -283,7 +283,7 @@ mdefine_line|#define  MDIO_DATA_SB_MASK&t;0xc0000000 /* Start Bits */
 DECL|macro|MDIO_DATA_SB_SHIFT
 mdefine_line|#define  MDIO_DATA_SB_SHIFT&t;30
 DECL|macro|MDIO_DATA_SB_START
-mdefine_line|#define  MDIO_DATA_SB_START&t;0x10000000 /* Start Of Frame */
+mdefine_line|#define  MDIO_DATA_SB_START&t;0x40000000 /* Start Of Frame */
 DECL|macro|B44_EMAC_IMASK
 mdefine_line|#define B44_EMAC_IMASK&t;0x0418UL /* EMAC Interrupt Mask */
 DECL|macro|B44_EMAC_ISTAT

@@ -1195,7 +1195,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;pmtu discvovery on SA IPCOMP/%08x/&quot;
+l_string|&quot;pmtu discovery on SA IPCOMP/%08x/&quot;
 l_string|&quot;%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x&bslash;n&quot;
 comma
 id|spi

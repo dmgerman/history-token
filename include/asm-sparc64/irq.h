@@ -97,6 +97,8 @@ DECL|macro|IMAP_VALID
 mdefine_line|#define IMAP_VALID&t;&t;0x80000000&t;/* IRQ Enabled&t;&t;*/
 DECL|macro|IMAP_TID_UPA
 mdefine_line|#define IMAP_TID_UPA&t;&t;0x7c000000&t;/* UPA TargetID&t;&t;*/
+DECL|macro|IMAP_TID_JBUS
+mdefine_line|#define IMAP_TID_JBUS&t;&t;0x7c000000&t;/* JBUS TargetID&t;*/
 DECL|macro|IMAP_AID_SAFARI
 mdefine_line|#define IMAP_AID_SAFARI&t;&t;0x7c000000&t;/* Safari AgentID&t;*/
 DECL|macro|IMAP_NID_SAFARI

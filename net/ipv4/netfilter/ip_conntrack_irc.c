@@ -143,8 +143,8 @@ comma
 l_string|&quot;SCHAT &quot;
 )brace
 suffix:semicolon
-DECL|macro|MAXMATCHLEN
-mdefine_line|#define MAXMATCHLEN&t;6
+DECL|macro|MINMATCHLEN
+mdefine_line|#define MINMATCHLEN&t;5
 DECL|variable|ip_irc_lock
 id|DECLARE_LOCK
 c_func
@@ -250,9 +250,22 @@ id|data
 op_eq
 l_char|&squot; &squot;
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|data
+op_ge
+id|data_end
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|data
 op_increment
 suffix:semicolon
+)brace
 op_star
 id|port
 op_assign
@@ -480,6 +493,7 @@ id|skb-&gt;len
 op_minus
 id|dataoff
 suffix:semicolon
+multiline_comment|/* strlen(&quot;&bslash;1DCC SENT t AAAAAAAA P&bslash;1&bslash;n&quot;)=24&n;&t; * 5+MINMATCHLEN+strlen(&quot;t AAAAAAAA P&bslash;1&bslash;n&quot;)=14 */
 r_while
 c_loop
 (paren
@@ -489,9 +503,9 @@ OL
 id|data_limit
 op_minus
 (paren
-l_int|22
+l_int|19
 op_plus
-id|MAXMATCHLEN
+id|MINMATCHLEN
 )paren
 )paren
 )paren
@@ -520,6 +534,7 @@ id|data
 op_add_assign
 l_int|5
 suffix:semicolon
+multiline_comment|/* we have at least (19+MINMATCHLEN)-5 bytes valid data left */
 id|DEBUGP
 c_func
 (paren
@@ -619,6 +634,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* we have at least &n;&t;&t;&t; * (19+MINMATCHLEN)-5-dccprotos[i].matchlen bytes valid&n;&t;&t;&t; * data left (== 14/13 bytes) */
 r_if
 c_cond
 (paren

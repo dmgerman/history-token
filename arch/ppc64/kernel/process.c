@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 DECL|variable|last_task_used_math
 r_struct
 id|task_struct
@@ -1802,24 +1803,6 @@ id|end_of_stack
 suffix:semicolon
 )brace
 )brace
-r_extern
-r_char
-id|_stext
-(braket
-)braket
-comma
-id|_etext
-(braket
-)braket
-comma
-id|__init_begin
-(braket
-)braket
-comma
-id|__init_end
-(braket
-)braket
-suffix:semicolon
 DECL|function|ppc_find_proc_name
 r_char
 op_star

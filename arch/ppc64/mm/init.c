@@ -36,6 +36,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_dma.h&gt;
 macro_line|#endif
@@ -58,32 +59,6 @@ suffix:semicolon
 r_extern
 id|pgd_t
 id|swapper_pg_dir
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_char
-id|__init_begin
-comma
-id|__init_end
-suffix:semicolon
-r_extern
-r_char
-id|_start
-(braket
-)braket
-comma
-id|_end
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_char
-id|_stext
-(braket
-)braket
-comma
-id|etext
 (braket
 )braket
 suffix:semicolon
@@ -1573,10 +1548,7 @@ op_assign
 r_int
 r_int
 )paren
-(paren
-op_amp
 id|__init_begin
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1588,10 +1560,7 @@ OL
 r_int
 r_int
 )paren
-(paren
-op_amp
 id|__init_end
-)paren
 suffix:semicolon
 id|addr
 op_add_assign
@@ -1635,10 +1604,16 @@ id|printk
 l_string|&quot;Freeing unused kernel memory: %luk freed&bslash;n&quot;
 comma
 (paren
-op_amp
+(paren
+r_int
+r_int
+)paren
 id|__init_end
 op_minus
-op_amp
+(paren
+r_int
+r_int
+)paren
 id|__init_begin
 )paren
 op_rshift
@@ -2583,9 +2558,10 @@ c_cond
 id|addr
 OL
 (paren
-id|ulong
+r_int
+r_int
 )paren
-id|etext
+id|_etext
 )paren
 id|codepages
 op_increment
@@ -2600,7 +2576,6 @@ op_ge
 r_int
 r_int
 )paren
-op_amp
 id|__init_begin
 op_logical_and
 id|addr
@@ -2609,7 +2584,6 @@ OL
 r_int
 r_int
 )paren
-op_amp
 id|__init_end
 )paren
 id|initpages
