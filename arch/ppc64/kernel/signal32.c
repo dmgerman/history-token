@@ -651,10 +651,6 @@ multiline_comment|/* an array of ELF_NGREG unsigned ints (32 bits) */
 id|sigset_t
 id|set
 suffix:semicolon
-r_int
-r_int
-id|prevsp
-suffix:semicolon
 id|sc
 op_assign
 (paren
@@ -7866,7 +7862,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Put another sigcontext on the stack */
+multiline_comment|/* Put a sigcontext on the stack */
 op_star
 id|newspp
 op_sub_assign
