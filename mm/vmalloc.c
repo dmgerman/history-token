@@ -1333,6 +1333,14 @@ comma
 id|align
 )paren
 suffix:semicolon
+id|size
+op_assign
+id|PAGE_ALIGN
+c_func
+(paren
+id|size
+)paren
+suffix:semicolon
 id|area
 op_assign
 id|kmalloc
@@ -1360,11 +1368,6 @@ id|area
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * We always allocate a guard page.&n;&t; */
-id|size
-op_add_assign
-id|PAGE_SIZE
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1385,6 +1388,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * We always allocate a guard page.&n;&t; */
+id|size
+op_add_assign
+id|PAGE_SIZE
+suffix:semicolon
 id|write_lock
 c_func
 (paren
@@ -1727,6 +1735,11 @@ c_func
 op_amp
 id|vmlist_lock
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Remove the guard page.&n;&t; */
+id|tmp-&gt;size
+op_sub_assign
+id|PAGE_SIZE
 suffix:semicolon
 r_return
 id|tmp
