@@ -357,7 +357,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Doing ethertap_open()...&quot;
+l_string|&quot;%s: Doing ethertap_open()...&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * xfrm4_input.c&n; *&n; * Changes:&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;Split up af-specific portion&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&n; *&t;&t;Add Encapsulation support&n; * &t;&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
@@ -24,6 +25,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|xfrm4_rcv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm4_rcv
+)paren
+suffix:semicolon
 DECL|function|ipip_ecn_decapsulate
 r_static
 r_inline
