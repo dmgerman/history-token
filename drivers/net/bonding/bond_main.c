@@ -4665,8 +4665,8 @@ c_func
 (paren
 id|KERN_WARNING
 id|DRV_NAME
-l_string|&quot;: Warning: failed to get speed/duplex from %s, speed &quot;
-l_string|&quot;forced to 100Mbps, duplex forced to Full.&bslash;n&quot;
+l_string|&quot;: Warning: failed to get speed and duplex from %s, &quot;
+l_string|&quot;assumed to be 100Mb/sec and Full.&bslash;n&quot;
 comma
 id|new_slave-&gt;dev-&gt;name
 )paren
