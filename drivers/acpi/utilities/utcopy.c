@@ -1252,6 +1252,9 @@ id|dest_desc-&gt;string.pointer
 op_assign
 id|ACPI_MEM_ALLOCATE
 (paren
+(paren
+id|acpi_size
+)paren
 id|source_desc-&gt;string.length
 op_plus
 l_int|1
@@ -1276,6 +1279,9 @@ id|dest_desc-&gt;string.pointer
 comma
 id|source_desc-&gt;string.pointer
 comma
+(paren
+id|acpi_size
+)paren
 id|source_desc-&gt;string.length
 op_plus
 l_int|1

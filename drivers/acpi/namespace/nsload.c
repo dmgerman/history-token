@@ -92,6 +92,7 @@ id|table_desc-&gt;aml_start
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Ignore table if there is no AML contained within */
 r_if
 c_cond
 (paren
@@ -99,18 +100,18 @@ op_logical_neg
 id|table_desc-&gt;aml_length
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_WARNING
 (paren
 (paren
-id|ACPI_DB_ERROR
+l_string|&quot;Zero-length AML block in table [%4.4s]&bslash;n&quot;
 comma
-l_string|&quot;Zero-length AML block&bslash;n&quot;
+id|table_desc-&gt;pointer-&gt;signature
 )paren
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_BAD_PARAMETER
+id|AE_OK
 )paren
 suffix:semicolon
 )brace

@@ -41,11 +41,11 @@ mdefine_line|#define DBTEST_OUTPUT_LEVEL(lvl)        if (acpi_gbl_db_opt_verbose
 DECL|macro|VERBOSE_PRINT
 mdefine_line|#define VERBOSE_PRINT(fp)               DBTEST_OUTPUT_LEVEL(lvl) {&bslash;&n;&t;&t;&t;  acpi_os_printf PARAM_LIST(fp);}
 DECL|macro|EX_NO_SINGLE_STEP
-mdefine_line|#define EX_NO_SINGLE_STEP       1
+mdefine_line|#define EX_NO_SINGLE_STEP               1
 DECL|macro|EX_SINGLE_STEP
-mdefine_line|#define EX_SINGLE_STEP          2
+mdefine_line|#define EX_SINGLE_STEP                  2
 multiline_comment|/* Prototypes */
-multiline_comment|/*&n; * dbapi - external debugger interfaces&n; */
+multiline_comment|/*&n; * dbxface - external debugger interfaces&n; */
 id|acpi_status
 id|acpi_db_initialize
 (paren
@@ -73,6 +73,29 @@ id|op
 comma
 id|u32
 id|op_type
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_db_start_command
+(paren
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
+r_union
+id|acpi_parse_object
+op_star
+id|op
+)paren
+suffix:semicolon
+r_void
+id|acpi_db_method_end
+(paren
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * dbcmds - debug commands and output routines&n; */
@@ -522,6 +545,25 @@ op_star
 id|context
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_db_execution_walk
+(paren
+id|acpi_handle
+id|obj_handle
+comma
+id|u32
+id|nesting_level
+comma
+r_void
+op_star
+id|context
+comma
+r_void
+op_star
+op_star
+id|return_value
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * dbfileio - Debugger file I/O commands&n; */
 id|acpi_object_type
 id|acpi_db_match_argument
@@ -568,11 +610,31 @@ id|filename
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_db_get_acpi_table
+id|acpi_db_get_table_from_file
 (paren
 r_char
 op_star
 id|filename
+comma
+r_struct
+id|acpi_table_header
+op_star
+op_star
+id|table
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_db_read_table_from_file
+(paren
+r_char
+op_star
+id|filename
+comma
+r_struct
+id|acpi_table_header
+op_star
+op_star
+id|table
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * dbhistry - debugger HISTORY command&n; */
