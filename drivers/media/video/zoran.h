@@ -248,7 +248,7 @@ mdefine_line|#define RELEASE_VERSION 5&t;/* release version */
 DECL|macro|ZORAN_NAME
 mdefine_line|#define ZORAN_NAME    &quot;ZORAN&quot;&t;/* name of the device */
 DECL|macro|ZR_DEVNAME
-mdefine_line|#define ZR_DEVNAME(zr) pci_name((zr)-&gt;pci_dev)
+mdefine_line|#define ZR_DEVNAME(zr) ((zr)-&gt;name)
 DECL|macro|BUZ_MAX_WIDTH
 mdefine_line|#define   BUZ_MAX_WIDTH   (zr-&gt;timing-&gt;Wa)
 DECL|macro|BUZ_MAX_HEIGHT
@@ -1130,7 +1130,6 @@ r_int
 id|id
 suffix:semicolon
 multiline_comment|/* number of this device */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 DECL|member|name
 r_char
 id|name
@@ -1139,7 +1138,6 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* name of this device */
-macro_line|#endif
 DECL|member|pci_dev
 r_struct
 id|pci_dev
