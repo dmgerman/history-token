@@ -422,7 +422,7 @@ id|flags
 suffix:semicolon
 id|t-&gt;next
 op_assign
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_vec
@@ -430,7 +430,7 @@ id|tasklet_vec
 dot
 id|list
 suffix:semicolon
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_vec
@@ -481,7 +481,7 @@ id|flags
 suffix:semicolon
 id|t-&gt;next
 op_assign
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_hi_vec
@@ -489,7 +489,7 @@ id|tasklet_hi_vec
 dot
 id|list
 suffix:semicolon
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_hi_vec
@@ -541,7 +541,7 @@ c_func
 suffix:semicolon
 id|list
 op_assign
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_vec
@@ -549,7 +549,7 @@ id|tasklet_vec
 dot
 id|list
 suffix:semicolon
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_vec
@@ -652,7 +652,7 @@ c_func
 suffix:semicolon
 id|t-&gt;next
 op_assign
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_vec
@@ -660,7 +660,7 @@ id|tasklet_vec
 dot
 id|list
 suffix:semicolon
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_vec
@@ -712,7 +712,7 @@ c_func
 suffix:semicolon
 id|list
 op_assign
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_hi_vec
@@ -720,7 +720,7 @@ id|tasklet_hi_vec
 dot
 id|list
 suffix:semicolon
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_hi_vec
@@ -823,7 +823,7 @@ c_func
 suffix:semicolon
 id|t-&gt;next
 op_assign
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_hi_vec
@@ -831,7 +831,7 @@ id|tasklet_hi_vec
 dot
 id|list
 suffix:semicolon
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|tasklet_hi_vec

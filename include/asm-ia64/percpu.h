@@ -17,8 +17,8 @@ id|NR_CPUS
 suffix:semicolon
 DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu)&t;(*(__typeof__(&amp;(var))) ((void *) &amp;(var) + __per_cpu_offset[cpu]))
-DECL|macro|this_cpu
-mdefine_line|#define this_cpu(var)&t;&t;(var)
+DECL|macro|__get_cpu_var
+mdefine_line|#define __get_cpu_var(var)&t;(var)
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PERCPU_H */
 eof

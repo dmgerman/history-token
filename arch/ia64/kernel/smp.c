@@ -177,7 +177,7 @@ op_star
 id|pending_ipis
 op_assign
 op_amp
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|ipi_operation

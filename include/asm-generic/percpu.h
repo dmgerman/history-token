@@ -15,7 +15,7 @@ suffix:semicolon
 multiline_comment|/* var is in discarded region: offset to particular copy we want */
 DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu) (*RELOC_HIDE(&amp;var, __per_cpu_offset[cpu]))
-DECL|macro|this_cpu
-mdefine_line|#define this_cpu(var) per_cpu(var, smp_processor_id())
+DECL|macro|__get_cpu_var
+mdefine_line|#define __get_cpu_var(var) per_cpu(var, smp_processor_id())
 macro_line|#endif /* _ASM_GENERIC_PERCPU_H_ */
 eof
