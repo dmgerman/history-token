@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *&t;jfs_dtree.c: directory B+-tree manager&n; *&n; * B+-tree with variable length key directory:&n; *&n; * each directory page is structured as an array of 32-byte&n; * directory entry slots initialized as a freelist&n; * to avoid search/compaction of free space at insertion.&n; * when an entry is inserted, a number of slots are allocated&n; * from the freelist as required to store variable length data&n; * of the entry; when the entry is deleted, slots of the entry&n; * are returned to freelist.&n; *&n; * leaf entry stores full name as key and file serial number&n; * (aka inode number) as data.&n; * internal/router entry stores sufffix compressed name&n; * as key and simple extent descriptor as data.&n; *&n; * each directory page maintains a sorted entry index table&n; * which stores the start slot index of sorted entries&n; * to allow binary search on the table.&n; *&n; * directory starts as a root/leaf page in on-disk inode&n; * inline data area.&n; * when it becomes full, it starts a leaf of a external extent&n; * of length of 1 block. each time the first leaf becomes full,&n; * it is extended rather than split (its size is doubled),&n; * until its length becoms 4 KBytes, from then the extent is split&n; * with new 4 Kbyte extent when it becomes full&n; * to reduce external fragmentation of small directories.&n; *&n; * blah, blah, blah, for linear scan of directory in pieces by&n; * readdir().&n; *&n; *&n; *&t;case-insensitive directory file system&n; *&n; * names are stored in case-sensitive way in leaf entry.&n; * but stored, searched and compared in case-insensitive (uppercase) order&n; * (i.e., both search key and entry key are folded for search/compare):&n; * (note that case-sensitive order is BROKEN in storage, e.g.,&n; *  sensitive: Ad, aB, aC, aD -&gt; insensitive: aB, aC, aD, Ad&n; *&n; *  entries which folds to the same key makes up a equivalent class&n; *  whose members are stored as contiguous cluster (may cross page boundary)&n; *  but whose order is arbitrary and acts as duplicate, e.g.,&n; *  abc, Abc, aBc, abC)&n; *&n; * once match is found at leaf, requires scan forward/backward&n; * either for, in case-insensitive search, duplicate&n; * or for, in case-sensitive search, for exact match&n; *&n; * router entry must be created/stored in case-insensitive way&n; * in internal entry:&n; * (right most key of left page and left most key of right page&n; * are folded, and its suffix compression is propagated as router&n; * key in parent)&n; * (e.g., if split occurs &lt;abc&gt; and &lt;aBd&gt;, &lt;ABD&gt; trather than &lt;aB&gt;&n; * should be made the router key for the split)&n; *&n; * case-insensitive search:&n; *&n; * &t;fold search key;&n; *&n; *&t;case-insensitive search of B-tree:&n; *&t;for internal entry, router key is already folded;&n; *&t;for leaf entry, fold the entry key before comparison.&n; *&n; *&t;if (leaf entry case-insensitive match found)&n; *&t;&t;if (next entry satisfies case-insensitive match)&n; *&t;&t;&t;return EDUPLICATE;&n; *&t;&t;if (prev entry satisfies case-insensitive match)&n; *&t;&t;&t;return EDUPLICATE;&n; *&t;&t;return match;&n; *&t;else&n; *&t;&t;return no match;&n; *&n; * &t;serialization:&n; * target directory inode lock is being held on entry/exit&n; * of all main directory service routines.&n; *&n; *&t;log based recovery:&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
@@ -1204,6 +1204,26 @@ l_int|1
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * It&squot;s time to move the inline table to an external&n;&t;&t; * page and begin to build the xtree&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|dbAlloc
+c_func
+(paren
+id|ip
+comma
+l_int|0
+comma
+id|sbi-&gt;nbperpage
+comma
+op_amp
+id|xaddr
+)paren
+)paren
+r_goto
+id|clean_up
+suffix:semicolon
+multiline_comment|/* No space */
 multiline_comment|/*&n;&t;&t; * Save the table, we&squot;re going to overwrite it with the&n;&t;&t; * xtree root&n;&t;&t; */
 r_struct
 id|dir_table_slot
@@ -1236,10 +1256,6 @@ id|ip
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Allocate the first block &amp; add it to the xtree&n;&t;&t; */
-id|xaddr
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1263,6 +1279,7 @@ l_int|0
 )paren
 )paren
 (brace
+multiline_comment|/* This really shouldn&squot;t fail */
 id|jfs_warn
 c_func
 (paren
@@ -2574,9 +2591,11 @@ multiline_comment|/* update max. number of pages to split */
 r_if
 c_cond
 (paren
-id|btstack-&gt;nsplit
-op_ge
-l_int|8
+id|BT_STACK_FULL
+c_func
+(paren
+id|btstack
+)paren
 )paren
 (brace
 multiline_comment|/* Something&squot;s corrupted, mark filesytem dirty so&n;&t;&t;&t; * chkdsk will fix it.&n;&t;&t;&t; */
@@ -2586,6 +2605,12 @@ c_func
 id|sb
 comma
 l_string|&quot;stack overrun in dtSearch!&quot;
+)paren
+suffix:semicolon
+id|BT_STACK_DUMP
+c_func
+(paren
+id|btstack
 )paren
 suffix:semicolon
 id|rc
@@ -3336,9 +3361,17 @@ id|xaddr
 )paren
 )paren
 )paren
+(brace
+id|DT_PUTPAGE
+c_func
+(paren
+id|smp
+)paren
+suffix:semicolon
 r_goto
 id|freeKeyName
 suffix:semicolon
+)brace
 id|pxdlist.maxnpxd
 op_assign
 l_int|1
@@ -12200,6 +12233,41 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * descend down to leftmost child page&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|BT_STACK_FULL
+c_func
+(paren
+id|btstack
+)paren
+)paren
+(brace
+id|DT_PUTPAGE
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;dtReadFirst: btstack overrun&quot;
+)paren
+suffix:semicolon
+id|BT_STACK_DUMP
+c_func
+(paren
+id|btstack
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* push (bn, index) of the parent page/entry */
 id|BT_PUSH
 c_func

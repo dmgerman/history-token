@@ -776,6 +776,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;You&squot;re using the deprecated elanfreq command line option. Use elanfreq.max_freq instead, please!&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -934,11 +941,13 @@ id|elanfreq_driver
 )paren
 suffix:semicolon
 )brace
-id|MODULE_PARM
+id|module_param
 (paren
 id|max_freq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
