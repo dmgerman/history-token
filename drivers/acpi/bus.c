@@ -19,7 +19,7 @@ l_string|&quot;acpi_bus&quot;
 )paren
 r_extern
 r_void
-id|eisa_set_level_irq
+id|acpi_pic_set_level_irq
 c_func
 (paren
 r_int
@@ -2145,7 +2145,7 @@ id|acpi_fadt.sci_int
 )paren
 suffix:semicolon
 r_else
-id|eisa_set_level_irq
+id|acpi_pic_set_level_irq
 c_func
 (paren
 id|acpi_fadt.sci_int
