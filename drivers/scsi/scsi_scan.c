@@ -6534,7 +6534,7 @@ id|id
 comma
 id|lun
 )paren
-op_ne
+op_eq
 l_int|NULL
 )paren
 (brace
