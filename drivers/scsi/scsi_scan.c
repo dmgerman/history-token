@@ -4823,14 +4823,6 @@ comma
 id|sdev-&gt;lun
 )paren
 suffix:semicolon
-id|sdev-&gt;de
-op_assign
-id|devfs_mk_dir
-c_func
-(paren
-id|sdev-&gt;devfs_name
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * End driverfs/devfs code.&n;&t; */
 r_if
 c_cond

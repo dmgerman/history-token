@@ -4953,14 +4953,6 @@ comma
 id|drive-&gt;lun
 )paren
 suffix:semicolon
-id|drive-&gt;de
-op_assign
-id|devfs_mk_dir
-c_func
-(paren
-id|drive-&gt;devfs_name
-)paren
-suffix:semicolon
 )brace
 )brace
 id|blk_register_region

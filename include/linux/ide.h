@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/hdsmart.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
@@ -1469,11 +1468,6 @@ l_int|64
 )braket
 suffix:semicolon
 multiline_comment|/* devfs crap */
-DECL|member|de
-id|devfs_handle_t
-id|de
-suffix:semicolon
-multiline_comment|/* will go away soon */
 DECL|member|hwif
 r_struct
 id|hwif_s

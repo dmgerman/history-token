@@ -5618,10 +5618,6 @@ id|sdkp-&gt;index
 op_assign
 id|index
 suffix:semicolon
-id|gd-&gt;de
-op_assign
-id|sdp-&gt;de
-suffix:semicolon
 id|gd-&gt;major
 op_assign
 id|sd_major
@@ -5699,6 +5695,14 @@ l_int|26
 )paren
 suffix:semicolon
 )brace
+id|strcpy
+c_func
+(paren
+id|gd-&gt;devfs_name
+comma
+id|sdp-&gt;devfs_name
+)paren
+suffix:semicolon
 id|sd_init_onedisk
 c_func
 (paren
@@ -5715,8 +5719,6 @@ suffix:semicolon
 id|gd-&gt;flags
 op_assign
 id|GENHD_FL_DRIVERFS
-op_or
-id|GENHD_FL_DEVFS
 suffix:semicolon
 r_if
 c_cond
