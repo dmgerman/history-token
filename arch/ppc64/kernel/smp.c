@@ -49,12 +49,6 @@ id|cpu_online_map
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|boot_cpuid
-r_int
-id|boot_cpuid
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|smp_ops
 r_static
 r_struct

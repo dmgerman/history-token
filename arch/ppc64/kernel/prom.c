@@ -318,6 +318,12 @@ id|bootdevice
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|boot_cpuid
+r_int
+id|boot_cpuid
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|allnodes
 r_struct
 id|device_node
@@ -7104,6 +7110,7 @@ id|active
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 id|RELOC
 c_func
 (paren
@@ -7114,6 +7121,7 @@ l_int|1
 op_lshift
 id|_prom-&gt;cpu
 suffix:semicolon
+macro_line|#endif
 id|RELOC
 c_func
 (paren

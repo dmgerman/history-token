@@ -553,6 +553,10 @@ r_struct
 id|prom_t
 id|prom
 suffix:semicolon
+r_extern
+r_int
+id|boot_cpuid
+suffix:semicolon
 multiline_comment|/* Prototypes */
 r_extern
 r_void

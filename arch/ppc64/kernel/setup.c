@@ -863,7 +863,6 @@ r_int
 r_int
 id|min
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -908,7 +907,7 @@ id|cpu_id
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif
+macro_line|#ifdef CONFIG_SMP
 id|pvr
 op_assign
 id|paca
@@ -918,6 +917,15 @@ id|cpu_id
 dot
 id|pvr
 suffix:semicolon
+macro_line|#else
+id|pvr
+op_assign
+id|_get_PVR
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|maj
 op_assign
 (paren
@@ -951,15 +959,6 @@ id|m
 comma
 l_string|&quot;cpu&bslash;t&bslash;t: &quot;
 )paren
-suffix:semicolon
-id|pvr
-op_assign
-id|paca
-(braket
-id|cpu_id
-)braket
-dot
-id|pvr
 suffix:semicolon
 r_switch
 c_cond
