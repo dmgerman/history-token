@@ -500,7 +500,6 @@ op_lshift
 l_int|12
 )paren
 suffix:semicolon
-macro_line|#ifndef __ia64__
 DECL|variable|loops_per_jiffy
 id|EXPORT_SYMBOL
 c_func
@@ -508,7 +507,6 @@ c_func
 id|loops_per_jiffy
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* This is the number of bits of precision for the loops_per_jiffy.  Each&n;   bit takes on average 1.5/HZ seconds.  This (like the original) is a little&n;   better than 1% */
 DECL|macro|LPS_PREC
 mdefine_line|#define LPS_PREC 8
