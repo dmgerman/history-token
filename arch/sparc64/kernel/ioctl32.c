@@ -25205,6 +25205,11 @@ id|TCSBRK
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|TCSBRKP
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|TCXONC
 )paren
 id|COMPATIBLE_IOCTL
