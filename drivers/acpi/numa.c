@@ -460,6 +460,7 @@ DECL|function|acpi_numa_init
 id|acpi_numa_init
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
