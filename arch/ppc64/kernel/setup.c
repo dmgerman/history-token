@@ -1948,9 +1948,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;interrupt_controller    = 0x%ld&bslash;n&quot;
+l_string|&quot;ppc64_interrupt_controller    = 0x%ld&bslash;n&quot;
 comma
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 )paren
 suffix:semicolon
 id|printk

@@ -62,6 +62,10 @@ r_int
 r_int
 id|lpevent_count
 suffix:semicolon
+DECL|variable|ppc64_interrupt_controller
+id|u64
+id|ppc64_interrupt_controller
+suffix:semicolon
 DECL|function|show_interrupts
 r_int
 id|show_interrupts
@@ -1225,7 +1229,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_OPEN_PIC
 )paren

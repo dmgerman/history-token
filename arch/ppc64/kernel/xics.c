@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
@@ -2596,7 +2595,7 @@ r_void
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_PPC_XIC
 op_logical_and

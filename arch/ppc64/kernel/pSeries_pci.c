@@ -1533,7 +1533,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_OPEN_PIC
 )paren
@@ -1654,7 +1654,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_OPEN_PIC
 op_logical_and

@@ -46,7 +46,6 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/of_device.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &quot;mpic.h&quot;
 macro_line|#ifdef DEBUG
@@ -984,7 +983,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BOOTX_TEXT */
 )brace
 multiline_comment|/* Setup interrupt mapping options */
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_OPEN_PIC
 suffix:semicolon

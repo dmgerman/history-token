@@ -701,7 +701,7 @@ multiline_comment|/* Fixup ppc_md depending on the type of interrupt controller 
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_OPEN_PIC
 )paren
@@ -1075,7 +1075,7 @@ id|__irq_offset_value
 op_assign
 id|NUM_ISA_INTERRUPTS
 suffix:semicolon
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_INVALID
 suffix:semicolon
@@ -1127,7 +1127,7 @@ comma
 l_string|&quot;open-pic&quot;
 )paren
 )paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_OPEN_PIC
 suffix:semicolon
@@ -1143,7 +1143,7 @@ comma
 l_string|&quot;ppc-xicp&quot;
 )paren
 )paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_PPC_XIC
 suffix:semicolon

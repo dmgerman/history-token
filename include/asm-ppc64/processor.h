@@ -803,6 +803,10 @@ r_extern
 r_int
 id|have_of
 suffix:semicolon
+r_extern
+id|u64
+id|ppc64_interrupt_controller
+suffix:semicolon
 r_struct
 id|task_struct
 suffix:semicolon

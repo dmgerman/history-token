@@ -54,11 +54,6 @@ id|u64
 id|serialPortAddr
 suffix:semicolon
 multiline_comment|/* Phy addr of serial port   0x38 */
-DECL|member|interrupt_controller
-id|u64
-id|interrupt_controller
-suffix:semicolon
-multiline_comment|/* Type of int controller    0x40 */
 )brace
 suffix:semicolon
 r_extern
