@@ -4007,12 +4007,6 @@ id|amd
 )paren
 )paren
 (brace
-id|snd_amd7930_free
-c_func
-(paren
-id|amd
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
@@ -4025,6 +4019,12 @@ c_func
 (paren
 id|irq_prop-&gt;pri
 )paren
+)paren
+suffix:semicolon
+id|snd_amd7930_free
+c_func
+(paren
+id|amd
 )paren
 suffix:semicolon
 r_return
