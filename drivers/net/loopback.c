@@ -612,10 +612,7 @@ c_func
 (paren
 id|loopback_stats
 comma
-id|get_cpu
-c_func
-(paren
-)paren
+id|i
 )paren
 suffix:semicolon
 id|stats-&gt;rx_bytes
@@ -633,11 +630,6 @@ suffix:semicolon
 id|stats-&gt;tx_packets
 op_add_assign
 id|lb_stats-&gt;tx_packets
-suffix:semicolon
-id|put_cpu
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 r_return
