@@ -1041,13 +1041,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|kernel_map_pages
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_map_pages
-)paren
-suffix:semicolon
 macro_line|#endif
 DECL|variable|change_page_attr
 id|EXPORT_SYMBOL
