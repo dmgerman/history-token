@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * xfrm6_input.c: based on net/ipv4/xfrm4_input.c&n; *&n; * Authors:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro &lt;kunihiro@ipinfusion.com&gt;&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;IPv6 support&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
@@ -61,9 +62,9 @@ id|inner_iph
 )paren
 suffix:semicolon
 )brace
-DECL|function|xfrm6_rcv
+DECL|function|xfrm6_rcv_spi
 r_int
-id|xfrm6_rcv
+id|xfrm6_rcv_spi
 c_func
 (paren
 r_struct
@@ -76,6 +77,9 @@ r_int
 r_int
 op_star
 id|nhoffp
+comma
+id|u32
+id|spi
 )paren
 (brace
 r_struct
@@ -90,8 +94,6 @@ r_int
 id|err
 suffix:semicolon
 id|u32
-id|spi
-comma
 id|seq
 suffix:semicolon
 r_struct
@@ -135,9 +137,16 @@ id|skb-&gt;nh.raw
 id|nhoff
 )braket
 suffix:semicolon
+id|seq
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|spi
+op_logical_and
 (paren
 id|err
 op_assign
@@ -652,6 +661,42 @@ suffix:semicolon
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+)brace
+DECL|variable|xfrm6_rcv_spi
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm6_rcv_spi
+)paren
+suffix:semicolon
+DECL|function|xfrm6_rcv
+r_int
+id|xfrm6_rcv
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+comma
+r_int
+r_int
+op_star
+id|nhoffp
+)paren
+(brace
+r_return
+id|xfrm6_rcv_spi
+c_func
+(paren
+id|pskb
+comma
+id|nhoffp
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 eof
