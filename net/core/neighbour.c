@@ -3309,7 +3309,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Generic update routine.&n;   -- lladdr is new lladdr or NULL, if it is not supplied.&n;   -- new    is new state.&n;   -- flags&n;&t;NEIGH_UPDATE_F_OVERRIDE allows to override existing lladdr,&n;&t;&t;&t;&t;if it is different.&n;&t;NEIGH_UPDATE_F_SUSPECT_CONNECTED will suspect existing &quot;connected&quot;&n;&t;&t;&t;&t;lladdr instead of overriding it &n;&t;&t;&t;&t;if it is different.&n;&t;NEIGH_UPDATE_F_ADMIN&t;means that the change is administrative.&n;&n;   Caller MUST hold reference count on the entry.&n; */
+multiline_comment|/* Generic update routine.&n;   -- lladdr is new lladdr or NULL, if it is not supplied.&n;   -- new    is new state.&n;   -- flags&n;&t;NEIGH_UPDATE_F_OVERRIDE allows to override existing lladdr,&n;&t;&t;&t;&t;if it is different.&n;&t;NEIGH_UPDATE_F_SUSPECT_CONNECTED will suspect existing &quot;connected&quot;&n;&t;&t;&t;&t;lladdr instead of overriding it &n;&t;&t;&t;&t;if it is different.&n;&t;NEIGH_UPDATE_F_RETAIN_STATE allows to retain current state&n;&t;&t;&t;&t;if lladdr is unchanged.&n;&t;NEIGH_UPDATE_F_ADMIN&t;means that the change is administrative.&n;&n;   Caller MUST hold reference count on the entry.&n; */
 DECL|function|neigh_update
 r_int
 id|neigh_update
@@ -3613,9 +3613,17 @@ op_eq
 id|NUD_STALE
 op_logical_and
 (paren
+(paren
+id|flags
+op_amp
+id|NEIGH_UPDATE_F_RETAIN_STATE
+)paren
+op_logical_or
+(paren
 id|old
 op_amp
 id|NUD_CONNECTED
+)paren
 )paren
 )paren
 r_new

@@ -4232,6 +4232,8 @@ id|NUD_STALE
 comma
 id|NEIGH_UPDATE_F_SUSPECT_CONNECTED
 op_or
+id|NEIGH_UPDATE_F_RETAIN_STATE
+op_or
 (paren
 id|msg-&gt;icmph.icmp6_override
 ques
@@ -4915,6 +4917,8 @@ id|lladdr
 comma
 id|NUD_STALE
 comma
+id|NEIGH_UPDATE_F_RETAIN_STATE
+op_or
 id|NEIGH_UPDATE_F_OVERRIDE
 )paren
 suffix:semicolon
@@ -5483,6 +5487,8 @@ id|lladdr
 comma
 id|NUD_STALE
 comma
+id|NEIGH_UPDATE_F_RETAIN_STATE
+op_or
 id|NEIGH_UPDATE_F_OVERRIDE
 )paren
 suffix:semicolon
