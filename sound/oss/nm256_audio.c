@@ -3782,7 +3782,7 @@ suffix:semicolon
 multiline_comment|/* &n; * Install a driver for the PCI device referenced by PCIDEV.&n; * VERSTR is a human-readable version string.&n; */
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|nm256_install
 id|nm256_install
 c_func
