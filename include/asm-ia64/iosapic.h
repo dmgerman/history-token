@@ -55,6 +55,7 @@ mdefine_line|#define&t;IOSAPIC_UNMASK&t;&t;&t;0
 DECL|macro|IOSAPIC_MSAK
 mdefine_line|#define&t;IOSAPIC_MSAK&t;&t;&t;1
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef CONFIG_IOSAPIC
 r_extern
 r_void
 id|__init
@@ -199,6 +200,18 @@ id|iosapic_pci_fixup
 r_int
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|iosapic_system_init
+mdefine_line|#define iosapic_system_init(pcat_compat)&t;&t;&t;do { } while (0)
+DECL|macro|iosapic_init
+mdefine_line|#define iosapic_init(address,gsi_base)&t;&t;&t;&t;do { } while (0)
+DECL|macro|iosapic_register_intr
+mdefine_line|#define iosapic_register_intr(gsi,polarity,trigger)&t;&t;(gsi)
+DECL|macro|iosapic_override_isa_irq
+mdefine_line|#define iosapic_override_isa_irq(isa_irq,gsi,polarity,trigger)&t;do { } while (0)
+DECL|macro|iosapic_register_platform_intr
+mdefine_line|#define iosapic_register_platform_intr(type,gsi,pmi,eid,id, &bslash;&n;&t;polarity,trigger)&t;&t;&t;&t;&t;(gsi)
+macro_line|#endif
 macro_line|# endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __ASM_IA64_IOSAPIC_H */
 eof

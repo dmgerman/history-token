@@ -17,36 +17,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
-id|asm
-(paren
-l_string|&quot;.weak iosapic_register_intr&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_override_isa_irq&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_register_platform_intr&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_init&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_system_init&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_version&quot;
-)paren
-suffix:semicolon
 DECL|variable|pm_idle
 r_void
 (paren
@@ -719,11 +689,6 @@ c_func
 id|header
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|iosapic_init
-)paren
 id|iosapic_init
 c_func
 (paren
@@ -780,26 +745,6 @@ c_func
 id|header
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iosapic_register_platform_intr
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|PREFIX
-l_string|&quot;No ACPI platform interrupt support&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Get vector assignment for this interrupt, set attributes,&n;&t; * and program the IOSAPIC routing table.&n;&t; */
 id|vector
 op_assign
@@ -890,16 +835,6 @@ c_func
 (paren
 id|header
 )paren
-suffix:semicolon
-multiline_comment|/* Ignore if the platform doesn&squot;t support overrides */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iosapic_override_isa_irq
-)paren
-r_return
-l_int|0
 suffix:semicolon
 id|iosapic_override_isa_irq
 c_func
@@ -1035,11 +970,6 @@ op_assign
 id|acpi_madt-&gt;flags.pcat_compat
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|iosapic_system_init
-)paren
 id|iosapic_system_init
 c_func
 (paren
@@ -2059,16 +1989,6 @@ id|acpi_kbd_controller_present
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iosapic_register_intr
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* just ignore the rest */
 id|sci_irq
 op_assign
 id|fadt-&gt;sci_int
@@ -2713,15 +2633,6 @@ c_func
 (paren
 id|gsi
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iosapic_register_intr
-)paren
-r_return
-l_int|0
 suffix:semicolon
 multiline_comment|/* Turn it on */
 id|vector
