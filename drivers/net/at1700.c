@@ -1142,11 +1142,6 @@ l_int|1
 suffix:semicolon
 r_else
 (brace
-id|ret
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 r_goto
 id|err_out
 suffix:semicolon
@@ -1261,11 +1256,6 @@ l_int|8
 r_goto
 id|err_out
 suffix:semicolon
-id|ret
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 )brace
 )brace
 r_else
@@ -1288,9 +1278,8 @@ l_int|0x07
 op_ne
 id|ioaddr
 )paren
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|err_out
 suffix:semicolon
 id|irq
 op_assign
