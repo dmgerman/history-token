@@ -837,9 +837,9 @@ l_string|&quot;Sony&quot;
 comma
 l_string|&quot;Memorystick NW-MS7&quot;
 comma
-id|US_SC_UFI
+id|US_SC_DEVICE
 comma
-id|US_PR_CB
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
