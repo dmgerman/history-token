@@ -7109,6 +7109,7 @@ id|ncomm
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg2

@@ -2384,6 +2384,11 @@ op_star
 id|page
 comma
 r_struct
+id|writeback_control
+op_star
+id|wbc
+comma
+r_struct
 id|buffer_head
 op_star
 id|bh_arr
@@ -2519,12 +2524,18 @@ id|i
 suffix:semicolon
 )brace
 r_else
+(brace
 id|end_page_writeback
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+id|wbc-&gt;pages_skipped
+op_increment
+suffix:semicolon
+multiline_comment|/* We didn&squot;t write this page */
+)brace
 )brace
 multiline_comment|/*&n; * Allocate &amp; map buffers for page given the extent map. Write it out.&n; * except for the original page of a writepage, this is called on&n; * delalloc/unwritten pages only, for the original page it is possible&n; * that the page has no mapping at all.&n; */
 id|STATIC
@@ -2965,6 +2976,8 @@ id|xfs_submit_page
 c_func
 (paren
 id|page
+comma
+id|wbc
 comma
 id|bh_arr
 comma
@@ -3899,6 +3912,8 @@ id|xfs_submit_page
 c_func
 (paren
 id|page
+comma
+id|wbc
 comma
 id|bh_arr
 comma

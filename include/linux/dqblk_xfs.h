@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 1995-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2.1 of the GNU Lesser General Public License&n; * as published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU Lesser General Public&n; * License along with this program; if not, write the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307,&n; * USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 1995-2001,2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2.1 of the GNU Lesser General Public License&n; * as published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307&n; * USA&n; *&n; * Contact information: Silicon Graphics, Inc., 1500 Crittenden Lane,&n; * Mountain View, CA 94043, USA, or: http://www.sgi.com&n; */
 macro_line|#ifndef _LINUX_DQBLK_XFS_H
 DECL|macro|_LINUX_DQBLK_XFS_H
 mdefine_line|#define _LINUX_DQBLK_XFS_H
@@ -7,17 +7,17 @@ multiline_comment|/*&n; * Disk quota - quotactl(2) commands for the XFS Quota Ma
 DECL|macro|XQM_CMD
 mdefine_line|#define XQM_CMD(x)&t;((&squot;X&squot;&lt;&lt;8)+(x))&t;/* note: forms first QCMD argument */
 DECL|macro|Q_XQUOTAON
-mdefine_line|#define Q_XQUOTAON&t;XQM_CMD(0x1)&t;/* enable accounting/enforcement */
+mdefine_line|#define Q_XQUOTAON&t;XQM_CMD(1)&t;/* enable accounting/enforcement */
 DECL|macro|Q_XQUOTAOFF
-mdefine_line|#define Q_XQUOTAOFF&t;XQM_CMD(0x2)&t;/* disable accounting/enforcement */
+mdefine_line|#define Q_XQUOTAOFF&t;XQM_CMD(2)&t;/* disable accounting/enforcement */
 DECL|macro|Q_XGETQUOTA
-mdefine_line|#define Q_XGETQUOTA&t;XQM_CMD(0x3)&t;/* get disk limits and usage */
+mdefine_line|#define Q_XGETQUOTA&t;XQM_CMD(3)&t;/* get disk limits and usage */
 DECL|macro|Q_XSETQLIM
-mdefine_line|#define Q_XSETQLIM&t;XQM_CMD(0x4)&t;/* set disk limits */
+mdefine_line|#define Q_XSETQLIM&t;XQM_CMD(4)&t;/* set disk limits */
 DECL|macro|Q_XGETQSTAT
-mdefine_line|#define Q_XGETQSTAT&t;XQM_CMD(0x5)&t;/* get quota subsystem status */
+mdefine_line|#define Q_XGETQSTAT&t;XQM_CMD(5)&t;/* get quota subsystem status */
 DECL|macro|Q_XQUOTARM
-mdefine_line|#define Q_XQUOTARM&t;XQM_CMD(0x6)&t;/* free disk space used by dquots */
+mdefine_line|#define Q_XQUOTARM&t;XQM_CMD(6)&t;/* free disk space used by dquots */
 multiline_comment|/*&n; * fs_disk_quota structure:&n; *&n; * This contains the current quota information regarding a user/proj/group.&n; * It is 64-bit aligned, and all the blk units are in BBs (Basic Blocks) of&n; * 512 bytes.&n; */
 DECL|macro|FS_DQUOT_VERSION
 mdefine_line|#define FS_DQUOT_VERSION&t;1&t;/* fs_disk_quota.d_version */
@@ -168,6 +168,15 @@ DECL|macro|FS_DQ_RTBTIMER
 mdefine_line|#define FS_DQ_RTBTIMER &t;(1&lt;&lt;8)
 DECL|macro|FS_DQ_TIMER_MASK
 mdefine_line|#define FS_DQ_TIMER_MASK&t;(FS_DQ_BTIMER | FS_DQ_ITIMER | FS_DQ_RTBTIMER)
+multiline_comment|/*&n; * Warning counts are set in both super user&squot;s dquot and others. For others,&n; * warnings are set/cleared by the administrators (or automatically by going&n; * below the soft limit).  Superusers warning values set the warning limits&n; * for the rest.  In case these values are zero, the DQ_{F,B}WARNLIMIT values&n; * defined below are used. &n; * These values also apply only to the d_fieldmask field for Q_XSETQLIM.&n; */
+DECL|macro|FS_DQ_BWARNS
+mdefine_line|#define FS_DQ_BWARNS&t;(1&lt;&lt;9)
+DECL|macro|FS_DQ_IWARNS
+mdefine_line|#define FS_DQ_IWARNS&t;(1&lt;&lt;10)
+DECL|macro|FS_DQ_RTBWARNS
+mdefine_line|#define FS_DQ_RTBWARNS&t;(1&lt;&lt;11)
+DECL|macro|FS_DQ_WARNS_MASK
+mdefine_line|#define FS_DQ_WARNS_MASK&t;(FS_DQ_BWARNS | FS_DQ_IWARNS | FS_DQ_RTBWARNS)
 multiline_comment|/*&n; * Various flags related to quotactl(2).  Only relevant to XFS filesystems.&n; */
 DECL|macro|XFS_QUOTA_UDQ_ACCT
 mdefine_line|#define XFS_QUOTA_UDQ_ACCT&t;(1&lt;&lt;0)  /* user quota accounting */
@@ -177,10 +186,14 @@ DECL|macro|XFS_QUOTA_GDQ_ACCT
 mdefine_line|#define XFS_QUOTA_GDQ_ACCT&t;(1&lt;&lt;2)  /* group quota accounting */
 DECL|macro|XFS_QUOTA_GDQ_ENFD
 mdefine_line|#define XFS_QUOTA_GDQ_ENFD&t;(1&lt;&lt;3)  /* group quota limits enforcement */
+DECL|macro|XFS_QUOTA_PDQ_ACCT
+mdefine_line|#define XFS_QUOTA_PDQ_ACCT&t;(1&lt;&lt;4)  /* project quota accounting */
+DECL|macro|XFS_QUOTA_PDQ_ENFD
+mdefine_line|#define XFS_QUOTA_PDQ_ENFD&t;(1&lt;&lt;5)  /* project quota limits enforcement */
 DECL|macro|XFS_USER_QUOTA
 mdefine_line|#define XFS_USER_QUOTA&t;&t;(1&lt;&lt;0)&t;/* user quota type */
 DECL|macro|XFS_PROJ_QUOTA
-mdefine_line|#define XFS_PROJ_QUOTA&t;&t;(1&lt;&lt;1)&t;/* (IRIX) project quota type */
+mdefine_line|#define XFS_PROJ_QUOTA&t;&t;(1&lt;&lt;1)&t;/* project quota type */
 DECL|macro|XFS_GROUP_QUOTA
 mdefine_line|#define XFS_GROUP_QUOTA&t;&t;(1&lt;&lt;2)&t;/* group quota type */
 multiline_comment|/*&n; * fs_quota_stat is the struct returned in Q_XGETQSTAT for a given file system.&n; * Provides a centralized way to get meta infomation about the quota subsystem.&n; * eg. space taken up for user and group quotas, number of dquots currently&n; * incore.&n; */

@@ -90,6 +90,11 @@ id|xfs_sysctl_val_t
 id|xfs_buf_age
 suffix:semicolon
 multiline_comment|/* Metadata buffer age before flush. */
+DECL|member|inherit_nosym
+id|xfs_sysctl_val_t
+id|inherit_nosym
+suffix:semicolon
+multiline_comment|/* Inherit the &quot;nosymlinks&quot; flag. */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
@@ -163,6 +168,11 @@ op_assign
 l_int|17
 comma
 multiline_comment|/* XFS_IO_BYPASS = 18 */
+DECL|enumerator|XFS_INHERIT_NOSYM
+id|XFS_INHERIT_NOSYM
+op_assign
+l_int|19
+comma
 )brace
 suffix:semicolon
 r_extern
