@@ -3420,8 +3420,6 @@ id|id
 suffix:semicolon
 r_int
 id|err
-op_assign
-l_int|0
 suffix:semicolon
 r_const
 r_char
@@ -3553,6 +3551,11 @@ id|force_subclients
 id|i
 )braket
 )paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 r_goto
 id|ERROR_SC_1
@@ -3724,6 +3727,11 @@ l_int|0
 dot
 id|addr
 )paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EBUSY
 suffix:semicolon
 r_goto
 id|ERROR_SC_1
@@ -3930,7 +3938,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|err
+l_int|0
 suffix:semicolon
 multiline_comment|/* Undo inits in case of errors */
 id|ERROR_SC_2
@@ -4002,8 +4010,6 @@ id|data
 suffix:semicolon
 r_int
 id|err
-op_assign
-l_int|0
 suffix:semicolon
 r_const
 r_char
@@ -4045,9 +4051,16 @@ comma
 id|I2C_FUNC_SMBUS_BYTE_DATA
 )paren
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_goto
 id|ERROR0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4067,9 +4080,16 @@ comma
 l_string|&quot;w83781d&quot;
 )paren
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
 r_goto
 id|ERROR0
 suffix:semicolon
+)brace
 multiline_comment|/* Probe whether there is anything available on this address. Already&n;&t;   done for SMBus clients */
 r_if
 c_cond
@@ -4087,7 +4107,7 @@ id|is_isa
 (brace
 DECL|macro|REALLY_SLOW_IO
 mdefine_line|#define REALLY_SLOW_IO
-multiline_comment|/* We need the timeouts for at least some LM78-like chips. But only&n;&t;&t;&t;   if we read &squot;undefined&squot; registers. */
+multiline_comment|/* We need the timeouts for at least some LM78-like&n;&t;&t;&t;   chips. But only if we read &squot;undefined&squot; registers. */
 id|i
 op_assign
 id|inb_p
@@ -4111,9 +4131,16 @@ l_int|2
 op_ne
 id|i
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|ERROR1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4127,9 +4154,16 @@ l_int|3
 op_ne
 id|i
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|ERROR1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4143,9 +4177,16 @@ l_int|7
 op_ne
 id|i
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|ERROR1
 suffix:semicolon
+)brace
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO
 multiline_comment|/* Let&squot;s just hope nothing breaks here */
@@ -4207,8 +4248,13 @@ op_plus
 l_int|5
 )paren
 suffix:semicolon
-r_return
-l_int|0
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|ERROR1
 suffix:semicolon
 )brace
 )brace
@@ -4338,9 +4384,16 @@ id|W83781D_REG_CONFIG
 op_amp
 l_int|0x80
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|ERROR2
 suffix:semicolon
+)brace
 id|val1
 op_assign
 id|w83781d_read_value
@@ -4431,10 +4484,17 @@ l_int|0x06
 )paren
 )paren
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|ERROR2
 suffix:semicolon
-multiline_comment|/* If Winbond SMBus, check address at 0x48. Asus doesn&squot;t support */
+)brace
+multiline_comment|/* If Winbond SMBus, check address at 0x48.&n;&t;&t;   Asus doesn&squot;t support */
 r_if
 c_cond
 (paren
@@ -4489,9 +4549,16 @@ id|W83781D_REG_I2C_ADDR
 op_ne
 id|address
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|ERROR2
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* We have either had a force parameter, or we have already detected the&n;&t;   Winbond. Put it now into bank 0 and Vendor ID High Byte */
@@ -4569,9 +4636,16 @@ op_assign
 id|asus
 suffix:semicolon
 r_else
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|ERROR2
 suffix:semicolon
+)brace
 multiline_comment|/* mask off lower bit, not reliable */
 id|val1
 op_assign
@@ -4715,6 +4789,11 @@ comma
 id|address
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_goto
 id|ERROR2
 suffix:semicolon
@@ -4811,10 +4890,16 @@ c_func
 op_amp
 id|new_client-&gt;dev
 comma
-l_string|&quot;Internal error: unknown kind (%d)?!?&quot;
+l_string|&quot;Internal error: unknown &quot;
+l_string|&quot;kind (%d)?!?&quot;
 comma
 id|kind
 )paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
 r_goto
 id|ERROR2
