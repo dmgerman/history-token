@@ -876,6 +876,10 @@ id|fidvidctl.bits.FID
 op_assign
 id|fid
 suffix:semicolon
+id|fidvidctl.bits.VIDC
+op_assign
+l_int|0
+suffix:semicolon
 id|fidvidctl.bits.FIDC
 op_assign
 l_int|1
@@ -925,6 +929,10 @@ suffix:semicolon
 id|fidvidctl.bits.VID
 op_assign
 id|vid
+suffix:semicolon
+id|fidvidctl.bits.FIDC
+op_assign
+l_int|0
 suffix:semicolon
 id|fidvidctl.bits.VIDC
 op_assign
