@@ -3537,6 +3537,12 @@ suffix:colon
 r_case
 id|RPC_AUTH_REJECTEDVERF
 suffix:colon
+r_case
+id|RPCSEC_GSS_CREDPROBLEM
+suffix:colon
+r_case
+id|RPCSEC_GSS_CTXPROBLEM
+suffix:colon
 r_if
 c_cond
 (paren
