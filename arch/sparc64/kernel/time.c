@@ -893,14 +893,16 @@ r_int
 id|addr
 op_assign
 id|HBIRD_STICKCMP_ADDR
+op_plus
+l_int|0x8UL
 suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%2, [%0] %4&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;%0, 0x8, %0&bslash;n&bslash;t&quot;
-l_string|&quot;stxa&t;%3, [%0] %4&quot;
+l_string|&quot;stxa&t;%3, [%0] %4&bslash;n&bslash;t&quot;
+l_string|&quot;sub&t;%0, 0x8, %0&bslash;n&bslash;t&quot;
+l_string|&quot;stxa&t;%2, [%0] %4&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
