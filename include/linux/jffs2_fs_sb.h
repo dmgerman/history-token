@@ -1,9 +1,10 @@
-multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.31 2002/07/02 22:48:24 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.32 2002/07/23 14:35:34 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_SB
 DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/list.h&gt;

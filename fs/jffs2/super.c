@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.71 2002/07/23 12:57:38 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.72 2002/07/23 14:39:54 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -256,9 +256,9 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;jffs2_sb_compare: match on device %d (&bslash;&quot;%s&bslash;&quot;)&bslash;n&quot;
 comma
-id|mtd-&gt;index
+id|p-&gt;mtd-&gt;index
 comma
-id|mtd-&gt;name
+id|p-&gt;mtd-&gt;name
 )paren
 )paren
 suffix:semicolon
@@ -281,9 +281,9 @@ id|c-&gt;mtd-&gt;index
 comma
 id|c-&gt;mtd-&gt;name
 comma
-id|mtd-&gt;index
+id|p-&gt;mtd-&gt;index
 comma
-id|mtd-&gt;name
+id|p-&gt;mtd-&gt;name
 )paren
 )paren
 suffix:semicolon
