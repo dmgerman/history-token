@@ -260,7 +260,7 @@ id|client-&gt;addr
 suffix:semicolon
 id|msg.flags
 op_assign
-id|client-&gt;flags
+l_int|0
 suffix:semicolon
 r_while
 c_loop
