@@ -6008,21 +6008,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; * This does any final handling that is required.&n;&t; */
-r_if
-c_cond
-(paren
-id|tpnt-&gt;finish
-op_logical_and
-id|tpnt-&gt;nr_dev
-)paren
-(paren
-op_star
-id|tpnt-&gt;finish
-)paren
-(paren
-)paren
-suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
@@ -6042,7 +6027,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_else
 r_return
 l_int|0
 suffix:semicolon

@@ -33,12 +33,6 @@ r_int
 r_char
 id|write_prot
 suffix:semicolon
-DECL|member|has_been_registered
-r_int
-id|has_been_registered
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|WCE
 r_int
 id|WCE

@@ -1031,17 +1031,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Sizes arrays based upon number of devices&n;&t;&t;   *  detected */
-DECL|member|finish
-r_void
-(paren
-op_star
-id|finish
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Perform initialization after attachment */
 DECL|member|attach
 r_int
 (paren
