@@ -7633,8 +7633,8 @@ op_mod
 l_int|3
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * TCP Westwood&n; * Functions needed for estimating bandwidth.&n; */
-multiline_comment|/*&n; * This function initializes fields used in TCP Westwood.&n; * We can&squot;t get no information about RTT at this time so&n; * we are forced to set it to 0.&n; */
+multiline_comment|/*&n; * TCP Westwood+&n; */
+multiline_comment|/*&n; * @init_westwood&n; * This function initializes fields used in TCP Westwood+. We can&squot;t&n; * get no information about RTTmin at this time so we simply set it to&n; * TCP_WESTWOOD_INIT_RTT. This value was chosen to be too conservative&n; * since in this way we&squot;re sure it will be updated in a consistent&n; * way as soon as possible. It will reasonably happen within the first&n; * RTT period of the connection lifetime.&n; */
 DECL|function|init_westwood
 r_static
 r_void
@@ -7771,7 +7771,7 @@ id|tp-&gt;westwood.bw_ns_est
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* @westwood_update_rttmin&n; * It is used to update RTTmin. In this case we MUST NOT use&n; * WESTWOOD_RTT_MIN minimum bound since we could be on a LAN!&n; */
+multiline_comment|/* &n; * @westwood_update_rttmin&n; * It is used to update RTTmin. In this case we MUST NOT use&n; * WESTWOOD_RTT_MIN minimum bound since we could be on a LAN!&n; */
 DECL|function|westwood_update_rttmin
 r_static
 r_inline
@@ -7829,7 +7829,7 @@ r_return
 id|rttmin
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * @westwood_acked&n; * Evaluate increases for dk. It requires no lock since when it is&n; * called lock should already be held. Be careful about it!&n; */
+multiline_comment|/*&n; * @westwood_acked&n; * Evaluate increases for dk. &n; */
 DECL|function|westwood_acked
 r_static
 r_inline
@@ -7938,7 +7938,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * @westwood_update_window&n; * It updates RTT evaluation window if it is the right moment to do&n; * it. If so it calls filter for evaluating bandwidth. Be careful&n; * about __westwood_update_window() since it is called without&n; * any form of lock. It should be used only for internal purposes.&n; * Call westwood_update_window() instead.&n; */
+multiline_comment|/*&n; * @westwood_update_window&n; * It updates RTT evaluation window if it is the right moment to do&n; * it. If so it calls filter for evaluating bandwidth. &n; */
 DECL|function|__westwood_update_window
 r_static
 r_void
@@ -8035,7 +8035,7 @@ id|now
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * @__westwood_fast_bw&n; * It is called when we are in fast path. In particular it is called when&n; * header prediction is successfull. In such case infact update is&n; * straight forward and doesn&squot;t need any particular care.&n; */
+multiline_comment|/*&n; * @__tcp_westwood_fast_bw&n; * It is called when we are in fast path. In particular it is called when&n; * header prediction is successfull. In such case infact update is&n; * straight forward and doesn&squot;t need any particular care.&n; */
 DECL|function|__tcp_westwood_fast_bw
 r_void
 id|__tcp_westwood_fast_bw
@@ -8092,7 +8092,7 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * @tcp_westwood_dupack_update&n; * It updates accounted and cumul_ack when receiving a dupack.&n; */
+multiline_comment|/*&n; * @westwood_dupack_update&n; * It updates accounted and cumul_ack when receiving a dupack.&n; */
 DECL|function|westwood_dupack_update
 r_static
 r_void
@@ -8283,7 +8283,7 @@ r_return
 id|tp-&gt;westwood.cumul_ack
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * @__westwood_slow_bw&n; * It is called when something is going wrong..even if there could&n; * be no problems! Infact a simple delayed packet may trigger a&n; * dupack. But we need to be careful in such case.&n; */
+multiline_comment|/*&n; * @__tcp_westwood_slow_bw&n; * It is called when something is going wrong..even if there could&n; * be no problems! Infact a simple delayed packet may trigger a&n; * dupack. But we need to be careful in such case.&n; */
 DECL|function|__tcp_westwood_slow_bw
 r_void
 id|__tcp_westwood_slow_bw
