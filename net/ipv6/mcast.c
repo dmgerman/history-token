@@ -2754,9 +2754,6 @@ op_star
 id|ma
 )paren
 (brace
-r_int
-id|addr_type
-suffix:semicolon
 r_if
 c_cond
 (paren
