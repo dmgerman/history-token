@@ -7,7 +7,6 @@ suffix:semicolon
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/arch/uncompress.h&gt;
-macro_line|#include &lt;asm/proc/uncompress.h&gt;
 macro_line|#ifdef STANDALONE_DEBUG
 DECL|macro|puts
 mdefine_line|#define puts printf
@@ -1124,11 +1123,6 @@ suffix:semicolon
 id|__machine_arch_type
 op_assign
 id|arch_id
-suffix:semicolon
-id|proc_decomp_setup
-c_func
-(paren
-)paren
 suffix:semicolon
 id|arch_decomp_setup
 c_func
