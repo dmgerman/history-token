@@ -2318,7 +2318,7 @@ id|down
 c_func
 (paren
 op_amp
-id|nd-&gt;dentry-&gt;d_inode-&gt;i_zombie
+id|nd-&gt;dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -2416,7 +2416,7 @@ id|up
 c_func
 (paren
 op_amp
-id|nd-&gt;dentry-&gt;d_inode-&gt;i_zombie
+id|nd-&gt;dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -2936,7 +2936,7 @@ id|down
 c_func
 (paren
 op_amp
-id|nd-&gt;dentry-&gt;d_inode-&gt;i_zombie
+id|nd-&gt;dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -3086,7 +3086,7 @@ id|up
 c_func
 (paren
 op_amp
-id|nd-&gt;dentry-&gt;d_inode-&gt;i_zombie
+id|nd-&gt;dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|out
@@ -4801,7 +4801,7 @@ id|down
 c_func
 (paren
 op_amp
-id|old_nd.dentry-&gt;d_inode-&gt;i_zombie
+id|old_nd.dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|error
@@ -5083,7 +5083,7 @@ id|up
 c_func
 (paren
 op_amp
-id|old_nd.dentry-&gt;d_inode-&gt;i_zombie
+id|old_nd.dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|up_write

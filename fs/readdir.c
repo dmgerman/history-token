@@ -57,13 +57,6 @@ op_amp
 id|inode-&gt;i_sem
 )paren
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|inode-&gt;i_zombie
-)paren
-suffix:semicolon
 id|res
 op_assign
 op_minus
@@ -105,13 +98,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|inode-&gt;i_zombie
-)paren
-suffix:semicolon
 id|up
 c_func
 (paren
