@@ -9335,10 +9335,6 @@ op_star
 id|im
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|i
 comma
 id|j
@@ -9362,15 +9358,11 @@ macro_line|#else
 r_return
 suffix:semicolon
 macro_line|#endif
-id|save_flags
+id|spin_lock_irq
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+op_amp
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 id|im-&gt;regs
@@ -9566,10 +9558,11 @@ id|ALI_STOP
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irq
 c_func
 (paren
-id|flags
+op_amp
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 macro_line|#ifndef PCI_OLD_SUSPEND
@@ -9649,10 +9642,6 @@ op_star
 id|im
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|i
 comma
 id|j
@@ -9682,15 +9671,11 @@ c_func
 id|chip-&gt;pci
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irq
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+op_amp
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 r_for
@@ -9871,10 +9856,11 @@ id|ALI_MISCINT
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irq
 c_func
 (paren
-id|flags
+op_amp
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 macro_line|#ifndef PCI_OLD_SUSPEND
