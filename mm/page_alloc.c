@@ -1614,6 +1614,18 @@ comma
 id|order
 )paren
 suffix:semicolon
+id|kernel_map_pages
+c_func
+(paren
+id|page
+comma
+l_int|1
+op_lshift
+id|order
+comma
+l_int|1
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* &n; * Do the hard work of removing an element from the buddy allocator.&n; * Call me with the zone-&gt;lock already held.&n; */
 DECL|function|__rmqueue
@@ -3515,18 +3527,6 @@ c_func
 id|zonelist
 comma
 id|z
-)paren
-suffix:semicolon
-id|kernel_map_pages
-c_func
-(paren
-id|page
-comma
-l_int|1
-op_lshift
-id|order
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_return
