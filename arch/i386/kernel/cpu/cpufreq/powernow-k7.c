@@ -2458,7 +2458,7 @@ id|cpu_khz
 op_div
 id|fid_codes
 (braket
-id|fidvidstatus.bits.CFID
+id|fidvidstatus.bits.MFID
 )braket
 suffix:semicolon
 r_if
