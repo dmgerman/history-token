@@ -183,12 +183,14 @@ id|sysfs_ops
 id|class_sysfs_ops
 op_assign
 (brace
+dot
 id|show
-suffix:colon
+op_assign
 id|devclass_attr_show
 comma
+dot
 id|store
-suffix:colon
+op_assign
 id|devclass_attr_store
 comma
 )brace
