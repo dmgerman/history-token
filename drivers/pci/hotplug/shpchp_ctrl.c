@@ -10180,6 +10180,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -10222,6 +10223,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -10294,6 +10296,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10336,6 +10339,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10356,6 +10360,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10373,6 +10378,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10442,6 +10448,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10484,6 +10491,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10504,6 +10512,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10521,6 +10530,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10590,6 +10600,7 @@ op_assign
 id|hold_bus_node-&gt;base
 suffix:semicolon
 id|pci_bus_read_config_dword
+c_func
 (paren
 id|pci_bus
 comma
