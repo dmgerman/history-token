@@ -3224,19 +3224,14 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;PCI device %s&bslash;nEHCI %x.%02x, hcd state %d (driver &quot;
+l_string|&quot;bus %s device %s&bslash;n&quot;
+l_string|&quot;EHCI %x.%02x, hcd state %d (driver &quot;
 id|DRIVER_VERSION
 l_string|&quot;)&bslash;n&quot;
 comma
-id|pci_name
-c_func
-(paren
-id|to_pci_dev
-c_func
-(paren
-id|hcd-&gt;self.controller
-)paren
-)paren
+id|hcd-&gt;self.controller-&gt;bus-&gt;name
+comma
+id|hcd-&gt;self.controller-&gt;bus_id
 comma
 id|i
 op_rshift

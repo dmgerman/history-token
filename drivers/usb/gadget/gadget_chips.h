@@ -6,6 +6,13 @@ macro_line|#else
 DECL|macro|gadget_is_net2280
 mdefine_line|#define&t;gadget_is_net2280(g)&t;0
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_DUMMY_HCD
+DECL|macro|gadget_is_dummy
+mdefine_line|#define&t;gadget_is_dummy(g)&t;!strcmp(&quot;dummy_udc&quot;, (g)-&gt;name)
+macro_line|#else
+DECL|macro|gadget_is_dummy
+mdefine_line|#define&t;gadget_is_dummy(g)&t;0
+macro_line|#endif
 macro_line|#ifdef CONFIG_USB_GADGET_PXA
 DECL|macro|gadget_is_pxa
 mdefine_line|#define&t;gadget_is_pxa(g)&t;!strcmp(&quot;pxa2xx_udc&quot;, (g)-&gt;name)

@@ -31,13 +31,15 @@ multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v1.1&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Anonymous&quot;
+mdefine_line|#define DRIVER_AUTHOR &quot;Alessandro Zummo&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB ZyXEL omni.net LCD PLUS Driver&quot;
 DECL|macro|ZYXEL_VENDOR_ID
 mdefine_line|#define ZYXEL_VENDOR_ID&t;&t;0x0586
 DECL|macro|ZYXEL_OMNINET_ID
 mdefine_line|#define ZYXEL_OMNINET_ID&t;0x1000
+DECL|macro|BT_IGNITIONPRO_ID
+mdefine_line|#define BT_IGNITIONPRO_ID&t;0x2000  /* This one seems to be a re-branded ZyXEL device */
 multiline_comment|/* function prototypes */
 r_static
 r_int
@@ -157,6 +159,16 @@ c_func
 id|ZYXEL_VENDOR_ID
 comma
 id|ZYXEL_OMNINET_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|ZYXEL_VENDOR_ID
+comma
+id|BT_IGNITIONPRO_ID
 )paren
 )brace
 comma
