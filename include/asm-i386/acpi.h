@@ -274,20 +274,6 @@ op_star
 id|irq
 )paren
 suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|platform_rename_gsi
-)paren
-(paren
-r_int
-id|ioapic
-comma
-r_int
-id|gsi
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_X86_IO_APIC
 r_extern
 r_int
@@ -345,6 +331,20 @@ macro_line|#  define acpi_lapic 0
 DECL|macro|acpi_ioapic
 macro_line|#  define acpi_ioapic 0
 macro_line|#endif
+r_extern
+r_int
+(paren
+op_star
+id|platform_rename_gsi
+)paren
+(paren
+r_int
+id|ioapic
+comma
+r_int
+id|gsi
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|function|acpi_noirq_set
 r_static
