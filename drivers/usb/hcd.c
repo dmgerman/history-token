@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;&t;&t;&t;/* for UTS_SYSNAME */
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -228,12 +229,99 @@ multiline_comment|/*  __u8  bNumConfigurations; */
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* Configuration descriptor for all our root hubs */
-DECL|variable|rh_config_descriptor
+multiline_comment|/* Configuration descriptors for our root hubs */
+DECL|variable|fs_rh_config_descriptor
 r_static
 r_const
 id|u8
-id|rh_config_descriptor
+id|fs_rh_config_descriptor
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* one configuration */
+l_int|0x09
+comma
+multiline_comment|/*  __u8  bLength; */
+l_int|0x02
+comma
+multiline_comment|/*  __u8  bDescriptorType; Configuration */
+l_int|0x19
+comma
+l_int|0x00
+comma
+multiline_comment|/*  __u16 wTotalLength; */
+l_int|0x01
+comma
+multiline_comment|/*  __u8  bNumInterfaces; (1) */
+l_int|0x01
+comma
+multiline_comment|/*  __u8  bConfigurationValue; */
+l_int|0x00
+comma
+multiline_comment|/*  __u8  iConfiguration; */
+l_int|0x40
+comma
+multiline_comment|/*  __u8  bmAttributes; &n;&t;&t;&t;&t; Bit 7: Bus-powered,&n;&t;&t;&t;&t;     6: Self-powered,&n;&t;&t;&t;&t;     5 Remote-wakwup,&n;&t;&t;&t;&t;     4..0: resvd */
+l_int|0x00
+comma
+multiline_comment|/*  __u8  MaxPower; */
+multiline_comment|/* USB 1.1:&n;&t; * USB 2.0, single TT organization (mandatory):&n;&t; *&t;one interface, protocol 0&n;&t; *&n;&t; * USB 2.0, multiple TT organization (optional):&n;&t; *&t;two interfaces, protocols 1 (like single TT)&n;&t; *&t;and 2 (multiple TT mode) ... config is&n;&t; *&t;sometimes settable&n;&t; *&t;NOT IMPLEMENTED&n;&t; */
+multiline_comment|/* one interface */
+l_int|0x09
+comma
+multiline_comment|/*  __u8  if_bLength; */
+l_int|0x04
+comma
+multiline_comment|/*  __u8  if_bDescriptorType; Interface */
+l_int|0x00
+comma
+multiline_comment|/*  __u8  if_bInterfaceNumber; */
+l_int|0x00
+comma
+multiline_comment|/*  __u8  if_bAlternateSetting; */
+l_int|0x01
+comma
+multiline_comment|/*  __u8  if_bNumEndpoints; */
+l_int|0x09
+comma
+multiline_comment|/*  __u8  if_bInterfaceClass; HUB_CLASSCODE */
+l_int|0x00
+comma
+multiline_comment|/*  __u8  if_bInterfaceSubClass; */
+l_int|0x00
+comma
+multiline_comment|/*  __u8  if_bInterfaceProtocol; [usb1.1 or single tt] */
+l_int|0x00
+comma
+multiline_comment|/*  __u8  if_iInterface; */
+multiline_comment|/* one endpoint (status change endpoint) */
+l_int|0x07
+comma
+multiline_comment|/*  __u8  ep_bLength; */
+l_int|0x05
+comma
+multiline_comment|/*  __u8  ep_bDescriptorType; Endpoint */
+l_int|0x81
+comma
+multiline_comment|/*  __u8  ep_bEndpointAddress; IN Endpoint 1 */
+l_int|0x03
+comma
+multiline_comment|/*  __u8  ep_bmAttributes; Interrupt */
+l_int|0x02
+comma
+l_int|0x00
+comma
+multiline_comment|/*  __u16 ep_wMaxPacketSize; 1 + (MAX_ROOT_PORTS / 8) */
+l_int|0xff
+multiline_comment|/*  __u8  ep_bInterval; (255ms -- usb 2.0 spec) */
+)brace
+suffix:semicolon
+DECL|variable|hs_rh_config_descriptor
+r_static
+r_const
+id|u8
+id|hs_rh_config_descriptor
 (braket
 )braket
 op_assign
@@ -313,7 +401,7 @@ l_int|0x00
 comma
 multiline_comment|/*  __u16 ep_wMaxPacketSize; 1 + (MAX_ROOT_PORTS / 8) */
 l_int|0x0c
-multiline_comment|/*  __u8  ep_bInterval; (12ms -- usb 2.0 spec) */
+multiline_comment|/*  __u8  ep_bInterval; (256ms -- usb 2.0 spec) */
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -775,15 +863,36 @@ id|USB_DT_CONFIG
 op_lshift
 l_int|8
 suffix:colon
+r_if
+c_cond
+(paren
+id|hcd-&gt;driver-&gt;flags
+op_amp
+id|HCD_USB2
+)paren
+(brace
 id|bufp
 op_assign
-id|rh_config_descriptor
+id|hs_rh_config_descriptor
 suffix:semicolon
 id|len
 op_assign
 r_sizeof
-id|rh_config_descriptor
+id|hs_rh_config_descriptor
 suffix:semicolon
+)brace
+r_else
+(brace
+id|bufp
+op_assign
+id|fs_rh_config_descriptor
+suffix:semicolon
+id|len
+op_assign
+r_sizeof
+id|fs_rh_config_descriptor
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1101,26 +1210,14 @@ r_int
 )paren
 id|urb
 suffix:semicolon
+multiline_comment|/* USB 2.0 spec says 256msec; this is close enough */
 id|hcd-&gt;rh_timer.expires
 op_assign
 id|jiffies
 op_plus
-(paren
 id|HZ
-op_star
-(paren
-id|urb-&gt;interval
-OL
-l_int|30
-ques
-c_cond
-l_int|30
-suffix:colon
-id|urb-&gt;interval
-)paren
-)paren
 op_div
-l_int|1000
+l_int|4
 suffix:semicolon
 id|add_timer
 (paren
@@ -3867,8 +3964,83 @@ id|hcd
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|function|urb_unlink
+r_static
+r_void
+id|urb_unlink
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|usb_device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* Release any periodic transfer bandwidth */
+r_if
+c_cond
+(paren
+id|urb-&gt;bandwidth
+)paren
+id|usb_release_bandwidth
+(paren
+id|urb-&gt;dev
+comma
+id|urb
+comma
+id|usb_pipeisoc
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* clear all state linking urb to this dev (and hcd) */
+id|spin_lock_irqsave
+(paren
+op_amp
+id|hcd_data_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|list_del_init
+(paren
+op_amp
+id|urb-&gt;urb_list
+)paren
+suffix:semicolon
+id|dev
+op_assign
+id|urb-&gt;dev
+suffix:semicolon
+id|urb-&gt;dev
+op_assign
+l_int|NULL
+suffix:semicolon
+id|usb_dec_dev_use
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|hcd_data_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* may be called in any context with a valid urb-&gt;dev usecount */
-multiline_comment|/* caller surrenders &quot;ownership&quot; of urb (and chain at urb-&gt;next).  */
+multiline_comment|/* caller surrenders &quot;ownership&quot; of urb */
 DECL|function|hcd_submit_urb
 r_static
 r_int
@@ -3904,6 +4076,8 @@ r_int
 id|pipe
 comma
 id|temp
+comma
+id|max
 suffix:semicolon
 r_if
 c_cond
@@ -3926,6 +4100,10 @@ op_minus
 id|EINPROGRESS
 suffix:semicolon
 id|urb-&gt;actual_length
+op_assign
+l_int|0
+suffix:semicolon
+id|urb-&gt;bandwidth
 op_assign
 l_int|0
 suffix:semicolon
@@ -4024,7 +4202,199 @@ r_return
 op_minus
 id|EPIPE
 suffix:semicolon
+multiline_comment|/* FIXME there should be a sharable lock protecting us against&n;&t; * config/altsetting changes and disconnects, kicking in here.&n;&t; */
+multiline_comment|/* Sanity check, so HCDs can rely on clean data */
+id|max
+op_assign
+id|usb_maxpacket
+(paren
+id|urb-&gt;dev
+comma
+id|pipe
+comma
+id|usb_pipeout
+(paren
+id|pipe
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|max
+op_le
+l_int|0
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;bogus endpoint (bad maxpacket)&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/* &quot;high bandwidth&quot; mode, 1-3 packets/uframe? */
+r_if
+c_cond
+(paren
+id|urb-&gt;dev-&gt;speed
+op_eq
+id|USB_SPEED_HIGH
+)paren
+(brace
+r_int
+id|mult
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|temp
+)paren
+(brace
+r_case
+id|PIPE_ISOCHRONOUS
+suffix:colon
+r_case
+id|PIPE_INTERRUPT
+suffix:colon
+id|mult
+op_assign
+l_int|1
+op_plus
+(paren
+(paren
+id|max
+op_rshift
+l_int|11
+)paren
+op_amp
+l_int|0x03
+)paren
+suffix:semicolon
+id|max
+op_and_assign
+l_int|0x03ff
+suffix:semicolon
+id|max
+op_mul_assign
+id|mult
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* periodic transfers limit size per frame/uframe */
+r_switch
+c_cond
+(paren
+id|temp
+)paren
+(brace
+r_case
+id|PIPE_ISOCHRONOUS
+suffix:colon
+(brace
+r_int
+id|n
+comma
+id|len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb-&gt;number_of_packets
+op_le
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|n
+op_assign
+l_int|0
+suffix:semicolon
+id|n
+OL
+id|urb-&gt;number_of_packets
+suffix:semicolon
+id|n
+op_increment
+)paren
+(brace
+id|len
+op_assign
+id|urb-&gt;iso_frame_desc
+(braket
+id|n
+)braket
+dot
+id|length
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+template_param
+id|max
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
+r_case
+id|PIPE_INTERRUPT
+suffix:colon
+r_if
+c_cond
+(paren
+id|urb-&gt;transfer_buffer_length
+OG
+id|max
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/* the I/O buffer must usually be mapped/unmapped */
+r_if
+c_cond
+(paren
+id|urb-&gt;transfer_buffer_length
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb-&gt;next
+)paren
+(brace
+id|warn
+(paren
+l_string|&quot;use explicit queuing not urb-&gt;next&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 macro_line|#ifdef DEBUG
+multiline_comment|/* stuff that drivers shouldn&squot;t do, but which shouldn&squot;t&n;&t; * cause problems in HCDs if they get it wrong.&n;&t; */
 (brace
 r_int
 r_int
@@ -4100,7 +4470,7 @@ id|urb-&gt;transfer_flags
 op_and_assign
 id|allowed
 suffix:semicolon
-multiline_comment|/* warn if submitter gave bogus flags */
+multiline_comment|/* fail if submitter gave bogus flags */
 r_if
 c_cond
 (paren
@@ -4108,6 +4478,7 @@ id|urb-&gt;transfer_flags
 op_ne
 id|orig_flags
 )paren
+(brace
 id|err
 (paren
 l_string|&quot;BOGUS urb flags, %x --&gt; %x&quot;
@@ -4117,6 +4488,11 @@ comma
 id|urb-&gt;transfer_flags
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * Force periodic transfer intervals to be legal values that are&n;&t; * a power of two (so HCDs don&squot;t need to).&n;&t; *&n;&t; * FIXME want bus-&gt;{intr,iso}_sched_horizon values here.  Each HC&n;&t; * supports different values... this uses EHCI/UHCI defaults (and&n;&t; * EHCI can use smaller non-default values).&n;&t; */
@@ -4338,10 +4714,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|status
 )paren
-(brace
+r_return
+id|status
+suffix:semicolon
+multiline_comment|/* temporarily up refcount while queueing it in the HCD,&n;&t; * since we report some queuing/setup errors ourselves&n;&t; */
+id|urb
+op_assign
+id|usb_get_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4370,34 +4755,26 @@ comma
 id|mem_flags
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* urb-&gt;dev got nulled if hcd called giveback for us */
 r_if
 c_cond
 (paren
 id|status
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|urb-&gt;dev
 )paren
-(brace
-id|urb-&gt;status
-op_assign
-id|status
-suffix:semicolon
-id|usb_hcd_giveback_urb
+id|urb_unlink
 (paren
-id|hcd
-comma
 id|urb
 )paren
 suffix:semicolon
-)brace
-)brace
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|status
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -4440,7 +4817,8 @@ id|completion_splice
 singleline_comment|// modified urb context:
 multiline_comment|/* did we complete? */
 DECL|member|done
-r_int
+r_struct
+id|completion
 id|done
 suffix:semicolon
 multiline_comment|/* original urb data */
@@ -4502,9 +4880,12 @@ id|urb-&gt;complete
 id|urb
 )paren
 suffix:semicolon
+multiline_comment|/* then let the synchronous unlink call complete */
+id|complete
+(paren
+op_amp
 id|splice-&gt;done
-op_assign
-l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * called in any context; note ASYNC_UNLINK restrictions&n; *&n; * caller guarantees urb won&squot;t be recycled till both unlink()&n; * and the urb&squot;s completion function return&n; */
@@ -4661,7 +5042,8 @@ id|EINPROGRESS
 (brace
 id|retval
 op_assign
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 r_goto
 id|done
@@ -4718,9 +5100,11 @@ id|done
 suffix:semicolon
 )brace
 multiline_comment|/* synchronous unlink: block till we see the completion */
+id|init_completion
+(paren
+op_amp
 id|splice.done
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|splice.complete
 op_assign
@@ -4847,30 +5231,6 @@ op_logical_neg
 id|retval
 )paren
 (brace
-r_while
-c_loop
-(paren
-op_logical_neg
-id|splice.done
-)paren
-(brace
-id|set_current_state
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-(paren
-(paren
-l_int|2
-multiline_comment|/*msec*/
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
-)paren
-suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;%s: wait for giveback urb %p&quot;
@@ -4880,7 +5240,12 @@ comma
 id|urb
 )paren
 suffix:semicolon
-)brace
+id|wait_for_completion
+(paren
+op_amp
+id|splice.done
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -5175,7 +5540,7 @@ id|hcd
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause deadlocks if it resubmits this URB,&n; * and won&squot;t confuse things by modifying and resubmitting this one.&n; * Bandwidth and other resources will be deallocated.&n; *&n; * HCDs must not use this for periodic URBs that are still scheduled&n; * and will be reissued.  They should just call their completion handlers&n; * until the urb is returned to the device driver by unlinking.&n; *&n; * In common cases, urb-&gt;next will be submitted before the completion&n; * function gets called.  That&squot;s not done if the URB includes error&n; * status (including unlinking).&n; */
+multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause deadlocks if it resubmits this URB,&n; * and won&squot;t confuse things by modifying and resubmitting this one.&n; * Bandwidth and other resources will be deallocated.&n; *&n; * HCDs must not use this for periodic URBs that are still scheduled&n; * and will be reissued.  They should just call their completion handlers&n; * until the urb is returned to the device driver by unlinking.&n; *&n; * NOTE that no urb-&gt;next processing is done, even for isochronous URBs.&n; * ISO streaming functionality can be achieved by having completion handlers&n; * re-queue URBs.  Such explicit queuing doesn&squot;t discard error reports.&n; */
 DECL|function|usb_hcd_giveback_urb
 r_void
 id|usb_hcd_giveback_urb
@@ -5191,62 +5556,9 @@ op_star
 id|urb
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|usb_device
-op_star
-id|dev
-suffix:semicolon
-multiline_comment|/* Release periodic transfer bandwidth */
-r_if
-c_cond
+id|urb_unlink
 (paren
-id|urb-&gt;bandwidth
-)paren
-id|usb_release_bandwidth
-(paren
-id|urb-&gt;dev
-comma
 id|urb
-comma
-id|usb_pipeisoc
-(paren
-id|urb-&gt;pipe
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* clear all state linking urb to this dev (and hcd) */
-id|spin_lock_irqsave
-(paren
-op_amp
-id|hcd_data_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|list_del_init
-(paren
-op_amp
-id|urb-&gt;urb_list
-)paren
-suffix:semicolon
-id|dev
-op_assign
-id|urb-&gt;dev
-suffix:semicolon
-id|urb-&gt;dev
-op_assign
-l_int|NULL
-suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|hcd_data_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 singleline_comment|// NOTE:  a generic device/urb monitoring hook would go here.
@@ -5270,55 +5582,7 @@ comma
 id|urb-&gt;actual_length
 )paren
 suffix:semicolon
-multiline_comment|/* if no error, make sure urb-&gt;next progresses */
-r_else
-r_if
-c_cond
-(paren
-id|urb-&gt;next
-)paren
-(brace
-r_int
-id|status
-suffix:semicolon
-id|status
-op_assign
-id|usb_submit_urb
-(paren
-id|urb-&gt;next
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;urb %p chain fail, %d&quot;
-comma
-id|urb-&gt;next
-comma
-id|status
-)paren
-suffix:semicolon
-id|urb-&gt;next-&gt;status
-op_assign
-op_minus
-id|ENOTCONN
-suffix:semicolon
-)brace
-multiline_comment|/* HCDs never modify the urb-&gt;next chain, and only use it here,&n;&t;&t; * so that if urb-&gt;complete sees an URB there with -ENOTCONN,&n;&t;&t; * it knows the driver chained it but it couldn&squot;t be submitted.&n;&t;&t; */
-)brace
 multiline_comment|/* pass ownership to the completion handler */
-id|usb_dec_dev_use
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|urb-&gt;complete
 (paren
 id|urb
