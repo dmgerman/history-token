@@ -12476,7 +12476,7 @@ c_func
 (paren
 id|ac97
 comma
-id|AC97_EXTENDED_ID
+id|AC97_EXTENDED_STATUS
 )paren
 suffix:semicolon
 r_if
@@ -12512,7 +12512,7 @@ c_func
 (paren
 id|ac97
 comma
-id|AC97_EXTENDED_ID
+id|AC97_EXTENDED_STATUS
 comma
 id|reg
 )paren
