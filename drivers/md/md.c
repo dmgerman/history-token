@@ -1813,7 +1813,7 @@ c_cond
 (paren
 id|sb-&gt;level
 op_eq
-id|MULTIPATH
+id|LEVEL_MULTIPATH
 )paren
 id|rdev-&gt;desc_nr
 op_assign
