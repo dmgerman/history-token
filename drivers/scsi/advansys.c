@@ -10429,16 +10429,15 @@ l_int|NULL
 r_continue
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PCI
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|shp
 comma
-id|pci_devp
+op_amp
+id|pci_devp-&gt;dev
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Save a pointer to the Scsi_host of each board found. */
 id|asc_host
 (braket

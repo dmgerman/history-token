@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Include file for defining the kernel loggger messages&n; * These definitions are shared between the klog driver and the&n; * klogd daemon process&n; *&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * Eicon File Revision :    1.0  &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/*&n; * Include file for defining the kernel logger messages&n; * These definitions are shared between the klog driver and the&n; * klogd daemon process&n; *&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * Eicon File Revision :    1.0  &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#if !defined(_KLOGMSG_H)
 DECL|macro|_KLOGMSG_H
 mdefine_line|#define _KLOGMSG_H

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/signal.c -- Signal handling&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1999,2000,2002  Niibe Yutaka &amp; Kaz Kojima&n; *  Copyright (C) 1991,1992  Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * 1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; * This file was derived from the sh version, arch/sh/kernel/signal.c&n; */
+multiline_comment|/*&n; * arch/v850/kernel/signal.c -- Signal handling&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1999,2000,2002  Niibe Yutaka &amp; Kaz Kojima&n; *  Copyright (C) 1991,1992  Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * 1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; * This file was derived from the sh version, arch/sh/kernel/signal.c&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -2458,7 +2458,7 @@ op_star
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus

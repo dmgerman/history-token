@@ -1147,7 +1147,7 @@ comma
 id|ioaddr
 )paren
 suffix:semicolon
-multiline_comment|/* XXX FIXME maz : Add multicast adresses here, so having a&n;&t; * multicast address configured isn&squot;t equal to IFF_ALLMULTI */
+multiline_comment|/* XXX FIXME maz : Add multicast addresses here, so having a&n;&t; * multicast address configured isn&squot;t equal to IFF_ALLMULTI */
 )brace
 "&f;"
 multiline_comment|/* The Z-Note probe is pretty easy.  The NETIDBLK exists in the safe-to-probe&n;   BIOS area.  We just scan for the signature, and pull the vital parameters&n;   out of the structure. */

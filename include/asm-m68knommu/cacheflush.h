@@ -2,10 +2,27 @@ macro_line|#ifndef _M68KNOMMU_CACHEFLUSH_H
 DECL|macro|_M68KNOMMU_CACHEFLUSH_H
 mdefine_line|#define _M68KNOMMU_CACHEFLUSH_H
 multiline_comment|/*&n; * (C) Copyright 2000-2002, Greg Ungerer &lt;gerg@snapgear.com&gt;&n; */
-macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/*&n; * Cache handling functions&n; */
+macro_line|#include &lt;linux/mm.h&gt;
 DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all() __flush_cache_all()
+mdefine_line|#define flush_cache_all()&t;&t;&t;__flush_cache_all()
+DECL|macro|flush_cache_mm
+mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
+DECL|macro|flush_cache_range
+mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
+DECL|macro|flush_cache_page
+mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
+DECL|macro|flush_page_to_ram
+mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
+DECL|macro|flush_dcache_range
+mdefine_line|#define flush_dcache_range(start,len)&t;&t;do { } while (0)
+DECL|macro|flush_dcache_page
+mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
+DECL|macro|flush_icache_range
+mdefine_line|#define flush_icache_range(start,len)&t;&t;__flush_cache_all()
+DECL|macro|flush_icache_page
+mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 DECL|function|__flush_cache_all
 r_extern
 r_inline
@@ -81,34 +98,5 @@ l_string|&quot;d0&quot;
 suffix:semicolon
 macro_line|#endif /* CONFIG_M5249 */
 )brace
-multiline_comment|/*&n; *&t;FIXME: we could do better than an entire flush in most cases.&n; *&t;But this will always work :-)&n; */
-DECL|macro|flush_cache_all
-mdefine_line|#define&t;flush_cache_all()&t;&t;__flush_cache_all()
-DECL|macro|flush_cache_mm
-mdefine_line|#define&t;flush_cache_mm(mm)&t;&t;__flush_cache_all()
-DECL|macro|flush_cache_range
-mdefine_line|#define&t;flush_cache_range(vma,a,b)&t;__flush_cache_all()
-DECL|macro|flush_cache_page
-mdefine_line|#define&t;flush_cache_page(vma,p)&t;&t;__flush_cache_all()
-DECL|macro|flush_page_to_ram
-mdefine_line|#define&t;flush_page_to_ram(page)&t;&t;__flush_cache_all()
-DECL|macro|flush_dcache_page
-mdefine_line|#define&t;flush_dcache_page(page)&t;&t;__flush_cache_all()
-DECL|macro|flush_icache
-mdefine_line|#define&t;flush_icache()&t;&t;&t;__flush_cache_all()
-DECL|macro|flush_icache_page
-mdefine_line|#define&t;flush_icache_page(page)&t;&t;__flush_cache_all()
-DECL|macro|flush_icache_range
-mdefine_line|#define&t;flush_icache_range(start,len)&t;__flush_cache_all()
-DECL|macro|cache_push_v
-mdefine_line|#define&t;cache_push_v(vaddr,len)&t;&t;__flush_cache_all()
-DECL|macro|cache_push
-mdefine_line|#define&t;cache_push(paddr,len)&t;&t;__flush_cache_all()
-DECL|macro|cache_clear
-mdefine_line|#define&t;cache_clear(paddr,len)&t;&t;__flush_cache_all()
-DECL|macro|flush_dcache_range
-mdefine_line|#define&t;flush_dcache_range(a,b)
-DECL|macro|flush_icache_user_range
-mdefine_line|#define&t;flush_icache_user_range(vma,page,addr,len)&t;__flush_cache_all()
 macro_line|#endif /* _M68KNOMMU_CACHEFLUSH_H */
 eof

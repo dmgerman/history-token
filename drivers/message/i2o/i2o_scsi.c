@@ -691,7 +691,7 @@ l_int|3
 suffix:semicolon
 id|lock
 op_assign
-id|current_command-&gt;host-&gt;host_lock
+id|current_command-&gt;device-&gt;host-&gt;host_lock
 suffix:semicolon
 id|printk
 c_func
@@ -1190,7 +1190,7 @@ id|current_command-&gt;sc_data_direction
 suffix:semicolon
 id|lock
 op_assign
-id|current_command-&gt;host-&gt;host_lock
+id|current_command-&gt;device-&gt;host-&gt;host_lock
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -2201,7 +2201,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Do the incoming paperwork&n;&t; */
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -2236,7 +2236,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 OG
 l_int|15
 )paren
@@ -2247,7 +2247,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;i2o_scsi: Wild target %d.&bslash;n&quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_return
@@ -2259,10 +2259,10 @@ id|tid
 op_assign
 id|hostdata-&gt;task
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 (braket
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 id|dprintk
@@ -2538,10 +2538,10 @@ id|jiffies
 op_minus
 id|hostdata-&gt;tagclock
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 (braket
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )braket
 )paren
 OG
@@ -2559,10 +2559,10 @@ suffix:semicolon
 multiline_comment|/* ORDERED! */
 id|hostdata-&gt;tagclock
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 (braket
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )braket
 op_assign
 id|jiffies
@@ -3315,7 +3315,7 @@ l_string|&quot;i2o_scsi: Aborting command block.&bslash;n&quot;
 suffix:semicolon
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -3330,10 +3330,10 @@ id|tid
 op_assign
 id|hostdata-&gt;task
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 (braket
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 r_if
@@ -3569,7 +3569,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Find the TID for the bus&n;&t; */
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|spin_unlock_irq
 c_func

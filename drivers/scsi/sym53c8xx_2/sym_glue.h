@@ -284,7 +284,7 @@ mdefine_line|#define sym_offb(o)&t;(o)
 DECL|macro|sym_offw
 mdefine_line|#define sym_offw(o)&t;(o)
 macro_line|#endif
-multiline_comment|/*&n; *  If the CPU and the chip use same endian-ness adressing,&n; *  no byte reordering is needed for script patching.&n; *  Macro cpu_to_scr() is to be used for script patching.&n; *  Macro scr_to_cpu() is to be used for getting a DWORD &n; *  from the script.&n; */
+multiline_comment|/*&n; *  If the CPU and the chip use same endian-ness addressing,&n; *  no byte reordering is needed for script patching.&n; *  Macro cpu_to_scr() is to be used for script patching.&n; *  Macro scr_to_cpu() is to be used for getting a DWORD &n; *  from the script.&n; */
 macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SYM_CONF_CHIP_BIG_ENDIAN)
 DECL|macro|cpu_to_scr
 mdefine_line|#define cpu_to_scr(dw)&t;cpu_to_le32(dw)
@@ -301,7 +301,7 @@ mdefine_line|#define cpu_to_scr(dw)&t;(dw)
 DECL|macro|scr_to_cpu
 mdefine_line|#define scr_to_cpu(dw)&t;(dw)
 macro_line|#endif
-multiline_comment|/*&n; *  Access to the controller chip.&n; *&n; *  If SYM_CONF_IOMAPPED is defined, the driver will use &n; *  normal IOs instead of the MEMORY MAPPED IO method  &n; *  recommended by PCI specifications.&n; *  If all PCI bridges, host brigdes and architectures &n; *  would have been correctly designed for PCI, this &n; *  option would be useless.&n; *&n; *  If the CPU and the chip use same endian-ness adressing,&n; *  no byte reordering is needed for accessing chip io &n; *  registers. Functions suffixed by &squot;_raw&squot; are assumed &n; *  to access the chip over the PCI without doing byte &n; *  reordering. Functions suffixed by &squot;_l2b&squot; are &n; *  assumed to perform little-endian to big-endian byte &n; *  reordering, those suffixed by &squot;_b2l&squot; blah, blah,&n; *  blah, ...&n; */
+multiline_comment|/*&n; *  Access to the controller chip.&n; *&n; *  If SYM_CONF_IOMAPPED is defined, the driver will use &n; *  normal IOs instead of the MEMORY MAPPED IO method  &n; *  recommended by PCI specifications.&n; *  If all PCI bridges, host brigdes and architectures &n; *  would have been correctly designed for PCI, this &n; *  option would be useless.&n; *&n; *  If the CPU and the chip use same endian-ness addressing,&n; *  no byte reordering is needed for accessing chip io &n; *  registers. Functions suffixed by &squot;_raw&squot; are assumed &n; *  to access the chip over the PCI without doing byte &n; *  reordering. Functions suffixed by &squot;_l2b&squot; are &n; *  assumed to perform little-endian to big-endian byte &n; *  reordering, those suffixed by &squot;_b2l&squot; blah, blah,&n; *  blah, ...&n; */
 macro_line|#if defined(SYM_CONF_IOMAPPED)
 multiline_comment|/*&n; *  IO mapped only input / ouput&n; */
 DECL|macro|INB_OFF

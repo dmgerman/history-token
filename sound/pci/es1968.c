@@ -4200,7 +4200,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* clear WP interupts */
+multiline_comment|/* clear WP interrupts */
 id|outw
 c_func
 (paren
@@ -4766,7 +4766,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* clear WP interupts */
+multiline_comment|/* clear WP interrupts */
 id|outw
 c_func
 (paren
@@ -5482,7 +5482,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* *************************&n;   * DMA memory management *&n;   *************************/
-multiline_comment|/* Because the Maestro can only take addresses relative to the PCM base adress&n;   register :( */
+multiline_comment|/* Because the Maestro can only take addresses relative to the PCM base address&n;   register :( */
 DECL|function|calc_available_memory_size
 r_static
 r_int
@@ -7621,7 +7621,7 @@ op_plus
 l_int|0x04
 )paren
 suffix:semicolon
-multiline_comment|/* clear WP interupts */
+multiline_comment|/* clear WP interrupts */
 id|outw
 c_func
 (paren

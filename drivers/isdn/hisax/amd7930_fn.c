@@ -663,7 +663,7 @@ id|cs-&gt;dc.amd7930.old_state
 op_assign
 id|cs-&gt;dc.amd7930.ph_state
 suffix:semicolon
-multiline_comment|/* abort transmit if nessesary */
+multiline_comment|/* abort transmit if necessary */
 r_if
 c_cond
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/serverworks.c&t;&t;Version 0.7&t;10 Sept 2002&n; *&n; * Copyright (C) 1998-2000 Michel Aubry&n; * Copyright (C) 1998-2000 Andrzej Krzysztofowicz&n; * Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions copyright (c) 2001 Sun Microsystems&n; *&n; *&n; * RCC/ServerWorks IDE driver for Linux&n; *&n; *   OSB4: `Open South Bridge&squot; IDE Interface (fn 1)&n; *         supports UDMA mode 2 (33 MB/s)&n; *&n; *   CSB5: `Champion South Bridge&squot; IDE Interface (fn 1)&n; *         all revisions support UDMA mode 4 (66 MB/s)&n; *         revision A2.0 and up support UDMA mode 5 (100 MB/s)&n; *&n; *         *** The CSB5 does not provide ANY register ***&n; *         *** to detect 80-conductor cable presence. ***&n; *&n; *   CSB6: `Champion South Bridge&squot; IDE Interface (optional: third channel)&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/serverworks.c&t;&t;Version 0.7&t;10 Sept 2002&n; *&n; * Copyright (C) 1998-2000 Michel Aubry&n; * Copyright (C) 1998-2000 Andrzej Krzysztofowicz&n; * Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions copyright (c) 2001 Sun Microsystems&n; *&n; *&n; * RCC/ServerWorks IDE driver for Linux&n; *&n; *   OSB4: `Open South Bridge&squot; IDE Interface (fn 1)&n; *         supports UDMA mode 2 (33 MB/s)&n; *&n; *   CSB5: `Champion South Bridge&squot; IDE Interface (fn 1)&n; *         all revisions support UDMA mode 4 (66 MB/s)&n; *         revision A2.0 and up support UDMA mode 5 (100 MB/s)&n; *&n; *         *** The CSB5 does not provide ANY register ***&n; *         *** to detect 80-conductor cable presence. ***&n; *&n; *   CSB6: `Champion South Bridge&squot; IDE Interface (optional: third channel)&n; *&n; * Documentation:&n; *&t;Available under NDA only. Errata info very hard to get.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -3507,7 +3507,7 @@ id|reg41
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * This is a device pin issue on CSB6.&n;&t;&t;&t; * Since there will be a future raid mode,&n;&t;&t;&t; * early versions of the chipset require the&n;&t;&t;&t; * interrupt pin to be set, and it is a compatablity&n;&t;&t;&t; * mode issue.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * This is a device pin issue on CSB6.&n;&t;&t;&t; * Since there will be a future raid mode,&n;&t;&t;&t; * early versions of the chipset require the&n;&t;&t;&t; * interrupt pin to be set, and it is a compatiblity&n;&t;&t;&t; * mode issue.&n;&t;&t;&t; */
 id|dev-&gt;irq
 op_assign
 l_int|0

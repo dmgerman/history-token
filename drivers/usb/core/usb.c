@@ -1846,6 +1846,10 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
+id|dev-&gt;present
+op_assign
+l_int|1
+suffix:semicolon
 id|usb_bus_get
 c_func
 (paren
@@ -2344,6 +2348,11 @@ c_func
 op_amp
 id|dev-&gt;dev
 )paren
+suffix:semicolon
+multiline_comment|/* mark the device as not present so any further urb submissions for&n;&t; * this device will fail. */
+id|dev-&gt;present
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Decrement the reference count, it&squot;ll auto free everything when */
 multiline_comment|/* it hits 0 which could very well be now */

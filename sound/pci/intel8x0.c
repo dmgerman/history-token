@@ -10071,7 +10071,7 @@ c_cond
 op_logical_neg
 id|subs
 op_logical_or
-id|subs-&gt;dma_bytes
+id|subs-&gt;dma_buffer.bytes
 OL
 id|INTEL8X0_TESTBUF_SIZE
 )paren
@@ -10095,7 +10095,7 @@ id|ICHD_PCMOUT
 suffix:semicolon
 id|ichdev-&gt;physbuf
 op_assign
-id|subs-&gt;dma_addr
+id|subs-&gt;dma_buffer.addr
 suffix:semicolon
 id|ichdev-&gt;size
 op_assign

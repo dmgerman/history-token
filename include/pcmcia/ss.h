@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_SS_H
 DECL|macro|_LINUX_SS_H
 mdefine_line|#define _LINUX_SS_H
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/* Definitions for card status flags for GetStatus */
 DECL|macro|SS_WRPROT
 mdefine_line|#define SS_WRPROT&t;0x0001
@@ -451,30 +452,45 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  Calls to set up low-level &quot;Socket Services&quot; drivers&n; */
-r_extern
+DECL|macro|MAX_SOCKETS_PER_DEV
+mdefine_line|#define MAX_SOCKETS_PER_DEV 8
+DECL|struct|pcmcia_socket_class_data
+r_struct
+id|pcmcia_socket_class_data
+(brace
+DECL|member|nsock
 r_int
-id|register_ss_entry
-c_func
-(paren
 r_int
 id|nsock
-comma
+suffix:semicolon
+multiline_comment|/* number of sockets */
+DECL|member|ops
 r_struct
 id|pccard_operations
 op_star
 id|ops
-)paren
+suffix:semicolon
+multiline_comment|/* see above */
+DECL|member|s_info
+r_void
+op_star
+id|s_info
+(braket
+id|MAX_SOCKETS_PER_DEV
+)braket
+suffix:semicolon
+multiline_comment|/* socket_info_t */
+DECL|member|use_bus_pm
+r_int
+r_int
+id|use_bus_pm
+suffix:semicolon
+)brace
 suffix:semicolon
 r_extern
-r_void
-id|unregister_ss_entry
-c_func
-(paren
 r_struct
-id|pccard_operations
-op_star
-id|ops
-)paren
+id|device_class
+id|pcmcia_socket_class
 suffix:semicolon
 macro_line|#endif /* _LINUX_SS_H */
 eof

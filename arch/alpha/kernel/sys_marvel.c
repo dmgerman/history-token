@@ -783,7 +783,7 @@ op_lshift
 l_int|14
 )paren
 suffix:semicolon
-multiline_comment|/* set teh new target pid */
+multiline_comment|/* set the new target pid */
 id|io7-&gt;csrs-&gt;PO7_LSI_CTL
 (braket
 id|which
@@ -862,7 +862,7 @@ op_lshift
 l_int|14
 )paren
 suffix:semicolon
-multiline_comment|/* set teh new target pid */
+multiline_comment|/* set the new target pid */
 id|io7-&gt;csrs-&gt;PO7_MSI_CTL
 (braket
 id|which

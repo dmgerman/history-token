@@ -465,6 +465,10 @@ DECL|macro|__NR_io_submit
 mdefine_line|#define __NR_io_submit&t;&t;230
 DECL|macro|__NR_io_cancel
 mdefine_line|#define __NR_io_cancel&t;&t;231
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;232
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;233
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;234
 DECL|macro|__NR_lookup_dcookie

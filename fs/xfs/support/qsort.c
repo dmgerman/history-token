@@ -565,11 +565,16 @@ id|base_ptr
 suffix:semicolon
 r_char
 op_star
+r_const
 id|thresh
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_char
+op_star
+r_const
+comma
 id|end_ptr
 comma
 id|base_ptr

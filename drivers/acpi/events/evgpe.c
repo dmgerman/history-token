@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evgpe - General Purpose Event handling and dispatch&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
@@ -782,9 +782,11 @@ id|block_address-&gt;address
 )paren
 )paren
 suffix:semicolon
-id|ACPI_REPORT_INFO
+id|ACPI_DEBUG_PRINT
 (paren
 (paren
+id|ACPI_DB_INFO
+comma
 l_string|&quot;GPE Block%d defined as GPE%d to GPE%d&bslash;n&quot;
 comma
 (paren
@@ -884,8 +886,10 @@ id|return_value
 id|u32
 id|gpe_number
 suffix:semicolon
-id|u32
-id|gpe_number_index
+r_struct
+id|acpi_gpe_number_info
+op_star
+id|gpe_number_info
 suffix:semicolon
 r_char
 id|name
@@ -1022,9 +1026,9 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Get GPE index and ensure that we have a valid GPE number */
-id|gpe_number_index
+id|gpe_number_info
 op_assign
-id|acpi_ev_get_gpe_number_index
+id|acpi_ev_get_gpe_number_info
 (paren
 id|gpe_number
 )paren
@@ -1032,34 +1036,34 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_number_index
-op_eq
-id|ACPI_GPE_INVALID
+op_logical_neg
+id|gpe_number_info
 )paren
 (brace
 multiline_comment|/* Not valid, all we can do here is ignore it */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;GPE number associated with method is not valid %s&bslash;n&quot;
+comma
+id|name
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now we can add this information to the gpe_info block&n;&t; * for use during dispatch of this GPE.&n;&t; */
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|type
+multiline_comment|/*&n;&t; * Now we can add this information to the gpe_number_info block&n;&t; * for use during dispatch of this GPE.&n;&t; */
+id|gpe_number_info-&gt;type
 op_assign
 id|type
 suffix:semicolon
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|method_node
+id|gpe_number_info-&gt;method_node
 op_assign
 (paren
 r_struct
@@ -1443,7 +1447,7 @@ id|gpe_number_index
 suffix:semicolon
 r_struct
 id|acpi_gpe_number_info
-id|gpe_info
+id|gpe_number_info
 suffix:semicolon
 id|acpi_status
 id|status
@@ -1491,7 +1495,7 @@ id|status
 id|return_VOID
 suffix:semicolon
 )brace
-id|gpe_info
+id|gpe_number_info
 op_assign
 id|acpi_gbl_gpe_number_info
 (braket
@@ -1520,7 +1524,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_info.method_node
+id|gpe_number_info.method_node
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Invoke the GPE Method (_Lxx, _Exx):&n;&t;&t; * (Evaluate the _Lxx/_Exx control method that corresponds to this GPE.)&n;&t;&t; */
@@ -1528,7 +1532,7 @@ id|status
 op_assign
 id|acpi_ns_evaluate_by_handle
 (paren
-id|gpe_info.method_node
+id|gpe_number_info.method_node
 comma
 l_int|NULL
 comma
@@ -1554,7 +1558,7 @@ id|acpi_format_exception
 id|status
 )paren
 comma
-id|gpe_info.method_node-&gt;name.ascii
+id|gpe_number_info.method_node-&gt;name.ascii
 comma
 id|gpe_number
 )paren
@@ -1565,7 +1569,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_info.type
+id|gpe_number_info.type
 op_amp
 id|ACPI_EVENT_LEVEL_TRIGGERED
 )paren
@@ -1612,13 +1616,10 @@ id|u32
 id|gpe_number
 )paren
 (brace
-id|u32
-id|gpe_number_index
-suffix:semicolon
 r_struct
 id|acpi_gpe_number_info
 op_star
-id|gpe_info
+id|gpe_number_info
 suffix:semicolon
 id|acpi_status
 id|status
@@ -1628,9 +1629,10 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;ev_gpe_dispatch&quot;
 )paren
 suffix:semicolon
-id|gpe_number_index
+multiline_comment|/*&n;&t; * We don&squot;t have to worry about mutex on gpe_number_info because we are&n;&t; * executing at interrupt level.&n;&t; */
+id|gpe_number_info
 op_assign
-id|acpi_ev_get_gpe_number_index
+id|acpi_ev_get_gpe_number_info
 (paren
 id|gpe_number
 )paren
@@ -1638,9 +1640,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_number_index
-op_eq
-id|ACPI_GPE_INVALID
+op_logical_neg
+id|gpe_number_info
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1660,20 +1661,11 @@ id|ACPI_INTERRUPT_NOT_HANDLED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We don&squot;t have to worry about mutex on gpe_info because we are&n;&t; * executing at interrupt level.&n;&t; */
-id|gpe_info
-op_assign
-op_amp
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-suffix:semicolon
 multiline_comment|/*&n;&t; * If edge-triggered, clear the GPE status bit now.  Note that&n;&t; * level-triggered events are cleared after the GPE is serviced.&n;&t; */
 r_if
 c_cond
 (paren
-id|gpe_info-&gt;type
+id|gpe_number_info-&gt;type
 op_amp
 id|ACPI_EVENT_EDGE_TRIGGERED
 )paren
@@ -1714,13 +1706,13 @@ multiline_comment|/*&n;&t; * Dispatch the GPE to either an installed handler, or
 r_if
 c_cond
 (paren
-id|gpe_info-&gt;handler
+id|gpe_number_info-&gt;handler
 )paren
 (brace
 multiline_comment|/* Invoke the installed handler (at interrupt level) */
-id|gpe_info-&gt;handler
+id|gpe_number_info-&gt;handler
 (paren
-id|gpe_info-&gt;context
+id|gpe_number_info-&gt;context
 )paren
 suffix:semicolon
 )brace
@@ -1728,7 +1720,7 @@ r_else
 r_if
 c_cond
 (paren
-id|gpe_info-&gt;method_node
+id|gpe_number_info-&gt;method_node
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Disable GPE, so it doesn&squot;t keep firing before the method has a&n;&t;&t; * chance to run.&n;&t;&t; */
@@ -1843,7 +1835,7 @@ multiline_comment|/*&n;&t; * It is now safe to clear level-triggered evnets.&n;&
 r_if
 c_cond
 (paren
-id|gpe_info-&gt;type
+id|gpe_number_info-&gt;type
 op_amp
 id|ACPI_EVENT_LEVEL_TRIGGERED
 )paren

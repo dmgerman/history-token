@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Author: Pete Popov &lt;ppopov@mvista.com&gt;&n; *&n; * 2000 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; * Data structures specific to the IBM PowerPC 405 on-chip DMA controller&n; * and API.&n; */
+multiline_comment|/*&n; * Author: Pete Popov &lt;ppopov@mvista.com&gt;&n; *&n; * 2000 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; * Data structures specific to the IBM PowerPC 405 on-chip DMA controller&n; * and API.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASMPPC_405_DMA_H
 DECL|macro|__ASMPPC_405_DMA_H

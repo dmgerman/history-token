@@ -1577,7 +1577,7 @@ op_logical_and
 id|chip-&gt;rmidi
 )paren
 )paren
-multiline_comment|/* MPU401 interupt */
+multiline_comment|/* MPU401 interrupt */
 id|snd_mpu401_uart_interrupt
 c_func
 (paren

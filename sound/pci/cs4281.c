@@ -236,7 +236,7 @@ mdefine_line|#define BA0_HISR_FIFOI&t;&t;(1&lt;&lt;20)&t;/* FIFO polled interrup
 DECL|macro|BA0_HISR_DMAI
 mdefine_line|#define BA0_HISR_DMAI&t;&t;(1&lt;&lt;18)&t;/* DMA interrupt (half or end) */
 DECL|macro|BA0_HISR_FIFO
-mdefine_line|#define BA0_HISR_FIFO(c)&t;(1&lt;&lt;(12+(c))) /* FIFO channel interupt */
+mdefine_line|#define BA0_HISR_FIFO(c)&t;(1&lt;&lt;(12+(c))) /* FIFO channel interrupt */
 DECL|macro|BA0_HISR_DMA
 mdefine_line|#define BA0_HISR_DMA(c)&t;&t;(1&lt;&lt;(8+(c)))  /* DMA channel interrupt */
 DECL|macro|BA0_HISR_GPPI

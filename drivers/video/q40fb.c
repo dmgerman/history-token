@@ -383,7 +383,7 @@ op_star
 )paren
 id|q40fb_fix.smem_start
 suffix:semicolon
-multiline_comment|/* The below feilds will go away !!!! */
+multiline_comment|/* The below fields will go away !!!! */
 id|fb_alloc_cmap
 c_func
 (paren

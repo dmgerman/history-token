@@ -1222,7 +1222,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * i8042_close() frees the interrupt, so that it can possibly be used&n; * by another driver. We never know - if the user doesn&squot;t have a mouse,&n; * the BIOS could have used the AUX interupt for PCI.&n; */
+multiline_comment|/*&n; * i8042_close() frees the interrupt, so that it can possibly be used&n; * by another driver. We never know - if the user doesn&squot;t have a mouse,&n; * the BIOS could have used the AUX interrupt for PCI.&n; */
 DECL|function|i8042_close
 r_static
 r_void

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -8703,6 +8704,77 @@ id|pcic_proc_setup
 )brace
 suffix:semicolon
 multiline_comment|/*====================================================================*/
+DECL|variable|i82365_data
+r_static
+r_struct
+id|pcmcia_socket_class_data
+id|i82365_data
+op_assign
+(brace
+dot
+id|ops
+op_assign
+op_amp
+id|pcic_operations
+comma
+)brace
+suffix:semicolon
+DECL|variable|i82365_driver
+r_static
+r_struct
+id|device_driver
+id|i82365_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;i82365&quot;
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|platform_bus_type
+comma
+dot
+id|devclass
+op_assign
+op_amp
+id|pcmcia_socket_class
+comma
+)brace
+suffix:semicolon
+DECL|variable|i82365_device
+r_static
+r_struct
+id|platform_device
+id|i82365_device
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;i82365&quot;
+comma
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;i82365&quot;
+comma
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|init_i82365
 r_static
 r_int
@@ -8765,6 +8837,13 @@ id|sockets
 op_assign
 l_int|0
 suffix:semicolon
+id|driver_register
+c_func
+(paren
+op_amp
+id|i82365_driver
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ISA
 id|isa_probe
 c_func
@@ -8784,6 +8863,13 @@ id|printk
 c_func
 (paren
 l_string|&quot;not found.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|driver_unregister
+c_func
+(paren
+op_amp
+id|i82365_driver
 )paren
 suffix:semicolon
 r_return
@@ -8815,26 +8901,21 @@ id|pcic_interrupt
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|register_ss_entry
+id|platform_device_register
 c_func
 (paren
-id|sockets
-comma
 op_amp
-id|pcic_operations
+id|i82365_device
 )paren
-op_ne
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;i82365: register_ss_entry() failed&bslash;n&quot;
-)paren
+suffix:semicolon
+id|i82365_data.nsock
+op_assign
+id|sockets
+suffix:semicolon
+id|i82365_device.dev.class_data
+op_assign
+op_amp
+id|i82365_data
 suffix:semicolon
 multiline_comment|/* Finally, schedule a polling interrupt */
 r_if
@@ -8914,11 +8995,11 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
-id|unregister_ss_entry
+id|platform_device_unregister
 c_func
 (paren
 op_amp
-id|pcic_operations
+id|i82365_device
 )paren
 suffix:semicolon
 r_if
@@ -9005,6 +9086,13 @@ id|i82365_pnpdev
 )paren
 suffix:semicolon
 macro_line|#endif
+id|driver_unregister
+c_func
+(paren
+op_amp
+id|i82365_driver
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* exit_i82365 */
 DECL|variable|init_i82365

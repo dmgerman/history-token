@@ -1045,7 +1045,7 @@ id|eaddr
 op_add_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/* &n;&t; * For alignment faults on the ARM922T/ARM920T the MMU  makes&n;&t; * the FSR (and hence addr) equal to the updated base address&n;&t; * of the multiple access rather than the restored value.&n;&t; * Switch this messsage off if we&squot;ve got a ARM92[02], otherwise&n;&t; * [ls]dm alignment faults are noisy!&n;&t; */
+multiline_comment|/* &n;&t; * For alignment faults on the ARM922T/ARM920T the MMU  makes&n;&t; * the FSR (and hence addr) equal to the updated base address&n;&t; * of the multiple access rather than the restored value.&n;&t; * Switch this message off if we&squot;ve got a ARM92[02], otherwise&n;&t; * [ls]dm alignment faults are noisy!&n;&t; */
 macro_line|#if !(defined CONFIG_CPU_ARM922T)  &amp;&amp; !(defined CONFIG_CPU_ARM920T)
 multiline_comment|/*&n;&t; * This is a &quot;hint&quot; - we already have eaddr worked out by the&n;&t; * processor for us.&n;&t; */
 r_if

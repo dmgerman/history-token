@@ -55,7 +55,7 @@ mdefine_line|#define USE_DMAC
 multiline_comment|/*&n; * ====================================================================================&n; */
 macro_line|#ifdef DEBUG_TARGET
 DECL|macro|DBG
-mdefine_line|#define DBG(cmd,xxx...) &bslash;&n;  if (cmd-&gt;target == DEBUG_TARGET) { &bslash;&n;    xxx; &bslash;&n;  }
+mdefine_line|#define DBG(cmd,xxx...) &bslash;&n;  if (cmd-&gt;device-&gt;id == DEBUG_TARGET) { &bslash;&n;    xxx; &bslash;&n;  }
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(cmd,xxx...) xxx
@@ -2509,7 +2509,7 @@ id|host-&gt;SCpnt
 r_return
 l_char|&squot;0&squot;
 op_plus
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:semicolon
 r_return
 l_char|&squot;H&squot;
@@ -3085,7 +3085,7 @@ id|host-&gt;scsi.io_port
 comma
 id|DESTID
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|sbic_arm_write
@@ -3139,7 +3139,7 @@ id|host-&gt;host-&gt;host_no
 comma
 l_char|&squot;0&squot;
 op_plus
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|SCpnt-&gt;cmnd
 (braket
@@ -3188,11 +3188,11 @@ macro_line|#endif
 id|set_bit
 c_func
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 op_star
 l_int|8
 op_plus
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 id|host-&gt;busyluns
 )paren
@@ -3457,7 +3457,7 @@ c_func
 (paren
 id|host
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -3490,11 +3490,11 @@ suffix:semicolon
 id|clear_bit
 c_func
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 op_star
 l_int|8
 op_plus
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 id|host-&gt;busyluns
 )paren
@@ -4069,7 +4069,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )paren
 )paren
 (brace
@@ -5882,7 +5882,7 @@ c_func
 (paren
 id|host
 comma
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -5969,7 +5969,7 @@ c_cond
 (paren
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_state
@@ -5978,7 +5978,7 @@ id|SYNC_SENT_REQUEST
 )paren
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_state
@@ -6044,11 +6044,11 @@ suffix:semicolon
 id|set_bit
 c_func
 (paren
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 op_star
 l_int|8
 op_plus
-id|host-&gt;SCpnt-&gt;lun
+id|host-&gt;SCpnt-&gt;device-&gt;lun
 comma
 id|host-&gt;busyluns
 )paren
@@ -6083,7 +6083,7 @@ id|host
 suffix:semicolon
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_xfer
@@ -6092,7 +6092,7 @@ id|SYNCHTRANSFER_2DBA
 suffix:semicolon
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_state
@@ -6108,7 +6108,7 @@ id|SYNCHTRANSFER
 comma
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_xfer
@@ -6175,7 +6175,7 @@ c_cond
 (paren
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_state
@@ -6186,7 +6186,7 @@ id|SYNC_SENT_REQUEST
 multiline_comment|/*&n;&t;&t; * We requested synchronous transfers.  This isn&squot;t quite right...&n;&t;&t; * We can only say if this succeeded if we proceed on to execute the&n;&t;&t; * command from this message.  If we get a MESSAGE PARITY ERROR,&n;&t;&t; * and the target retries fail, then we fallback to asynchronous mode&n;&t;&t; */
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_state
@@ -6222,7 +6222,7 @@ l_int|4
 suffix:semicolon
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_xfer
@@ -6316,7 +6316,7 @@ id|length
 suffix:semicolon
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_xfer
@@ -6341,7 +6341,7 @@ id|SYNCHTRANSFER
 comma
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_xfer
@@ -6625,12 +6625,12 @@ c_func
 (paren
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|disconnect_ok
 comma
-id|host-&gt;SCpnt-&gt;lun
+id|host-&gt;SCpnt-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -6717,7 +6717,7 @@ c_cond
 (paren
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_state
@@ -6727,7 +6727,7 @@ id|SYNC_NEGOCIATE
 (brace
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_state
@@ -6815,7 +6815,7 @@ id|SYNCHTRANSFER
 comma
 id|host-&gt;device
 (braket
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )braket
 dot
 id|sync_xfer
@@ -6938,7 +6938,7 @@ id|host-&gt;host-&gt;host_no
 comma
 id|target
 comma
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|host-&gt;SCpnt
@@ -6977,11 +6977,11 @@ id|host-&gt;scsi.disconnectable
 op_logical_and
 id|host-&gt;SCpnt
 op_logical_and
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 op_eq
 id|target
 op_logical_and
-id|host-&gt;SCpnt-&gt;lun
+id|host-&gt;SCpnt-&gt;device-&gt;lun
 op_eq
 id|lun
 )paren
@@ -7127,11 +7127,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 op_eq
 id|host-&gt;scsi.reconnected.target
 op_logical_and
-id|host-&gt;SCpnt-&gt;lun
+id|host-&gt;SCpnt-&gt;device-&gt;lun
 op_eq
 id|host-&gt;scsi.reconnected.lun
 op_logical_and
@@ -7509,7 +7509,7 @@ id|host-&gt;scsi.disconnectable
 id|ADD_STATUS
 c_func
 (paren
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 comma
 id|ssr
 comma
@@ -7719,7 +7719,7 @@ suffix:semicolon
 id|ADD_STATUS
 c_func
 (paren
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 comma
 id|ssr
 comma
@@ -7805,7 +7805,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -7934,7 +7934,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -8057,7 +8057,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -8252,7 +8252,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -8318,7 +8318,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -8372,7 +8372,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -8407,7 +8407,7 @@ suffix:semicolon
 id|ADD_STATUS
 c_func
 (paren
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 comma
 id|ssr
 comma
@@ -8586,7 +8586,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -8768,7 +8768,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -8968,7 +8968,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -9048,7 +9048,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -9134,7 +9134,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -9179,7 +9179,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -9257,7 +9257,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -9363,7 +9363,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -9399,7 +9399,7 @@ comma
 id|host-&gt;SCpnt
 ques
 c_cond
-id|host-&gt;SCpnt-&gt;target
+id|host-&gt;SCpnt-&gt;device-&gt;id
 suffix:colon
 l_int|8
 )paren
@@ -9642,7 +9642,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 )paren
 )paren
@@ -9657,7 +9657,7 @@ id|SCpnt-&gt;host-&gt;host_no
 comma
 l_char|&squot;0&squot;
 op_plus
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -10171,7 +10171,7 @@ c_func
 (paren
 id|host
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -10211,11 +10211,11 @@ singleline_comment|//#endif
 id|clear_bit
 c_func
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 op_star
 l_int|8
 op_plus
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 id|host-&gt;busyluns
 )paren
@@ -10281,7 +10281,7 @@ c_func
 (paren
 id|host
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 macro_line|#if (DEBUG &amp; DEBUG_ABORT)
@@ -10392,7 +10392,7 @@ c_func
 (paren
 id|host
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace

@@ -2665,7 +2665,7 @@ id|ieee1284_info
 op_star
 id|info
 suffix:semicolon
-multiline_comment|/* parport released, but not in compatability mode */
+multiline_comment|/* parport released, but not in compatibility mode */
 id|parport_claim_or_block
 (paren
 id|pp-&gt;pdev

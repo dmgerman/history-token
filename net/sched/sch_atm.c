@@ -2454,7 +2454,7 @@ suffix:semicolon
 id|D2PRINTK
 c_func
 (paren
-l_string|&quot;atm_tc_deqeueue: sending on class %p&bslash;n&quot;
+l_string|&quot;atm_tc_dequeue: sending on class %p&bslash;n&quot;
 comma
 id|flow
 )paren

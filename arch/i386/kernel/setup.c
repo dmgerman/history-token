@@ -245,14 +245,6 @@ r_extern
 r_int
 id|blk_nohighio
 suffix:semicolon
-r_void
-id|__init
-id|visws_get_board_type_and_rev
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|saved_videomode
 r_int
 r_int

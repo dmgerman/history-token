@@ -43,7 +43,7 @@ mdefine_line|#define CDROMMULTISESSION&t;0x5310 /* Obtain the start-of-last-sess
 DECL|macro|CDROM_GET_MCN
 mdefine_line|#define CDROM_GET_MCN&t;&t;0x5311 /* Obtain the &quot;Universal Product Code&quot; &n;                                           if available (struct cdrom_mcn) */
 DECL|macro|CDROM_GET_UPC
-mdefine_line|#define CDROM_GET_UPC&t;&t;CDROM_GET_MCN  /* This one is depricated, &n;                                          but here anyway for compatability */
+mdefine_line|#define CDROM_GET_UPC&t;&t;CDROM_GET_MCN  /* This one is depricated, &n;                                          but here anyway for compatibility */
 DECL|macro|CDROMRESET
 mdefine_line|#define CDROMRESET&t;&t;0x5312 /* hard-reset the drive */
 DECL|macro|CDROMVOLREAD

@@ -1101,6 +1101,22 @@ c_func
 l_string|&quot;PCI: unable to alloc resources&quot;
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|res
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|resource
+)paren
+op_star
+l_int|2
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren

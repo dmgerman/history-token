@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/siimage.c&t;&t;Version 1.01&t;Sept 11, 2002&n; *&n; * Copyright (C) 2001-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/siimage.c&t;&t;Version 1.02&t;Jan 30, 2003&n; *&n; * Copyright (C) 2001-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -80,7 +80,8 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|bmdma
 op_assign
 (paren
@@ -90,7 +91,8 @@ ques
 c_cond
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|pci_get_drvdata
 c_func
@@ -145,7 +147,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;MMIO Base 0x%08x&bslash;n&quot;
+l_string|&quot;MMIO Base 0x%lx&bslash;n&quot;
 comma
 id|bmdma
 )paren
@@ -157,7 +159,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%s-DMA Base 0x%08x&bslash;n&quot;
+l_string|&quot;%s-DMA Base 0x%lx&bslash;n&quot;
 comma
 (paren
 id|mmio
@@ -178,7 +180,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%s-DMA Base 0x%08x&bslash;n&quot;
+l_string|&quot;%s-DMA Base 0x%lx&bslash;n&quot;
 comma
 (paren
 id|mmio
@@ -1559,23 +1561,15 @@ c_func
 (paren
 id|drive
 comma
-(paren
 op_logical_neg
-(paren
 id|speed
-)paren
-)paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
-(paren
 id|speed
-)paren
-)paren
 )paren
 r_return
 l_int|0
@@ -1642,13 +1636,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|id
 op_ne
 l_int|NULL
-)paren
 op_logical_and
-(paren
 (paren
 id|id-&gt;capability
 op_amp
@@ -1656,7 +1647,6 @@ l_int|1
 )paren
 op_ne
 l_int|0
-)paren
 op_logical_and
 id|drive-&gt;autodma
 )paren
@@ -1919,10 +1909,6 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* return 1 if Device INTR asserted */
-r_if
-c_cond
-(paren
-(paren
 id|pci_read_config_byte
 c_func
 (paren
@@ -1937,17 +1923,13 @@ comma
 op_amp
 id|dma_altstat
 )paren
-)paren
-comma
-(paren
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|dma_altstat
 op_amp
 l_int|8
-)paren
-op_eq
-l_int|8
-)paren
 )paren
 r_return
 l_int|0
@@ -2158,6 +2140,7 @@ macro_line|#if 1
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: sata_error = 0x%08x, &quot;
 l_string|&quot;watchdog = %d, %s&bslash;n&quot;
 comma
@@ -2518,6 +2501,7 @@ l_int|0x03
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: reset phy dead, status=0x%08x&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -2799,6 +2783,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: reset phy, status=0x%08x, %s&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -2820,6 +2805,7 @@ id|sata_stat
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: reset phy dead, status=0x%08x&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -2865,6 +2851,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: BASE CLOCK &quot;
 comma
 id|name
@@ -2968,7 +2955,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* DISPLAY_SIIMAGE_TIMINGS &amp;&amp; CONFIG_PROC_FS */
 )brace
-macro_line|#ifdef CONFIG_TRY_MMIO_SIIMAGE
 DECL|function|setup_mmio_siimage
 r_static
 r_int
@@ -2986,7 +2972,8 @@ op_star
 id|name
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|bar5
 op_assign
 id|pci_resource_start
@@ -2997,7 +2984,8 @@ comma
 l_int|5
 )paren
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|end5
 op_assign
 id|pci_resource_end
@@ -3013,7 +3001,8 @@ id|tmpbyte
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|addr
 suffix:semicolon
 r_void
@@ -3050,24 +3039,21 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|addr
-op_assign
-(paren
-id|u32
-)paren
-id|ioaddr
-suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren
 id|dev
 comma
-(paren
-r_void
-op_star
+id|ioaddr
 )paren
+suffix:semicolon
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
+id|ioaddr
 suffix:semicolon
 r_if
 c_cond
@@ -3077,7 +3063,7 @@ op_eq
 id|PCI_DEVICE_ID_SII_3112
 )paren
 (brace
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0
@@ -3089,7 +3075,7 @@ l_int|0x148
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0
@@ -3102,7 +3088,7 @@ l_int|0x1C8
 )paren
 suffix:semicolon
 )brace
-id|sii_outb
+id|writeb
 c_func
 (paren
 l_int|0
@@ -3114,7 +3100,7 @@ l_int|0xB4
 )paren
 )paren
 suffix:semicolon
-id|sii_outb
+id|writeb
 c_func
 (paren
 l_int|0
@@ -3128,7 +3114,7 @@ l_int|0xF4
 suffix:semicolon
 id|tmpbyte
 op_assign
-id|sii_inb
+id|readb
 c_func
 (paren
 id|DEVADDR
@@ -3147,7 +3133,7 @@ id|tmpbyte
 r_case
 l_int|0x01
 suffix:colon
-id|sii_outb
+id|writeb
 c_func
 (paren
 id|tmpbyte
@@ -3163,7 +3149,7 @@ l_int|0x4A
 suffix:semicolon
 id|tmpbyte
 op_assign
-id|sii_inb
+id|readb
 c_func
 (paren
 id|DEVADDR
@@ -3178,7 +3164,7 @@ l_int|0x31
 suffix:colon
 multiline_comment|/* if clocking is disabled */
 multiline_comment|/* 133 clock attempt to force it on */
-id|sii_outb
+id|writeb
 c_func
 (paren
 id|tmpbyte
@@ -3195,7 +3181,7 @@ l_int|0x4A
 suffix:semicolon
 id|tmpbyte
 op_assign
-id|sii_inb
+id|readb
 c_func
 (paren
 id|DEVADDR
@@ -3224,7 +3210,7 @@ id|tmpbyte
 op_or_assign
 l_int|0x20
 suffix:semicolon
-id|sii_outb
+id|writeb
 c_func
 (paren
 id|tmpbyte
@@ -3239,7 +3225,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|sii_outb
+id|writeb
 c_func
 (paren
 l_int|0x72
@@ -3251,7 +3237,7 @@ l_int|0xA1
 )paren
 )paren
 suffix:semicolon
-id|sii_outw
+id|writew
 c_func
 (paren
 l_int|0x328A
@@ -3263,7 +3249,7 @@ l_int|0xA2
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0x62DD62DD
@@ -3275,7 +3261,7 @@ l_int|0xA4
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0x43924392
@@ -3287,7 +3273,7 @@ l_int|0xA8
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0x40094009
@@ -3299,7 +3285,7 @@ l_int|0xAC
 )paren
 )paren
 suffix:semicolon
-id|sii_outb
+id|writeb
 c_func
 (paren
 l_int|0x72
@@ -3311,7 +3297,7 @@ l_int|0xE1
 )paren
 )paren
 suffix:semicolon
-id|sii_outw
+id|writew
 c_func
 (paren
 l_int|0x328A
@@ -3323,7 +3309,7 @@ l_int|0xE2
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0x62DD62DD
@@ -3335,7 +3321,7 @@ l_int|0xE4
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0x43924392
@@ -3347,7 +3333,7 @@ l_int|0xE8
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0x40094009
@@ -3367,7 +3353,7 @@ op_eq
 id|PCI_DEVICE_ID_SII_3112
 )paren
 (brace
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0xFFFF0000
@@ -3379,7 +3365,7 @@ l_int|0x108
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0xFFFF0000
@@ -3391,7 +3377,7 @@ l_int|0x188
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0x00680000
@@ -3403,7 +3389,7 @@ l_int|0x148
 )paren
 )paren
 suffix:semicolon
-id|sii_outl
+id|writel
 c_func
 (paren
 l_int|0x00680000
@@ -3418,7 +3404,7 @@ suffix:semicolon
 )brace
 id|tmpbyte
 op_assign
-id|sii_inb
+id|readb
 c_func
 (paren
 id|DEVADDR
@@ -3446,7 +3432,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_TRY_MMIO_SIIMAGE */
 DECL|function|init_chipset_siimage
 r_static
 r_int
@@ -3475,13 +3460,11 @@ id|tmpbyte
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_TRY_MMIO_SIIMAGE
 id|u8
 id|BA5_EN
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_TRY_MMIO_SIIMAGE */
 id|pci_read_config_dword
 c_func
 (paren
@@ -3514,7 +3497,6 @@ suffix:colon
 l_int|255
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_TRY_MMIO_SIIMAGE
 id|pci_read_config_byte
 c_func
 (paren
@@ -3563,7 +3545,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_TRY_MMIO_SIIMAGE */
 id|pci_write_config_byte
 c_func
 (paren
@@ -3859,11 +3840,13 @@ id|dev
 op_assign
 id|hwif-&gt;pci_dev
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|addr
 op_assign
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|pci_get_drvdata
 c_func
@@ -3880,45 +3863,11 @@ singleline_comment|//&t;u16 i&t;&t;&t;= 0;
 id|hw_regs_t
 id|hw
 suffix:semicolon
-id|hwif-&gt;OUTB
-op_assign
-id|sii_outb
-suffix:semicolon
-id|hwif-&gt;OUTW
-op_assign
-id|sii_outw
-suffix:semicolon
-id|hwif-&gt;OUTL
-op_assign
-id|sii_outl
-suffix:semicolon
-id|hwif-&gt;OUTSW
-op_assign
-id|sii_outsw
-suffix:semicolon
-id|hwif-&gt;OUTSL
-op_assign
-id|sii_outsl
-suffix:semicolon
-id|hwif-&gt;INB
-op_assign
-id|sii_inb
-suffix:semicolon
-id|hwif-&gt;INW
-op_assign
-id|sii_inw
-suffix:semicolon
-id|hwif-&gt;INL
-op_assign
-id|sii_inl
-suffix:semicolon
-id|hwif-&gt;INSW
-op_assign
-id|sii_insw
-suffix:semicolon
-id|hwif-&gt;INSL
-op_assign
-id|sii_insl
+id|default_hwif_mmiops
+c_func
+(paren
+id|hwif
+)paren
 suffix:semicolon
 id|memset
 c_func
@@ -4379,6 +4328,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: &quot;
 comma
 id|hwif-&gt;name
@@ -4582,7 +4532,6 @@ id|hw.irq
 op_assign
 id|hwif-&gt;pci_dev-&gt;irq
 suffix:semicolon
-singleline_comment|//&t;hw.iops&t;&t;&t;&t;= siimage_iops;
 id|memcpy
 c_func
 (paren
@@ -4879,18 +4828,6 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_TRY_MMIO_SIIMAGE
-r_if
-c_cond
-(paren
-id|hwif-&gt;mmio
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_TRY_MMIO_SIIMAGE */
 r_return
 (paren
 id|hwif

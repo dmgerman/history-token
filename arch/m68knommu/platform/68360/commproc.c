@@ -184,7 +184,7 @@ op_amp
 id|CMD_FLAG
 )paren
 suffix:semicolon
-multiline_comment|/* On the recommendation of the 68360 manual, p. 7-60&n;&t; * - Set sdma interupt service mask to 7&n;&t; * - Set sdma arbitration ID to 4&n;&t; */
+multiline_comment|/* On the recommendation of the 68360 manual, p. 7-60&n;&t; * - Set sdma interrupt service mask to 7&n;&t; * - Set sdma arbitration ID to 4&n;&t; */
 id|pquicc-&gt;sdma_sdcr
 op_assign
 l_int|0x0740

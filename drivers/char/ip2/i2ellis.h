@@ -747,7 +747,7 @@ DECL|member|write_fifo_spinlock
 id|rwlock_t
 id|write_fifo_spinlock
 suffix:semicolon
-singleline_comment|//&t;For queuing interupt bottom half handlers.&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
+singleline_comment|//&t;For queuing interrupt bottom half handlers.&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
 DECL|member|tqueue_interrupt
 r_struct
 id|work_struct

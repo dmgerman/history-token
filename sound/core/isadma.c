@@ -244,6 +244,8 @@ ques
 c_cond
 l_int|0
 suffix:colon
+id|size
+op_minus
 id|result
 suffix:semicolon
 )brace

@@ -3,6 +3,7 @@ DECL|macro|_ASMi386_SIGNAL_H
 mdefine_line|#define _ASMi386_SIGNAL_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 multiline_comment|/* Avoid too many header ordering problems.  */
 r_struct
 id|siginfo

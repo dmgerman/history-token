@@ -42,7 +42,7 @@ id|EISA_SIG_LEN
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* There is not much we can say about an EISA device, apart from&n; * signature, slot number, and base address */
+multiline_comment|/* There is not much we can say about an EISA device, apart from&n; * signature, slot number, and base address. */
 DECL|struct|eisa_device
 r_struct
 id|eisa_device
@@ -158,5 +158,54 @@ op_assign
 id|data
 suffix:semicolon
 )brace
+multiline_comment|/* The EISA root device. There&squot;s rumours about machines with multiple&n; * busses (PA-RISC ?), so we try to handle that. */
+DECL|struct|eisa_root_device
+r_struct
+id|eisa_root_device
+(brace
+DECL|member|node
+r_struct
+id|list_head
+id|node
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* Pointer to bridge device */
+DECL|member|res
+r_struct
+id|resource
+op_star
+id|res
+suffix:semicolon
+DECL|member|bus_base_addr
+r_int
+r_int
+id|bus_base_addr
+suffix:semicolon
+DECL|member|slots
+r_int
+id|slots
+suffix:semicolon
+multiline_comment|/* Max slot number */
+DECL|member|bus_nr
+r_int
+id|bus_nr
+suffix:semicolon
+multiline_comment|/* Set by eisa_root_register */
+)brace
+suffix:semicolon
+r_int
+id|eisa_root_register
+(paren
+r_struct
+id|eisa_root_device
+op_star
+id|root
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

@@ -1112,7 +1112,7 @@ id|mask
 r_int
 id|irq
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Perform a binary search on set bits.&n;&t;&t; * `Less than Fatal&squot; and PS2 interupts aren&squot;t supported.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Perform a binary search on set bits.&n;&t;&t; * `Less than Fatal&squot; and PS2 interrupts aren&squot;t supported.&n;&t;&t; */
 r_if
 c_cond
 (paren

@@ -2984,7 +2984,7 @@ id|diff
 op_add_assign
 id|runtime-&gt;boundary
 suffix:semicolon
-id|pcm-&gt;sw_ready
+id|frames
 op_add_assign
 id|diff
 suffix:semicolon

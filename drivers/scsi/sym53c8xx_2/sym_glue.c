@@ -6890,7 +6890,6 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_set_dma_mask
 c_func
 (paren
@@ -7696,12 +7695,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|instance
 comma
-id|dev-&gt;pdev
+op_amp
+id|dev-&gt;pdev-&gt;dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Now let the generic SCSI driver&n;&t; *  look for the SCSI devices on the bus ..&n;&t; */

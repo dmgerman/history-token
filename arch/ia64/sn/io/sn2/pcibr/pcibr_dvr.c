@@ -12600,7 +12600,7 @@ id|xio_port
 op_assign
 id|pcibr_dmamap-&gt;bd_xio_port
 suffix:semicolon
-multiline_comment|/* If this DMA is to an addres that&n;     * refers back to this Bridge chip,&n;     * reduce it back to the correct&n;     * PCI MEM address.&n;     */
+multiline_comment|/* If this DMA is to an address that&n;     * refers back to this Bridge chip,&n;     * reduce it back to the correct&n;     * PCI MEM address.&n;     */
 r_if
 c_cond
 (paren

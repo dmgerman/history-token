@@ -4229,6 +4229,11 @@ r_void
 )paren
 (brace
 r_int
+id|eisa_found
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|orig_cards_found
 op_assign
 id|vortex_cards_found
@@ -4252,15 +4257,14 @@ id|eisa_driver_register
 op_amp
 id|vortex_eisa_driver
 )paren
-OL
+op_ge
 l_int|0
 )paren
 (brace
-id|eisa_driver_unregister
-(paren
-op_amp
-id|vortex_eisa_driver
-)paren
+multiline_comment|/* Because of the way EISA bus is probed, we cannot assume&n;&t;&t;&t; * any device have been found when we exit from&n;&t;&t;&t; * eisa_driver_register (the bus root driver may not be&n;&t;&t;&t; * initialized yet). So we blindly assume something was&n;&t;&t;&t; * found, and let the sysfs magic happend... */
+id|eisa_found
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -4291,6 +4295,8 @@ r_return
 id|vortex_cards_found
 op_minus
 id|orig_cards_found
+op_plus
+id|eisa_found
 suffix:semicolon
 )brace
 multiline_comment|/* returns count (&gt;= 0), or negative on error */
@@ -8544,6 +8550,13 @@ id|media_status
 suffix:semicolon
 )brace
 r_else
+(brace
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8552,12 +8565,6 @@ OG
 l_int|1
 )paren
 (brace
-id|netif_carrier_off
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8576,6 +8583,7 @@ comma
 id|media_status
 )paren
 suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon

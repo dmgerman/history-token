@@ -2762,7 +2762,7 @@ comma
 id|reg
 )paren
 suffix:semicolon
-multiline_comment|/* Clear latched errors.  So our interupt deasserts. */
+multiline_comment|/* Clear latched errors.  So our interrupt deasserts. */
 id|ahd_outb
 c_func
 (paren
@@ -3077,7 +3077,7 @@ comma
 id|DCHSPLTSTAT1
 )paren
 suffix:semicolon
-multiline_comment|/* Clear latched errors.  So our interupt deasserts. */
+multiline_comment|/* Clear latched errors.  So our interrupt deasserts. */
 id|ahd_outb
 c_func
 (paren
@@ -3139,7 +3139,7 @@ comma
 id|SGSPLTSTAT1
 )paren
 suffix:semicolon
-multiline_comment|/* Clear latched errors.  So our interupt deasserts. */
+multiline_comment|/* Clear latched errors.  So our interrupt deasserts. */
 id|ahd_outb
 c_func
 (paren

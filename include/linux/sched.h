@@ -692,6 +692,81 @@ suffix:semicolon
 r_struct
 id|backing_dev_info
 suffix:semicolon
+multiline_comment|/* POSIX.1b interval timer structure. */
+DECL|struct|k_itimer
+r_struct
+id|k_itimer
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* free/ allocate list */
+DECL|member|it_lock
+id|spinlock_t
+id|it_lock
+suffix:semicolon
+DECL|member|it_clock
+id|clockid_t
+id|it_clock
+suffix:semicolon
+multiline_comment|/* which timer type */
+DECL|member|it_id
+id|timer_t
+id|it_id
+suffix:semicolon
+multiline_comment|/* timer id */
+DECL|member|it_overrun
+r_int
+id|it_overrun
+suffix:semicolon
+multiline_comment|/* overrun on pending signal  */
+DECL|member|it_overrun_last
+r_int
+id|it_overrun_last
+suffix:semicolon
+multiline_comment|/* overrun on last delivered signal */
+DECL|member|it_requeue_pending
+r_int
+id|it_requeue_pending
+suffix:semicolon
+multiline_comment|/* waiting to requeue this timer */
+DECL|member|it_sigev_notify
+r_int
+id|it_sigev_notify
+suffix:semicolon
+multiline_comment|/* notify word of sigevent struct */
+DECL|member|it_sigev_signo
+r_int
+id|it_sigev_signo
+suffix:semicolon
+multiline_comment|/* signo word of sigevent struct */
+DECL|member|it_sigev_value
+id|sigval_t
+id|it_sigev_value
+suffix:semicolon
+multiline_comment|/* value word of sigevent struct */
+DECL|member|it_incr
+r_int
+r_int
+id|it_incr
+suffix:semicolon
+multiline_comment|/* interval specified in jiffies */
+DECL|member|it_process
+r_struct
+id|task_struct
+op_star
+id|it_process
+suffix:semicolon
+multiline_comment|/* process to send signal to */
+DECL|member|it_timer
+r_struct
+id|timer_list
+id|it_timer
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|task_struct
 r_struct
 id|task_struct
@@ -952,6 +1027,12 @@ r_struct
 id|timer_list
 id|real_timer
 suffix:semicolon
+DECL|member|posix_timers
+r_struct
+id|list_head
+id|posix_timers
+suffix:semicolon
+multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|utime
 DECL|member|stime
 DECL|member|cutime
@@ -1284,27 +1365,6 @@ DECL|macro|PF_FSTRANS
 mdefine_line|#define PF_FSTRANS&t;0x00020000&t;/* inside a filesystem transaction */
 DECL|macro|PF_KSWAPD
 mdefine_line|#define PF_KSWAPD&t;0x00040000&t;/* I am kswapd */
-multiline_comment|/*&n; * Ptrace flags&n; */
-DECL|macro|PT_PTRACED
-mdefine_line|#define PT_PTRACED&t;0x00000001
-DECL|macro|PT_DTRACE
-mdefine_line|#define PT_DTRACE&t;0x00000002&t;/* delayed trace (used on m68k, i386) */
-DECL|macro|PT_TRACESYSGOOD
-mdefine_line|#define PT_TRACESYSGOOD&t;0x00000004
-DECL|macro|PT_PTRACE_CAP
-mdefine_line|#define PT_PTRACE_CAP&t;0x00000008&t;/* ptracer can follow suid-exec */
-DECL|macro|PT_TRACE_FORK
-mdefine_line|#define PT_TRACE_FORK&t;0x00000010
-DECL|macro|PT_TRACE_VFORK
-mdefine_line|#define PT_TRACE_VFORK&t;0x00000020
-DECL|macro|PT_TRACE_CLONE
-mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
-DECL|macro|PT_TRACE_EXEC
-mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
-DECL|macro|PT_TRACE_VFORK_DONE
-mdefine_line|#define PT_TRACE_VFORK_DONE&t;0x00000100
-DECL|macro|PT_TRACE_EXIT
-mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
 macro_line|#if CONFIG_SMP
 r_extern
 r_void
@@ -2083,27 +2143,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|mm_struct
-op_star
-id|start_lazy_tlb
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|end_lazy_tlb
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-suffix:semicolon
 multiline_comment|/* mmdrop drops the mm and the page tables */
 r_extern
 r_inline
@@ -2270,6 +2309,16 @@ suffix:semicolon
 r_extern
 r_void
 id|__exit_sighand
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|exit_itimers
 c_func
 (paren
 r_struct

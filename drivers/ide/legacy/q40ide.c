@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/q40ide.c -- Q40 I/O port IDE Driver&n; *&n; *     (c) Richard Zidlicky&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/legacy/q40ide.c -- Q40 I/O port IDE Driver&n; *&n; *     (c) Richard Zidlicky&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -196,7 +196,8 @@ op_amp
 id|hw
 comma
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|pcide_bases
 (braket

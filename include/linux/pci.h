@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;$Id: pci.h,v 1.87 1998/10/11 15:13:12 mj Exp $&n; *&
 macro_line|#ifndef LINUX_PCI_H
 DECL|macro|LINUX_PCI_H
 mdefine_line|#define LINUX_PCI_H
+macro_line|#include &lt;linux/mod_devicetable.h&gt;
 multiline_comment|/*&n; * Under PCI, each device has 256 bytes of configuration address space,&n; * of which the first 64 bytes are standardized as follows:&n; */
 DECL|macro|PCI_VENDOR_ID
 mdefine_line|#define PCI_VENDOR_ID&t;&t;0x00&t;/* 16 bits */
@@ -551,8 +552,6 @@ DECL|macro|DEVICE_COUNT_DMA
 mdefine_line|#define DEVICE_COUNT_DMA&t;2
 DECL|macro|DEVICE_COUNT_RESOURCE
 mdefine_line|#define DEVICE_COUNT_RESOURCE&t;12
-DECL|macro|PCI_ANY_ID
-mdefine_line|#define PCI_ANY_ID (~0)
 multiline_comment|/*&n; * The pci_dev structure is used to describe PCI devices.&n; */
 DECL|struct|pci_dev
 r_struct
@@ -981,45 +980,6 @@ id|prefetch_start
 comma
 id|prefetch_end
 suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|pci_device_id
-r_struct
-id|pci_device_id
-(brace
-DECL|member|vendor
-DECL|member|device
-r_int
-r_int
-id|vendor
-comma
-id|device
-suffix:semicolon
-multiline_comment|/* Vendor and device ID or PCI_ANY_ID */
-DECL|member|subvendor
-DECL|member|subdevice
-r_int
-r_int
-id|subvendor
-comma
-id|subdevice
-suffix:semicolon
-multiline_comment|/* Subsystem ID&squot;s or PCI_ANY_ID */
-DECL|member|class
-DECL|member|class_mask
-r_int
-r_int
-r_class
-comma
-id|class_mask
-suffix:semicolon
-multiline_comment|/* (class,subclass,prog-if) triplet */
-DECL|member|driver_data
-r_int
-r_int
-id|driver_data
-suffix:semicolon
-multiline_comment|/* Data private to the driver */
 )brace
 suffix:semicolon
 DECL|struct|pci_driver

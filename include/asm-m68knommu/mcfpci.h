@@ -7,7 +7,7 @@ mdefine_line|#define&t;mcfpci_h
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_PCI
-multiline_comment|/*&n; *&t;Address regions in the PCI addres space are not mapped into the&n; *&t;normal memory space of the ColdFire. They must be accessed via&n; *&t;handler routines. This is easy for I/O space (inb/outb/etc) but&n; *&t;needs some code changes to support ordinary memory. Interrupts&n; *&t;also need to be vectored through the PCI handler first, then it&n; *&t;will call the actual driver sub-handlers.&n; */
+multiline_comment|/*&n; *&t;Address regions in the PCI address space are not mapped into the&n; *&t;normal memory space of the ColdFire. They must be accessed via&n; *&t;handler routines. This is easy for I/O space (inb/outb/etc) but&n; *&t;needs some code changes to support ordinary memory. Interrupts&n; *&t;also need to be vectored through the PCI handler first, then it&n; *&t;will call the actual driver sub-handlers.&n; */
 multiline_comment|/*&n; *&t;Un-define all the standard I/O access routines.&n; */
 DECL|macro|inb
 macro_line|#undef&t;inb

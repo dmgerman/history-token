@@ -623,11 +623,10 @@ id|irq_affinity
 id|NR_IRQS
 )braket
 suffix:semicolon
-DECL|variable|irq_balance_mask
-r_int
+DECL|variable|pending_irq_balance_apicid
 r_int
 id|__cacheline_aligned
-id|irq_balance_mask
+id|pending_irq_balance_apicid
 (braket
 id|NR_IRQS
 )braket
@@ -1573,12 +1572,16 @@ op_amp
 id|desc-&gt;lock
 )paren
 suffix:semicolon
-id|irq_balance_mask
+id|pending_irq_balance_apicid
 (braket
 id|selected_irq
 )braket
 op_assign
-id|target_cpu_mask
+id|cpu_to_logical_apicid
+c_func
+(paren
+id|min_loaded
+)paren
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -1851,7 +1854,7 @@ op_amp
 id|desc-&gt;lock
 )paren
 suffix:semicolon
-id|irq_balance_mask
+id|pending_irq_balance_apicid
 (braket
 id|irq
 )braket
@@ -1916,14 +1919,16 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|irq_balance_mask
+id|pending_irq_balance_apicid
 (braket
 id|i
 )braket
 op_assign
-l_int|1
-op_lshift
+id|cpu_to_logical_apicid
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2336,7 +2341,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|irq_balance_mask
+id|pending_irq_balance_apicid
 (braket
 id|irq
 )braket
@@ -2348,13 +2353,13 @@ c_func
 (paren
 id|irq
 comma
-id|irq_balance_mask
+id|pending_irq_balance_apicid
 (braket
 id|irq
 )braket
 )paren
 suffix:semicolon
-id|irq_balance_mask
+id|pending_irq_balance_apicid
 (braket
 id|irq
 )braket
@@ -2740,6 +2745,13 @@ id|lbus
 )braket
 op_eq
 id|MP_BUS_MCA
+op_logical_or
+id|mp_bus_id_to_type
+(braket
+id|lbus
+)braket
+op_eq
+id|MP_BUS_NEC98
 )paren
 op_logical_and
 (paren
@@ -3125,6 +3137,11 @@ DECL|macro|default_MCA_trigger
 mdefine_line|#define default_MCA_trigger(idx)&t;(1)
 DECL|macro|default_MCA_polarity
 mdefine_line|#define default_MCA_polarity(idx)&t;(0)
+multiline_comment|/* NEC98 interrupts are always polarity zero edge triggered,&n; * when listed as conforming in the MP table. */
+DECL|macro|default_NEC98_trigger
+mdefine_line|#define default_NEC98_trigger(idx)     (0)
+DECL|macro|default_NEC98_polarity
+mdefine_line|#define default_NEC98_polarity(idx)    (0)
 DECL|function|MPBIOS_polarity
 r_static
 r_int
@@ -3233,6 +3250,22 @@ multiline_comment|/* MCA pin */
 id|polarity
 op_assign
 id|default_MCA_polarity
+c_func
+(paren
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+id|MP_BUS_NEC98
+suffix:colon
+multiline_comment|/* NEC 98 pin */
+(brace
+id|polarity
+op_assign
+id|default_NEC98_polarity
 c_func
 (paren
 id|idx
@@ -3452,6 +3485,22 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_case
+id|MP_BUS_NEC98
+suffix:colon
+multiline_comment|/* NEC 98 pin */
+(brace
+id|trigger
+op_assign
+id|default_NEC98_trigger
+c_func
+(paren
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 (brace
@@ -3650,6 +3699,9 @@ id|MP_BUS_EISA
 suffix:colon
 r_case
 id|MP_BUS_MCA
+suffix:colon
+r_case
+id|MP_BUS_NEC98
 suffix:colon
 (brace
 id|irq
@@ -4641,14 +4693,21 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot; WARNING: unexpected IO-APIC, please mail&bslash;n&quot;
+l_string|&quot;INFO: unexpected IO-APIC, please file a report at&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;          to linux-smp@vger.kernel.org&bslash;n&quot;
+l_string|&quot;      http://bugzilla.kernel.org&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;      if your kernel is less than 3 months old.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7501,66 +7560,6 @@ comma
 id|end_lapic_irq
 )brace
 suffix:semicolon
-DECL|function|enable_NMI_through_LVT0
-r_void
-id|enable_NMI_through_LVT0
-(paren
-r_void
-op_star
-id|dummy
-)paren
-(brace
-r_int
-r_int
-id|v
-comma
-id|ver
-suffix:semicolon
-id|ver
-op_assign
-id|apic_read
-c_func
-(paren
-id|APIC_LVR
-)paren
-suffix:semicolon
-id|ver
-op_assign
-id|GET_APIC_VERSION
-c_func
-(paren
-id|ver
-)paren
-suffix:semicolon
-id|v
-op_assign
-id|APIC_DM_NMI
-suffix:semicolon
-multiline_comment|/* unmask and set to NMI */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|APIC_INTEGRATED
-c_func
-(paren
-id|ver
-)paren
-)paren
-multiline_comment|/* 82489DX */
-id|v
-op_or_assign
-id|APIC_LVT_LEVEL_TRIGGER
-suffix:semicolon
-id|apic_write_around
-c_func
-(paren
-id|APIC_LVT0
-comma
-id|v
-)paren
-suffix:semicolon
-)brace
 DECL|function|setup_nmi
 r_static
 r_void

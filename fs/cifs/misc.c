@@ -217,7 +217,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNull buffer passed to sesInfoFree&quot;
+l_string|&quot;Null buffer passed to sesInfoFree&quot;
 )paren
 )paren
 suffix:semicolon
@@ -421,7 +421,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNull buffer passed to tconInfoFree&quot;
+l_string|&quot;Null buffer passed to tconInfoFree&quot;
 )paren
 )paren
 suffix:semicolon
@@ -608,7 +608,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNull buffer passed to buf_release&quot;
+l_string|&quot;Null buffer passed to buf_release&quot;
 )paren
 )paren
 suffix:semicolon
@@ -865,7 +865,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|treeCon-&gt;ses-&gt;secMode
+id|treeCon-&gt;ses-&gt;server
+)paren
+r_if
+c_cond
+(paren
+id|treeCon-&gt;ses-&gt;server-&gt;secMode
 op_amp
 (paren
 id|SECMODE_SIGN_REQUIRED
@@ -966,7 +971,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n Rcvd Request not response &quot;
+l_string|&quot;Rcvd Request not response &quot;
 )paren
 )paren
 suffix:semicolon
@@ -998,7 +1003,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nBad protocol string signature header %x &quot;
+l_string|&quot;Bad protocol string signature header %x &quot;
 comma
 op_star
 (paren
@@ -1023,7 +1028,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n Mids do not match &bslash;n&quot;
+l_string|&quot;Mids do not match&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1034,7 +1039,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS: bad smb detected. The Mid=%d&bslash;n&quot;
+l_string|&quot;bad smb detected. The Mid=%d&quot;
 comma
 id|smb-&gt;Mid
 )paren
@@ -1067,7 +1072,7 @@ c_func
 l_int|0
 comma
 (paren
-l_string|&quot;&bslash;nEntering checkSMB with Length: %x, smb_buf_length: %x &quot;
+l_string|&quot;Entering checkSMB with Length: %x, smb_buf_length: %x &quot;
 comma
 id|length
 comma
@@ -1129,7 +1134,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n Length less than 2 + sizeof smb_hdr &quot;
+l_string|&quot;Length less than 2 + sizeof smb_hdr &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1180,7 +1185,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n smb_buf_length greater than CIFS_MAX_MSGSIZE ... &quot;
+l_string|&quot;smb_buf_length greater than CIFS_MAX_MSGSIZE ... &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1190,7 +1195,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;CIFS: bad smb detected. Illegal length. The mid=%d&bslash;n&quot;
+l_string|&quot;bad smb detected. Illegal length. The mid=%d&quot;
 comma
 id|smb-&gt;Mid
 )paren
@@ -1258,7 +1263,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS: smbCalcSize %x &quot;
+l_string|&quot;smbCalcSize %x &quot;
 comma
 id|smbCalcSize
 c_func
@@ -1274,7 +1279,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;CIFS: bad smb size detected. The Mid=%d&bslash;n&quot;
+l_string|&quot;bad smb size detected. The Mid=%d&quot;
 comma
 id|smb-&gt;Mid
 )paren
@@ -1314,9 +1319,19 @@ op_star
 id|tmp
 suffix:semicolon
 r_struct
+id|list_head
+op_star
+id|tmp1
+suffix:semicolon
+r_struct
 id|cifsTconInfo
 op_star
 id|tcon
+suffix:semicolon
+r_struct
+id|cifsFileInfo
+op_star
+id|netfile
 suffix:semicolon
 multiline_comment|/* could add check for smb response flag 0x80 */
 id|cFYI
@@ -1325,7 +1340,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nChecking for oplock break&quot;
+l_string|&quot;Checking for oplock break&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1432,15 +1447,39 @@ id|tcon-&gt;tid
 op_eq
 id|buf-&gt;Tid
 )paren
+(brace
+(def_block
+id|list_for_each
+c_func
+(paren
+id|tmp1
+comma
+op_amp
+id|tcon-&gt;openFileList
+)paren
+(brace
+id|netfile
+op_assign
+id|list_entry
+c_func
+(paren
+id|tmp1
+comma
+r_struct
+id|cifsFileInfo
+comma
+id|tlist
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcon-&gt;ses-&gt;Suid
+id|pSMB-&gt;Fid
 op_eq
-id|buf-&gt;Uid
+id|netfile-&gt;netfid
 )paren
 (brace
-multiline_comment|/* BB Add following logic: &n;                         2) look up inode from tcon-&gt;openFileList-&gt;file-&gt;f_dentry-&gt;d_inode&n;                         3) flush dirty pages and cached byte range locks and mark inode&n;                         4) depending on break type change to r/o caching or no caching&n;                         5) send oplock break response to server */
+multiline_comment|/* BB Add following logic: &n;&t;&t;&t;  2) look up inode from tcon-&gt;openFileList-&gt;file-&gt;f_dentry-&gt;d_inode&n;&t;&t;&t;  3) flush dirty pages and cached byte range locks and mark inode&n;&t;&t;&t;  4) depending on break type change to r/o caching or no caching&n;                  cifsinode-&gt;clientCanCacheAll = 0&n;              5)  inode-&gt;i_data.a_ops = &amp;cifs_addr_ops_writethrough;&n;&t;&t;&t;  6) send oplock break response to server */
 id|read_unlock
 c_func
 (paren
@@ -1454,7 +1493,30 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFound matching connection, process oplock break&quot;
+l_string|&quot;Matching file id, processing oplock break&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+id|TRUE
+suffix:semicolon
+)brace
+)brace
+)def_block
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;No matching file for oplock break on connection&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1476,7 +1538,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nProcessing oplock break for non-existent connection&quot;
+l_string|&quot;Can not process oplock break for non-existent connection&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1568,7 +1630,8 @@ multiline_comment|/* we have reached the beginning of line  */
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n| &quot;
+id|KERN_DEBUG
+l_string|&quot;| &quot;
 )paren
 suffix:semicolon
 id|j
@@ -1659,7 +1722,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; | %s&quot;
+l_string|&quot; | %s&bslash;n&quot;
 comma
 id|debug_line
 )paren

@@ -53,7 +53,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef MODULE
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* initcalls are now grouped by functionality into separate &n; * subsections. Ordering inside the subsections is determined&n; * by link order. &n; * For backwards compatability, initcall() puts the call in &n; * the device init subsection.&n; */
+multiline_comment|/* initcalls are now grouped by functionality into separate &n; * subsections. Ordering inside the subsections is determined&n; * by link order. &n; * For backwards compatibility, initcall() puts the call in &n; * the device init subsection.&n; */
 DECL|macro|__define_initcall
 mdefine_line|#define __define_initcall(level,fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute__ ((unused,__section__ (&quot;.initcall&quot; level &quot;.init&quot;))) = fn
 DECL|macro|core_initcall

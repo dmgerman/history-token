@@ -129,6 +129,37 @@ op_star
 id|n
 )paren
 suffix:semicolon
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+multiline_comment|/* profiling hook activated on each timer interrupt */
+r_void
+id|profile_hook
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|function|profile_event_register
 r_static
@@ -180,6 +211,44 @@ DECL|macro|profile_exec_unmap
 mdefine_line|#define profile_exec_unmap(a) do { } while (0)
 DECL|macro|profile_exit_mmap
 mdefine_line|#define profile_exit_mmap(a) do { } while (0)
+DECL|function|register_profile_notifier
+r_static
+r_inline
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|function|unregister_profile_notifier
+r_static
+r_inline
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|macro|profile_hook
+mdefine_line|#define profile_hook(regs) do { } while (0)
 macro_line|#endif /* CONFIG_PROFILING */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_PROFILE_H */

@@ -892,7 +892,7 @@ macro_line|#endif
 multiline_comment|/* the following macro derives the widget number from the register&n; * address passed to it and uses is_iobrick to determine whether&n; * the widget in question is part of an SN1 IO brick.&n; */
 DECL|macro|IS_IOBRICK
 mdefine_line|#define IS_IOBRICK(rg)&t;is_iobrick( NASID_GET((rg)), SWIN_WIDGETNUM((rg)) )
-multiline_comment|/* macros for NIC compatability */
+multiline_comment|/* macros for NIC compatibility */
 multiline_comment|/* always invoked on &quot;this&quot; cbrick */
 DECL|macro|HUB_VERTEX_MFG_INFO
 mdefine_line|#define HUB_VERTEX_MFG_INFO(v) &bslash;&n;    eeprom_vertex_info_set( C_BRICK, get_nasid(), (v), 0 )

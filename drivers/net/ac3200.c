@@ -1560,7 +1560,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;I/O base adress(es)&quot;
+l_string|&quot;I/O base address(es)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -4,7 +4,9 @@ DECL|macro|__ASM_PROC_SYSTEM_H
 mdefine_line|#define __ASM_PROC_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|set_cr
-mdefine_line|#define set_cr(x)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&quot;mcr&t;p15, 0, %0, c1, c0&t;@ set CR&quot;&t;&bslash;&n;&t;: : &quot;r&quot; (x))
+mdefine_line|#define set_cr(x)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&quot;mcr&t;p15, 0, %0, c1, c0, 0&t;@ set CR&quot;&t;&bslash;&n;&t;: : &quot;r&quot; (x))
+DECL|macro|get_cr
+mdefine_line|#define get_cr(x)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&quot;mrc&t;p15, 0, %0, c1, c0, 0&t;@ get CR&quot;&t;&bslash;&n;&t;: &quot;=r&quot; (x))
 DECL|macro|CR_M
 mdefine_line|#define CR_M&t;(1 &lt;&lt; 0)&t;/* MMU enable&t;&t;&t;&t;*/
 DECL|macro|CR_A
@@ -19,12 +21,12 @@ DECL|macro|CR_D
 mdefine_line|#define CR_D&t;(1 &lt;&lt; 5)&t;/* 32-bit data address range&t;&t;*/
 DECL|macro|CR_L
 mdefine_line|#define CR_L&t;(1 &lt;&lt; 6)&t;/* Implementation defined&t;&t;*/
-DECL|macro|CD_B
-mdefine_line|#define CD_B&t;(1 &lt;&lt; 7)&t;/* Big endian&t;&t;&t;&t;*/
+DECL|macro|CR_B
+mdefine_line|#define CR_B&t;(1 &lt;&lt; 7)&t;/* Big endian&t;&t;&t;&t;*/
 DECL|macro|CR_S
 mdefine_line|#define CR_S&t;(1 &lt;&lt; 8)&t;/* System MMU protection&t;&t;*/
-DECL|macro|CD_R
-mdefine_line|#define CD_R&t;(1 &lt;&lt; 9)&t;/* ROM MMU protection&t;&t;&t;*/
+DECL|macro|CR_R
+mdefine_line|#define CR_R&t;(1 &lt;&lt; 9)&t;/* ROM MMU protection&t;&t;&t;*/
 DECL|macro|CR_F
 mdefine_line|#define CR_F&t;(1 &lt;&lt; 10)&t;/* Implementation defined&t;&t;*/
 DECL|macro|CR_Z

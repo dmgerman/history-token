@@ -110,9 +110,15 @@ id|value
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
-multiline_comment|/* For replacement modutils, use an alias not a pointer. */
+DECL|macro|___module_cat
+mdefine_line|#define ___module_cat(a,b) a ## b
+DECL|macro|__module_cat
+mdefine_line|#define __module_cat(a,b) ___module_cat(a,b)
+multiline_comment|/* For userspace: you can also call me... */
+DECL|macro|MODULE_ALIAS
+mdefine_line|#define MODULE_ALIAS(alias)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __module_cat(__alias_,__LINE__)[]&t;&bslash;&n;&t;&t;__attribute__((section(&quot;.modinfo&quot;),unused)) = &quot;alias=&quot; alias
 DECL|macro|MODULE_GENERIC_TABLE
-mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;static const unsigned long __module_##gtype##_size&t;&t;&bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id);&t;&t;&bslash;&n;static const struct gtype##_id * __module_##gtype##_table&t;&bslash;&n;  __attribute__ ((unused)) = name;&t;&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE (&amp;__this_module)
 DECL|macro|MOD_INC_USE_COUNT
@@ -123,6 +129,8 @@ multiline_comment|/*&n; * The following license idents are currently accepted as
 DECL|macro|MODULE_LICENSE
 mdefine_line|#define MODULE_LICENSE(license)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __module_license[]&t;&t;&t;&bslash;&n;&t;&t;__attribute__((section(&quot;.init.license&quot;), unused)) = license
 macro_line|#else  /* !MODULE */
+DECL|macro|MODULE_ALIAS
+mdefine_line|#define MODULE_ALIAS(alias)
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
 DECL|macro|THIS_MODULE

@@ -1,5 +1,5 @@
-multiline_comment|/*&n; *  Driver for Philips UDA1341TS on Compaq iPAQ H3600 soundcard&n; *  Copyright (C) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License.&n; * &n; * History:&n; *&n; * 2002-03-13&t;Tomas Kasparek&t;Initial release - based on h3600-uda1341.c from OSS&n; * 2002-03-20   Tomas Kasparek  playback over ALSA is working&n; * 2002-03-28   Tomas Kasparek  playback over OSS emulation is working&n; * 2002-03-29   Tomas Kasparek  basic capture is working (native ALSA)&n; * 2002-03-29   Tomas Kasparek  capture is working (OSS emulation)&n; * 2002-04-04   Tomas Kasparek  better rates handling (allow non-standard rates)&n; */
-multiline_comment|/* $Id: sa11xx-uda1341.c,v 1.6 2002/12/04 18:52:05 perex Exp $ */
+multiline_comment|/*&n; *  Driver for Philips UDA1341TS on Compaq iPAQ H3600 soundcard&n; *  Copyright (C) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License.&n; * &n; * History:&n; *&n; * 2002-03-13   Tomas Kasparek  initial release - based on h3600-uda1341.c from OSS&n; * 2002-03-20   Tomas Kasparek  playback over ALSA is working&n; * 2002-03-28   Tomas Kasparek  playback over OSS emulation is working&n; * 2002-03-29   Tomas Kasparek  basic capture is working (native ALSA)&n; * 2002-03-29   Tomas Kasparek  capture is working (OSS emulation)&n; * 2002-04-04   Tomas Kasparek  better rates handling (allow non-standard rates)&n; */
+multiline_comment|/* $Id: sa11xx-uda1341.c,v 1.7 2003/02/13 19:19:18 perex Exp $ */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1539,6 +1539,10 @@ l_string|&quot;  dma_area:&quot;
 suffix:semicolon
 id|buf
 op_assign
+(paren
+r_char
+op_star
+)paren
 id|s-&gt;stream-&gt;runtime-&gt;dma_addr
 op_plus
 (paren

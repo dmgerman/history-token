@@ -1493,7 +1493,7 @@ id|x
 )paren
 suffix:semicolon
 )brace
-macro_line|#elif CONFIG_X86_USE_3DNOW
+macro_line|#elif defined CONFIG_X86_USE_3DNOW
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCHW

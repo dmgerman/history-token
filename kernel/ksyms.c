@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
@@ -118,6 +119,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__page_cache_release
+)paren
+suffix:semicolon
+DECL|variable|__pagevec_lru_add
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__pagevec_lru_add
 )paren
 suffix:semicolon
 DECL|variable|__free_pages

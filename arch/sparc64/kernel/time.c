@@ -225,24 +225,12 @@ id|regs-&gt;u_regs
 id|UREG_RETPC
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROFILING
-r_extern
-r_void
-id|sparc64_profile_hook
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-id|sparc64_profile_hook
+id|profile_hook
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

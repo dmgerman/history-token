@@ -83,7 +83,7 @@ r_int
 id|priority
 )paren
 suffix:semicolon
-multiline_comment|/* Add a new event for propogation to the ULP. */
+multiline_comment|/* Add a new event for propagation to the ULP. */
 r_int
 id|sctp_ulpq_tail_event
 c_func

@@ -2186,7 +2186,7 @@ id|mii_status
 op_eq
 l_int|0x0000
 )paren
-multiline_comment|/* the mii is not accessable, try next one */
+multiline_comment|/* the mii is not accessible, try next one */
 r_continue
 suffix:semicolon
 r_if

@@ -5554,6 +5554,14 @@ c_func
 id|emu-&gt;pci
 comma
 id|substream
+comma
+l_int|64
+op_star
+l_int|1024
+comma
+l_int|64
+op_star
+l_int|1024
 )paren
 )paren
 OL

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/irq.c -- High-level interrupt handling&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1994-2000  Ralf Baechle&n; *  Copyright (C) 1992  Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * This file was was derived from the mips version, arch/mips/kernel/irq.c&n; */
+multiline_comment|/*&n; * arch/v850/kernel/irq.c -- High-level interrupt handling&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1994-2000  Ralf Baechle&n; *  Copyright (C) 1992  Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * This file was was derived from the mips version, arch/mips/kernel/irq.c&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2241,4 +2241,15 @@ id|interval
 suffix:semicolon
 )brace
 )brace
+macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_SYSCTL)
+DECL|function|init_irq_proc
+r_void
+id|init_irq_proc
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif /* CONFIG_PROC_FS &amp;&amp; CONFIG_SYSCTL */
 eof

@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 r_enum
 (brace
-multiline_comment|/* These three have identical behaviour; use the second one if DOS fdisk gets&n;   confused about extended/logical partitions starting past cylinder 1023. */
+multiline_comment|/* These three have identical behaviour; use the second one if DOS FDISK gets&n;   confused about extended/logical partitions starting past cylinder 1023. */
 DECL|enumerator|DOS_EXTENDED_PARTITION
 id|DOS_EXTENDED_PARTITION
 op_assign
@@ -40,18 +40,6 @@ id|SOLARIS_X86_PARTITION
 op_assign
 id|LINUX_SWAP_PARTITION
 comma
-DECL|enumerator|DM6_PARTITION
-id|DM6_PARTITION
-op_assign
-l_int|0x54
-comma
-multiline_comment|/* has DDO: use xlated geom &amp; offset */
-DECL|enumerator|EZD_PARTITION
-id|EZD_PARTITION
-op_assign
-l_int|0x55
-comma
-multiline_comment|/* EZ-DRIVE */
 DECL|enumerator|DM6_AUX1PARTITION
 id|DM6_AUX1PARTITION
 op_assign
@@ -64,6 +52,18 @@ op_assign
 l_int|0x53
 comma
 multiline_comment|/* no DDO:  use xlated geom */
+DECL|enumerator|DM6_PARTITION
+id|DM6_PARTITION
+op_assign
+l_int|0x54
+comma
+multiline_comment|/* has DDO: use xlated geom &amp; offset */
+DECL|enumerator|EZD_PARTITION
+id|EZD_PARTITION
+op_assign
+l_int|0x55
+comma
+multiline_comment|/* EZ-DRIVE */
 DECL|enumerator|FREEBSD_PARTITION
 id|FREEBSD_PARTITION
 op_assign
@@ -88,12 +88,6 @@ op_assign
 l_int|0xb7
 comma
 multiline_comment|/* BSDI Partition ID */
-multiline_comment|/* Ours is not to wonder why.. */
-DECL|enumerator|BSD_PARTITION
-id|BSD_PARTITION
-op_assign
-id|FREEBSD_PARTITION
-comma
 DECL|enumerator|MINIX_PARTITION
 id|MINIX_PARTITION
 op_assign
@@ -105,8 +99,7 @@ id|UNIXWARE_PARTITION
 op_assign
 l_int|0x63
 comma
-multiline_comment|/* Partition ID, same as */
-multiline_comment|/* GNU_HURD and SCO Unix */
+multiline_comment|/* Same as GNU_HURD and SCO Unix */
 )brace
 suffix:semicolon
 DECL|struct|partition

@@ -2059,7 +2059,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Not configured.&n;&t;&t;&t;** For now, propogate HBA limits to the bus;&n;&t;&t;&t;**&t;PCI will adjust them later.&n;&t;&t;&t;*/
+multiline_comment|/* Not configured.&n;&t;&t;&t;** For now, propagate HBA limits to the bus;&n;&t;&t;&t;**&t;PCI will adjust them later.&n;&t;&t;&t;*/
 id|bus-&gt;resource
 (braket
 l_int|0

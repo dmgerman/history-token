@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &quot;cifsfs.h&quot;
@@ -180,6 +181,7 @@ id|disposition
 op_assign
 id|FILE_OVERWRITE
 suffix:semicolon
+multiline_comment|/* BB first check if file has batch oplock (or oplock ?) */
 multiline_comment|/* BB finish adding in oplock support BB */
 r_if
 c_cond
@@ -188,7 +190,7 @@ id|oplockEnabled
 )paren
 id|oplock
 op_assign
-id|TRUE
+id|REQ_OPLOCK
 suffix:semicolon
 r_else
 id|oplock
@@ -234,7 +236,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;ncifs_open returned 0x%x &quot;
+l_string|&quot;cifs_open returned 0x%x &quot;
 comma
 id|rc
 )paren
@@ -246,7 +248,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; oplock: %d &quot;
+l_string|&quot;oplock: %d &quot;
 comma
 id|oplock
 )paren
@@ -456,18 +458,6 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;n  inode = 0x%p with &quot;
-comma
-id|inode
-)paren
-)paren
-suffix:semicolon
 id|xid
 op_assign
 id|GetXid
@@ -595,7 +585,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nClosedir inode = 0x%p with &quot;
+l_string|&quot;Closedir inode = 0x%p with &quot;
 comma
 id|inode
 )paren
@@ -620,7 +610,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFreeing private data in close dir&quot;
+l_string|&quot;Freeing private data in close dir&quot;
 )paren
 )paren
 suffix:semicolon
@@ -723,7 +713,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nLock parm: 0x%x flockflags: 0x%x flocktype: 0x%x start: %lld end: %lld&quot;
+l_string|&quot;Lock parm: 0x%x flockflags: 0x%x flocktype: 0x%x start: %lld end: %lld&quot;
 comma
 id|cmd
 comma
@@ -750,7 +740,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nPosix &quot;
+l_string|&quot;Posix &quot;
 )paren
 )paren
 suffix:semicolon
@@ -767,7 +757,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFlock &quot;
+l_string|&quot;Flock &quot;
 )paren
 )paren
 suffix:semicolon
@@ -784,7 +774,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nBlocking lock &quot;
+l_string|&quot;Blocking lock &quot;
 )paren
 )paren
 suffix:semicolon
@@ -801,7 +791,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nProcess suspended by mandatory locking &quot;
+l_string|&quot;Process suspended by mandatory locking &quot;
 )paren
 )paren
 suffix:semicolon
@@ -818,7 +808,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nLease on file &quot;
+l_string|&quot;Lease on file &quot;
 )paren
 )paren
 suffix:semicolon
@@ -835,7 +825,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n Unknown lock flags &quot;
+l_string|&quot;Unknown lock flags &quot;
 )paren
 )paren
 suffix:semicolon
@@ -853,7 +843,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nF_WRLCK &quot;
+l_string|&quot;F_WRLCK &quot;
 )paren
 )paren
 suffix:semicolon
@@ -877,7 +867,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nF_UNLCK &quot;
+l_string|&quot;F_UNLCK &quot;
 )paren
 )paren
 suffix:semicolon
@@ -901,7 +891,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nF_RDLCK &quot;
+l_string|&quot;F_RDLCK &quot;
 )paren
 )paren
 suffix:semicolon
@@ -929,7 +919,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nF_EXLCK &quot;
+l_string|&quot;F_EXLCK &quot;
 )paren
 )paren
 suffix:semicolon
@@ -953,7 +943,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nF_SHLCK &quot;
+l_string|&quot;F_SHLCK &quot;
 )paren
 )paren
 suffix:semicolon
@@ -973,7 +963,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nUnknown type of lock &quot;
+l_string|&quot;Unknown type of lock &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1117,7 +1107,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError unlocking previously locked range %d during test of lock &quot;
+l_string|&quot;Error unlocking previously locked range %d during test of lock &quot;
 comma
 id|rc
 )paren
@@ -1261,7 +1251,7 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
-multiline_comment|/*cFYI(1,&n;&t;   (&quot; write %d bytes to offset %lld of %s &bslash;n&quot;, write_size,&n;&t;   *poffset, file-&gt;f_dentry-&gt;d_name.name)); */
+multiline_comment|/*cFYI(1,&n;&t;   (&quot; write %d bytes to offset %lld of %s&quot;, write_size,&n;&t;   *poffset, file-&gt;f_dentry-&gt;d_name.name)); */
 r_if
 c_cond
 (paren
@@ -1533,6 +1523,11 @@ id|open_file
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|tmp
+suffix:semicolon
 r_int
 id|xid
 suffix:semicolon
@@ -1593,6 +1588,17 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+id|offset
+op_add_assign
+(paren
+id|loff_t
+)paren
+id|from
+suffix:semicolon
+id|write_data
+op_add_assign
+id|from
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1607,24 +1613,51 @@ id|from
 OG
 id|to
 )paren
+op_logical_or
+(paren
+id|offset
+OG
+id|mapping-&gt;host-&gt;i_size
+)paren
 )paren
 (brace
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
 )brace
+multiline_comment|/* check to make sure that we are not extending the file */
+r_if
+c_cond
+(paren
+id|mapping-&gt;host-&gt;i_size
+op_minus
 id|offset
-op_add_assign
+OL
 (paren
 id|loff_t
 )paren
-id|from
+id|to
+)paren
+(brace
+id|to
+op_assign
+(paren
+r_int
+)paren
+(paren
+id|mapping-&gt;host-&gt;i_size
+op_minus
+id|offset
+)paren
 suffix:semicolon
-id|write_data
-op_add_assign
-id|from
-suffix:semicolon
+)brace
 id|cifsInode
 op_assign
 id|CIFS_I
@@ -1633,18 +1666,13 @@ c_func
 id|mapping-&gt;host
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
+id|list_for_each
 c_func
 (paren
+id|tmp
+comma
 op_amp
-(paren
 id|cifsInode-&gt;openFileList
-)paren
-)paren
 )paren
 (brace
 id|open_file
@@ -1652,7 +1680,7 @@ op_assign
 id|list_entry
 c_func
 (paren
-id|cifsInode-&gt;openFileList.next
+id|tmp
 comma
 r_struct
 id|cifsFileInfo
@@ -1664,7 +1692,23 @@ multiline_comment|/* We could check if file is open for writing first */
 r_if
 c_cond
 (paren
+(paren
 id|open_file-&gt;pfile
+)paren
+op_logical_and
+(paren
+(paren
+id|open_file-&gt;pfile-&gt;f_flags
+op_amp
+id|O_RDWR
+)paren
+op_logical_or
+(paren
+id|open_file-&gt;pfile-&gt;f_flags
+op_amp
+id|O_WRONLY
+)paren
+)paren
 )paren
 (brace
 id|bytes_written
@@ -1684,7 +1728,6 @@ op_amp
 id|offset
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Does mm or vfs already set times? */
 id|inode-&gt;i_atime
 op_assign
@@ -1710,17 +1753,6 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|offset
-OG
-id|inode-&gt;i_size
-)paren
-id|inode-&gt;i_size
-op_assign
-id|offset
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -1736,14 +1768,15 @@ op_assign
 id|bytes_written
 suffix:semicolon
 )brace
-id|mark_inode_dirty_sync
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 )brace
-r_else
+)brace
+r_if
+c_cond
+(paren
+id|open_file
+op_eq
+l_int|NULL
+)paren
 (brace
 id|cFYI
 c_func
@@ -1751,7 +1784,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNo open files to get file handle from&quot;
+l_string|&quot;No writeable filehandles for inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1761,6 +1794,50 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|cifs_writepages
+id|cifs_writepages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
+)paren
+(brace
+r_int
+id|rc
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_int
+id|xid
+suffix:semicolon
+id|xid
+op_assign
+id|GetXid
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* call 16K write then Setpageuptodate */
 id|FreeXid
 c_func
 (paren
@@ -1804,6 +1881,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* BB add check for wbc flags */
 id|page_cache_get
 c_func
 (paren
@@ -1822,7 +1900,13 @@ comma
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
-multiline_comment|/* insert call to SetPageToUpdate like function here? */
+id|SetPageUptodate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* BB add check for error and Clearuptodate? */
 id|unlock_page
 c_func
 (paren
@@ -1870,8 +1954,42 @@ id|to
 (brace
 r_int
 id|xid
-comma
+suffix:semicolon
+r_int
 id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|page-&gt;mapping-&gt;host
+suffix:semicolon
+id|loff_t
+id|position
+op_assign
+(paren
+(paren
+id|loff_t
+)paren
+id|page-&gt;index
+op_lshift
+id|PAGE_CACHE_SHIFT
+)paren
+op_plus
+id|to
+suffix:semicolon
+r_struct
+id|cifsFileInfo
+op_star
+id|open_file
+suffix:semicolon
+r_struct
+id|cifs_sb_info
+op_star
+id|cifs_sb
 suffix:semicolon
 id|xid
 op_assign
@@ -1883,26 +2001,84 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|offset
+id|position
 OG
-id|to
+id|inode-&gt;i_size
 )paren
 (brace
-r_return
-op_minus
-id|EIO
+id|inode-&gt;i_size
+op_assign
+id|position
 suffix:semicolon
-)brace
+r_if
+c_cond
+(paren
+id|file-&gt;private_data
+op_eq
+l_int|NULL
+)paren
+(brace
 id|rc
 op_assign
-id|cifs_partialpagewrite
+op_minus
+id|EBADF
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cifs_sb
+op_assign
+id|CIFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+suffix:semicolon
+id|open_file
+op_assign
+(paren
+r_struct
+id|cifsFileInfo
+op_star
+)paren
+id|file-&gt;private_data
+suffix:semicolon
+id|rc
+op_assign
+id|CIFSSMBSetFileSize
+c_func
+(paren
+id|xid
+comma
+id|cifs_sb-&gt;tcon
+comma
+id|position
+comma
+id|open_file-&gt;netfid
+comma
+id|open_file-&gt;pid
+comma
+id|FALSE
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot; SetEOF (commit write) rc = %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+id|set_page_dirty
 c_func
 (paren
 id|page
-comma
-id|offset
-comma
-id|to
 )paren
 suffix:semicolon
 id|FreeXid
@@ -1914,34 +2090,6 @@ suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|cifs_prepare_write
-id|cifs_prepare_write
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-id|offset
-comma
-r_int
-id|to
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* eventually add code to flush any incompatible requests */
 )brace
 r_int
 DECL|function|cifs_fsync
@@ -1970,6 +2118,13 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
 id|xid
 op_assign
 id|GetXid
@@ -1977,19 +2132,26 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB fill in code to flush write behind buffers - when we start supporting oplock */
 id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot; name: %s datasync: 0x%x &quot;
+l_string|&quot;Sync file - name: %s datasync: 0x%x &quot;
 comma
 id|dentry-&gt;d_name.name
 comma
 id|datasync
 )paren
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|filemap_fdatawrite
+c_func
+(paren
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|FreeXid
@@ -2041,6 +2203,18 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;sync page %p&quot;
+comma
+id|page
+)paren
+)paren
+suffix:semicolon
 id|mapping
 op_assign
 id|page-&gt;mapping
@@ -2075,7 +2249,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nrpages is %d for sync page of Index %ld &quot;
+l_string|&quot;rpages is %d for sync page of Index %ld &quot;
 comma
 id|rpages
 comma
@@ -2095,6 +2269,66 @@ id|rc
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * As file closes, flush all cached write data for this inode checking&n; * for write behind errors.&n; *&n; */
+DECL|function|cifs_flush
+r_int
+id|cifs_flush
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Rather than do the steps manually: */
+multiline_comment|/* lock the inode for writing */
+multiline_comment|/* loop through pages looking for write behind data (dirty pages) */
+multiline_comment|/* coalesce into contiguous 16K (or smaller) chunks to write to server */
+multiline_comment|/* send to server (prefer in parallel) */
+multiline_comment|/* deal with writebehind errors */
+multiline_comment|/* unlock inode for writing */
+multiline_comment|/* filemapfdatawrite appears easier for the time being */
+id|rc
+op_assign
+id|filemap_fdatawrite
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Flush inode %p file %p rc %d&quot;
+comma
+id|inode
+comma
+id|file
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 id|ssize_t
@@ -2146,6 +2380,10 @@ suffix:semicolon
 r_int
 id|xid
 suffix:semicolon
+r_char
+op_star
+id|current_offset
+suffix:semicolon
 id|xid
 op_assign
 id|GetXid
@@ -2190,12 +2428,20 @@ c_loop
 id|total_read
 op_assign
 l_int|0
+comma
+id|current_offset
+op_assign
+id|read_data
 suffix:semicolon
 id|read_size
 OG
 id|total_read
 suffix:semicolon
 id|total_read
+op_add_assign
+id|bytes_read
+comma
+id|current_offset
 op_add_assign
 id|bytes_read
 )paren
@@ -2232,9 +2478,8 @@ comma
 op_amp
 id|bytes_read
 comma
-id|read_data
-op_plus
-id|total_read
+op_amp
+id|current_offset
 )paren
 suffix:semicolon
 r_if
@@ -2288,8 +2533,8 @@ r_return
 id|total_read
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_file_mmap
+r_int
 id|cifs_file_mmap
 c_func
 (paren
@@ -2343,7 +2588,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Validation prior to mmap failed, error=%d&bslash;n&quot;
+l_string|&quot;Validation prior to mmap failed, error=%d&quot;
 comma
 id|rc
 )paren
@@ -2367,6 +2612,670 @@ c_func
 id|file
 comma
 id|vma
+)paren
+suffix:semicolon
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
+DECL|function|cifs_copy_cache_pages
+r_static
+r_void
+id|cifs_copy_cache_pages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|list_head
+op_star
+id|pages
+comma
+r_int
+id|bytes_read
+comma
+r_char
+op_star
+id|data
+comma
+r_struct
+id|pagevec
+op_star
+id|plru_pvec
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+suffix:semicolon
+r_char
+op_star
+id|target
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|bytes_read
+OG
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+id|pages
+)paren
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+id|page
+op_assign
+id|list_entry
+c_func
+(paren
+id|pages-&gt;prev
+comma
+r_struct
+id|page
+comma
+id|list
+)paren
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|page-&gt;list
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|add_to_page_cache
+c_func
+(paren
+id|page
+comma
+id|mapping
+comma
+id|page-&gt;index
+comma
+id|GFP_KERNEL
+)paren
+)paren
+(brace
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Add page cache failed&quot;
+)paren
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|page_cache_get
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|target
+op_assign
+id|kmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PAGE_CACHE_SIZE
+OG
+id|bytes_read
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|target
+comma
+id|data
+comma
+id|bytes_read
+)paren
+suffix:semicolon
+id|bytes_read
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|memcpy
+c_func
+(paren
+id|target
+comma
+id|data
+comma
+id|PAGE_CACHE_SIZE
+)paren
+suffix:semicolon
+id|bytes_read
+op_sub_assign
+id|PAGE_CACHE_SIZE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pagevec_add
+c_func
+(paren
+id|plru_pvec
+comma
+id|page
+)paren
+)paren
+id|__pagevec_lru_add
+c_func
+(paren
+id|plru_pvec
+)paren
+suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|SetPageUptodate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|data
+op_add_assign
+id|PAGE_CACHE_SIZE
+suffix:semicolon
+)brace
+r_return
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|cifs_readpages
+id|cifs_readpages
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|list_head
+op_star
+id|page_list
+comma
+r_int
+id|num_pages
+)paren
+(brace
+r_int
+id|rc
+op_assign
+op_minus
+id|EACCES
+suffix:semicolon
+r_int
+id|xid
+comma
+id|i
+suffix:semicolon
+id|loff_t
+id|offset
+suffix:semicolon
+r_struct
+id|page
+op_star
+id|page
+suffix:semicolon
+r_struct
+id|cifs_sb_info
+op_star
+id|cifs_sb
+suffix:semicolon
+r_struct
+id|cifsTconInfo
+op_star
+id|pTcon
+suffix:semicolon
+r_int
+id|bytes_read
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|read_size
+suffix:semicolon
+r_char
+op_star
+id|smb_read_data
+op_assign
+l_int|0
+suffix:semicolon
+r_struct
+id|smb_com_read_rsp
+op_star
+id|pSMBr
+suffix:semicolon
+r_struct
+id|pagevec
+id|lru_pvec
+suffix:semicolon
+id|xid
+op_assign
+id|GetXid
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|file-&gt;private_data
+op_eq
+l_int|NULL
+)paren
+(brace
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBADF
+suffix:semicolon
+)brace
+id|cifs_sb
+op_assign
+id|CIFS_SB
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_sb
+)paren
+suffix:semicolon
+id|pTcon
+op_assign
+id|cifs_sb-&gt;tcon
+suffix:semicolon
+id|pagevec_init
+c_func
+(paren
+op_amp
+id|lru_pvec
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|num_pages
+suffix:semicolon
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+id|page_list
+)paren
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+id|page
+op_assign
+id|list_entry
+c_func
+(paren
+id|page_list-&gt;prev
+comma
+r_struct
+id|page
+comma
+id|list
+)paren
+suffix:semicolon
+id|offset
+op_assign
+(paren
+id|loff_t
+)paren
+id|page-&gt;index
+op_lshift
+id|PAGE_CACHE_SHIFT
+suffix:semicolon
+multiline_comment|/* for reads over a certain size could initiate async read ahead */
+id|cFYI
+c_func
+(paren
+l_int|0
+comma
+(paren
+l_string|&quot;Read %d pages into cache at offset %ld &quot;
+comma
+id|num_pages
+op_minus
+id|i
+comma
+(paren
+r_int
+r_int
+)paren
+id|offset
+)paren
+)paren
+suffix:semicolon
+id|read_size
+op_assign
+(paren
+id|num_pages
+op_minus
+id|i
+)paren
+op_star
+id|PAGE_CACHE_SIZE
+suffix:semicolon
+id|rc
+op_assign
+id|CIFSSMBRead
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+(paren
+(paren
+r_struct
+id|cifsFileInfo
+op_star
+)paren
+id|file
+op_member_access_from_pointer
+id|private_data
+)paren
+op_member_access_from_pointer
+id|netfid
+comma
+id|read_size
+comma
+id|offset
+comma
+op_amp
+id|bytes_read
+comma
+op_amp
+id|smb_read_data
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|rc
+OL
+l_int|0
+)paren
+op_logical_or
+(paren
+id|smb_read_data
+op_eq
+l_int|NULL
+)paren
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Read error in readpages: %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* clean up remaing pages off list */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+id|page_list
+)paren
+op_logical_and
+(paren
+id|i
+OL
+id|num_pages
+)paren
+)paren
+(brace
+id|page
+op_assign
+id|list_entry
+c_func
+(paren
+id|page_list-&gt;prev
+comma
+r_struct
+id|page
+comma
+id|list
+)paren
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|page-&gt;list
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|bytes_read
+OG
+l_int|0
+)paren
+(brace
+id|pSMBr
+op_assign
+(paren
+r_struct
+id|smb_com_read_rsp
+op_star
+)paren
+id|smb_read_data
+suffix:semicolon
+id|cifs_copy_cache_pages
+c_func
+(paren
+id|mapping
+comma
+id|page_list
+comma
+id|bytes_read
+comma
+id|smb_read_data
+op_plus
+l_int|4
+multiline_comment|/* RFC1000 hdr */
+op_plus
+id|le16_to_cpu
+c_func
+(paren
+id|pSMBr-&gt;DataOffset
+)paren
+comma
+op_amp
+id|lru_pvec
+)paren
+suffix:semicolon
+id|i
+op_add_assign
+id|bytes_read
+op_rshift
+id|PAGE_CACHE_SHIFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|bytes_read
+op_amp
+id|PAGE_CACHE_MASK
+)paren
+op_ne
+id|bytes_read
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Partial page %d of %d read to cache&quot;
+comma
+id|i
+op_increment
+comma
+id|num_pages
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;No bytes read&quot;
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|smb_read_data
+)paren
+(brace
+id|buf_release
+c_func
+(paren
+id|smb_read_data
+)paren
+suffix:semicolon
+id|smb_read_data
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|bytes_read
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|pagevec_lru_add
+c_func
+(paren
+op_amp
+id|lru_pvec
 )paren
 suffix:semicolon
 id|FreeXid
@@ -2416,16 +3325,6 @@ op_assign
 op_minus
 id|EACCES
 suffix:semicolon
-r_struct
-id|cifs_sb_info
-op_star
-id|cifs_sb
-suffix:semicolon
-r_struct
-id|cifsTconInfo
-op_star
-id|pTcon
-suffix:semicolon
 r_int
 id|xid
 suffix:semicolon
@@ -2435,18 +3334,6 @@ id|GetXid
 c_func
 (paren
 )paren
-suffix:semicolon
-id|cifs_sb
-op_assign
-id|CIFS_SB
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_sb
-)paren
-suffix:semicolon
-id|pTcon
-op_assign
-id|cifs_sb-&gt;tcon
 suffix:semicolon
 r_if
 c_cond
@@ -2467,6 +3354,28 @@ op_minus
 id|EBADF
 suffix:semicolon
 )brace
+id|cFYI
+c_func
+(paren
+l_int|0
+comma
+(paren
+l_string|&quot;readpage %p at offset %d 0x%x&bslash;n&quot;
+comma
+id|page
+comma
+(paren
+r_int
+)paren
+id|offset
+comma
+(paren
+r_int
+)paren
+id|offset
+)paren
+)paren
+suffix:semicolon
 id|page_cache_get
 c_func
 (paren
@@ -2481,7 +3390,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/* for reads over a certain size we could initiate async read ahead */
+multiline_comment|/* for reads over a certain size could initiate async read ahead */
 id|rc
 op_assign
 id|cifs_read
@@ -2515,7 +3424,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nBytes read %d &quot;
+l_string|&quot;Bytes read %d &quot;
 comma
 id|rc
 )paren
@@ -2665,7 +3574,7 @@ id|cifsInfo-&gt;inUse
 )paren
 suffix:semicolon
 multiline_comment|/* inc on every refresh of inode info */
-multiline_comment|/* Linux can not store file creation time unfortunately so we ignore it */
+multiline_comment|/* Linux can not store file creation time unfortunately so ignore it */
 id|tmp_inode-&gt;i_atime
 op_assign
 id|cifs_NTtimeToUnix
@@ -2702,7 +3611,8 @@ id|pfindData-&gt;ChangeTime
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* should we treat the dos attribute of read-only as read-only mode bit e.g. 555 */
+multiline_comment|/* treat dos attribute of read-only as read-only mode bit e.g. 555? */
+multiline_comment|/* 2767 perms - indicate mandatory locking */
 id|tmp_inode-&gt;i_mode
 op_assign
 id|S_IALLUGO
@@ -2714,14 +3624,13 @@ op_or
 id|S_IXGRP
 )paren
 suffix:semicolon
-multiline_comment|/* 2767 perms - indicate mandatory locking */
 id|cFYI
 c_func
 (paren
 l_int|0
 comma
 (paren
-l_string|&quot;&bslash;nCIFS FFIRST: Attributes came in as 0x%x&quot;
+l_string|&quot;CIFS FFIRST: Attributes came in as 0x%x&quot;
 comma
 id|pfindData-&gt;ExtFileAttributes
 )paren
@@ -2740,11 +3649,11 @@ id|pobject_type
 op_assign
 id|DT_LNK
 suffix:semicolon
+multiline_comment|/* BB can this and S_IFREG or S_IFDIR be set as in Windows? */
 id|tmp_inode-&gt;i_mode
 op_or_assign
 id|S_IFLNK
 suffix:semicolon
-multiline_comment|/* BB can this and S_IFREG or S_IFDIR be set at same time as in Windows? */
 )brace
 r_else
 r_if
@@ -2760,11 +3669,11 @@ id|pobject_type
 op_assign
 id|DT_DIR
 suffix:semicolon
+multiline_comment|/* override default perms since we do not lock dirs */
 id|tmp_inode-&gt;i_mode
 op_assign
 id|S_IRWXUGO
 suffix:semicolon
-multiline_comment|/* override default perms since we do not lock dirs */
 id|tmp_inode-&gt;i_mode
 op_or_assign
 id|S_IFDIR
@@ -2783,7 +3692,7 @@ id|S_IFREG
 suffix:semicolon
 )brace
 multiline_comment|/* could add code here - to validate if device or weird share type? */
-multiline_comment|/* can not fill in nlink here as in qpathinfo version and in Unx search */
+multiline_comment|/* can not fill in nlink here as in qpathinfo version and Unx search */
 id|tmp_inode-&gt;i_size
 op_assign
 id|pfindData-&gt;EndOfFile
@@ -2811,7 +3720,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nServer inconsistency Error: it says allocation size less than end of file &quot;
+l_string|&quot;Possible sparse file: allocation size less than end of file &quot;
 )paren
 )paren
 suffix:semicolon
@@ -2821,7 +3730,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS FFIRST: Size %ld and blocks %ld and blocksize %ld&quot;
+l_string|&quot;File Size %ld and blocks %ld and blocksize %ld&quot;
 comma
 (paren
 r_int
@@ -2938,7 +3847,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nInit special inode &quot;
+l_string|&quot; Init special inode &quot;
 )paren
 )paren
 suffix:semicolon
@@ -3342,7 +4251,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nInit special inode &quot;
+l_string|&quot; Init special inode &quot;
 )paren
 )paren
 suffix:semicolon
@@ -3411,7 +4320,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFor %s &quot;
+l_string|&quot;For %s &quot;
 comma
 id|qstring-&gt;name
 )paren
@@ -3458,16 +4367,15 @@ id|tmp_dentry
 id|cFYI
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 (paren
-l_string|&quot; existing dentry with inode 0x%p &quot;
+l_string|&quot; existing dentry with inode 0x%p&quot;
 comma
 id|tmp_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB remove */
 op_star
 id|ptmp_inode
 op_assign
@@ -3496,19 +4404,6 @@ c_func
 id|file-&gt;f_dentry-&gt;d_sb
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nAlloc new inode %p &quot;
-comma
-op_star
-id|ptmp_inode
-)paren
-)paren
-suffix:semicolon
 id|tmp_dentry-&gt;d_op
 op_assign
 op_amp
@@ -3517,7 +4412,7 @@ suffix:semicolon
 id|cFYI
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 (paren
 l_string|&quot; instantiate dentry 0x%p with inode 0x%p &quot;
@@ -3557,7 +4452,7 @@ op_member_access_from_pointer
 id|i_blksize
 op_assign
 (paren
-id|pTcon-&gt;ses-&gt;maxBuf
+id|pTcon-&gt;ses-&gt;server-&gt;maxBuf
 op_minus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -3570,7 +4465,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;ni_blksize = %ld&quot;
+l_string|&quot;i_blksize = %ld&quot;
 comma
 (paren
 op_star
@@ -3922,7 +4817,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFull path: %s start at: %lld &quot;
+l_string|&quot;Full path: %s start at: %lld &quot;
 comma
 id|full_path
 comma
@@ -3969,7 +4864,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFilldir for current dir failed &quot;
+l_string|&quot;Filldir for current dir failed &quot;
 )paren
 )paren
 suffix:semicolon
@@ -4010,7 +4905,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFilldir for parent dir failed &quot;
+l_string|&quot;Filldir for parent dir failed &quot;
 )paren
 )paren
 suffix:semicolon
@@ -4479,7 +5374,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nReaddir on closed srch, pos = %lld&quot;
+l_string|&quot;Readdir on closed srch, pos = %lld&quot;
 comma
 id|file-&gt;f_pos
 )paren
@@ -4513,7 +5408,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nEnd of search &quot;
+l_string|&quot;End of search &quot;
 )paren
 )paren
 suffix:semicolon
@@ -4948,6 +5843,11 @@ op_assign
 id|cifs_readpage
 comma
 dot
+id|readpages
+op_assign
+id|cifs_readpages
+comma
+dot
 id|writepage
 op_assign
 id|cifs_writepage
@@ -4955,21 +5855,24 @@ comma
 dot
 id|prepare_write
 op_assign
-id|cifs_prepare_write
+id|simple_prepare_write
 comma
 dot
 id|commit_write
 op_assign
 id|cifs_commit_write
 comma
-multiline_comment|/*&t;.sync_page = cifs_sync_page, */
+dot
+id|sync_page
+op_assign
+id|cifs_sync_page
+comma
 )brace
 suffix:semicolon
-multiline_comment|/* change over to struct below when sync page tested and complete */
-DECL|variable|cifs_addr_ops2
+DECL|variable|cifs_addr_ops_writethrough
 r_struct
 id|address_space_operations
-id|cifs_addr_ops2
+id|cifs_addr_ops_writethrough
 op_assign
 (brace
 dot
@@ -4978,6 +5881,11 @@ op_assign
 id|cifs_readpage
 comma
 dot
+id|readpages
+op_assign
+id|cifs_readpages
+comma
+dot
 id|writepage
 op_assign
 id|cifs_writepage
@@ -4985,7 +5893,45 @@ comma
 dot
 id|prepare_write
 op_assign
-id|cifs_prepare_write
+id|simple_prepare_write
+comma
+dot
+id|commit_write
+op_assign
+id|cifs_commit_write
+comma
+dot
+id|sync_page
+op_assign
+id|cifs_sync_page
+comma
+)brace
+suffix:semicolon
+DECL|variable|cifs_addr_ops_nocache
+r_struct
+id|address_space_operations
+id|cifs_addr_ops_nocache
+op_assign
+(brace
+dot
+id|readpage
+op_assign
+id|cifs_readpage
+comma
+dot
+id|readpages
+op_assign
+id|cifs_readpages
+comma
+dot
+id|writepage
+op_assign
+id|cifs_writepage
+comma
+dot
+id|prepare_write
+op_assign
+id|simple_prepare_write
 comma
 dot
 id|commit_write

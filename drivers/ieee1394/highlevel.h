@@ -576,7 +576,7 @@ id|start
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Enable or disable receving a certain isochronous channel through the&n; * iso_receive op.&n; */
-r_void
+r_int
 id|hpsb_listen_channel
 c_func
 (paren

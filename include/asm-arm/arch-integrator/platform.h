@@ -552,7 +552,7 @@ DECL|macro|MAXFIQNUM
 mdefine_line|#define MAXFIQNUM                       31
 DECL|macro|MAXSWINUM
 mdefine_line|#define MAXSWINUM                       31
-multiline_comment|/* ------------------------------------------------------------------------&n; *  LED&squot;s - The header LED is not accessable via the uHAL API&n; * ------------------------------------------------------------------------&n; * &n; */
+multiline_comment|/* ------------------------------------------------------------------------&n; *  LED&squot;s - The header LED is not accessible via the uHAL API&n; * ------------------------------------------------------------------------&n; * &n; */
 DECL|macro|GREEN_LED
 mdefine_line|#define GREEN_LED                       0x01
 DECL|macro|YELLOW_LED

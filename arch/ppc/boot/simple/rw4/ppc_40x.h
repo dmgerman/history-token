@@ -21,11 +21,11 @@ mdefine_line|#define dccr            0x3fa               /* data cache control r
 DECL|macro|dcwr
 mdefine_line|#define dcwr            0x3ba               /* data cache write-thru reg     */
 DECL|macro|dear
-mdefine_line|#define dear            0x3d5               /* data exeption address reg     */
+mdefine_line|#define dear            0x3d5               /* data exception address reg    */
 DECL|macro|esr
-mdefine_line|#define esr             0x3d4               /* execption syndrome registe    */
+mdefine_line|#define esr             0x3d4               /* exception syndrome registe    */
 DECL|macro|evpr
-mdefine_line|#define evpr            0x3d6               /* exeption vector prefix reg    */
+mdefine_line|#define evpr            0x3d6               /* exception vector prefix reg   */
 DECL|macro|iccr
 mdefine_line|#define iccr            0x3fb               /* instruction cache cntrl re    */
 DECL|macro|icdbdr

@@ -768,7 +768,7 @@ id|as_quad
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * IO7 IID (Interrupt IDentifier) format&n; *&n; * For level-sensative interupts, int_num is encoded as:&n; *&n; *&t;bus/port&t;slot/device&t;INTx&n; *&t;&lt;7:5&gt;&t;&t;&lt;4:2&gt;&t;&t;&lt;1:0&gt;&n; */
+multiline_comment|/*&n; * IO7 IID (Interrupt IDentifier) format&n; *&n; * For level-sensative interrupts, int_num is encoded as:&n; *&n; *&t;bus/port&t;slot/device&t;INTx&n; *&t;&lt;7:5&gt;&t;&t;&lt;4:2&gt;&t;&t;&lt;1:0&gt;&n; */
 DECL|union|IO7_IID
 r_union
 id|IO7_IID

@@ -83,12 +83,12 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Re-run the IRQ&n;&t; */
-DECL|member|rerun
-r_void
+multiline_comment|/*&n;&t; * Ask the hardware to re-trigger the IRQ.&n;&t; * Note: This method _must_ _not_ call the interrupt handler.&n;&t; * If you are unable to retrigger the interrupt, do not&n;&t; * provide a function, or if you do, return non-zero.&n;&t; */
+DECL|member|retrigger
+r_int
 (paren
 op_star
-id|rerun
+id|retrigger
 )paren
 (paren
 r_int
@@ -146,6 +146,11 @@ r_struct
 id|irqaction
 op_star
 id|action
+suffix:semicolon
+DECL|member|pend
+r_struct
+id|list_head
+id|pend
 suffix:semicolon
 DECL|member|disable_depth
 r_int

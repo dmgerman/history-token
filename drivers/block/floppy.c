@@ -3112,7 +3112,7 @@ id|jiffies
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; *&t;We should propogate failures to grab the resources back&n;&t; *&t;nicely from here. Actually we ought to rewrite the fd&n;&t; *&t;driver some day too.&n;&t; */
+multiline_comment|/*&n;&t; *&t;We should propagate failures to grab the resources back&n;&t; *&t;nicely from here. Actually we ought to rewrite the fd&n;&t; *&t;driver some day too.&n;&t; */
 r_if
 c_cond
 (paren

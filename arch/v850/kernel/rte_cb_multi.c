@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/rte_multi.c -- Support for Multi debugger monitor ROM&n; * &t;on Midas lab RTE-CB series of evaluation boards&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/rte_multi.c -- Support for Multi debugger monitor ROM&n; * &t;on Midas lab RTE-CB series of evaluation boards&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 multiline_comment|/* A table of which interrupt vectors to install, since blindly&n;   installing all of them makes the debugger stop working.  This is a&n;   list of offsets in the interrupt vector area; each entry means to&n;   copy that particular 16-byte vector.  An entry less than zero ends&n;   the table.  */
@@ -15,6 +15,11 @@ comma
 l_int|0x50
 comma
 multiline_comment|/* trap vectors */
+macro_line|#ifdef CONFIG_RTE_CB_MULTI_DBTRAP
+l_int|0x60
+comma
+multiline_comment|/* illegal insn / dbtrap */
+macro_line|#endif
 multiline_comment|/* Note -- illegal insn trap is used by the debugger.  */
 l_int|0xD0
 comma
@@ -119,7 +124,7 @@ r_int
 op_star
 id|ii
 suffix:semicolon
-multiline_comment|/* Copy interupt vectors as instructed by multi_intv_install_table. */
+multiline_comment|/* Copy interrupt vectors as instructed by multi_intv_install_table. */
 r_for
 c_loop
 (paren

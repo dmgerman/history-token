@@ -1,6 +1,7 @@
 macro_line|#ifndef _LINUX_BLKDEV_H
 DECL|macro|_LINUX_BLKDEV_H
 mdefine_line|#define _LINUX_BLKDEV_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -752,6 +753,7 @@ DECL|macro|BLK_BOUNCE_ANY
 mdefine_line|#define BLK_BOUNCE_ANY&t;&t;((u64)blk_max_pfn &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ISA
 mdefine_line|#define BLK_BOUNCE_ISA&t;&t;(ISA_DMA_THRESHOLD)
+macro_line|#if CONFIG_MMU
 r_extern
 r_int
 id|init_emergency_isa_pool
@@ -776,6 +778,41 @@ op_star
 id|bio
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|init_emergency_isa_pool
+r_static
+r_inline
+r_int
+id|init_emergency_isa_pool
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|blk_queue_bounce
+r_static
+r_inline
+r_void
+id|blk_queue_bounce
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+r_struct
+id|bio
+op_star
+op_star
+id|bio
+)paren
+(brace
+)brace
+macro_line|#endif /* CONFIG_MMU */
 DECL|macro|rq_for_each_bio
 mdefine_line|#define rq_for_each_bio(bio, rq)&t;&bslash;&n;&t;if ((rq-&gt;bio))&t;&t;&t;&bslash;&n;&t;&t;for (bio = (rq)-&gt;bio; bio; bio = bio-&gt;bi_next)
 DECL|struct|sec_size

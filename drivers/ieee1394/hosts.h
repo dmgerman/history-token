@@ -213,7 +213,7 @@ DECL|enum|isoctl_cmd
 r_enum
 id|isoctl_cmd
 (brace
-multiline_comment|/* rawiso API - see iso.h for the meanings of these commands&n;&t; * INIT = allocate resources&n;&t; * START = begin transmission/reception (arg: cycle to start on)&n;&t; * STOP = halt transmission/reception&n;&t; * QUEUE/RELEASE = produce/consume packets (arg: # of packets)&n;&t; * SHUTDOWN = deallocate resources&n;&t; */
+multiline_comment|/* rawiso API - see iso.h for the meanings of these commands&n;&t; * INIT = allocate resources&n;&t; * START = begin transmission/reception&n;&t; * STOP = halt transmission/reception&n;&t; * QUEUE/RELEASE = produce/consume packets&n;&t; * SHUTDOWN = deallocate resources&n;&t; */
 DECL|enumerator|XMIT_INIT
 id|XMIT_INIT
 comma
@@ -232,6 +232,18 @@ comma
 DECL|enumerator|RECV_INIT
 id|RECV_INIT
 comma
+DECL|enumerator|RECV_LISTEN_CHANNEL
+id|RECV_LISTEN_CHANNEL
+comma
+multiline_comment|/* multi-channel only */
+DECL|enumerator|RECV_UNLISTEN_CHANNEL
+id|RECV_UNLISTEN_CHANNEL
+comma
+multiline_comment|/* multi-channel only */
+DECL|enumerator|RECV_SET_CHANNEL_MASK
+id|RECV_SET_CHANNEL_MASK
+comma
+multiline_comment|/* multi-channel only; arg is a *u64 */
 DECL|enumerator|RECV_START
 id|RECV_START
 comma
@@ -342,7 +354,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-multiline_comment|/* ISO transmission/reception functions. Return 0 on success, -1 on failure.&n;&t;  * If the low-level driver does not support the new ISO API, set isoctl to NULL.&n;&t;  */
+multiline_comment|/* ISO transmission/reception functions. Return 0 on success, -1&n;&t;  * (or -EXXX errno code) on failure. If the low-level driver does not&n;&t;  * support the new ISO API, set isoctl to NULL.&n;&t;  */
 DECL|member|isoctl
 r_int
 (paren
@@ -359,6 +371,7 @@ r_enum
 id|isoctl_cmd
 id|command
 comma
+r_int
 r_int
 id|arg
 )paren

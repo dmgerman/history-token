@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/init_task.c -- Initial task/thread structures&n; *&n; *  Copyright (C) 2002  NEC Corporation&n; *  Copyright (C) 2002  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
+multiline_comment|/*&n; * arch/v850/kernel/init_task.c -- Initial task/thread structures&n; *&n; *  Copyright (C) 2002,03  NEC Electronics Corporation&n; *  Copyright (C) 2002,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -31,6 +31,18 @@ op_assign
 id|INIT_SIGNALS
 (paren
 id|init_signals
+)paren
+suffix:semicolon
+DECL|variable|init_sighand
+r_static
+r_struct
+id|sighand_struct
+id|init_sighand
+op_assign
+id|INIT_SIGHAND
+c_func
+(paren
+id|init_sighand
 )paren
 suffix:semicolon
 DECL|variable|init_mm

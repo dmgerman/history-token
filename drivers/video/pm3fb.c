@@ -10989,7 +10989,7 @@ comma
 id|bgx
 )paren
 suffix:semicolon
-multiline_comment|/* WARNING : adress select X need to specify 8 bits for fontwidth &lt;= 8 */
+multiline_comment|/* WARNING : address select X need to specify 8 bits for fontwidth &lt;= 8 */
 multiline_comment|/* and 16 bits for fontwidth &lt;= 16 */
 multiline_comment|/* same in _putcs, same for Y and fontheight */
 r_if
@@ -11764,7 +11764,7 @@ comma
 id|bgx
 )paren
 suffix:semicolon
-multiline_comment|/* WARNING : adress select X need to specify 8 bits for fontwidth &lt;= 8 */
+multiline_comment|/* WARNING : address select X need to specify 8 bits for fontwidth &lt;= 8 */
 multiline_comment|/* and 16 bits for fontwidth &lt;= 16 */
 multiline_comment|/* same in _putc, same for Y and fontheight */
 r_if

@@ -306,12 +306,14 @@ id|fh_pre_size
 suffix:semicolon
 multiline_comment|/* size before operation */
 DECL|member|fh_pre_mtime
-id|time_t
+r_struct
+id|timespec
 id|fh_pre_mtime
 suffix:semicolon
 multiline_comment|/* mtime before oper */
 DECL|member|fh_pre_ctime
-id|time_t
+r_struct
+id|timespec
 id|fh_pre_ctime
 suffix:semicolon
 multiline_comment|/* ctime before oper */
@@ -362,17 +364,20 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* i_rdev */
 DECL|member|fh_post_atime
-id|time_t
+r_struct
+id|timespec
 id|fh_post_atime
 suffix:semicolon
 multiline_comment|/* i_atime */
 DECL|member|fh_post_mtime
-id|time_t
+r_struct
+id|timespec
 id|fh_post_mtime
 suffix:semicolon
 multiline_comment|/* i_mtime */
 DECL|member|fh_post_ctime
-id|time_t
+r_struct
+id|timespec
 id|fh_post_ctime
 suffix:semicolon
 multiline_comment|/* i_ctime */
@@ -757,11 +762,11 @@ id|fhp-&gt;fh_pre_saved
 (brace
 id|fhp-&gt;fh_pre_mtime
 op_assign
-id|inode-&gt;i_mtime.tv_sec
+id|inode-&gt;i_mtime
 suffix:semicolon
 id|fhp-&gt;fh_pre_ctime
 op_assign
-id|inode-&gt;i_ctime.tv_sec
+id|inode-&gt;i_ctime
 suffix:semicolon
 id|fhp-&gt;fh_pre_size
 op_assign
@@ -896,15 +901,15 @@ id|inode-&gt;i_rdev
 suffix:semicolon
 id|fhp-&gt;fh_post_atime
 op_assign
-id|inode-&gt;i_atime.tv_sec
+id|inode-&gt;i_atime
 suffix:semicolon
 id|fhp-&gt;fh_post_mtime
 op_assign
-id|inode-&gt;i_mtime.tv_sec
+id|inode-&gt;i_mtime
 suffix:semicolon
 id|fhp-&gt;fh_post_ctime
 op_assign
-id|inode-&gt;i_ctime.tv_sec
+id|inode-&gt;i_ctime
 suffix:semicolon
 id|fhp-&gt;fh_post_saved
 op_assign

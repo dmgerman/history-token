@@ -9073,7 +9073,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * in XOR mode, we determine the output device by performing xor on&n; * the source and destination hw adresses.  If this device is not &n; * enabled, find the next slave following this xor slave. &n; */
+multiline_comment|/* &n; * in XOR mode, we determine the output device by performing xor on&n; * the source and destination hw addresses.  If this device is not &n; * enabled, find the next slave following this xor slave. &n; */
 DECL|function|bond_xmit_xor
 r_static
 r_int

@@ -83,24 +83,12 @@ r_extern
 r_char
 id|_stext
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROFILING
-r_extern
-r_void
-id|parisc_profile_hook
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-id|parisc_profile_hook
+id|profile_hook
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

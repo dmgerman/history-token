@@ -1680,7 +1680,7 @@ l_int|0UL
 )paren
 suffix:semicolon
 multiline_comment|/* disable all extr interrupt for now */
-multiline_comment|/* 1) only process IRQs that are enabled/unmasked (cpu_eiem)&n;&t; * 2) We loop here on EIRR contents in order to avoid&n;&t; *    nested interrupts or having to take another interupt&n;&t; *    when we could have just handled it right away.&n;&t; * 3) Limit the number of times we loop to make sure other&n;&t; *    processing can occur.&n;&t; */
+multiline_comment|/* 1) only process IRQs that are enabled/unmasked (cpu_eiem)&n;&t; * 2) We loop here on EIRR contents in order to avoid&n;&t; *    nested interrupts or having to take another interrupt&n;&t; *    when we could have just handled it right away.&n;&t; * 3) Limit the number of times we loop to make sure other&n;&t; *    processing can occur.&n;&t; */
 r_while
 c_loop
 (paren

@@ -273,6 +273,13 @@ DECL|member|device_lock
 id|spinlock_t
 id|device_lock
 suffix:semicolon
+DECL|member|thread_name
+r_char
+id|thread_name
+(braket
+id|MD_THREAD_NAME_MAX
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|typedef|raid5_conf_t

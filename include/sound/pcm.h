@@ -889,6 +889,33 @@ DECL|typedef|snd_pcm_hw_constraint_list_t
 )brace
 id|snd_pcm_hw_constraint_list_t
 suffix:semicolon
+DECL|struct|snd_pcm_dma_buffer
+r_struct
+id|snd_pcm_dma_buffer
+(brace
+DECL|member|area
+r_int
+r_char
+op_star
+id|area
+suffix:semicolon
+DECL|member|addr
+id|dma_addr_t
+id|addr
+suffix:semicolon
+DECL|member|bytes
+r_int
+r_int
+id|bytes
+suffix:semicolon
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
+multiline_comment|/* for allocator */
+)brace
+suffix:semicolon
 DECL|struct|_snd_pcm_runtime
 r_struct
 id|_snd_pcm_runtime
@@ -1179,6 +1206,12 @@ r_int
 id|dma_bytes
 suffix:semicolon
 multiline_comment|/* size of DMA area */
+DECL|member|dma_private
+r_void
+op_star
+id|dma_private
+suffix:semicolon
+multiline_comment|/* private DMA data for the memory allocator */
 macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 multiline_comment|/* -- OSS things -- */
 DECL|member|oss
@@ -1234,18 +1267,10 @@ DECL|member|dma_type
 r_int
 id|dma_type
 suffix:semicolon
-DECL|member|dma_area
-r_void
-op_star
-id|dma_area
-suffix:semicolon
-DECL|member|dma_addr
-id|dma_addr_t
-id|dma_addr
-suffix:semicolon
-DECL|member|dma_bytes
-r_int
-id|dma_bytes
+DECL|member|dma_buffer
+r_struct
+id|snd_pcm_dma_buffer
+id|dma_buffer
 suffix:semicolon
 DECL|member|dma_max
 r_int
@@ -3682,6 +3707,9 @@ c_func
 id|snd_pcm_substream_t
 op_star
 id|substream
+comma
+id|snd_pcm_uframes_t
+id|new_hw_ptr
 )paren
 suffix:semicolon
 r_int

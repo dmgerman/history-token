@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  tms380tr.c: A network driver library for Texas Instruments TMS380-based&n; *              Token Ring Adapters.&n; *&n; *  Originally sktr.c: Written 1997 by Christoph Goos&n; *&n; *  A fine result of the Linux Systems Network Architecture Project.&n; *  http://www.linux-sna.org&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; *&n; *  The following modules are currently available for card support:&n; *&t;- tmspci (Generic PCI card support)&n; *&t;- abyss (Madge PCI support)&n; *      - tmsisa (SysKonnect TR4/16 ISA)&n; *&n; *  Sources:&n; *  &t;- The hardware related parts of this driver are take from&n; *  &t;  the SysKonnect Token Ring driver for Windows NT.&n; *  &t;- I used the IBM Token Ring driver &squot;ibmtr.c&squot; as a base for this&n; *  &t;  driver, as well as the &squot;skeleton.c&squot; driver by Donald Becker.&n; *  &t;- Also various other drivers in the linux source tree were taken&n; *  &t;  as samples for some tasks.&n; *      - TI TMS380 Second-Generation Token Ring User&squot;s Guide&n; *  &t;- TI datasheets for respective chips&n; *  &t;- David Hein at Texas Instruments &n; *  &t;- Various Madge employees&n; *&n; *  Maintainer(s):&n; *    JS&t;Jay Schulist&t;&t;jschlst@samba.org&n; *    CG&t;Christoph Goos&t;&t;cgoos@syskonnect.de&n; *    AF&t;Adam Fritzler&t;&t;mid@auk.cx&n; *    MLP       Mike Phillips           phillim@amtrak.com&n; *    JF&t;Jochen Friedrich&t;jochen@scram.de&n; *     &n; *  Modification History:&n; *&t;29-Aug-97&t;CG&t;Created&n; *&t;04-Apr-98&t;CG&t;Fixed problems caused by tok_timer_check&n; *&t;10-Apr-98&t;CG&t;Fixed lockups at cable disconnection&n; *&t;27-May-98&t;JS&t;Formated to Linux Kernel Format&n; *&t;31-May-98&t;JS&t;Hacked in PCI support&n; *&t;16-Jun-98&t;JS&t;Modulized for multiple cards with one driver&n; *&t;   Sep-99&t;AF&t;Renamed to tms380tr (supports more than SK&squot;s)&n; *      23-Sep-99&t;AF      Added Compaq and Thomas-Conrad PCI support&n; *&t;&t;&t;&t;Fixed a bug causing double copies on PCI&n; *&t;&t;&t;&t;Fixed for new multicast stuff (2.2/2.3)&n; *&t;25-Sep-99&t;AF&t;Uped TPL_NUM from 3 to 9&n; *&t;&t;&t;&t;Removed extraneous &squot;No free TPL&squot;&n; *&t;22-Dec-99&t;AF&t;Added Madge PCI Mk2 support and generalized&n; *&t;&t;&t;&t;parts of the initilization procedure.&n; *&t;30-Dec-99&t;AF&t;Turned tms380tr into a library ala 8390.&n; *&t;&t;&t;&t;Madge support is provided in the abyss module&n; *&t;&t;&t;&t;Generic PCI support is in the tmspci module.&n; *&t;30-Nov-00&t;JF&t;Updated PCI code to support IO MMU via&n; *&t;&t;&t;&t;pci_map_static(). Alpha uses this MMU for ISA&n; *&t;&t;&t;&t;as well.&n; *      14-Jan-01&t;JF&t;Fix DMA on ifdown/ifup sequences. Some &n; *      &t;&t;&t;cleanup.&n; *      &t;&t;&t;&n; *  To do:&n; *    1. Multi/Broadcast packet handling (this may have fixed itself)&n; *    2. Write a sktrisa module that includes the old ISA support (done)&n; *    3. Allow modules to load their own microcode&n; *    4. Speed up the BUD process -- freezing the kernel for 3+sec is&n; *         quite unacceptable.&n; *    5. Still a few remaining stalls when the cable is unplugged.&n; */
+multiline_comment|/*&n; *  tms380tr.c: A network driver library for Texas Instruments TMS380-based&n; *              Token Ring Adapters.&n; *&n; *  Originally sktr.c: Written 1997 by Christoph Goos&n; *&n; *  A fine result of the Linux Systems Network Architecture Project.&n; *  http://www.linux-sna.org&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; *&n; *  The following modules are currently available for card support:&n; *&t;- tmspci (Generic PCI card support)&n; *&t;- abyss (Madge PCI support)&n; *      - tmsisa (SysKonnect TR4/16 ISA)&n; *&n; *  Sources:&n; *  &t;- The hardware related parts of this driver are take from&n; *  &t;  the SysKonnect Token Ring driver for Windows NT.&n; *  &t;- I used the IBM Token Ring driver &squot;ibmtr.c&squot; as a base for this&n; *  &t;  driver, as well as the &squot;skeleton.c&squot; driver by Donald Becker.&n; *  &t;- Also various other drivers in the linux source tree were taken&n; *  &t;  as samples for some tasks.&n; *      - TI TMS380 Second-Generation Token Ring User&squot;s Guide&n; *  &t;- TI datasheets for respective chips&n; *  &t;- David Hein at Texas Instruments &n; *  &t;- Various Madge employees&n; *&n; *  Maintainer(s):&n; *    JS&t;Jay Schulist&t;&t;jschlst@samba.org&n; *    CG&t;Christoph Goos&t;&t;cgoos@syskonnect.de&n; *    AF&t;Adam Fritzler&t;&t;mid@auk.cx&n; *    MLP       Mike Phillips           phillim@amtrak.com&n; *    JF&t;Jochen Friedrich&t;jochen@scram.de&n; *     &n; *  Modification History:&n; *&t;29-Aug-97&t;CG&t;Created&n; *&t;04-Apr-98&t;CG&t;Fixed problems caused by tok_timer_check&n; *&t;10-Apr-98&t;CG&t;Fixed lockups at cable disconnection&n; *&t;27-May-98&t;JS&t;Formated to Linux Kernel Format&n; *&t;31-May-98&t;JS&t;Hacked in PCI support&n; *&t;16-Jun-98&t;JS&t;Modulized for multiple cards with one driver&n; *&t;   Sep-99&t;AF&t;Renamed to tms380tr (supports more than SK&squot;s)&n; *      23-Sep-99&t;AF      Added Compaq and Thomas-Conrad PCI support&n; *&t;&t;&t;&t;Fixed a bug causing double copies on PCI&n; *&t;&t;&t;&t;Fixed for new multicast stuff (2.2/2.3)&n; *&t;25-Sep-99&t;AF&t;Uped TPL_NUM from 3 to 9&n; *&t;&t;&t;&t;Removed extraneous &squot;No free TPL&squot;&n; *&t;22-Dec-99&t;AF&t;Added Madge PCI Mk2 support and generalized&n; *&t;&t;&t;&t;parts of the initilization procedure.&n; *&t;30-Dec-99&t;AF&t;Turned tms380tr into a library ala 8390.&n; *&t;&t;&t;&t;Madge support is provided in the abyss module&n; *&t;&t;&t;&t;Generic PCI support is in the tmspci module.&n; *&t;30-Nov-00&t;JF&t;Updated PCI code to support IO MMU via&n; *&t;&t;&t;&t;pci_map_static(). Alpha uses this MMU for ISA&n; *&t;&t;&t;&t;as well.&n; *      14-Jan-01&t;JF&t;Fix DMA on ifdown/ifup sequences. Some &n; *      &t;&t;&t;cleanup.&n; *&t;13-Jan-02&t;JF&t;Add spinlock to fix race condition.&n; *&t;09-Nov-02&t;JF&t;Fixed printks to not SPAM the console during&n; *&t;&t;&t;&t;normal operation.&n; *&t;30-Dec-02&t;JF&t;Removed incorrect __init from &n; *&t;&t;&t;&t;tms380tr_init_card.&n; *      &t;&t;&t;&n; *  To do:&n; *    1. Multi/Broadcast packet handling (this may have fixed itself)&n; *    2. Write a sktrisa module that includes the old ISA support (done)&n; *    3. Allow modules to load their own microcode&n; *    4. Speed up the BUD process -- freezing the kernel for 3+sec is&n; *         quite unacceptable.&n; *    5. Still a few remaining stalls when the cable is unplugged.&n; */
 macro_line|#ifdef MODULE
 DECL|variable|version
 r_static
@@ -8,7 +8,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;tms380tr.c: v1.08 14/01/2001 by Christoph Goos, Adam Fritzler&bslash;n&quot;
+l_string|&quot;tms380tr.c: v1.10 30/12/2002 by Christoph Goos, Adam Fritzler&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
@@ -795,7 +795,6 @@ multiline_comment|/* Dummy function */
 DECL|function|tms380tr_init_card
 r_static
 r_int
-id|__init
 id|tms380tr_init_card
 c_func
 (paren
@@ -816,6 +815,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: tms380tr_init_card&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -854,6 +854,13 @@ id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+multiline_comment|/* init the spinlock */
+id|spin_lock_init
+c_func
+(paren
+id|tp-&gt;lock
+)paren
 suffix:semicolon
 multiline_comment|/* Reset the hardware here. Don&squot;t forget to set the station address. */
 r_if
@@ -967,7 +974,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Adapter RAM size: %dK&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1190,7 +1197,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Resetting adapter...&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1231,7 +1238,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Bringup diags...&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1272,7 +1279,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Init adapter...&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1313,7 +1320,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Done!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2605,6 +2612,10 @@ r_char
 op_star
 id|buf
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -2626,6 +2637,15 @@ suffix:semicolon
 )paren
 (brace
 multiline_comment|/* Try to get a free TPL from the chain.&n;&t;&t; *&n;&t;&t; * NOTE: We *must* always leave one unused TPL in the chain, &n;&t;&t; * because otherwise the adapter might send frames twice.&n;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2643,10 +2663,19 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: No free TPL&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2670,6 +2699,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2889,6 +2927,15 @@ c_func
 id|dev
 comma
 id|CMD_TX_VALID
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -3190,6 +3237,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: irq %d for unknown device.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3245,7 +3293,7 @@ id|irq_type
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: DATA LATE occurred&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3415,7 +3463,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;Unknown Token Ring IRQ (0x%04x)&bslash;n&quot;
 comma
 id|irq_type
@@ -5383,7 +5431,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;BUD-Status: &quot;
 )paren
 suffix:semicolon
@@ -5428,7 +5476,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot; %04X &bslash;n&quot;
 comma
 id|Status
@@ -5797,7 +5845,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: buffer (real): %lx&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5812,7 +5860,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: buffer (virt): %lx&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5841,7 +5889,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: buffer (DMA) : %lx&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5855,7 +5903,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: buffer (tp)  : %lx&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7264,6 +7312,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: AdapterCheckBlock: &quot;
 comma
 id|dev-&gt;name
@@ -7574,6 +7623,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Illegal operation code in firmware&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7588,6 +7638,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Adapter internal bus parity error&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7602,6 +7653,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: RAM data error&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7616,6 +7668,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: RAM parity error&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7630,6 +7683,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Internal DMA underrun detected&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7643,6 +7697,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Unrecognized interrupt detected&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7657,6 +7712,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Unrecognized error interrupt detected&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7671,6 +7727,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Unrecognized XOP request detected&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7684,6 +7741,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Unknown status&quot;
 comma
 id|dev-&gt;name
@@ -8245,8 +8303,8 @@ id|AC_NOT_RECOGNIZED
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s: (DA=%08lX not recognized)&quot;
+id|KERN_DEBUG
+l_string|&quot;%s: (DA=%08lX not recognized)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -8279,6 +8337,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Directed frame tx&squot;d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8311,6 +8370,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Broadcast frame tx&squot;d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8546,6 +8606,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Packet Length %04X (%d)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -9306,9 +9367,6 @@ id|net_local
 op_star
 id|tms_local
 suffix:semicolon
-id|dma_addr_t
-id|buffer
-suffix:semicolon
 id|dev-&gt;priv
 op_assign
 id|kmalloc
@@ -9336,6 +9394,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Out of memory for DMA&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -9384,7 +9443,7 @@ id|tms_local-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
-id|buffer
+id|tms_local-&gt;dmabuffer
 op_assign
 id|pci_map_single
 c_func
@@ -9409,7 +9468,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buffer
+id|tms_local-&gt;dmabuffer
 op_plus
 r_sizeof
 (paren
@@ -9423,6 +9482,7 @@ id|dmalimit
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Memory not accessible for DMA&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -9439,10 +9499,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|tms_local-&gt;dmabuffer
-op_assign
-id|buffer
-suffix:semicolon
 )brace
 multiline_comment|/* These can be overridden by the card driver if needed */
 id|dev-&gt;init
@@ -9552,6 +9608,7 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s&quot;
 comma
 id|version

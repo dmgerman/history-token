@@ -2132,7 +2132,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;BUG!! enabling interupt when FC off (timerintr.) &bslash;n&quot;
+l_string|&quot;BUG!! enabling interrupt when FC off (timerintr.) &bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

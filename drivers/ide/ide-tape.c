@@ -26505,19 +26505,11 @@ id|busy
 op_assign
 l_int|1
 comma
-macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
-dot
-id|supports_dma
-op_assign
-l_int|0
-comma
-macro_line|#else
 dot
 id|supports_dma
 op_assign
 l_int|1
 comma
-macro_line|#endif
 dot
 id|supports_dsc_overlap
 op_assign
