@@ -77,6 +77,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|m8260_find_bridges
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_static
 r_void
 id|__init
@@ -93,6 +101,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI_8260
+id|m8260_find_bridges
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* The decrementer counts at the system (internal) clock frequency&n; * divided by four.&n; */
 r_static
