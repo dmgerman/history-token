@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  mm/mprotect.c&n; *&n; *  (C) Copyright 1994 Linus Torvalds&n; *  (C) Copyright 2002 Christoph Hellwig&n; *&n; *  Address space accounting code&t;&lt;alan@redhat.com&gt;&n; *  (C) Copyright 2002 Red Hat Inc, All Rights Reserved&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;

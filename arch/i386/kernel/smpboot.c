@@ -32,7 +32,6 @@ l_int|1
 suffix:semicolon
 DECL|variable|phys_proc_id
 r_int
-id|__initdata
 id|phys_proc_id
 (braket
 id|NR_CPUS

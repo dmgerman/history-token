@@ -17,7 +17,7 @@ r_int
 id|nr_pages
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Return a scatterlist for a an array of userpages (NULL on errors).  Memory&n; * for the scatterlist is allocated using kmalloc.  The caller must&n; * free the memory.&n; */
+multiline_comment|/*&n; * Return a scatterlist for a an array of userpages (NULL on errors).&n; * Memory for the scatterlist is allocated using kmalloc.  The caller&n; * must free the memory.&n; */
 r_struct
 id|scatterlist
 op_star
@@ -37,6 +37,34 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+r_int
+id|videobuf_lock
+c_func
+(paren
+r_struct
+id|page
+op_star
+op_star
+id|pages
+comma
+r_int
+id|nr_pages
+)paren
+suffix:semicolon
+r_int
+id|videobuf_unlock
+c_func
+(paren
+r_struct
+id|page
+op_star
+op_star
+id|pages
+comma
+r_int
+id|nr_pages
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * A small set of helper functions to manage buffers (both userland&n; * and kernel) for DMA.&n; *&n; * videobuf_init_*_dmabuf()&n; *&t;creates a buffer.  The userland version takes a userspace&n; *&t;pointer + length.  The kernel version just wants the size and&n; *&t;does memory allocation too using vmalloc_32().&n; *&n; * videobuf_pci_*_dmabuf()&n; *&t;see Documentation/DMA-mapping.txt, these functions to&n; *&t;basically the same.  The map function does also build a&n; *&t;scatterlist for the buffer (and unmap frees it ...)&n; *&n; * videobuf_free_dmabuf()&n; *&t;no comment ...&n; *&n; */
 DECL|struct|videobuf_dmabuf
@@ -44,16 +72,16 @@ r_struct
 id|videobuf_dmabuf
 (brace
 multiline_comment|/* for userland buffer */
+DECL|member|offset
+r_int
+id|offset
+suffix:semicolon
 DECL|member|pages
 r_struct
 id|page
 op_star
 op_star
 id|pages
-suffix:semicolon
-DECL|member|offset
-r_int
-id|offset
 suffix:semicolon
 multiline_comment|/* for kernel buffers */
 DECL|member|vmalloc
@@ -212,12 +240,6 @@ id|q
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|VBUF_FIELD_EVEN
-mdefine_line|#define VBUF_FIELD_EVEN  1
-DECL|macro|VBUF_FIELD_ODD
-mdefine_line|#define VBUF_FIELD_ODD   2
-DECL|macro|VBUF_FIELD_INTER
-mdefine_line|#define VBUF_FIELD_INTER 4
 DECL|enum|videobuf_state
 r_enum
 id|videobuf_state
@@ -281,7 +303,8 @@ r_int
 id|size
 suffix:semicolon
 DECL|member|field
-r_int
+r_enum
+id|v4l2_field
 id|field
 suffix:semicolon
 DECL|member|state
@@ -302,13 +325,11 @@ suffix:semicolon
 multiline_comment|/* QBUF/DQBUF list */
 multiline_comment|/* for mmap&squot;ed buffers */
 DECL|member|boff
-r_int
-r_int
+id|off_t
 id|boff
 suffix:semicolon
 multiline_comment|/* buffer offset (mmap) */
 DECL|member|bsize
-r_int
 r_int
 id|bsize
 suffix:semicolon
@@ -339,12 +360,11 @@ DECL|member|field_count
 r_int
 id|field_count
 suffix:semicolon
-macro_line|#ifdef HAVE_V4L2
 DECL|member|ts
-id|stamp_t
+r_struct
+id|timeval
 id|ts
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|videobuf_queue_ops
@@ -388,9 +408,6 @@ r_struct
 id|videobuf_buffer
 op_star
 id|vb
-comma
-r_int
-id|field
 )paren
 suffix:semicolon
 DECL|member|buf_queue
@@ -452,7 +469,8 @@ op_star
 id|pci
 suffix:semicolon
 DECL|member|type
-r_int
+r_enum
+id|v4l2_buf_type
 id|type
 suffix:semicolon
 DECL|member|msize
@@ -564,11 +582,22 @@ id|spinlock_t
 op_star
 id|irqlock
 comma
-r_int
+r_enum
+id|v4l2_buf_type
 id|type
 comma
 r_int
 id|msize
+)paren
+suffix:semicolon
+r_int
+id|videobuf_queue_is_busy
+c_func
+(paren
+r_struct
+id|videobuf_queue
+op_star
+id|q
 )paren
 suffix:semicolon
 r_void
@@ -586,7 +615,6 @@ op_star
 id|q
 )paren
 suffix:semicolon
-macro_line|#ifdef HAVE_V4L2
 r_void
 id|videobuf_status
 c_func
@@ -601,7 +629,8 @@ id|videobuf_buffer
 op_star
 id|vb
 comma
-r_int
+r_enum
+id|v4l2_buf_type
 id|type
 )paren
 suffix:semicolon
@@ -680,7 +709,6 @@ op_star
 id|b
 )paren
 suffix:semicolon
-macro_line|#endif
 r_int
 id|videobuf_streamon
 c_func

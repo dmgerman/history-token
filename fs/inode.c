@@ -361,7 +361,6 @@ id|inode
 suffix:semicolon
 )brace
 DECL|function|destroy_inode
-r_static
 r_void
 id|destroy_inode
 c_func

@@ -3,8 +3,9 @@ DECL|macro|__LINUX_VIDEODEV_H
 mdefine_line|#define __LINUX_VIDEODEV_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if 0
-multiline_comment|/*&n; * v4l2 is still work-in-progress, integration planed for 2.5.x&n; *   v4l2 project homepage:   http://www.thedirks.org/v4l2/&n; *   patches available from:  http://bytesex.org/patches/&n; */
+macro_line|#if 1
+multiline_comment|/*&n; * v4l2 is still work-in-progress, integration planed for 2.5.x&n; *   documentation:           http://bytesex.org/v4l/&n; *   patches available from:  http://bytesex.org/patches/&n; */
+DECL|macro|HAVE_V4L2
 macro_line|# define HAVE_V4L2 1
 macro_line|# include &lt;linux/videodev2.h&gt;
 macro_line|#else
@@ -50,7 +51,7 @@ DECL|member|minor
 r_int
 id|minor
 suffix:semicolon
-multiline_comment|/* new interface -- we will use file_operations directly&n; &t; * like soundcore does.&n; &t; * kernel_ioctl() will be called by video_generic_ioctl.&n; &t; * video_generic_ioctl() does the userspace copying of the&n; &t; * ioctl arguments */
+multiline_comment|/* new interface -- we will use file_operations directly&n; &t; * like soundcore does. */
 DECL|member|fops
 r_struct
 id|file_operations
@@ -1086,7 +1087,7 @@ mdefine_line|#define VID_HARDWARE_MEYE&t;32&t;/* Sony Vaio MotionEye cameras */
 DECL|macro|VID_HARDWARE_CPIA2
 mdefine_line|#define VID_HARDWARE_CPIA2&t;33
 DECL|macro|VID_HARDWARE_VICAM
-mdefine_line|#define VID_HARDWARE_VICAM&t;34
+mdefine_line|#define VID_HARDWARE_VICAM      34
 macro_line|#endif /* __LINUX_VIDEODEV_H */
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof
