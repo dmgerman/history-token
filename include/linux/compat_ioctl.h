@@ -1334,6 +1334,16 @@ c_func
 (paren
 id|SIOCSIFVLAN
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCBRADDBR
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCBRDELBR
+)paren
 multiline_comment|/* SG stuff */
 id|COMPATIBLE_IOCTL
 c_func

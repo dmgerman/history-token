@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
+macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/raid/md.h&gt;
@@ -16259,11 +16260,11 @@ id|iwr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Emulate old style bridge ioctls */
-DECL|function|do_bridge_ioctl
+multiline_comment|/* Since old style bridge ioctl&squot;s endup using SIOCDEVPRIVATE&n; * for some operations; this forces use of the newer bridge-utils that&n; * use compatiable ioctls&n; */
+DECL|function|old_bridge_ioctl
 r_static
 r_int
-id|do_bridge_ioctl
+id|old_bridge_ioctl
 c_func
 (paren
 r_int
@@ -16282,41 +16283,6 @@ id|arg
 id|u32
 id|tmp
 suffix:semicolon
-r_int
-r_int
-op_star
-id|argbuf
-op_assign
-id|compat_alloc_user_space
-c_func
-(paren
-l_int|3
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|3
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -16325,9 +16291,6 @@ c_func
 (paren
 id|tmp
 comma
-id|i
-op_plus
-(paren
 (paren
 id|u32
 op_star
@@ -16335,36 +16298,25 @@ op_star
 id|arg
 )paren
 )paren
-op_logical_or
-id|put_user
-c_func
-(paren
-id|tmp
-comma
-id|i
-op_plus
-id|argbuf
-)paren
-)paren
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
+r_if
+c_cond
+(paren
+id|tmp
+op_eq
+id|BRCTL_GET_VERSION
+)paren
 r_return
-id|sys_ioctl
-c_func
-(paren
-id|fd
-comma
-id|cmd
-comma
-(paren
-r_int
-r_int
-)paren
-id|argbuf
-)paren
+id|BRCTL_VERSION
+op_plus
+l_int|1
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 DECL|macro|CODE
@@ -16659,6 +16611,20 @@ c_func
 id|SIOCDELRT
 comma
 id|routing_ioctl
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|SIOCBRADDIF
+comma
+id|dev_ifsioc
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|SIOCBRDELIF
+comma
+id|dev_ifsioc
 )paren
 multiline_comment|/* Note SIOCRTMSG is no longer, so this is safe and * the user would have seen just an -EINVAL anyways. */
 id|HANDLE_IOCTL
@@ -17493,14 +17459,14 @@ c_func
 (paren
 id|SIOCSIFBR
 comma
-id|do_bridge_ioctl
+id|old_bridge_ioctl
 )paren
 id|HANDLE_IOCTL
 c_func
 (paren
 id|SIOCGIFBR
 comma
-id|do_bridge_ioctl
+id|old_bridge_ioctl
 )paren
 DECL|macro|DECLARES
 macro_line|#undef DECLARES
