@@ -787,7 +787,7 @@ id|u8
 id|irq
 suffix:semicolon
 DECL|member|flags
-id|u8
+r_int
 id|flags
 suffix:semicolon
 DECL|member|tx_last

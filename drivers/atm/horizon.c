@@ -1211,13 +1211,10 @@ r_int
 id|br
 op_assign
 id|test_bit
+c_func
 (paren
 id|ultra
 comma
-(paren
-id|hrz_flags
-op_star
-)paren
 op_amp
 id|dev-&gt;flags
 )paren
@@ -3259,7 +3256,7 @@ id|PRINTD
 (paren
 id|DBG_TX
 comma
-l_string|&quot;sleeping at tx lock %p %u&quot;
+l_string|&quot;sleeping at tx lock %p %lu&quot;
 comma
 id|dev
 comma
@@ -3276,7 +3273,7 @@ id|PRINTD
 (paren
 id|DBG_TX
 comma
-l_string|&quot;woken at tx lock %p %u&quot;
+l_string|&quot;woken at tx lock %p %lu&quot;
 comma
 id|dev
 comma
