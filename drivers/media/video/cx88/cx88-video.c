@@ -9815,9 +9815,12 @@ op_amp
 id|dev-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|dev-&gt;slock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|core-&gt;tvnorm
 op_assign
