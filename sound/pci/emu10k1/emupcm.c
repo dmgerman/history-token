@@ -6921,7 +6921,7 @@ c_func
 (paren
 id|pcm-&gt;name
 comma
-l_string|&quot;EMU10K1&quot;
+l_string|&quot;ADC Capture/Standard PCM Playback&quot;
 )paren
 suffix:semicolon
 id|emu-&gt;pcm
@@ -7135,7 +7135,7 @@ c_func
 (paren
 id|pcm-&gt;name
 comma
-l_string|&quot;EMU10K1 multichannel EFX&quot;
+l_string|&quot;Multichannel Playback&quot;
 )paren
 suffix:semicolon
 id|emu-&gt;pcm
@@ -7377,7 +7377,7 @@ c_func
 (paren
 id|pcm-&gt;name
 comma
-l_string|&quot;EMU10K1 MIC&quot;
+l_string|&quot;Mic Capture&quot;
 )paren
 suffix:semicolon
 id|emu-&gt;pcm_mic
@@ -9318,7 +9318,7 @@ c_func
 (paren
 id|pcm-&gt;name
 comma
-l_string|&quot;EMU10K1 EFX&quot;
+l_string|&quot;Multichannel Capture/PT Playback&quot;
 )paren
 suffix:semicolon
 id|emu-&gt;pcm_efx
