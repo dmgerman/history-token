@@ -20,12 +20,6 @@ id|REF_CLOCK
 op_assign
 l_int|14318
 suffix:semicolon
-DECL|variable|pSTGReg
-id|STG4000REG
-id|__iomem
-op_star
-id|pSTGReg
-suffix:semicolon
 DECL|function|InitialiseRamdac
 r_int
 id|InitialiseRamdac

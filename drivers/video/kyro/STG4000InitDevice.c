@@ -101,6 +101,7 @@ mdefine_line|#define    STG4K3_PLL_MAXR_VCO    500000000&t;/* Max VCO rate (rest
 DECL|macro|OS_DELAY
 mdefine_line|#define OS_DELAY(X) &bslash;&n;{ &bslash;&n;volatile u32 i,count=0; &bslash;&n;    for(i=0;i&lt;X;i++) count++; &bslash;&n;}
 DECL|function|InitSDRAMRegisters
+r_static
 id|u32
 id|InitSDRAMRegisters
 c_func

@@ -1545,6 +1545,7 @@ comma
 suffix:semicolon
 multiline_comment|/* Accessors */
 DECL|function|kyro_dev_video_mode_set
+r_static
 r_int
 id|kyro_dev_video_mode_set
 c_func
@@ -1659,6 +1660,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|kyro_dev_overlay_create
+r_static
 r_int
 id|kyro_dev_overlay_create
 c_func
@@ -1803,6 +1805,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|kyro_dev_overlay_viewport_set
+r_static
 r_int
 id|kyro_dev_overlay_viewport_set
 c_func
@@ -2501,7 +2504,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|kyrofb_setup
+r_static
 r_int
 id|__init
 id|kyrofb_setup
@@ -2628,6 +2633,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|kyrofb_ioctl
 r_static
 r_int
@@ -3575,6 +3581,7 @@ id|info
 suffix:semicolon
 )brace
 DECL|function|kyrofb_init
+r_static
 r_int
 id|__init
 id|kyrofb_init

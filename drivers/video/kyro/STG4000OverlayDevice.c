@@ -42,6 +42,7 @@ DECL|macro|STG4000_OVRL_MAX_HEIGHT
 mdefine_line|#define STG4000_OVRL_MAX_HEIGHT 576
 multiline_comment|/* Decimation and Scaling */
 DECL|variable|adwDecim8
+r_static
 id|u32
 id|adwDecim8
 (braket
