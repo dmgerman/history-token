@@ -3,7 +3,7 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 r_static
 r_inline
-r_void
+r_int
 DECL|function|arch_prepare_suspend
 id|arch_prepare_suspend
 c_func
@@ -17,11 +17,12 @@ c_cond
 op_logical_neg
 id|cpu_has_pse
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;pse required&quot;
-)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* image of the saved processor state */
@@ -130,15 +131,6 @@ id|restore_processor_state
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|do_magic
-c_func
-(paren
-r_int
-id|resume
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_SLEEP
