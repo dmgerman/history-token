@@ -4,9 +4,18 @@ DECL|macro|_ASM_GENERIC__TLB_H
 mdefine_line|#define _ASM_GENERIC__TLB_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-multiline_comment|/* aim for something that fits in the L1 cache */
+multiline_comment|/*&n; * For UP we don&squot;t need to worry about TLB flush&n; * and page free order so much..&n; */
+macro_line|#ifdef CONFIG_SMP
 DECL|macro|FREE_PTE_NR
-mdefine_line|#define FREE_PTE_NR&t;508
+mdefine_line|#define FREE_PTE_NR&t;507
+DECL|macro|tlb_fast_mode
+mdefine_line|#define tlb_fast_mode(tlb) ((tlb)-&gt;nr == ~0UL) 
+macro_line|#else
+DECL|macro|FREE_PTE_NR
+mdefine_line|#define FREE_PTE_NR&t;1
+DECL|macro|tlb_fast_mode
+mdefine_line|#define tlb_fast_mode(tlb) 1
+macro_line|#endif
 multiline_comment|/* mmu_gather_t is an opaque type used by the mm code for passing around any&n; * data needed by arch specific code for tlb_remove_page.  This structure can&n; * be per-CPU or per-MM as the page table lock is held for the duration of TLB&n; * shootdown.&n; */
 DECL|struct|free_pte_ctx
 r_typedef
@@ -51,11 +60,6 @@ id|mmu_gathers
 id|NR_CPUS
 )braket
 suffix:semicolon
-multiline_comment|/* Do me later */
-DECL|macro|tlb_start_vma
-mdefine_line|#define tlb_start_vma(tlb, vma) do { } while (0)
-DECL|macro|tlb_end_vma
-mdefine_line|#define tlb_end_vma(tlb, vma) do { } while (0)
 multiline_comment|/* tlb_gather_mmu&n; *&t;Return a pointer to an initialized mmu_gather_t.&n; */
 DECL|function|tlb_gather_mmu
 r_static
@@ -133,10 +137,10 @@ r_int
 r_int
 id|nr
 suffix:semicolon
-id|flush_tlb_mm
+id|tlb_flush
 c_func
 (paren
-id|tlb-&gt;mm
+id|tlb
 )paren
 suffix:semicolon
 id|nr
@@ -146,10 +150,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nr
-op_ne
-op_complement
-l_int|0UL
+op_logical_neg
+id|tlb_fast_mode
+c_func
+(paren
+id|tlb
+)paren
 )paren
 (brace
 r_int
@@ -269,15 +275,14 @@ op_star
 id|page
 )paren
 (brace
-multiline_comment|/* Handle the common case fast, first. */
-"&bslash;"
 r_if
 c_cond
 (paren
-id|tlb-&gt;nr
-op_eq
-op_complement
-l_int|0UL
+id|tlb_fast_mode
+c_func
+(paren
+id|tlb
+)paren
 )paren
 (brace
 id|free_page_and_swap_cache
