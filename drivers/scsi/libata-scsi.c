@@ -1980,7 +1980,7 @@ id|n_sect
 op_amp
 l_int|0xff
 suffix:semicolon
-id|tf-&gt;hob_lbah
+id|tf-&gt;lbah
 op_assign
 (paren
 id|sect
@@ -1990,7 +1990,7 @@ l_int|16
 op_amp
 l_int|0xff
 suffix:semicolon
-id|tf-&gt;hob_lbam
+id|tf-&gt;lbam
 op_assign
 (paren
 id|sect
@@ -2000,7 +2000,7 @@ l_int|8
 op_amp
 l_int|0xff
 suffix:semicolon
-id|tf-&gt;hob_lbal
+id|tf-&gt;lbal
 op_assign
 id|sect
 op_amp
@@ -2434,7 +2434,7 @@ id|tf-&gt;device
 op_or_assign
 id|scsicmd
 (braket
-l_int|2
+l_int|6
 )braket
 suffix:semicolon
 id|qc-&gt;nsect
