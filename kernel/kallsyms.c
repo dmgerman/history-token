@@ -1206,4 +1206,11 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Allocate the __kallsyms section, so it&squot;s already present in&n; * the temporary vmlinux that kallsyms is run on, so the first&n; * run will pick up the section info already. */
+id|__asm__
+c_func
+(paren
+l_string|&quot;.section __kallsyms,&bslash;&quot;a&bslash;&quot;&bslash;n.previous&quot;
+)paren
+suffix:semicolon
 eof
