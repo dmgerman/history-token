@@ -1543,14 +1543,14 @@ id|i
 dot
 id|frequency
 op_assign
-(paren
 id|fsb
 op_star
 id|fid_codes
 (braket
 id|fid
 )braket
-)paren
+op_div
+l_int|10
 suffix:semicolon
 id|powernow_table
 (braket
