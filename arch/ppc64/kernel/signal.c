@@ -2043,19 +2043,13 @@ id|rt_sf-&gt;puc
 )paren
 multiline_comment|/* Put the siginfo */
 op_logical_or
-id|__copy_to_user
+id|copy_siginfo_to_user
 c_func
 (paren
 op_amp
 id|rt_sf-&gt;info
 comma
 id|info
-comma
-r_sizeof
-(paren
-op_star
-id|info
-)paren
 )paren
 multiline_comment|/* Create the ucontext */
 op_logical_or

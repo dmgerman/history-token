@@ -5067,9 +5067,12 @@ id|d-&gt;si_errno
 op_assign
 id|s-&gt;si_errno
 suffix:semicolon
+multiline_comment|/* XXX why dont we just implement copy_siginfo_to_user32? - Anton */
 id|d-&gt;si_code
 op_assign
 id|s-&gt;si_code
+op_amp
+l_int|0xffff
 suffix:semicolon
 r_if
 c_cond
