@@ -385,6 +385,12 @@ id|name
 op_assign
 id|sdebug_proc_name
 comma
+dot
+id|devclass
+op_assign
+op_amp
+id|shost_devclass
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* function declarations */
@@ -8881,6 +8887,13 @@ id|scsi_add_host
 c_func
 (paren
 id|hpnt
+comma
+id|scsi_debug_hosts
+(braket
+id|num
+)braket
+dot
+id|dev
 )paren
 suffix:semicolon
 r_if
