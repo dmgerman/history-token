@@ -2767,10 +2767,7 @@ DECL|macro|SOCK_MIN_SNDBUF
 mdefine_line|#define SOCK_MIN_SNDBUF 2048
 DECL|macro|SOCK_MIN_RCVBUF
 mdefine_line|#define SOCK_MIN_RCVBUF 256
-multiline_comment|/* Must be less or equal SOCK_MIN_SNDBUF */
-DECL|macro|SOCK_MIN_WRITE_SPACE
-mdefine_line|#define SOCK_MIN_WRITE_SPACE&t;SOCK_MIN_SNDBUF
-multiline_comment|/*&n; *&t;Default write policy as shown to user space via poll/select/SIGIO&n; *&t;Kernel internally doesn&squot;t use the MIN_WRITE_SPACE threshold.&n; */
+multiline_comment|/*&n; *&t;Default write policy as shown to user space via poll/select/SIGIO&n; */
 DECL|function|sock_writeable
 r_static
 r_inline
@@ -2785,13 +2782,18 @@ id|sk
 )paren
 (brace
 r_return
-id|sock_wspace
+id|atomic_read
 c_func
 (paren
-id|sk
+op_amp
+id|sk-&gt;wmem_alloc
 )paren
-op_ge
-id|SOCK_MIN_WRITE_SPACE
+OL
+(paren
+id|sk-&gt;sndbuf
+op_div
+l_int|2
+)paren
 suffix:semicolon
 )brace
 DECL|function|gfp_any
