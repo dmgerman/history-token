@@ -68,16 +68,15 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#if 0
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
-macro_line|#else
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#endif
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
-macro_line|#include &quot;dc390.h&quot;
+DECL|macro|DC390_BANNER
+mdefine_line|#define DC390_BANNER &quot;Tekram DC390/AM53C974&quot;
+DECL|macro|DC390_VERSION
+mdefine_line|#define DC390_VERSION &quot;2.1d 2004-05-27&quot;
 DECL|macro|PCI_DEVICE_ID_AMD53C974
 mdefine_line|#define PCI_DEVICE_ID_AMD53C974 &t;PCI_DEVICE_ID_AMD_SCSI
 DECL|variable|tmscsim_pci_tbl
@@ -634,14 +633,6 @@ op_star
 id|dc390_pACB_current
 op_assign
 l_int|NULL
-suffix:semicolon
-DECL|variable|dc390_lastabortedpid
-r_static
-r_int
-r_int
-id|dc390_lastabortedpid
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dc390_laststatus
 r_static
@@ -4959,11 +4950,11 @@ l_string|&quot;DC390: In case of driver trouble read linux/Documentation/scsi/tm
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * Function : int DC390_abort (struct scsi_cmnd *cmd)&n; *&n; * Purpose : Abort an errant SCSI command&n; *&n; * Inputs : cmd - command to abort&n; *&n; * Returns : 0 on success, -1 on failure.&n; *&n; * Status: Buggy !&n; ***********************************************************************/
 DECL|function|DC390_abort
 r_static
 r_int
 id|DC390_abort
+c_func
 (paren
 r_struct
 id|scsi_cmnd
@@ -4971,6 +4962,18 @@ op_star
 id|cmd
 )paren
 (brace
+r_struct
+id|dc390_acb
+op_star
+id|pACB
+op_assign
+(paren
+r_struct
+id|dc390_acb
+op_star
+)paren
+id|cmd-&gt;device-&gt;host-&gt;hostdata
+suffix:semicolon
 r_struct
 id|dc390_dcb
 op_star
@@ -4991,28 +4994,8 @@ comma
 op_star
 id|psrb
 suffix:semicolon
-id|u32
-id|count
-comma
-id|i
-suffix:semicolon
-r_int
-id|status
-suffix:semicolon
-singleline_comment|//unsigned long sbac;
-r_struct
-id|dc390_acb
-op_star
-id|pACB
-op_assign
-(paren
-r_struct
-id|dc390_acb
-op_star
-)paren
-id|cmd-&gt;device-&gt;host-&gt;hostdata
-suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;DC390: Abort command (pid %li, Device %02i-%02i)&bslash;n&quot;
 comma
@@ -5023,19 +5006,6 @@ comma
 id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pDCB
-)paren
-(brace
-r_goto
-id|NOT_RUN
-suffix:semicolon
-)brace
-multiline_comment|/* Added 98/07/02 KG */
-multiline_comment|/*&n;    pSRB = pDCB-&gt;pActiveSRB;&n;    if (pSRB &amp;&amp; pSRB-&gt;pcmd == cmd )&n;&t;goto ON_GOING;&n;     */
 id|pSRB
 op_assign
 id|pDCB-&gt;pWaitingSRB
@@ -5046,29 +5016,17 @@ c_cond
 op_logical_neg
 id|pSRB
 )paren
-(brace
 r_goto
-id|ON_GOING
+id|on_going
 suffix:semicolon
-)brace
 multiline_comment|/* Now scan Waiting queue */
 r_if
 c_cond
 (paren
 id|pSRB-&gt;pcmd
-op_eq
+op_ne
 id|cmd
 )paren
-(brace
-id|pDCB-&gt;pWaitingSRB
-op_assign
-id|pSRB-&gt;pNextSRB
-suffix:semicolon
-r_goto
-id|IN_WAIT
-suffix:semicolon
-)brace
-r_else
 (brace
 id|psrb
 op_assign
@@ -5082,11 +5040,9 @@ op_logical_neg
 id|psrb-&gt;pNextSRB
 )paren
 )paren
-(brace
 r_goto
-id|ON_GOING
+id|on_going
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -5111,11 +5067,9 @@ id|psrb
 op_eq
 id|pSRB
 )paren
-(brace
 r_goto
-id|ON_GOING
+id|on_going
 suffix:semicolon
-)brace
 )brace
 id|pSRB
 op_assign
@@ -5132,15 +5086,18 @@ id|pSRB
 op_eq
 id|pDCB-&gt;pWaitLast
 )paren
-(brace
 id|pDCB-&gt;pWaitLast
 op_assign
 id|psrb
 suffix:semicolon
 )brace
-id|IN_WAIT
-suffix:colon
+r_else
+id|pDCB-&gt;pWaitingSRB
+op_assign
+id|pSRB-&gt;pNextSRB
+suffix:semicolon
 id|dc390_Free_insert
+c_func
 (paren
 id|pACB
 comma
@@ -5162,19 +5119,14 @@ op_amp
 id|cmd-&gt;SCp
 )paren
 suffix:semicolon
-id|status
-op_assign
-id|SCSI_ABORT_SUCCESS
+r_return
+id|SUCCESS
 suffix:semicolon
-r_goto
-id|ABO_X
-suffix:semicolon
-)brace
-multiline_comment|/* SRB has already been sent ! */
-id|ON_GOING
+id|on_going
 suffix:colon
-multiline_comment|/* abort() is too stupid for already sent commands at the moment. &n;     * If it&squot;s called we are in trouble anyway, so let&squot;s dump some info &n;     * into the syslog at least. (KG, 98/08/20,99/06/20) */
+multiline_comment|/* abort() is too stupid for already sent commands at the moment. &n;&t; * If it&squot;s called we are in trouble anyway, so let&squot;s dump some info &n;&t; * into the syslog at least. (KG, 98/08/20,99/06/20) */
 id|dc390_dumpinfo
+c_func
 (paren
 id|pACB
 comma
@@ -5183,246 +5135,21 @@ comma
 id|pSRB
 )paren
 suffix:semicolon
-id|pSRB
-op_assign
-id|pDCB-&gt;pGoingSRB
-suffix:semicolon
 id|pDCB-&gt;DCBFlag
 op_or_assign
 id|ABORT_DEV_
-suffix:semicolon
-multiline_comment|/* Now for the hard part: The command is currently processed */
-r_for
-c_loop
-(paren
-id|count
-op_assign
-id|pDCB-&gt;GoingSRBCnt
-comma
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pSRB-&gt;pcmd
-op_ne
-id|cmd
-)paren
-(brace
-id|pSRB
-op_assign
-id|pSRB-&gt;pNextSRB
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|pACB-&gt;pActiveDCB
-op_eq
-id|pDCB
-)paren
-op_logical_and
-(paren
-id|pDCB-&gt;pActiveSRB
-op_eq
-id|pSRB
-)paren
-)paren
-(brace
-id|status
-op_assign
-id|SCSI_ABORT_BUSY
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;DC390: Abort current command (pid %li, SRB %p)&bslash;n&quot;
-comma
-id|cmd-&gt;pid
-comma
-id|pSRB
-)paren
-suffix:semicolon
-r_goto
-id|ABO_X
-suffix:semicolon
-)brace
-r_else
-(brace
-id|status
-op_assign
-id|SCSI_ABORT_SNOOZE
-suffix:semicolon
-r_goto
-id|ABO_X
-suffix:semicolon
-)brace
-)brace
-)brace
-id|NOT_RUN
-suffix:colon
-id|status
-op_assign
-id|SCSI_ABORT_NOT_RUNNING
-suffix:semicolon
-id|ABO_X
-suffix:colon
-id|cmd-&gt;result
-op_assign
-id|DID_ABORT
-op_lshift
-l_int|16
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;DC390: Aborted pid %li with status %i&bslash;n&quot;
+l_string|&quot;DC390: Aborted pid %li&bslash;n&quot;
 comma
 id|cmd-&gt;pid
-comma
-id|status
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|cmd-&gt;pid
-op_eq
-id|dc390_lastabortedpid
-)paren
-multiline_comment|/* repeated failure ? */
-(brace
-multiline_comment|/* Let&squot;s do something to help the bus getting clean again */
-id|DC390_write8
-(paren
-id|DMA_Cmd
-comma
-id|DMA_IDLE_CMD
-)paren
-suffix:semicolon
-id|DC390_write8
-(paren
-id|ScsiCmd
-comma
-id|DMA_COMMAND
-)paren
-suffix:semicolon
-singleline_comment|//DC390_write8 (ScsiCmd, CLEAR_FIFO_CMD);
-singleline_comment|//DC390_write8 (ScsiCmd, RESET_ATN_CMD);
-id|DC390_write8
-(paren
-id|ScsiCmd
-comma
-id|NOP_CMD
-)paren
-suffix:semicolon
-singleline_comment|//udelay (10000);
-singleline_comment|//DC390_read8 (INT_Status);
-singleline_comment|//DC390_write8 (ScsiCmd, EN_SEL_RESEL);
-)brace
-id|sbac
-op_assign
-id|DC390_read32
-(paren
-id|DMA_ScsiBusCtrl
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sbac
-op_amp
-id|SCSI_BUSY
-)paren
-(brace
-multiline_comment|/* clear BSY, SEL and ATN */
-id|printk
-(paren
-id|KERN_WARNING
-l_string|&quot;DC390: Reset SCSI device: &quot;
-)paren
-suffix:semicolon
-singleline_comment|//DC390_write32 (DMA_ScsiBusCtrl, (sbac | SCAM) &amp; ~SCSI_LINES);
-singleline_comment|//udelay (250);
-singleline_comment|//sbac = DC390_read32 (DMA_ScsiBusCtrl);
-singleline_comment|//printk (&quot;%08lx &quot;, sbac);
-singleline_comment|//DC390_write32 (DMA_ScsiBusCtrl, sbac &amp; ~(SCSI_LINES | SCAM));
-singleline_comment|//udelay (100);
-singleline_comment|//sbac = DC390_read32 (DMA_ScsiBusCtrl);
-singleline_comment|//printk (&quot;%08lx &quot;, sbac);
-id|DC390_write8
-(paren
-id|ScsiCmd
-comma
-id|RST_DEVICE_CMD
-)paren
-suffix:semicolon
-id|udelay
-(paren
-l_int|250
-)paren
-suffix:semicolon
-id|DC390_write8
-(paren
-id|ScsiCmd
-comma
-id|NOP_CMD
-)paren
-suffix:semicolon
-id|sbac
-op_assign
-id|DC390_read32
-(paren
-id|DMA_ScsiBusCtrl
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;%08lx&bslash;n&quot;
-comma
-id|sbac
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-id|dc390_lastabortedpid
-op_assign
-id|cmd-&gt;pid
-suffix:semicolon
-singleline_comment|//do_DC390_Interrupt (pACB-&gt;IRQLevel, 0, 0);
-macro_line|#ifndef USE_NEW_EH&t;
-r_if
-c_cond
-(paren
-id|status
-op_eq
-id|SCSI_ABORT_SUCCESS
-)paren
-id|cmd
-op_member_access_from_pointer
-id|scsi_done
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
-macro_line|#endif&t;
 r_return
-id|status
+id|FAILED
 suffix:semicolon
 )brace
 DECL|function|dc390_ResetDevParam
@@ -5523,157 +5250,10 @@ id|RESET_DETECT
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/* Moves all SRBs from Going to Waiting for all DCBs */
-r_static
-r_void
-id|dc390_RecoverSRB
-c_func
-(paren
-r_struct
-id|dc390_acb
-op_star
-id|pACB
-)paren
-(brace
-r_struct
-id|dc390_dcb
-op_star
-id|pDCB
-comma
-op_star
-id|pdcb
-suffix:semicolon
-r_struct
-id|dc390_srb
-op_star
-id|psrb
-comma
-op_star
-id|psrb2
-suffix:semicolon
-id|u32
-id|cnt
-comma
-id|i
-suffix:semicolon
-id|pDCB
-op_assign
-id|pACB-&gt;pLinkDCB
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pDCB
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
-id|pdcb
-op_assign
-id|pDCB
-suffix:semicolon
-r_do
-(brace
-id|cnt
-op_assign
-id|pdcb-&gt;GoingSRBCnt
-suffix:semicolon
-id|psrb
-op_assign
-id|pdcb-&gt;pGoingSRB
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|cnt
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|psrb2
-op_assign
-id|psrb
-suffix:semicolon
-id|psrb
-op_assign
-id|psrb-&gt;pNextSRB
-suffix:semicolon
-multiline_comment|/*&t;    dc390_RewaitSRB( pDCB, psrb ); */
-r_if
-c_cond
-(paren
-id|pdcb-&gt;pWaitingSRB
-)paren
-(brace
-id|psrb2-&gt;pNextSRB
-op_assign
-id|pdcb-&gt;pWaitingSRB
-suffix:semicolon
-id|pdcb-&gt;pWaitingSRB
-op_assign
-id|psrb2
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pdcb-&gt;pWaitingSRB
-op_assign
-id|psrb2
-suffix:semicolon
-id|pdcb-&gt;pWaitLast
-op_assign
-id|psrb2
-suffix:semicolon
-id|psrb2-&gt;pNextSRB
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-id|pdcb-&gt;GoingSRBCnt
-op_assign
-l_int|0
-suffix:semicolon
-id|pdcb-&gt;pGoingSRB
-op_assign
-l_int|NULL
-suffix:semicolon
-id|pdcb-&gt;TagMask
-op_assign
-l_int|0
-suffix:semicolon
-id|pdcb
-op_assign
-id|pdcb-&gt;pNextDCB
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|pdcb
-op_ne
-id|pDCB
-)paren
-(brace
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-multiline_comment|/***********************************************************************&n; * Function : int DC390_reset (struct scsi_cmnd *cmd, ...)&n; *&n; * Purpose : perform a hard reset on the SCSI bus&n; *&n; * Inputs : cmd - command which caused the SCSI RESET&n; *&t;    resetFlags - how hard to try&n; *&n; * Returns : 0 on success.&n; ***********************************************************************/
-DECL|function|DC390_reset
+DECL|function|DC390_bus_reset
 r_static
 r_int
-id|DC390_reset
+id|DC390_bus_reset
 (paren
 r_struct
 id|scsi_cmnd
@@ -5681,9 +5261,6 @@ op_star
 id|cmd
 )paren
 (brace
-id|u8
-id|bval
-suffix:semicolon
 r_struct
 id|dc390_acb
 op_star
@@ -5696,22 +5273,9 @@ op_star
 )paren
 id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;DC390: RESET ... &quot;
-)paren
+id|u8
+id|bval
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|timer_pending
-(paren
-op_amp
-id|pACB-&gt;Waiting_Timer
-)paren
-)paren
 id|del_timer
 (paren
 op_amp
@@ -5721,15 +5285,15 @@ suffix:semicolon
 id|bval
 op_assign
 id|DC390_read8
+c_func
 (paren
 id|CtrlReg1
 )paren
-suffix:semicolon
-id|bval
-op_or_assign
+op_or
 id|DIS_INT_ON_SCSI_RST
 suffix:semicolon
 id|DC390_write8
+c_func
 (paren
 id|CtrlReg1
 comma
@@ -5754,6 +5318,7 @@ id|pACB
 )paren
 suffix:semicolon
 id|udelay
+c_func
 (paren
 l_int|1000
 )paren
@@ -5779,6 +5344,7 @@ id|EE_DELAY
 )braket
 suffix:semicolon
 id|DC390_write8
+c_func
 (paren
 id|ScsiCmd
 comma
@@ -5786,6 +5352,7 @@ id|CLEAR_FIFO_CMD
 )paren
 suffix:semicolon
 id|DC390_read8
+c_func
 (paren
 id|INT_Status
 )paren
@@ -5799,7 +5366,6 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* dc390_RecoverSRB (pACB); */
 id|pACB-&gt;pActiveDCB
 op_assign
 l_int|NULL
@@ -5811,16 +5377,16 @@ suffix:semicolon
 id|bval
 op_assign
 id|DC390_read8
+c_func
 (paren
 id|CtrlReg1
 )paren
-suffix:semicolon
-id|bval
-op_and_assign
+op_amp
 op_complement
 id|DIS_INT_ON_SCSI_RST
 suffix:semicolon
 id|DC390_write8
+c_func
 (paren
 id|CtrlReg1
 comma
@@ -5834,14 +5400,8 @@ c_func
 id|pACB
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;done&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-id|SCSI_RESET_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
 macro_line|#include &quot;scsiiom.c&quot;
@@ -7298,7 +6858,7 @@ comma
 dot
 id|eh_bus_reset_handler
 op_assign
-id|DC390_reset
+id|DC390_bus_reset
 comma
 dot
 id|bios_param
