@@ -9484,6 +9484,24 @@ multiline_comment|/* MSI KT4V */
 dot
 id|vendor
 op_assign
+l_int|0x1631
+comma
+dot
+id|device
+op_assign
+l_int|0xe004
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* Easy Note 3174, Packard Bell */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1695
 comma
 dot
