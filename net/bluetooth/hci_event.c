@@ -2426,6 +2426,16 @@ r_return
 suffix:semicolon
 )brace
 )brace
+id|memcpy
+c_func
+(paren
+id|conn-&gt;dev_class
+comma
+id|ev-&gt;dev_class
+comma
+l_int|3
+)paren
+suffix:semicolon
 id|conn-&gt;state
 op_assign
 id|BT_CONNECT

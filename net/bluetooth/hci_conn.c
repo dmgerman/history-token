@@ -144,6 +144,16 @@ c_func
 l_int|0x8000
 )paren
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|conn-&gt;dev_class
+comma
+id|ie-&gt;data.dev_class
+comma
+l_int|3
+)paren
+suffix:semicolon
 )brace
 id|cp.pkt_type
 op_assign

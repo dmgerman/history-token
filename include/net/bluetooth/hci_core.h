@@ -482,6 +482,13 @@ DECL|member|out
 id|__u8
 id|out
 suffix:semicolon
+DECL|member|dev_class
+id|__u8
+id|dev_class
+(braket
+l_int|3
+)braket
+suffix:semicolon
 DECL|member|link_mode
 id|__u32
 id|link_mode
