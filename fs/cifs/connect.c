@@ -4978,15 +4978,6 @@ op_star
 id|psin_server
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;cifs: rfc1001_send rc = %d&bslash;n&quot;
-comma
-id|rc
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme */
 id|kfree
 c_func
 (paren
