@@ -5874,7 +5874,7 @@ suffix:semicolon
 id|set_current_state
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 id|schedule_timeout
@@ -5889,6 +5889,8 @@ op_star
 id|HZ
 op_div
 l_int|1000
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace

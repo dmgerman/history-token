@@ -2341,6 +2341,8 @@ c_func
 (paren
 l_int|10
 )paren
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* adjust slew rate control register. */
