@@ -814,10 +814,6 @@ r_static
 r_int
 id|sound_ticks
 suffix:semicolon
-DECL|variable|q40rtc_oldsecs
-r_int
-id|q40rtc_oldsecs
-suffix:semicolon
 DECL|macro|SVOL
 mdefine_line|#define SVOL 45
 DECL|function|q40_mksound
@@ -922,7 +918,6 @@ op_star
 id|regs
 )paren
 (brace
-macro_line|#if (HZ==100)
 id|ql_ticks
 op_assign
 id|ql_ticks
@@ -971,35 +966,6 @@ op_assign
 id|sval
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_Q40RTC) || defined(CONFIG_GEN_RTC)
-r_if
-c_cond
-(paren
-id|gen_rtc_irq_ctrl
-op_logical_and
-(paren
-id|q40rtc_oldsecs
-op_ne
-id|Q40_RTC_SECS
-)paren
-)paren
-(brace
-id|q40rtc_oldsecs
-op_assign
-id|Q40_RTC_SECS
-suffix:semicolon
-id|gen_rtc_irq_flags
-op_assign
-id|RTC_UIE
-suffix:semicolon
-id|gen_rtc_interrupt
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1007,7 +973,6 @@ id|ql_ticks
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
 id|q40_timer_routine
 c_func
 (paren
@@ -1047,19 +1012,10 @@ id|q40_timer_routine
 op_assign
 id|timer_routine
 suffix:semicolon
-macro_line|#if (HZ==10000)
-id|timer_irq
-op_assign
-id|Q40_IRQ_SAMPLE
-suffix:semicolon
-macro_line|#else
 id|timer_irq
 op_assign
 id|Q40_IRQ_FRAME
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/*printk(&quot;registering sched/timer IRQ %d, handler %p&bslash;n&quot;, timer_irq,q40_timer_int);*/
-multiline_comment|/*printk(&quot;timer routine %p&bslash;n&quot;,q40_timer_routine);*/
 r_if
 c_cond
 (paren
@@ -1082,33 +1038,6 @@ id|panic
 l_string|&quot;Couldn&squot;t register timer int&quot;
 )paren
 suffix:semicolon
-macro_line|#if (HZ==10000)
-id|master_outb
-c_func
-(paren
-id|SAMPLE_LOW
-comma
-id|SAMPLE_RATE_REG
-)paren
-suffix:semicolon
-id|master_outb
-c_func
-(paren
-op_minus
-l_int|1
-comma
-id|SAMPLE_CLEAR_REG
-)paren
-suffix:semicolon
-id|master_outb
-c_func
-(paren
-l_int|1
-comma
-id|SAMPLE_ENABLE_REG
-)paren
-suffix:semicolon
-macro_line|#else
 id|master_outb
 c_func
 (paren
@@ -1118,8 +1047,6 @@ comma
 id|FRAME_CLEAR_REG
 )paren
 suffix:semicolon
-multiline_comment|/* not necessary ? */
-macro_line|#if (HZ==100)
 id|master_outb
 c_func
 (paren
@@ -1128,8 +1055,6 @@ comma
 id|FRAME_RATE_REG
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 )brace
 multiline_comment|/* &n; * tables to translate bits into IRQ numbers &n; * it is a good idea to order the entries by priority&n; * &n;*/
 DECL|struct|IRQ_TABLE
@@ -1182,13 +1107,7 @@ multiline_comment|/* FIXME: add shared ints,mask,unmask,probing.... */
 DECL|macro|IRQ_INPROGRESS
 mdefine_line|#define IRQ_INPROGRESS 1
 multiline_comment|/*static unsigned short saved_mask;*/
-DECL|variable|do_tint
-r_static
-r_int
-id|do_tint
-op_assign
-l_int|0
-suffix:semicolon
+singleline_comment|//static int do_tint=0;
 DECL|macro|DEBUG_Q40INT
 mdefine_line|#define DEBUG_Q40INT
 multiline_comment|/*#define IP_USE_DISABLE */
@@ -1229,8 +1148,7 @@ id|fp
 (brace
 r_int
 id|mir
-suffix:semicolon
-r_int
+comma
 id|mer
 suffix:semicolon
 r_int
@@ -1253,12 +1171,36 @@ c_cond
 (paren
 id|mir
 op_amp
-id|IRQ_FRAME_MASK
+id|Q40_IRQ_FRAME_MASK
 )paren
 (brace
-multiline_comment|/* dont loose  ticks */
-id|do_tint
+id|irq_tab
+(braket
+id|Q40_IRQ_FRAME
+)braket
+dot
+id|count
 op_increment
+suffix:semicolon
+id|irq_tab
+(braket
+id|Q40_IRQ_FRAME
+)braket
+dot
+id|handler
+c_func
+(paren
+id|Q40_IRQ_FRAME
+comma
+id|irq_tab
+(braket
+id|Q40_IRQ_FRAME
+)braket
+dot
+id|dev_id
+comma
+id|fp
+)paren
 suffix:semicolon
 id|master_outb
 c_func
@@ -1276,17 +1218,16 @@ c_cond
 (paren
 id|mir
 op_amp
-id|IRQ_SER_MASK
+id|Q40_IRQ_SER_MASK
 )paren
 op_logical_or
 (paren
 id|mir
 op_amp
-id|IRQ_EXT_MASK
+id|Q40_IRQ_EXT_MASK
 )paren
 )paren
 (brace
-multiline_comment|/* some ISA dev caused the int */
 id|mer
 op_assign
 id|master_inb
@@ -1395,7 +1336,7 @@ op_amp
 id|IRQ_INPROGRESS
 )paren
 (brace
-multiline_comment|/* some handlers do local_irq_enable() for irq latency reasons, */
+multiline_comment|/* some handlers do sti() for irq latency reasons, */
 multiline_comment|/* however reentering an active irq handler is not permitted */
 macro_line|#ifdef IP_USE_DISABLE
 multiline_comment|/* in theory this is the better way to do it because it still */
@@ -1522,10 +1463,9 @@ suffix:semicolon
 multiline_comment|/*printk(&quot;reenabling irq %d&bslash;n&quot;,irq); */
 macro_line|#endif
 )brace
-r_goto
-id|repeat
+singleline_comment|// used to do &squot;goto repeat;&squot; her, this delayed bh processing too long
+r_return
 suffix:semicolon
-multiline_comment|/* return;  */
 )brace
 )brace
 r_if
@@ -1567,71 +1507,8 @@ c_cond
 (paren
 id|mir
 op_amp
-id|IRQ_FRAME_MASK
+id|Q40_IRQ_KEYB_MASK
 )paren
-(brace
-id|do_tint
-op_increment
-suffix:semicolon
-id|master_outb
-c_func
-(paren
-op_minus
-l_int|1
-comma
-id|FRAME_CLEAR_REG
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|do_tint
-OG
-l_int|0
-suffix:semicolon
-id|do_tint
-op_decrement
-)paren
-(brace
-id|irq_tab
-(braket
-id|Q40_IRQ_FRAME
-)braket
-dot
-id|count
-op_increment
-suffix:semicolon
-id|irq_tab
-(braket
-id|Q40_IRQ_FRAME
-)braket
-dot
-id|handler
-c_func
-(paren
-id|Q40_IRQ_FRAME
-comma
-id|irq_tab
-(braket
-id|Q40_IRQ_FRAME
-)braket
-dot
-id|dev_id
-comma
-id|fp
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|mir
-op_amp
-id|IRQ_KEYB_MASK
-)paren
-multiline_comment|/* may handle it even if actually disabled*/
 (brace
 id|irq_tab
 (braket
@@ -1790,7 +1667,6 @@ op_star
 id|fp
 )paren
 (brace
-macro_line|#if 0
 id|printk
 (paren
 l_string|&quot;Unknown q40 interrupt 0x%02x&bslash;n&quot;
@@ -1798,7 +1674,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|sys_default_handler
 r_static
@@ -1819,13 +1694,6 @@ op_star
 id|regs
 )paren
 (brace
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|ints_inited
-)paren
-macro_line|#endif
 id|printk
 (paren
 l_string|&quot;Uninitialised interrupt level %d&bslash;n&quot;
@@ -1833,14 +1701,6 @@ comma
 id|lev
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_else
-id|printk
-(paren
-l_string|&quot;Interrupt before interrupt initialisation&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|q40_sys_default_handler
 r_void
@@ -1943,7 +1803,7 @@ r_int
 id|irq
 )paren
 (brace
-multiline_comment|/* disable ISA iqs : only do something if the driver has been&n;  * verified to be Q40 &quot;compatible&quot; - right now IDE, NE2K&n;  * Any driver should not attempt to sleep accross disable_irq !!&n;  */
+multiline_comment|/* disable ISA iqs : only do something if the driver has been&n;   * verified to be Q40 &quot;compatible&quot; - right now IDE, NE2K&n;   * Any driver should not attempt to sleep accross disable_irq !!&n;   */
 r_if
 c_cond
 (paren
@@ -2017,5 +1877,5 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;m68k-linux-gcc -D__KERNEL__ -I/home/rz/lx/linux-2.2.6/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fno-strength-reduce -ffixed-a2 -m68040   -c -o q40ints.o q40ints.c&quot;&n; */
+multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;m68k-linux-gcc -D__KERNEL__ -I/home/rz/lx/linux-2.2.6/include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fno-strength-reduce -ffixed-a2 -m68040   -c -o q40ints.o q40ints.c&quot;&n; * End:&n; */
 eof

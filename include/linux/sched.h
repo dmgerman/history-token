@@ -1287,6 +1287,29 @@ macro_line|#else
 DECL|macro|set_cpus_allowed
 macro_line|# define set_cpus_allowed(p, new_mask) do { } while (0)
 macro_line|#endif
+macro_line|#ifdef CONFIG_NUMA
+r_extern
+r_void
+id|sched_balance_exec
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|node_nr_running_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|sched_balance_exec
+mdefine_line|#define sched_balance_exec()   {}
+DECL|macro|node_nr_running_init
+mdefine_line|#define node_nr_running_init() {}
+macro_line|#endif
 r_extern
 r_void
 id|set_user_nice

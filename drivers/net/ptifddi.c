@@ -1049,7 +1049,6 @@ id|ptifddi
 op_star
 id|pp
 suffix:semicolon
-multiline_comment|/* No need to check MOD_IN_USE, as sys_delete_module() checks. */
 r_while
 c_loop
 (paren

@@ -5271,7 +5271,6 @@ r_void
 r_int
 id|slot
 suffix:semicolon
-multiline_comment|/* No need to check MOD_IN_USE, as sys_delete_module() checks. */
 id|unregister_netdev
 c_func
 (paren

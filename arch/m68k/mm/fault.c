@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -109,8 +110,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
 id|fixup
 suffix:semicolon
 multiline_comment|/* Are we prepared to handle this kernel fault? */
@@ -120,7 +123,7 @@ c_cond
 (paren
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;pc
@@ -167,7 +170,7 @@ l_int|0
 suffix:semicolon
 id|tregs-&gt;pc
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 id|tregs-&gt;sr
 op_assign

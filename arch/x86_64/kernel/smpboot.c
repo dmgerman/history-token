@@ -2665,27 +2665,6 @@ id|HZ
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Cycle through the processors sending APIC IPIs to boot each.&n; */
-r_extern
-r_int
-id|prof_multiplier
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_int
-id|prof_old_multiplier
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_int
-id|prof_counter
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 DECL|function|smp_boot_cpus
 r_static
 r_void
@@ -2703,7 +2682,7 @@ id|apicid
 comma
 id|cpu
 suffix:semicolon
-multiline_comment|/*&n;&t; * Initialize the logical to physical CPU number mapping&n;&t; * and the per-CPU profiling counter/multiplier&n;&t; */
+multiline_comment|/*&n;&t; * Initialize the logical to physical CPU number mapping&n;&t; */
 r_for
 c_loop
 (paren
@@ -2725,27 +2704,6 @@ id|apicid
 )braket
 op_assign
 op_minus
-l_int|1
-suffix:semicolon
-id|prof_counter
-(braket
-id|apicid
-)braket
-op_assign
-l_int|1
-suffix:semicolon
-id|prof_old_multiplier
-(braket
-id|apicid
-)braket
-op_assign
-l_int|1
-suffix:semicolon
-id|prof_multiplier
-(braket
-id|apicid
-)braket
-op_assign
 l_int|1
 suffix:semicolon
 )brace

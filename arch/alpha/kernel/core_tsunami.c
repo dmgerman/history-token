@@ -1425,15 +1425,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef NXM_MACHINE_CHECKS_ON_TSUNAMI
-r_extern
-id|asmlinkage
-r_void
-id|entInt
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_int
 r_int
 id|tmp

@@ -7346,18 +7346,4 @@ c_func
 id|symbols_init
 )paren
 suffix:semicolon
-multiline_comment|/* Obsolete lvalue for broken code which asks about usage */
-DECL|variable|module_dummy_usage
-r_int
-id|module_dummy_usage
-op_assign
-l_int|1
-suffix:semicolon
-DECL|variable|module_dummy_usage
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|module_dummy_usage
-)paren
-suffix:semicolon
 eof

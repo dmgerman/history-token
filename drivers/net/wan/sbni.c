@@ -6608,7 +6608,6 @@ suffix:semicolon
 r_int
 id|num
 suffix:semicolon
-multiline_comment|/* No need to check MOD_IN_USE, as sys_delete_module( ) checks. */
 r_for
 c_loop
 (paren

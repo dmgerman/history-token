@@ -1,6 +1,108 @@
 multiline_comment|/*&n; *  fs/partitions/sgi.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; */
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;sgi.h&quot;
+DECL|struct|sgi_disklabel
+r_struct
+id|sgi_disklabel
+(brace
+DECL|member|magic_mushroom
+id|s32
+id|magic_mushroom
+suffix:semicolon
+multiline_comment|/* Big fat spliff... */
+DECL|member|root_part_num
+id|s16
+id|root_part_num
+suffix:semicolon
+multiline_comment|/* Root partition number */
+DECL|member|swap_part_num
+id|s16
+id|swap_part_num
+suffix:semicolon
+multiline_comment|/* Swap partition number */
+DECL|member|boot_file
+id|s8
+id|boot_file
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* Name of boot file for ARCS */
+DECL|member|_unused0
+id|u8
+id|_unused0
+(braket
+l_int|48
+)braket
+suffix:semicolon
+multiline_comment|/* Device parameter useless crapola.. */
+DECL|struct|sgi_volume
+r_struct
+id|sgi_volume
+(brace
+DECL|member|name
+id|s8
+id|name
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* Name of volume */
+DECL|member|block_num
+id|s32
+id|block_num
+suffix:semicolon
+multiline_comment|/* Logical block number */
+DECL|member|num_bytes
+id|s32
+id|num_bytes
+suffix:semicolon
+multiline_comment|/* How big, in bytes */
+DECL|member|volume
+)brace
+id|volume
+(braket
+l_int|15
+)braket
+suffix:semicolon
+DECL|struct|sgi_partition
+r_struct
+id|sgi_partition
+(brace
+DECL|member|num_blocks
+id|u32
+id|num_blocks
+suffix:semicolon
+multiline_comment|/* Size in logical blocks */
+DECL|member|first_block
+id|u32
+id|first_block
+suffix:semicolon
+multiline_comment|/* First logical block */
+DECL|member|type
+id|s32
+id|type
+suffix:semicolon
+multiline_comment|/* Type of this partition */
+DECL|member|partitions
+)brace
+id|partitions
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|csum
+id|s32
+id|csum
+suffix:semicolon
+multiline_comment|/* Disk label checksum */
+DECL|member|_unused1
+id|s32
+id|_unused1
+suffix:semicolon
+multiline_comment|/* Padding */
+)brace
+suffix:semicolon
 DECL|function|sgi_partition
 r_int
 id|sgi_partition
@@ -45,88 +147,6 @@ id|sect
 suffix:semicolon
 r_struct
 id|sgi_disklabel
-(brace
-r_int
-id|magic_mushroom
-suffix:semicolon
-multiline_comment|/* Big fat spliff... */
-r_int
-id|root_part_num
-suffix:semicolon
-multiline_comment|/* Root partition number */
-r_int
-id|swap_part_num
-suffix:semicolon
-multiline_comment|/* Swap partition number */
-r_char
-id|boot_file
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* Name of boot file for ARCS */
-r_int
-r_char
-id|_unused0
-(braket
-l_int|48
-)braket
-suffix:semicolon
-multiline_comment|/* Device parameter useless crapola.. */
-r_struct
-id|sgi_volume
-(brace
-r_char
-id|name
-(braket
-l_int|8
-)braket
-suffix:semicolon
-multiline_comment|/* Name of volume */
-r_int
-id|block_num
-suffix:semicolon
-multiline_comment|/* Logical block number */
-r_int
-id|num_bytes
-suffix:semicolon
-multiline_comment|/* How big, in bytes */
-)brace
-id|volume
-(braket
-l_int|15
-)braket
-suffix:semicolon
-r_struct
-id|sgi_partition
-(brace
-r_int
-id|num_blocks
-suffix:semicolon
-multiline_comment|/* Size in logical blocks */
-r_int
-id|first_block
-suffix:semicolon
-multiline_comment|/* First logical block */
-r_int
-id|type
-suffix:semicolon
-multiline_comment|/* Type of this partition */
-)brace
-id|partitions
-(braket
-l_int|16
-)braket
-suffix:semicolon
-r_int
-id|csum
-suffix:semicolon
-multiline_comment|/* Disk label checksum */
-r_int
-id|_unused1
-suffix:semicolon
-multiline_comment|/* Padding */
-)brace
 op_star
 id|label
 suffix:semicolon

@@ -1393,10 +1393,6 @@ op_assign
 op_amp
 id|fake_vfsmnt
 suffix:semicolon
-id|p-&gt;swap_device
-op_assign
-l_int|0
-suffix:semicolon
 id|p-&gt;swap_map
 op_assign
 id|swap_data
@@ -1416,7 +1412,7 @@ l_int|0x7ff0
 suffix:semicolon
 multiline_comment|/* a rather high priority, but not the higest&n;&t;&t;&t;&t;&t;&t;&t;&t; * to give the user a chance to override */
 multiline_comment|/* call stram_open() directly, avoids at least the overhead in&n;&t; * constructing a dummy file structure... */
-id|p-&gt;swap_device
+id|swap_inode.i_rdev
 op_assign
 id|MKDEV
 c_func
@@ -1425,10 +1421,6 @@ id|STRAM_MAJOR
 comma
 id|STRAM_MINOR
 )paren
-suffix:semicolon
-id|swap_inode.i_rdev
-op_assign
-id|p-&gt;swap_device
 suffix:semicolon
 id|stram_open
 c_func

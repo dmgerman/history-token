@@ -65,17 +65,6 @@ id|fixup
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Returns 0 if exception not found and fixup otherwise.  */
-r_extern
-r_int
-r_int
-id|search_exception_table
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * These are the main single-value transfer routines.  They automatically&n; * use the right size if we just have the right pointer type.&n; */
 DECL|macro|put_user
 mdefine_line|#define put_user(x, ptr)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    int __pu_err;&t;&t;&t;&t;&t;&bslash;&n;    typeof(*(ptr)) __pu_val = (x);&t;&t;&t;&bslash;&n;    switch (sizeof (*(ptr))) {&t;&t;&t;&t;&bslash;&n;    case 1:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user_asm(__pu_err, __pu_val, ptr, b);&t;&bslash;&n;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;    case 2:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user_asm(__pu_err, __pu_val, ptr, w);&t;&bslash;&n;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;    case 4:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user_asm(__pu_err, __pu_val, ptr, l);&t;&bslash;&n;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;    case 8:                                             &bslash;&n;       __pu_err = __constant_copy_to_user(ptr, &amp;__pu_val, 8);        &bslash;&n;       break;                                           &bslash;&n;    default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err = __put_user_bad();&t;&t;&t;&bslash;&n;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    __pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})

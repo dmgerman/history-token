@@ -27,5 +27,10 @@ macro_line|#ifndef __node_to_memblk
 DECL|macro|__node_to_memblk
 mdefine_line|#define __node_to_memblk(node)&t;&t;(0)
 macro_line|#endif
+multiline_comment|/* Cross-node load balancing interval. */
+macro_line|#ifndef NODE_BALANCE_RATE
+DECL|macro|NODE_BALANCE_RATE
+mdefine_line|#define NODE_BALANCE_RATE 10
+macro_line|#endif
 macro_line|#endif /* _ASM_GENERIC_TOPOLOGY_H */
 eof

@@ -350,10 +350,6 @@ c_func
 (paren
 id|fxsave-&gt;cwd
 comma
-(paren
-id|u16
-op_star
-)paren
 op_amp
 id|buf-&gt;cw
 )paren
@@ -365,10 +361,6 @@ c_func
 (paren
 id|fxsave-&gt;swd
 comma
-(paren
-id|u16
-op_star
-)paren
 op_amp
 id|buf-&gt;sw
 )paren
@@ -380,10 +372,6 @@ c_func
 (paren
 id|fxsave-&gt;twd
 comma
-(paren
-id|u16
-op_star
-)paren
 op_amp
 id|buf-&gt;tag
 )paren

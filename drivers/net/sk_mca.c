@@ -4772,21 +4772,6 @@ suffix:semicolon
 r_int
 id|z
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;cannot unload, module in use&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
