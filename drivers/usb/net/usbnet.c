@@ -10082,6 +10082,8 @@ op_assign
 id|alloc_skb
 (paren
 id|size
+op_plus
+id|NET_IP_ALIGN
 comma
 id|flags
 )paren
@@ -10112,6 +10114,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|skb_reserve
+(paren
+id|skb
+comma
+id|NET_IP_ALIGN
+)paren
+suffix:semicolon
 id|entry
 op_assign
 (paren
