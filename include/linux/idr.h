@@ -3,30 +3,33 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 DECL|macro|RESERVED_ID_BITS
 mdefine_line|#define RESERVED_ID_BITS 8
-macro_line|#if     BITS_PER_LONG == 32
+macro_line|#if BITS_PER_LONG == 32
 DECL|macro|IDR_BITS
-mdefine_line|#define IDR_BITS 5
+macro_line|# define IDR_BITS 5
 DECL|macro|IDR_FULL
-mdefine_line|#define IDR_FULL 0xffffffff
+macro_line|# define IDR_FULL 0xffffffff
 macro_line|#elif BITS_PER_LONG == 64
 DECL|macro|IDR_BITS
-mdefine_line|#define IDR_BITS 6
+macro_line|# define IDR_BITS 6
 DECL|macro|IDR_FULL
-mdefine_line|#define IDR_FULL 0xffffffffffffffff
+macro_line|# define IDR_FULL 0xffffffffffffffff
 macro_line|#else
-macro_line|#error &quot;BITS_PER_LONG is not 32 or 64&quot;
+macro_line|# error &quot;BITS_PER_LONG is not 32 or 64&quot;
 macro_line|#endif
 DECL|macro|IDR_MASK
 mdefine_line|#define IDR_MASK ((1 &lt;&lt; IDR_BITS)-1)
-multiline_comment|/* Leave the possibility of an incomplete final layer */
-DECL|macro|MAX_LEVEL
-mdefine_line|#define MAX_LEVEL (BITS_PER_LONG - RESERVED_ID_BITS + IDR_BITS - 1) / IDR_BITS
+multiline_comment|/* Define the size of the id&squot;s */
+DECL|macro|BITS_PER_INT
+mdefine_line|#define BITS_PER_INT (sizeof(int)*8)
 DECL|macro|MAX_ID_SHIFT
-mdefine_line|#define MAX_ID_SHIFT (BITS_PER_LONG - RESERVED_ID_BITS)
+mdefine_line|#define MAX_ID_SHIFT (BITS_PER_INT - RESERVED_ID_BITS)
 DECL|macro|MAX_ID_BIT
-mdefine_line|#define MAX_ID_BIT (1L &lt;&lt; MAX_ID_SHIFT)
+mdefine_line|#define MAX_ID_BIT (1 &lt;&lt; MAX_ID_SHIFT)
 DECL|macro|MAX_ID_MASK
 mdefine_line|#define MAX_ID_MASK (MAX_ID_BIT - 1)
+multiline_comment|/* Leave the possibility of an incomplete final layer */
+DECL|macro|MAX_LEVEL
+mdefine_line|#define MAX_LEVEL (MAX_ID_SHIFT + IDR_BITS - 1) / IDR_BITS
 multiline_comment|/* Number of id_layer structs to leave in free list */
 DECL|macro|IDR_FREE_MAX
 mdefine_line|#define IDR_FREE_MAX MAX_LEVEL + MAX_LEVEL
@@ -39,12 +42,7 @@ r_int
 r_int
 id|bitmap
 suffix:semicolon
-singleline_comment|// A zero bit means &quot;space here&quot;
-DECL|member|count
-r_int
-id|count
-suffix:semicolon
-singleline_comment|// When zero, we can release it
+multiline_comment|/* A zero bit means &quot;space here&quot; */
 DECL|member|ary
 r_struct
 id|idr_layer
@@ -56,6 +54,11 @@ op_lshift
 id|IDR_BITS
 )braket
 suffix:semicolon
+DECL|member|count
+r_int
+id|count
+suffix:semicolon
+multiline_comment|/* When zero, we can release it */
 )brace
 suffix:semicolon
 DECL|struct|idr
@@ -68,19 +71,19 @@ id|idr_layer
 op_star
 id|top
 suffix:semicolon
-DECL|member|layers
-r_int
-id|layers
-suffix:semicolon
-DECL|member|count
-r_int
-id|count
-suffix:semicolon
 DECL|member|id_free
 r_struct
 id|idr_layer
 op_star
 id|id_free
+suffix:semicolon
+DECL|member|count
+r_int
+id|count
+suffix:semicolon
+DECL|member|layers
+r_int
+id|layers
 suffix:semicolon
 DECL|member|id_free_cnt
 r_int

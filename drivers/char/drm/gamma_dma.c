@@ -768,7 +768,7 @@ l_string|&quot; &bslash;&quot;while locked&bslash;&quot;, but no lock held&bslas
 comma
 id|buf-&gt;idx
 comma
-id|buf-&gt;pid
+id|current-&gt;pid
 )paren
 suffix:semicolon
 )brace
@@ -1438,6 +1438,11 @@ r_int
 id|gamma_dma_priority
 c_func
 (paren
+r_struct
+id|file
+op_star
+id|filp
+comma
 id|drm_device_t
 op_star
 id|dev
@@ -1649,19 +1654,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_ne
-id|current-&gt;pid
+id|filp
 )paren
 (brace
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;Process %d using buffer owned by %d&bslash;n&quot;
+l_string|&quot;Process %d using buffer not owned&bslash;n&quot;
 comma
 id|current-&gt;pid
-comma
-id|buf-&gt;pid
 )paren
 suffix:semicolon
 id|retcode
@@ -1684,11 +1687,9 @@ id|DRM_LIST_NONE
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;Process %d using %d&squot;s buffer on list %d&bslash;n&quot;
+l_string|&quot;Process %d using buffer on list %d&bslash;n&quot;
 comma
 id|current-&gt;pid
-comma
-id|buf-&gt;pid
 comma
 id|buf-&gt;list
 )paren
@@ -2060,6 +2061,11 @@ r_int
 id|gamma_dma_send_buffers
 c_func
 (paren
+r_struct
+id|file
+op_star
+id|filp
+comma
 id|drm_device_t
 op_star
 id|dev
@@ -2134,7 +2140,7 @@ op_assign
 id|gamma_dma_enqueue
 c_func
 (paren
-id|dev
+id|filp
 comma
 id|d
 )paren
@@ -2303,7 +2309,7 @@ id|retcode
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;ctx%d w%d p%d c%d i%d l%d %d/%d&bslash;n&quot;
+l_string|&quot;ctx%d w%d p%d c%ld i%d l%d pid:%d&bslash;n&quot;
 comma
 id|d-&gt;context
 comma
@@ -2311,6 +2317,9 @@ id|last_buf-&gt;waiting
 comma
 id|last_buf-&gt;pending
 comma
+(paren
+r_int
+)paren
 id|DRM_WAITCOUNT
 c_func
 (paren
@@ -2322,8 +2331,6 @@ comma
 id|last_buf-&gt;idx
 comma
 id|last_buf-&gt;list
-comma
-id|last_buf-&gt;pid
 comma
 id|current-&gt;pid
 )paren
@@ -2477,6 +2484,8 @@ op_assign
 id|gamma_dma_priority
 c_func
 (paren
+id|filp
+comma
 id|dev
 comma
 op_amp
@@ -2489,6 +2498,8 @@ op_assign
 id|gamma_dma_send_buffers
 c_func
 (paren
+id|filp
+comma
 id|dev
 comma
 op_amp
@@ -2514,7 +2525,7 @@ op_assign
 id|gamma_dma_get_buffers
 c_func
 (paren
-id|dev
+id|filp
 comma
 op_amp
 id|d

@@ -244,7 +244,7 @@ r_new
 comma
 id|prev
 suffix:semicolon
-id|dev-&gt;lock.pid
+id|dev-&gt;lock.filp
 op_assign
 l_int|0
 suffix:semicolon
@@ -317,12 +317,7 @@ r_new
 comma
 id|prev
 suffix:semicolon
-id|pid_t
-id|pid
-op_assign
-id|dev-&gt;lock.pid
-suffix:semicolon
-id|dev-&gt;lock.pid
+id|dev-&gt;lock.filp
 op_assign
 l_int|0
 suffix:semicolon
@@ -379,7 +374,7 @@ id|context
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;%d freed heavyweight lock held by %d (pid %d)&bslash;n&quot;
+l_string|&quot;%d freed heavyweight lock held by %d&bslash;n&quot;
 comma
 id|context
 comma
@@ -388,8 +383,6 @@ c_func
 (paren
 id|old
 )paren
-comma
-id|pid
 )paren
 suffix:semicolon
 r_return

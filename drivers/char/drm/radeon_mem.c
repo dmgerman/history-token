@@ -24,8 +24,8 @@ comma
 r_int
 id|size
 comma
-r_int
-id|pid
+id|DRMFILE
+id|filp
 )paren
 (brace
 multiline_comment|/* Maybe cut off the start of an existing block */
@@ -75,7 +75,7 @@ op_minus
 id|p-&gt;start
 )paren
 suffix:semicolon
-id|newblock-&gt;pid
+id|newblock-&gt;filp
 op_assign
 l_int|0
 suffix:semicolon
@@ -149,7 +149,7 @@ id|p-&gt;size
 op_minus
 id|size
 suffix:semicolon
-id|newblock-&gt;pid
+id|newblock-&gt;filp
 op_assign
 l_int|0
 suffix:semicolon
@@ -177,9 +177,9 @@ suffix:semicolon
 id|out
 suffix:colon
 multiline_comment|/* Our block is in the middle */
-id|p-&gt;pid
+id|p-&gt;filp
 op_assign
-id|pid
+id|filp
 suffix:semicolon
 r_return
 id|p
@@ -204,8 +204,8 @@ comma
 r_int
 id|align2
 comma
-r_int
-id|pid
+id|DRMFILE
+id|filp
 )paren
 (brace
 r_struct
@@ -255,7 +255,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;pid
+id|p-&gt;filp
 op_eq
 l_int|0
 op_logical_and
@@ -277,7 +277,7 @@ id|start
 comma
 id|size
 comma
-id|pid
+id|filp
 )paren
 suffix:semicolon
 )brace
@@ -348,15 +348,15 @@ op_star
 id|p
 )paren
 (brace
-id|p-&gt;pid
+id|p-&gt;filp
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Assumes a single contiguous range.  Needs a special pid in&n;&t; * &squot;heap&squot; to stop it being subsumed.&n;&t; */
+multiline_comment|/* Assumes a single contiguous range.  Needs a special filp in&n;&t; * &squot;heap&squot; to stop it being subsumed.&n;&t; */
 r_if
 c_cond
 (paren
-id|p-&gt;next-&gt;pid
+id|p-&gt;next-&gt;filp
 op_eq
 l_int|0
 )paren
@@ -384,13 +384,19 @@ id|DRM_FREE
 c_func
 (paren
 id|q
+comma
+r_sizeof
+(paren
+op_star
+id|q
+)paren
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|p-&gt;prev-&gt;pid
+id|p-&gt;prev-&gt;filp
 op_eq
 l_int|0
 )paren
@@ -418,6 +424,12 @@ id|DRM_FREE
 c_func
 (paren
 id|p
+comma
+r_sizeof
+(paren
+op_star
+id|q
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -493,6 +505,12 @@ id|DRM_FREE
 c_func
 (paren
 id|blocks
+comma
+r_sizeof
+(paren
+op_star
+id|blocks
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -508,7 +526,7 @@ id|blocks-&gt;size
 op_assign
 id|size
 suffix:semicolon
-id|blocks-&gt;pid
+id|blocks-&gt;filp
 op_assign
 l_int|0
 suffix:semicolon
@@ -540,8 +558,11 @@ op_star
 id|heap
 )paren
 op_member_access_from_pointer
-id|pid
+id|filp
 op_assign
+(paren
+id|DRMFILE
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -565,23 +586,21 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Free all blocks associated with the releasing pid.&n; */
+multiline_comment|/* Free all blocks associated with the releasing file.&n; */
 DECL|function|radeon_mem_release
 r_void
 id|radeon_mem_release
 c_func
 (paren
+id|DRMFILE
+id|filp
+comma
 r_struct
 id|mem_block
 op_star
 id|heap
 )paren
 (brace
-r_int
-id|pid
-op_assign
-id|DRM_CURRENTPID
-suffix:semicolon
 r_struct
 id|mem_block
 op_star
@@ -617,16 +636,16 @@ id|p-&gt;next
 r_if
 c_cond
 (paren
-id|p-&gt;pid
+id|p-&gt;filp
 op_eq
-id|pid
+id|filp
 )paren
-id|p-&gt;pid
+id|p-&gt;filp
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Assumes a single contiguous range.  Needs a special pid in&n;&t; * &squot;heap&squot; to stop it being subsumed.&n;&t; */
+multiline_comment|/* Assumes a single contiguous range.  Needs a special filp in&n;&t; * &squot;heap&squot; to stop it being subsumed.&n;&t; */
 r_for
 c_loop
 (paren
@@ -646,11 +665,11 @@ id|p-&gt;next
 r_while
 c_loop
 (paren
-id|p-&gt;pid
+id|p-&gt;filp
 op_eq
 l_int|0
 op_logical_and
-id|p-&gt;next-&gt;pid
+id|p-&gt;next-&gt;filp
 op_eq
 l_int|0
 )paren
@@ -678,6 +697,12 @@ id|DRM_FREE
 c_func
 (paren
 id|q
+comma
+r_sizeof
+(paren
+op_star
+id|q
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -744,6 +769,12 @@ id|DRM_FREE
 c_func
 (paren
 id|q
+comma
+r_sizeof
+(paren
+op_star
+id|q
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -752,6 +783,13 @@ c_func
 (paren
 op_star
 id|heap
+comma
+r_sizeof
+(paren
+op_star
+op_star
+id|heap
+)paren
 )paren
 suffix:semicolon
 op_star
@@ -924,7 +962,7 @@ id|alloc.size
 comma
 id|alloc.alignment
 comma
-id|DRM_CURRENTPID
+id|filp
 )paren
 suffix:semicolon
 r_if
@@ -1098,9 +1136,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|block-&gt;pid
+id|block-&gt;filp
 op_ne
-id|DRM_CURRENTPID
+id|filp
 )paren
 r_return
 id|DRM_ERR

@@ -859,9 +859,6 @@ r_int
 id|result
 suffix:semicolon
 r_int
-id|target
-suffix:semicolon
-r_int
 id|batch_count
 op_assign
 l_int|0
@@ -913,16 +910,6 @@ id|result
 suffix:semicolon
 multiline_comment|/*&n;&t; * OK, we need to start writing disk blocks.  Try to free up a&n;&t; * quarter of the log in a single checkpoint if we can.&n;&t; */
 multiline_comment|/*&n;&t; * AKPM: check this code.  I had a feeling a while back that it&n;&t; * degenerates into a busy loop at unmount time.&n;&t; */
-id|target
-op_assign
-(paren
-id|journal-&gt;j_last
-op_minus
-id|journal-&gt;j_first
-)paren
-op_div
-l_int|4
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1428,11 +1415,6 @@ id|jh
 suffix:semicolon
 r_do
 (brace
-r_struct
-id|buffer_head
-op_star
-id|bh
-suffix:semicolon
 id|jh
 op_assign
 id|next_jh
@@ -1440,14 +1422,6 @@ suffix:semicolon
 id|next_jh
 op_assign
 id|jh-&gt;b_cpnext
-suffix:semicolon
-id|bh
-op_assign
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
 suffix:semicolon
 id|ret
 op_add_assign
