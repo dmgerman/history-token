@@ -44,6 +44,8 @@ DECL|macro|MACHINE_HAS_DIAG44
 mdefine_line|#define MACHINE_HAS_DIAG44&t;(machine_flags &amp; 32)
 DECL|macro|MACHINE_NEW_STIDP
 mdefine_line|#define MACHINE_NEW_STIDP&t;(machine_flags &amp; 64)
+DECL|macro|MACHINE_HAS_IDTE
+mdefine_line|#define MACHINE_HAS_IDTE&t;(machine_flags &amp; 128)
 macro_line|#ifndef __s390x__
 DECL|macro|MACHINE_HAS_IEEE
 mdefine_line|#define MACHINE_HAS_IEEE&t;(machine_flags &amp; 2)

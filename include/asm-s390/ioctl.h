@@ -37,15 +37,29 @@ DECL|macro|_IOC_READ
 mdefine_line|#define _IOC_READ&t;2U
 DECL|macro|_IOC
 mdefine_line|#define _IOC(dir,type,nr,size) &bslash;&n;&t;(((dir)  &lt;&lt; _IOC_DIRSHIFT) | &bslash;&n;&t; ((type) &lt;&lt; _IOC_TYPESHIFT) | &bslash;&n;&t; ((nr)   &lt;&lt; _IOC_NRSHIFT) | &bslash;&n;&t; ((size) &lt;&lt; _IOC_SIZESHIFT))
+multiline_comment|/* provoke compile error for invalid uses of size argument */
+r_extern
+r_int
+r_int
+id|__invalid_size_argument_for_IOC
+suffix:semicolon
+DECL|macro|_IOC_TYPECHECK
+mdefine_line|#define _IOC_TYPECHECK(t) &bslash;&n;&t;((sizeof(t) == sizeof(t[1]) &amp;&amp; &bslash;&n;&t;  sizeof(t) &lt; (1 &lt;&lt; _IOC_SIZEBITS)) ? &bslash;&n;&t;  sizeof(t) : __invalid_size_argument_for_IOC)
 multiline_comment|/* used to create numbers */
 DECL|macro|_IO
 mdefine_line|#define _IO(type,nr)&t;&t;_IOC(_IOC_NONE,(type),(nr),0)
 DECL|macro|_IOR
-mdefine_line|#define _IOR(type,nr,size)&t;_IOC(_IOC_READ,(type),(nr),sizeof(size))
+mdefine_line|#define _IOR(type,nr,size)&t;_IOC(_IOC_READ,(type),(nr),(_IOC_TYPECHECK(size)))
 DECL|macro|_IOW
-mdefine_line|#define _IOW(type,nr,size)&t;_IOC(_IOC_WRITE,(type),(nr),sizeof(size))
+mdefine_line|#define _IOW(type,nr,size)&t;_IOC(_IOC_WRITE,(type),(nr),(_IOC_TYPECHECK(size)))
 DECL|macro|_IOWR
-mdefine_line|#define _IOWR(type,nr,size)&t;_IOC(_IOC_READ|_IOC_WRITE,(type),(nr),sizeof(size))
+mdefine_line|#define _IOWR(type,nr,size)&t;_IOC(_IOC_READ|_IOC_WRITE,(type),(nr),(_IOC_TYPECHECK(size)))
+DECL|macro|_IOR_BAD
+mdefine_line|#define _IOR_BAD(type,nr,size)&t;_IOC(_IOC_READ,(type),(nr),sizeof(size))
+DECL|macro|_IOW_BAD
+mdefine_line|#define _IOW_BAD(type,nr,size)&t;_IOC(_IOC_WRITE,(type),(nr),sizeof(size))
+DECL|macro|_IOWR_BAD
+mdefine_line|#define _IOWR_BAD(type,nr,size)&t;_IOC(_IOC_READ|_IOC_WRITE,(type),(nr),sizeof(size))
 multiline_comment|/* used to decode ioctl numbers.. */
 DECL|macro|_IOC_DIR
 mdefine_line|#define _IOC_DIR(nr)&t;&t;(((nr) &gt;&gt; _IOC_DIRSHIFT) &amp; _IOC_DIRMASK)
