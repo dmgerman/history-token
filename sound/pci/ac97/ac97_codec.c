@@ -861,9 +861,9 @@ l_int|0x43525920
 comma
 l_int|0xfffffff8
 comma
-l_string|&quot;CS4294/4298&quot;
+l_string|&quot;CS4298&quot;
 comma
-l_int|NULL
+id|patch_cirrus_spdif
 comma
 l_int|NULL
 )brace
