@@ -28,53 +28,5 @@ macro_line|#else /* !CONFIG_CLUSTERED_APIC */
 DECL|macro|boot_cpu_apicid
 mdefine_line|#define boot_cpu_apicid boot_cpu_physical_apicid
 macro_line|#endif /* CONFIG_CLUSTERED_APIC */
-multiline_comment|/*&n; * Mappings between logical cpu number and logical / physical apicid&n; * The first four macros are trivial, but it keeps the abstraction consistent&n; */
-r_extern
-r_volatile
-r_int
-id|logical_apicid_2_cpu
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|cpu_2_logical_apicid
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|physical_apicid_2_cpu
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|cpu_2_physical_apicid
-(braket
-)braket
-suffix:semicolon
-DECL|macro|logical_apicid_to_cpu
-mdefine_line|#define logical_apicid_to_cpu(apicid) logical_apicid_2_cpu[apicid]
-DECL|macro|cpu_to_logical_apicid
-mdefine_line|#define cpu_to_logical_apicid(cpu) cpu_2_logical_apicid[cpu]
-DECL|macro|physical_apicid_to_cpu
-mdefine_line|#define physical_apicid_to_cpu(apicid) physical_apicid_2_cpu[apicid]
-DECL|macro|cpu_to_physical_apicid
-mdefine_line|#define cpu_to_physical_apicid(cpu) cpu_2_physical_apicid[cpu]
-macro_line|#ifdef CONFIG_CLUSTERED_APIC&t;&t;&t;/* use logical IDs to bootstrap */
-DECL|macro|boot_apicid_to_cpu
-mdefine_line|#define boot_apicid_to_cpu(apicid) logical_apicid_2_cpu[apicid]
-DECL|macro|cpu_to_boot_apicid
-mdefine_line|#define cpu_to_boot_apicid(cpu) cpu_2_logical_apicid[cpu]
-macro_line|#else /* !CONFIG_CLUSTERED_APIC */&t;&t;/* use physical IDs to bootstrap */
-DECL|macro|boot_apicid_to_cpu
-mdefine_line|#define boot_apicid_to_cpu(apicid) physical_apicid_2_cpu[apicid]
-DECL|macro|cpu_to_boot_apicid
-mdefine_line|#define cpu_to_boot_apicid(cpu) cpu_2_physical_apicid[cpu]
-macro_line|#endif /* CONFIG_CLUSTERED_APIC */
 macro_line|#endif
 eof
