@@ -1151,14 +1151,6 @@ r_struct
 id|kobject
 id|kobj
 suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-id|DEVICE_NAME_SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* descriptive ascii string */
 DECL|member|bus_id
 r_char
 id|bus_id

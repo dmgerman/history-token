@@ -3,47 +3,6 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-DECL|function|device_read_name
-r_static
-id|ssize_t
-id|device_read_name
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_return
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-)brace
-r_static
-id|DEVICE_ATTR
-c_func
-(paren
-id|name
-comma
-id|S_IRUGO
-comma
-id|device_read_name
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 r_static
 id|ssize_t
 DECL|function|device_read_power
@@ -433,9 +392,6 @@ id|dev_default_attrs
 )braket
 op_assign
 (brace
-op_amp
-id|dev_attr_name.attr
-comma
 op_amp
 id|dev_attr_power.attr
 comma

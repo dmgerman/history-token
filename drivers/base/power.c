@@ -137,7 +137,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: suspend returned %d&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;bus_id
 comma
 id|error
 )paren

@@ -712,11 +712,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;DEV: registering device: ID = &squot;%s&squot;, name = %s&bslash;n&quot;
+l_string|&quot;DEV: registering device: ID = &squot;%s&squot;&bslash;n&quot;
 comma
 id|dev-&gt;bus_id
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* first, register with generic layer. */
@@ -1005,11 +1003,9 @@ id|dev
 id|pr_debug
 c_func
 (paren
-l_string|&quot;DEV: Unregistering device. ID = &squot;%s&squot;, name = &squot;%s&squot;&bslash;n&quot;
+l_string|&quot;DEV: Unregistering device. ID = &squot;%s&squot;&bslash;n&quot;
 comma
 id|dev-&gt;bus_id
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 id|device_del
