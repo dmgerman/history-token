@@ -1,22 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/affs/file.c&n; *&n; *  (c) 1996  Hans-Joachim Widmaier - Rewritten&n; *&n; *  (C) 1993  Ray Burr - Modified for Amiga FFS filesystem.&n; *&n; *  (C) 1992  Eric Youngdale Modified for ISO 9660 filesystem.&n; *&n; *  (C) 1991  Linus Torvalds - minix filesystem&n; *&n; *  affs regular file handling primitives&n; */
-macro_line|#include &lt;asm/div64.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/affs_fs.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/dirent.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/amigaffs.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &quot;affs.h&quot;
 macro_line|#if PAGE_SIZE &lt; 4096
 macro_line|#error PAGE_SIZE must be at least 4096
 macro_line|#endif
