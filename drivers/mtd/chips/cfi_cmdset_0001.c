@@ -2105,6 +2105,9 @@ suffix:semicolon
 r_case
 id|FL_READY
 suffix:colon
+r_case
+id|FL_STATUS
+suffix:colon
 multiline_comment|/* We should really make set_vpp() count, rather than doing this */
 id|DISABLE_VPP
 c_func
