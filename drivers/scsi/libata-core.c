@@ -8907,6 +8907,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|ap-&gt;thr_timer
+)paren
+suffix:semicolon
 id|complete_and_exit
 (paren
 op_amp
