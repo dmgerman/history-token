@@ -85,7 +85,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 908 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 921 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -2190,9 +2190,15 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;Inserting packet for node %d, tlabel=%d, tcode=0x%x, speed=%d&quot;
+l_string|&quot;Inserting packet for node &quot;
+id|NODE_BUS_FMT
+l_string|&quot;, tlabel=%d, tcode=0x%x, speed=%d&quot;
 comma
+id|NODE_BUS_ARGS
+c_func
+(paren
 id|packet-&gt;node_id
+)paren
 comma
 id|packet-&gt;tlabel
 comma
@@ -6170,6 +6176,14 @@ c_func
 l_int|3
 op_lshift
 l_int|20
+)paren
+suffix:semicolon
+id|next-&gt;status
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|recv-&gt;buf_stride
 )paren
 suffix:semicolon
 multiline_comment|/* link prev to next */
@@ -11706,6 +11720,115 @@ c_cond
 (paren
 id|datasize
 )paren
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|d-&gt;prg_cpu
+(braket
+id|d-&gt;sent_ind
+)braket
+op_member_access_from_pointer
+id|data
+(braket
+l_int|0
+)braket
+)paren
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0xf
+)paren
+op_eq
+l_int|0xa
+)paren
+(brace
+id|DBGMSG
+c_func
+(paren
+id|ohci-&gt;id
+comma
+l_string|&quot;Stream packet sent to channel %d tcode=0x%X &quot;
+l_string|&quot;ack=0x%X spd=%d dataLength=%d ctx=%d&quot;
+comma
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|d-&gt;prg_cpu
+(braket
+id|d-&gt;sent_ind
+)braket
+op_member_access_from_pointer
+id|data
+(braket
+l_int|0
+)braket
+)paren
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0x3f
+comma
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|d-&gt;prg_cpu
+(braket
+id|d-&gt;sent_ind
+)braket
+op_member_access_from_pointer
+id|data
+(braket
+l_int|0
+)braket
+)paren
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0xf
+comma
+id|status
+op_amp
+l_int|0x1f
+comma
+(paren
+id|status
+op_rshift
+l_int|5
+)paren
+op_amp
+l_int|0x3
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|d-&gt;prg_cpu
+(braket
+id|d-&gt;sent_ind
+)braket
+op_member_access_from_pointer
+id|data
+(braket
+l_int|1
+)braket
+)paren
+op_rshift
+l_int|16
+comma
+id|d-&gt;ctx
+)paren
+suffix:semicolon
+)brace
+r_else
 id|DBGMSG
 c_func
 (paren
@@ -12785,7 +12908,7 @@ suffix:semicolon
 )brace
 id|d-&gt;prg_pool
 op_assign
-id|hpsb_pci_pool_create
+id|pci_pool_create
 c_func
 (paren
 l_string|&quot;ohci1394 rcv prg&quot;
@@ -12801,8 +12924,6 @@ comma
 l_int|4
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 id|OHCI_DMA_ALLOC
@@ -13464,7 +13585,7 @@ id|dma_addr_t
 suffix:semicolon
 id|d-&gt;prg_pool
 op_assign
-id|hpsb_pci_pool_create
+id|pci_pool_create
 c_func
 (paren
 l_string|&quot;ohci1394 trm prg&quot;
@@ -13480,8 +13601,6 @@ comma
 l_int|4
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 id|OHCI_DMA_ALLOC

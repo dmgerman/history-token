@@ -15,62 +15,10 @@ macro_line|#ifndef minor
 DECL|macro|minor
 mdefine_line|#define minor(dev) MINOR(dev)
 macro_line|#endif
-macro_line|#ifndef __devexit_p
-DECL|macro|__devexit_p
-mdefine_line|#define __devexit_p(x) x
-macro_line|#endif
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#ifndef list_for_each_safe
-DECL|macro|list_for_each_safe
-mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, n = pos-&gt;next)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,5)
-DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel pte_offset
-macro_line|#endif
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
-macro_line|#ifndef MAX
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
-macro_line|#endif
-multiline_comment|/* Compatibility for task/work queues */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,42)
-multiline_comment|/* Use task queue */
-macro_line|#include &lt;linux/tqueue.h&gt;
-DECL|macro|hpsb_queue_struct
-mdefine_line|#define hpsb_queue_struct tq_struct
-DECL|macro|hpsb_queue_list
-mdefine_line|#define hpsb_queue_list list
-DECL|macro|hpsb_schedule_work
-mdefine_line|#define hpsb_schedule_work(x) schedule_task(x)
-DECL|macro|HPSB_INIT_WORK
-mdefine_line|#define HPSB_INIT_WORK(x,y,z) INIT_TQUEUE(x,y,z)
-DECL|macro|HPSB_PREPARE_WORK
-mdefine_line|#define HPSB_PREPARE_WORK(x,y,z) PREPARE_TQUEUE(x,y,z)
-macro_line|#else
-multiline_comment|/* Use work queue */
-macro_line|#include &lt;linux/workqueue.h&gt;
-DECL|macro|hpsb_queue_struct
-mdefine_line|#define hpsb_queue_struct work_struct
-DECL|macro|hpsb_queue_list
-mdefine_line|#define hpsb_queue_list entry
-DECL|macro|hpsb_schedule_work
-mdefine_line|#define hpsb_schedule_work(x) schedule_work(x)
-DECL|macro|HPSB_INIT_WORK
-mdefine_line|#define HPSB_INIT_WORK(x,y,z) INIT_WORK(x,y,z)
-DECL|macro|HPSB_PREPARE_WORK
-mdefine_line|#define HPSB_PREPARE_WORK(x,y,z) PREPARE_WORK(x,y,z)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,44)
-multiline_comment|/* pci_pool_create changed. does not take the flags arg any longer */
-DECL|macro|hpsb_pci_pool_create
-mdefine_line|#define hpsb_pci_pool_create(a,b,c,d,e,f) pci_pool_create(a,b,c,d,e,f)
-macro_line|#else
-DECL|macro|hpsb_pci_pool_create
-mdefine_line|#define hpsb_pci_pool_create(a,b,c,d,e,f) pci_pool_create(a,b,c,d,e)
 macro_line|#endif
 multiline_comment|/* Transaction Label handling */
 DECL|struct|hpsb_tlabel_pool

@@ -25,11 +25,12 @@ macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
-macro_line|#include &quot;ieee1394_hotplug.h&quot;
+macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;video1394.h&quot;
+macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;dma.h&quot;
 macro_line|#include &quot;ohci1394.h&quot;
 DECL|macro|ISO_CHANNELS
@@ -5107,6 +5108,10 @@ id|dma_iso_ctx
 op_star
 id|d
 suffix:semicolon
+id|qv.packet_sizes
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5188,6 +5193,22 @@ op_amp
 id|VIDEO1394_VARIABLE_PACKET_SIZE
 )paren
 (brace
+r_int
+r_int
+op_star
+id|psizes
+suffix:semicolon
+r_int
+id|buf_size
+op_assign
+id|d-&gt;nb_cmd
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5213,32 +5234,55 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+id|psizes
+op_assign
+id|kmalloc
+c_func
+(paren
+id|buf_size
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|access_ok
+id|psizes
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
-id|VERIFY_READ
+id|psizes
 comma
 id|qv.packet_sizes
 comma
-id|d-&gt;nb_cmd
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
+id|buf_size
 )paren
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|psizes
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+id|qv.packet_sizes
+op_assign
+id|psizes
+suffix:semicolon
 )brace
 id|spin_lock_irqsave
 c_func
@@ -5279,6 +5323,17 @@ op_amp
 id|d-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|qv.packet_sizes
+)paren
+id|kfree
+c_func
+(paren
+id|qv.packet_sizes
 )paren
 suffix:semicolon
 r_return
@@ -5562,6 +5617,17 @@ l_int|0x1000
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|qv.packet_sizes
+)paren
+id|kfree
+c_func
+(paren
+id|qv.packet_sizes
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
