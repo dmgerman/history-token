@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -22,11 +22,6 @@ id|rsdp_address
 suffix:semicolon
 id|acpi_status
 id|status
-suffix:semicolon
-id|u32
-id|number_of_tables
-op_assign
-l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -112,8 +107,6 @@ id|status
 op_assign
 id|acpi_tb_get_table_rsdt
 (paren
-op_amp
-id|number_of_tables
 )paren
 suffix:semicolon
 r_if
@@ -141,12 +134,11 @@ r_goto
 id|error_exit
 suffix:semicolon
 )brace
-multiline_comment|/* Now get the rest of the tables */
+multiline_comment|/* Now get the tables needed by this subsystem (FADT, DSDT, etc.) */
 id|status
 op_assign
-id|acpi_tb_get_all_tables
+id|acpi_tb_get_required_tables
 (paren
-id|number_of_tables
 )paren
 suffix:semicolon
 r_if
@@ -281,6 +273,8 @@ multiline_comment|/* Copy the table to a local buffer */
 id|address.pointer_type
 op_assign
 id|ACPI_LOGICAL_POINTER
+op_or
+id|ACPI_LOGICAL_ADDRESSING
 suffix:semicolon
 id|address.pointer.logical
 op_assign
@@ -288,10 +282,12 @@ id|table_ptr
 suffix:semicolon
 id|status
 op_assign
-id|acpi_tb_get_table
+id|acpi_tb_get_table_body
 (paren
 op_amp
 id|address
+comma
+id|table_ptr
 comma
 op_amp
 id|table_info
@@ -330,7 +326,7 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* Free table allocated by Acpi_tb_get_table */
+multiline_comment|/* Free table allocated by Acpi_tb_get_table_body */
 id|acpi_tb_delete_single_table
 (paren
 op_amp

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 163 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 164 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -625,7 +625,7 @@ id|NUM_ACPI_TABLES
 )braket
 op_assign
 (brace
-multiline_comment|/***********    Name,   Signature, Global typed pointer     Signature size,      How many allowed?,    Contains valid AML? */
+multiline_comment|/***********    Name,   Signature, Global typed pointer     Signature size,      Type                  How many allowed?,    Contains valid AML? */
 multiline_comment|/* RSDP 0 */
 (brace
 id|RSDP_NAME
@@ -641,6 +641,8 @@ id|RSDP_SIG
 op_minus
 l_int|1
 comma
+id|ACPI_TABLE_ROOT
+op_or
 id|ACPI_TABLE_SINGLE
 )brace
 comma
@@ -665,6 +667,8 @@ id|DSDT_SIG
 op_minus
 l_int|1
 comma
+id|ACPI_TABLE_SECONDARY
+op_or
 id|ACPI_TABLE_SINGLE
 op_or
 id|ACPI_TABLE_EXECUTABLE
@@ -691,6 +695,8 @@ id|FADT_SIG
 op_minus
 l_int|1
 comma
+id|ACPI_TABLE_PRIMARY
+op_or
 id|ACPI_TABLE_SINGLE
 )brace
 comma
@@ -715,6 +721,8 @@ id|FACS_SIG
 op_minus
 l_int|1
 comma
+id|ACPI_TABLE_SECONDARY
+op_or
 id|ACPI_TABLE_SINGLE
 )brace
 comma
@@ -733,6 +741,8 @@ id|PSDT_SIG
 op_minus
 l_int|1
 comma
+id|ACPI_TABLE_PRIMARY
+op_or
 id|ACPI_TABLE_MULTIPLE
 op_or
 id|ACPI_TABLE_EXECUTABLE
@@ -753,6 +763,8 @@ id|SSDT_SIG
 op_minus
 l_int|1
 comma
+id|ACPI_TABLE_PRIMARY
+op_or
 id|ACPI_TABLE_MULTIPLE
 op_or
 id|ACPI_TABLE_EXECUTABLE
@@ -773,6 +785,8 @@ id|RSDT_SIG
 op_minus
 l_int|1
 comma
+id|ACPI_TABLE_ROOT
+op_or
 id|ACPI_TABLE_SINGLE
 )brace
 comma
