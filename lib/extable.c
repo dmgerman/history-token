@@ -17,6 +17,7 @@ id|__stop___ex_table
 (braket
 )braket
 suffix:semicolon
+macro_line|#ifndef ARCH_HAS_SORT_EXTABLE
 multiline_comment|/*&n; * The exception table needs to be sorted so that the binary&n; * search that we use to find entries in it works properly.&n; * This is used both for the kernel exception table and for&n; * the exception tables of modules that get loaded.&n; */
 DECL|function|sort_extable
 r_void
@@ -136,6 +137,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
+macro_line|#ifndef ARCH_HAS_SEARCH_EXTABLE
 multiline_comment|/*&n; * Search one exception table for an entry corresponding to the&n; * given instruction address, and return the address of the entry,&n; * or NULL if none is found.&n; * We use a binary search, and thus we assume that the table is&n; * already sorted.&n; */
 r_const
 r_struct
@@ -225,4 +228,5 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#endif
 eof
