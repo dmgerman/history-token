@@ -1,4 +1,4 @@
-multiline_comment|/* orinoco_cs.c 0.11a&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
+multiline_comment|/* orinoco_cs.c 0.11b&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef  __IN_PCMCIA_PACKAGE__
 macro_line|#include &lt;pcmcia/k_compat.h&gt;
@@ -39,7 +39,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;orinoco_cs.c 0.11a (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+l_string|&quot;orinoco_cs.c 0.11b (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -1156,6 +1156,13 @@ id|priv
 op_assign
 id|link-&gt;priv
 suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|priv-&gt;ndev
+suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
@@ -1285,14 +1292,14 @@ suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
-id|priv-&gt;ndev
+id|dev
 )paren
 suffix:semicolon
 )brace
 id|kfree
 c_func
 (paren
-id|priv-&gt;card
+id|dev
 )paren
 suffix:semicolon
 id|out

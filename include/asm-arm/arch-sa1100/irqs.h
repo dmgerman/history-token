@@ -98,9 +98,6 @@ DECL|macro|IRQ_GPIO26
 mdefine_line|#define&t;IRQ_GPIO26&t;&t;47
 DECL|macro|IRQ_GPIO27
 mdefine_line|#define&t;IRQ_GPIO27&t;&t;48
-multiline_comment|/*&n; * To get the GPIO number from an IRQ number&n; */
-DECL|macro|GPIO_11_27_IRQ
-mdefine_line|#define GPIO_11_27_IRQ(i)&t;((i) - 21)
 multiline_comment|/*&n; * The next 16 interrupts are for board specific purposes.  Since&n; * the kernel can only run on one machine at a time, we can re-use&n; * these.  If you need more, increase IRQ_BOARD_END, but keep it&n; * within sensible limits.  IRQs 49 to 64 are available.&n; */
 DECL|macro|IRQ_BOARD_START
 mdefine_line|#define IRQ_BOARD_START&t;&t;49

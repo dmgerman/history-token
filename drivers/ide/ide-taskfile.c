@@ -1170,6 +1170,8 @@ id|startstop
 comma
 id|drive
 comma
+id|rq
+comma
 id|DATA_READY
 comma
 id|drive-&gt;bad_wstat
@@ -1268,6 +1270,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 l_string|&quot;task_mulout_intr&quot;
 comma
 id|stat
@@ -1330,6 +1334,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;task_mulout_intr&quot;
 comma
@@ -1951,7 +1957,7 @@ comma
 r_struct
 id|request
 op_star
-id|__rq
+id|rq
 )paren
 (brace
 id|u8
@@ -1981,6 +1987,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;recal_intr&quot;
 comma
@@ -2060,6 +2068,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 l_string|&quot;task_no_data_intr&quot;
 comma
 id|stat
@@ -2072,8 +2082,11 @@ c_cond
 id|args
 )paren
 id|ide_end_drive_cmd
+c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 id|stat
 comma
@@ -2092,6 +2105,7 @@ DECL|function|task_in_intr
 r_static
 id|ide_startstop_t
 id|task_in_intr
+c_func
 (paren
 r_struct
 id|ata_device
@@ -2154,6 +2168,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;task_in_intr&quot;
 comma
@@ -2342,6 +2358,8 @@ id|startstop
 comma
 id|drive
 comma
+id|rq
+comma
 id|DATA_READY
 comma
 id|drive-&gt;bad_wstat
@@ -2509,6 +2527,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;task_out_intr&quot;
 comma
@@ -2697,6 +2717,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;task_mulin_intr&quot;
 comma

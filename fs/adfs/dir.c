@@ -14,6 +14,8 @@ DECL|variable|adfs_dir_lock
 r_static
 id|rwlock_t
 id|adfs_dir_lock
+op_assign
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
 r_static
 r_int

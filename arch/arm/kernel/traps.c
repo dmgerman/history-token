@@ -513,8 +513,6 @@ c_func
 l_string|&quot;Stack: &quot;
 comma
 id|sp
-op_minus
-l_int|16
 comma
 l_int|8192
 op_plus
@@ -610,13 +608,15 @@ c_cond
 (paren
 id|fp
 OL
-l_int|4096
-op_plus
 (paren
 r_int
 r_int
 )paren
+(paren
 id|tsk-&gt;thread_info
+op_plus
+l_int|1
+)paren
 )paren
 id|printk
 c_func
@@ -764,19 +764,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Process %s (pid: %d, stackpage=%08lx)&bslash;n&quot;
+l_string|&quot;Process %s (pid: %d, stack limit = 0x%p)&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
 id|current-&gt;pid
 comma
-l_int|4096
+id|tsk-&gt;thread_info
 op_plus
-(paren
-r_int
-r_int
-)paren
-id|tsk
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -910,16 +906,10 @@ r_void
 id|do_undefinstr
 c_func
 (paren
-r_int
-id|address
-comma
 r_struct
 id|pt_regs
 op_star
 id|regs
-comma
-r_int
-id|mode
 )paren
 (brace
 r_int
@@ -1020,7 +1010,7 @@ l_string|&quot;Oops - undefined instruction&quot;
 comma
 id|regs
 comma
-id|mode
+l_int|0
 )paren
 suffix:semicolon
 )brace

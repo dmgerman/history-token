@@ -1750,7 +1750,9 @@ r_void
 )brace
 DECL|function|fork_by_hand
 r_static
-r_int
+r_struct
+id|task_struct
+op_star
 id|__init
 id|fork_by_hand
 c_func
@@ -1784,7 +1786,7 @@ c_func
 (paren
 id|CLONE_VM
 op_or
-id|CLONE_PID
+id|CLONE_IDLETASK
 comma
 l_int|0
 comma
@@ -1817,15 +1819,21 @@ op_star
 id|cpu_lowcore
 suffix:semicolon
 multiline_comment|/* We can&squot;t use kernel_thread since we must _avoid_ to reschedule&n;           the child. */
-r_if
-c_cond
-(paren
+id|idle
+op_assign
 id|fork_by_hand
 c_func
 (paren
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|idle
+)paren
 )paren
 id|panic
 c_func
@@ -1836,29 +1844,6 @@ id|cpu
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         * We remove it from the pidhash and the runqueue&n;         * once we got the process:&n;         */
-id|idle
-op_assign
-id|prev_task
-c_func
-(paren
-op_amp
-id|init_task
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|idle
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;No idle process for CPU %d&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
 id|idle-&gt;processor
 op_assign
 id|cpu

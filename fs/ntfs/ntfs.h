@@ -3,13 +3,11 @@ macro_line|#ifndef _LINUX_NTFS_H
 DECL|macro|_LINUX_NTFS_H
 mdefine_line|#define _LINUX_NTFS_H
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,5)
-macro_line|#&t;error The NTFS driver requires at least kernel 2.5.5.
-macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -23,13 +21,6 @@ macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;layout.h&quot;
 macro_line|#include &quot;attrib.h&quot;
 macro_line|#include &quot;mft.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-DECL|typedef|sector_t
-r_typedef
-r_int
-id|sector_t
-suffix:semicolon
-macro_line|#endif
 r_typedef
 r_enum
 (brace
