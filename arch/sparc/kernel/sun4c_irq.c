@@ -150,7 +150,7 @@ id|current_mask
 comma
 id|new_mask
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -257,7 +257,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -271,7 +271,7 @@ id|interrupt_enable
 op_assign
 id|new_mask
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -299,7 +299,7 @@ id|current_mask
 comma
 id|new_mask
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -386,7 +386,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -400,7 +400,7 @@ id|interrupt_enable
 op_assign
 id|new_mask
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

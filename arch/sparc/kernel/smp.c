@@ -22,6 +22,8 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -1134,6 +1136,14 @@ r_int
 r_int
 id|lvl14_resolution
 suffix:semicolon
+multiline_comment|/* /proc/profile writes can call this, don&squot;t __init it please. */
+DECL|variable|prof_setup_lock
+r_static
+id|spinlock_t
+id|prof_setup_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|setup_profiling_timer
 r_int
 id|setup_profiling_timer
@@ -1174,9 +1184,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|prof_setup_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1229,9 +1242,12 @@ id|multiplier
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|prof_setup_lock
+comma
 id|flags
 )paren
 suffix:semicolon
