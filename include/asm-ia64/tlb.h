@@ -288,15 +288,10 @@ id|tlb-&gt;mm
 op_assign
 id|mm
 suffix:semicolon
+multiline_comment|/*&n;&t; * Use fast mode if only 1 CPU is online.&n;&t; *&n;&t; * It would be tempting to turn on fast-mode for full_mm_flush as well.  But this&n;&t; * doesn&squot;t work because of speculative accesses and software prefetching: the page&n;&t; * table of &quot;mm&quot; may (and usually is) the currently active page table and even&n;&t; * though the kernel won&squot;t do any user-space accesses during the TLB shoot down, a&n;&t; * compiler might use speculation or lfetch.fault on what happens to be a valid&n;&t; * user-space address.  This in turn could trigger a TLB miss fault (or a VHPT&n;&t; * walk) and re-insert a TLB entry we just removed.  Slow mode avoids such&n;&t; * problems.  (We could make fast-mode work by switching the current task to a&n;&t; * different &quot;mm&quot; during the shootdown.) --davidm 08/02/2002&n;&t; */
 id|tlb-&gt;nr
 op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
 (paren
-id|full_mm_flush
-op_logical_or
 id|num_online_cpus
 c_func
 (paren
@@ -304,11 +299,12 @@ c_func
 op_eq
 l_int|1
 )paren
-multiline_comment|/*&n;&t;&t; * Use fast mode if only 1 CPU is online or if we&squot;re tearing down the&n;&t;&t; * entire address space.&n;&t;&t; */
-id|tlb-&gt;nr
-op_assign
+ques
+c_cond
 op_complement
 l_int|0U
+suffix:colon
+l_int|0
 suffix:semicolon
 id|tlb-&gt;fullmm
 op_assign

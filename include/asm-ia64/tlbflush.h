@@ -160,6 +160,11 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
+r_else
+id|vma-&gt;vm_mm-&gt;context
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * Flush the TLB entries mapping the virtually mapped linear page&n; * table corresponding to address range [START-END).&n; */

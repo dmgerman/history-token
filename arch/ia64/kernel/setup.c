@@ -1250,6 +1250,30 @@ id|cmdline_p
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_HCDP
+r_if
+c_cond
+(paren
+id|efi.hcdp
+)paren
+(brace
+r_void
+id|setup_serial_hcdp
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Setup the serial ports described by HCDP */
+id|setup_serial_hcdp
+c_func
+(paren
+id|efi.hcdp
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 macro_line|# if defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp

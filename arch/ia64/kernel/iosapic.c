@@ -366,6 +366,19 @@ suffix:semicolon
 r_char
 id|redir
 suffix:semicolon
+macro_line|#ifdef DEBUG_IRQ_ROUTING
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;set_rte: routing vector 0x%02x to 0x%lx&bslash;n&quot;
+comma
+id|vector
+comma
+id|dest
+)paren
+suffix:semicolon
+macro_line|#endif
 id|pin
 op_assign
 id|iosapic_irq
@@ -1388,7 +1401,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Reassigning Vector 0x%x to 0x%x&bslash;n&quot;
+l_string|&quot;Reassigning vector 0x%x to 0x%x&bslash;n&quot;
 comma
 id|vector
 comma
@@ -3086,6 +3099,28 @@ id|cpu_index
 op_assign
 l_int|0
 suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|cpu_index
+)paren
+)paren
+r_if
+c_cond
+(paren
+op_increment
+id|cpu_index
+op_ge
+id|NR_CPUS
+)paren
+id|cpu_index
+op_assign
+l_int|0
+suffix:semicolon
 id|set_rte
 c_func
 (paren
@@ -3099,29 +3134,6 @@ id|cpu_index
 op_amp
 l_int|0xffff
 )paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cpu_index
-op_increment
-suffix:semicolon
-op_logical_neg
-id|cpu_online
-c_func
-(paren
-id|cpu_index
-op_mod
-id|NR_CPUS
-)paren
-suffix:semicolon
-id|cpu_index
-op_increment
-)paren
-suffix:semicolon
-id|cpu_index
-op_mod_assign
-id|NR_CPUS
 suffix:semicolon
 )brace
 r_else

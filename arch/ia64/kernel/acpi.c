@@ -1573,7 +1573,7 @@ r_return
 id|rsdp_phys
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SERIAL_ACPI
+macro_line|#ifdef CONFIG_SERIAL_8250_ACPI
 macro_line|#include &lt;linux/acpi_serial.h&gt;
 r_static
 r_int
@@ -1758,7 +1758,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_SERIAL_ACPI */
+macro_line|#endif /* CONFIG_SERIAL_8250_ACPI */
 r_int
 id|__init
 DECL|function|acpi_boot_init
@@ -1990,7 +1990,7 @@ id|PREFIX
 l_string|&quot;Can&squot;t find FADT&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_ACPI
+macro_line|#ifdef CONFIG_SERIAL_8250_ACPI
 multiline_comment|/*&n;&t; * TBD: Need phased approach to table parsing (only do those absolutely&n;&t; *      required during boot-up).  Recommend expanding concept of fix-&n;&t; *      feature devices (LDM) to include table-based devices such as&n;&t; *      serial ports, EC, SMBus, etc.&n;&t; */
 id|acpi_table_parse
 c_func

@@ -489,6 +489,16 @@ id|sig
 comma
 id|code
 suffix:semicolon
+id|die_if_kernel
+c_func
+(paren
+l_string|&quot;bad break&quot;
+comma
+id|regs
+comma
+id|break_num
+)paren
+suffix:semicolon
 multiline_comment|/* SIGILL, SIGFPE, SIGSEGV, and SIGBUS want these field initialized: */
 id|siginfo.si_addr
 op_assign

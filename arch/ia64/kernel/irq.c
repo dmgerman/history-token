@@ -1131,6 +1131,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 (paren
 id|status
@@ -1139,6 +1142,7 @@ op_amp
 id|IRQ_DISABLED
 op_or
 id|IRQ_INPROGRESS
+)paren
 )paren
 )paren
 )paren
@@ -1167,8 +1171,12 @@ multiline_comment|/*&n;&t;&t; * If there is no IRQ handler or it was disabled, e
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|action
+)paren
 )paren
 r_goto
 id|out
@@ -1223,13 +1231,13 @@ op_complement
 id|IRQ_PENDING
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|desc-&gt;status
 op_and_assign
 op_complement
 id|IRQ_INPROGRESS
 suffix:semicolon
-id|out
-suffix:colon
 multiline_comment|/*&n;&t;&t; * The -&gt;end() handler has to deal with interrupts which got&n;&t;&t; * disabled while the handler was running.&n;&t;&t; */
 id|desc-&gt;handler
 op_member_access_from_pointer
