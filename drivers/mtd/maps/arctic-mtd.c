@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: arctic-mtd.c,v 1.8 2003/05/21 12:45:17 dwmw2 Exp $&n; * &n; * drivers/mtd/maps/arctic-mtd.c MTD mappings and partition tables for &n; *                              IBM 405LP Arctic boards.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Copyright (C) 2002, International Business Machines Corporation&n; * All Rights Reserved.&n; *&n; * Bishop Brock&n; * IBM Research, Austin Center for Low-Power Computing&n; * bcbrock@us.ibm.com&n; * March 2002&n; *&n; * modified for Arctic by,&n; * David Gibson&n; * IBM OzLabs, Canberra, Australia&n; * &lt;arctic@gibson.dropbear.id.au&gt;&n; */
+multiline_comment|/*&n; * $Id: arctic-mtd.c,v 1.10 2003/06/02 16:37:59 trini Exp $&n; * &n; * drivers/mtd/maps/arctic-mtd.c MTD mappings and partition tables for &n; *                              IBM 405LP Arctic boards.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Copyright (C) 2002, International Business Machines Corporation&n; * All Rights Reserved.&n; *&n; * Bishop Brock&n; * IBM Research, Austin Center for Low-Power Computing&n; * bcbrock@us.ibm.com&n; * March 2002&n; *&n; * modified for Arctic by,&n; * David Gibson&n; * IBM OzLabs, Canberra, Australia&n; * &lt;arctic@gibson.dropbear.id.au&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -8,19 +8,25 @@ macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ibm4xx.h&gt;
-multiline_comment|/*&n; * fe000000 -- ff9fffff  Arctic FFS (26MB)&n; * ffa00000 -- fff5ffff  kernel (5.504MB)&n; * fff60000 -- ffffffff  firmware (640KB)&n; */
-DECL|macro|ARCTIC_FFS_SIZE
-mdefine_line|#define ARCTIC_FFS_SIZE&t;&t;0x01a00000 /* 26 M */
-DECL|macro|ARCTIC_FIRMWARE_SIZE
-mdefine_line|#define ARCTIC_FIRMWARE_SIZE&t;0x000a0000 /* 640K */
+multiline_comment|/*&n; * 0 : 0xFE00 0000 - 0xFEFF FFFF : Filesystem 1 (16MiB)&n; * 1 : 0xFF00 0000 - 0xFF4F FFFF : kernel (5.12MiB)&n; * 2 : 0xFF50 0000 - 0xFFF5 FFFF : Filesystem 2 (10.624MiB) (if non-XIP)&n; * 3 : 0xFFF6 0000 - 0xFFFF FFFF : PIBS Firmware (640KiB)&n; */
+DECL|macro|FFS1_SIZE
+mdefine_line|#define FFS1_SIZE&t;0x01000000 /* 16MiB */
+DECL|macro|KERNEL_SIZE
+mdefine_line|#define KERNEL_SIZE&t;0x00500000 /* 5.12MiB */
+DECL|macro|FFS2_SIZE
+mdefine_line|#define FFS2_SIZE&t;0x00a60000 /* 10.624MiB */
+DECL|macro|FIRMWARE_SIZE
+mdefine_line|#define FIRMWARE_SIZE&t;0x000a0000 /* 640KiB */
 DECL|macro|NAME
-mdefine_line|#define NAME     &quot;Arctic Linux Flash&quot;
+mdefine_line|#define NAME     &t;&quot;Arctic Linux Flash&quot;
 DECL|macro|PADDR
-mdefine_line|#define PADDR    SUBZERO_BOOTFLASH_PADDR
-DECL|macro|SIZE
-mdefine_line|#define SIZE     SUBZERO_BOOTFLASH_SIZE
+mdefine_line|#define PADDR    &t;SUBZERO_BOOTFLASH_PADDR
 DECL|macro|BUSWIDTH
-mdefine_line|#define BUSWIDTH 2
+mdefine_line|#define BUSWIDTH&t;2
+DECL|macro|SIZE
+mdefine_line|#define SIZE&t;&t;SUBZERO_BOOTFLASH_SIZE
+DECL|macro|PARTITIONS
+mdefine_line|#define PARTITIONS&t;4
 multiline_comment|/* Flash memories on these boards are memory resources, accessed big-endian. */
 (brace
 multiline_comment|/* do nothing for now */
@@ -67,7 +73,7 @@ r_struct
 id|mtd_partition
 id|arctic_partitions
 (braket
-l_int|3
+id|PARTITIONS
 )braket
 op_assign
 (brace
@@ -75,12 +81,12 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Arctic FFS&quot;
+l_string|&quot;Filesystem&quot;
 comma
 dot
 id|size
 op_assign
-id|ARCTIC_FFS_SIZE
+id|FFS1_SIZE
 comma
 dot
 id|offset
@@ -98,16 +104,32 @@ comma
 dot
 id|size
 op_assign
-id|SUBZERO_BOOTFLASH_SIZE
-op_minus
-id|ARCTIC_FFS_SIZE
-op_minus
-id|ARCTIC_FIRMWARE_SIZE
+id|KERNEL_SIZE
 comma
 dot
 id|offset
 op_assign
-id|ARCTIC_FFS_SIZE
+id|FFS1_SIZE
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Filesystem&quot;
+comma
+dot
+id|size
+op_assign
+id|FFS2_SIZE
+comma
+dot
+id|offset
+op_assign
+id|FFS1_SIZE
+op_plus
+id|KERNEL_SIZE
 comma
 )brace
 comma
@@ -120,14 +142,14 @@ comma
 dot
 id|size
 op_assign
-id|ARCTIC_FIRMWARE_SIZE
+id|FIRMWARE_SIZE
 comma
 dot
 id|offset
 op_assign
 id|SUBZERO_BOOTFLASH_SIZE
 op_minus
-id|ARCTIC_FIRMWARE_SIZE
+id|FIRMWARE_SIZE
 comma
 )brace
 comma
@@ -243,7 +265,7 @@ id|arctic_mtd
 comma
 id|arctic_partitions
 comma
-l_int|3
+id|PARTITIONS
 )paren
 suffix:semicolon
 )brace
