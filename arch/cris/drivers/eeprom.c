@@ -1370,11 +1370,6 @@ id|file-&gt;f_pos
 op_assign
 l_int|0
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -1401,6 +1396,11 @@ op_minus
 id|EOVERFLOW
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|ret
