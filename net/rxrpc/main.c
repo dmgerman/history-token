@@ -11,36 +11,6 @@ macro_line|#include &lt;rxrpc/connection.h&gt;
 macro_line|#include &lt;rxrpc/call.h&gt;
 macro_line|#include &lt;rxrpc/message.h&gt;
 macro_line|#include &quot;internal.h&quot;
-r_static
-r_int
-id|rxrpc_initialise
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
-id|rxrpc_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|variable|rxrpc_initialise
-id|module_init
-c_func
-(paren
-id|rxrpc_initialise
-)paren
-suffix:semicolon
-DECL|variable|rxrpc_cleanup
-id|module_exit
-c_func
-(paren
-id|rxrpc_cleanup
-)paren
-suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -68,6 +38,7 @@ multiline_comment|/*&n; * initialise the Rx module&n; */
 DECL|function|rxrpc_initialise
 r_static
 r_int
+id|__init
 id|rxrpc_initialise
 c_func
 (paren
@@ -226,6 +197,13 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_initialise() */
+DECL|variable|rxrpc_initialise
+id|module_init
+c_func
+(paren
+id|rxrpc_initialise
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * clean up the Rx module&n; */
 DECL|function|rxrpc_cleanup
@@ -451,6 +429,13 @@ l_string|&quot;&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_cleanup() */
+DECL|variable|rxrpc_cleanup
+id|module_exit
+c_func
+(paren
+id|rxrpc_cleanup
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * clear the dead space between task_struct and kernel stack&n; * - called by supplying -finstrument-functions to gcc&n; */
 macro_line|#if 0
