@@ -207,6 +207,38 @@ id|reg
 suffix:semicolon
 )brace
 )brace
+macro_line|#elif&t;defined(CONFIG_ARCH_OMAP)
+multiline_comment|/* We can only do 16-bit reads and writes in the static memory space. */
+DECL|macro|SMC_CAN_USE_8BIT
+mdefine_line|#define SMC_CAN_USE_8BIT&t;0
+DECL|macro|SMC_CAN_USE_16BIT
+mdefine_line|#define SMC_CAN_USE_16BIT&t;1
+DECL|macro|SMC_CAN_USE_32BIT
+mdefine_line|#define SMC_CAN_USE_32BIT&t;0
+DECL|macro|SMC_IO_SHIFT
+mdefine_line|#define SMC_IO_SHIFT&t;&t;0
+DECL|macro|SMC_NOWAIT
+mdefine_line|#define SMC_NOWAIT&t;&t;1
+DECL|macro|SMC_inb
+mdefine_line|#define SMC_inb(a, r)&t;&t;readb((a) + (r))
+DECL|macro|SMC_outb
+mdefine_line|#define SMC_outb(v, a, r)&t;writeb(v, (a) + (r))
+DECL|macro|SMC_inw
+mdefine_line|#define SMC_inw(a, r)&t;&t;readw((a) + (r))
+DECL|macro|SMC_outw
+mdefine_line|#define SMC_outw(v, a, r)&t;writew(v, (a) + (r))
+DECL|macro|SMC_insw
+mdefine_line|#define SMC_insw(a, r, p, l)&t;readsw((a) + (r), p, l)
+DECL|macro|SMC_outsw
+mdefine_line|#define SMC_outsw(a, r, p, l)&t;writesw((a) + (r), p, l)
+DECL|macro|SMC_inl
+mdefine_line|#define SMC_inl(a, r)&t;&t;readl((a) + (r))
+DECL|macro|SMC_outl
+mdefine_line|#define SMC_outl(v, a, r)&t;writel(v, (a) + (r))
+DECL|macro|SMC_insl
+mdefine_line|#define SMC_insl(a, r, p, l)&t;readsl((a) + (r), p, l)
+DECL|macro|SMC_outsl
+mdefine_line|#define SMC_outsl(a, r, p, l)&t;writesl((a) + (r), p, l)
 macro_line|#elif&t;defined(CONFIG_ISA)
 DECL|macro|SMC_CAN_USE_8BIT
 mdefine_line|#define SMC_CAN_USE_8BIT&t;1
