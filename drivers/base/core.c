@@ -252,6 +252,25 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Device &squot;%s&squot; does not have a release() function, &quot;
+l_string|&quot;it is broken and must be fixed.&bslash;n&quot;
+comma
+id|dev-&gt;bus_id
+)paren
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|variable|ktype_device
 r_static

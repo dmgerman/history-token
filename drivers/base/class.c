@@ -855,6 +855,25 @@ c_func
 id|cd
 )paren
 suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Device class &squot;%s&squot; does not have a release() function, &quot;
+l_string|&quot;it is broken and must be fixed.&bslash;n&quot;
+comma
+id|cd-&gt;class_id
+)paren
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|variable|ktype_class_device
 r_static
