@@ -171,6 +171,13 @@ id|baud
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* This board supports RTS/CTS for the on-chip UART, but only for channel 1. */
+multiline_comment|/* CTS for UART channel 1 is pin P37 (bit 7 of port 3).  */
+DECL|macro|NB85E_UART_CTS
+mdefine_line|#define NB85E_UART_CTS(chan)&t;((chan) == 1 ? !(ANNA_PORT_IO(3) &amp; 0x80) : 1)
+multiline_comment|/* RTS for UART channel 1 is pin P07 (bit 7 of port 0).  */
+DECL|macro|NB85E_UART_SET_RTS
+mdefine_line|#define NB85E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 1) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = ANNA_PORT_IO(0); &t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   ANNA_PORT_IO(0) = old &amp; ~0x80;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   ANNA_PORT_IO(0) = old | 0x80;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
 multiline_comment|/* Timer C details.  */
 DECL|macro|NB85E_TIMER_C_BASE_ADDR
 mdefine_line|#define NB85E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600

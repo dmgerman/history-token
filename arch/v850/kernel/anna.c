@@ -11,11 +11,14 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/nb85e_timer_d.h&gt;
 macro_line|#include &lt;asm/nb85e_uart.h&gt;
 macro_line|#include &quot;mach.h&quot;
-multiline_comment|/* SRAM and SDRAM are vaguely contiguous (with a hole in between; see&n;   mach_reserve_bootmem for details), so just use both as one big area.  */
+multiline_comment|/* SRAM and SDRAM are vaguely contiguous (with a big hole in between; see&n;   mach_reserve_bootmem for details); use both as one big area.  */
 DECL|macro|RAM_START
 mdefine_line|#define RAM_START &t;SRAM_ADDR
 DECL|macro|RAM_END
 mdefine_line|#define RAM_END&t;&t;(SDRAM_ADDR + SDRAM_SIZE)
+multiline_comment|/* The bits of this port are connected to an 8-LED bar-graph.  */
+DECL|macro|LEDS_PORT
+mdefine_line|#define LEDS_PORT&t;0
 r_static
 r_void
 id|anna_led_tick
@@ -65,9 +68,9 @@ l_int|0
 suffix:semicolon
 id|ANNA_BHC
 op_assign
-l_int|0x00FF
+l_int|0xFFFF
 suffix:semicolon
-multiline_comment|/* icache all memory, dcache none */
+multiline_comment|/* icache all memory, dcache all */
 id|ANNA_BCT
 c_func
 (paren
@@ -145,7 +148,7 @@ suffix:semicolon
 macro_line|#endif
 id|ANNA_PORT_PM
 (paren
-l_int|0
+id|LEDS_PORT
 )paren
 op_assign
 l_int|0
@@ -480,7 +483,7 @@ multiline_comment|/* Ignore all interrupts.  */
 id|ANNA_PORT_IO
 c_func
 (paren
-l_int|0
+id|LEDS_PORT
 )paren
 op_assign
 l_int|0xAA
@@ -668,7 +671,7 @@ op_amp
 id|ANNA_PORT_IO
 c_func
 (paren
-l_int|0
+id|LEDS_PORT
 )paren
 )paren
 suffix:semicolon
@@ -684,7 +687,7 @@ op_amp
 id|ANNA_PORT_IO
 c_func
 (paren
-l_int|0
+id|LEDS_PORT
 )paren
 )paren
 suffix:semicolon
