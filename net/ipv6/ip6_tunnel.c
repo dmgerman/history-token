@@ -25,6 +25,7 @@ macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/ip6_tunnel.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1887,6 +1888,16 @@ r_goto
 id|discard
 suffix:semicolon
 )brace
+id|secpath_put
+c_func
+(paren
+id|skb-&gt;sp
+)paren
+suffix:semicolon
+id|skb-&gt;sp
+op_assign
+l_int|NULL
+suffix:semicolon
 id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;nh.raw

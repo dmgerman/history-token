@@ -348,7 +348,7 @@ l_string|&quot;wr&t;%0, %2, %%psr&bslash;n&bslash;t&quot;
 l_string|&quot;nop; nop; nop;&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|retval
 )paren
@@ -564,6 +564,8 @@ l_string|&quot;r&quot;
 (paren
 id|m
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return

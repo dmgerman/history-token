@@ -1434,12 +1434,12 @@ id|ENFILE
 suffix:semicolon
 multiline_comment|/* Over 100 of the things .. bail out! */
 )brace
-multiline_comment|/**&n; *&t;dev_alloc - allocate a network device and name&n; *&t;@name: name format string&n; *&t;@err: error return pointer&n; *&n; *&t;Passed a format string, eg. &quot;lt%d&quot;, it will allocate a network device&n; *&t;and space for the name. %NULL is returned if no memory is available.&n; *&t;If the allocation succeeds then the name is assigned and the&n; *&t;device pointer returned. %NULL is returned if the name allocation&n; *&t;failed. The cause of an error is returned as a negative errno code&n; *&t;in the variable @err points to.&n; *&n; *&t;The caller must hold the @dev_base or RTNL locks when doing this in&n; *&t;order to avoid duplicate name allocations.&n; */
-DECL|function|dev_alloc
+multiline_comment|/**&n; *&t;dev_alloc - allocate a network device and name&n; *&t;@name: name format string&n; *&t;@err: error return pointer&n; *&n; *&t;Passed a format string, eg. &quot;lt%d&quot;, it will allocate a network device&n; *&t;and space for the name. %NULL is returned if no memory is available.&n; *&t;If the allocation succeeds then the name is assigned and the&n; *&t;device pointer returned. %NULL is returned if the name allocation&n; *&t;failed. The cause of an error is returned as a negative errno code&n; *&t;in the variable @err points to.&n; *&n; *&t;This call is deprecated in favor of alloc_netdev because&n; *&t;the caller must hold the @dev_base or RTNL locks when doing this in&n; *&t;order to avoid duplicate name allocations.&n; */
+DECL|function|__dev_alloc
 r_struct
 id|net_device
 op_star
-id|dev_alloc
+id|__dev_alloc
 c_func
 (paren
 r_const
@@ -9762,11 +9762,11 @@ c_func
 id|dev_add_pack
 )paren
 suffix:semicolon
-DECL|variable|dev_alloc
+DECL|variable|__dev_alloc
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|dev_alloc
+id|__dev_alloc
 )paren
 suffix:semicolon
 DECL|variable|dev_alloc_name
