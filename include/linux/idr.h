@@ -6,17 +6,17 @@ DECL|macro|IDR_BITS
 macro_line|# define IDR_BITS 5
 DECL|macro|IDR_FULL
 macro_line|# define IDR_FULL 0xfffffffful
-multiline_comment|/* We can only use half the bits in the top level because there are&n;   only four possible bits in the top level (5 bits * 4 levels = 25&n;   bits, but you only use 24 bits in the id). */
+multiline_comment|/* We can only use two of the bits in the top level because there is&n;   only one possible bit in the top level (5 bits * 7 levels = 35&n;   bits, but you only use 31 bits in the id). */
 DECL|macro|TOP_LEVEL_FULL
-macro_line|# define TOP_LEVEL_FULL (IDR_FULL &gt;&gt; 16)
+macro_line|# define TOP_LEVEL_FULL (IDR_FULL &gt;&gt; 30)
 macro_line|#elif BITS_PER_LONG == 64
 DECL|macro|IDR_BITS
 macro_line|# define IDR_BITS 6
 DECL|macro|IDR_FULL
 macro_line|# define IDR_FULL 0xfffffffffffffffful
-multiline_comment|/* We can use all the bits in a 64-bit long at the top level. */
+multiline_comment|/* We can only use two of the bits in the top level because there is&n;   only one possible bit in the top level (6 bits * 6 levels = 36&n;   bits, but you only use 31 bits in the id). */
 DECL|macro|TOP_LEVEL_FULL
-macro_line|# define TOP_LEVEL_FULL IDR_FULL
+macro_line|# define TOP_LEVEL_FULL (IDR_FULL &gt;&gt; 62)
 macro_line|#else
 macro_line|# error &quot;BITS_PER_LONG is not 32 or 64&quot;
 macro_line|#endif
@@ -138,6 +138,27 @@ comma
 r_void
 op_star
 id|ptr
+comma
+r_int
+op_star
+id|id
+)paren
+suffix:semicolon
+r_int
+id|idr_get_new_above
+c_func
+(paren
+r_struct
+id|idr
+op_star
+id|idp
+comma
+r_void
+op_star
+id|ptr
+comma
+r_int
+id|starting_id
 comma
 r_int
 op_star
