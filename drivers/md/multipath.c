@@ -479,7 +479,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;multipath: %s: rescheduling sector %lu&bslash;n&quot;
+l_string|&quot;multipath: %s: rescheduling sector %llu&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -487,6 +487,11 @@ c_func
 id|rdev-&gt;bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bio-&gt;bi_sector
 )paren
 suffix:semicolon
@@ -1221,9 +1226,9 @@ id|err
 suffix:semicolon
 )brace
 DECL|macro|IO_ERROR
-mdefine_line|#define IO_ERROR KERN_ALERT &bslash;&n;&quot;multipath: %s: unrecoverable IO read error for block %lu&bslash;n&quot;
+mdefine_line|#define IO_ERROR KERN_ALERT &bslash;&n;&quot;multipath: %s: unrecoverable IO read error for block %llu&bslash;n&quot;
 DECL|macro|REDIRECT_SECTOR
-mdefine_line|#define REDIRECT_SECTOR KERN_ERR &bslash;&n;&quot;multipath: %s: redirecting sector %lu to another IO path&bslash;n&quot;
+mdefine_line|#define REDIRECT_SECTOR KERN_ERR &bslash;&n;&quot;multipath: %s: redirecting sector %llu to another IO path&bslash;n&quot;
 multiline_comment|/*&n; * This is a kernel thread which:&n; *&n; *&t;1.&t;Retries failed read operations on working multipaths.&n; *&t;2.&t;Updates the raid superblock when problems encounter.&n; *&t;3.&t;Performs writes following reads for array syncronising.&n; */
 DECL|function|multipathd
 r_static
@@ -1340,6 +1345,11 @@ c_func
 id|bio-&gt;bi_bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bio-&gt;bi_sector
 )paren
 suffix:semicolon
@@ -1365,6 +1375,11 @@ c_func
 id|bio-&gt;bi_bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bio-&gt;bi_sector
 )paren
 suffix:semicolon

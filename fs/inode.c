@@ -3261,7 +3261,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;bmap&t;- find a block number in a file&n; *&t;@inode: inode of file&n; *&t;@block: block to find&n; *&n; *&t;Returns the block number on the device holding the inode that&n; *&t;is the disk block number for the block of the file requested.&n; *&t;That is, asked for block 4 of inode 1 the function will return the&n; *&t;disk block relative to the disk start that holds that block of the &n; *&t;file.&n; */
 DECL|function|bmap
-r_int
+id|sector_t
 id|bmap
 c_func
 (paren
@@ -3270,11 +3270,11 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace
-r_int
+id|sector_t
 id|res
 op_assign
 l_int|0

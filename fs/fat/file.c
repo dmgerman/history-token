@@ -220,6 +220,10 @@ c_cond
 (paren
 op_logical_neg
 (paren
+(paren
+r_int
+r_int
+)paren
 id|iblock
 op_mod
 id|MSDOS_SB

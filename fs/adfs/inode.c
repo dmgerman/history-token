@@ -218,7 +218,7 @@ suffix:semicolon
 )brace
 DECL|function|_adfs_bmap
 r_static
-r_int
+id|sector_t
 id|_adfs_bmap
 c_func
 (paren
@@ -227,7 +227,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

@@ -726,12 +726,17 @@ c_func
 (paren
 id|part
 comma
-l_string|&quot;%4d  %4d %10ld %s&bslash;n&quot;
+l_string|&quot;%4d  %4d %10llu %s&bslash;n&quot;
 comma
 id|sgp-&gt;major
 comma
 id|sgp-&gt;first_minor
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|get_capacity
 c_func
 (paren
@@ -791,7 +796,7 @@ c_func
 (paren
 id|part
 comma
-l_string|&quot;%4d  %4d %10ld %s&bslash;n&quot;
+l_string|&quot;%4d  %4d %10llu %s&bslash;n&quot;
 comma
 id|sgp-&gt;major
 comma
@@ -801,6 +806,11 @@ l_int|1
 op_plus
 id|sgp-&gt;first_minor
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sgp-&gt;part
 (braket
 id|n
@@ -939,24 +949,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FC4_SOC
-multiline_comment|/* This has to be done before scsi_dev_init */
-id|soc_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ATM
-(paren
-r_void
-)paren
-id|atmdev_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|devclass_register
 c_func
 (paren

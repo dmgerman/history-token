@@ -6237,12 +6237,8 @@ l_int|2
 )braket
 op_assign
 id|disk-&gt;capacity
-op_div
-(paren
-l_int|64
-op_star
-l_int|32
-)paren
+op_rshift
+l_int|11
 suffix:semicolon
 multiline_comment|/*&n;     * for disks &gt;1GB do some guessing&n;     */
 r_if
@@ -6348,6 +6344,10 @@ id|ip
 l_int|2
 )braket
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_div
 (paren

@@ -4227,13 +4227,18 @@ id|s-&gt;s_blocksize
 id|printk
 (paren
 l_string|&quot;sh-2011: read_super_block: &quot;
-l_string|&quot;can&squot;t find a reiserfs filesystem on (dev %s, block %lu, size %lu)&bslash;n&quot;
+l_string|&quot;can&squot;t find a reiserfs filesystem on (dev %s, block %Lu, size %lu)&bslash;n&quot;
 comma
 id|reiserfs_bdevname
 (paren
 id|s
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 comma
 id|s-&gt;s_blocksize
@@ -4547,25 +4552,15 @@ id|bh
 id|printk
 c_func
 (paren
-"&quot;"
-id|reread_meta_blocks
-comma
-id|error
-id|reading
-id|bitmap
-id|block
-id|number
-op_mod
-id|d
-id|at
-op_mod
-id|ld
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;reread_meta_blocks, error reading bitmap block number %d at %llu&bslash;n&quot;
 comma
 id|i
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|SB_AP_BITMAP
 c_func
 (paren

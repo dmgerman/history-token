@@ -2281,6 +2281,9 @@ op_assign
 r_void
 op_star
 )paren
+(paren
+r_int
+)paren
 id|bh-&gt;b_blocknr
 suffix:semicolon
 id|affs_lock_dir

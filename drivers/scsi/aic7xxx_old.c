@@ -26200,7 +26200,7 @@ id|printk
 c_func
 (paren
 id|INFO_LEAD
-l_string|&quot;Enabled tagged queuing, queue depth %d.&bslash;n&quot;
+l_string|&quot;Enabled tagged queuing on secondary lun, queue depth +%d.&bslash;n&quot;
 comma
 id|p-&gt;host_no
 comma
@@ -26210,7 +26210,10 @@ id|device-&gt;id
 comma
 id|device-&gt;lun
 comma
-id|device-&gt;queue_depth
+id|p-&gt;dev_lun_queue_depth
+(braket
+id|tindex
+)braket
 )paren
 suffix:semicolon
 )brace
@@ -26634,7 +26637,10 @@ id|device-&gt;id
 comma
 id|device-&gt;lun
 comma
-id|device-&gt;queue_depth
+id|p-&gt;dev_lun_queue_depth
+(braket
+id|tindex
+)braket
 )paren
 suffix:semicolon
 )brace
@@ -45480,6 +45486,10 @@ l_int|32
 suffix:semicolon
 id|cylinders
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_div
 (paren
@@ -45514,6 +45524,10 @@ l_int|63
 suffix:semicolon
 id|cylinders
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_div
 (paren

@@ -7930,6 +7930,10 @@ id|info_array
 l_int|2
 )braket
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_div
 (paren
@@ -8041,6 +8045,10 @@ id|info_array
 l_int|2
 )braket
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_div
 (paren

@@ -251,6 +251,13 @@ c_func
 id|scsi_unblock_requests
 )paren
 suffix:semicolon
+DECL|variable|scsi_adjust_queue_depth
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_adjust_queue_depth
+)paren
+suffix:semicolon
 DECL|variable|scsi_get_host_dev
 id|EXPORT_SYMBOL
 c_func
