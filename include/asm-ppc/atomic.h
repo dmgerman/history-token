@@ -37,9 +37,13 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
+DECL|macro|SMP_SYNC
+mdefine_line|#define SMP_SYNC&t;&quot;sync&quot;
 DECL|macro|SMP_ISYNC
 mdefine_line|#define SMP_ISYNC&t;&quot;&bslash;n&bslash;tisync&quot;
 macro_line|#else
+DECL|macro|SMP_SYNC
+mdefine_line|#define SMP_SYNC&t;&quot;&quot;
 DECL|macro|SMP_ISYNC
 mdefine_line|#define SMP_ISYNC
 macro_line|#endif
@@ -567,14 +571,16 @@ r_return
 id|t
 suffix:semicolon
 )brace
+DECL|macro|__MB
+mdefine_line|#define __MB&t;__asm__ __volatile__ (SMP_SYNC : : : &quot;memory&quot;)
 DECL|macro|smp_mb__before_atomic_dec
-mdefine_line|#define smp_mb__before_atomic_dec()&t;smp_mb()
+mdefine_line|#define smp_mb__before_atomic_dec()&t;__MB
 DECL|macro|smp_mb__after_atomic_dec
-mdefine_line|#define smp_mb__after_atomic_dec()&t;smp_mb()
+mdefine_line|#define smp_mb__after_atomic_dec()&t;__MB
 DECL|macro|smp_mb__before_atomic_inc
-mdefine_line|#define smp_mb__before_atomic_inc()&t;smp_mb()
+mdefine_line|#define smp_mb__before_atomic_inc()&t;__MB
 DECL|macro|smp_mb__after_atomic_inc
-mdefine_line|#define smp_mb__after_atomic_inc()&t;smp_mb()
+mdefine_line|#define smp_mb__after_atomic_inc()&t;__MB
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_PPC_ATOMIC_H_ */
 eof

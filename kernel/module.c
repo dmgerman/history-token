@@ -2483,6 +2483,10 @@ r_int
 op_star
 id|use
 suffix:semicolon
+r_int
+r_int
+id|max
+suffix:semicolon
 multiline_comment|/* Only copy to init section if there is one */
 r_if
 c_cond
@@ -2507,6 +2511,10 @@ op_assign
 op_amp
 id|used-&gt;init_size
 suffix:semicolon
+id|max
+op_assign
+id|mod-&gt;init_size
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -2518,6 +2526,10 @@ id|use
 op_assign
 op_amp
 id|used-&gt;core_size
+suffix:semicolon
+id|max
+op_assign
+id|mod-&gt;core_size
 suffix:semicolon
 )brace
 multiline_comment|/* Align up */
@@ -2542,6 +2554,22 @@ op_star
 id|use
 op_add_assign
 id|sechdr-&gt;sh_size
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|use
+OG
+id|max
+)paren
+r_return
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOEXEC
+)paren
 suffix:semicolon
 multiline_comment|/* May not actually be in the file (eg. bss). */
 r_if
@@ -3511,6 +3539,10 @@ r_const
 r_char
 op_star
 id|secstrings
+comma
+r_int
+r_int
+id|common_length
 )paren
 (brace
 r_struct
@@ -3520,7 +3552,7 @@ op_assign
 (brace
 l_int|0
 comma
-l_int|0
+id|common_length
 )brace
 suffix:semicolon
 r_int
@@ -4377,19 +4409,7 @@ c_func
 id|mod
 )paren
 suffix:semicolon
-multiline_comment|/* How much space will we need?  (Common area in core) */
-id|sizes
-op_assign
-id|get_sizes
-c_func
-(paren
-id|hdr
-comma
-id|sechdrs
-comma
-id|secstrings
-)paren
-suffix:semicolon
+multiline_comment|/* How much space will we need?  (Common area in first) */
 id|common_length
 op_assign
 id|read_commons
@@ -4404,9 +4424,19 @@ id|symindex
 )braket
 )paren
 suffix:semicolon
-id|sizes.core_size
-op_add_assign
+id|sizes
+op_assign
+id|get_sizes
+c_func
+(paren
+id|hdr
+comma
+id|sechdrs
+comma
+id|secstrings
+comma
 id|common_length
+)paren
 suffix:semicolon
 multiline_comment|/* Set these up, and allow archs to manipulate them. */
 id|mod-&gt;core_size
@@ -4526,6 +4556,8 @@ c_cond
 (paren
 op_logical_neg
 id|ptr
+op_logical_and
+id|mod-&gt;init_size
 )paren
 (brace
 id|err

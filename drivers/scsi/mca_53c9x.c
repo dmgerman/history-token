@@ -1,8 +1,10 @@
 multiline_comment|/* mca_53c9x.c: Driver for the SCSI adapter found on NCR 35xx&n; *  (and maybe some other) Microchannel machines&n; *&n; * Code taken mostly from Cyberstorm SCSI drivers&n; *   Copyright (C) 1996 Jesper Skov (jskov@cygnus.co.uk)&n; *&n; * Hacked to work with the NCR MCA stuff by Tymm Twillman (tymm@computer.org)&n; *&n; * The CyberStorm SCSI driver (and this driver) is based on David S. Miller&squot;s&n; *   ESP driver  * for the Sparc computers. &n; * &n; * Special thanks to Ken Stewart at Symbios (LSI) for helping with info on&n; *  the 86C01.  I was on the brink of going ga-ga...&n; *&n; * Also thanks to Jesper Skov for helping me with info on how the Amiga&n; *  does things...&n; */
 multiline_comment|/*&n; * This is currently only set up to use one 53c9x card at a time; it could be &n; *  changed fairly easily to detect/use more than one, but I&squot;m not too sure how&n; *  many cards that use the 53c9x on MCA systems there are (if, in fact, there&n; *  are cards that use them, other than the one built into some NCR systems)...&n; *  If anyone requests this, I&squot;ll throw it in, otherwise it&squot;s not worth the&n; *  effort.&n; */
 multiline_comment|/*&n; * Info on the 86C01 MCA interface chip at the bottom, if you care enough to&n; *  look.&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -14,7 +16,6 @@ macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;NCR53C9x.h&quot;
 macro_line|#include &quot;mca_53c9x.h&quot;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mca_dma.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;

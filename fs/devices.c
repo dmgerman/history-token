@@ -920,7 +920,7 @@ comma
 id|umode_t
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 )paren
 (brace
