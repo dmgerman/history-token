@@ -722,6 +722,25 @@ id|direction
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_int
+DECL|function|dma_error
+id|dma_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+id|pci_dma_error
+c_func
+(paren
+id|dma_addr
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Now for the API extensions over the pci_ one */
 DECL|macro|dma_alloc_noncoherent
 mdefine_line|#define dma_alloc_noncoherent(d, s, h, f) dma_alloc_coherent(d, s, h, f)
