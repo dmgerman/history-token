@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/drivers/m32r_cfc.c&n; *&n; *  Device driver for the CFC functionality of M32R.&n; *&n; *  Copyright (c) 2001, 2002, 2003, 2004&n; *   Hiroyuki Kondo, Sugai Naotom, Hayato Fujiwara&n; */
+multiline_comment|/*&n; *  linux/arch/m32r/drivers/m32r_cfc.c&n; *&n; *  Device driver for the CFC functionality of M32R.&n; *&n; *  Copyright (c) 2001, 2002, 2003, 2004&n; *    Hiroyuki Kondo, Naoto Sugai, Hayato Fujiwara&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2721,8 +2721,8 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;m32r_cfc: SetMemMap(%d, %d, %#2.2x, %d ns, %#5.5lx-%#5.5&quot;
-l_string|&quot;lx, %#5.5x)&bslash;n&quot;
+l_string|&quot;m32r_cfc: SetMemMap(%d, %d, %#2.2x, %d ns, &quot;
+l_string|&quot;%#5.5lx-%#5.5lx, %#5.5x)&bslash;n&quot;
 comma
 id|sock
 comma
@@ -2732,9 +2732,9 @@ id|mem-&gt;flags
 comma
 id|mem-&gt;speed
 comma
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 comma
-id|mem-&gt;sys_stop
+id|mem-&gt;res-&gt;end
 comma
 id|mem-&gt;card_start
 )paren
@@ -2756,9 +2756,9 @@ l_int|0x3ffffff
 )paren
 op_logical_or
 (paren
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 OG
-id|mem-&gt;sys_stop
+id|mem-&gt;res-&gt;end
 )paren
 )paren
 (brace
@@ -2835,15 +2835,15 @@ id|M32R_PCC_MAPMASK
 )paren
 suffix:semicolon
 singleline_comment|//&t;pcc_set(sock, PCADR, addr);
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 op_assign
 id|addr
 op_plus
 id|mem-&gt;card_start
 suffix:semicolon
-id|mem-&gt;sys_stop
+id|mem-&gt;res-&gt;end
 op_assign
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 op_plus
 (paren
 id|M32R_PCC_MAPSIZE
