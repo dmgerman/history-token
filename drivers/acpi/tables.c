@@ -132,6 +132,12 @@ id|ACPI_HPET
 op_assign
 l_string|&quot;HPET&quot;
 comma
+(braket
+id|ACPI_MCFG
+)braket
+op_assign
+l_string|&quot;MCFG&quot;
+comma
 )brace
 suffix:semicolon
 DECL|variable|mps_inti_flags_polarity
