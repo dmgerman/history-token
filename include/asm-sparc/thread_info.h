@@ -75,11 +75,16 @@ r_int
 r_int
 id|kwim
 suffix:semicolon
+DECL|member|restart_block
+r_struct
+id|restart_block
+id|restart_block
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;uwinmask:&t;0,&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;&t;flags:&t;&t;0,&t;&t;&t;&bslash;&n;&t;cpu:&t;&t;0,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.uwinmask&t;=&t;0,&t;&t;&t;&bslash;&n;&t;.task&t;&t;=&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain&t;=&t;&amp;default_exec_domain,&t;&bslash;&n;&t;.flags&t;&t;=&t;0,&t;&t;&t;&bslash;&n;&t;.cpu&t;&t;=&t;0,&t;&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&t;&bslash;&n;&t;&t;.fn&t;=&t;do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
@@ -165,6 +170,8 @@ DECL|macro|TI_KPSR
 mdefine_line|#define TI_KPSR&t;&t;0x28&t;/* kpsr */
 DECL|macro|TI_KWIM
 mdefine_line|#define TI_KWIM&t;&t;0x2c&t;/* kwim (ldd&squot;ed with kpsr) */
+DECL|macro|TI_RESTART_BLOCK
+mdefine_line|#define TI_RESTART_BLOCK 0x30
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * thread information flag bit numbers&n; */

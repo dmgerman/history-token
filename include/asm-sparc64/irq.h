@@ -5,6 +5,7 @@ mdefine_line|#define _SPARC64_IRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/pil.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/* You should not mess with this directly. That&squot;s the job of irq.c.&n; *&n; * If you make changes here, please update hand coded assembler of&n; * SBUS/floppy interrupt handler in entry.S -DaveM&n; *&n; * This is currently one DCACHE line, two buckets per L2 cache&n; * line.  Keep this in mind please.&n; */
@@ -448,5 +449,67 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+r_struct
+id|notifier_block
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROFILING
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|register_profile_notifier
+r_static
+r_inline
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|function|unregister_profile_notifier
+r_static
+r_inline
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PROFILING */
 macro_line|#endif
 eof

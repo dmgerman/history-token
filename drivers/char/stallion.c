@@ -2971,11 +2971,14 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************/
 macro_line|#ifdef MODULE
 multiline_comment|/*&n; *&t;Loadable module initialization stuff.&n; */
-DECL|function|init_module
+DECL|function|stallion_module_init
+r_static
 r_int
-id|init_module
+id|__init
+id|stallion_module_init
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -3017,11 +3020,14 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
-DECL|function|cleanup_module
+DECL|function|stallion_module_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|stallion_module_exit
 c_func
 (paren
+r_void
 )paren
 (brace
 id|stlbrd_t
@@ -3431,6 +3437,20 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|stallion_module_init
+id|module_init
+c_func
+(paren
+id|stallion_module_init
+)paren
+suffix:semicolon
+DECL|variable|stallion_module_exit
+id|module_exit
+c_func
+(paren
+id|stallion_module_exit
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Check for any arguments passed in on the module load command line.&n; */
 DECL|function|stl_argbrds

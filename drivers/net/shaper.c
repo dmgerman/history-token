@@ -2235,6 +2235,14 @@ id|net_device
 op_star
 id|devs
 suffix:semicolon
+DECL|variable|shapers_registered
+r_static
+r_int
+r_int
+id|shapers_registered
+op_assign
+l_int|0
+suffix:semicolon
 DECL|function|shaper_init
 r_static
 r_int
@@ -2257,12 +2265,6 @@ r_struct
 id|shaper
 op_star
 id|sp
-suffix:semicolon
-r_int
-r_int
-id|shapers_registered
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

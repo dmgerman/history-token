@@ -800,7 +800,7 @@ id|dlci_int_mode_unbusy
 suffix:semicolon
 multiline_comment|/* flag for carrying out dev_tint */
 DECL|member|configured
-r_char
+r_int
 id|configured
 suffix:semicolon
 multiline_comment|/* flag for previous configurations */

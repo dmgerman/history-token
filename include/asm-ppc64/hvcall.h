@@ -104,6 +104,8 @@ DECL|macro|H_IPOLL
 mdefine_line|#define H_IPOLL&t;&t;&t;0x70
 DECL|macro|H_XIRR
 mdefine_line|#define H_XIRR&t;&t;&t;0x74
+DECL|macro|H_PERFMON
+mdefine_line|#define H_PERFMON&t;&t;0x7c
 DECL|macro|HSC
 mdefine_line|#define HSC&t;&t;&t;&quot;.long 0x44000022&bslash;n&quot;
 DECL|macro|H_ENTER_r3

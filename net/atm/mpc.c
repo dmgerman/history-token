@@ -3485,44 +3485,23 @@ id|atm_dev
 id|mpc_dev
 op_assign
 (brace
+dot
+id|ops
+op_assign
 op_amp
 id|mpc_ops
 comma
-multiline_comment|/* device operations    */
-l_int|NULL
-comma
-multiline_comment|/* PHY operations       */
+dot
+id|type
+op_assign
 l_string|&quot;mpc&quot;
 comma
-multiline_comment|/* device type name     */
+dot
+id|number
+op_assign
 l_int|42
 comma
-multiline_comment|/* device index (dummy) */
-l_int|NULL
-comma
-multiline_comment|/* VCC table            */
-l_int|NULL
-comma
-multiline_comment|/* last VCC             */
-l_int|NULL
-comma
-multiline_comment|/* per-device data      */
-l_int|NULL
-comma
-multiline_comment|/* private PHY data     */
-(brace
-l_int|0
-)brace
-comma
-multiline_comment|/* device flags         */
-l_int|NULL
-comma
-multiline_comment|/* local ATM address    */
-(brace
-l_int|0
-)brace
-multiline_comment|/* no ESI               */
-multiline_comment|/* rest of the members will be 0 */
+multiline_comment|/* members not explicitely initialised will be 0 */
 )brace
 suffix:semicolon
 DECL|function|atm_mpoa_mpoad_attach

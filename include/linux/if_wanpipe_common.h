@@ -40,7 +40,6 @@ id|driver_busy
 suffix:semicolon
 DECL|member|common_critical
 r_int
-r_char
 id|common_critical
 suffix:semicolon
 DECL|member|tx_timer

@@ -2,6 +2,8 @@ multiline_comment|/*&n; * Network block device - make block devices work over TC
 DECL|macro|PARANOIA
 mdefine_line|#define PARANOIA
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -11,6 +13,8 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

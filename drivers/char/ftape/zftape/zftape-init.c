@@ -1227,7 +1227,6 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*  Called by modules package when installing the driver or by kernel&n; *  during the initialization phase&n; */
 DECL|function|zft_init
-r_static
 r_int
 id|__init
 id|zft_init

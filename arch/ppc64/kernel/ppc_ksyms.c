@@ -247,25 +247,11 @@ c_func
 id|isa_io_base
 )paren
 suffix:semicolon
-DECL|variable|isa_mem_base
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|isa_mem_base
-)paren
-suffix:semicolon
 DECL|variable|pci_io_base
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_io_base
-)paren
-suffix:semicolon
-DECL|variable|pci_dram_offset
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_dram_offset
 )paren
 suffix:semicolon
 DECL|variable|find_next_zero_bit
@@ -1191,6 +1177,7 @@ c_func
 id|tb_ticks_per_usec
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROFILING
 DECL|variable|register_profile_notifier
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -1205,4 +1192,5 @@ c_func
 id|unregister_profile_notifier
 )paren
 suffix:semicolon
+macro_line|#endif
 eof

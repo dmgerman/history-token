@@ -155,6 +155,11 @@ DECL|member|cee_stuff
 id|__u64
 id|cee_stuff
 suffix:semicolon
+DECL|member|restart_block
+r_struct
+id|restart_block
+id|restart_block
+suffix:semicolon
 DECL|member|fpregs
 r_int
 r_int
@@ -229,6 +234,8 @@ DECL|macro|TI_PCR
 mdefine_line|#define TI_PCR&t;&t;0x00000490
 DECL|macro|TI_CEE_STUFF
 mdefine_line|#define TI_CEE_STUFF&t;0x00000498
+DECL|macro|TI_RESTART_BLOCK
+mdefine_line|#define TI_RESTART_BLOCK 0x000004a0
 DECL|macro|TI_FPREGS
 mdefine_line|#define TI_FPREGS&t;0x000004c0
 multiline_comment|/* We embed this in the uppermost byte of thread_info-&gt;flags */
@@ -256,7 +263,7 @@ mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; *&n; * preempt_count needs to be 1 initially, until the scheduler is functional.&n; */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&t;&bslash;&n;&t;flags:&t;&t;((unsigned long)ASI_P) &lt;&lt; TI_FLAG_CURRENT_DS_SHIFT,&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&t;&bslash;&n;&t;preempt_count:&t;1,&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;=&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;= ((unsigned long)ASI_P) &lt;&lt; TI_FLAG_CURRENT_DS_SHIFT,&t;&bslash;&n;&t;.exec_domain&t;=&t;&amp;default_exec_domain,&t;&bslash;&n;&t;.preempt_count&t;=&t;1,&t;&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&t;&bslash;&n;&t;&t;.fn&t;=&t;do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack

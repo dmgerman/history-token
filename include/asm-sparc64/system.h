@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/visasm.h&gt;
-macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Sparc (general) CPU types&n; */
 DECL|enum|sparc_cpu

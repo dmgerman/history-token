@@ -175,22 +175,6 @@ id|epca_timer
 suffix:semicolon
 multiline_comment|/* ---------------------- Begin function prototypes --------------------- */
 multiline_comment|/* ----------------------------------------------------------------------&n;&t;Begin generic memory functions.  These functions will be alias&n;&t;(point at) more specific functions dependent on the board being&n;&t;configured.&n;----------------------------------------------------------------------- */
-macro_line|#ifdef MODULE
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* MODULE */
 r_static
 r_inline
 r_void
@@ -4808,13 +4792,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* End pc_open */
 macro_line|#ifdef MODULE
-multiline_comment|/* -------------------- Begin init_module ---------------------- */
-DECL|function|init_module
+DECL|function|epca_module_init
+r_static
 r_int
 id|__init
-id|init_module
+id|epca_module_init
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* Begin init_module */
@@ -4848,7 +4833,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* End init_module */
+DECL|variable|epca_module_init
+id|module_init
+c_func
+(paren
+id|epca_module_init
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef ENABLE_PCI
 DECL|variable|epca_driver
@@ -4860,14 +4851,16 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef MODULE
 multiline_comment|/* -------------------- Begin cleanup_module  ---------------------- */
-DECL|function|cleanup_module
+DECL|function|epca_module_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|epca_module_exit
 c_func
 (paren
+r_void
 )paren
 (brace
-multiline_comment|/* Begin cleanup_module */
 r_int
 id|count
 comma
@@ -5064,7 +5057,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* End cleanup_module */
+DECL|variable|epca_module_exit
+id|module_exit
+c_func
+(paren
+id|epca_module_exit
+)paren
+suffix:semicolon
 macro_line|#endif /* MODULE */
 multiline_comment|/* ------------------ Begin pc_init  ---------------------- */
 DECL|function|pc_init

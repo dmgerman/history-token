@@ -3,8 +3,10 @@ macro_line|#ifndef _SPARC64_TTABLE_H
 DECL|macro|_SPARC64_TTABLE_H
 mdefine_line|#define _SPARC64_TTABLE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#include &lt;asm/utrap.h&gt;
+macro_line|#ifdef __ASSEMBLY__
+macro_line|#include &lt;asm/thread_info.h&gt;
+macro_line|#endif
 DECL|macro|BOOT_KERNEL
 mdefine_line|#define BOOT_KERNEL b sparc64_boot; nop; nop; nop; nop; nop; nop; nop;
 multiline_comment|/* We need a &quot;cleaned&quot; instruction... */

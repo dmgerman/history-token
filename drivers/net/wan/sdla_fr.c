@@ -188,7 +188,6 @@ suffix:semicolon
 multiline_comment|/* Inverse Arp Request status */
 DECL|member|inarp_ready
 r_int
-r_char
 id|inarp_ready
 suffix:semicolon
 multiline_comment|/* Ready to send requests */
@@ -205,7 +204,6 @@ suffix:semicolon
 multiline_comment|/* InArp jiffies tick counter */
 DECL|member|interface_down
 r_int
-r_char
 id|interface_down
 suffix:semicolon
 multiline_comment|/* Bring interface down on disconnect */
@@ -298,11 +296,11 @@ id|u32
 id|ip_remote
 suffix:semicolon
 DECL|member|config_dlci
-id|u8
+r_int
 id|config_dlci
 suffix:semicolon
 DECL|member|unconfig_dlci
-id|u32
+r_int
 id|unconfig_dlci
 suffix:semicolon
 multiline_comment|/* Whether this interface should be setup as a gateway.&n;&t; * Used by dynamic route setup code */
@@ -4822,7 +4820,8 @@ id|card-&gt;flags
 suffix:semicolon
 r_int
 id|udp_type
-comma
+suffix:semicolon
+r_int
 id|delay_tx_queued
 op_assign
 l_int|0
@@ -9652,7 +9651,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Route Added Successfully: %u.%u.%u.%U&bslash;n&quot;
+l_string|&quot;%s: Route Added Successfully: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma

@@ -29,8 +29,6 @@ id|err
 )paren
 suffix:semicolon
 multiline_comment|/* @@@ fix this */
-DECL|macro|sockfd_put
-mdefine_line|#define sockfd_put(sock) fput((sock)-&gt;file)&t;/* @@@ copied because it&squot;s&n;&t;&t;&t;&t;&t;&t;   __inline__ in socket.c */
 macro_line|#if 0 /* control */
 mdefine_line|#define DPRINTK(format,args...) printk(KERN_DEBUG format,##args)
 macro_line|#else

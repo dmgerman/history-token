@@ -858,7 +858,7 @@ id|READ
 id|printk
 c_func
 (paren
-l_string|&quot;GSCD: bad cmd %d&bslash;n&quot;
+l_string|&quot;GSCD: bad cmd %lu&bslash;n&quot;
 comma
 id|rq_data_dir
 c_func

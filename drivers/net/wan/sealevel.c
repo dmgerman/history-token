@@ -577,10 +577,6 @@ op_star
 id|b
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|u
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Get the needed I/O space&n;&t; */

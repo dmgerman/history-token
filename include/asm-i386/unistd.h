@@ -509,12 +509,12 @@ DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;252
 DECL|macro|__NR_lookup_dcookie
 mdefine_line|#define __NR_lookup_dcookie&t;253
-DECL|macro|__NR_sys_epoll_create
-mdefine_line|#define __NR_sys_epoll_create&t;254
-DECL|macro|__NR_sys_epoll_ctl
-mdefine_line|#define __NR_sys_epoll_ctl&t;255
-DECL|macro|__NR_sys_epoll_wait
-mdefine_line|#define __NR_sys_epoll_wait&t;256
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;254
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;255
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;256
 DECL|macro|__NR_remap_file_pages
 mdefine_line|#define __NR_remap_file_pages&t;257
 DECL|macro|__NR_set_tid_address

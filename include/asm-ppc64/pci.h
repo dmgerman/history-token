@@ -3,26 +3,26 @@ DECL|macro|__PPC64_PCI_H
 mdefine_line|#define __PPC64_PCI_H
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-multiline_comment|/* Values for the `which&squot; argument to sys_pciconfig_iobase syscall.  */
-DECL|macro|IOBASE_BRIDGE_NUMBER
-mdefine_line|#define IOBASE_BRIDGE_NUMBER&t;0
-DECL|macro|IOBASE_MEMORY
-mdefine_line|#define IOBASE_MEMORY&t;&t;1
-DECL|macro|IOBASE_IO
-mdefine_line|#define IOBASE_IO&t;&t;2
-DECL|macro|IOBASE_ISA_IO
-mdefine_line|#define IOBASE_ISA_IO           3
-DECL|macro|IOBASE_ISA_MEM
-mdefine_line|#define IOBASE_ISA_MEM          4
-multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n; * already-configured bus numbers - to be used for buggy BIOSes&n; * or architectures with incomplete PCI setup by the loader.&n; */
-r_extern
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/prom.h&gt;
+DECL|function|pcibios_assign_all_busses
+r_static
+r_inline
 r_int
 id|pcibios_assign_all_busses
 c_func
 (paren
 r_void
 )paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
+)brace
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
@@ -55,96 +55,8 @@ id|irq
 (brace
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/scatterlist.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/prom.h&gt;
 r_struct
 id|pci_dev
-suffix:semicolon
-DECL|macro|REG_SAVE_SIZE
-mdefine_line|#define REG_SAVE_SIZE 64
-multiline_comment|/************************************************************************&n; * Structure to hold the data for PCI Register Save/Restore functions.  *&n; ************************************************************************/
-DECL|struct|pci_config_reg_save_area
-r_struct
-id|pci_config_reg_save_area
-(brace
-DECL|member|PciDev
-r_struct
-id|pci_dev
-op_star
-id|PciDev
-suffix:semicolon
-multiline_comment|/* Pointer to device(Sanity Check)     */
-DECL|member|Flags
-r_int
-id|Flags
-suffix:semicolon
-multiline_comment|/* Control &amp; Info Flags                */
-DECL|member|RCode
-r_int
-id|RCode
-suffix:semicolon
-multiline_comment|/* Return Code on Save/Restore         */
-DECL|member|Register
-r_int
-id|Register
-suffix:semicolon
-multiline_comment|/* Pointer to current register.        */
-DECL|member|Regs
-id|u8
-id|Regs
-(braket
-id|REG_SAVE_SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* Save Area                           */
-)brace
-suffix:semicolon
-multiline_comment|/************************************************************************&n; * Functions to support device reset                                    *&n; ************************************************************************/
-r_extern
-r_int
-id|pci_reset_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pci_save_config_regs
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-r_struct
-id|pci_config_reg_save_area
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pci_restore_config_regs
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-r_struct
-id|pci_config_reg_save_area
-op_star
-)paren
 suffix:semicolon
 r_extern
 r_char
