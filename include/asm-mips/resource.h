@@ -43,7 +43,7 @@ DECL|macro|RLIM_INFINITY
 mdefine_line|#define RLIM_INFINITY&t;(~0UL)
 macro_line|#endif
 DECL|macro|INIT_RLIMITS
-mdefine_line|#define INIT_RLIMITS&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ _STK_LIM,      RLIM_INFINITY },&t;&t;&bslash;&n;&t;{        0,      RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ INR_OPEN,      INR_OPEN      },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ MLOCK_LIMIT,     MLOCK_LIMIT },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ MAX_SIGPENDING, MAX_SIGPENDING },&t;&t;&bslash;&n;&t;{ MQ_BYTES_MAX, MQ_BYTES_MAX },&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_RLIMITS&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ _STK_LIM,      RLIM_INFINITY },&t;&t;&bslash;&n;&t;{        0,      RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ INR_OPEN,      INR_OPEN      },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ 0,             0             },&t;&t;&bslash;&n;&t;{ MLOCK_LIMIT,   MLOCK_LIMIT   },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ MAX_SIGPENDING, MAX_SIGPENDING },&t;&t;&bslash;&n;&t;{ MQ_BYTES_MAX, MQ_BYTES_MAX },&t;&t;&t;&bslash;&n;}
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_RESOURCE_H */
 eof
