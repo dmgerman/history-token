@@ -190,26 +190,7 @@ id|system3_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
-(brace
-l_int|0xe8000000
-comma
-l_int|0x00000000
-comma
-l_int|0x01000000
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 0 */
+multiline_comment|/* virtual     physical        length      domain     r  w  c  b */
 (brace
 l_int|0xf3000000
 comma
