@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 DECL|function|vfs_statfs
 r_int
 id|vfs_statfs
@@ -1529,7 +1530,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if !(defined(__alpha__) || defined(__ia64__))
+macro_line|#ifdef __ARCH_WANT_SYS_UTIME
 multiline_comment|/*&n; * sys_utime() can be implemented in user-level using sys_utimes().&n; * Is this for backwards compatibility?  If so, why not move it&n; * into the appropriate arch directory (for those architectures that&n; * need it).&n; */
 multiline_comment|/* If times==NULL, set access and modification to current time,&n; * must be owner or have write permission.&n; * Else, update from *times, must be owner or super user.&n; */
 DECL|function|sys_utime

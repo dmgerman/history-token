@@ -2250,6 +2250,46 @@ DECL|macro|__syscall_clobber
 mdefine_line|#define __syscall_clobber &quot;r11&quot;,&quot;rcx&quot;,&quot;memory&quot; 
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-127)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
+macro_line|#ifdef __KERNEL__
+DECL|macro|__ARCH_WANT_OLD_READDIR
+mdefine_line|#define __ARCH_WANT_OLD_READDIR
+DECL|macro|__ARCH_WANT_OLD_STAT
+mdefine_line|#define __ARCH_WANT_OLD_STAT
+DECL|macro|__ARCH_WANT_SYS_ALARM
+mdefine_line|#define __ARCH_WANT_SYS_ALARM
+DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
+mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
+DECL|macro|__ARCH_WANT_SYS_PAUSE
+mdefine_line|#define __ARCH_WANT_SYS_PAUSE
+DECL|macro|__ARCH_WANT_SYS_SGETMASK
+mdefine_line|#define __ARCH_WANT_SYS_SGETMASK
+DECL|macro|__ARCH_WANT_SYS_SIGNAL
+mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
+DECL|macro|__ARCH_WANT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_SYS_TIME
+DECL|macro|__ARCH_WANT_SYS_UTIME
+mdefine_line|#define __ARCH_WANT_SYS_UTIME
+DECL|macro|__ARCH_WANT_SYS_WAITPID
+mdefine_line|#define __ARCH_WANT_SYS_WAITPID
+DECL|macro|__ARCH_WANT_SYS_SOCKETCALL
+mdefine_line|#define __ARCH_WANT_SYS_SOCKETCALL
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+mdefine_line|#define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+mdefine_line|#define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_LLSEEK
+mdefine_line|#define __ARCH_WANT_SYS_LLSEEK
+DECL|macro|__ARCH_WANT_SYS_NICE
+mdefine_line|#define __ARCH_WANT_SYS_NICE
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+mdefine_line|#define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+mdefine_line|#define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
+DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
+mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+macro_line|#endif
 macro_line|#ifndef __KERNEL_SYSCALLS__
 DECL|macro|__syscall
 mdefine_line|#define __syscall &quot;syscall&quot;

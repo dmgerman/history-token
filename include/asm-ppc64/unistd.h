@@ -620,6 +620,46 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
+mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
+DECL|macro|__ARCH_WANT_OLD_READDIR
+mdefine_line|#define __ARCH_WANT_OLD_READDIR
+DECL|macro|__ARCH_WANT_STAT64
+mdefine_line|#define __ARCH_WANT_STAT64
+DECL|macro|__ARCH_WANT_SYS_ALARM
+mdefine_line|#define __ARCH_WANT_SYS_ALARM
+DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
+mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
+DECL|macro|__ARCH_WANT_SYS_PAUSE
+mdefine_line|#define __ARCH_WANT_SYS_PAUSE
+DECL|macro|__ARCH_WANT_SYS_SGETMASK
+mdefine_line|#define __ARCH_WANT_SYS_SGETMASK
+DECL|macro|__ARCH_WANT_SYS_SIGNAL
+mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
+DECL|macro|__ARCH_WANT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_SYS_TIME
+DECL|macro|__ARCH_WANT_SYS_UTIME
+mdefine_line|#define __ARCH_WANT_SYS_UTIME
+DECL|macro|__ARCH_WANT_SYS_WAITPID
+mdefine_line|#define __ARCH_WANT_SYS_WAITPID
+DECL|macro|__ARCH_WANT_SYS_SOCKETCALL
+mdefine_line|#define __ARCH_WANT_SYS_SOCKETCALL
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+mdefine_line|#define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+mdefine_line|#define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_LLSEEK
+mdefine_line|#define __ARCH_WANT_SYS_LLSEEK
+DECL|macro|__ARCH_WANT_SYS_NICE
+mdefine_line|#define __ARCH_WANT_SYS_NICE
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+mdefine_line|#define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+mdefine_line|#define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
+DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
+mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
 r_int
 r_int
 id|sys_mmap

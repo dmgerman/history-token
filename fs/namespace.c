@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 r_extern
 r_int
 id|__init
@@ -2093,6 +2094,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#ifdef __ARCH_WANT_SYS_OLDUMOUNT
 multiline_comment|/*&n; *&t;The 2.0 compatible umount. No flags. &n; */
 DECL|function|sys_oldumount
 id|asmlinkage
@@ -2116,6 +2118,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|mount_is_safe
 r_static
 r_int

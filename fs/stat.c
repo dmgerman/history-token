@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 DECL|function|generic_fillattr
 r_void
 id|generic_fillattr
@@ -432,7 +433,7 @@ c_func
 id|vfs_fstat
 )paren
 suffix:semicolon
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__sparc__) &amp;&amp; !defined(__ia64__) &bslash;&n;  &amp;&amp; !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(__hppa__) &bslash;&n;  &amp;&amp; !defined(__arm__) &amp;&amp; !defined(CONFIG_V850) &amp;&amp; !defined(__powerpc64__) &bslash;&n;  &amp;&amp; !defined(__mips__)
+macro_line|#ifdef __ARCH_WANT_OLD_STAT
 multiline_comment|/*&n; * For backward compatibility?  Maybe this should be moved&n; * into arch/i386 instead?&n; */
 DECL|function|cp_old_stat
 r_static
@@ -772,7 +773,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* __ARCH_WANT_OLD_STAT */
 DECL|function|cp_new_stat
 r_static
 r_int
@@ -1286,7 +1287,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* ---------- LFS-64 ----------- */
-macro_line|#if !defined(__ia64__) &amp;&amp; !defined(__mips64) &amp;&amp; !defined(__x86_64__) &amp;&amp; !defined(CONFIG_ARCH_S390X)
+macro_line|#ifdef __ARCH_WANT_STAT64
 DECL|function|cp_new_stat64
 r_static
 r_int
@@ -1629,7 +1630,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#endif /* LFS-64 */
+macro_line|#endif /* __ARCH_WANT_STAT64 */
 DECL|function|inode_add_bytes
 r_void
 id|inode_add_bytes

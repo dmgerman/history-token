@@ -490,8 +490,27 @@ mdefine_line|#define __NR_mq_getsetattr&t;&t;1267
 DECL|macro|__NR_kexec_load
 mdefine_line|#define __NR_kexec_load&t;&t;&t;1268
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
+macro_line|#ifdef CONFIG_IA32_SUPPORT
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+macro_line|# define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+macro_line|# define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_LLSEEK
+macro_line|# define __ARCH_WANT_SYS_LLSEEK
+DECL|macro|__ARCH_WANT_SYS_NICE
+macro_line|# define __ARCH_WANT_SYS_NICE
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+macro_line|# define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+macro_line|# define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+macro_line|# define __ARCH_WANT_SYS_SIGPENDING
+DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
+macro_line|# define __ARCH_WANT_SYS_SIGPROCMASK
+macro_line|#endif
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
