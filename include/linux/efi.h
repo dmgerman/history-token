@@ -1061,7 +1061,7 @@ id|memmap
 suffix:semicolon
 macro_line|#ifdef CONFIG_EFI_PCDP
 r_extern
-r_void
+r_int
 id|__init
 id|efi_setup_pcdp_console
 c_func
