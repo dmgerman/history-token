@@ -8366,10 +8366,18 @@ c_cond
 (paren
 id|set_pm_idle
 )paren
+(brace
 id|pm_idle
 op_assign
 id|original_pm_idle
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We are about to unload the current idle thread pm callback&n;&t;&t; * (pm_idle), Wait for all processors to update cached/local&n;&t;&t; * copies of pm_idle before proceeding.&n;&t;&t; */
+id|synchronize_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -289,6 +289,14 @@ id|idle
 (paren
 r_void
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Mark this as an RCU critical section so that&n;&t;&t;&t; * synchronize_kernel() in the unload path waits&n;&t;&t;&t; * for our completion.&n;&t;&t;&t; */
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|idle
 op_assign
 id|pm_idle
 suffix:semicolon
@@ -315,6 +323,11 @@ op_assign
 id|jiffies
 suffix:semicolon
 id|idle
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rcu_read_unlock
 c_func
 (paren
 )paren
