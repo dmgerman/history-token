@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
+macro_line|#include &lt;linux/prio_tree.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
@@ -785,21 +786,21 @@ suffix:semicolon
 multiline_comment|/* methods */
 DECL|member|i_mmap
 r_struct
-id|list_head
+id|prio_tree_root
 id|i_mmap
 suffix:semicolon
-multiline_comment|/* list of private mappings */
+multiline_comment|/* tree of private mappings */
 DECL|member|i_mmap_shared
 r_struct
-id|list_head
+id|prio_tree_root
 id|i_mmap_shared
 suffix:semicolon
-multiline_comment|/* list of shared mappings */
+multiline_comment|/* tree of shared mappings */
 DECL|member|i_mmap_lock
 id|spinlock_t
 id|i_mmap_lock
 suffix:semicolon
-multiline_comment|/* protect both above lists */
+multiline_comment|/* protect trees &amp; list above */
 DECL|member|truncate_count
 id|atomic_t
 id|truncate_count
@@ -967,7 +968,7 @@ id|mapping
 (brace
 r_return
 op_logical_neg
-id|list_empty
+id|prio_tree_empty
 c_func
 (paren
 op_amp
@@ -975,7 +976,7 @@ id|mapping-&gt;i_mmap
 )paren
 op_logical_or
 op_logical_neg
-id|list_empty
+id|prio_tree_empty
 c_func
 (paren
 op_amp
@@ -999,7 +1000,7 @@ id|mapping
 (brace
 r_return
 op_logical_neg
-id|list_empty
+id|prio_tree_empty
 c_func
 (paren
 op_amp
