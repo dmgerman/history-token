@@ -66,13 +66,13 @@ suffix:semicolon
 DECL|macro|ID_ALL_MASK
 mdefine_line|#define ID_ALL_MASK&t;&t;&t;0xFFFFFFFFFFFFFFFFull
 DECL|macro|ID_ALL_IROC_MASK
-mdefine_line|#define ID_ALL_IROC_MASK&t;&t;0xFFFFFF7FFFFFFFFFull
+mdefine_line|#define ID_ALL_IROC_MASK&t;&t;0xFF7FFFFFFFFFFFFFull
 DECL|macro|ID_DEV_VENDOR_MASK
 mdefine_line|#define ID_DEV_VENDOR_MASK&t;&t;0xFFFFFFFF00000000ull
 DECL|macro|ID_9005_GENERIC_MASK
 mdefine_line|#define ID_9005_GENERIC_MASK&t;&t;0xFFF0FFFF00000000ull
 DECL|macro|ID_9005_GENERIC_IROC_MASK
-mdefine_line|#define ID_9005_GENERIC_IROC_MASK&t;0xFFF0FF7F00000000ull
+mdefine_line|#define ID_9005_GENERIC_IROC_MASK&t;0xFF70FFFF00000000ull
 DECL|macro|ID_AIC7901
 mdefine_line|#define ID_AIC7901&t;&t;&t;0x800F9005FFFF9005ull
 DECL|macro|ID_AHA_29320A
@@ -111,6 +111,8 @@ DECL|macro|ID_AIC7902_PCI_REV_B0
 mdefine_line|#define ID_AIC7902_PCI_REV_B0&t;&t;0x10
 DECL|macro|SUBID_HP
 mdefine_line|#define SUBID_HP&t;&t;&t;0x0E11
+DECL|macro|DEVID_9005_HOSTRAID
+mdefine_line|#define DEVID_9005_HOSTRAID(id) ((id) &amp; 0x80)
 DECL|macro|DEVID_9005_TYPE
 mdefine_line|#define DEVID_9005_TYPE(id) ((id) &amp; 0xF)
 DECL|macro|DEVID_9005_TYPE_HBA
@@ -190,7 +192,7 @@ comma
 id|ahd_aic7901_setup
 )brace
 comma
-multiline_comment|/* aic7901A based controllers */
+multiline_comment|/* aic7902 based controllers */
 (brace
 id|ID_AHA_29320
 comma
@@ -198,7 +200,7 @@ id|ID_ALL_MASK
 comma
 l_string|&quot;Adaptec 29320 Ultra320 SCSI adapter&quot;
 comma
-id|ahd_aic7901A_setup
+id|ahd_aic7902_setup
 )brace
 comma
 (brace
@@ -208,7 +210,7 @@ id|ID_ALL_MASK
 comma
 l_string|&quot;Adaptec 29320B Ultra320 SCSI adapter&quot;
 comma
-id|ahd_aic7901A_setup
+id|ahd_aic7902_setup
 )brace
 comma
 (brace
@@ -221,7 +223,6 @@ comma
 id|ahd_aic7901A_setup
 )brace
 comma
-multiline_comment|/* aic7902 based controllers */
 (brace
 id|ID_AHA_39320
 comma
@@ -292,33 +293,13 @@ comma
 id|ahd_aic7902_setup
 )brace
 comma
-(brace
-id|ID_AHA_29320
-comma
-id|ID_ALL_MASK
-comma
-l_string|&quot;Adaptec 29320 Ultra320 SCSI adapter&quot;
-comma
-id|ahd_aic7902_setup
-)brace
-comma
-(brace
-id|ID_AHA_29320B
-comma
-id|ID_ALL_MASK
-comma
-l_string|&quot;Adaptec 29320B Ultra320 SCSI adapter&quot;
-comma
-id|ahd_aic7902_setup
-)brace
-comma
 multiline_comment|/* Generic chip probes for devices we don&squot;t know &squot;exactly&squot; */
 (brace
 id|ID_AIC7901
 op_amp
-id|ID_DEV_VENDOR_MASK
+id|ID_9005_GENERIC_MASK
 comma
-id|ID_DEV_VENDOR_MASK
+id|ID_9005_GENERIC_MASK
 comma
 l_string|&quot;Adaptec AIC7901 Ultra320 SCSI adapter&quot;
 comma
@@ -570,6 +551,11 @@ id|subdevice
 comma
 id|subvendor
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Controllers, mask out the IROC/HostRAID bit&n;&t; */
+id|full_id
+op_and_assign
+id|ID_ALL_IROC_MASK
 suffix:semicolon
 r_for
 c_loop
