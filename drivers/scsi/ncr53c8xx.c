@@ -27196,7 +27196,7 @@ id|SCSI_NCR_CMD_PER_LUN
 suffix:semicolon
 id|tpnt-&gt;use_clustering
 op_assign
-id|DISABLE_CLUSTERING
+id|ENABLE_CLUSTERING
 suffix:semicolon
 r_if
 c_cond
