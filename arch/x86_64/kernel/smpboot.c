@@ -1175,44 +1175,6 @@ id|initial_code
 r_void
 )paren
 suffix:semicolon
-DECL|function|fork_by_hand
-r_static
-r_struct
-id|task_struct
-op_star
-id|__init
-id|fork_by_hand
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|pt_regs
-id|regs
-suffix:semicolon
-multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
-r_return
-id|copy_process
-c_func
-(paren
-id|CLONE_VM
-op_or
-id|CLONE_IDLETASK
-comma
-l_int|0
-comma
-op_amp
-id|regs
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 macro_line|#if APIC_DEBUG
 DECL|function|inquire_remote_apic
 r_static
@@ -1931,9 +1893,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We can&squot;t use kernel_thread since we must avoid to&n;&t; * reschedule the child.&n;&t; */
 id|idle
 op_assign
-id|fork_by_hand
+id|fork_idle
 c_func
 (paren
+id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -1959,22 +1922,6 @@ id|cpu
 )braket
 op_assign
 id|apicid
-suffix:semicolon
-multiline_comment|/* Make this the idle thread */
-id|init_idle
-c_func
-(paren
-id|idle
-comma
-id|cpu
-)paren
-suffix:semicolon
-multiline_comment|/* Remove it from the pidhash */
-id|unhash_process
-c_func
-(paren
-id|idle
-)paren
 suffix:semicolon
 id|cpu_pda
 (braket

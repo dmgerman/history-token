@@ -15828,6 +15828,18 @@ comma
 id|current
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Make us the idle thread. Technically, schedule() should not be&n;&t; * called from this thread, however somewhere below it might be,&n;&t; * but because we are the idle thread, we just pick up running again&n;&t; * when this runqueue becomes &quot;idle&quot;.&n;&t; */
+id|init_idle
+c_func
+(paren
+id|current
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK_SLEEP
 DECL|function|__might_sleep

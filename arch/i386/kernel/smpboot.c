@@ -1501,44 +1501,6 @@ suffix:semicolon
 )brace
 id|stack_start
 suffix:semicolon
-DECL|function|fork_by_hand
-r_static
-r_struct
-id|task_struct
-op_star
-id|__init
-id|fork_by_hand
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|pt_regs
-id|regs
-suffix:semicolon
-multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
-r_return
-id|copy_process
-c_func
-(paren
-id|CLONE_VM
-op_or
-id|CLONE_IDLETASK
-comma
-l_int|0
-comma
-op_amp
-id|regs
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* which logical CPUs are on which nodes */
 DECL|variable|node_2_cpu_mask
@@ -2747,9 +2709,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We can&squot;t use kernel_thread since we must avoid to&n;&t; * reschedule the child.&n;&t; */
 id|idle
 op_assign
-id|fork_by_hand
+id|fork_idle
 c_func
 (paren
+id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -2769,15 +2732,6 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-multiline_comment|/* Make this the idle thread */
-id|init_idle
-c_func
-(paren
-id|idle
-comma
-id|cpu
-)paren
-suffix:semicolon
 id|idle-&gt;thread.eip
 op_assign
 (paren
@@ -2785,13 +2739,6 @@ r_int
 r_int
 )paren
 id|start_secondary
-suffix:semicolon
-multiline_comment|/* Remove it from the pidhash */
-id|unhash_process
-c_func
-(paren
-id|idle
-)paren
 suffix:semicolon
 multiline_comment|/* start_eip had better be page-aligned! */
 id|start_eip
