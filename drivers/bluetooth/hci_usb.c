@@ -30,10 +30,10 @@ DECL|macro|BT_DMP
 mdefine_line|#define BT_DMP( A... )
 macro_line|#endif
 macro_line|#ifndef CONFIG_BT_USB_ZERO_PACKET
-DECL|macro|USB_ZERO_PACKET
-macro_line|#undef  USB_ZERO_PACKET
-DECL|macro|USB_ZERO_PACKET
-mdefine_line|#define USB_ZERO_PACKET 0
+DECL|macro|URB_ZERO_PACKET
+macro_line|#undef  URB_ZERO_PACKET
+DECL|macro|URB_ZERO_PACKET
+mdefine_line|#define URB_ZERO_PACKET 0
 macro_line|#endif
 DECL|variable|hci_usb_driver
 r_static
@@ -2056,7 +2056,7 @@ id|husb
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 suffix:semicolon
 id|BT_DBG
 c_func
