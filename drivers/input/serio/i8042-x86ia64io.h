@@ -385,9 +385,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PNP: %s [%s] at I/O 0x%x, 0x%x, irq %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;PNP: %s [%s,%s] at 0x%x,0x%x irq %d&bslash;n&quot;
 comma
 l_string|&quot;PS/2 Keyboard Controller&quot;
+comma
+id|did-&gt;id
 comma
 id|pnp_dev_name
 c_func
@@ -464,9 +467,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PNP: %s [%s] at irq %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;PNP: %s [%s,%s] irq %d&bslash;n&quot;
 comma
 l_string|&quot;PS/2 Mouse Controller&quot;
+comma
+id|did-&gt;id
 comma
 id|pnp_dev_name
 c_func
@@ -534,7 +540,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;i8042 kdb&quot;
+l_string|&quot;i8042 kbd&quot;
 comma
 dot
 id|id_table
