@@ -22,10 +22,6 @@ DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) (((a) &lt; (b)) ? (a) : (b))
-macro_line|#endif
 r_extern
 r_void
 id|sigreturn_exit
@@ -37,7 +33,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|GP_REGS_SIZE
-mdefine_line|#define GP_REGS_SIZE&t;MIN(sizeof(elf_gregset_t), sizeof(struct pt_regs))
+mdefine_line|#define GP_REGS_SIZE&t;min(sizeof(elf_gregset_t), sizeof(struct pt_regs))
 multiline_comment|/* &n; * These are the flags in the MSR that the user is allowed to change&n; * by modifying the saved value of the MSR on the stack.  SE and BE&n; * should not be in this list since gdb may want to change these.  I.e,&n; * you should be able to step out of a signal handler to see what&n; * instruction executes next after the signal handler completes.&n; * Alternately, if you stepped into a signal handler, you should be&n; * able to continue &squot;til the next breakpoint from within the signal&n; * handler, even if the handler returns.&n; */
 DECL|macro|MSR_USERCHANGE
 mdefine_line|#define MSR_USERCHANGE&t;(MSR_FE0 | MSR_FE1)
