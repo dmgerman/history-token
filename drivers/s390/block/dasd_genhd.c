@@ -1,11 +1,10 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_ioctl.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Dealing with devices registered to multiple major numbers.&n; *&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_genhd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Dealing with devices registered to multiple major numbers.&n; *&n; * $Revision: 1.23 $&n; *&n; * History of changes&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* This is ugly... */
 DECL|macro|PRINTK_HEADER
@@ -164,7 +163,6 @@ id|mi-&gt;major
 op_assign
 id|new_major
 suffix:semicolon
-multiline_comment|/* Setup block device pointers for the new major. */
 multiline_comment|/* Insert the new major info structure into dasd_major_info list. */
 id|spin_lock
 c_func
@@ -275,162 +273,6 @@ c_func
 (paren
 id|mi
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This one is needed for naming 18000+ possible dasd devices.&n; *   dasda - dasdz : 26 devices&n; *   dasdaa - dasdzz : 676 devices, added up = 702&n; *   dasdaaa - dasdzzz : 17576 devices, added up = 18278&n; */
-r_int
-DECL|function|dasd_device_name
-id|dasd_device_name
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-id|index
-comma
-r_int
-id|partition
-)paren
-(brace
-r_int
-id|len
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|partition
-OG
-id|DASD_PARTN_MASK
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-id|len
-op_assign
-id|sprintf
-c_func
-(paren
-id|str
-comma
-l_string|&quot;dasd&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|index
-OG
-l_int|25
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|index
-OG
-l_int|701
-)paren
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|str
-op_plus
-id|len
-comma
-l_string|&quot;%c&quot;
-comma
-l_char|&squot;a&squot;
-op_plus
-(paren
-(paren
-(paren
-id|index
-op_minus
-l_int|702
-)paren
-op_div
-l_int|676
-)paren
-op_mod
-l_int|26
-)paren
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|str
-op_plus
-id|len
-comma
-l_string|&quot;%c&quot;
-comma
-l_char|&squot;a&squot;
-op_plus
-(paren
-(paren
-(paren
-id|index
-op_minus
-l_int|26
-)paren
-op_div
-l_int|26
-)paren
-op_mod
-l_int|26
-)paren
-)paren
-suffix:semicolon
-)brace
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|str
-op_plus
-id|len
-comma
-l_string|&quot;%c&quot;
-comma
-l_char|&squot;a&squot;
-op_plus
-(paren
-id|index
-op_mod
-l_int|26
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|partition
-)paren
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|str
-op_plus
-id|len
-comma
-l_string|&quot;%d&quot;
-comma
-id|partition
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate gendisk structure for devindex.&n; */
@@ -723,6 +565,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return devindex of first device using a specific major number.&n; */
 DECL|function|dasd_gendisk_major_index
+r_static
 r_int
 id|dasd_gendisk_major_index
 c_func

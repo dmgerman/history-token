@@ -254,7 +254,7 @@ id|ACPI_ALL_DRIVERS
 suffix:semicolon
 id|acpi_dbg_level
 op_assign
-id|DEBUG_DEFAULT
+id|ACPI_DEBUG_DEFAULT
 suffix:semicolon
 r_break
 suffix:semicolon

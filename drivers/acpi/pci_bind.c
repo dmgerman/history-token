@@ -289,7 +289,7 @@ suffix:semicolon
 r_char
 id|pathname
 (braket
-id|PATHNAME_MAX
+id|ACPI_PATHNAME_MAX
 )braket
 op_assign
 (brace
@@ -300,7 +300,7 @@ id|acpi_buffer
 id|buffer
 op_assign
 (brace
-id|PATHNAME_MAX
+id|ACPI_PATHNAME_MAX
 comma
 id|pathname
 )brace
@@ -775,7 +775,7 @@ suffix:semicolon
 r_char
 id|pathname
 (braket
-id|PATHNAME_MAX
+id|ACPI_PATHNAME_MAX
 )braket
 op_assign
 (brace
@@ -786,7 +786,7 @@ id|acpi_buffer
 id|buffer
 op_assign
 (brace
-id|PATHNAME_MAX
+id|ACPI_PATHNAME_MAX
 comma
 id|pathname
 )brace

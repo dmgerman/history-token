@@ -52,8 +52,8 @@ DECL|macro|__LC_CREGS_SAVE_AREA
 mdefine_line|#define __LC_CREGS_SAVE_AREA            0x1C0
 DECL|macro|__LC_RETURN_PSW
 mdefine_line|#define __LC_RETURN_PSW                 0x200
-DECL|macro|__LC_SYNC_IO_WORD
-mdefine_line|#define __LC_SYNC_IO_WORD               0x400
+DECL|macro|__LC_IRB
+mdefine_line|#define __LC_IRB&t;&t;&t;0x208
 DECL|macro|__LC_SAVE_AREA
 mdefine_line|#define __LC_SAVE_AREA                  0xC00
 DECL|macro|__LC_KERNEL_STACK
@@ -411,37 +411,30 @@ id|cregs_save_area
 l_int|16
 )braket
 suffix:semicolon
-multiline_comment|/* 0x240 */
+multiline_comment|/* 0x1c0 */
 DECL|member|return_psw
 id|psw_t
 id|return_psw
 suffix:semicolon
 multiline_comment|/* 0x200 */
+DECL|member|irb
+id|__u8
+id|irb
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* 0x208 */
 DECL|member|pad8
 id|__u8
 id|pad8
 (braket
-l_int|0x400
-op_minus
-l_int|0x208
-)braket
-suffix:semicolon
-multiline_comment|/* 0x208 */
-DECL|member|sync_io_word
-id|__u32
-id|sync_io_word
-suffix:semicolon
-multiline_comment|/* 0x400 */
-DECL|member|pad9
-id|__u8
-id|pad9
-(braket
 l_int|0xc00
 op_minus
-l_int|0x404
+l_int|0x248
 )braket
 suffix:semicolon
-multiline_comment|/* 0x404 */
+multiline_comment|/* 0x248 */
 multiline_comment|/* System info area */
 DECL|member|save_area
 id|__u32

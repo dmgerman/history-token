@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 90 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 91 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACOUTPUT_H__
 DECL|macro|__ACOUTPUT_H__
@@ -42,21 +42,21 @@ multiline_comment|/* Component IDs reserved for ACPI drivers */
 DECL|macro|ACPI_ALL_DRIVERS
 mdefine_line|#define ACPI_ALL_DRIVERS            0xFFFF0000
 multiline_comment|/*&n; * Raw debug output levels, do not use these in the DEBUG_PRINT macros&n; */
-DECL|macro|ACPI_LV_OK
-mdefine_line|#define ACPI_LV_OK                  0x00000001
-DECL|macro|ACPI_LV_INFO
-mdefine_line|#define ACPI_LV_INFO                0x00000002
-DECL|macro|ACPI_LV_WARN
-mdefine_line|#define ACPI_LV_WARN                0x00000004
 DECL|macro|ACPI_LV_ERROR
-mdefine_line|#define ACPI_LV_ERROR               0x00000008
-DECL|macro|ACPI_LV_FATAL
-mdefine_line|#define ACPI_LV_FATAL               0x00000010
+mdefine_line|#define ACPI_LV_ERROR               0x00000001
+DECL|macro|ACPI_LV_WARN
+mdefine_line|#define ACPI_LV_WARN                0x00000002
+DECL|macro|ACPI_LV_INIT
+mdefine_line|#define ACPI_LV_INIT                0x00000004
 DECL|macro|ACPI_LV_DEBUG_OBJECT
-mdefine_line|#define ACPI_LV_DEBUG_OBJECT        0x00000020
+mdefine_line|#define ACPI_LV_DEBUG_OBJECT        0x00000008
+DECL|macro|ACPI_LV_INFO
+mdefine_line|#define ACPI_LV_INFO                0x00000010
 DECL|macro|ACPI_LV_ALL_EXCEPTIONS
-mdefine_line|#define ACPI_LV_ALL_EXCEPTIONS      0x0000003F
+mdefine_line|#define ACPI_LV_ALL_EXCEPTIONS      0x0000001F
 multiline_comment|/* Trace verbosity level 1 [Standard Trace Level] */
+DECL|macro|ACPI_LV_INIT_NAMES
+mdefine_line|#define ACPI_LV_INIT_NAMES          0x00000020
 DECL|macro|ACPI_LV_PARSE
 mdefine_line|#define ACPI_LV_PARSE               0x00000040
 DECL|macro|ACPI_LV_LOAD
@@ -83,10 +83,8 @@ DECL|macro|ACPI_LV_USER_REQUESTS
 mdefine_line|#define ACPI_LV_USER_REQUESTS       0x00020000
 DECL|macro|ACPI_LV_PACKAGE
 mdefine_line|#define ACPI_LV_PACKAGE             0x00040000
-DECL|macro|ACPI_LV_INIT
-mdefine_line|#define ACPI_LV_INIT                0x00080000
 DECL|macro|ACPI_LV_VERBOSITY1
-mdefine_line|#define ACPI_LV_VERBOSITY1          0x000FFF40 | ACPI_LV_ALL_EXCEPTIONS
+mdefine_line|#define ACPI_LV_VERBOSITY1          0x0007FF40 | ACPI_LV_ALL_EXCEPTIONS
 multiline_comment|/* Trace verbosity level 2 [Function tracing and memory allocation] */
 DECL|macro|ACPI_LV_ALLOCATIONS
 mdefine_line|#define ACPI_LV_ALLOCATIONS         0x00100000
@@ -124,21 +122,21 @@ multiline_comment|/*&n; * Debug level macros that are used in the DEBUG_PRINT ma
 DECL|macro|ACPI_DEBUG_LEVEL
 mdefine_line|#define ACPI_DEBUG_LEVEL(dl)       dl,__LINE__,&amp;_dbg
 multiline_comment|/* Exception level -- used in the global &quot;Debug_level&quot; */
-DECL|macro|ACPI_DB_OK
-mdefine_line|#define ACPI_DB_OK                  ACPI_DEBUG_LEVEL (ACPI_LV_OK)
-DECL|macro|ACPI_DB_INFO
-mdefine_line|#define ACPI_DB_INFO                ACPI_DEBUG_LEVEL (ACPI_LV_INFO)
-DECL|macro|ACPI_DB_WARN
-mdefine_line|#define ACPI_DB_WARN                ACPI_DEBUG_LEVEL (ACPI_LV_WARN)
 DECL|macro|ACPI_DB_ERROR
 mdefine_line|#define ACPI_DB_ERROR               ACPI_DEBUG_LEVEL (ACPI_LV_ERROR)
-DECL|macro|ACPI_DB_FATAL
-mdefine_line|#define ACPI_DB_FATAL               ACPI_DEBUG_LEVEL (ACPI_LV_FATAL)
+DECL|macro|ACPI_DB_WARN
+mdefine_line|#define ACPI_DB_WARN                ACPI_DEBUG_LEVEL (ACPI_LV_WARN)
+DECL|macro|ACPI_DB_INIT
+mdefine_line|#define ACPI_DB_INIT                ACPI_DEBUG_LEVEL (ACPI_LV_INIT)
 DECL|macro|ACPI_DB_DEBUG_OBJECT
 mdefine_line|#define ACPI_DB_DEBUG_OBJECT        ACPI_DEBUG_LEVEL (ACPI_LV_DEBUG_OBJECT)
+DECL|macro|ACPI_DB_INFO
+mdefine_line|#define ACPI_DB_INFO                ACPI_DEBUG_LEVEL (ACPI_LV_INFO)
 DECL|macro|ACPI_DB_ALL_EXCEPTIONS
 mdefine_line|#define ACPI_DB_ALL_EXCEPTIONS      ACPI_DEBUG_LEVEL (ACPI_LV_ALL_EXCEPTIONS)
 multiline_comment|/* Trace level -- also used in the global &quot;Debug_level&quot; */
+DECL|macro|ACPI_DB_INIT_NAMES
+mdefine_line|#define ACPI_DB_INIT_NAMES          ACPI_DEBUG_LEVEL (ACPI_LV_INIT_NAMES)
 DECL|macro|ACPI_DB_THREADS
 mdefine_line|#define ACPI_DB_THREADS             ACPI_DEBUG_LEVEL (ACPI_LV_THREADS)
 DECL|macro|ACPI_DB_PARSE
@@ -179,25 +177,14 @@ DECL|macro|ACPI_DB_PACKAGE
 mdefine_line|#define ACPI_DB_PACKAGE             ACPI_DEBUG_LEVEL (ACPI_LV_PACKAGE)
 DECL|macro|ACPI_DB_MUTEX
 mdefine_line|#define ACPI_DB_MUTEX               ACPI_DEBUG_LEVEL (ACPI_LV_MUTEX)
-DECL|macro|ACPI_DB_INIT
-mdefine_line|#define ACPI_DB_INIT                ACPI_DEBUG_LEVEL (ACPI_LV_INIT)
 DECL|macro|ACPI_DB_ALL
 mdefine_line|#define ACPI_DB_ALL                 ACPI_DEBUG_LEVEL (ACPI_LV_ALL)
 multiline_comment|/* Defaults for Debug_level, debug and normal */
-DECL|macro|DEBUG_DEFAULT
-mdefine_line|#define DEBUG_DEFAULT               (ACPI_LV_OK | ACPI_LV_WARN | ACPI_LV_ERROR | ACPI_LV_DEBUG_OBJECT)
-DECL|macro|NORMAL_DEFAULT
-mdefine_line|#define NORMAL_DEFAULT              (ACPI_LV_OK | ACPI_LV_WARN | ACPI_LV_ERROR | ACPI_LV_DEBUG_OBJECT)
-DECL|macro|DEBUG_ALL
-mdefine_line|#define DEBUG_ALL                   (ACPI_LV_AML_DISASSEMBLE | ACPI_LV_ALL_EXCEPTIONS | ACPI_LV_ALL)
-multiline_comment|/* Misc defines */
-DECL|macro|HEX
-mdefine_line|#define HEX                         0x01
-DECL|macro|ASCII
-mdefine_line|#define ASCII                       0x02
-DECL|macro|FULL_ADDRESS
-mdefine_line|#define FULL_ADDRESS                0x04
-DECL|macro|CHARS_PER_LINE
-mdefine_line|#define CHARS_PER_LINE              16          /* used in Dump_buf function */
+DECL|macro|ACPI_DEBUG_DEFAULT
+mdefine_line|#define ACPI_DEBUG_DEFAULT          (ACPI_LV_INIT | ACPI_LV_WARN | ACPI_LV_ERROR | ACPI_LV_DEBUG_OBJECT)
+DECL|macro|ACPI_NORMAL_DEFAULT
+mdefine_line|#define ACPI_NORMAL_DEFAULT         (ACPI_LV_INIT | ACPI_LV_WARN | ACPI_LV_ERROR | ACPI_LV_DEBUG_OBJECT)
+DECL|macro|ACPI_DEBUG_ALL
+mdefine_line|#define ACPI_DEBUG_ALL              (ACPI_LV_AML_DISASSEMBLE | ACPI_LV_ALL_EXCEPTIONS | ACPI_LV_ALL)
 macro_line|#endif /* __ACOUTPUT_H__ */
 eof

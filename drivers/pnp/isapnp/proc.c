@@ -599,9 +599,12 @@ comma
 id|proc_bus
 )paren
 suffix:semicolon
-id|isapnp_for_each_dev
+id|protocol_for_each_dev
 c_func
 (paren
+op_amp
+id|isapnp_protocol
+comma
 id|dev
 )paren
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 65 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 66 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -803,11 +803,11 @@ id|length
 suffix:semicolon
 id|offset
 op_add_assign
-id|RSDP_SCAN_STEP
+id|ACPI_RSDP_SCAN_STEP
 comma
 id|mem_rover
 op_add_assign
-id|RSDP_SCAN_STEP
+id|ACPI_RSDP_SCAN_STEP
 )paren
 (brace
 multiline_comment|/* The signature and checksum must both be correct */
@@ -934,9 +934,9 @@ id|acpi_os_map_memory
 (paren
 id|u64
 )paren
-id|LO_RSDP_WINDOW_BASE
+id|ACPI_LO_RSDP_WINDOW_BASE
 comma
-id|LO_RSDP_WINDOW_SIZE
+id|ACPI_LO_RSDP_WINDOW_SIZE
 comma
 (paren
 r_void
@@ -963,9 +963,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Could not map memory at %X for length %X&bslash;n&quot;
 comma
-id|LO_RSDP_WINDOW_BASE
+id|ACPI_LO_RSDP_WINDOW_BASE
 comma
-id|LO_RSDP_WINDOW_SIZE
+id|ACPI_LO_RSDP_WINDOW_SIZE
 )paren
 )paren
 suffix:semicolon
@@ -981,14 +981,14 @@ id|acpi_tb_scan_memory_for_rsdp
 (paren
 id|table_ptr
 comma
-id|LO_RSDP_WINDOW_SIZE
+id|ACPI_LO_RSDP_WINDOW_SIZE
 )paren
 suffix:semicolon
 id|acpi_os_unmap_memory
 (paren
 id|table_ptr
 comma
-id|LO_RSDP_WINDOW_SIZE
+id|ACPI_LO_RSDP_WINDOW_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -1000,7 +1000,7 @@ id|mem_rover
 multiline_comment|/* Found it, return the physical address */
 id|phys_addr
 op_assign
-id|LO_RSDP_WINDOW_BASE
+id|ACPI_LO_RSDP_WINDOW_BASE
 suffix:semicolon
 id|phys_addr
 op_add_assign
@@ -1029,9 +1029,9 @@ id|acpi_os_map_memory
 (paren
 id|u64
 )paren
-id|HI_RSDP_WINDOW_BASE
+id|ACPI_HI_RSDP_WINDOW_BASE
 comma
-id|HI_RSDP_WINDOW_SIZE
+id|ACPI_HI_RSDP_WINDOW_SIZE
 comma
 (paren
 r_void
@@ -1058,9 +1058,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Could not map memory at %X for length %X&bslash;n&quot;
 comma
-id|HI_RSDP_WINDOW_BASE
+id|ACPI_HI_RSDP_WINDOW_BASE
 comma
-id|HI_RSDP_WINDOW_SIZE
+id|ACPI_HI_RSDP_WINDOW_SIZE
 )paren
 )paren
 suffix:semicolon
@@ -1076,14 +1076,14 @@ id|acpi_tb_scan_memory_for_rsdp
 (paren
 id|table_ptr
 comma
-id|HI_RSDP_WINDOW_SIZE
+id|ACPI_HI_RSDP_WINDOW_SIZE
 )paren
 suffix:semicolon
 id|acpi_os_unmap_memory
 (paren
 id|table_ptr
 comma
-id|HI_RSDP_WINDOW_SIZE
+id|ACPI_HI_RSDP_WINDOW_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -1095,7 +1095,7 @@ id|mem_rover
 multiline_comment|/* Found it, return the physical address */
 id|phys_addr
 op_assign
-id|HI_RSDP_WINDOW_BASE
+id|ACPI_HI_RSDP_WINDOW_BASE
 suffix:semicolon
 id|phys_addr
 op_add_assign
@@ -1127,10 +1127,10 @@ id|acpi_tb_scan_memory_for_rsdp
 (paren
 id|ACPI_PHYSADDR_TO_PTR
 (paren
-id|LO_RSDP_WINDOW_BASE
+id|ACPI_LO_RSDP_WINDOW_BASE
 )paren
 comma
-id|LO_RSDP_WINDOW_SIZE
+id|ACPI_LO_RSDP_WINDOW_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -1160,10 +1160,10 @@ id|acpi_tb_scan_memory_for_rsdp
 (paren
 id|ACPI_PHYSADDR_TO_PTR
 (paren
-id|HI_RSDP_WINDOW_BASE
+id|ACPI_HI_RSDP_WINDOW_BASE
 )paren
 comma
-id|HI_RSDP_WINDOW_SIZE
+id|ACPI_HI_RSDP_WINDOW_SIZE
 )paren
 suffix:semicolon
 r_if

@@ -1,11 +1,10 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.6 $&n; *&n; * History of changes&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* This is ugly... */
 DECL|macro|PRINTK_HEADER
@@ -64,7 +63,8 @@ id|cplength
 op_star
 r_sizeof
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 )paren
 )paren
 OG
@@ -138,7 +138,8 @@ id|cplength
 op_star
 r_sizeof
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 )paren
 suffix:semicolon
 r_if
@@ -250,7 +251,8 @@ l_int|0
 id|cqr-&gt;cpaddr
 op_assign
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 op_star
 )paren
 id|data
@@ -261,7 +263,8 @@ id|cplength
 op_star
 r_sizeof
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 )paren
 suffix:semicolon
 id|memset
@@ -275,7 +278,8 @@ id|cplength
 op_star
 r_sizeof
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 )paren
 )paren
 suffix:semicolon
@@ -778,6 +782,50 @@ suffix:semicolon
 )brace
 )brace
 r_void
+DECL|function|dasd_log_sense
+id|dasd_log_sense
+c_func
+(paren
+id|dasd_ccw_req_t
+op_star
+id|cqr
+comma
+r_struct
+id|irb
+op_star
+id|irb
+)paren
+(brace
+id|dasd_device_t
+op_star
+id|device
+suffix:semicolon
+id|device
+op_assign
+id|cqr-&gt;device
+suffix:semicolon
+multiline_comment|/* dump sense data */
+r_if
+c_cond
+(paren
+id|device-&gt;discipline
+op_logical_and
+id|device-&gt;discipline-&gt;dump_sense
+)paren
+id|device-&gt;discipline
+op_member_access_from_pointer
+id|dump_sense
+c_func
+(paren
+id|device
+comma
+id|cqr
+comma
+id|irb
+)paren
+suffix:semicolon
+)brace
+r_void
 DECL|function|dasd_log_ccw
 id|dasd_log_ccw
 c_func
@@ -801,7 +849,8 @@ id|dasd_ccw_req_t
 op_star
 id|lcqr
 suffix:semicolon
-id|ccw1_t
+r_struct
+id|ccw1
 op_star
 id|ccw
 suffix:semicolon
@@ -811,24 +860,6 @@ suffix:semicolon
 id|device
 op_assign
 id|cqr-&gt;device
-suffix:semicolon
-multiline_comment|/* dump sense data */
-r_if
-c_cond
-(paren
-id|device-&gt;discipline
-op_logical_and
-id|device-&gt;discipline-&gt;dump_sense
-)paren
-id|device-&gt;discipline
-op_member_access_from_pointer
-id|dump_sense
-c_func
-(paren
-id|device
-comma
-id|cqr
-)paren
 suffix:semicolon
 multiline_comment|/* log the channel program */
 r_for
@@ -938,7 +969,8 @@ l_int|40
 op_star
 r_sizeof
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 )paren
 )paren
 suffix:semicolon
@@ -969,7 +1001,8 @@ l_int|10
 op_star
 r_sizeof
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 )paren
 )paren
 suffix:semicolon
@@ -1000,7 +1033,8 @@ id|cplength
 op_star
 r_sizeof
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 )paren
 )paren
 suffix:semicolon
@@ -1073,7 +1107,8 @@ l_int|20
 op_star
 r_sizeof
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 )paren
 )paren
 suffix:semicolon
@@ -1107,6 +1142,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dasd_free_erp_request
+)paren
+suffix:semicolon
+DECL|variable|dasd_log_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dasd_log_sense
 )paren
 suffix:semicolon
 DECL|variable|dasd_log_ccw

@@ -83,8 +83,7 @@ c_cond
 id|compare_pnp_id
 c_func
 (paren
-op_amp
-id|dev-&gt;ids
+id|dev-&gt;id
 comma
 id|pnp_id_eisaid
 (braket

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 106 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 107 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -1134,8 +1134,56 @@ id|dest_desc-&gt;common.flags
 op_assign
 id|source_desc-&gt;common.flags
 suffix:semicolon
-multiline_comment|/* Fall through to common string/buffer case */
-multiline_comment|/*lint -fallthrough */
+multiline_comment|/*&n;&t;&t; * Allocate and copy the actual buffer if and only if:&n;&t;&t; * 1) There is a valid buffer (length &gt; 0)&n;&t;&t; * 2) The buffer is not static (not in an ACPI table) (in this case,&n;&t;&t; *    the actual pointer was already copied above)&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|source_desc-&gt;buffer.length
+)paren
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|source_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_STATIC_POINTER
+)paren
+)paren
+)paren
+(brace
+id|dest_desc-&gt;buffer.pointer
+op_assign
+id|ACPI_MEM_ALLOCATE
+(paren
+id|source_desc-&gt;buffer.length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dest_desc-&gt;buffer.pointer
+)paren
+(brace
+r_return
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+id|ACPI_MEMCPY
+(paren
+id|dest_desc-&gt;buffer.pointer
+comma
+id|source_desc-&gt;buffer.pointer
+comma
+id|source_desc-&gt;buffer.length
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
@@ -1162,6 +1210,8 @@ op_assign
 id|ACPI_MEM_ALLOCATE
 (paren
 id|source_desc-&gt;string.length
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1184,6 +1234,8 @@ comma
 id|source_desc-&gt;string.pointer
 comma
 id|source_desc-&gt;string.length
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace

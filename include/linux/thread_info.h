@@ -2,6 +2,47 @@ multiline_comment|/* thread_info.h: common low-level thread information accessor
 macro_line|#ifndef _LINUX_THREAD_INFO_H
 DECL|macro|_LINUX_THREAD_INFO_H
 mdefine_line|#define _LINUX_THREAD_INFO_H
+multiline_comment|/*&n; * System call restart block. &n; */
+DECL|struct|restart_block
+r_struct
+id|restart_block
+(brace
+DECL|member|fn
+r_int
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_struct
+id|restart_block
+op_star
+)paren
+suffix:semicolon
+DECL|member|arg0
+DECL|member|arg1
+DECL|member|arg2
+r_int
+r_int
+id|arg0
+comma
+id|arg1
+comma
+id|arg2
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_int
+id|do_no_restart_syscall
+c_func
+(paren
+r_struct
+id|restart_block
+op_star
+id|parm
+)paren
+suffix:semicolon
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#ifdef __KERNEL__
