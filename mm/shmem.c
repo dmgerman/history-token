@@ -5274,8 +5274,6 @@ op_assign
 id|generic_write_checks
 c_func
 (paren
-id|inode
-comma
 id|file
 comma
 op_amp

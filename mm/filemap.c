@@ -6029,11 +6029,6 @@ id|generic_write_checks
 c_func
 (paren
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|file
@@ -6050,6 +6045,13 @@ r_int
 id|isblk
 )paren
 (brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_mapping-&gt;host
+suffix:semicolon
 r_int
 r_int
 id|limit
@@ -6688,8 +6690,6 @@ op_assign
 id|generic_write_checks
 c_func
 (paren
-id|inode
-comma
 id|file
 comma
 op_amp
