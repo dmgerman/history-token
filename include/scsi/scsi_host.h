@@ -806,6 +806,7 @@ r_int
 suffix:semicolon
 r_extern
 r_int
+id|__must_check
 id|scsi_add_host
 c_func
 (paren
