@@ -2325,6 +2325,10 @@ id|req-&gt;wb_offset
 op_assign
 id|offset
 suffix:semicolon
+id|req-&gt;wb_pgbase
+op_assign
+id|offset
+suffix:semicolon
 id|req-&gt;wb_bytes
 op_assign
 id|rqend
@@ -2848,7 +2852,7 @@ multiline_comment|/* If we wrote past the end of the page.&n;&t; * Call the stra
 r_if
 c_cond
 (paren
-id|req-&gt;wb_offset
+id|req-&gt;wb_pgbase
 op_eq
 l_int|0
 op_logical_and

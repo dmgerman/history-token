@@ -104,6 +104,34 @@ id|compat_flock
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|get_compat_timespec
+c_func
+(paren
+r_struct
+id|timespec
+op_star
+comma
+r_struct
+id|compat_timespec
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|put_compat_timespec
+c_func
+(paren
+r_struct
+id|timespec
+op_star
+comma
+r_struct
+id|compat_timespec
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof

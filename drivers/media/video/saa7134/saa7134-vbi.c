@@ -568,6 +568,10 @@ r_struct
 id|videobuf_buffer
 op_star
 id|vb
+comma
+r_enum
+id|v4l2_field
+id|field
 )paren
 (brace
 r_struct
@@ -786,7 +790,7 @@ id|buffer_activate
 suffix:semicolon
 id|buf-&gt;vb.field
 op_assign
-id|V4L2_FIELD_SEQ_TB
+id|field
 suffix:semicolon
 r_return
 l_int|0
@@ -1073,6 +1077,13 @@ c_func
 (paren
 op_amp
 id|dev-&gt;vbi_q.queue
+)paren
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|dev-&gt;vbi_q.timeout
 )paren
 suffix:semicolon
 id|dev-&gt;vbi_q.timeout.function

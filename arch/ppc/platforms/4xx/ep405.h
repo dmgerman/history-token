@@ -6,6 +6,7 @@ mdefine_line|#define __ASM_EP405_H__
 multiline_comment|/* We have a 405GP core */
 macro_line|#include &lt;platforms/4xx/ibm405gp.h&gt;
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/types.h&gt;
 DECL|struct|board_info
 r_typedef
 r_struct

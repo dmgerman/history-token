@@ -8,20 +8,12 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/ftape.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,16)
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#else
-DECL|macro|__initdata
-mdefine_line|#define __initdata
-DECL|macro|__initfunc
-mdefine_line|#define __initfunc(__arg) __arg
-macro_line|#endif
 macro_line|#include &lt;linux/qic117.h&gt;
 macro_line|#ifdef CONFIG_ZFTAPE
 macro_line|#include &lt;linux/zftape.h&gt;
 macro_line|#endif
 macro_line|#include &quot;../lowlevel/ftape-init.h&quot;
-macro_line|#include &quot;../lowlevel/ftape_syms.h&quot;
 macro_line|#include &quot;../lowlevel/ftape-io.h&quot;
 macro_line|#include &quot;../lowlevel/ftape-read.h&quot;
 macro_line|#include &quot;../lowlevel/ftape-write.h&quot;
@@ -271,16 +263,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VER(2,1,18)
-id|register_symtab
-c_func
-(paren
-op_amp
-id|ftape_symbol_table
-)paren
-suffix:semicolon
-multiline_comment|/* add global ftape symbols */
-macro_line|#endif
 macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_FT_PROC_FS)
 (paren
 r_void
@@ -316,7 +298,6 @@ op_minus
 l_int|1
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,18)
 DECL|macro|FT_MOD_PARM
 mdefine_line|#define FT_MOD_PARM(var,type,desc) &bslash;&n;&t;MODULE_PARM(var,type); MODULE_PARM_DESC(var,desc)
 id|FT_MOD_PARM
@@ -419,7 +400,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*  Called by modules package when installing the driver&n; */
 DECL|function|init_module
 r_int

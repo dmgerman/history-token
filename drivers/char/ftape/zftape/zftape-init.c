@@ -22,7 +22,6 @@ macro_line|#include &quot;../zftape/zftape-read.h&quot;
 macro_line|#include &quot;../zftape/zftape-write.h&quot;
 macro_line|#include &quot;../zftape/zftape-ctl.h&quot;
 macro_line|#include &quot;../zftape/zftape-buffers.h&quot;
-macro_line|#include &quot;../zftape/zftape_syms.h&quot;
 DECL|variable|__initdata
 r_char
 id|zft_src

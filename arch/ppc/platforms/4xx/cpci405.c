@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/cpci405.c&n; *&n; * Board setup routines for the esd CPCI-405 cPCI Board.&n; *&n; * Author: Stefan Roese&n; *         stefan.roese@esd-electronics.com&n; *&n; * Copyright 2001 esd electronic system design - hannover germany&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; *&t;History: 11/09/2001 - armin&n; *       added board_init to add in additional instuctions needed during platfrom_init&n; *&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/cpci405.c&n; *&n; * Board setup routines for the esd CPCI-405 cPCI Board.&n; *&n; * Author: Stefan Roese&n; *         stefan.roese@esd-electronics.com&n; *&n; * Copyright 2001 esd electronic system design - hannover germany&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -6,6 +6,11 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
+DECL|variable|cpci405_nvram
+r_void
+op_star
+id|cpci405_nvram
+suffix:semicolon
 multiline_comment|/*&n; * Some IRQs unique to CPCI-405.&n; */
 r_int
 id|__init
@@ -138,44 +143,107 @@ suffix:semicolon
 suffix:semicolon
 r_void
 id|__init
-DECL|function|board_setup_arch
-id|board_setup_arch
+DECL|function|cpci405_setup_arch
+id|cpci405_setup_arch
 c_func
 (paren
 r_void
 )paren
 (brace
+id|ppc4xx_setup_arch
+c_func
+(paren
+)paren
+suffix:semicolon
+id|TODC_INIT
+c_func
+(paren
+id|TODC_TYPE_MK48T35
+comma
+id|cpci405_nvram
+comma
+id|cpci405_nvram
+comma
+id|cpci405_nvram
+comma
+l_int|8
+)paren
+suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|board_io_mapping
-id|board_io_mapping
+DECL|function|cpci405_map_io
+id|cpci405_map_io
 c_func
 (paren
 r_void
 )paren
 (brace
+id|ppc4xx_map_io
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpci405_nvram
+op_assign
+id|ioremap
+c_func
+(paren
+id|CPCI405_NVRAM_PADDR
+comma
+id|CPCI405_NVRAM_SIZE
+)paren
+suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|board_setup_irq
-id|board_setup_irq
+DECL|function|platform_init
+id|platform_init
 c_func
 (paren
-r_void
+r_int
+r_int
+id|r3
+comma
+r_int
+r_int
+id|r4
+comma
+r_int
+r_int
+id|r5
+comma
+r_int
+r_int
+id|r6
+comma
+r_int
+r_int
+id|r7
 )paren
 (brace
-)brace
-r_void
-id|__init
-DECL|function|board_init
-id|board_init
+id|ppc4xx_init
 c_func
 (paren
-r_void
+id|r3
+comma
+id|r4
+comma
+id|r5
+comma
+id|r6
+comma
+id|r7
 )paren
-(brace
-macro_line|#ifdef CONFIG_PPC_RTC
+suffix:semicolon
+id|ppc_md.setup_arch
+op_assign
+id|cpci405_setup_arch
+suffix:semicolon
+id|ppc_md.setup_io_mappings
+op_assign
+id|cpci405_map_io
+suffix:semicolon
 id|ppc_md.time_init
 op_assign
 id|todc_time_init
@@ -196,6 +264,5 @@ id|ppc_md.nvram_write_val
 op_assign
 id|todc_direct_write_val
 suffix:semicolon
-macro_line|#endif
 )brace
 eof

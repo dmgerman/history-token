@@ -11,6 +11,17 @@ id|hw_interrupt_type
 op_star
 id|ppc4xx_pic
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|ibm4xxPIC_NumInitSenses
+suffix:semicolon
+r_extern
+r_int
+r_char
+op_star
+id|ibm4xxPIC_InitSenses
+suffix:semicolon
 multiline_comment|/* Function Prototypes */
 r_extern
 r_void
@@ -31,5 +42,5 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif /* __PPC4XX_PIC_H__ */
+macro_line|#endif&t;&t;&t;&t;/* __PPC4XX_PIC_H__ */
 eof

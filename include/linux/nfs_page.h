@@ -61,13 +61,17 @@ r_int
 r_int
 id|wb_index
 suffix:semicolon
-multiline_comment|/* Offset within mapping */
+multiline_comment|/* Offset &gt;&gt; PAGE_CACHE_SHIFT */
 DECL|member|wb_offset
 r_int
 r_int
 id|wb_offset
 comma
-multiline_comment|/* Offset within page */
+multiline_comment|/* Offset &amp; ~PAGE_CACHE_MASK */
+DECL|member|wb_pgbase
+id|wb_pgbase
+comma
+multiline_comment|/* Start of page data */
 DECL|member|wb_bytes
 id|wb_bytes
 comma
