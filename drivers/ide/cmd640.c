@@ -82,7 +82,7 @@ mdefine_line|#define&t;ARTTIM0&t;&t;0x53
 DECL|macro|DRWTIM0
 mdefine_line|#define&t;DRWTIM0&t;&t;0x54
 DECL|macro|ARTTIM1
-mdefine_line|#define ARTTIM1 &t;0x55
+mdefine_line|#define ARTTIM1&t;&t;0x55
 DECL|macro|DRWTIM1
 mdefine_line|#define DRWTIM1&t;&t;0x56
 DECL|macro|ARTTIM23
@@ -98,7 +98,7 @@ mdefine_line|#define BRST&t;&t;0x59
 multiline_comment|/*&n; * Registers and masks for easy access by drive index:&n; */
 DECL|variable|prefetch_regs
 r_static
-id|byte
+id|u8
 id|prefetch_regs
 (braket
 l_int|4
@@ -116,7 +116,7 @@ id|ARTTIM23
 suffix:semicolon
 DECL|variable|prefetch_masks
 r_static
-id|byte
+id|u8
 id|prefetch_masks
 (braket
 l_int|4
@@ -133,9 +133,18 @@ id|ARTTIM23_DIS_RA3
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640_ENHANCED
+multiline_comment|/*&n; * Protects register file access from overlapping on primary and secondary&n; * channel, since those share hardware resources.&n; */
+DECL|variable|__cacheline_aligned
+r_static
+id|spinlock_t
+id|cmd640_lock
+id|__cacheline_aligned
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|arttim_regs
 r_static
-id|byte
+id|u8
 id|arttim_regs
 (braket
 l_int|4
@@ -153,7 +162,7 @@ id|ARTTIM23
 suffix:semicolon
 DECL|variable|drwtim_regs
 r_static
-id|byte
+id|u8
 id|drwtim_regs
 (braket
 l_int|4
@@ -172,7 +181,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Current cmd640 timing values for each drive.&n; * The defaults for each are the slowest possible timings.&n; */
 DECL|variable|setup_counts
 r_static
-id|byte
+id|u8
 id|setup_counts
 (braket
 l_int|4
@@ -191,7 +200,7 @@ suffix:semicolon
 multiline_comment|/* Address setup count (in clocks) */
 DECL|variable|active_counts
 r_static
-id|byte
+id|u8
 id|active_counts
 (braket
 l_int|4
@@ -210,7 +219,7 @@ suffix:semicolon
 multiline_comment|/* Active count   (encoded) */
 DECL|variable|recovery_counts
 r_static
-id|byte
+id|u8
 id|recovery_counts
 (braket
 l_int|4
@@ -227,7 +236,7 @@ l_int|16
 )brace
 suffix:semicolon
 multiline_comment|/* Recovery count (encoded) */
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
+macro_line|#endif
 multiline_comment|/*&n; * These are initialized to point at the devices we control&n; */
 DECL|variable|cmd_hwif0
 DECL|variable|cmd_hwif1
@@ -242,7 +251,8 @@ id|cmd_hwif1
 suffix:semicolon
 DECL|variable|cmd_drives
 r_static
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|cmd_drives
 (braket
@@ -274,7 +284,7 @@ id|val
 suffix:semicolon
 DECL|variable|get_cmd640_reg
 r_static
-id|byte
+id|u8
 (paren
 op_star
 id|get_cmd640_reg
@@ -359,7 +369,7 @@ suffix:semicolon
 )brace
 DECL|function|get_cmd640_reg_pci1
 r_static
-id|byte
+id|u8
 id|get_cmd640_reg_pci1
 (paren
 r_int
@@ -367,7 +377,7 @@ r_int
 id|reg
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 r_int
@@ -433,7 +443,7 @@ r_int
 r_int
 id|reg
 comma
-id|byte
+id|u8
 id|val
 )paren
 (brace
@@ -487,7 +497,7 @@ suffix:semicolon
 )brace
 DECL|function|get_cmd640_reg_pci2
 r_static
-id|byte
+id|u8
 id|get_cmd640_reg_pci2
 (paren
 r_int
@@ -495,7 +505,7 @@ r_int
 id|reg
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 r_int
@@ -559,7 +569,7 @@ r_int
 r_int
 id|reg
 comma
-id|byte
+id|u8
 id|val
 )paren
 (brace
@@ -605,7 +615,7 @@ suffix:semicolon
 )brace
 DECL|function|get_cmd640_reg_vlb
 r_static
-id|byte
+id|u8
 id|get_cmd640_reg_vlb
 (paren
 r_int
@@ -613,7 +623,7 @@ r_int
 id|reg
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 r_int
@@ -669,7 +679,7 @@ r_void
 )paren
 (brace
 r_const
-id|byte
+id|u8
 id|ven_dev
 (braket
 l_int|4
@@ -867,7 +877,7 @@ id|probe_for_cmd640_vlb
 r_void
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 id|get_cmd640_reg
@@ -1165,7 +1175,7 @@ id|cmd_drives
 id|index
 )braket
 suffix:semicolon
-id|byte
+id|u8
 id|b
 op_assign
 id|get_cmd640_reg
@@ -1381,7 +1391,8 @@ r_int
 id|mode
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -1398,7 +1409,7 @@ id|prefetch_regs
 id|index
 )braket
 suffix:semicolon
-id|byte
+id|u8
 id|b
 suffix:semicolon
 r_int
@@ -1431,7 +1442,7 @@ id|mode
 )paren
 (brace
 multiline_comment|/* want prefetch on? */
-macro_line|#if CMD640_PREFETCH_MASKS
+macro_line|# if CMD640_PREFETCH_MASKS
 id|drive-&gt;channel-&gt;no_unmask
 op_assign
 l_int|1
@@ -1440,7 +1451,7 @@ id|drive-&gt;channel-&gt;unmask
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
+macro_line|# endif
 id|drive-&gt;channel-&gt;no_io_32bit
 op_assign
 l_int|0
@@ -1504,7 +1515,7 @@ r_int
 id|index
 )paren
 (brace
-id|byte
+id|u8
 id|active_count
 comma
 id|recovery_count
@@ -1577,15 +1588,15 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Pack active and recovery counts into single byte representation&n; * used by controller&n; */
 DECL|function|pack_nibbles
-r_inline
 r_static
-id|byte
+r_inline
+id|u8
 id|pack_nibbles
 (paren
-id|byte
+id|u8
 id|upper
 comma
-id|byte
+id|u8
 id|lower
 )paren
 (brace
@@ -1619,7 +1630,7 @@ r_int
 id|index
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the internal setup timing, and convert to clock count&n;&t; */
@@ -1754,7 +1765,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|byte
+id|u8
 id|setup_count
 op_assign
 id|setup_counts
@@ -1762,7 +1773,7 @@ id|setup_counts
 id|index
 )braket
 suffix:semicolon
-id|byte
+id|u8
 id|active_count
 op_assign
 id|active_counts
@@ -1770,7 +1781,7 @@ id|active_counts
 id|index
 )braket
 suffix:semicolon
-id|byte
+id|u8
 id|recovery_count
 op_assign
 id|recovery_counts
@@ -1974,7 +1985,7 @@ r_int
 r_int
 id|index
 comma
-id|byte
+id|u8
 id|pio_mode
 comma
 r_int
@@ -1995,15 +2006,17 @@ id|recovery_time
 comma
 id|clock_time
 suffix:semicolon
-id|byte
+id|u8
 id|setup_count
 comma
 id|active_count
-comma
+suffix:semicolon
+id|u8
 id|recovery_count
 comma
 id|recovery_count2
-comma
+suffix:semicolon
+id|u8
 id|cycle_count
 suffix:semicolon
 id|recovery_time
@@ -2203,8 +2216,10 @@ DECL|function|cmd640_tune_drive
 r_static
 r_void
 id|cmd640_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2212,7 +2227,7 @@ id|byte
 id|mode_wanted
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 r_struct
@@ -2225,6 +2240,19 @@ r_int
 id|index
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|cmd640_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -2249,12 +2277,14 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: bad news in cmd640_tune_drive&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_lock
 suffix:semicolon
 )brace
 )brace
@@ -2307,6 +2337,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: %sabled cmd640 fast host timing (devsel)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -2319,7 +2350,8 @@ suffix:colon
 l_string|&quot;dis&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_lock
 suffix:semicolon
 r_case
 l_int|8
@@ -2356,7 +2388,8 @@ suffix:colon
 l_string|&quot;dis&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_lock
 suffix:semicolon
 )brace
 r_if
@@ -2393,7 +2426,7 @@ op_plus
 id|min_t
 c_func
 (paren
-id|byte
+id|u8
 comma
 id|mode_wanted
 comma
@@ -2434,10 +2467,21 @@ c_func
 id|index
 )paren
 suffix:semicolon
+id|out_lock
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|cmd640_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
+macro_line|#endif
 multiline_comment|/*&n; * Probe for a cmd640 chipset, and initialize it if found.  Called from ide.c&n; */
 DECL|function|ide_probe_for_cmd640x
 r_int
@@ -2472,7 +2516,7 @@ r_int
 r_int
 id|index
 suffix:semicolon
-id|byte
+id|u8
 id|b
 comma
 id|cfr
@@ -2639,7 +2683,7 @@ op_assign
 op_amp
 id|cmd640_tune_drive
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
+macro_line|#endif
 multiline_comment|/*&n;&t; * Ensure compatibility by always using the slowest timings&n;&t; * for access to the drive&squot;s command register block,&n;&t; * and reset the prefetch burstsize to default (512 bytes).&n;&t; *&n;&t; * Maybe we need a way to NOT do these on *some* systems?&n;&t; */
 id|put_cmd640_reg
 c_func
@@ -2760,7 +2804,7 @@ id|second_port_toggled
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
+macro_line|#endif
 id|port2
 op_assign
 l_string|&quot;enabled&quot;
@@ -2813,7 +2857,7 @@ op_assign
 op_amp
 id|cmd640_tune_drive
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
+macro_line|#endif
 )brace
 id|printk
 c_func
@@ -2856,7 +2900,8 @@ id|index
 op_increment
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign
@@ -2985,7 +3030,7 @@ suffix:colon
 l_string|&quot;on&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
+macro_line|#endif
 )brace
 macro_line|#ifdef CMD640_DUMP_REGS
 id|CMD640_DUMP_REGS

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/ide-pmac.c&t;&t;Version ?.??&t;Mar. 18, 2000&n; *&n; * Support for IDE interfaces on PowerMacs.&n; * These IDE interfaces are memory-mapped and have a DBDMA channel&n; * for doing DMA.&n; *&n; *  Copyright (C) 1998-2001 Paul Mackerras &amp; Ben. Herrenschmidt&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; * Some code taken from drivers/ide/ide-dma.c:&n; *&n; *  Copyright (c) 1995-1998  Mark Lord&n; *  &n; * TODO:&n; * &n; *  - Find a way to duplicate less code with ide-dma and use the&n; *    dma fileds in the hwif structure instead of our own&n; *  - Fix check_disk_change() call&n; *  - Make module-able (includes setting ppc_md. hooks from within&n; *    this file and not from arch code, and handling module deps with&n; *    mediabay (by having both modules do dynamic lookup of each other&n; *    symbols or by storing hooks at arch level).&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/ide/ide-pmac.c&t;&t;Version ?.??&t;Mar. 18, 2000&n; *&n; * Support for IDE interfaces on PowerMacs.&n; * These IDE interfaces are memory-mapped and have a DBDMA channel&n; * for doing DMA.&n; *&n; *  Copyright (C) 1998-2001 Paul Mackerras &amp; Ben. Herrenschmidt&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; * Some code taken from drivers/ide/ide-dma.c:&n; *&n; *  Copyright (c) 1995-1998  Mark Lord&n; *&n; * TODO:&n; *&n; *  - Find a way to duplicate less code with ide-dma and use the&n; *    dma fileds in the hwif structure instead of our own&n; *&n; *  - Fix check_disk_change() call&n; *&n; *  - Make module-able (includes setting ppc_md. hooks from within&n; *    this file and not from arch code, and handling module deps with&n; *    mediabay (by having both modules do dynamic lookup of each other&n; *    symbols or by storing hooks at arch level).&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -22,10 +22,6 @@ macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ata-timing.h&quot;
-r_extern
-id|spinlock_t
-id|ide_lock
-suffix:semicolon
 DECL|macro|IDE_PMAC_DEBUG
 macro_line|#undef IDE_PMAC_DEBUG
 DECL|macro|DMA_WAIT_TIMEOUT
@@ -148,7 +144,7 @@ DECL|macro|IDE_SYSCLK_NS
 mdefine_line|#define IDE_SYSCLK_NS&t;&t;30&t;/* 33Mhz cell */
 DECL|macro|IDE_SYSCLK_66_NS
 mdefine_line|#define IDE_SYSCLK_66_NS&t;15&t;/* 66Mhz cell */
-multiline_comment|/* 66Mhz cell, found in KeyLargo. Can do ultra mode 0 to 2 on&n; * 40 connector cable and to 4 on 80 connector one.&n; * Clock unit is 15ns (66Mhz)&n; * &n; * 3 Values can be programmed:&n; *  - Write data setup, which appears to match the cycle time. They&n; *    also call it DIOW setup.&n; *  - Ready to pause time (from spec)&n; *  - Address setup. That one is weird. I don&squot;t see where exactly&n; *    it fits in UDMA cycles, I got it&squot;s name from an obscure piece&n; *    of commented out code in Darwin. They leave it to 0, we do as&n; *    well, despite a comment that would lead to think it has a&n; *    min value of 45ns.&n; * Apple also add 60ns to the write data setup (or cycle time ?) on&n; * reads. I can&squot;t explain that, I tried it and it broke everything&n; * here.&n; */
+multiline_comment|/* 66Mhz cell, found in KeyLargo. Can do ultra mode 0 to 2 on&n; * 40 connector cable and to 4 on 80 connector one.&n; * Clock unit is 15ns (66Mhz)&n; *&n; * 3 Values can be programmed:&n; *  - Write data setup, which appears to match the cycle time. They&n; *    also call it DIOW setup.&n; *  - Ready to pause time (from spec)&n; *  - Address setup. That one is weird. I don&squot;t see where exactly&n; *    it fits in UDMA cycles, I got it&squot;s name from an obscure piece&n; *    of commented out code in Darwin. They leave it to 0, we do as&n; *    well, despite a comment that would lead to think it has a&n; *    min value of 45ns.&n; * Apple also add 60ns to the write data setup (or cycle time ?) on&n; * reads. I can&squot;t explain that, I tried it and it broke everything&n; * here.&n; */
 DECL|macro|TR_66_UDMA_MASK
 mdefine_line|#define TR_66_UDMA_MASK&t;&t;&t;0xfff00000
 DECL|macro|TR_66_UDMA_EN
@@ -185,7 +181,7 @@ DECL|macro|TR_66_PIO_ACCESS_MASK
 mdefine_line|#define TR_66_PIO_ACCESS_MASK&t;&t;0x0000001f
 DECL|macro|TR_66_PIO_ACCESS_SHIFT
 mdefine_line|#define TR_66_PIO_ACCESS_SHIFT&t;&t;0
-multiline_comment|/* 33Mhz cell, found in OHare, Heathrow (&amp; Paddington) and KeyLargo&n; * Can do pio &amp; mdma modes, clock unit is 30ns (33Mhz)&n; * &n; * The access time and recovery time can be programmed. Some older&n; * Darwin code base limit OHare to 150ns cycle time. I decided to do&n; * the same here fore safety against broken old hardware ;)&n; * The HalfTick bit, when set, adds half a clock (15ns) to the access&n; * time and removes one from recovery. It&squot;s not supported on KeyLargo&n; * implementation afaik. The E bit appears to be set for PIO mode 0 and&n; * is used to reach long timings used in this mode.&n; */
+multiline_comment|/* 33Mhz cell, found in OHare, Heathrow (&amp; Paddington) and KeyLargo&n; * Can do pio &amp; mdma modes, clock unit is 30ns (33Mhz)&n; *&n; * The access time and recovery time can be programmed. Some older&n; * Darwin code base limit OHare to 150ns cycle time. I decided to do&n; * the same here fore safety against broken old hardware ;)&n; * The HalfTick bit, when set, adds half a clock (15ns) to the access&n; * time and removes one from recovery. It&squot;s not supported on KeyLargo&n; * implementation afaik. The E bit appears to be set for PIO mode 0 and&n; * is used to reach long timings used in this mode.&n; */
 DECL|macro|TR_33_MDMA_MASK
 mdefine_line|#define TR_33_MDMA_MASK&t;&t;&t;0x003ff800
 DECL|macro|TR_33_MDMA_RECOVERY_MASK
@@ -220,7 +216,7 @@ DECL|macro|BAD_DMA_DRIVE
 macro_line|# define BAD_DMA_DRIVE&t;&t;0
 DECL|macro|GOOD_DMA_DRIVE
 macro_line|# define GOOD_DMA_DRIVE&t;&t;1
-multiline_comment|/* Rounded Multiword DMA timings&n; * &n; * I gave up finding a generic formula for all controller&n; * types and instead, built tables based on timing values&n; * used by Apple in Darwin&squot;s implementation.&n; */
+multiline_comment|/* Rounded Multiword DMA timings&n; *&n; * I gave up finding a generic formula for all controller&n; * types and instead, built tables based on timing values&n; * used by Apple in Darwin&squot;s implementation.&n; */
 DECL|struct|mdma_timings_t
 r_struct
 id|mdma_timings_t
@@ -790,7 +786,8 @@ DECL|function|pmac_ide_find
 id|pmac_ide_find
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -1157,7 +1154,8 @@ op_star
 id|pmac_ide_get_devnode
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -1199,7 +1197,8 @@ DECL|function|pmac_ide_selectproc
 id|pmac_ide_selectproc
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -1302,7 +1301,7 @@ id|_IO_BASE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Note: We don&squot;t use the generic routine here because for some&n; * yet unexplained reasons, it cause some media-bay CD-ROMs to&n; * lockup the bus. Strangely, this new version of the code is&n; * almost identical to the generic one and works, I&squot;ve not yet&n; * managed to figure out what bit is causing the lockup in the&n; * generic code, possibly a timing issue...&n; * &n; * --BenH&n; */
+multiline_comment|/* Note: We don&squot;t use the generic routine here because for some&n; * yet unexplained reasons, it cause some media-bay CD-ROMs to&n; * lockup the bus. Strangely, this new version of the code is&n; * almost identical to the generic one and works, I&squot;ve not yet&n; * managed to figure out what bit is causing the lockup in the&n; * generic code, possibly a timing issue...&n; *&n; * --BenH&n; */
 r_static
 r_int
 id|__pmac
@@ -1310,7 +1309,8 @@ DECL|function|wait_for_ready
 id|wait_for_ready
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -1433,7 +1433,8 @@ DECL|function|pmac_ide_do_setfeature
 id|pmac_ide_do_setfeature
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1809,7 +1810,8 @@ DECL|function|pmac_ide_tuneproc
 id|pmac_ide_tuneproc
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2170,7 +2172,7 @@ op_star
 id|timings
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2309,7 +2311,7 @@ op_star
 id|timings
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2554,7 +2556,7 @@ comma
 id|recTime
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2923,7 +2925,7 @@ op_or_assign
 id|TR_33_MDMA_HALFTICK
 suffix:semicolon
 )brace
-macro_line|#ifdef IDE_PMAC_DEBUG
+macro_line|# ifdef IDE_PMAC_DEBUG
 id|printk
 c_func
 (paren
@@ -2938,12 +2940,12 @@ op_star
 id|timings
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|# endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* #ifdef CONFIG_BLK_DEV_IDEDMA_PMAC */
+macro_line|#endif
 multiline_comment|/* You may notice we don&squot;t use this function on normal operation,&n; * our, normal mdma function is supposed to be more precise&n; */
 r_static
 r_int
@@ -2951,7 +2953,8 @@ id|__pmac
 DECL|function|pmac_ide_tune_chipset
 id|pmac_ide_tune_chipset
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3124,7 +3127,7 @@ suffix:colon
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PMAC */
+macro_line|#endif
 r_case
 id|XFER_PIO_4
 suffix:colon
@@ -4245,7 +4248,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_PBOOK */
+macro_line|#endif
 id|in_bay
 op_assign
 l_int|1
@@ -4432,7 +4435,7 @@ id|hwif-&gt;noprobe
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_PBOOK */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
 r_if
 c_cond
@@ -4454,7 +4457,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PMAC */
+macro_line|#endif
 op_increment
 id|i
 suffix:semicolon
@@ -4482,7 +4485,7 @@ op_amp
 id|idepmac_sleep_notifier
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_PBOOK */
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
 r_static
@@ -5741,7 +5744,8 @@ DECL|function|pmac_ide_mdma_enable
 id|pmac_ide_mdma_enable
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -5927,7 +5931,8 @@ DECL|function|pmac_ide_udma_enable
 id|pmac_ide_udma_enable
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -6074,7 +6079,8 @@ DECL|function|pmac_ide_check_dma
 id|pmac_ide_check_dma
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -6300,7 +6306,8 @@ r_void
 id|ide_toggle_bounce
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -7172,7 +7179,8 @@ r_void
 id|idepmac_sleep_device
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -7361,7 +7369,8 @@ DECL|function|idepmac_wake_device
 id|idepmac_wake_device
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -7437,13 +7446,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|flags
+id|drive-&gt;channel-&gt;active
 )paren
 suffix:semicolon
 id|pmac_ide_check_dma
@@ -7458,24 +7461,17 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|flags
+id|drive-&gt;channel-&gt;active
 )paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PMAC */
+macro_line|#endif
 )brace
 r_static
 r_void
@@ -7669,7 +7665,8 @@ DECL|function|idepmac_sleep_drive
 id|idepmac_sleep_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -7704,13 +7701,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|flags
+id|drive-&gt;channel-&gt;active
 )paren
 suffix:semicolon
 multiline_comment|/* Stop the device */
@@ -7727,8 +7718,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -7739,7 +7729,8 @@ DECL|function|idepmac_wake_drive
 id|idepmac_wake_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -7837,12 +7828,11 @@ id|BUSY_STAT
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* We resume processing on the HW group */
+multiline_comment|/* We resume processing on the lock group */
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 id|clear_bit
@@ -7851,13 +7841,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|flags
+id|drive-&gt;channel-&gt;active
 )paren
 suffix:semicolon
 r_if
@@ -7881,8 +7865,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -8260,7 +8243,8 @@ id|dn
 op_increment
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign

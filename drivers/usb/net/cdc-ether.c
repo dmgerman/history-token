@@ -4341,7 +4341,7 @@ id|ether_dev
 )paren
 suffix:semicolon
 singleline_comment|// Does this REALLY do anything???
-id|usb_inc_dev_use
+id|usb_get_dev
 c_func
 (paren
 id|usb
@@ -4430,7 +4430,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 singleline_comment|// I ask again, does this do anything???
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|usb

@@ -84,10 +84,6 @@ c_func
 )paren
 )braket
 suffix:semicolon
-r_int
-r_int
-id|nr
-suffix:semicolon
 id|tlb-&gt;mm
 op_assign
 id|mm
@@ -96,35 +92,18 @@ id|tlb-&gt;freed
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Use fast mode if this MM only exists on this CPU */
-id|nr
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_if
-c_cond
-(paren
-id|mm-&gt;cpu_vm_mask
-op_ne
-(paren
-l_int|1
-op_lshift
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-)paren
-id|nr
-op_assign
-l_int|0UL
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/* Use fast mode if only one CPU is online */
 id|tlb-&gt;nr
 op_assign
-id|nr
+id|smp_num_cpus
+OG
+l_int|1
+ques
+c_cond
+l_int|0UL
+suffix:colon
+op_complement
+l_int|0UL
 suffix:semicolon
 r_return
 id|tlb

@@ -2859,6 +2859,7 @@ id|pc
 )paren
 suffix:semicolon
 id|idefloppy_queue_pc_head
+c_func
 (paren
 id|drive
 comma

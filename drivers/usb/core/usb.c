@@ -2868,6 +2868,11 @@ op_amp
 id|dev-&gt;serialize
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;bus-&gt;op-&gt;allocate
+)paren
 id|dev-&gt;bus-&gt;op
 op_member_access_from_pointer
 id|allocate
@@ -2880,7 +2885,40 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_free_dev - free a usb device structure (usbcore-internal)&n; * @dev: device that&squot;s been disconnected&n; * Context: !in_interrupt ()&n; *&n; * Used by hub and virtual root hub drivers.  The device is completely&n; * gone, everything is cleaned up, so it&squot;s time to get rid of these last&n; * records of this device.&n; */
+multiline_comment|/**&n; * usb_get_dev - increments the reference count of the device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them by calling usb_put_dev(), in their disconnect() methods.&n; *&n; * A pointer to the device with the incremented reference counter is returned.&n; */
+DECL|function|usb_get_dev
+r_struct
+id|usb_device
+op_star
+id|usb_get_dev
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dev
+)paren
+(brace
+id|atomic_inc
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+suffix:semicolon
+r_return
+id|dev
+suffix:semicolon
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_free_dev - free a usb device structure when all users of it are finished.&n; * @dev: device that&squot;s been disconnected&n; * Context: !in_interrupt ()&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; *&n; * Used by hub and virtual root hub drivers.  The device is completely&n; * gone, everything is cleaned up, so it&squot;s time to get rid of these last&n; * records of this device.&n; */
 DECL|function|usb_free_dev
 r_void
 id|usb_free_dev
@@ -2895,32 +2933,23 @@ id|dev
 r_if
 c_cond
 (paren
-id|in_interrupt
-(paren
-)paren
-)paren
-id|BUG
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|atomic_dec_and_test
+c_func
 (paren
 op_amp
 id|dev-&gt;refcnt
 )paren
 )paren
 (brace
-multiline_comment|/* MUST go to zero here, else someone&squot;s hanging on to&n;&t;&t; * a device that&squot;s supposed to have been cleaned up!!&n;&t;&t; */
-id|BUG
+r_if
+c_cond
 (paren
-)paren
-suffix:semicolon
-)brace
 id|dev-&gt;bus-&gt;op-&gt;deallocate
+)paren
+id|dev-&gt;bus-&gt;op
+op_member_access_from_pointer
+id|deallocate
+c_func
 (paren
 id|dev
 )paren
@@ -2940,6 +2969,7 @@ id|kfree
 id|dev
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * usb_alloc_urb - creates a new urb for a USB driver to use&n; * @iso_packets: number of iso packets for this urb&n; * @mem_flags: the type of memory to allocate, see kmalloc() for a list of&n; *&t;valid options for this.&n; *&n; * Creates an urb for the USB driver to use, initializes a few internal&n; * structures, incrementes the usage counter, and returns a pointer to it.&n; *&n; * If no memory is available, NULL is returned.&n; *&n; * If the driver want to use this urb for interrupt, control, or bulk&n; * endpoints, pass &squot;0&squot; as the number of iso packets.&n; *&n; * The driver must call usb_free_urb() when it is finished with the urb.&n; */
 DECL|function|usb_alloc_urb
@@ -3075,7 +3105,7 @@ id|urb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_get_urb - incrementes the reference count of the urb&n; * @urb: pointer to the urb to modify&n; *&n; * This must be  called whenever a urb is transfered from a device driver to a&n; * host controller driver.  This allows proper reference counting to happen&n; * for urbs.&n; *&n; * A pointer to the urb with the incremented reference counter is returned.&n; */
+multiline_comment|/**&n; * usb_get_urb - increments the reference count of the urb&n; * @urb: pointer to the urb to modify&n; *&n; * This must be  called whenever a urb is transfered from a device driver to a&n; * host controller driver.  This allows proper reference counting to happen&n; * for urbs.&n; *&n; * A pointer to the urb with the incremented reference counter is returned.&n; */
 DECL|function|usb_get_urb
 r_struct
 id|urb
@@ -3138,6 +3168,42 @@ id|urb-&gt;dev-&gt;bus
 op_logical_and
 id|urb-&gt;dev-&gt;bus-&gt;op
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|usb_maxpacket
+c_func
+(paren
+id|urb-&gt;dev
+comma
+id|urb-&gt;pipe
+comma
+id|usb_pipeout
+c_func
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+op_le
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s: pipe %x has invalid size (&lt;= 0)&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;pipe
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EMSGSIZE
+suffix:semicolon
+)brace
 r_return
 id|urb-&gt;dev-&gt;bus-&gt;op
 op_member_access_from_pointer
@@ -3149,7 +3215,7 @@ comma
 id|mem_flags
 )paren
 suffix:semicolon
-r_else
+)brace
 r_return
 op_minus
 id|ENODEV
@@ -6068,8 +6134,9 @@ id|dev-&gt;dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Free up the device itself */
-id|usb_free_dev
+multiline_comment|/* Decrement the reference count, it&squot;ll auto free everything when */
+multiline_comment|/* it hits 0 which could very well be now */
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -8121,6 +8188,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * By the time we get here, the device has gotten a new device ID&n; * and is in the default state. We need to identify the thing and&n; * get the ball rolling..&n; *&n; * Returns 0 for success, != 0 for error.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
+DECL|macro|NEW_DEVICE_RETRYS
+mdefine_line|#define NEW_DEVICE_RETRYS&t;2
+DECL|macro|SET_ADDRESS_RETRYS
+mdefine_line|#define SET_ADDRESS_RETRYS&t;2
 DECL|function|usb_new_device
 r_int
 id|usb_new_device
@@ -8134,6 +8205,14 @@ id|dev
 (brace
 r_int
 id|err
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+id|j
 suffix:semicolon
 multiline_comment|/* USB v1.1 5.5.3 */
 multiline_comment|/* We read the first 8 bytes from the device descriptor to get to */
@@ -8153,6 +8232,36 @@ l_int|0
 op_assign
 l_int|8
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NEW_DEVICE_RETRYS
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|SET_ADDRESS_RETRYS
+suffix:semicolon
+op_increment
+id|j
+)paren
+(brace
 id|err
 op_assign
 id|usb_set_address
@@ -8161,6 +8270,22 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ge
+l_int|0
+)paren
+r_break
+suffix:semicolon
+id|wait_ms
+c_func
+(paren
+l_int|200
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8220,6 +8345,22 @@ comma
 l_int|8
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ge
+l_int|8
+)paren
+r_break
+suffix:semicolon
+id|wait_ms
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8885,7 +9026,7 @@ c_func
 id|usb_exit
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * USB may be built into the kernel or be built as modules.&n; * If the USB core [and maybe a host controller driver] is built&n; * into the kernel, and other device drivers are built as modules,&n; * then these symbols need to be exported for the modules to use.&n; */
+multiline_comment|/*&n; * USB may be built into the kernel or be built as modules.&n; * These symbols are exported for device (or host controller)&n; * driver modules to use.&n; */
 DECL|variable|usb_ifnum_to_ifpos
 id|EXPORT_SYMBOL
 c_func
@@ -8956,6 +9097,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_free_dev
+)paren
+suffix:semicolon
+DECL|variable|usb_get_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_get_dev
+)paren
+suffix:semicolon
+DECL|variable|usb_hub_tt_clear_buffer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_hub_tt_clear_buffer
 )paren
 suffix:semicolon
 DECL|variable|usb_find_interface_driver_for_ifnum
@@ -9148,13 +9303,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_set_interface
-)paren
-suffix:semicolon
-DECL|variable|usb_make_path
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|usb_make_path
 )paren
 suffix:semicolon
 DECL|variable|usb_devfs_handle

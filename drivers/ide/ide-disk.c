@@ -1287,8 +1287,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 comma
 id|flags
 )paren
@@ -1345,8 +1344,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 comma
 id|flags
 )paren
@@ -1778,22 +1776,6 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-multiline_comment|/* FIXME: Hmm... just bailing out my be problematic, since there *is*&n;&t; * activity during boot. For now the same problem persists in&n;&t; * set_pio_mode() we will have to do something about it soon.&n;&t; */
-r_if
-c_cond
-(paren
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|handler
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1883,21 +1865,6 @@ r_int
 id|arg
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|handler
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
 id|drive-&gt;nowerr
 op_assign
 id|arg
@@ -2333,22 +2300,11 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* wait until all commands are finished */
-id|printk
-c_func
-(paren
-l_string|&quot;ide_disk_suspend()&bslash;n&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: waiting for spinlocks should be done instead. */
 r_while
 c_loop
 (paren
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|handler
+id|drive-&gt;channel-&gt;handler
 )paren
 id|yield
 c_func
@@ -4133,8 +4089,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -4238,8 +4193,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -4324,8 +4278,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -4410,8 +4363,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -4422,7 +4374,8 @@ r_case
 id|HDIO_GET_ACOUSTIC
 suffix:colon
 (brace
-id|u8
+r_int
+r_int
 id|val
 op_assign
 id|drive-&gt;acoustic
@@ -4494,8 +4447,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -4579,8 +4531,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -4596,7 +4547,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *      IDE subdriver functions, registered with ide.c&n; */
+multiline_comment|/*&n; * Subdriver functions.&n; */
 DECL|variable|idedisk_driver
 r_static
 r_struct
@@ -4709,6 +4660,7 @@ id|drive
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;%s: cleanup_module() called while still busy&bslash;n&quot;
@@ -4716,11 +4668,10 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-id|failed
 op_increment
+id|failed
 suffix:semicolon
 )brace
-multiline_comment|/* We must remove proc entries defined in this module.&n;&t;&t;   Otherwise we oops while accessing these entries */
 )brace
 )brace
 DECL|function|idedisk_init
@@ -4831,8 +4782,8 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|failed
 op_decrement
+id|failed
 suffix:semicolon
 )brace
 id|revalidate_drives

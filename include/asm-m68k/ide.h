@@ -104,10 +104,6 @@ DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|#undef SUPPORT_SLOW_DATA_PORTS
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 mdefine_line|#define SUPPORT_SLOW_DATA_PORTS 0
-DECL|macro|SUPPORT_VLB_SYNC
-macro_line|#undef SUPPORT_VLB_SYNC
-DECL|macro|SUPPORT_VLB_SYNC
-mdefine_line|#define SUPPORT_VLB_SYNC 0
 multiline_comment|/* this definition is used only on startup .. */
 DECL|macro|HD_DATA
 macro_line|#undef HD_DATA
@@ -178,6 +174,11 @@ mdefine_line|#define insw_swapw(port, buf, nr) raw_insw_swapw(ADDR_TRANS_W(port)
 DECL|macro|outsw_swapw
 mdefine_line|#define outsw_swapw(port, buf, nr) raw_outsw_swapw(ADDR_TRANS_W(port),buf,nr)
 macro_line|#endif /* CONFIG_ATARI || CONFIG_Q40 */
+DECL|macro|ATA_ARCH_ACK_INTR
+mdefine_line|#define ATA_ARCH_ACK_INTR
+macro_line|#ifdef CONFIG_ATARI
+DECL|macro|ATA_ARCH_LOCK
+mdefine_line|#define ATA_ARCH_LOCK
 DECL|function|ide_release_lock
 r_static
 id|__inline__
@@ -189,7 +190,6 @@ op_star
 id|ide_lock
 )paren
 (brace
-macro_line|#ifdef CONFIG_ATARI
 r_if
 c_cond
 (paren
@@ -225,7 +225,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ATARI */
 )brace
 DECL|function|ide_get_lock
 r_static
@@ -258,7 +257,6 @@ op_star
 id|data
 )paren
 (brace
-macro_line|#ifdef CONFIG_ATARI
 r_if
 c_cond
 (paren
@@ -305,10 +303,8 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ATARI */
 )brace
-DECL|macro|ide_ack_intr
-mdefine_line|#define ide_ack_intr(hwif)&t;((hwif)-&gt;hw.ack_intr ? (hwif)-&gt;hw.ack_intr(hwif) : 1)
+macro_line|#endif /* CONFIG_ATARI */
 multiline_comment|/*&n; * On the Atari, we sometimes can&squot;t enable interrupts:&n; */
 multiline_comment|/* MSch: changed sti() to STI() wherever possible in ide.c; moved STI() def. &n; * to asm/ide.h &n; */
 multiline_comment|/* The Atari interrupt structure strictly requires that the IPL isn&squot;t lowered&n; * uncontrolled in an interrupt handler. In the concrete case, the IDE&n; * interrupt is already a slow int, so the irq is already disabled at the time&n; * the handler is called, and the IPL has been lowered to the minimum value&n; * possible. To avoid going below that, STI() checks for being called inside&n; * an interrupt, and in that case it does nothing. Hope that is reasonable and&n; * works. (Roman)&n; */

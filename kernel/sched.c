@@ -9,14 +9,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
-multiline_comment|/*&n; * Priority of a process goes from 0 to 139. The 0-99&n; * priority range is allocated to RT tasks, the 100-139&n; * range is for SCHED_OTHER tasks. Priority values are&n; * inverted: lower p-&gt;prio value means higher priority.&n; * &n; * MAX_USER_RT_PRIO allows the actual maximum RT priority&n; * to be separate from the value exported to user-space.&n; * NOTE: MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
-DECL|macro|MAX_RT_PRIO
-mdefine_line|#define MAX_RT_PRIO&t;&t;100
-DECL|macro|MAX_USER_RT_PRIO
-mdefine_line|#define MAX_USER_RT_PRIO&t;100
-DECL|macro|MAX_PRIO
-mdefine_line|#define MAX_PRIO&t;&t;(MAX_RT_PRIO + 40)
-multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ 100 ... 139 (MAX_PRIO-1) ],&n; * and back.&n; */
+multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ MAX_RT_PRIO..MAX_PRIO-1 ],&n; * and back.&n; */
 DECL|macro|NICE_TO_PRIO
 mdefine_line|#define NICE_TO_PRIO(nice)&t;(MAX_RT_PRIO + (nice) + 20)
 DECL|macro|PRIO_TO_NICE
@@ -3708,7 +3701,7 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Valid priorities for SCHED_FIFO and SCHED_RR are 1..99, valid&n;&t; * priority for SCHED_OTHER is 0.&n;&t; */
+multiline_comment|/*&n;&t; * Valid priorities for SCHED_FIFO and SCHED_RR are&n;&t; * 1..MAX_USER_RT_PRIO, valid priority for SCHED_OTHER is 0.&n;&t; */
 id|retval
 op_assign
 op_minus
