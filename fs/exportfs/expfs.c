@@ -659,6 +659,12 @@ c_func
 id|ppd
 )paren
 suffix:semicolon
+id|dput
+c_func
+(paren
+id|pd
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -669,12 +675,6 @@ id|ENOENT
 )paren
 multiline_comment|/* some race between get_parent and&n;&t;&t;&t;&t;&t; * get_name?  just try again&n;&t;&t;&t;&t;&t; */
 r_continue
-suffix:semicolon
-id|dput
-c_func
-(paren
-id|pd
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -993,6 +993,10 @@ c_func
 op_amp
 id|dcache_lock
 )paren
+suffix:semicolon
+id|toput
+op_assign
+l_int|NULL
 suffix:semicolon
 id|head
 op_assign
