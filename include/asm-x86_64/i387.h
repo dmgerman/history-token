@@ -93,12 +93,33 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * FPU lazy state save handling...&n; */
-DECL|macro|kernel_fpu_end
-mdefine_line|#define kernel_fpu_end() stts()
 DECL|macro|unlazy_fpu
 mdefine_line|#define unlazy_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
+multiline_comment|/* Ignore delayed exceptions from user space */
+DECL|function|tolerant_fwait
+r_static
+r_inline
+r_void
+id|tolerant_fwait
+c_func
+(paren
+r_void
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;1: fwait&bslash;n&quot;
+l_string|&quot;2:&bslash;n&quot;
+l_string|&quot;   .section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;.align 8&bslash;n&quot;
+l_string|&quot;&t;.quad 1b,2b&bslash;n&quot;
+l_string|&quot;&t;.previous&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 DECL|macro|clear_fpu
-mdefine_line|#define clear_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fnclex ; fwait&quot;);&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;thread_info-&gt;status &amp;= ~TS_USEDFPU;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define clear_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) {&t;&t;&bslash;&n;&t;&t;tolerant_fwait();&t;&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;thread_info-&gt;status &amp;= ~TS_USEDFPU;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * ptrace request handers...&n; */
 r_extern
 r_int
@@ -318,6 +339,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -351,6 +377,27 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|function|kernel_fpu_end
+r_static
+r_inline
+r_void
+id|kernel_fpu_end
+c_func
+(paren
+r_void
+)paren
+(brace
+id|stts
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|save_init_fpu
 r_static
 r_inline
@@ -367,7 +414,7 @@ id|tsk
 id|asm
 r_volatile
 (paren
-l_string|&quot;fxsave %0 ; fnclex&quot;
+l_string|&quot;rex64 ; fxsave %0 ; fnclex&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren

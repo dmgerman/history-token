@@ -23,6 +23,12 @@ id|node_to_cpumask
 (braket
 )braket
 suffix:semicolon
+r_extern
+id|cpumask_t
+id|pci_bus_to_cpumask
+(braket
+)braket
+suffix:semicolon
 DECL|macro|cpu_to_node
 mdefine_line|#define cpu_to_node(cpu)&t;&t;(cpu_to_node[cpu])
 DECL|macro|parent_node
@@ -31,17 +37,30 @@ DECL|macro|node_to_first_cpu
 mdefine_line|#define node_to_first_cpu(node) &t;(__ffs(node_to_cpumask[node]))
 DECL|macro|node_to_cpumask
 mdefine_line|#define node_to_cpumask(node)&t;&t;(node_to_cpumask[node])
-DECL|function|pcibus_to_cpumask
+DECL|function|__pcibus_to_cpumask
 r_static
 r_inline
 id|cpumask_t
-id|pcibus_to_cpumask
+id|__pcibus_to_cpumask
 c_func
 (paren
 r_int
 id|bus
 )paren
 (brace
+id|cpumask_t
+id|busmask
+op_assign
+id|pci_bus_to_cpumask
+(braket
+id|bus
+)braket
+suffix:semicolon
+id|cpumask_t
+id|online
+op_assign
+id|cpu_online_map
+suffix:semicolon
 id|cpumask_t
 id|res
 suffix:semicolon
@@ -50,18 +69,18 @@ c_func
 (paren
 id|res
 comma
-id|pci_bus_to_cpumask
-(braket
-id|bus
-)braket
+id|busmask
 comma
-id|cpu_online_map
+id|online
 )paren
 suffix:semicolon
 r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/* broken generic file uses #ifndef later on this */
+DECL|macro|pcibus_to_cpumask
+mdefine_line|#define pcibus_to_cpumask(bus) __pcibus_to_cpumask(bus)
 DECL|macro|NODE_BALANCE_RATE
 mdefine_line|#define NODE_BALANCE_RATE 30&t;/* CHECKME */ 
 macro_line|#endif

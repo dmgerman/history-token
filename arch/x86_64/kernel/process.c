@@ -2059,6 +2059,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -2068,9 +2069,8 @@ c_func
 (paren
 id|SIGCHLD
 comma
-id|regs.rsp
+id|regs-&gt;rsp
 comma
-op_amp
 id|regs
 comma
 l_int|0
@@ -2107,6 +2107,7 @@ id|child_tid
 comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -2118,7 +2119,7 @@ id|newsp
 )paren
 id|newsp
 op_assign
-id|regs.rsp
+id|regs-&gt;rsp
 suffix:semicolon
 r_return
 id|do_fork
@@ -2131,7 +2132,6 @@ id|CLONE_IDLETASK
 comma
 id|newsp
 comma
-op_amp
 id|regs
 comma
 l_int|0
@@ -2151,6 +2151,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -2164,9 +2165,8 @@ id|CLONE_VM
 op_or
 id|SIGCHLD
 comma
-id|regs.rsp
+id|regs-&gt;rsp
 comma
-op_amp
 id|regs
 comma
 l_int|0

@@ -471,13 +471,6 @@ id|MAX_MP_BUSSES
 )braket
 suffix:semicolon
 r_extern
-id|cpumask_t
-id|pci_bus_to_cpumask
-(braket
-l_int|256
-)braket
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|boot_cpu_physical_apicid

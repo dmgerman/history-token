@@ -509,6 +509,7 @@ id|mask
 comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -551,7 +552,7 @@ op_amp
 id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
-id|regs.rax
+id|regs-&gt;rax
 op_assign
 op_minus
 id|EINTR
@@ -577,7 +578,6 @@ c_cond
 id|do_signal
 c_func
 (paren
-op_amp
 id|regs
 comma
 op_amp
@@ -609,6 +609,7 @@ id|uoss_ptr
 comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -732,7 +733,7 @@ comma
 op_amp
 id|uoss
 comma
-id|regs.rsp
+id|regs-&gt;rsp
 )paren
 suffix:semicolon
 id|set_fs
@@ -1253,6 +1254,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -1269,7 +1271,7 @@ id|__user
 op_star
 )paren
 (paren
-id|regs.rsp
+id|regs-&gt;rsp
 op_minus
 l_int|8
 )paren
@@ -1389,7 +1391,6 @@ c_cond
 id|ia32_restore_sigcontext
 c_func
 (paren
-op_amp
 id|regs
 comma
 op_amp
@@ -1410,7 +1411,6 @@ suffix:colon
 id|signal_fault
 c_func
 (paren
-op_amp
 id|regs
 comma
 id|frame
@@ -1430,6 +1430,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -1437,6 +1438,19 @@ r_struct
 id|rt_sigframe
 id|__user
 op_star
+id|frame
+suffix:semicolon
+id|sigset_t
+id|set
+suffix:semicolon
+r_int
+r_int
+id|eax
+suffix:semicolon
+r_struct
+id|pt_regs
+id|tregs
+suffix:semicolon
 id|frame
 op_assign
 (paren
@@ -1446,17 +1460,10 @@ id|__user
 op_star
 )paren
 (paren
-id|regs.rsp
+id|regs-&gt;rsp
 op_minus
 l_int|4
 )paren
-suffix:semicolon
-id|sigset_t
-id|set
-suffix:semicolon
-r_int
-r_int
-id|eax
 suffix:semicolon
 r_if
 c_cond
@@ -1538,7 +1545,6 @@ c_cond
 id|ia32_restore_sigcontext
 c_func
 (paren
-op_amp
 id|regs
 comma
 op_amp
@@ -1551,6 +1557,11 @@ id|eax
 r_goto
 id|badframe
 suffix:semicolon
+id|tregs
+op_assign
+op_star
+id|regs
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1562,7 +1573,8 @@ id|frame-&gt;uc.uc_stack
 comma
 l_int|NULL
 comma
-id|regs
+op_amp
+id|tregs
 )paren
 op_eq
 op_minus
@@ -1579,7 +1591,6 @@ suffix:colon
 id|signal_fault
 c_func
 (paren
-op_amp
 id|regs
 comma
 id|frame

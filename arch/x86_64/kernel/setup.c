@@ -97,6 +97,7 @@ r_int
 r_int
 id|saved_video_mode
 suffix:semicolon
+macro_line|#ifdef CONFIG_SWIOTLB
 DECL|variable|swiotlb
 r_int
 id|swiotlb
@@ -108,6 +109,7 @@ c_func
 id|swiotlb
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Setup options&n; */
 DECL|struct|drive_info_struct
 DECL|member|dummy
@@ -3385,6 +3387,14 @@ comma
 id|LVL_2
 comma
 l_int|2048
+)brace
+comma
+(brace
+l_int|0x60
+comma
+id|LVL_1_DATA
+comma
+l_int|16
 )brace
 comma
 (brace
