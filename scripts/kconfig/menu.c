@@ -1410,10 +1410,6 @@ c_cond
 id|type
 op_eq
 id|P_MENU
-op_logical_or
-id|type
-op_eq
-id|P_ROOTMENU
 )paren
 r_break
 suffix:semicolon

@@ -297,7 +297,6 @@ DECL|enumerator|P_UNKNOWN
 DECL|enumerator|P_PROMPT
 DECL|enumerator|P_COMMENT
 DECL|enumerator|P_MENU
-DECL|enumerator|P_ROOTMENU
 DECL|enumerator|P_DEFAULT
 DECL|enumerator|P_CHOICE
 id|P_UNKNOWN
@@ -307,8 +306,6 @@ comma
 id|P_COMMENT
 comma
 id|P_MENU
-comma
-id|P_ROOTMENU
 comma
 id|P_DEFAULT
 comma
@@ -450,6 +447,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|MENU_CHANGED
 mdefine_line|#define MENU_CHANGED&t;&t;0x0001
+DECL|macro|MENU_ROOT
+mdefine_line|#define MENU_ROOT&t;&t;0x0002
 macro_line|#ifndef SWIG
 r_extern
 r_struct

@@ -2788,12 +2788,6 @@ r_return
 l_string|&quot;menu&quot;
 suffix:semicolon
 r_case
-id|P_ROOTMENU
-suffix:colon
-r_return
-l_string|&quot;rootmenu&quot;
-suffix:semicolon
-r_case
 id|P_DEFAULT
 suffix:colon
 r_return
