@@ -895,11 +895,6 @@ id|de
 op_assign
 l_int|NULL
 suffix:semicolon
-id|dev_t
-id|dev
-op_assign
-id|bdev-&gt;bd_dev
-suffix:semicolon
 r_char
 id|buf
 (braket
@@ -1193,7 +1188,7 @@ suffix:semicolon
 id|md_autodetect_dev
 c_func
 (paren
-id|dev
+id|bdev-&gt;bd_dev
 op_plus
 id|j
 )paren
