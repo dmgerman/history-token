@@ -2328,9 +2328,11 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
+macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
 r_int
 id|i
 suffix:semicolon
+macro_line|#endif
 id|ifp
 op_assign
 id|XFS_IFORK_PTR
