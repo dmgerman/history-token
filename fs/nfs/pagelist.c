@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
+macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs_page.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_flushd.h&gt;
@@ -1668,7 +1669,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 multiline_comment|/* Let&squot;s try to free up some completed NFSv3 unstable writes */
 id|nfs_scan_lru_commit
 c_func

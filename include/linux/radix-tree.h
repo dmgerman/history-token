@@ -5,8 +5,6 @@ mdefine_line|#define _LINUX_RADIX_TREE_H
 r_struct
 id|radix_tree_node
 suffix:semicolon
-DECL|macro|RADIX_TREE_SLOT_RESERVED
-mdefine_line|#define RADIX_TREE_SLOT_RESERVED ((void *)~0UL)
 DECL|struct|radix_tree_root
 r_struct
 id|radix_tree_root
@@ -34,24 +32,6 @@ DECL|macro|RADIX_TREE
 mdefine_line|#define RADIX_TREE(name, mask) &bslash;&n;&t;struct radix_tree_root name = RADIX_TREE_INIT(mask)
 DECL|macro|INIT_RADIX_TREE
 mdefine_line|#define INIT_RADIX_TREE(root, mask)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&bslash;&n;&t;(root)-&gt;height = 0;&t;&t;&bslash;&n;&t;(root)-&gt;gfp_mask = (mask);&t;&bslash;&n;&t;(root)-&gt;rnode = NULL;&t;&t;&bslash;&n;} while (0)
-r_extern
-r_int
-id|radix_tree_reserve
-c_func
-(paren
-r_struct
-id|radix_tree_root
-op_star
-comma
-r_int
-r_int
-comma
-r_void
-op_star
-op_star
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|radix_tree_insert

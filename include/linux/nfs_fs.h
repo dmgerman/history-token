@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
+macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs_page.h&gt;
 macro_line|#include &lt;linux/nfs_xdr.h&gt;
 multiline_comment|/*&n; * Enable debugging support for nfs client.&n; * Requires RPC_DEBUG.&n; */
@@ -142,6 +143,11 @@ r_int
 r_int
 id|attrtimeo_timestamp
 suffix:semicolon
+DECL|member|change_attr
+id|__u64
+id|change_attr
+suffix:semicolon
+multiline_comment|/* v4 only */
 multiline_comment|/*&n;&t; * Timestamp that dates the change made to read_cache_mtime.&n;&t; * This is of use for dentry revalidation&n;&t; */
 DECL|member|cache_mtime_jiffies
 r_int
@@ -281,6 +287,8 @@ DECL|macro|NFS_CACHE_MTIME
 mdefine_line|#define NFS_CACHE_MTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_mtime)
 DECL|macro|NFS_CACHE_ISIZE
 mdefine_line|#define NFS_CACHE_ISIZE(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_isize)
+DECL|macro|NFS_CHANGE_ATTR
+mdefine_line|#define NFS_CHANGE_ATTR(inode)&t;&t;(NFS_I(inode)-&gt;change_attr)
 DECL|macro|NFS_NEXTSCAN
 mdefine_line|#define NFS_NEXTSCAN(inode)&t;&t;(NFS_I(inode)-&gt;nextscan)
 DECL|macro|NFS_CACHEINV
@@ -838,7 +846,7 @@ id|list_head
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_extern
 r_int
 id|nfs_commit_file
@@ -1103,6 +1111,11 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Hack for future NFS swap support */
+macro_line|#ifndef IS_SWAPFILE
+DECL|macro|IS_SWAPFILE
+macro_line|# define IS_SWAPFILE(inode)&t;(0)
+macro_line|#endif
 multiline_comment|/*&n; * linux/fs/nfs/read.c&n; */
 r_extern
 r_int
@@ -1171,6 +1184,33 @@ op_star
 comma
 r_struct
 id|list_head
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_readpage_result
+c_func
+(paren
+r_struct
+id|rpc_task
+op_star
+comma
+r_int
+r_int
+id|count
+comma
+r_int
+id|eof
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_readdata_release
+c_func
+(paren
+r_struct
+id|rpc_task
 op_star
 )paren
 suffix:semicolon

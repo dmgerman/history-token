@@ -720,6 +720,7 @@ DECL|macro|__pte_offset
 mdefine_line|#define __pte_offset(address) &bslash;&n;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel
 mdefine_line|#define pte_offset_kernel(dir, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) +  __pte_offset(address))
+macro_line|#if defined(CONFIG_HIGHPTE)
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE0) + __pte_offset(address))
 DECL|macro|pte_offset_map_nested
@@ -728,6 +729,16 @@ DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) kunmap_atomic(pte, KM_PTE0)
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) kunmap_atomic(pte, KM_PTE1)
+macro_line|#else
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)page_address(pmd_page(*(dir))) + __pte_offset(address))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir, address) pte_offset_map(dir, address)
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte) do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte) do { } while (0)
+macro_line|#endif
 macro_line|#if defined(CONFIG_HIGHPTE) &amp;&amp; defined(CONFIG_HIGHMEM4G)
 DECL|typedef|pte_addr_t
 r_typedef

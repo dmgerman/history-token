@@ -61,6 +61,12 @@ id|FIX_F00F_IDT
 comma
 multiline_comment|/* Virtual mapping for IDT */
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_CYCLONE
+DECL|enumerator|FIX_CYCLONE_TIMER
+id|FIX_CYCLONE_TIMER
+comma
+multiline_comment|/*cyclone timer register*/
+macro_line|#endif 
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|enumerator|FIX_KMAP_BEGIN
 id|FIX_KMAP_BEGIN

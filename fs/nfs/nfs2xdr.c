@@ -344,7 +344,7 @@ id|p
 op_increment
 )paren
 suffix:semicolon
-id|fattr-&gt;fsid
+id|fattr-&gt;fsid_u.nfs3
 op_assign
 id|ntohl
 c_func
