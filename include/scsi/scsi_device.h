@@ -13,6 +13,23 @@ suffix:semicolon
 r_struct
 id|scsi_mode_data
 suffix:semicolon
+multiline_comment|/*&n; * sdev state&n; */
+r_enum
+(brace
+DECL|enumerator|SDEV_ADD
+id|SDEV_ADD
+comma
+DECL|enumerator|SDEV_DEL
+id|SDEV_DEL
+comma
+DECL|enumerator|SDEV_CANCEL
+id|SDEV_CANCEL
+comma
+DECL|enumerator|SDEV_RECOVERY
+id|SDEV_RECOVERY
+comma
+)brace
+suffix:semicolon
 DECL|struct|scsi_device
 r_struct
 id|scsi_device
@@ -374,10 +391,17 @@ r_struct
 id|class_device
 id|sdev_classdev
 suffix:semicolon
+DECL|member|sdev_state
+r_int
+r_int
+id|sdev_state
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_scsi_device
 mdefine_line|#define&t;to_scsi_device(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_gendev)
+DECL|macro|class_to_sdev
+mdefine_line|#define&t;class_to_sdev(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_classdev)
 r_extern
 r_struct
 id|scsi_device

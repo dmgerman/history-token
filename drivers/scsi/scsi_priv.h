@@ -528,6 +528,11 @@ id|shost_class
 suffix:semicolon
 r_extern
 r_struct
+r_class
+id|sdev_class
+suffix:semicolon
+r_extern
+r_struct
 id|bus_type
 id|scsi_bus_type
 suffix:semicolon
