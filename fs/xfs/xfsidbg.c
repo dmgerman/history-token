@@ -23663,9 +23663,19 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;mk_sharedro %d dirversion %d dirblkfsbs %d &amp;dirops 0x%p&bslash;n&quot;
+l_string|&quot;mk_sharedro %d inode_quiesce %d sectbb_log %d&bslash;n&quot;
 comma
 id|mp-&gt;m_mk_sharedro
+comma
+id|mp-&gt;m_inode_quiesce
+comma
+id|mp-&gt;m_sectbb_log
+)paren
+suffix:semicolon
+id|kdb_printf
+c_func
+(paren
+l_string|&quot;dirversion %d dirblkfsbs %d &amp;dirops 0x%p&bslash;n&quot;
 comma
 id|mp-&gt;m_dirversion
 comma

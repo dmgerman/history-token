@@ -6101,6 +6101,10 @@ comma
 id|agno
 comma
 id|XFS_AGI_DADDR
+c_func
+(paren
+id|mp
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the agi buffer first.  It ensures lock ordering&n;&t; * on the list.&n;&t; */
@@ -6117,7 +6121,13 @@ id|mp-&gt;m_ddev_targp
 comma
 id|agdaddr
 comma
+id|XFS_FSS_TO_BB
+c_func
+(paren
+id|mp
+comma
 l_int|1
+)paren
 comma
 l_int|0
 comma
@@ -6554,6 +6564,10 @@ comma
 id|agno
 comma
 id|XFS_AGI_DADDR
+c_func
+(paren
+id|mp
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the agi buffer first.  It ensures lock ordering&n;&t; * on the list.&n;&t; */
@@ -6570,7 +6584,13 @@ id|mp-&gt;m_ddev_targp
 comma
 id|agdaddr
 comma
+id|XFS_FSS_TO_BB
+c_func
+(paren
+id|mp
+comma
 l_int|1
+)paren
 comma
 l_int|0
 comma
@@ -6582,8 +6602,6 @@ r_if
 c_cond
 (paren
 id|error
-op_ne
-l_int|0
 )paren
 (brace
 id|cmn_err

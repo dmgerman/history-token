@@ -1067,26 +1067,6 @@ id|EFSCORRUPTED
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sbp-&gt;sb_logsectlog
-)paren
-id|sbp-&gt;sb_logsectlog
-op_assign
-id|sbp-&gt;sb_sectlog
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sbp-&gt;sb_logsectsize
-)paren
-id|sbp-&gt;sb_logsectsize
-op_assign
-id|sbp-&gt;sb_sectsize
-suffix:semicolon
 multiline_comment|/*&n;&t; * More sanity checking. These were stolen directly from&n;&t; * xfs_repair.&n;&t; */
 r_if
 c_cond
@@ -1100,14 +1080,6 @@ template_param
 id|XFS_MAX_SECTORSIZE
 op_logical_or
 id|sbp-&gt;sb_sectlog
-template_param
-id|XFS_MAX_SECTORSIZE_LOG
-op_logical_or
-id|sbp-&gt;sb_logsectsize
-template_param
-id|XFS_MAX_SECTORSIZE
-op_logical_or
-id|sbp-&gt;sb_logsectlog
 template_param
 id|XFS_MAX_SECTORSIZE_LOG
 op_logical_or
@@ -1275,7 +1247,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS: Trying to mount file system with blocksize %d bytes&quot;
+l_string|&quot;XFS: Attempted to mount file system with blocksize %d bytes&quot;
 comma
 id|sbp-&gt;sb_blocksize
 )paren
@@ -1285,7 +1257,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS: Only page-sized (%d bytes) or less blocksizes currently work.&quot;
+l_string|&quot;XFS: Only page-sized (%d) or less blocksizes currently work.&quot;
 comma
 id|PAGE_SIZE
 )paren
@@ -3468,7 +3440,7 @@ id|mp-&gt;m_logdev_targp
 comma
 id|d
 op_minus
-id|XFS_LOGS_TO_BB
+id|XFS_FSB_TO_BB
 c_func
 (paren
 id|mp
@@ -3476,7 +3448,7 @@ comma
 l_int|1
 )paren
 comma
-id|XFS_LOGS_TO_BB
+id|XFS_FSB_TO_BB
 c_func
 (paren
 id|mp

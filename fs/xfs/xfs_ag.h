@@ -164,7 +164,7 @@ DECL|macro|XFS_AGF_ALL_BITS
 mdefine_line|#define XFS_AGF_ALL_BITS&t;((1 &lt;&lt; XFS_AGF_NUM_BITS) - 1)
 multiline_comment|/* disk block (xfs_daddr_t) in the AG */
 DECL|macro|XFS_AGF_DADDR
-mdefine_line|#define XFS_AGF_DADDR&t;&t;((xfs_daddr_t)1)
+mdefine_line|#define XFS_AGF_DADDR(mp)&t;((xfs_daddr_t)(1 &lt;&lt; (mp)-&gt;m_sectbb_log))
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AGF_BLOCK)
 id|xfs_agblock_t
 id|xfs_agf_block
@@ -180,7 +180,7 @@ DECL|macro|XFS_AGF_BLOCK
 mdefine_line|#define XFS_AGF_BLOCK(mp)&t;xfs_agf_block(mp)
 macro_line|#else
 DECL|macro|XFS_AGF_BLOCK
-mdefine_line|#define XFS_AGF_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_AGF_DADDR)
+mdefine_line|#define XFS_AGF_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_AGF_DADDR(mp))
 macro_line|#endif
 multiline_comment|/*&n; * Size of the unlinked inode hash table in the agi.&n; */
 DECL|macro|XFS_AGI_UNLINKED_BUCKETS
@@ -282,7 +282,7 @@ DECL|macro|XFS_AGI_ALL_BITS
 mdefine_line|#define XFS_AGI_ALL_BITS&t;((1 &lt;&lt; XFS_AGI_NUM_BITS) - 1)
 multiline_comment|/* disk block (xfs_daddr_t) in the AG */
 DECL|macro|XFS_AGI_DADDR
-mdefine_line|#define XFS_AGI_DADDR&t;&t;((xfs_daddr_t)2)
+mdefine_line|#define XFS_AGI_DADDR(mp)&t;((xfs_daddr_t)(2 &lt;&lt; (mp)-&gt;m_sectbb_log))
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AGI_BLOCK)
 id|xfs_agblock_t
 id|xfs_agi_block
@@ -298,11 +298,11 @@ DECL|macro|XFS_AGI_BLOCK
 mdefine_line|#define XFS_AGI_BLOCK(mp)&t;xfs_agi_block(mp)
 macro_line|#else
 DECL|macro|XFS_AGI_BLOCK
-mdefine_line|#define XFS_AGI_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_AGI_DADDR)
+mdefine_line|#define XFS_AGI_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_AGI_DADDR(mp))
 macro_line|#endif
 multiline_comment|/*&n; * The third a.g. block contains the a.g. freelist, an array&n; * of block pointers to blocks owned by the allocation btree code.&n; */
 DECL|macro|XFS_AGFL_DADDR
-mdefine_line|#define XFS_AGFL_DADDR&t;&t;((xfs_daddr_t)3)
+mdefine_line|#define XFS_AGFL_DADDR(mp)&t;((xfs_daddr_t)(3 &lt;&lt; (mp)-&gt;m_sectbb_log))
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AGFL_BLOCK)
 id|xfs_agblock_t
 id|xfs_agfl_block
@@ -318,10 +318,11 @@ DECL|macro|XFS_AGFL_BLOCK
 mdefine_line|#define XFS_AGFL_BLOCK(mp)&t;xfs_agfl_block(mp)
 macro_line|#else
 DECL|macro|XFS_AGFL_BLOCK
-mdefine_line|#define XFS_AGFL_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_AGFL_DADDR)
+mdefine_line|#define XFS_AGFL_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_AGFL_DADDR(mp))
 macro_line|#endif
 DECL|macro|XFS_AGFL_SIZE
-mdefine_line|#define XFS_AGFL_SIZE&t;&t;(BBSIZE / sizeof(xfs_agblock_t))
+mdefine_line|#define XFS_AGFL_SIZE(mp)&t;((mp)-&gt;m_sb.sb_sectsize / sizeof(xfs_agblock_t))
+multiline_comment|/* -- nathans TODO ... use of BBSIZE here - should be sector size -- */
 DECL|struct|xfs_agfl
 r_typedef
 r_struct
@@ -331,7 +332,12 @@ DECL|member|agfl_bno
 id|xfs_agblock_t
 id|agfl_bno
 (braket
-id|XFS_AGFL_SIZE
+id|BBSIZE
+op_div
+r_sizeof
+(paren
+id|xfs_agblock_t
+)paren
 )braket
 suffix:semicolon
 DECL|typedef|xfs_agfl_t
@@ -482,10 +488,10 @@ suffix:semicolon
 DECL|macro|XFS_AG_BEST_BLOCKS
 mdefine_line|#define XFS_AG_BEST_BLOCKS(bl,blks)&t;xfs_ag_best_blocks(bl,blks)
 macro_line|#else
-multiline_comment|/*--#define&t;XFS_AG_BEST_BLOCKS(bl)&t;((xfs_extlen_t)(XFS_AG_BEST_BYTES &gt;&gt; bl))*/
+multiline_comment|/*--#define XFS_AG_BEST_BLOCKS(bl) ((xfs_extlen_t)(XFS_AG_BEST_BYTES &gt;&gt; bl))*/
 multiline_comment|/*&n; * Best is XFS_AG_BEST_BLOCKS at and below 64 Gigabyte filesystems, and&n; * XFS_AG_MAX_BLOCKS above 64 Gigabytes.&n; */
 DECL|macro|XFS_AG_BEST_BLOCKS
-mdefine_line|#define XFS_AG_BEST_BLOCKS(bl,blks)&t;((xfs_extlen_t)((1LL &lt;&lt; (36 - bl)) &gt;= &bslash;&n;&t;&t;&t;&t;&t;&t;&t;blks) ? &bslash;&n;&t;&t;&t;&t;&t;&t;&t;((xfs_extlen_t)(XFS_AG_BEST_BYTES &gt;&gt; bl)) : &bslash;&n;&t;&t;&t;&t;&t;&t;&t;XFS_AG_MAX_BLOCKS(bl))
+mdefine_line|#define XFS_AG_BEST_BLOCKS(bl,blks)&t;&bslash;&n;&t;((xfs_extlen_t)((1LL &lt;&lt; (36 - bl)) &gt;= blks) ? &bslash;&n;&t;&t;((xfs_extlen_t)(XFS_AG_BEST_BYTES &gt;&gt; bl)) : &bslash;&n;&t;&t;XFS_AG_MAX_BLOCKS(bl))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_MAX_BLOCKS)
 id|xfs_extlen_t
