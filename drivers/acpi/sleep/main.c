@@ -491,7 +491,11 @@ c_cond
 id|i
 op_eq
 id|ACPI_STATE_S4
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|acpi_gbl_FACS-&gt;S4bios_f
 )paren
 (brace
@@ -507,6 +511,24 @@ c_func
 (paren
 l_string|&quot; S4bios&quot;
 )paren
+suffix:semicolon
+id|acpi_pm_ops.pm_disk_mode
+op_assign
+id|PM_DISK_FIRMWARE
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sleep_states
+(braket
+id|i
+)braket
+)paren
+id|acpi_pm_ops.pm_disk_mode
+op_assign
+id|PM_DISK_PLATFORM
 suffix:semicolon
 )brace
 )brace
