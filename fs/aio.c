@@ -2268,6 +2268,13 @@ op_amp
 id|ctx-&gt;ctx_lock
 )paren
 suffix:semicolon
+multiline_comment|/* sync iocbs put the task here for us */
+id|wake_up_process
+c_func
+(paren
+id|iocb-&gt;ki_user_obj
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
