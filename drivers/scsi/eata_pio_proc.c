@@ -475,7 +475,7 @@ id|scd
 comma
 op_amp
 id|HBA_ptr-&gt;my_devices
-suffix:semicolon
+comma
 id|siblings
 )paren
 (brace

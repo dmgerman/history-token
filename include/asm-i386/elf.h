@@ -66,6 +66,9 @@ mdefine_line|#define ELF_HWCAP&t;(boot_cpu_data.x86_capability[0])
 multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.&n;&n;   For the moment, we have only optimizations for the Intel generations,&n;   but that could change... */
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM  (system_utsname.machine)
+multiline_comment|/*&n; * Architecture-neutral AT_ values in 0-17, leave some room&n; * for more of them, start the x86-specific ones at 32.&n; */
+DECL|macro|AT_SYSINFO
+mdefine_line|#define AT_SYSINFO&t;32
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
@@ -124,6 +127,8 @@ suffix:semicolon
 DECL|macro|ELF_CORE_SYNC
 mdefine_line|#define ELF_CORE_SYNC dump_smp_unlazy_fpu
 macro_line|#endif
+DECL|macro|ARCH_DLINFO
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO, 0xffffe000);&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#endif
 eof
