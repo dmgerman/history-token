@@ -16,41 +16,6 @@ r_int
 r_int
 id|__softirq_pending
 suffix:semicolon
-DECL|member|__unused_1
-r_int
-r_int
-id|__unused_1
-suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|member|WAS__local_irq_count
-r_int
-r_int
-id|WAS__local_irq_count
-suffix:semicolon
-macro_line|#else
-DECL|member|__unused_on_SMP
-r_int
-r_int
-id|__unused_on_SMP
-suffix:semicolon
-multiline_comment|/* DaveM says use brlock for SMP irq. KAO */
-macro_line|#endif
-DECL|member|WAS__local_bh_count
-r_int
-r_int
-id|WAS__local_bh_count
-suffix:semicolon
-DECL|member|__syscall_count
-r_int
-r_int
-id|__syscall_count
-suffix:semicolon
-DECL|member|__ksoftirqd_task
-r_struct
-id|task_struct
-op_star
-id|__ksoftirqd_task
-suffix:semicolon
 DECL|typedef|irq_cpustat_t
 )brace
 id|____cacheline_aligned
@@ -105,12 +70,12 @@ DECL|macro|hardirq_trylock
 mdefine_line|#define hardirq_trylock()       (!in_interrupt())
 DECL|macro|hardirq_endlock
 mdefine_line|#define hardirq_endlock()       do { } while (0)
-macro_line|#ifndef CONFIG_SMP
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()             (preempt_count() += HARDIRQ_OFFSET)
 macro_line|#ifdef CONFIG_PREEMPT
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|in_atomic
-macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
+macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
 macro_line|#else
@@ -121,159 +86,10 @@ macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
 macro_line|#endif
 DECL|macro|irq_exit
 mdefine_line|#define irq_exit()                                                      &bslash;&n;do {                                                                    &bslash;&n;                preempt_count() -= IRQ_EXIT_OFFSET;                     &bslash;&n;                if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id())) &bslash;&n;                        do_softirq();                                   &bslash;&n;                preempt_enable_no_resched();                            &bslash;&n;} while (0)
-macro_line|#else
-multiline_comment|/* Note that local_irq_count() is replaced by sparc64 specific version for SMP */
-multiline_comment|/* XXX This is likely to be broken by the above preempt-based IRQs */
-DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;br_read_lock(BR_GLOBALIRQ_LOCK)
-DECL|macro|local_irq_count
-macro_line|#undef local_irq_count
-DECL|macro|local_irq_count
-mdefine_line|#define local_irq_count(cpu)&t;(__brlock_array[cpu][BR_GLOBALIRQ_LOCK])
-DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;br_read_unlock(BR_GLOBALIRQ_LOCK)
-macro_line|#endif
-macro_line|#ifdef CONFIG_PREEMPT
-DECL|macro|in_atomic
-macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
-macro_line|#else
-DECL|macro|in_atomic
-macro_line|# define in_atomic()&t;(preempt_count() != 0)
-macro_line|#endif
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|synchronize_irq
-mdefine_line|#define synchronize_irq(irq)&t;barrier()
-macro_line|#else /* (CONFIG_SMP) */
-DECL|function|irqs_running
-r_static
-id|__inline__
-r_int
-id|irqs_running
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|local_irq_count
-c_func
-(paren
-id|cpu_logical_map
-c_func
-(paren
-id|i
-)paren
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_extern
-r_int
-r_char
-id|global_irq_holder
-suffix:semicolon
-DECL|function|release_irqlock
-r_static
-r_inline
-r_void
-id|release_irqlock
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-multiline_comment|/* if we didn&squot;t own the irq lock, just ignore... */
-r_if
-c_cond
-(paren
-id|global_irq_holder
-op_eq
-(paren
-r_int
-r_char
-)paren
-id|cpu
-)paren
-(brace
-id|global_irq_holder
-op_assign
-id|NO_PROC_ID
-suffix:semicolon
-id|br_write_unlock
-c_func
-(paren
-id|BR_GLOBALIRQ_LOCK
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#if 0
-r_static
-r_inline
-r_int
-id|hardirq_trylock
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-id|spinlock_t
-op_star
-id|lock
-op_assign
-op_amp
-id|__br_write_locks
-(braket
-id|BR_GLOBALIRQ_LOCK
-)braket
-dot
-id|lock
-suffix:semicolon
-r_return
-(paren
-op_logical_neg
-id|local_irq_count
-c_func
-(paren
-id|cpu
-)paren
-op_logical_and
-op_logical_neg
-id|spin_is_locked
-c_func
-(paren
-id|lock
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
+macro_line|# define synchronize_irq(irq)&t;barrier()
+macro_line|#else /* SMP */
 r_extern
 r_void
 id|synchronize_irq
@@ -284,7 +100,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
-singleline_comment|// extern void show_stack(unsigned long * esp);
+macro_line|#endif /* SMP */
 macro_line|#endif /* __SPARC_HARDIRQ_H */
 eof
