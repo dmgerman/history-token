@@ -312,7 +312,8 @@ l_int|0
 suffix:semicolon
 DECL|variable|lopec_ide_regbase
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 id|lopec_ide_regbase
 (braket
 id|MAX_HWIFS
@@ -320,7 +321,8 @@ id|MAX_HWIFS
 suffix:semicolon
 DECL|variable|lopec_ide_ctl_regbase
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 id|lopec_ide_ctl_regbase
 (braket
 id|MAX_HWIFS
@@ -328,7 +330,8 @@ id|MAX_HWIFS
 suffix:semicolon
 DECL|variable|lopec_idedma_regbase
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 id|lopec_idedma_regbase
 suffix:semicolon
 r_static
@@ -430,7 +433,8 @@ DECL|function|lopec_ide_default_irq
 id|lopec_ide_default_irq
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace
@@ -479,7 +483,8 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 DECL|function|lopec_ide_default_io_base
 id|lopec_ide_default_io_base
 c_func
@@ -518,10 +523,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctl
 comma
 r_int
@@ -529,7 +536,8 @@ op_star
 id|irq
 )paren
 (brace
-id|ide_ioreg_t
+r_int
+r_int
 id|reg
 op_assign
 id|data

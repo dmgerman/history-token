@@ -466,10 +466,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data_port
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl_port
 comma
 r_int
@@ -477,7 +479,8 @@ op_star
 id|irq
 )paren
 (brace
-id|ide_ioreg_t
+r_int
+r_int
 id|reg
 op_assign
 id|data_port
@@ -558,7 +561,8 @@ DECL|function|menf1_ide_default_irq
 id|menf1_ide_default_irq
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace
@@ -589,7 +593,8 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 DECL|function|menf1_ide_default_io_base
 id|menf1_ide_default_io_base
 c_func

@@ -2283,7 +2283,7 @@ id|SCCE_ENET_TXB
 )paren
 suffix:semicolon
 multiline_comment|/* Install our interrupt handler.&n;&t;*/
-id|request_8xxirq
+id|request_irq
 c_func
 (paren
 id|SIU_INT_ENET

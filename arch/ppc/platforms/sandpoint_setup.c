@@ -976,7 +976,8 @@ l_int|0
 suffix:semicolon
 DECL|variable|sandpoint_ide_regbase
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 id|sandpoint_ide_regbase
 (braket
 id|MAX_HWIFS
@@ -984,7 +985,8 @@ id|MAX_HWIFS
 suffix:semicolon
 DECL|variable|sandpoint_ide_ctl_regbase
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 id|sandpoint_ide_ctl_regbase
 (braket
 id|MAX_HWIFS
@@ -992,7 +994,8 @@ id|MAX_HWIFS
 suffix:semicolon
 DECL|variable|sandpoint_idedma_regbase
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 id|sandpoint_idedma_regbase
 suffix:semicolon
 r_static
@@ -1096,7 +1099,8 @@ DECL|function|sandpoint_ide_default_irq
 id|sandpoint_ide_default_irq
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace
@@ -1145,7 +1149,8 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 DECL|function|sandpoint_ide_default_io_base
 id|sandpoint_ide_default_io_base
 c_func
@@ -1184,10 +1189,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data_port
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl_port
 comma
 r_int
@@ -1195,7 +1202,8 @@ op_star
 id|irq
 )paren
 (brace
-id|ide_ioreg_t
+r_int
+r_int
 id|reg
 op_assign
 id|data_port
