@@ -351,7 +351,7 @@ c_func
 id|dxs_support
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,3}},dialog:list&quot;
+l_string|&quot;,allows:{{0,4}},dialog:list&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* pci ids */
