@@ -448,8 +448,7 @@ DECL|macro|__NR_sched_setaffinity
 mdefine_line|#define __NR_sched_setaffinity&t;222     
 DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;223
-DECL|macro|__NR_security
-mdefine_line|#define __NR_security&t;&t;224
+multiline_comment|/* 224 currently unused */
 DECL|macro|__NR_tuxcall
 mdefine_line|#define __NR_tuxcall&t;&t;225
 DECL|macro|__NR_sendfile64

@@ -439,8 +439,7 @@ DECL|macro|__NR_sched_setaffinity
 mdefine_line|#define __NR_sched_setaffinity&t;239
 DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;240
-DECL|macro|__NR_security
-mdefine_line|#define __NR_security&t;&t;241&t;/* syscall for security modules */
+multiline_comment|/*&n; * Number 241 is currently unused&n; */
 multiline_comment|/*&n; * Number 242 is reserved for tux&n; */
 DECL|macro|__NR_io_setup
 mdefine_line|#define __NR_io_setup&t;&t;243
