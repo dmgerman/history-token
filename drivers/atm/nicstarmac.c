@@ -394,7 +394,7 @@ DECL|function|read_eprom_byte
 id|read_eprom_byte
 c_func
 (paren
-id|u_int32_t
+id|virt_addr_t
 id|base
 comma
 id|u_int8_t

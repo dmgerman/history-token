@@ -1557,7 +1557,6 @@ op_amp
 id|r-&gt;r_dstmask
 )paren
 op_logical_or
-macro_line|#ifdef CONFIG_IP_ROUTE_TOS
 (paren
 id|r-&gt;r_tos
 op_logical_and
@@ -1566,7 +1565,6 @@ op_ne
 id|flp-&gt;fl4_tos
 )paren
 op_logical_or
-macro_line|#endif
 macro_line|#ifdef CONFIG_IP_ROUTE_FWMARK
 (paren
 id|r-&gt;r_fwmark

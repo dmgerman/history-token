@@ -194,11 +194,7 @@ r_if
 c_cond
 (paren
 (paren
-id|le32_to_cpu
-c_func
-(paren
 id|cifs_pdu-&gt;Flags2
-)paren
 op_amp
 id|SMBFLG2_SECURITY_SIGNATURE
 )paren
@@ -419,14 +415,6 @@ id|cifs_pdu-&gt;Command
 )paren
 suffix:semicolon
 )brace
-id|expected_sequence_number
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|expected_sequence_number
-)paren
-suffix:semicolon
 multiline_comment|/* save off the origiginal signature so we can modify the smb and check&n;&t;&t;its signature against what the server sent */
 id|memcpy
 c_func
@@ -440,7 +428,11 @@ l_int|8
 suffix:semicolon
 id|cifs_pdu-&gt;Signature.Sequence.SequenceNumber
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|expected_sequence_number
+)paren
 suffix:semicolon
 id|cifs_pdu-&gt;Signature.Sequence.Reserved
 op_assign

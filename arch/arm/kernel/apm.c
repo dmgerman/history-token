@@ -543,7 +543,7 @@ op_amp
 id|user_list_lock
 )paren
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp
@@ -911,6 +911,25 @@ id|current-&gt;flags
 op_or_assign
 id|PF_NOFREEZE
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Note: do not allow a thread which is acking the suspend&n;&t;&t; * to escape until the resume is complete.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|as-&gt;suspend_state
+op_eq
+id|SUSPEND_ACKED
+)paren
+id|wait_event
+c_func
+(paren
+id|apm_suspend_waitqueue
+comma
+id|as-&gt;suspend_state
+op_eq
+id|SUSPEND_DONE
+)paren
+suffix:semicolon
+r_else
 id|wait_event_interruptible
 c_func
 (paren

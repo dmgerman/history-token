@@ -1,3 +1,4 @@
+macro_line|#warning ipfwadm is obsolete, and will be removed soon.
 multiline_comment|/* Minor modifications to fit on compatibility framework:&n;   Rusty.Russell@rustcorp.com.au&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|CONFIG_IP_FIREWALL

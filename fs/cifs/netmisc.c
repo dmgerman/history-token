@@ -870,7 +870,7 @@ op_assign
 op_star
 (paren
 (paren
-r_int
+id|__be32
 op_star
 )paren
 id|bytes
@@ -885,7 +885,7 @@ suffix:semicolon
 op_star
 (paren
 (paren
-r_int
+id|__be32
 op_star
 )paren
 id|dst
@@ -5350,7 +5350,8 @@ id|SMBFLG2_ERR_STATUS
 )paren
 (brace
 multiline_comment|/* translate the newer STATUS codes to old style errors and then to POSIX errors */
-id|smb-&gt;Status.CifsError
+id|__u32
+id|err
 op_assign
 id|le32_to_cpu
 c_func
@@ -5367,14 +5368,14 @@ id|cifsFYI
 id|cifs_print_status
 c_func
 (paren
-id|smb-&gt;Status.CifsError
+id|err
 )paren
 suffix:semicolon
 )brace
 id|ntstatus_to_dos
 c_func
 (paren
-id|smb-&gt;Status.CifsError
+id|err
 comma
 op_amp
 id|smberrclass
@@ -5390,17 +5391,13 @@ id|smberrclass
 op_assign
 id|smb-&gt;Status.DosError.ErrorClass
 suffix:semicolon
-id|smb-&gt;Status.DosError.Error
+id|smberrcode
 op_assign
 id|le16_to_cpu
 c_func
 (paren
 id|smb-&gt;Status.DosError.Error
 )paren
-suffix:semicolon
-id|smberrcode
-op_assign
-id|smb-&gt;Status.DosError.Error
 suffix:semicolon
 )brace
 multiline_comment|/* old style errors */
