@@ -90,6 +90,7 @@ mdefine_line|#define nmi_enter()&t;&t;(irq_enter())
 DECL|macro|nmi_exit
 mdefine_line|#define nmi_exit()&t;&t;(preempt_count() -= HARDIRQ_OFFSET)
 macro_line|#ifdef CONFIG_PREEMPT
+macro_line|# include &lt;linux/smp_lock.h&gt;
 DECL|macro|in_atomic
 macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET
