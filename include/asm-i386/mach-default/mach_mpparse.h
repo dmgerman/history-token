@@ -75,5 +75,23 @@ id|productid
 )paren
 (brace
 )brace
+multiline_comment|/* Hook from generic ACPI tables.c */
+DECL|function|acpi_madt_oem_check
+r_static
+r_inline
+r_void
+id|acpi_madt_oem_check
+c_func
+(paren
+r_char
+op_star
+id|oem_id
+comma
+r_char
+op_star
+id|oem_table_id
+)paren
+(brace
+)brace
 macro_line|#endif /* __ASM_MACH_MPPARSE_H */
 eof

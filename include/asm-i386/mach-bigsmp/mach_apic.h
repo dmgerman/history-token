@@ -194,7 +194,7 @@ suffix:semicolon
 )brace
 r_extern
 id|u8
-id|raw_phys_apicid
+id|bios_cpu_apicid
 (braket
 )braket
 suffix:semicolon
@@ -213,7 +213,7 @@ r_return
 (paren
 r_int
 )paren
-id|raw_phys_apicid
+id|bios_cpu_apicid
 (braket
 id|mps_cpu
 )braket
