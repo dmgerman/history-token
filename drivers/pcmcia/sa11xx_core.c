@@ -1,6 +1,7 @@
 multiline_comment|/*======================================================================&n;&n;    Device driver for the PCMCIA control functionality of StrongARM&n;    SA-1100 microprocessors.&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is John G. Dorsey&n;    &lt;john+@cs.cmu.edu&gt;.  Portions created by John G. Dorsey are&n;    Copyright (C) 1999 John G. Dorsey.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 multiline_comment|/*&n; * Please see linux/Documentation/arm/SA1100/PCMCIA for more information&n; * on the low-level kernel interface.&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
@@ -17,12 +18,27 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;sa11xx_core.h&quot;
 macro_line|#include &quot;sa1100.h&quot;
-macro_line|#ifdef PCMCIA_DEBUG
+macro_line|#ifdef DEBUG
 DECL|variable|pc_debug
 r_static
 r_int
 id|pc_debug
 suffix:semicolon
+id|module_param
+c_func
+(paren
+id|pc_debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+DECL|macro|debug
+mdefine_line|#define debug(skt, lvl, fmt, arg...) do {&t;&t;&t;&bslash;&n;&t;if (pc_debug &gt; (lvl))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;skt%u: %s: &quot; fmt,&t;&t;&bslash;&n;&t;&t;       (skt)-&gt;nr, __func__ , ## arg);&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|debug
+mdefine_line|#define debug(skt, lvl, fmt, arg...) do { } while (0)
 macro_line|#endif
 DECL|macro|to_sa1100_socket
 mdefine_line|#define to_sa1100_socket(x)&t;container_of(x, struct sa1100_pcmcia_socket, socket)
@@ -318,16 +334,14 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
-l_int|4
+id|skt
 comma
-l_string|&quot;%s(): sock %u FAST %X  BSM %X  BSA %X  BSIO %X&bslash;n&quot;
+l_int|2
 comma
-id|__FUNCTION__
-comma
-id|skt-&gt;nr
+l_string|&quot;FAST %X  BSM %X  BSA %X  BSIO %X&bslash;n&quot;
 comma
 id|MECR_FAST_GET
 c_func
@@ -655,16 +669,14 @@ c_func
 id|sock
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
+id|skt
+comma
 l_int|2
 comma
-l_string|&quot;%s(): initializing socket %u&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|skt-&gt;nr
+l_string|&quot;initializing socket&bslash;n&quot;
 )paren
 suffix:semicolon
 id|skt-&gt;ops
@@ -706,16 +718,14 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
+id|skt
+comma
 l_int|2
 comma
-l_string|&quot;%s(): suspending socket %u&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|skt-&gt;nr
+l_string|&quot;suspending socket&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -772,14 +782,14 @@ r_int
 r_int
 id|events
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
+id|skt
+comma
 l_int|4
 comma
-l_string|&quot;%s(): entering PCMCIA monitoring thread&bslash;n&quot;
-comma
-id|__FUNCTION__
+l_string|&quot;entering PCMCIA monitoring thread&bslash;n&quot;
 )paren
 suffix:semicolon
 r_do
@@ -832,10 +842,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
-l_int|2
+id|skt
+comma
+l_int|4
 comma
 l_string|&quot;events: %s%s%s%s%s%s&bslash;n&quot;
 comma
@@ -940,14 +952,14 @@ op_star
 )paren
 id|dummy
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
+id|skt
+comma
 l_int|4
 comma
-l_string|&quot;%s(): polling for events&bslash;n&quot;
-comma
-id|__FUNCTION__
+l_string|&quot;polling for events&bslash;n&quot;
 )paren
 suffix:semicolon
 id|mod_timer
@@ -995,14 +1007,14 @@ id|skt
 op_assign
 id|dev
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
+id|skt
+comma
 l_int|3
 comma
-l_string|&quot;%s(): servicing IRQ %d&bslash;n&quot;
-comma
-id|__FUNCTION__
+l_string|&quot;servicing IRQ %d&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -1091,16 +1103,14 @@ c_func
 id|sock
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
+id|skt
+comma
 l_int|2
 comma
-l_string|&quot;%s() for sock %u&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|skt-&gt;nr
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 op_star
@@ -1140,24 +1150,14 @@ c_func
 id|sock
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
+id|skt
+comma
 l_int|2
 comma
-l_string|&quot;%s() for sock %u&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|skt-&gt;nr
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;&bslash;tmask:  %s%s%s%s%s%s&bslash;n&bslash;tflags: %s%s%s%s%s%s&bslash;n&quot;
+l_string|&quot;mask: %s%s%s%s%s%sflags: %s%s%s%s%s%sVcc %d Vpp %d irq %d&bslash;n&quot;
 comma
 (paren
 id|state-&gt;csc_mask
@@ -1166,7 +1166,7 @@ l_int|0
 )paren
 ques
 c_cond
-l_string|&quot;&lt;NONE&gt;&quot;
+l_string|&quot;&lt;NONE&gt; &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -1232,7 +1232,7 @@ l_int|0
 )paren
 ques
 c_cond
-l_string|&quot;&lt;NONE&gt;&quot;
+l_string|&quot;&lt;NONE&gt; &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -1290,14 +1290,6 @@ c_cond
 l_string|&quot;OUTPUT_ENA &quot;
 suffix:colon
 l_string|&quot;&quot;
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;&bslash;tVcc %d  Vpp %d  irq %d&bslash;n&quot;
 comma
 id|state-&gt;Vcc
 comma
@@ -1352,24 +1344,14 @@ id|speed
 op_assign
 id|map-&gt;speed
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
+id|skt
+comma
 l_int|2
 comma
-l_string|&quot;%s() for sock %u&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|skt-&gt;nr
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;&bslash;tmap %u  speed %u&bslash;n&bslash;tstart 0x%08x  stop 0x%08x&bslash;n&quot;
+l_string|&quot;map %u  speed %u start 0x%08x stop 0x%08x&bslash;n&quot;
 comma
 id|map-&gt;map
 comma
@@ -1380,12 +1362,14 @@ comma
 id|map-&gt;stop
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
-l_int|3
+id|skt
 comma
-l_string|&quot;&bslash;tflags: %s%s%s%s%s%s%s%s&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;flags: %s%s%s%s%s%s%s%s&bslash;n&quot;
 comma
 (paren
 id|map-&gt;flags
@@ -1624,24 +1608,14 @@ id|speed
 op_assign
 id|map-&gt;speed
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
+id|skt
+comma
 l_int|2
 comma
-l_string|&quot;%s() for sock %u&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|skt-&gt;nr
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;&bslash;tmap %u speed %u card_start %08x&bslash;n&quot;
+l_string|&quot;map %u speed %u card_start %08x&bslash;n&quot;
 comma
 id|map-&gt;map
 comma
@@ -1650,12 +1624,14 @@ comma
 id|map-&gt;card_start
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
-l_int|3
+id|skt
 comma
-l_string|&quot;&bslash;tflags: %s%s%s%s%s%s%s%s&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;flags: %s%s%s%s%s%s%s%s&bslash;n&quot;
 comma
 (paren
 id|map-&gt;flags
@@ -3815,46 +3791,6 @@ r_new
 OG
 id|freqs-&gt;old
 )paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;%s(): new frequency %u.%uMHz &gt; %u.%uMHz, &quot;
-l_string|&quot;pre-updating&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|freqs
-op_member_access_from_pointer
-r_new
-op_div
-l_int|1000
-comma
-(paren
-id|freqs
-op_member_access_from_pointer
-r_new
-op_div
-l_int|100
-)paren
-op_mod
-l_int|10
-comma
-id|freqs-&gt;old
-op_div
-l_int|1000
-comma
-(paren
-id|freqs-&gt;old
-op_div
-l_int|100
-)paren
-op_mod
-l_int|10
-)paren
-suffix:semicolon
 id|sa1100_pcmcia_update_mecr
 c_func
 (paren
@@ -3863,7 +3799,6 @@ op_member_access_from_pointer
 r_new
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -3878,46 +3813,6 @@ r_new
 OL
 id|freqs-&gt;old
 )paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;%s(): new frequency %u.%uMHz &lt; %u.%uMHz, &quot;
-l_string|&quot;post-updating&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|freqs
-op_member_access_from_pointer
-r_new
-op_div
-l_int|1000
-comma
-(paren
-id|freqs
-op_member_access_from_pointer
-r_new
-op_div
-l_int|100
-)paren
-op_mod
-l_int|10
-comma
-id|freqs-&gt;old
-op_div
-l_int|1000
-comma
-(paren
-id|freqs-&gt;old
-op_div
-l_int|100
-)paren
-op_mod
-l_int|10
-)paren
-suffix:semicolon
 id|sa1100_pcmcia_update_mecr
 c_func
 (paren
@@ -3926,7 +3821,6 @@ op_member_access_from_pointer
 r_new
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace

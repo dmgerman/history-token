@@ -15,6 +15,19 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
+r_static
+r_void
+id|retry_erase_list
+c_func
+(paren
+id|erase_busy_t
+op_star
+id|list
+comma
+id|u_int
+id|cause
+)paren
+suffix:semicolon
 multiline_comment|/*======================================================================&n;&n;    This function handles submitting an MTD request, and retrying&n;    requests when an MTD is busy.&n;&n;    An MTD request should never block.&n;    &n;======================================================================*/
 DECL|function|do_mtd_request
 r_static
@@ -239,6 +252,11 @@ r_void
 id|insert_queue
 c_func
 (paren
+r_struct
+id|pcmcia_socket
+op_star
+id|s
+comma
 id|erase_busy_t
 op_star
 id|head
@@ -248,12 +266,14 @@ op_star
 id|entry
 )paren
 (brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|2
 comma
-l_string|&quot;cs: adding 0x%p to queue 0x%p&bslash;n&quot;
+l_string|&quot;adding 0x%p to queue 0x%p&bslash;n&quot;
 comma
 id|entry
 comma
@@ -283,17 +303,24 @@ r_void
 id|remove_queue
 c_func
 (paren
+r_struct
+id|pcmcia_socket
+op_star
+id|s
+comma
 id|erase_busy_t
 op_star
 id|entry
 )paren
 (brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|2
 comma
-l_string|&quot;cs: unqueueing 0x%p&bslash;n&quot;
+l_string|&quot;unqueueing 0x%p&bslash;n&quot;
 comma
 id|entry
 )paren
@@ -342,12 +369,26 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|DEBUG
+id|mtd
+op_assign
+id|erase-&gt;Handle-&gt;mtd
+suffix:semicolon
+id|s
+op_assign
+id|SOCKET
 c_func
 (paren
+id|mtd
+)paren
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|s
+comma
 l_int|2
 comma
-l_string|&quot;cs: trying erase request 0x%p...&bslash;n&quot;
+l_string|&quot;trying erase request 0x%p...&bslash;n&quot;
 comma
 id|busy
 )paren
@@ -360,6 +401,8 @@ id|busy-&gt;next
 id|remove_queue
 c_func
 (paren
+id|s
+comma
 id|busy
 )paren
 suffix:semicolon
@@ -382,18 +425,6 @@ suffix:semicolon
 id|req.MediaID
 op_assign
 id|erase-&gt;Handle-&gt;MediaID
-suffix:semicolon
-id|mtd
-op_assign
-id|erase-&gt;Handle-&gt;mtd
-suffix:semicolon
-id|s
-op_assign
-id|SOCKET
-c_func
-(paren
-id|mtd
-)paren
 suffix:semicolon
 id|mtd-&gt;event_callback_args.mtdrequest
 op_assign
@@ -420,9 +451,11 @@ op_eq
 id|CS_BUSY
 )paren
 (brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|2
 comma
 l_string|&quot;  Status = %d, requeueing.&bslash;n&quot;
@@ -445,6 +478,8 @@ suffix:colon
 id|insert_queue
 c_func
 (paren
+id|s
+comma
 op_amp
 id|mtd-&gt;erase_busy
 comma
@@ -469,6 +504,8 @@ id|MTD_WAITRDY
 id|insert_queue
 c_func
 (paren
+id|s
+comma
 op_amp
 id|s-&gt;erase_busy
 comma
@@ -497,9 +534,11 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* update erase queue status */
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|2
 comma
 l_string|&quot;  Ret = %d&bslash;n&quot;
@@ -608,6 +647,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* retry_erase */
 DECL|function|retry_erase_list
+r_static
 r_void
 id|retry_erase_list
 c_func
@@ -626,12 +666,18 @@ op_assign
 op_star
 id|list
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|SOCKET
+c_func
+(paren
+id|list-&gt;client
+)paren
+comma
 l_int|2
 comma
-l_string|&quot;cs: rescanning erase queue list 0x%p&bslash;n&quot;
+l_string|&quot;rescanning erase queue list 0x%p&bslash;n&quot;
 comma
 id|list
 )paren
@@ -701,12 +747,28 @@ id|u_long
 id|arg
 )paren
 (brace
-id|DEBUG
+id|erase_busy_t
+op_star
+id|busy
+op_assign
+(paren
+id|erase_busy_t
+op_star
+)paren
+id|arg
+suffix:semicolon
+id|cs_dbg
 c_func
 (paren
+id|SOCKET
+c_func
+(paren
+id|busy-&gt;client
+)paren
+comma
 l_int|0
 comma
-l_string|&quot;cs: erase timeout for entry 0x%lx&bslash;n&quot;
+l_string|&quot;erase timeout for entry 0x%lx&bslash;n&quot;
 comma
 id|arg
 )paren
@@ -714,11 +776,7 @@ suffix:semicolon
 id|retry_erase
 c_func
 (paren
-(paren
-id|erase_busy_t
-op_star
-)paren
-id|arg
+id|busy
 comma
 id|MTD_REQ_TIMEOUT
 )paren
@@ -1286,12 +1344,18 @@ suffix:semicolon
 id|memory_handle_t
 id|r
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|SOCKET
+c_func
+(paren
+id|handle
+)paren
+comma
 l_int|1
 comma
-l_string|&quot;cs: setup_regions(0x%p, %d, 0x%p)&bslash;n&quot;
+l_string|&quot;setup_regions(0x%p, %d, 0x%p)&bslash;n&quot;
 comma
 id|handle
 comma
@@ -1369,15 +1433,20 @@ id|jedec.nid
 )paren
 )paren
 (brace
-macro_line|#ifdef PCMCIA_DEBUG
-id|printk
+id|cs_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;cs: Device info does not match JEDEC info.&bslash;n&quot;
+id|SOCKET
+c_func
+(paren
+id|handle
+)paren
+comma
+l_int|0
+comma
+l_string|&quot;Device info does not match JEDEC info.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|has_jedec
 op_assign
 l_int|0
@@ -1423,15 +1492,20 @@ id|geo.ngeo
 )paren
 )paren
 (brace
-macro_line|#ifdef PCMCIA_DEBUG
-id|printk
+id|cs_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;cs: Device info does not match geometry tuple.&bslash;n&quot;
+id|SOCKET
+c_func
+(paren
+id|handle
+)paren
+comma
+l_int|0
+comma
+l_string|&quot;Device info does not match geometry tuple.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|has_geo
 op_assign
 l_int|0
@@ -1946,12 +2020,14 @@ id|list
 op_assign
 id|s-&gt;c_region
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|1
 comma
-l_string|&quot;cs: register_mtd(0x%p, &squot;%s&squot;, 0x%x)&bslash;n&quot;
+l_string|&quot;register_mtd(0x%p, &squot;%s&squot;, 0x%x)&bslash;n&quot;
 comma
 id|handle
 comma
@@ -2371,12 +2447,14 @@ id|mh
 op_assign
 id|region
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|1
 comma
-l_string|&quot;cs: open_memory(0x%p, 0x%x) = 0x%p&bslash;n&quot;
+l_string|&quot;open_memory(0x%p, 0x%x) = 0x%p&bslash;n&quot;
 comma
 id|handle
 comma
@@ -2405,9 +2483,15 @@ id|memory_handle_t
 id|handle
 )paren
 (brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|SOCKET
+c_func
+(paren
+id|handle-&gt;mtd
+)paren
+comma
 l_int|1
 comma
 l_string|&quot;cs: close_memory(0x%p)&bslash;n&quot;
