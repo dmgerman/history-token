@@ -500,6 +500,20 @@ r_int
 id|relation
 )paren
 suffix:semicolon
+multiline_comment|/* should be defined, if possible */
+DECL|member|get
+r_int
+r_int
+(paren
+op_star
+id|get
+)paren
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/* optional */
 DECL|member|exit
 r_int
@@ -731,6 +745,17 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+multiline_comment|/* query the current CPU frequency (in kHz). If zero, cpufreq couldn&squot;t detect it */
+r_int
+r_int
+id|cpufreq_get
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/* the proc_intf.c needs this */
 r_int
 id|cpufreq_parse_governor
@@ -752,13 +777,6 @@ id|governor
 )paren
 suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ USERSPACE GOVERNOR                   *&n; *********************************************************************/
-r_int
-id|cpufreq_gov_userspace_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 r_int
 id|cpufreq_setmax
@@ -777,16 +795,6 @@ r_int
 r_int
 id|kHz
 comma
-r_int
-r_int
-id|cpu
-)paren
-suffix:semicolon
-r_int
-r_int
-id|cpufreq_get
-c_func
-(paren
 r_int
 r_int
 id|cpu
