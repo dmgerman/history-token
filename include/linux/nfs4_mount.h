@@ -17,6 +17,7 @@ suffix:semicolon
 DECL|member|data
 r_const
 r_char
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -107,6 +108,7 @@ multiline_comment|/* 1 */
 DECL|member|host_addr
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|host_addr
 suffix:semicolon
@@ -125,6 +127,7 @@ suffix:semicolon
 multiline_comment|/* 1 */
 DECL|member|auth_flavours
 r_int
+id|__user
 op_star
 id|auth_flavours
 suffix:semicolon
