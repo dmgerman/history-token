@@ -1580,6 +1580,7 @@ id|longhaul_version
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Note, this is not a typo, early Samuel2&squot;s had Samuel1 ratios. */
 id|memcpy
 (paren
 id|clock_ratio
