@@ -14,13 +14,14 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
+macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/*&n; * Initial task structure. Make this a per-architecture thing,&n; * because different architectures tend to have different&n; * alignment requirements and potentially different initial&n; * setup.&n; */
+multiline_comment|/*&n; * Initial task/thread structure. Make this a per-architecture thing,&n; * because different architectures tend to have different&n; * alignment requirements and potentially different initial&n; * setup.&n; */
 DECL|variable|init_fs
 r_static
 r_struct
@@ -56,10 +57,10 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-DECL|variable|init_task_union
+DECL|variable|init_thread_union
 r_union
-id|task_union
-id|init_task_union
+id|thread_union
+id|init_thread_union
 id|__attribute__
 c_func
 (paren
@@ -67,7 +68,7 @@ c_func
 id|section
 c_func
 (paren
-l_string|&quot;init_task&quot;
+l_string|&quot;.data.init_task&quot;
 )paren
 comma
 id|aligned
@@ -79,14 +80,24 @@ id|THREAD_SIZE
 )paren
 op_assign
 (brace
-id|task
-suffix:colon
+id|INIT_THREAD_INFO
+c_func
+(paren
+id|init_task
+)paren
+)brace
+suffix:semicolon
+multiline_comment|/* initial task structure */
+DECL|variable|init_task
+r_struct
+id|task_struct
+id|init_task
+op_assign
 id|INIT_TASK
 c_func
 (paren
-id|init_task_union.task
+id|init_task
 )paren
-)brace
 suffix:semicolon
 id|asmlinkage
 r_void
@@ -96,6 +107,85 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Return saved PC from a blocked thread&n; */
+DECL|function|thread_saved_pc
+r_int
+r_int
+id|thread_saved_pc
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+r_extern
+r_void
+id|scheduling_functions_start_here
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scheduling_functions_end_here
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_struct
+id|switch_stack
+op_star
+id|sw
+op_assign
+(paren
+r_struct
+id|switch_stack
+op_star
+)paren
+id|tsk-&gt;thread.ksp
+suffix:semicolon
+multiline_comment|/* Check whether the thread is blocked in resume() */
+r_if
+c_cond
+(paren
+id|sw-&gt;retpc
+OG
+(paren
+r_int
+r_int
+)paren
+id|scheduling_functions_start_here
+op_logical_and
+id|sw-&gt;retpc
+OL
+(paren
+r_int
+r_int
+)paren
+id|scheduling_functions_end_here
+)paren
+r_return
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|sw-&gt;a6
+)paren
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_else
+r_return
+id|sw-&gt;retpc
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The idle loop on an m68k..&n; */
 DECL|function|default_idle
 r_void
@@ -428,6 +518,10 @@ id|flags
 op_or
 id|CLONE_VM
 suffix:semicolon
+id|retval
+op_assign
+id|__NR_clone
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
@@ -440,23 +534,24 @@ l_string|&quot;jne 1f&bslash;n&bslash;t&quot;
 multiline_comment|/* parent - jump */
 l_string|&quot;lea %%sp@(%c7),%6&bslash;n&bslash;t&quot;
 multiline_comment|/* reload current */
+l_string|&quot;movel %6@,%6&bslash;n&bslash;t&quot;
 l_string|&quot;movel %3,%%sp@-&bslash;n&bslash;t&quot;
 multiline_comment|/* push argument */
 l_string|&quot;jsr %4@&bslash;n&bslash;t&quot;
 multiline_comment|/* call fn */
 l_string|&quot;movel %0,%%d1&bslash;n&bslash;t&quot;
 multiline_comment|/* pass exit value */
-l_string|&quot;movel %2,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2,%%d0&bslash;n&bslash;t&quot;
 multiline_comment|/* exit */
 l_string|&quot;trap #0&bslash;n&quot;
 l_string|&quot;1:&quot;
 suffix:colon
-l_string|&quot;=d&quot;
+l_string|&quot;+d&quot;
 (paren
 id|retval
 )paren
 suffix:colon
-l_string|&quot;0&quot;
+l_string|&quot;i&quot;
 (paren
 id|__NR_clone
 )paren
@@ -492,8 +587,6 @@ op_minus
 id|THREAD_SIZE
 )paren
 suffix:colon
-l_string|&quot;d0&quot;
-comma
 l_string|&quot;d2&quot;
 )paren
 suffix:semicolon
@@ -1590,7 +1683,9 @@ op_assign
 r_int
 r_int
 )paren
-id|p
+(paren
+id|p-&gt;thread_info
+)paren
 suffix:semicolon
 id|fp
 op_assign

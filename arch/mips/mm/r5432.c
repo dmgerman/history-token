@@ -1517,7 +1517,7 @@ l_string|&quot;[tlball]&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1598,7 +1598,7 @@ c_func
 id|old_ctx
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1638,7 +1638,7 @@ id|mm-&gt;context
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1667,7 +1667,7 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1727,7 +1727,7 @@ id|end
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1931,7 +1931,7 @@ l_int|0xff
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2001,7 +2001,7 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2089,7 +2089,7 @@ c_func
 id|oldpid
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2343,7 +2343,7 @@ id|pid
 suffix:semicolon
 )brace
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2486,7 +2486,7 @@ id|pid
 suffix:semicolon
 id|BARRIER
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2757,7 +2757,7 @@ r_int
 r_int
 id|old_ctx
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2853,7 +2853,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/iSeries/HvReleaseData.h&gt;
 macro_line|#include &lt;asm/iSeries/LparMap.h&gt;
 macro_line|#include &lt;asm/iSeries/ItVpdAreas.h&gt;
 macro_line|#include &lt;asm/iSeries/ItIplParmsReal.h&gt;
+macro_line|#include &lt;asm/iSeries/ItExtVpdPanel.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/IoHriProcessorVpd.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -39,6 +40,11 @@ r_extern
 r_struct
 id|ItIplParmsReal
 id|xItIplParmsReal
+suffix:semicolon
+r_extern
+r_struct
+id|ItExtVpdPanel
+id|xItExtVpdPanel
 suffix:semicolon
 r_extern
 r_struct

@@ -557,7 +557,9 @@ id|mach_free_irq
 op_assign
 id|sun3_free_irq
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 singleline_comment|//&t;mach_keyb_init       =  sun3_keyb_init;
+macro_line|#endif
 id|enable_irq
 op_assign
 id|sun3_enable_irq
@@ -598,7 +600,7 @@ id|mach_get_hardware_list
 op_assign
 id|sun3_get_hardware_list
 suffix:semicolon
-macro_line|#if !defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_FB)
+macro_line|#if !defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp
 op_assign
 op_amp
@@ -662,11 +664,13 @@ comma
 id|memory_end
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SUN3X_ZS
 id|sun_serial_setup
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|sun3_sched_init
 r_void

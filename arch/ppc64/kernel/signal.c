@@ -11,8 +11,6 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/ppc32.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
@@ -34,6 +32,76 @@ mdefine_line|#define GP_REGS_SIZE&t;MIN(sizeof(elf_gregset_t), sizeof(struct pt_
 multiline_comment|/* &n; * These are the flags in the MSR that the user is allowed to change&n; * by modifying the saved value of the MSR on the stack.  SE and BE&n; * should not be in this list since gdb may want to change these.  I.e,&n; * you should be able to step out of a signal handler to see what&n; * instruction executes next after the signal handler completes.&n; * Alternately, if you stepped into a signal handler, you should be&n; * able to continue &squot;til the next breakpoint from within the signal&n; * handler, even if the handler returns.&n; */
 DECL|macro|MSR_USERCHANGE
 mdefine_line|#define MSR_USERCHANGE&t;(MSR_FE0 | MSR_FE1)
+multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs with&n; *&t;a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; */
+DECL|struct|sigregs
+r_struct
+id|sigregs
+(brace
+DECL|member|gp_regs
+id|elf_gregset_t
+id|gp_regs
+suffix:semicolon
+DECL|member|fp_regs
+r_float
+id|fp_regs
+(braket
+id|ELF_NFPREG
+)braket
+suffix:semicolon
+DECL|member|tramp
+r_int
+r_int
+id|tramp
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 64 bit API allows for 288 bytes below sp before &n;&t;   decrementing it. */
+DECL|member|abigap
+r_int
+id|abigap
+(braket
+l_int|72
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|rt_sigframe
+r_struct
+id|rt_sigframe
+(brace
+DECL|member|_unused
+r_int
+r_int
+id|_unused
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|pinfo
+r_struct
+id|siginfo
+op_star
+id|pinfo
+suffix:semicolon
+DECL|member|puc
+r_void
+op_star
+id|puc
+suffix:semicolon
+DECL|member|info
+r_struct
+id|siginfo
+id|info
+suffix:semicolon
+DECL|member|uc
+r_struct
+id|ucontext
+id|uc
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
 r_int
 id|do_signal
 c_func
@@ -46,29 +114,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_wait4
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_int
-r_int
-op_star
-id|stat_addr
-comma
-r_int
-id|options
-comma
-multiline_comment|/*unsigned long*/
-r_struct
-id|rusage
-op_star
-id|ru
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Atomically swap in the new signal mask, and wait for a signal.&n; */
@@ -490,7 +535,6 @@ c_func
 (paren
 id|sig
 comma
-(paren
 id|act
 ques
 c_cond
@@ -498,9 +542,7 @@ op_amp
 id|new_ka
 suffix:colon
 l_int|NULL
-)paren
 comma
-(paren
 id|oact
 ques
 c_cond
@@ -508,7 +550,6 @@ op_amp
 id|old_ka
 suffix:colon
 l_int|NULL
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -585,75 +626,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs with&n; *&t;a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; */
-DECL|struct|sigregs
-r_struct
-id|sigregs
-(brace
-DECL|member|gp_regs
-id|elf_gregset_t
-id|gp_regs
-suffix:semicolon
-DECL|member|fp_regs
-r_float
-id|fp_regs
-(braket
-id|ELF_NFPREG
-)braket
-suffix:semicolon
-DECL|member|tramp
-r_int
-r_int
-id|tramp
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* 64 bit API allows for 288 bytes below sp before &n;&t;   decrementing it. */
-DECL|member|abigap
-r_int
-id|abigap
-(braket
-l_int|72
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|rt_sigframe
-r_struct
-id|rt_sigframe
-(brace
-DECL|member|_unused
-r_int
-r_int
-id|_unused
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|pinfo
-r_struct
-id|siginfo
-op_star
-id|pinfo
-suffix:semicolon
-DECL|member|puc
-r_void
-op_star
-id|puc
-suffix:semicolon
-DECL|member|info
-r_struct
-id|siginfo
-id|info
-suffix:semicolon
-DECL|member|uc
-r_struct
-id|ucontext
-id|uc
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; *  When we have rt signals to deliver, we set up on the&n; *  user stack, going down from the original stack pointer:&n; *&t;   a sigregs struct&n; *&t;   one rt_sigframe struct (siginfo + ucontext)&n; *&t;   a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; *  Each of these things must be a multiple of 16 bytes in size.&n; *&n; */
 DECL|function|sys_rt_sigreturn
 r_int
@@ -937,9 +909,9 @@ id|SIGSEGV
 )paren
 suffix:semicolon
 )brace
+DECL|function|setup_rt_frame
 r_static
 r_void
-DECL|function|setup_rt_frame
 id|setup_rt_frame
 c_func
 (paren
@@ -1056,6 +1028,7 @@ r_sizeof
 r_float
 )paren
 )paren
+multiline_comment|/* li r0, __NR_rt_sigreturn */
 op_logical_or
 id|__put_user
 c_func
@@ -1070,7 +1043,7 @@ id|frame-&gt;tramp
 l_int|0
 )braket
 )paren
-multiline_comment|/* li r0, __NR_rt_sigreturn */
+multiline_comment|/* sc */
 op_logical_or
 id|__put_user
 c_func
@@ -1084,7 +1057,6 @@ l_int|1
 )braket
 )paren
 )paren
-multiline_comment|/* sc */
 r_goto
 id|badframe
 suffix:semicolon
@@ -1545,9 +1517,9 @@ id|SIGSEGV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up a signal frame.&n; */
+DECL|function|setup_frame
 r_static
 r_void
-DECL|function|setup_frame
 id|setup_frame
 c_func
 (paren
@@ -1663,6 +1635,7 @@ r_sizeof
 r_float
 )paren
 )paren
+multiline_comment|/* li r0, __NR_sigreturn */
 op_logical_or
 id|__put_user
 c_func
@@ -1677,7 +1650,7 @@ id|frame-&gt;tramp
 l_int|0
 )braket
 )paren
-multiline_comment|/* li r0, __NR_sigreturn */
+multiline_comment|/* sc */
 op_logical_or
 id|__put_user
 c_func
@@ -1691,7 +1664,6 @@ l_int|1
 )braket
 )paren
 )paren
-multiline_comment|/* sc */
 r_goto
 id|badframe
 suffix:semicolon
@@ -1861,9 +1833,9 @@ id|SIGSEGV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * OK, we&squot;re invoking a handler&n; */
+DECL|function|handle_signal
 r_static
 r_void
-DECL|function|handle_signal
 id|handle_signal
 c_func
 (paren
@@ -2613,6 +2585,7 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* no signals delivered */
+multiline_comment|/* Invoke correct stack setup routine */
 r_if
 c_cond
 (paren

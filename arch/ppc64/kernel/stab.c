@@ -40,8 +40,6 @@ r_int
 id|large
 )paren
 suffix:semicolon
-DECL|macro|cpu_has_slb
-mdefine_line|#define cpu_has_slb()&t;(__is_processor(PV_POWER4))
 multiline_comment|/*&n; * Build an entry for the base kernel segment and put it into&n; * the segment table or SLB.  All other segment table or SLB&n; * entries are faulted in.&n; */
 DECL|function|stab_initialize
 r_void
@@ -1685,7 +1683,7 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1929,7 +1927,7 @@ id|stab_cache_pointer
 op_assign
 l_int|0
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -825,7 +825,7 @@ macro_line|#if SUSPECTED_CPU_OR_CHIPSET_BUG_WORKAROUND
 DECL|macro|SYNC_OTHER_CORES
 macro_line|# define SYNC_OTHER_CORES(x) udelay(x+1)
 macro_line|#else
-multiline_comment|/*&n; * We have to allow irqs to arrive between __sti and __cli&n; */
+multiline_comment|/*&n; * We have to allow irqs to arrive between local_irq_enable and local_irq_disable&n; */
 DECL|macro|SYNC_OTHER_CORES
 macro_line|# define SYNC_OTHER_CORES(x) __asm__ __volatile__ (&quot;nop&quot;)
 macro_line|#endif
@@ -918,7 +918,7 @@ op_complement
 l_int|0
 suffix:semicolon
 )brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -929,7 +929,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1124,7 +1124,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -1150,7 +1150,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1205,7 +1205,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1239,7 +1239,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -1338,7 +1338,7 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1348,7 +1348,7 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1424,7 +1424,7 @@ op_amp
 id|SA_INTERRUPT
 )paren
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1471,7 +1471,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

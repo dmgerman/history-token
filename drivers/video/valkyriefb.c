@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  valkyriefb.c -- frame buffer device for the PowerMac &squot;valkyrie&squot; display&n; *&n; *  Created 8 August 1998 by &n; *  Martin Costabel &lt;costabel@wanadoo.fr&gt; and Kevin Schoedel&n; *&n; *  Vmode-switching changes and vmode 15/17 modifications created 29 August&n; *  1998 by Barry K. Nathan &lt;barryn@pobox.com&gt;.&n; *&n; *  Derived directly from:&n; *&n; *   controlfb.c -- frame buffer device for the PowerMac &squot;control&squot; display&n; *   Copyright (C) 1998 Dan Jacobowitz &lt;dan@debian.org&gt;&n; *&n; *   pmc-valkyrie.c -- Console support for PowerMac &quot;valkyrie&quot; display adaptor.&n; *   Copyright (C) 1997 Paul Mackerras.&n; *&n; *  and indirectly:&n; *&n; *  Frame buffer structure from:&n; *    drivers/video/chipsfb.c -- frame buffer device for&n; *    Chips &amp; Technologies 65550 chip.&n; *&n; *    Copyright (C) 1998 Paul Mackerras&n; *&n; *    This file is derived from the Powermac &quot;chips&quot; driver:&n; *    Copyright (C) 1997 Fabio Riccardi.&n; *    And from the frame buffer device for Open Firmware-initialized devices:&n; *    Copyright (C) 1997 Geert Uytterhoeven.&n; *&n; *  Hardware information from:&n; *    control.c: Console support for PowerMac &quot;control&quot; display adaptor.&n; *    Copyright (C) 1996 Paul Mackerras&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  valkyriefb.c -- frame buffer device for the PowerMac &squot;valkyrie&squot; display&n; *&n; *  Created 8 August 1998 by &n; *  Martin Costabel &lt;costabel@wanadoo.fr&gt; and Kevin Schoedel&n; *&n; *  Vmode-switching changes and vmode 15/17 modifications created 29 August&n; *  1998 by Barry K. Nathan &lt;barryn@pobox.com&gt;.&n; *&n; *  Ported to m68k Macintosh by David Huggins-Daines &lt;dhd@debian.org&gt;&n; *&n; *  Derived directly from:&n; *&n; *   controlfb.c -- frame buffer device for the PowerMac &squot;control&squot; display&n; *   Copyright (C) 1998 Dan Jacobowitz &lt;dan@debian.org&gt;&n; *&n; *   pmc-valkyrie.c -- Console support for PowerMac &quot;valkyrie&quot; display adaptor.&n; *   Copyright (C) 1997 Paul Mackerras.&n; *&n; *  and indirectly:&n; *&n; *  Frame buffer structure from:&n; *    drivers/video/chipsfb.c -- frame buffer device for&n; *    Chips &amp; Technologies 65550 chip.&n; *&n; *    Copyright (C) 1998 Paul Mackerras&n; *&n; *    This file is derived from the Powermac &quot;chips&quot; driver:&n; *    Copyright (C) 1997 Fabio Riccardi.&n; *    And from the frame buffer device for Open Firmware-initialized devices:&n; *    Copyright (C) 1997 Geert Uytterhoeven.&n; *&n; *  Hardware information from:&n; *    control.c: Console support for PowerMac &quot;control&quot; display adaptor.&n; *    Copyright (C) 1996 Paul Mackerras&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -18,7 +18,12 @@ macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#ifdef CONFIG_MAC
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/macintosh.h&gt;
+macro_line|#else
 macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-cfb8.h&gt;
@@ -32,6 +37,23 @@ id|can_soft_blank
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAC
+multiline_comment|/* We don&squot;t yet have functions to read the PRAM... perhaps we can&n;   adapt them from the PPC code? */
+DECL|variable|default_vmode
+r_static
+r_int
+id|default_vmode
+op_assign
+id|VMODE_640_480_67
+suffix:semicolon
+DECL|variable|default_cmode
+r_static
+r_int
+id|default_cmode
+op_assign
+id|CMODE_8
+suffix:semicolon
+macro_line|#else
 DECL|variable|default_vmode
 r_static
 r_int
@@ -46,6 +68,7 @@ id|default_cmode
 op_assign
 id|CMODE_NVRAM
 suffix:semicolon
+macro_line|#endif
 DECL|variable|__initdata
 r_static
 r_char
@@ -214,17 +237,6 @@ c_func
 (paren
 r_char
 op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|valkyrie_of_init
-c_func
-(paren
-r_struct
-id|device_node
-op_star
-id|dp
 )paren
 suffix:semicolon
 r_static
@@ -1901,6 +1913,7 @@ id|p-&gt;sense
 )paren
 suffix:semicolon
 multiline_comment|/* Try to pick a video mode out of NVRAM if we have one. */
+macro_line|#ifndef CONFIG_MAC
 r_if
 c_cond
 (paren
@@ -1941,6 +1954,7 @@ op_assign
 id|VMODE_CHOOSE
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1971,6 +1985,7 @@ id|default_vmode
 op_assign
 id|VMODE_640_480_67
 suffix:semicolon
+macro_line|#ifndef CONFIG_MAC
 r_if
 c_cond
 (paren
@@ -1986,6 +2001,7 @@ c_func
 id|NV_CMODE
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Reduce the pixel size if we don&squot;t have enough VRAM or bandwitdh.&n;&t; */
 r_if
 c_cond
@@ -2388,6 +2404,62 @@ r_void
 )paren
 (brace
 r_struct
+id|fb_info_valkyrie
+op_star
+id|p
+suffix:semicolon
+r_int
+r_int
+id|frame_buffer_phys
+comma
+id|cmap_regs_phys
+comma
+id|flags
+suffix:semicolon
+macro_line|#ifdef CONFIG_MAC
+r_if
+c_cond
+(paren
+op_logical_neg
+id|MACH_IS_MAC
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mac_bi_data.id
+op_eq
+id|MAC_MODEL_Q630
+multiline_comment|/* I&squot;m not sure about this one */
+op_logical_or
+id|mac_bi_data.id
+op_eq
+id|MAC_MODEL_P588
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Hardcoded addresses... welcome to 68k Macintosh country :-) */
+id|frame_buffer_phys
+op_assign
+l_int|0xf9000000
+suffix:semicolon
+id|cmap_regs_phys
+op_assign
+l_int|0x50f24000
+suffix:semicolon
+id|flags
+op_assign
+id|IOMAP_NOCACHE_SER
+suffix:semicolon
+multiline_comment|/* IOMAP_WRITETHROUGH?? */
+macro_line|#else /* ppc (!CONFIG_MAC) */
+r_struct
 id|device_node
 op_star
 id|dp
@@ -2404,40 +2476,11 @@ r_if
 c_cond
 (paren
 id|dp
-op_ne
+op_eq
 l_int|0
 )paren
-id|valkyrie_of_init
-c_func
-(paren
-id|dp
-)paren
-suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-DECL|function|valkyrie_of_init
-r_static
-r_void
-id|__init
-id|valkyrie_of_init
-c_func
-(paren
-r_struct
-id|device_node
-op_star
-id|dp
-)paren
-(brace
-r_struct
-id|fb_info_valkyrie
-op_star
-id|p
-suffix:semicolon
-r_int
-r_int
-id|addr
 suffix:semicolon
 r_if
 c_cond
@@ -2457,8 +2500,34 @@ id|dp-&gt;n_addrs
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
+id|frame_buffer_phys
+op_assign
+id|dp-&gt;addrs
+(braket
+l_int|0
+)braket
+dot
+id|address
+suffix:semicolon
+id|cmap_regs_phys
+op_assign
+id|dp-&gt;addrs
+(braket
+l_int|0
+)braket
+dot
+id|address
+op_plus
+l_int|0x304000
+suffix:semicolon
+id|flags
+op_assign
+id|_PAGE_WRITETHRU
+suffix:semicolon
+macro_line|#endif /* ppc (!CONFIG_MAC) */
 id|p
 op_assign
 id|kmalloc
@@ -2481,6 +2550,7 @@ op_eq
 l_int|0
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|memset
 c_func
@@ -2497,15 +2567,6 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/* Map in frame buffer and registers */
-id|addr
-op_assign
-id|dp-&gt;addrs
-(braket
-l_int|0
-)braket
-dot
-id|address
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2513,14 +2574,9 @@ op_logical_neg
 id|request_mem_region
 c_func
 (paren
-id|addr
+id|frame_buffer_phys
 comma
-id|dp-&gt;addrs
-(braket
-l_int|0
-)braket
-dot
-id|size
+l_int|0x100000
 comma
 l_string|&quot;valkyriefb&quot;
 )paren
@@ -2533,29 +2589,32 @@ id|p
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
+id|p-&gt;total_vram
+op_assign
+l_int|0x100000
+suffix:semicolon
 id|p-&gt;frame_buffer_phys
 op_assign
-id|addr
+id|frame_buffer_phys
 suffix:semicolon
 id|p-&gt;frame_buffer
 op_assign
 id|__ioremap
 c_func
 (paren
-id|addr
+id|frame_buffer_phys
 comma
-l_int|0x100000
+id|p-&gt;total_vram
 comma
-id|_PAGE_WRITETHRU
+id|flags
 )paren
 suffix:semicolon
 id|p-&gt;cmap_regs_phys
 op_assign
-id|addr
-op_plus
-l_int|0x304000
+id|cmap_regs_phys
 suffix:semicolon
 id|p-&gt;cmap_regs
 op_assign
@@ -2564,14 +2623,14 @@ c_func
 (paren
 id|p-&gt;cmap_regs_phys
 comma
-l_int|4096
+l_int|0x1000
 )paren
 suffix:semicolon
 id|p-&gt;valkyrie_regs_phys
 op_assign
-id|addr
+id|cmap_regs_phys
 op_plus
-l_int|0x30a000
+l_int|0x6000
 suffix:semicolon
 id|p-&gt;valkyrie_regs
 op_assign
@@ -2580,19 +2639,17 @@ c_func
 (paren
 id|p-&gt;valkyrie_regs_phys
 comma
-l_int|4096
+l_int|0x1000
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * kps: As far as I know, all Valkyries have fixed usable VRAM.&n;&t; */
-id|p-&gt;total_vram
-op_assign
-l_int|0x100000
 suffix:semicolon
 id|init_valkyrie
 c_func
 (paren
 id|p
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Get the monitor sense value.&n; */

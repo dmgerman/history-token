@@ -102,6 +102,8 @@ DECL|macro|SONIC_FAET
 mdefine_line|#define SONIC_FAET              0x2d
 DECL|macro|SONIC_MPT
 mdefine_line|#define SONIC_MPT               0x2e
+DECL|macro|SONIC_DCR2
+mdefine_line|#define SONIC_DCR2              0x3f
 multiline_comment|/*&n; * SONIC command bits&n; */
 DECL|macro|SONIC_CR_LCAM
 mdefine_line|#define SONIC_CR_LCAM           0x0200

@@ -2,6 +2,9 @@ multiline_comment|/*&n;  nubus.h: various definitions and prototypes for NuBus d
 macro_line|#ifndef LINUX_NUBUS_H
 DECL|macro|LINUX_NUBUS_H
 mdefine_line|#define LINUX_NUBUS_H
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm/nubus.h&gt;
+macro_line|#endif
 DECL|enum|nubus_category
 r_enum
 id|nubus_category
@@ -712,14 +715,6 @@ op_star
 id|nubus_boards
 suffix:semicolon
 multiline_comment|/* Generic NuBus interface functions, modelled after the PCI interface */
-r_extern
-r_void
-id|nubus_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_void
 id|nubus_scan_bus
 c_func

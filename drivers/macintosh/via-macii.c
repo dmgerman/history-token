@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Device driver for the via ADB on (many) Mac II-class machines&n; *&n; * Based on the original ADB keyboard handler Copyright (c) 1997 Alan Cox&n; * Also derived from code Copyright (C) 1996 Paul Mackerras.&n; *&n; * With various updates provided over the years by Michael Schmitz,&n; * Guideo Koerber and others.&n; *&n; * Rewrite for Unified ADB by Joshua M. Thompson (funaho@jurai.org)&n; *&n; * 1999-08-02 (jmt) - Initial rewrite for Unified ADB.&n; */
+multiline_comment|/*&n; * Device driver for the via ADB on (many) Mac II-class machines&n; *&n; * Based on the original ADB keyboard handler Copyright (c) 1997 Alan Cox&n; * Also derived from code Copyright (C) 1996 Paul Mackerras.&n; *&n; * With various updates provided over the years by Michael Schmitz,&n; * Guideo Koerber and others.&n; *&n; * Rewrite for Unified ADB by Joshua M. Thompson (funaho@jurai.org)&n; *&n; * 1999-08-02 (jmt) - Initial rewrite for Unified ADB.&n; * 2000-03-29 Tony Mantler &lt;tonym@mac.linux-m68k.org&gt;&n; * &t;&t;&t;&t;- Big overhaul, should actually work now.&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -237,9 +237,6 @@ id|macii_state
 DECL|enumerator|idle
 id|idle
 comma
-DECL|enumerator|sent_first_byte
-id|sent_first_byte
-comma
 DECL|enumerator|sending
 id|sending
 comma
@@ -395,7 +392,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;adb: Mac II ADB Driver v0.4 for Unified ADB&bslash;n&quot;
+l_string|&quot;adb: Mac II ADB Driver v1.0 for Unified ADB&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -888,15 +885,8 @@ r_if
 c_cond
 (paren
 id|req-&gt;nbytes
-OL
-l_int|2
-op_logical_or
-id|req-&gt;data
-(braket
-l_int|0
-)braket
-op_ne
-id|ADB_PACKET
+template_param
+l_int|15
 )paren
 (brace
 id|req-&gt;complete
@@ -1192,6 +1182,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * IRQ signaled ?? (means ADB controller wants to send, or might &n;&t; * be end of packet if we were reading)&n;&t; */
+macro_line|#if 0 /* FIXME: This is broke broke broke, for some reason */
 r_if
 c_cond
 (paren
@@ -1207,6 +1198,12 @@ op_eq
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;macii_start: weird poll stuff. huh?&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;FIXME - we need to restart this on a timer&n;&t;&t; *&t;or a collision at boot hangs us.&n;&t;&t; *&t;Never set macii_state to idle here, or macii_start &n;&t;&t; *&t;won&squot;t be called again from send_request!&n;&t;&t; *&t;(need to re-check other cases ...)&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * if the interrupt handler set the need_poll&n;&t;&t; * flag, it&squot;s hopefully a SRQ poll or re-Talk&n;&t;&t; * so we try to send here anyway&n;&t;&t; */
 r_if
@@ -1269,6 +1266,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * Another retry pending? (sanity check)&n;&t; */
 r_if
 c_cond
@@ -1330,7 +1328,7 @@ id|ST_CMD
 suffix:semicolon
 id|macii_state
 op_assign
-id|sent_first_byte
+id|sending
 suffix:semicolon
 id|data_index
 op_assign
@@ -1568,13 +1566,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|sent_first_byte
+id|sending
 suffix:colon
 id|req
 op_assign
 id|current_req
 suffix:semicolon
-multiline_comment|/* maybe we&squot;re already done (Talk, or Poll)? */
 r_if
 c_cond
 (paren
@@ -1583,8 +1580,7 @@ op_ge
 id|req-&gt;nbytes
 )paren
 (brace
-multiline_comment|/* reset to shift in */
-multiline_comment|/* If it&squot;s a Listen command and we&squot;re done, someone&squot;s doing weird stuff. */
+multiline_comment|/* print an error message if a listen command has no data */
 r_if
 c_cond
 (paren
@@ -1597,178 +1593,22 @@ l_int|0x0C
 op_eq
 l_int|0x08
 )paren
+multiline_comment|/* &amp;&amp; (console_loglevel == 10) */
 op_logical_and
 (paren
-id|console_loglevel
+id|data_index
 op_eq
-l_int|10
+l_int|2
 )paren
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;macii_interrupt: listen command with no data: %x!&bslash;n&quot;
+l_string|&quot;MacII ADB: listen command with no data: %x!&bslash;n&quot;
 comma
 id|command_byte
 )paren
 suffix:semicolon
-multiline_comment|/* reset to shift in */
-id|via
-(braket
-id|ACR
-)braket
-op_and_assign
-op_complement
-id|SR_OUT
-suffix:semicolon
-id|x
-op_assign
-id|via
-(braket
-id|SR
-)braket
-suffix:semicolon
-multiline_comment|/* set ADB state idle - might get SRQ */
-id|via
-(braket
-id|B
-)braket
-op_assign
-(paren
-id|via
-(braket
-id|B
-)braket
-op_amp
-op_complement
-id|ST_MASK
-)paren
-op_or
-id|ST_IDLE
-suffix:semicolon
-id|req-&gt;sent
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|req-&gt;reply_expected
-)paren
-(brace
-id|macii_state
-op_assign
-id|awaiting_reply
-suffix:semicolon
-)brace
-r_else
-(brace
-id|req-&gt;complete
-op_assign
-l_int|1
-suffix:semicolon
-id|current_req
-op_assign
-id|req-&gt;next
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|req-&gt;done
-)paren
-(paren
-op_star
-id|req-&gt;done
-)paren
-(paren
-id|req
-)paren
-suffix:semicolon
-id|macii_state
-op_assign
-id|idle
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|current_req
-op_logical_or
-id|retry_req
-)paren
-id|macii_start
-c_func
-(paren
-)paren
-suffix:semicolon
-r_else
-id|macii_retransmit
-c_func
-(paren
-(paren
-id|command_byte
-op_amp
-l_int|0xF0
-)paren
-op_rshift
-l_int|4
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/* SR already set to shift out; send byte */
-id|via
-(braket
-id|SR
-)braket
-op_assign
-id|current_req-&gt;data
-(braket
-id|data_index
-op_increment
-)braket
-suffix:semicolon
-multiline_comment|/* set state to ST_EVEN (first byte was: ST_CMD) */
-id|via
-(braket
-id|B
-)braket
-op_assign
-(paren
-id|via
-(braket
-id|B
-)braket
-op_amp
-op_complement
-id|ST_MASK
-)paren
-op_or
-id|ST_EVEN
-suffix:semicolon
-id|macii_state
-op_assign
-id|sending
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-id|sending
-suffix:colon
-id|req
-op_assign
-id|current_req
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|data_index
-op_ge
-id|req-&gt;nbytes
-)paren
-(brace
 multiline_comment|/* reset to shift in */
 id|via
 (braket
@@ -1885,6 +1725,42 @@ id|data_index
 op_increment
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|via
+(braket
+id|B
+)braket
+op_amp
+id|ST_MASK
+)paren
+op_eq
+id|ST_CMD
+)paren
+(brace
+multiline_comment|/* just sent the command byte, set to EVEN */
+id|via
+(braket
+id|B
+)braket
+op_assign
+(paren
+id|via
+(braket
+id|B
+)braket
+op_amp
+op_complement
+id|ST_MASK
+)paren
+op_or
+id|ST_EVEN
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* invert state bits, toggle ODD/EVEN */
 id|via
 (braket
@@ -1893,6 +1769,7 @@ id|B
 op_xor_assign
 id|ST_MASK
 suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon
@@ -1974,7 +1851,7 @@ l_int|0xFF
 id|printk
 c_func
 (paren
-l_string|&quot;macii_interrupt: mistaken timeout/SRQ!&bslash;n&quot;
+l_string|&quot;MacII ADB: mistaken timeout/SRQ!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2120,11 +1997,14 @@ multiline_comment|/*&n;&t;&t;&t; * NetBSD hints that the next to last byte &n;&t
 r_if
 c_cond
 (paren
-op_logical_neg
+(paren
 (paren
 id|status
 op_amp
 id|TREQ
+)paren
+op_eq
+l_int|0
 )paren
 op_logical_and
 (paren
@@ -2307,18 +2187,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* /IRQ seen, so the ADB controller has data for us */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|status
-op_amp
-id|TREQ
-)paren
-)paren
-(brace
 multiline_comment|/* set ADB state to idle */
 id|via
 (braket
@@ -2337,6 +2205,22 @@ id|ST_MASK
 op_or
 id|ST_IDLE
 suffix:semicolon
+multiline_comment|/* /IRQ seen, so the ADB controller has data for us */
+r_if
+c_cond
+(paren
+(paren
+id|via
+(braket
+id|B
+)braket
+op_amp
+id|TREQ
+)paren
+op_ne
+l_int|0
+)paren
+(brace
 id|macii_state
 op_assign
 id|reading

@@ -175,6 +175,47 @@ suffix:semicolon
 multiline_comment|/* initial part of arg list */
 )brace
 suffix:semicolon
+macro_line|#include &lt;linux/time.h&gt;
+DECL|macro|jiffies_to_timeval
+mdefine_line|#define jiffies_to_timeval jiffies_to_timeval32
+r_static
+id|__inline__
+r_void
+DECL|function|jiffies_to_timeval32
+id|jiffies_to_timeval32
+c_func
+(paren
+r_int
+r_int
+id|jiffies
+comma
+r_struct
+id|timeval32
+op_star
+id|value
+)paren
+(brace
+id|value-&gt;tv_usec
+op_assign
+(paren
+id|jiffies
+op_mod
+id|HZ
+)paren
+op_star
+(paren
+l_int|1000000L
+op_div
+id|HZ
+)paren
+suffix:semicolon
+id|value-&gt;tv_sec
+op_assign
+id|jiffies
+op_div
+id|HZ
+suffix:semicolon
+)brace
 r_extern
 r_void
 id|start_thread32

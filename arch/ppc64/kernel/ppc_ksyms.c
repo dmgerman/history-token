@@ -315,20 +315,6 @@ c_func
 id|kernel_flag
 )paren
 suffix:semicolon
-DECL|variable|synchronize_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|synchronize_irq
-)paren
-suffix:semicolon
-DECL|variable|smp_num_cpus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|smp_num_cpus
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 DECL|variable|register_ioctl32_conversion
 id|EXPORT_SYMBOL
@@ -959,34 +945,6 @@ id|flush_dcache_page
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-DECL|variable|__global_cli
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_cli
-)paren
-suffix:semicolon
-DECL|variable|__global_sti
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_sti
-)paren
-suffix:semicolon
-DECL|variable|__global_save_flags
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_save_flags
-)paren
-suffix:semicolon
-DECL|variable|__global_restore_flags
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_restore_flags
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|variable|__no_use_restore_flags
 id|EXPORT_SYMBOL

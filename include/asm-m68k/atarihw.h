@@ -298,7 +298,7 @@ mdefine_line|#define atari_inb_p   raw_inb
 DECL|macro|atari_outb_p
 mdefine_line|#define atari_outb_p  raw_outb
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|function|dma_cache_maintenance
 r_static
 r_inline

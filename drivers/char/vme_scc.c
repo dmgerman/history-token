@@ -469,10 +469,17 @@ id|scc_driver.driver_name
 op_assign
 l_string|&quot;scc&quot;
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|scc_driver.name
+op_assign
+l_string|&quot;tts/%d&quot;
+suffix:semicolon
+macro_line|#else
 id|scc_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
 suffix:semicolon
+macro_line|#endif
 id|scc_driver.major
 op_assign
 id|TTY_MAJOR
@@ -598,10 +605,17 @@ id|scc_callout_driver
 op_assign
 id|scc_driver
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|scc_callout_driver.name
+op_assign
+l_string|&quot;cua/%d&quot;
+suffix:semicolon
+macro_line|#else
 id|scc_callout_driver.name
 op_assign
 l_string|&quot;cua&quot;
 suffix:semicolon
+macro_line|#endif
 id|scc_callout_driver.major
 op_assign
 id|TTYAUX_MAJOR
@@ -3166,7 +3180,6 @@ id|baud
 op_minus
 l_int|2
 suffix:semicolon
-r_else
 macro_line|#endif
 macro_line|#ifdef CONFIG_MVME162_SCC
 r_if
@@ -3194,7 +3207,6 @@ id|baud
 op_minus
 l_int|2
 suffix:semicolon
-r_else
 macro_line|#endif
 macro_line|#ifdef CONFIG_BVME6000_SCC
 r_if
@@ -3434,6 +3446,7 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Comment taken from sx.c (2.4.0):&n;   I haven&squot;t the foggiest why the decrement use count has to happen&n;   here. The whole linux serial drivers stuff needs to be redesigned.&n;   My guess is that this is a hack to minimize the impact of a bug&n;   elsewhere. Thinking about it some more. (try it sometime) Try&n;   running minicom on a serial port that is driven by a modularized&n;   driver. Have the modem hangup. Then remove the driver module. Then&n;   exit minicom.  I expect an &quot;oops&quot;.  -- REW */
 DECL|function|scc_hungup
 r_static
 r_void
@@ -3483,6 +3496,8 @@ c_func
 id|ptr
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n; * Internal support functions&n; *--------------------------------------------------------------------------*/
 DECL|function|scc_setsignals
@@ -3521,6 +3536,11 @@ id|save_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
 )paren
 suffix:semicolon
 id|t
@@ -4145,7 +4165,7 @@ suffix:semicolon
 )brace
 id|retval
 op_assign
-id|block_til_ready
+id|gs_block_til_ready
 c_func
 (paren
 id|port

@@ -25,20 +25,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
-r_int
-id|dump_fpu
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-id|elf_fpregset_t
-op_star
-id|fpregs
-)paren
-suffix:semicolon
 DECL|variable|last_task_used_math
 r_struct
 id|task_struct
@@ -170,8 +156,8 @@ l_int|1
 suffix:semicolon
 )brace
 r_void
-DECL|function|_switch_to
-id|_switch_to
+DECL|function|__switch_to
+id|__switch_to
 c_func
 (paren
 r_struct
@@ -229,7 +215,7 @@ op_assign
 op_amp
 id|current-&gt;thread
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -243,7 +229,7 @@ comma
 id|new_thread
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -611,7 +597,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* for kernel thread, set `current&squot; and stackptr in new task */
+multiline_comment|/* for kernel thread, set stackptr in new task */
 id|childregs-&gt;gpr
 (braket
 l_int|1
@@ -624,17 +610,6 @@ r_sizeof
 r_struct
 id|pt_regs
 )paren
-suffix:semicolon
-id|childregs-&gt;gpr
-(braket
-l_int|13
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|p
 suffix:semicolon
 id|p-&gt;thread.regs
 op_assign
@@ -1243,12 +1218,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_struct
-id|naca_struct
-op_star
-id|naca
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1271,12 +1240,24 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;processorCount
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_possible
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/* Carve out storage for the hardware interrupt stack */
 id|stack
 op_assign
@@ -1346,10 +1327,9 @@ multiline_comment|/*&n;&t; * __get_free_pages() might give us a page &gt; KERNBA
 r_if
 c_cond
 (paren
-id|__is_processor
+id|cpu_has_largepage
 c_func
 (paren
-id|PV_POWER4
 )paren
 )paren
 r_return
@@ -1363,12 +1343,24 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;processorCount
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_possible
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/* set page at the top of stack to be protected - prevent overflow */
 id|end_of_stack
 op_assign

@@ -4333,7 +4333,8 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;tZorro%s AutoConfig: %d Expansion Device%s&bslash;n&quot;
+l_string|&quot;&bslash;tZorro II%s AutoConfig: %d Expansion &quot;
+l_string|&quot;Device%s&bslash;n&quot;
 comma
 id|AMIGAHW_PRESENT
 c_func
@@ -4342,7 +4343,7 @@ id|ZORRO3
 )paren
 ques
 c_cond
-l_string|&quot; III&quot;
+l_string|&quot;I&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma

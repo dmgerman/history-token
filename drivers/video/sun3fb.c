@@ -20,6 +20,14 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;&t;/* io_remap_page_range() */
 macro_line|#ifdef CONFIG_SUN3
 macro_line|#include &lt;asm/oplib.h&gt;
+macro_line|#include &lt;asm/machines.h&gt;
+macro_line|#include &lt;asm/idprom.h&gt;
+DECL|macro|CGFOUR_OBMEM_ADDR
+mdefine_line|#define CGFOUR_OBMEM_ADDR 0x1f300000
+DECL|macro|BWTWO_OBMEM_ADDR
+mdefine_line|#define BWTWO_OBMEM_ADDR 0x1f000000
+DECL|macro|BWTWO_OBMEM50_ADDR
+mdefine_line|#define BWTWO_OBMEM50_ADDR 0x00100000
 macro_line|#endif
 macro_line|#ifdef CONFIG_SUN3X
 macro_line|#include &lt;asm/sun3x.h&gt;
@@ -31,6 +39,8 @@ DECL|macro|CURSOR_SHAPE
 mdefine_line|#define CURSOR_SHAPE&t;&t;&t;1
 DECL|macro|CURSOR_BLINK
 mdefine_line|#define CURSOR_BLINK&t;&t;&t;2
+DECL|macro|mymemset
+mdefine_line|#define mymemset(x,y) memset(x,0,y)
 multiline_comment|/*&n;     *  Interface used by the world&n;     */
 r_int
 id|sun3fb_init
@@ -39,7 +49,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_int
+r_void
 id|sun3fb_setup
 c_func
 (paren
@@ -370,6 +380,8 @@ c_func
 (paren
 id|p
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 r_if
 c_cond
@@ -1873,7 +1885,6 @@ op_increment
 suffix:semicolon
 )brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|sun3fbcon_switch
@@ -2199,6 +2210,9 @@ c_func
 (paren
 id|fb
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Read a single color register and split it into&n;     *  colors/transparent. Return != 0 for invalid regno.&n;     */
@@ -2734,7 +2748,7 @@ id|addr
 (brace
 r_static
 r_struct
-id|linux_sbus_device
+id|sbus_dev
 id|sdb
 suffix:semicolon
 r_struct
@@ -2902,25 +2916,12 @@ op_star
 id|h
 )paren
 suffix:semicolon
+multiline_comment|/*&t;&n;&t;fb-&gt;x_margin = (w &amp; 7) / 2;&n;&t;fb-&gt;y_margin = (h &amp; 15) / 2;&n;*/
 id|fb-&gt;x_margin
 op_assign
-(paren
-id|w
-op_amp
-l_int|7
-)paren
-op_div
-l_int|2
-suffix:semicolon
 id|fb-&gt;y_margin
 op_assign
-(paren
-id|h
-op_amp
-l_int|15
-)paren
-op_div
-l_int|2
+l_int|0
 suffix:semicolon
 id|var-&gt;xres_virtual
 op_assign
@@ -3114,11 +3115,38 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_FB_CGTHREE
+r_case
+id|FBTYPE_SUN4COLOR
+suffix:colon
+r_case
+id|FBTYPE_SUN3COLOR
+suffix:colon
+id|type-&gt;fb_size
+op_assign
+l_int|0x100000
+suffix:semicolon
+id|p
+op_assign
+id|cgthreefb_init
+c_func
+(paren
+id|fb
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 )brace
 id|fix-&gt;smem_start
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|fb-&gt;info.screen_base
 suffix:semicolon
+singleline_comment|// FIXME
 r_if
 c_cond
 (paren
@@ -3344,18 +3372,10 @@ c_func
 )paren
 )paren
 r_return
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;sun3fb_init()&bslash;n&quot;
-)paren
+op_minus
+id|ENODEV
 suffix:semicolon
 macro_line|#ifdef CONFIG_SUN3
-id|addr
-op_assign
-l_int|0xfe20000
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3368,6 +3388,10 @@ id|romvec-&gt;pv_fbtype
 r_case
 id|FBTYPE_SUN2BW
 suffix:colon
+id|addr
+op_assign
+l_int|0xfe20000
+suffix:semicolon
 r_return
 id|sun3fb_init_fb
 c_func
@@ -3380,15 +3404,59 @@ suffix:semicolon
 r_case
 id|FBTYPE_SUN3COLOR
 suffix:colon
+r_case
+id|FBTYPE_SUN4COLOR
+suffix:colon
+r_if
+c_cond
+(paren
+id|idprom-&gt;id_machtype
+op_ne
+(paren
+id|SM_SUN3
+op_or
+id|SM_3_60
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;cg3 detected but not supported&bslash;n&quot;
+l_string|&quot;sun3fb: cgthree/four only supported on 3/60&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 op_minus
-id|EINVAL
+id|ENODEV
+suffix:semicolon
+)brace
+id|addr
+op_assign
+id|CGFOUR_OBMEM_ADDR
+suffix:semicolon
+r_return
+id|sun3fb_init_fb
+c_func
+(paren
+op_star
+(paren
+id|romvec-&gt;pv_fbtype
+)paren
+comma
+id|addr
+)paren
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;sun3fb: unsupported framebuffer&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#else
@@ -3444,6 +3512,7 @@ macro_line|#if 0 /* not yet */
 r_case
 l_int|0x40
 suffix:colon
+r_return
 id|sun3fb_init_fb
 c_func
 (paren
@@ -3457,6 +3526,7 @@ suffix:semicolon
 r_case
 l_int|0x45
 suffix:colon
+r_return
 id|sun3fb_init_fb
 c_func
 (paren
@@ -3482,6 +3552,10 @@ id|addr
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 )brace
 id|MODULE_LICENSE
 c_func

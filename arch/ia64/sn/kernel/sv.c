@@ -489,7 +489,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -828,7 +828,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -900,7 +900,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -1724,7 +1724,7 @@ c_loop
 l_int|1
 )paren
 (brace
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags2
@@ -1782,7 +1782,7 @@ id|int_test_spin
 )paren
 suffix:semicolon
 )brace
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags2
@@ -1811,7 +1811,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags2

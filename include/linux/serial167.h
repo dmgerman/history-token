@@ -119,6 +119,7 @@ suffix:semicolon
 multiline_comment|/* Interrupt Enable Register */
 DECL|member|event
 r_int
+r_int
 id|event
 suffix:semicolon
 DECL|member|last_active

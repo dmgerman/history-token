@@ -160,22 +160,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Bitmask indicating portions of available Zorro II RAM that are unused&n;     *  by the system. Every bit represents a 64K chunk, for a maximum of 8MB&n;     *  (128 chunks, physical 0x00200000-0x009fffff).&n;     *&n;     *  If you want to use (= allocate) portions of this RAM, you should clear&n;     *  the corresponding bits.&n;     *&n;     *  Possible uses:&n;     *      - z2ram device&n;     *      - SCSI DMA bounce buffers&n;     *&n;     *  FIXME: use the normal resource management&n;     */
-DECL|variable|zorro_unused_z2ram
-id|u32
+id|bitmap_member
+c_func
+(paren
 id|zorro_unused_z2ram
-(braket
-l_int|4
-)braket
-op_assign
-(brace
-l_int|0
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
+l_int|128
+)paren
 suffix:semicolon
 DECL|function|mark_region
 r_static

@@ -149,6 +149,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|parport_atari_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_int

@@ -4177,14 +4177,14 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
 singleline_comment|// FIXME: is this safe?
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -4206,7 +4206,7 @@ id|owner
 )paren
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4233,7 +4233,7 @@ id|drive
 )paren
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4256,7 +4256,7 @@ id|drive-&gt;driver
 op_assign
 l_int|NULL
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

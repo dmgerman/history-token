@@ -2447,7 +2447,7 @@ id|p
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_MAC
+macro_line|#ifdef CONFIG_FBCON_MAC
 r_if
 c_cond
 (paren

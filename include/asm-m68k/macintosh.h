@@ -185,12 +185,6 @@ id|ptr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Macintosh Table&n; */
-DECL|variable|macintosh_config
-r_struct
-id|mac_model
-op_star
-id|macintosh_config
-suffix:semicolon
 DECL|struct|mac_model
 r_struct
 id|mac_model

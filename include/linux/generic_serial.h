@@ -207,6 +207,7 @@ id|tty
 suffix:semicolon
 DECL|member|event
 r_int
+r_int
 id|event
 suffix:semicolon
 DECL|member|closing_wait

@@ -3990,7 +3990,7 @@ c_func
 (paren
 r_char
 op_star
-id|buf
+id|page
 comma
 r_char
 op_star
@@ -4022,9 +4022,9 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|slot
-comma
 id|size
+op_assign
+id|PAGE_SIZE
 suffix:semicolon
 r_struct
 id|nubus_board
@@ -4036,7 +4036,7 @@ op_assign
 id|sprintf
 c_func
 (paren
-id|buf
+id|page
 comma
 l_string|&quot;Nubus devices found:&bslash;n&quot;
 )paren
@@ -4065,7 +4065,7 @@ c_func
 (paren
 id|board
 comma
-id|buf
+id|page
 op_plus
 id|len
 comma
@@ -4123,10 +4123,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|slot
-op_eq
-l_int|16
-op_logical_or
 id|len
 op_plus
 id|begin
@@ -4145,7 +4141,7 @@ suffix:semicolon
 op_star
 id|start
 op_assign
-id|buf
+id|page
 op_plus
 id|off
 suffix:semicolon
@@ -4225,7 +4221,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|nubus_init
-r_void
+r_static
+r_int
 id|__init
 id|nubus_init
 c_func
@@ -4240,6 +4237,7 @@ op_logical_neg
 id|MACH_IS_MAC
 )paren
 r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* Initialize the NuBus interrupts */
 r_if
@@ -4312,6 +4310,9 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|nubus_init
 id|subsys_initcall

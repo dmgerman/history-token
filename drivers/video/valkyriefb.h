@@ -1,4 +1,12 @@
-multiline_comment|/*&n; * valkyriefb.h: Constants of all sorts for valkyriefb&n; *&n; *  Created 8 August 1998 by &n; *  Martin Costabel &lt;costabel@wanadoo.fr&gt; and Kevin Schoedel&n; *&n; * Vmode-switching changes and vmode 15/17 modifications created 29 August&n; * 1998 by Barry K. Nathan &lt;barryn@pobox.com&gt;.&n; * &n; * vmode 10 changed by Steven Borley &lt;sjb@salix.demon.co.uk&gt;, 14 mai 2000&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Based directly on:&n; *&n; *  controlfb.h: Constants of all sorts for controlfb&n; *  Copyright (C) 1998 Daniel Jacobowitz &lt;dan@debian.org&gt;&n; *&n; *  pmc-valkyrie.h: Console support for PowerMac &quot;control&quot; display adaptor.&n; *  Copyright (C) 1997 Paul Mackerras.&n; *&n; *  pmc-valkyrie.c: Console support for PowerMac &quot;control&quot; display adaptor.&n; *  Copyright (C) 1997 Paul Mackerras.&n; *&n; * and indirectly from:&n; *&n; *  pmc-control.h: Console support for PowerMac &quot;control&quot; display adaptor.&n; *  Copyright (C) 1997 Paul Mackerras.&n; *&n; *  pmc-control.c: Console support for PowerMac &quot;control&quot; display adaptor.&n; *  Copyright (C) 1996 Paul Mackerras.&n; *&n; *  platinumfb.c: Console support for PowerMac &quot;platinum&quot; display adaptor.&n; *  Copyright (C) 1998 Jon Howell&n; */
+multiline_comment|/*&n; * valkyriefb.h: Constants of all sorts for valkyriefb&n; *&n; *  Created 8 August 1998 by &n; *  Martin Costabel &lt;costabel@wanadoo.fr&gt; and Kevin Schoedel&n; *&n; * Vmode-switching changes and vmode 15/17 modifications created 29 August&n; * 1998 by Barry K. Nathan &lt;barryn@pobox.com&gt;.&n; * &n; * vmode 10 changed by Steven Borley &lt;sjb@salix.demon.co.uk&gt;, 14 mai 2000&n; *&n; * Ported to 68k Macintosh by David Huggins-Daines &lt;dhd@debian.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Based directly on:&n; *&n; *  controlfb.h: Constants of all sorts for controlfb&n; *  Copyright (C) 1998 Daniel Jacobowitz &lt;dan@debian.org&gt;&n; *&n; *  pmc-valkyrie.h: Console support for PowerMac &quot;control&quot; display adaptor.&n; *  Copyright (C) 1997 Paul Mackerras.&n; *&n; *  pmc-valkyrie.c: Console support for PowerMac &quot;control&quot; display adaptor.&n; *  Copyright (C) 1997 Paul Mackerras.&n; *&n; * and indirectly from:&n; *&n; *  pmc-control.h: Console support for PowerMac &quot;control&quot; display adaptor.&n; *  Copyright (C) 1997 Paul Mackerras.&n; *&n; *  pmc-control.c: Console support for PowerMac &quot;control&quot; display adaptor.&n; *  Copyright (C) 1996 Paul Mackerras.&n; *&n; *  platinumfb.c: Console support for PowerMac &quot;platinum&quot; display adaptor.&n; *  Copyright (C) 1998 Jon Howell&n; */
+macro_line|#ifdef CONFIG_MAC
+multiline_comment|/* Valkyrie registers are word-aligned on m68k */
+DECL|macro|VALKYRIE_REG_PADSIZE
+mdefine_line|#define VALKYRIE_REG_PADSIZE&t;3
+macro_line|#else
+DECL|macro|VALKYRIE_REG_PADSIZE
+mdefine_line|#define VALKYRIE_REG_PADSIZE&t;7
+macro_line|#endif
 multiline_comment|/*&n; * Structure of the registers for the Valkyrie colormap registers.&n; */
 DECL|struct|cmap_regs
 r_struct
@@ -13,7 +21,7 @@ DECL|member|pad1
 r_char
 id|pad1
 (braket
-l_int|7
+id|VALKYRIE_REG_PADSIZE
 )braket
 suffix:semicolon
 DECL|member|lut
@@ -38,7 +46,7 @@ DECL|member|pad
 r_char
 id|pad
 (braket
-l_int|7
+id|VALKYRIE_REG_PADSIZE
 )braket
 suffix:semicolon
 )brace
@@ -125,6 +133,7 @@ id|vres
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifndef CONFIG_MAC
 multiline_comment|/* Register values for 1024x768, 75Hz mode (17) */
 multiline_comment|/* I&squot;m not sure which mode this is (16 or 17), so I&squot;m defining it as 17,&n; * since the equivalent mode in controlfb (which I adapted this from) is&n; * also 17. Just because MacOS can&squot;t do this on Valkyrie doesn&squot;t mean we&n; * can&squot;t! :)&n; *&n; * I was going to use 12, 31, 3, which I found by myself, but instead I&squot;m&n; * using 11, 28, 3 like controlfb, for consistency&squot;s sake.&n; */
 DECL|variable|valkyrie_reg_init_17
@@ -218,36 +227,6 @@ comma
 l_int|768
 )brace
 suffix:semicolon
-multiline_comment|/* Register values for 832x624, 75Hz mode (13) */
-DECL|variable|valkyrie_reg_init_13
-r_static
-r_struct
-id|valkyrie_regvals
-id|valkyrie_reg_init_13
-op_assign
-(brace
-l_int|9
-comma
-(brace
-l_int|23
-comma
-l_int|42
-comma
-l_int|3
-)brace
-comma
-multiline_comment|/* pixel clock = 57.07MHz for V=74.27Hz */
-(brace
-l_int|832
-comma
-l_int|0
-)brace
-comma
-l_int|832
-comma
-l_int|624
-)brace
-suffix:semicolon
 multiline_comment|/* Register values for 800x600, 72Hz mode (11) */
 DECL|variable|valkyrie_reg_init_11
 r_static
@@ -276,6 +255,37 @@ comma
 l_int|800
 comma
 l_int|600
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_MAC */
+multiline_comment|/* Register values for 832x624, 75Hz mode (13) */
+DECL|variable|valkyrie_reg_init_13
+r_static
+r_struct
+id|valkyrie_regvals
+id|valkyrie_reg_init_13
+op_assign
+(brace
+l_int|9
+comma
+(brace
+l_int|23
+comma
+l_int|42
+comma
+l_int|3
+)brace
+comma
+multiline_comment|/* pixel clock = 57.07MHz for V=74.27Hz */
+(brace
+l_int|832
+comma
+l_int|0
+)brace
+comma
+l_int|832
+comma
+l_int|624
 )brace
 suffix:semicolon
 multiline_comment|/* Register values for 800x600, 60Hz mode (10) */
@@ -402,6 +412,23 @@ comma
 op_amp
 id|valkyrie_reg_init_10
 comma
+macro_line|#ifdef CONFIG_MAC
+l_int|NULL
+comma
+l_int|NULL
+comma
+op_amp
+id|valkyrie_reg_init_13
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+macro_line|#else
 op_amp
 id|valkyrie_reg_init_11
 comma
@@ -421,6 +448,7 @@ comma
 op_amp
 id|valkyrie_reg_init_17
 comma
+macro_line|#endif
 l_int|NULL
 comma
 l_int|NULL

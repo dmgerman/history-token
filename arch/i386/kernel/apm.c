@@ -620,7 +620,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * These are the actual BIOS calls.  Depending on APM_ZERO_SEGS and&n; * apm_info.allow_ints, we are being really paranoid here!  Not only&n; * are interrupts disabled, but all the segment registers (except SS)&n; * are saved and zeroed this means that if the BIOS tries to reference&n; * any data without explicitly loading the segment registers, the kernel&n; * will fault immediately rather than have some unforeseen circumstances&n; * for the rest of the kernel.  And it will be very obvious!  :-) Doing&n; * this depends on CS referring to the same physical memory as DS so that&n; * DS can be zeroed before the call. Unfortunately, we can&squot;t do anything&n; * about the stack segment/pointer.  Also, we tell the compiler that&n; * everything could change.&n; *&n; * Also, we KNOW that for the non error case of apm_bios_call, there&n; * is no useful data returned in the low order 8 bits of eax.&n; */
 DECL|macro|APM_DO_CLI
-mdefine_line|#define APM_DO_CLI&t;&bslash;&n;&t;if (apm_info.allow_ints) &bslash;&n;&t;&t;__sti(); &bslash;&n;&t;else &bslash;&n;&t;&t;__cli();
+mdefine_line|#define APM_DO_CLI&t;&bslash;&n;&t;if (apm_info.allow_ints) &bslash;&n;&t;&t;local_irq_enable(); &bslash;&n;&t;else &bslash;&n;&t;&t;local_irq_disable();
 macro_line|#ifdef APM_ZERO_SEGS
 DECL|macro|APM_DECL_SEGS
 macro_line|#&t;define APM_DECL_SEGS &bslash;&n;&t;&t;unsigned int saved_fs; unsigned int saved_gs;
@@ -686,7 +686,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -762,7 +762,7 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 id|APM_DO_RESTORE_SEGS
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -804,7 +804,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -885,7 +885,7 @@ suffix:semicolon
 )brace
 id|APM_DO_RESTORE_SEGS
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -3,18 +3,10 @@ DECL|macro|__PPC64_SYSTEM_H
 mdefine_line|#define __PPC64_SYSTEM_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
-multiline_comment|/*&n; * System defines.&n; */
-DECL|macro|KERNEL_START_PHYS
-mdefine_line|#define KERNEL_START_PHYS&t;0x800000 
-DECL|macro|KERNEL_START
-mdefine_line|#define KERNEL_START&t;        (PAGE_OFFSET+KERNEL_START_PHYS)
-DECL|macro|START_ADDR
-mdefine_line|#define START_ADDR&t;        (PAGE_OFFSET+KERNEL_START_PHYS+0x00000)
 multiline_comment|/*&n; * Memory barrier.&n; * The sync instruction guarantees that all memory accesses initiated&n; * by this processor have been performed (with respect to all other&n; * mechanisms that access memory).  The eieio instruction is a barrier&n; * providing an ordering (separately) for (a) cacheable stores and (b)&n; * loads and stores to non-cacheable memory (e.g. I/O devices).&n; *&n; * mb() prevents loads and stores being reordered across this point.&n; * rmb() prevents loads being reordered across this point.&n; * wmb() prevents stores being reordered across this point.&n; *&n; * We can use the eieio instruction for wmb, but since it doesn&squot;t&n; * give any ordering guarantees about loads, we have to use the&n; * stronger but slower sync instruction for mb and rmb.&n; */
 DECL|macro|mb
 mdefine_line|#define mb()   __asm__ __volatile__ (&quot;sync&quot; : : : &quot;memory&quot;)
@@ -249,65 +241,8 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|hard_reset_now
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|poweroff_now
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|_get_PVR
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|_get_L2CR
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_set_L2CR
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|via_cuda_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pmac_nvram_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pmac_find_display
 c_func
 (paren
 r_void
@@ -329,26 +264,6 @@ id|enable_kernel_fp
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|giveup_altivec
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|load_up_altivec
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -398,18 +313,11 @@ r_int
 )paren
 suffix:semicolon
 r_struct
-id|device_node
-suffix:semicolon
-r_struct
 id|task_struct
 suffix:semicolon
-DECL|macro|prepare_to_switch
-mdefine_line|#define prepare_to_switch()&t;do { } while(0)
-DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next) _switch_to((prev),(next))
 r_extern
 r_void
-id|_switch_to
+id|__switch_to
 c_func
 (paren
 r_struct
@@ -421,6 +329,16 @@ id|task_struct
 op_star
 )paren
 suffix:semicolon
+DECL|macro|switch_to
+mdefine_line|#define switch_to(prev, next, last) __switch_to((prev), (next))
+DECL|macro|prepare_arch_schedule
+mdefine_line|#define prepare_arch_schedule(prev)&t;&t;do { } while(0)
+DECL|macro|finish_arch_schedule
+mdefine_line|#define finish_arch_schedule(prev)&t;&t;do { } while(0)
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq)&t;&t;&t;do { } while(0)
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq)&t;&t;&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 r_struct
 id|thread_struct
 suffix:semicolon
@@ -455,67 +373,16 @@ op_star
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|cli
-mdefine_line|#define cli()&t;__cli()
+mdefine_line|#define cli()&t;local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti()&t;__sti()
+mdefine_line|#define sti()&t;local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(flags)&t;__save_flags(flags)
+mdefine_line|#define save_flags(flags)&t;local_save_flags(flags)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(flags)&t;__restore_flags(flags)
+mdefine_line|#define restore_flags(flags)&t;local_irq_restore(flags)
 DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(flags)&t;__save_and_cli(flags)
-macro_line|#else /* CONFIG_SMP */
-r_extern
-r_void
-id|__global_cli
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_sti
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__global_save_flags
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_restore_flags
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|macro|cli
-mdefine_line|#define cli() __global_cli()
-DECL|macro|sti
-mdefine_line|#define sti() __global_sti()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x) ((x)=__global_save_flags())
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __global_restore_flags(x)
+mdefine_line|#define save_and_cli(flags)&t;local_irq_save(flags)
 macro_line|#endif /* !CONFIG_SMP */
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;&t;__cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;&t;__sti()
-DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(flags)&t;&t;__save_and_cli(flags)
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;__restore_flags(flags)
 DECL|function|__is_processor
 r_static
 id|__inline__

@@ -10,12 +10,20 @@ DECL|macro|in_be16
 mdefine_line|#define in_be16(addr) &bslash;&n;    ({ unsigned short __v = (*(volatile unsigned short *) (addr)); __v; })
 DECL|macro|in_be32
 mdefine_line|#define in_be32(addr) &bslash;&n;    ({ unsigned int __v = (*(volatile unsigned int *) (addr)); __v; })
+DECL|macro|in_le16
+mdefine_line|#define in_le16(addr) &bslash;&n;    ({ unsigned short __v = le16_to_cpu(*(volatile unsigned short *) (addr)); __v; })
+DECL|macro|in_le32
+mdefine_line|#define in_le32(addr) &bslash;&n;    ({ unsigned int __v = le32_to_cpu(*(volatile unsigned int *) (addr)); __v; })
 DECL|macro|out_8
 mdefine_line|#define out_8(addr,b) (void)((*(volatile unsigned char *) (addr)) = (b))
 DECL|macro|out_be16
-mdefine_line|#define out_be16(addr,b) (void)((*(volatile unsigned short *) (addr)) = (b))
+mdefine_line|#define out_be16(addr,w) (void)((*(volatile unsigned short *) (addr)) = (w))
 DECL|macro|out_be32
-mdefine_line|#define out_be32(addr,b) (void)((*(volatile unsigned int *) (addr)) = (b))
+mdefine_line|#define out_be32(addr,l) (void)((*(volatile unsigned int *) (addr)) = (l))
+DECL|macro|out_le16
+mdefine_line|#define out_le16(addr,w) (void)((*(volatile unsigned short *) (addr)) = cpu_to_le16(w))
+DECL|macro|out_le32
+mdefine_line|#define out_le32(addr,l) (void)((*(volatile unsigned int *) (addr)) = cpu_to_le32(l))
 DECL|macro|raw_inb
 mdefine_line|#define raw_inb in_8
 DECL|macro|raw_inw

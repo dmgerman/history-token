@@ -7,7 +7,7 @@ mdefine_line|#define tlb_start_vma(tlb, vma)&t;do { } while (0)
 DECL|macro|tlb_end_vma
 mdefine_line|#define tlb_end_vma(tlb, vma)&t;do { } while (0)
 DECL|macro|tlb_remove_tlb_entry
-mdefine_line|#define tlb_remove_tlb_entry(tlb, pte, address)&t;do { } while (0)
+mdefine_line|#define tlb_remove_tlb_entry(tlb, ptep, address)&t;do { } while (0)
 multiline_comment|/*&n; * .. because we flush the whole mm when it&n; * fills up.&n; */
 DECL|macro|tlb_flush
 mdefine_line|#define tlb_flush(tlb)&t;&t;flush_tlb_mm((tlb)-&gt;mm)

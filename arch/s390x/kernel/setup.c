@@ -226,7 +226,7 @@ c_loop
 suffix:semicolon
 suffix:semicolon
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

@@ -576,7 +576,7 @@ id|dev
 suffix:semicolon
 r_extern
 r_int
-id|mace68k_probe
+id|mace_probe
 c_func
 (paren
 r_struct
@@ -1373,7 +1373,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_MACMACE&t;&t;/* Mac 68k Quadra AV builtin Ethernet */
 (brace
-id|mace68k_probe
+id|mace_probe
 comma
 l_int|0
 )brace

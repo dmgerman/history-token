@@ -672,6 +672,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC
 id|request_OF_resource
 c_func
 (paren
@@ -682,6 +683,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -787,6 +789,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC
 r_if
 c_cond
 (paren
@@ -798,7 +801,36 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifndef CONFIG_PPC
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#else 
+r_int
+id|err
+op_assign
+id|cuda_init_via
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cuda_init_via() failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_return
 id|via_cuda_start
 c_func
@@ -806,9 +838,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ADB */
 DECL|macro|WAIT_FOR

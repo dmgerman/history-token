@@ -247,7 +247,7 @@ r_int
 id|portno
 )paren
 (brace
-id|writew
+id|nubus_writew
 c_func
 (paren
 id|swab16
@@ -265,7 +265,7 @@ r_return
 id|swab16
 c_func
 (paren
-id|readw
+id|nubus_readw
 c_func
 (paren
 id|dev-&gt;base_addr
@@ -294,7 +294,7 @@ r_int
 id|value
 )paren
 (brace
-id|writew
+id|nubus_writew
 c_func
 (paren
 id|swab16
@@ -308,7 +308,7 @@ op_plus
 id|ADD_PORT
 )paren
 suffix:semicolon
-id|writew
+id|nubus_writew
 c_func
 (paren
 id|swab16
@@ -344,7 +344,7 @@ r_return
 id|swab16
 c_func
 (paren
-id|readw
+id|nubus_readw
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -373,7 +373,7 @@ r_int
 id|value
 )paren
 (brace
-id|writew
+id|nubus_writew
 c_func
 (paren
 id|swab16
@@ -563,7 +563,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|writew
+id|nubus_writew
 c_func
 (paren
 l_int|0
@@ -575,7 +575,7 @@ id|ADD_PORT
 suffix:semicolon
 id|sig
 op_assign
-id|readw
+id|nubus_readw
 c_func
 (paren
 id|ioaddr
@@ -1719,7 +1719,7 @@ op_assign
 id|swab16
 c_func
 (paren
-id|readw
+id|nubus_readw
 c_func
 (paren
 id|dev-&gt;base_addr
@@ -2722,7 +2722,7 @@ r_void
 (brace
 macro_line|#endif
 macro_line|#ifdef MODULE
-id|writew
+id|nubus_writew
 c_func
 (paren
 l_int|0

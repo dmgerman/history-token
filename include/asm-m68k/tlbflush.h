@@ -2,15 +2,16 @@ macro_line|#ifndef _M68K_TLBFLUSH_H
 DECL|macro|_M68K_TLBFLUSH_H
 mdefine_line|#define _M68K_TLBFLUSH_H
 macro_line|#ifndef CONFIG_SUN3
+macro_line|#include &lt;asm/current.h&gt;
 DECL|function|flush_tlb_kernel_page
-r_extern
+r_static
 r_inline
 r_void
 id|flush_tlb_kernel_page
 c_func
 (paren
-r_int
-r_int
+r_void
+op_star
 id|addr
 )paren
 (brace
@@ -343,6 +344,38 @@ id|end
 (brace
 )brace
 macro_line|#else
+multiline_comment|/* Reserved PMEGs. */
+r_extern
+r_char
+id|sun3_reserved_pmeg
+(braket
+id|SUN3_PMEGS_NUM
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|pmeg_vaddr
+(braket
+id|SUN3_PMEGS_NUM
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|pmeg_alloc
+(braket
+id|SUN3_PMEGS_NUM
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|pmeg_ctx
+(braket
+id|SUN3_PMEGS_NUM
+)braket
+suffix:semicolon
 multiline_comment|/* Flush all userspace mappings one by one...  (why no flush command,&n;   sun?) */
 DECL|function|flush_tlb_all
 r_static

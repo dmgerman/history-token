@@ -5357,6 +5357,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_MAC
 r_if
 c_cond
 (paren
@@ -5375,6 +5376,7 @@ id|_MACH_Pmac
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif
 id|led_request.complete
 op_assign
 l_int|1

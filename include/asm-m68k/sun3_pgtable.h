@@ -94,12 +94,8 @@ DECL|macro|SUN3_PMD_MAGIC
 mdefine_line|#define SUN3_PMD_MAGIC&t;(0x0000002B)
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
-DECL|macro|__mk_pte
-mdefine_line|#define __mk_pte(page, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = (__pa(page) &gt;&gt; PAGE_SHIFT) | pgprot_val(pgprot); __pte; })
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page, pgprot) __mk_pte(page_address(page), (pgprot))
-DECL|macro|mk_pte_phys
-mdefine_line|#define mk_pte_phys(physpage, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = ((physpage) &gt;&gt; PAGE_SHIFT) | pgprot_val(pgprot); __pte; })
+mdefine_line|#define mk_pte(page, pgprot) pfn_pte(page_to_pfn(page), (pgprot))
 DECL|function|pte_modify
 r_extern
 r_inline
@@ -232,16 +228,14 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: this is only a guess */
-DECL|macro|pte_pagenr
-mdefine_line|#define pte_pagenr(pte)&t;&t;((__pte_page(pte) - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT)
-multiline_comment|/* Permanent address of a page. */
-DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;({ if (!(page)-&gt;virtual) BUG(); (page)-&gt;virtual; })
-DECL|macro|__page_address
-mdefine_line|#define __page_address(page)&t;(PAGE_OFFSET + (((page) - mem_map) &lt;&lt; PAGE_SHIFT))
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(pte)            (pte_val(pte) &amp; SUN3_PAGE_PGNUM_MASK)
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = pfn | pgprot_val(pgprot); __pte; })
 DECL|macro|pte_page
-mdefine_line|#define pte_page(pte)&t;&t;(mem_map+pte_pagenr(pte))
+mdefine_line|#define pte_page(pte)&t;&t;(mem_map+((__pte_page(pte) - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd)&t;&t;(mem_map+((__pmd_page(pmd) - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
 DECL|function|pmd_none2
 r_extern
 r_inline
@@ -770,36 +764,19 @@ id|pgd
 suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level pagetable. */
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(pmd, address) &bslash;&n;((pte_t *) __pmd_page (*pmd) + ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE-1)))
-multiline_comment|/* Disable caching for page at given kernel virtual address. */
-DECL|function|nocache_page
-r_static
-r_inline
-r_void
-id|nocache_page
-(paren
-r_int
-r_int
-id|vaddr
-)paren
-(brace
-multiline_comment|/* Don&squot;t think this is required on sun3. --m */
-)brace
-multiline_comment|/* Enable caching for page at given kernel virtual address. */
-DECL|function|cache_page
-r_static
-r_inline
-r_void
-id|cache_page
-(paren
-r_int
-r_int
-id|vaddr
-)paren
-(brace
-multiline_comment|/* Don&squot;t think this is required on sun3. --m */
-)brace
+DECL|macro|__pte_offset
+mdefine_line|#define __pte_offset(address) ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE-1))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(pmd, address) ((pte_t *) __pmd_page(*pmd) + __pte_offset(address))
+multiline_comment|/* FIXME: should we bother with kmap() here? */
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(pmd, address) ((pte_t *)kmap(pmd_page(*pmd)) + __pte_offset(address))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(pmd, address) pte_offset_map(pmd, address)
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte) kunmap(pte)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte) kunmap(pte)
 macro_line|#endif&t;/* !__ASSEMBLY__ */
 macro_line|#endif&t;/* !_SUN3_PGTABLE_H */
 eof

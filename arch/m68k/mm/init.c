@@ -30,10 +30,10 @@ id|mmu_gathers
 id|NR_CPUS
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * BAD_PAGE is the page that is used for page faults when linux&n; * is out-of-memory. Older versions of linux just did a&n; * do_exit(), but using this instead means there is less risk&n; * for a process dying in kernel mode, possibly leaving an inode&n; * unused etc..&n; *&n; * ZERO_PAGE is a special page that is used for zero-initialized&n; * data and COW.&n; */
+multiline_comment|/*&n; * ZERO_PAGE is a special page that is used for zero-initialized&n; * data and COW.&n; */
 DECL|variable|empty_zero_page
-r_int
-r_int
+r_void
+op_star
 id|empty_zero_page
 suffix:semicolon
 DECL|function|show_mem

@@ -22,9 +22,9 @@ mdefine_line|#define ACPI_ASM_MACROS
 DECL|macro|BREAKPOINT3
 mdefine_line|#define BREAKPOINT3
 DECL|macro|ACPI_DISABLE_IRQS
-mdefine_line|#define ACPI_DISABLE_IRQS() __cli()
+mdefine_line|#define ACPI_DISABLE_IRQS() local_irq_disable()
 DECL|macro|ACPI_ENABLE_IRQS
-mdefine_line|#define ACPI_ENABLE_IRQS()  __sti()
+mdefine_line|#define ACPI_ENABLE_IRQS()  local_irq_enable()
 DECL|macro|ACPI_FLUSH_CPU_CACHE
 mdefine_line|#define ACPI_FLUSH_CPU_CACHE()&t;wbinvd()
 multiline_comment|/*&n; * A brief explanation as GNU inline assembly is a bit hairy&n; *  %0 is the output parameter in EAX (&quot;=a&quot;)&n; *  %1 and %2 are the input parameters in ECX (&quot;c&quot;)&n; *  and an immediate value (&quot;i&quot;) respectively&n; *  All actual register references are preceded with &quot;%%&quot; as in &quot;%%edx&quot;&n; *  Immediate values in the assembly are preceded by &quot;$&quot; as in &quot;$0x1&quot;&n; *  The final asm parameter are the operation altered non-output registers.&n; */

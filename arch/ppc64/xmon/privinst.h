@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|GETREG
 mdefine_line|#define GETREG(reg)&t;&t;&bslash;&n;    static inline unsigned long get_ ## reg (void)&t;&bslash;&n;&t;{ unsigned long ret; asm volatile (&quot;mf&quot; #reg &quot; %0&quot; : &quot;=r&quot; (ret) :); return ret; }
 DECL|macro|SETREG

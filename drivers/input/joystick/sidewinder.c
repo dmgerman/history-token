@@ -670,14 +670,14 @@ id|sched
 op_assign
 l_int|0
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Quiet, please */
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -912,7 +912,7 @@ suffix:semicolon
 multiline_comment|/* Switch from global to bit timeouts */
 )brace
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1112,13 +1112,13 @@ id|i
 comma
 id|t
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1193,7 +1193,7 @@ id|gameport
 )paren
 suffix:semicolon
 multiline_comment|/* Last trigger */
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

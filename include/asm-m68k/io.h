@@ -449,7 +449,7 @@ mdefine_line|#define readw   isa_readw
 DECL|macro|writeb
 mdefine_line|#define writeb  isa_writeb
 DECL|macro|writew
-mdefine_line|#define writew  isa_writeb
+mdefine_line|#define writew  isa_writew
 macro_line|#endif /* CONFIG_ISA */
 macro_line|#if defined(CONFIG_PCI)
 DECL|macro|inl

@@ -306,6 +306,11 @@ id|address
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* Permanent address of a page. */
+DECL|macro|__page_address
+mdefine_line|#define __page_address(page)&t;(PAGE_OFFSET + (((page) - mem_map) &lt;&lt; PAGE_SHIFT))
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;virt_to_phys((void *)__page_address(page))
 multiline_comment|/*&n; * IO bus memory addresses are 1:1 with the physical address,&n; * except on the PCI bus of the Hades.&n; */
 macro_line|#ifdef CONFIG_HADES
 DECL|macro|virt_to_bus

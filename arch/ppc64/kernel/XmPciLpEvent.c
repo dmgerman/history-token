@@ -35,18 +35,18 @@ op_assign
 l_int|0
 comma
 singleline_comment|// PHB has been created
-DECL|enumerator|XmPciLpEvent_BusFailed
-id|XmPciLpEvent_BusFailed
+DECL|enumerator|XmPciLpEvent_BusError
+id|XmPciLpEvent_BusError
 op_assign
 l_int|1
 comma
 singleline_comment|// PHB has failed
-DECL|enumerator|XmPciLpEvent_BusRecovered
-id|XmPciLpEvent_BusRecovered
+DECL|enumerator|XmPciLpEvent_BusFailed
+id|XmPciLpEvent_BusFailed
 op_assign
-l_int|12
+l_int|2
 comma
-singleline_comment|// PHB has been recovered
+singleline_comment|// Msg to Seconday, Primary failed bus
 DECL|enumerator|XmPciLpEvent_NodeFailed
 id|XmPciLpEvent_NodeFailed
 op_assign
@@ -59,6 +59,24 @@ op_assign
 l_int|5
 comma
 singleline_comment|// Multi-adapter bridge has recovered
+DECL|enumerator|XmPciLpEvent_BusRecovered
+id|XmPciLpEvent_BusRecovered
+op_assign
+l_int|12
+comma
+singleline_comment|// PHB has been recovered
+DECL|enumerator|XmPciLpEvent_UnQuiesceBus
+id|XmPciLpEvent_UnQuiesceBus
+op_assign
+l_int|18
+comma
+singleline_comment|// Secondary bus unqiescing
+DECL|enumerator|XmPciLpEvent_BridgeError
+id|XmPciLpEvent_BridgeError
+op_assign
+l_int|21
+comma
+singleline_comment|// Bridge Error
 DECL|enumerator|XmPciLpEvent_SlotInterrupt
 id|XmPciLpEvent_SlotInterrupt
 op_assign
@@ -373,6 +391,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|XmPciLpEvent_BusError
+suffix:colon
+r_case
 id|XmPciLpEvent_BusFailed
 suffix:colon
 id|printk
@@ -389,6 +410,9 @@ suffix:semicolon
 r_case
 id|XmPciLpEvent_BusRecovered
 suffix:colon
+r_case
+id|XmPciLpEvent_UnQuiesceBus
+suffix:colon
 id|printk
 c_func
 (paren
@@ -402,6 +426,9 @@ r_break
 suffix:semicolon
 r_case
 id|XmPciLpEvent_NodeFailed
+suffix:colon
+r_case
+id|XmPciLpEvent_BridgeError
 suffix:colon
 id|printk
 c_func

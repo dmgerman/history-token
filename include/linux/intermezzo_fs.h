@@ -5,6 +5,7 @@ mdefine_line|#define __INTERMEZZO_FS_H_ 1
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/fsfilter.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 multiline_comment|/* fixups for fs.h */
 macro_line|#ifndef fs_down
 DECL|macro|fs_down
