@@ -120,6 +120,8 @@ DECL|macro|SONYPI_EVENT_BATTERY_INSERT
 mdefine_line|#define SONYPI_EVENT_BATTERY_INSERT&t;&t;57
 DECL|macro|SONYPI_EVENT_BATTERY_REMOVE
 mdefine_line|#define SONYPI_EVENT_BATTERY_REMOVE&t;&t;58
+DECL|macro|SONYPI_EVENT_FNKEY_RELEASED
+mdefine_line|#define SONYPI_EVENT_FNKEY_RELEASED&t;&t;59
 multiline_comment|/* get/set brightness */
 DECL|macro|SONYPI_IOCGBRT
 mdefine_line|#define SONYPI_IOCGBRT&t;&t;_IOR(&squot;v&squot;, 0, __u8)
