@@ -6634,12 +6634,6 @@ comma
 id|ID
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_7501_0
-)paren
-comma
-id|ID
-c_func
-(paren
 id|PCI_DEVICE_ID_INTEL_7205_0
 )paren
 comma
