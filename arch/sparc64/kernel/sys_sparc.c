@@ -112,7 +112,15 @@ id|MAP_SHARED
 )paren
 op_logical_and
 (paren
+(paren
 id|addr
+op_minus
+(paren
+id|pgoff
+op_lshift
+id|PAGE_SHIFT
+)paren
+)paren
 op_amp
 (paren
 id|SHMLBA
