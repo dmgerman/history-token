@@ -2,7 +2,7 @@ multiline_comment|/*&n; * drivers/base/fs.c - driver model interface to driverfs
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 r_extern
 r_struct
 id|driver_file_entry

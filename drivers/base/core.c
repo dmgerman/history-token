@@ -1,7 +1,8 @@
 multiline_comment|/*&n; * drivers/base/core.c - core driver model code (device registration, etc)&n; * &n; * Copyright (c) 2002 Patrick Mochel&n; *&t;&t; 2002 Open Source Development Lab&n; */
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
