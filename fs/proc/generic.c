@@ -2819,6 +2819,12 @@ id|de-&gt;nlink
 op_assign
 l_int|0
 suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+id|de-&gt;subdir
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
