@@ -5941,7 +5941,11 @@ id|tlb
 comma
 l_int|0
 comma
-id|TASK_SIZE
+id|MM_VM_SIZE
+c_func
+(paren
+id|mm
+)paren
 )paren
 suffix:semicolon
 id|vma
