@@ -480,14 +480,13 @@ id|devmpu
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_ad1816a_pnpids
 r_static
 r_struct
 id|pnp_card_device_id
 id|snd_ad1816a_pnpids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Analog Devices AD1815 */

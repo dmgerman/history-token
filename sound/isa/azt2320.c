@@ -526,14 +526,13 @@ id|devmpu
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_azt2320_pnpids
 r_static
 r_struct
 id|pnp_card_device_id
 id|snd_azt2320_pnpids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* PRO16V */

@@ -721,14 +721,13 @@ mdefine_line|#define ISAPNP_CS4232_1(_va, _vb, _vc, _device, _wss, _ctrl, _mpu40
 DECL|macro|ISAPNP_CS4232_WOMPU
 mdefine_line|#define ISAPNP_CS4232_WOMPU(_va, _vb, _vc, _device, _wss, _ctrl) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_va, _vb, _vc, _wss), &bslash;&n;                          ISAPNP_DEVICE_ID(_va, _vb, _vc, _ctrl) } &bslash;&n;        }
 macro_line|#ifdef CS4232
-DECL|variable|__devinitdata
+DECL|variable|snd_cs423x_pnpids
 r_static
 r_struct
 id|pnp_card_device_id
 id|snd_cs423x_pnpids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Philips PCA70PS */
@@ -917,14 +916,13 @@ multiline_comment|/* end */
 )brace
 suffix:semicolon
 macro_line|#else /* CS4236 */
-DECL|variable|__devinitdata
+DECL|variable|snd_cs423x_pnpids
 r_static
 r_struct
 id|pnp_card_device_id
 id|snd_cs423x_pnpids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Intel Marlin Spike Motherboard - CS4235 */

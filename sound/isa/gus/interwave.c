@@ -755,14 +755,13 @@ op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
-DECL|variable|__devinitdata
+DECL|variable|snd_interwave_pnpids
 r_static
 r_struct
 id|pnp_card_device_id
 id|snd_interwave_pnpids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 macro_line|#ifndef SNDRV_STB

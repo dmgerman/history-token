@@ -9963,14 +9963,13 @@ op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
-DECL|variable|__devinitdata
+DECL|variable|snd_audiodrive_pnpids
 r_static
 r_struct
 id|pnp_card_device_id
 id|snd_audiodrive_pnpids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* ESS 1868 (integrated on Compaq dual P-Pro motherboard and Genius 18PnP 3D) */
