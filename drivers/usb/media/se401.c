@@ -6418,9 +6418,7 @@ id|se401_button_irq
 comma
 id|se401
 comma
-id|HZ
-op_div
-l_int|10
+l_int|8
 )paren
 suffix:semicolon
 r_if
