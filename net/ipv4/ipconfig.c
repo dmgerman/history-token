@@ -1538,6 +1538,7 @@ id|skb
 comma
 r_sizeof
 (paren
+r_struct
 id|arphdr
 )paren
 )paren
@@ -1615,6 +1616,7 @@ id|skb
 comma
 r_sizeof
 (paren
+r_struct
 id|arphdr
 )paren
 op_plus
@@ -3500,7 +3502,7 @@ OL
 id|ntohs
 c_func
 (paren
-id|b-&gt;udhp.len
+id|b-&gt;udph.len
 )paren
 op_plus
 r_sizeof
