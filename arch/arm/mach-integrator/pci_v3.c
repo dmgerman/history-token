@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
@@ -411,8 +412,7 @@ id|addr
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-l_int|4
+r_default
 suffix:colon
 id|v
 op_assign

@@ -445,12 +445,6 @@ id|semaphore
 id|access_mutex
 suffix:semicolon
 multiline_comment|/* locking */
-DECL|member|proc
-id|snd_info_entry_t
-op_star
-id|proc
-suffix:semicolon
-multiline_comment|/* proc interface */
 )brace
 suffix:semicolon
 r_int

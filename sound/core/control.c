@@ -89,10 +89,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|card
 op_assign
 id|snd_cards
@@ -276,10 +272,6 @@ id|file
 suffix:semicolon
 id|__error1
 suffix:colon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -516,10 +508,6 @@ comma
 id|file
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -746,6 +734,7 @@ id|card-&gt;ctl_files_rwlock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ctl_new - create a control instance from the template&n; * @control: the control template&n; *&n; * Allocates a new snd_kcontrol_t instance and copies the given template &n; * to the new instance.&n; *&n; * Returns the pointer of the new instance, or NULL on failure.&n; */
 DECL|function|snd_ctl_new
 id|snd_kcontrol_t
 op_star
@@ -808,6 +797,7 @@ r_return
 id|kctl
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ctl_new1 - create a control instance from the template&n; * @ncontrol: the initialization record&n; * @private_data: the private data to set&n; *&n; * Allocates a new snd_kcontrol_t instance and initialize from the given &n; * template.  When the access field of ncontrol is 0, it&squot;s assumed as&n; * READWRITE access.&n; *&n; * Returns the pointer of the newly generated instance, or NULL on failure.&n; */
 DECL|function|snd_ctl_new1
 id|snd_kcontrol_t
 op_star
@@ -874,6 +864,11 @@ id|kctl.id.subdevice
 op_assign
 id|ncontrol-&gt;subdevice
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ncontrol-&gt;name
+)paren
 id|strncpy
 c_func
 (paren
@@ -943,6 +938,7 @@ id|kctl
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ctl_free_one - release the control instance&n; * @kcontrol: the control instance&n; *&n; * Releases the control instance created via snd_ctl_new()&n; * or snd_ctl_new1().&n; * Don&squot;t call this after the control was added to the card.&n; */
 DECL|function|snd_ctl_free_one
 r_void
 id|snd_ctl_free_one
@@ -980,6 +976,7 @@ id|kcontrol
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * snd_ctl_add - add the control instance to the card&n; * @card: the card instance&n; * @kcontrol: the control instance to add&n; *&n; * Adds the control instance created via snd_ctl_new() or&n; * snd_ctl_new1() to the given card.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_ctl_add
 r_int
 id|snd_ctl_add
@@ -1107,6 +1104,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ctl_remove - remove the control from the card and release it&n; * @card: the card instance&n; * @kcontrol: the control instance to remove&n; *&n; * Removes the control from the card and then releases the instance.&n; * You don&squot;t need to call snd_ctl_free_one().&n; * &n; * Returns 0 if successful, or a negative error code on failure.&n; */
 DECL|function|snd_ctl_remove
 r_int
 id|snd_ctl_remove
@@ -1182,6 +1180,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ctl_remove_id - remove the control of the given id and release it&n; * @card: the card instance&n; * @id: the control id to remove&n; *&n; * Finds the control instance with the given id, removes it from the&n; * card list and releases it.&n; * &n; * Returns 0 if successful, or a negative error code on failure.&n; */
 DECL|function|snd_ctl_remove_id
 r_int
 id|snd_ctl_remove_id
@@ -1247,6 +1246,7 @@ id|id
 )paren
 suffix:semicolon
 multiline_comment|/* w/o lock */
+multiline_comment|/**&n; * snd_ctl_rename_id - replace the id of a control on the card&n; * @card: the card instance&n; * @src_id: the old id&n; * @dst_id: the new id&n; *&n; * Finds the control with the old id from the card, and replaces the&n; * id with the new one.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_ctl_rename_id
 r_int
 id|snd_ctl_rename_id
@@ -1534,7 +1534,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* exported: with read lock */
+multiline_comment|/**&n; * snd_ctl_find_id - find the control instance with the given id&n; * @card: the card instance&n; * @id: the id to search&n; *&n; * Finds the control instance with the given id from the card.&n; *&n; * Returns the pointer of the instance if found, or NULL if not.&n; */
 DECL|function|snd_ctl_find_id
 id|snd_kcontrol_t
 op_star
@@ -1582,7 +1582,7 @@ r_return
 id|kctl
 suffix:semicolon
 )brace
-multiline_comment|/* exported: with read lock */
+multiline_comment|/**&n; * snd_ctl_find_numid - find the control instance with the given number-id&n; * @card: the card instance&n; * @numid: the number-id to search&n; *&n; * Finds the control instance with the given number-id from the card.&n; *&n; * Returns the pointer of the instance if found, or NULL if not.&n; */
 DECL|function|snd_ctl_find_numid
 id|snd_kcontrol_t
 op_star
@@ -3440,19 +3440,26 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOPROTOOPT
+suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 r_if
 c_cond
 (paren
 id|card-&gt;set_power_state
-op_eq
-l_int|NULL
 )paren
-r_return
-op_minus
-id|ENOPROTOOPT
+(brace
+id|snd_power_lock
+c_func
+(paren
+id|card
+)paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 id|card
 op_member_access_from_pointer
 id|set_power_state
@@ -3463,12 +3470,17 @@ comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#else
-r_return
-op_minus
-id|ENOPROTOOPT
+id|snd_power_unlock
+c_func
+(paren
+id|card
+)paren
 suffix:semicolon
+)brace
 macro_line|#endif
+r_return
+id|err
+suffix:semicolon
 r_case
 id|SNDRV_CTL_IOCTL_POWER_STATE
 suffix:colon
@@ -4034,6 +4046,7 @@ r_return
 id|mask
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * register the device-specific control-ioctls.&n; * called from each device manager like pcm.c, hwdep.c, etc.&n; */
 DECL|function|snd_ctl_register_ioctl
 r_int
 id|snd_ctl_register_ioctl
@@ -4107,6 +4120,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * de-register the device-specific control-ioctls.&n; */
 DECL|function|snd_ctl_unregister_ioctl
 r_int
 id|snd_ctl_unregister_ioctl
@@ -4349,6 +4363,7 @@ id|snd_ctl_f_ops
 comma
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * registration of the control device:&n; * called from init.c&n; */
 DECL|function|snd_ctl_register
 r_int
 id|snd_ctl_register
@@ -4443,6 +4458,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * disconnection of the control device:&n; * called from init.c&n; */
 DECL|function|snd_ctl_disconnect
 r_int
 id|snd_ctl_disconnect
@@ -4516,6 +4532,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * de-registration of the control device:&n; * called from init.c&n; */
 DECL|function|snd_ctl_unregister
 r_int
 id|snd_ctl_unregister

@@ -105,6 +105,14 @@ op_ne
 id|flags
 )paren
 (brace
+r_const
+r_int
+id|was_dirty
+op_assign
+id|inode-&gt;i_state
+op_amp
+id|I_DIRTY
+suffix:semicolon
 r_struct
 id|address_space
 op_star
@@ -153,7 +161,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|mapping-&gt;dirtied_when
+id|was_dirty
 )paren
 (brace
 id|mapping-&gt;dirtied_when
@@ -893,6 +901,8 @@ id|WB_SYNC_HOLD
 id|mapping-&gt;dirtied_when
 op_assign
 id|jiffies
+op_or
+l_int|1
 suffix:semicolon
 id|list_move
 c_func

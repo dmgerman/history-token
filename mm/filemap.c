@@ -4689,6 +4689,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is for filesystems which do not implement -&gt;writepage.&n; */
 DECL|function|generic_file_readonly_mmap
 r_int
 id|generic_file_readonly_mmap
@@ -4717,17 +4718,12 @@ op_logical_and
 (paren
 id|vma-&gt;vm_flags
 op_amp
-id|VM_WRITE
+id|VM_MAYWRITE
 )paren
 )paren
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|vma-&gt;vm_flags
-op_and_assign
-op_complement
-id|VM_MAYWRITE
 suffix:semicolon
 r_return
 id|generic_file_mmap

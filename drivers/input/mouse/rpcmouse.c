@@ -385,9 +385,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input: Acorn RiscPC mouse irq %d&quot;
-comma
-id|IRQ_VSYNCPULSE
+l_string|&quot;input: Acorn RiscPC mouse&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
