@@ -6109,6 +6109,9 @@ r_goto
 id|freeregion
 suffix:semicolon
 )brace
+macro_line|#if (BITS_PER_LONG == 64)
+macro_line|#error broken on 64-bit:  casts pointer to 32-bit, and then back to pointer.
+macro_line|#endif
 multiline_comment|/*We need to align the taskfile on a taskfile size boundary */
 (brace
 r_int
