@@ -378,7 +378,7 @@ op_star
 id|rt
 )paren
 (brace
-id|call_rcu
+id|call_rcu_bh
 c_func
 (paren
 op_amp
@@ -413,7 +413,7 @@ op_amp
 id|rt-&gt;u.dst
 )paren
 suffix:semicolon
-id|call_rcu
+id|call_rcu_bh
 c_func
 (paren
 op_amp
@@ -4993,7 +4993,7 @@ id|MSG_TRYHARD
 )paren
 )paren
 (brace
-id|rcu_read_lock
+id|rcu_read_lock_bh
 c_func
 (paren
 )paren
@@ -5017,7 +5017,7 @@ op_assign
 id|rt-&gt;u.rt_next
 )paren
 (brace
-id|read_barrier_depends
+id|smp_read_barrier_depends
 c_func
 (paren
 )paren
@@ -5072,7 +5072,7 @@ suffix:semicolon
 id|rt-&gt;u.dst.__use
 op_increment
 suffix:semicolon
-id|rcu_read_unlock
+id|rcu_read_unlock_bh
 c_func
 (paren
 )paren
@@ -5088,7 +5088,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|rcu_read_unlock
+id|rcu_read_unlock_bh
 c_func
 (paren
 )paren
@@ -7328,7 +7328,7 @@ id|s_idx
 op_assign
 l_int|0
 suffix:semicolon
-id|rcu_read_lock
+id|rcu_read_lock_bh
 c_func
 (paren
 )paren
@@ -7359,7 +7359,7 @@ id|idx
 op_increment
 )paren
 (brace
-id|read_barrier_depends
+id|smp_read_barrier_depends
 c_func
 (paren
 )paren
@@ -7421,7 +7421,7 @@ l_int|NULL
 )paren
 )paren
 suffix:semicolon
-id|rcu_read_unlock
+id|rcu_read_unlock_bh
 c_func
 (paren
 )paren
@@ -7444,7 +7444,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-id|rcu_read_unlock
+id|rcu_read_unlock_bh
 c_func
 (paren
 )paren
@@ -7526,7 +7526,7 @@ op_decrement
 id|s-&gt;bucket
 )paren
 (brace
-id|rcu_read_lock
+id|rcu_read_lock_bh
 c_func
 (paren
 )paren
@@ -7601,7 +7601,7 @@ op_logical_neg
 id|rt
 )paren
 (brace
-id|rcu_read_unlock
+id|rcu_read_unlock_bh
 c_func
 (paren
 )paren
@@ -7616,7 +7616,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-id|rcu_read_lock
+id|rcu_read_lock_bh
 c_func
 (paren
 )paren
@@ -7767,7 +7767,7 @@ c_cond
 (paren
 id|v
 )paren
-id|rcu_read_unlock
+id|rcu_read_unlock_bh
 c_func
 (paren
 )paren
