@@ -948,7 +948,7 @@ multiline_comment|/* NFORCE */
 (brace
 l_int|0x1022
 comma
-l_int|0x764d
+l_int|0x746d
 comma
 id|PCI_ANY_ID
 comma
@@ -5759,6 +5759,9 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* don&squot;t process interrupts */
 multiline_comment|/* set rate */
+r_if
+c_cond
+(paren
 id|snd_ac97_set_rate
 c_func
 (paren
@@ -5768,7 +5771,22 @@ id|AC97_PCM_FRONT_DAC_RATE
 comma
 l_int|48000
 )paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cannot set ac97 rate: clock = %d&bslash;n&quot;
+comma
+id|chip-&gt;ac97-&gt;clock
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|snd_intel8x0_setup_periods
 c_func
 (paren
@@ -6799,7 +6817,7 @@ l_string|&quot;NVidia NForce&quot;
 )brace
 comma
 (brace
-l_int|0x764d
+l_int|0x746d
 comma
 l_string|&quot;AMD AMD8111&quot;
 )brace
