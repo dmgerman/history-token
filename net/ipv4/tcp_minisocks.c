@@ -2553,7 +2553,7 @@ id|GFP_ATOMIC
 comma
 l_int|0
 comma
-id|sk-&gt;sk_slab
+id|sk-&gt;sk_prot-&gt;slab
 )paren
 suffix:semicolon
 r_if

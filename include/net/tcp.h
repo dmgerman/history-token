@@ -233,12 +233,6 @@ DECL|macro|tcp_lhash_wait
 mdefine_line|#define tcp_lhash_wait&t;(tcp_hashinfo.__tcp_lhash_wait)
 DECL|macro|tcp_portalloc_lock
 mdefine_line|#define tcp_portalloc_lock (tcp_hashinfo.__tcp_portalloc_lock)
-multiline_comment|/* SLAB cache for TCP socks */
-r_extern
-id|kmem_cache_t
-op_star
-id|tcp_sk_cachep
-suffix:semicolon
 r_extern
 id|kmem_cache_t
 op_star

@@ -11270,6 +11270,15 @@ id|max_header
 op_assign
 id|MAX_TCP_HEADER
 comma
+dot
+id|slab_obj_size
+op_assign
+r_sizeof
+(paren
+r_struct
+id|tcp_sock
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|function|tcp_v4_init

@@ -3118,6 +3118,15 @@ id|unhash
 op_assign
 id|raw_v4_unhash
 comma
+dot
+id|slab_obj_size
+op_assign
+r_sizeof
+(paren
+r_struct
+id|raw_sock
+)paren
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS

@@ -794,6 +794,16 @@ op_member_access_from_pointer
 id|raw6
 suffix:semicolon
 )brace
+DECL|struct|ipv6_sk_offset
+r_struct
+id|ipv6_sk_offset
+(brace
+DECL|member|offset
+r_int
+id|offset
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 DECL|macro|__ipv6_only_sock
 mdefine_line|#define __ipv6_only_sock(sk)&t;(inet6_sk(sk)-&gt;ipv6only)

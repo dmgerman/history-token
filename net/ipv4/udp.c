@@ -5469,6 +5469,15 @@ id|get_port
 op_assign
 id|udp_v4_get_port
 comma
+dot
+id|slab_obj_size
+op_assign
+r_sizeof
+(paren
+r_struct
+id|udp_sock
+)paren
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------ */
