@@ -145,8 +145,6 @@ DECL|macro|MNTOPT_OSYNCISOSYNC
 mdefine_line|#define MNTOPT_OSYNCISOSYNC &quot;osyncisosync&quot; /* o_sync is REALLY o_sync */
 DECL|macro|MNTOPT_QUOTA
 mdefine_line|#define MNTOPT_QUOTA&t;&quot;quota&quot;&t;&t;/* disk quotas */
-DECL|macro|MNTOPT_MRQUOTA
-mdefine_line|#define MNTOPT_MRQUOTA&t;&quot;mrquota&quot;&t;/* don&squot;t turnoff if SB has quotas on */
 DECL|macro|MNTOPT_NOQUOTA
 mdefine_line|#define MNTOPT_NOQUOTA&t;&quot;noquota&quot;&t;/* no quotas */
 DECL|macro|MNTOPT_UQUOTA
