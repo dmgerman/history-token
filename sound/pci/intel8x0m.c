@@ -6511,7 +6511,7 @@ c_func
 (paren
 id|card-&gt;driver
 comma
-l_string|&quot;NFORCE&quot;
+l_string|&quot;NFORCE-MODEM&quot;
 )paren
 suffix:semicolon
 r_break
@@ -6523,7 +6523,7 @@ c_func
 (paren
 id|card-&gt;driver
 comma
-l_string|&quot;ICH&quot;
+l_string|&quot;ICH-MODEM&quot;
 )paren
 suffix:semicolon
 r_break
