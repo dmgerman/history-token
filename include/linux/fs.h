@@ -6009,7 +6009,7 @@ id|inode-&gt;i_mapping
 suffix:semicolon
 )brace
 r_extern
-r_void
+r_int
 id|invalidate_inode_pages2
 c_func
 (paren
