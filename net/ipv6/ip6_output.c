@@ -1572,7 +1572,7 @@ op_add_assign
 id|opt-&gt;opt_flen
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *&t;Length of fragmented part on every packet but &n;&t; *&t;the last must be an:&n;&t; *&t;&quot;integer multiple of 8 octects&quot;.&n;&t; */
+multiline_comment|/*&n;&t; *&t;Length of fragmented part on every packet but &n;&t; *&t;the last must be an:&n;&t; *&t;&quot;integer multiple of 8 octets&quot;.&n;&t; */
 id|frag_len
 op_assign
 (paren
@@ -2444,7 +2444,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;ip6_build_xmit: &quot;
-l_string|&quot;no availiable source address&bslash;n&quot;
+l_string|&quot;no available source address&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5130,7 +5130,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;ip6_build_xmit: &quot;
-l_string|&quot;no availiable source address&bslash;n&quot;
+l_string|&quot;no available source address&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -441,7 +441,7 @@ comma
 id|nexthdr
 )paren
 suffix:semicolon
-multiline_comment|/* Skip  hop-by-hop options, they are already parsed. */
+multiline_comment|/* Skip hop-by-hop options, they are already parsed. */
 r_if
 c_cond
 (paren
