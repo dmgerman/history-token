@@ -2471,6 +2471,25 @@ id|acpi_sci_flags.polarity
 op_assign
 l_int|3
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpi_skip_timer_override&quot;
+comma
+l_int|24
+)paren
+)paren
+id|acpi_skip_timer_override
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* disable IO-APIC */
 r_else

@@ -121,6 +121,11 @@ r_int
 id|acpi_sci_override_gsi
 id|__initdata
 suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|acpi_skip_timer_override
+id|__initdata
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|variable|__initdata
 r_static
@@ -910,6 +915,31 @@ comma
 id|intsrc-&gt;flags.polarity
 comma
 id|intsrc-&gt;flags.trigger
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|acpi_skip_timer_override
+op_logical_and
+id|intsrc-&gt;bus_irq
+op_eq
+l_int|0
+op_logical_and
+id|intsrc-&gt;global_irq
+op_eq
+l_int|2
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|PREFIX
+l_string|&quot;BIOS IRQ0 pin2 override ignored.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
