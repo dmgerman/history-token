@@ -168,9 +168,9 @@ DECL|member|rq_ntimeo
 r_int
 id|rq_ntimeo
 suffix:semicolon
-DECL|member|rq_nresend
+DECL|member|rq_ntrans
 r_int
-id|rq_nresend
+id|rq_ntrans
 suffix:semicolon
 )brace
 suffix:semicolon
