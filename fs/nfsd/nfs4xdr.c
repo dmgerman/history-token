@@ -8781,9 +8781,6 @@ id|dentry
 r_if
 c_cond
 (paren
-(paren
-id|nfserr
-op_assign
 id|nfsd_cross_mnt
 c_func
 (paren
@@ -8794,7 +8791,6 @@ id|dentry
 comma
 op_amp
 id|exp
-)paren
 )paren
 )paren
 (brace
