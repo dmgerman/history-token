@@ -2295,7 +2295,7 @@ id|fn
 id|printk
 c_func
 (paren
-l_string|&quot;%s called, but not implemented&quot;
+l_string|&quot;%s called, but not implemented&bslash;n&quot;
 comma
 id|fn
 )paren
