@@ -8915,18 +8915,8 @@ id|params
 comma
 id|byte_count
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;In QPathInfo path %s&quot;
-comma
-id|searchName
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* cFYI(1, (&quot;In QPathInfo path %s&quot;, searchName)); */
+multiline_comment|/* BB fixme BB */
 id|QPathInfoRetry
 suffix:colon
 id|rc
@@ -11359,9 +11349,10 @@ id|parms-&gt;SearchCount
 )paren
 suffix:semicolon
 id|psrch_inf-&gt;index_of_last_entry
-op_add_assign
+op_assign
 id|psrch_inf-&gt;entries_in_buffer
 suffix:semicolon
+multiline_comment|/*cFYI(1,(&quot;entries in buf %d index_of_last %d&quot;,psrch_inf-&gt;entries_in_buffer,psrch_inf-&gt;index_of_last_entry));  */
 op_star
 id|pnetfid
 op_assign
@@ -11864,6 +11855,7 @@ id|psrch_inf-&gt;index_of_last_entry
 op_add_assign
 id|psrch_inf-&gt;entries_in_buffer
 suffix:semicolon
+multiline_comment|/*  cFYI(1,(&quot;fnxt2 entries in buf %d index_of_last %d&quot;,psrch_inf-&gt;entries_in_buffer,psrch_inf-&gt;index_of_last_entry)); */
 multiline_comment|/* BB fixme add unlock here */
 )brace
 )brace

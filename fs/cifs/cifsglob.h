@@ -985,6 +985,8 @@ DECL|macro|MID_RESPONSE_RECEIVED
 mdefine_line|#define   MID_RESPONSE_RECEIVED 4
 DECL|macro|MID_RETRY_NEEDED
 mdefine_line|#define   MID_RETRY_NEEDED      8 /* session closed while this request out */
+DECL|macro|MID_NO_RESP_NEEDED
+mdefine_line|#define   MID_NO_RESP_NEEDED 0x10
 multiline_comment|/*&n; *****************************************************************&n; * All constants go here&n; *****************************************************************&n; */
 DECL|macro|UID_HASH
 mdefine_line|#define UID_HASH (16)
