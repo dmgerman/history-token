@@ -578,7 +578,7 @@ id|oldset
 )paren
 suffix:semicolon
 DECL|macro|ptrace_signal_deliver
-mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
+mdefine_line|#define ptrace_signal_deliver(regs, cookie)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (current-&gt;ptrace &amp; PT_DTRACE) {&t;&bslash;&n;&t;&t;&t;current-&gt;ptrace &amp;= ~PT_DTRACE;&t;&bslash;&n;&t;&t;&t;(regs)-&gt;eflags &amp;= ~TF_MASK;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

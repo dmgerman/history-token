@@ -4,7 +4,6 @@ macro_line|#ifdef HAVE_CONFIG_H
 macro_line|#  include &lt;config.h&gt;
 macro_line|#endif
 macro_line|#include &quot;lkc.h&quot;
-macro_line|#include &quot;images.c&quot;
 macro_line|#include &lt;glade/glade.h&gt;
 macro_line|#include &lt;gtk/gtk.h&gt;
 macro_line|#include &lt;glib.h&gt;
@@ -1118,14 +1117,12 @@ comma
 l_string|&quot;button4&quot;
 )paren
 suffix:semicolon
-id|gtk_button_clicked
-c_func
-(paren
-id|GTK_BUTTON
+id|g_signal_emit_by_name
 c_func
 (paren
 id|widget
-)paren
+comma
+l_string|&quot;clicked&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1143,14 +1140,12 @@ comma
 l_string|&quot;button5&quot;
 )paren
 suffix:semicolon
-id|gtk_button_clicked
-c_func
-(paren
-id|GTK_BUTTON
+id|g_signal_emit_by_name
 c_func
 (paren
 id|widget
-)paren
+comma
+l_string|&quot;clicked&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1168,14 +1163,12 @@ comma
 l_string|&quot;button6&quot;
 )paren
 suffix:semicolon
-id|gtk_button_clicked
-c_func
-(paren
-id|GTK_BUTTON
+id|g_signal_emit_by_name
 c_func
 (paren
 id|widget
-)paren
+comma
+l_string|&quot;clicked&quot;
 )paren
 suffix:semicolon
 r_break
@@ -5609,6 +5602,88 @@ id|FALSE
 suffix:semicolon
 )brace
 multiline_comment|/* Conf management */
+DECL|variable|xpm_menu
+r_static
+r_const
+r_char
+op_star
+id|xpm_menu
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;12 12 2 1&quot;
+comma
+l_string|&quot;  c white&quot;
+comma
+l_string|&quot;. c black&quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;  .         &quot;
+comma
+l_string|&quot;  ..        &quot;
+comma
+l_string|&quot;  ...       &quot;
+comma
+l_string|&quot;  ....      &quot;
+comma
+l_string|&quot;  .....     &quot;
+comma
+l_string|&quot;  ....      &quot;
+comma
+l_string|&quot;  ...       &quot;
+comma
+l_string|&quot;  ..        &quot;
+comma
+l_string|&quot;  .         &quot;
+comma
+l_string|&quot;            &quot;
+)brace
+suffix:semicolon
+DECL|variable|xpm_void
+r_static
+r_const
+r_char
+op_star
+id|xpm_void
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;12 12 2 1&quot;
+comma
+l_string|&quot;  c white&quot;
+comma
+l_string|&quot;. c black&quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+)brace
+suffix:semicolon
 multiline_comment|/* Fill a row of strings */
 DECL|function|fill_row
 r_static
