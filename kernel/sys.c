@@ -425,11 +425,6 @@ c_func
 (paren
 id|sys_lookup_dcookie
 )paren
-id|cond_syscall
-c_func
-(paren
-id|sys_security
-)paren
 DECL|function|set_one_prio
 r_static
 r_int
