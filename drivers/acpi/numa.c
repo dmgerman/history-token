@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/acmacros.h&gt;
 r_extern
 r_int
 id|__init
@@ -70,11 +71,11 @@ op_star
 )paren
 id|header
 suffix:semicolon
-id|printk
+id|ACPI_DEBUG_PRINT
 c_func
 (paren
-id|KERN_INFO
-id|PREFIX
+(paren
+id|ACPI_DB_INFO
 l_string|&quot;SRAT Processor (id[0x%02x] eid[0x%02x]) in proximity domain %d %s&bslash;n&quot;
 comma
 id|p-&gt;apic_id
@@ -89,6 +90,7 @@ c_cond
 l_string|&quot;enabled&quot;
 suffix:colon
 l_string|&quot;disabled&quot;
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -110,11 +112,11 @@ op_star
 )paren
 id|header
 suffix:semicolon
-id|printk
+id|ACPI_DEBUG_PRINT
 c_func
 (paren
-id|KERN_INFO
-id|PREFIX
+(paren
+id|ACPI_DB_INFO
 l_string|&quot;SRAT Memory (0x%08x%08x length 0x%08x%08x type 0x%x) in proximity domain %d %s%s&bslash;n&quot;
 comma
 id|p-&gt;base_addr_hi
@@ -142,6 +144,7 @@ c_cond
 l_string|&quot; hot-pluggable&quot;
 suffix:colon
 l_string|&quot;&quot;
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -257,8 +260,6 @@ r_struct
 id|acpi_table_processor_affinity
 op_star
 id|processor_affinity
-op_assign
-l_int|NULL
 suffix:semicolon
 id|processor_affinity
 op_assign
@@ -311,8 +312,6 @@ r_struct
 id|acpi_table_memory_affinity
 op_star
 id|memory_affinity
-op_assign
-l_int|NULL
 suffix:semicolon
 id|memory_affinity
 op_assign
@@ -369,8 +368,6 @@ r_struct
 id|acpi_table_srat
 op_star
 id|srat
-op_assign
-l_int|NULL
 suffix:semicolon
 r_if
 c_cond
