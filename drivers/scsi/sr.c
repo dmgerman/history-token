@@ -2135,6 +2135,10 @@ comma
 id|cd
 )paren
 suffix:semicolon
+id|disk-&gt;flags
+op_or_assign
+id|GENHD_FL_REMOVABLE
+suffix:semicolon
 id|add_disk
 c_func
 (paren
