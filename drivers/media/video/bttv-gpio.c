@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttv-gpio.c,v 1.3 2004/09/15 16:15:24 kraxel Exp $&n;&n;    bttv-gpio.c  --  gpio sub drivers&n;&n;    sysfs-based sub driver interface for bttv&n;    mainly intented for gpio access&n;&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;    &n;*/
+multiline_comment|/*&n;    $Id: bttv-gpio.c,v 1.4 2004/10/13 10:39:00 kraxel Exp $&n;&n;    bttv-gpio.c  --  gpio sub drivers&n;&n;    sysfs-based sub driver interface for bttv&n;    mainly intented for gpio access&n;&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -142,6 +142,9 @@ id|bttv_sub_device
 op_star
 id|sub
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|sub
 op_assign
 id|kmalloc
@@ -216,6 +219,33 @@ comma
 id|core-&gt;nr
 )paren
 suffix:semicolon
+id|err
+op_assign
+id|device_register
+c_func
+(paren
+op_amp
+id|sub-&gt;dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_ne
+id|err
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|sub
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -234,13 +264,6 @@ id|sub-&gt;list
 comma
 op_amp
 id|core-&gt;subs
-)paren
-suffix:semicolon
-id|device_register
-c_func
-(paren
-op_amp
-id|sub-&gt;dev
 )paren
 suffix:semicolon
 r_return
@@ -502,15 +525,13 @@ comma
 id|wanted
 )paren
 suffix:semicolon
+r_return
 id|driver_register
 c_func
 (paren
 op_amp
 id|sub-&gt;drv
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|bttv_sub_register

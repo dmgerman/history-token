@@ -477,6 +477,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|pi_unclaim
+r_static
 r_void
 id|pi_unclaim
 c_func
@@ -511,13 +512,6 @@ id|pi-&gt;pardev
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|variable|pi_unclaim
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pi_unclaim
-)paren
-suffix:semicolon
 DECL|function|pi_connect
 r_void
 id|pi_connect

@@ -438,6 +438,8 @@ id|physical
 suffix:semicolon
 DECL|member|virtual
 id|u32
+id|__iomem
+op_star
 r_virtual
 suffix:semicolon
 DECL|member|offset
@@ -538,6 +540,8 @@ id|mmio_base_phys
 suffix:semicolon
 DECL|member|mmio_base
 id|u32
+id|__iomem
+op_star
 id|mmio_base
 suffix:semicolon
 multiline_comment|/* fb start offset (in bytes) */
@@ -548,6 +552,8 @@ suffix:semicolon
 multiline_comment|/* ring buffer */
 DECL|member|ring_head
 id|u32
+id|__iomem
+op_star
 id|ring_head
 suffix:semicolon
 DECL|member|ring_tail

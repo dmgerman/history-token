@@ -18,7 +18,7 @@ mdefine_line|#define AUDIO_EXTERN       0x02
 DECL|macro|AUDIO_INTERN
 mdefine_line|#define AUDIO_INTERN       0x03
 DECL|macro|AUDIO_OFF
-mdefine_line|#define AUDIO_OFF          0x04 
+mdefine_line|#define AUDIO_OFF          0x04
 DECL|macro|AUDIO_ON
 mdefine_line|#define AUDIO_ON           0x05
 DECL|macro|AUDIO_EXTERN_1

@@ -812,7 +812,6 @@ l_string|&quot;Mapped:       %8lu kB&bslash;n&quot;
 l_string|&quot;Slab:         %8lu kB&bslash;n&quot;
 l_string|&quot;CommitLimit:  %8lu kB&bslash;n&quot;
 l_string|&quot;Committed_AS: %8lu kB&bslash;n&quot;
-l_string|&quot;CommitAvail:  %8ld kB&bslash;n&quot;
 l_string|&quot;PageTables:   %8lu kB&bslash;n&quot;
 l_string|&quot;VmallocTotal: %8lu kB&bslash;n&quot;
 l_string|&quot;VmallocUsed:  %8lu kB&bslash;n&quot;
@@ -940,14 +939,6 @@ comma
 id|K
 c_func
 (paren
-id|committed
-)paren
-comma
-id|K
-c_func
-(paren
-id|allowed
-op_minus
 id|committed
 )paren
 comma

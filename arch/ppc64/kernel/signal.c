@@ -856,13 +856,37 @@ l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
 macro_line|#ifndef CONFIG_SMP
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|last_task_used_math
+op_eq
+id|current
+)paren
 id|last_task_used_math
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|last_task_used_altivec
+op_eq
+id|current
+)paren
 id|last_task_used_altivec
 op_assign
 l_int|NULL
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Force reload of FP/VEC */

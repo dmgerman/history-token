@@ -281,6 +281,7 @@ suffix:semicolon
 DECL|member|ioaddr
 r_volatile
 id|u8
+id|__iomem
 op_star
 id|ioaddr
 suffix:semicolon
@@ -349,6 +350,7 @@ r_struct
 (brace
 DECL|member|vbase
 id|u8
+id|__iomem
 op_star
 id|vbase
 suffix:semicolon
@@ -375,6 +377,7 @@ r_struct
 DECL|member|vbase
 r_volatile
 id|u8
+id|__iomem
 op_star
 id|vbase
 suffix:semicolon
@@ -393,6 +396,7 @@ suffix:semicolon
 DECL|member|bci_base
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|bci_base
 suffix:semicolon

@@ -86,7 +86,7 @@ comma
 dot
 id|action_msg
 op_assign
-l_string|&quot;Power Off&bslash;n&quot;
+l_string|&quot;Power Off&quot;
 )brace
 suffix:semicolon
 DECL|function|pm_sysrq_init

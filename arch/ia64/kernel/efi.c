@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
+macro_line|#include &lt;asm/meminit.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
@@ -646,13 +647,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * granule_addr is the base of md&squot;s first granule.&n;&t;&t; * [granule_addr - first_non_wb_addr) is guaranteed to&n;&t;&t; * be contiguous WB memory.&n;&t;&t; */
 id|granule_addr
 op_assign
-id|md-&gt;phys_addr
-op_amp
-op_complement
+id|GRANULEROUNDDOWN
+c_func
 (paren
-id|IA64_GRANULE_SIZE
-op_minus
-l_int|1
+id|md-&gt;phys_addr
 )paren
 suffix:semicolon
 id|first_non_wb_addr
@@ -685,13 +683,10 @@ id|IA64_GRANULE_SIZE
 suffix:semicolon
 id|granule_addr
 op_assign
-id|md-&gt;phys_addr
-op_amp
-op_complement
+id|GRANULEROUNDDOWN
+c_func
 (paren
-id|IA64_GRANULE_SIZE
-op_minus
-l_int|1
+id|md-&gt;phys_addr
 )paren
 suffix:semicolon
 id|first_non_wb_addr
@@ -753,13 +748,10 @@ multiline_comment|/* non-WB or hole */
 )brace
 id|last_granule_addr
 op_assign
-id|first_non_wb_addr
-op_amp
-op_complement
+id|GRANULEROUNDDOWN
+c_func
 (paren
-id|IA64_GRANULE_SIZE
-op_minus
-l_int|1
+id|first_non_wb_addr
 )paren
 suffix:semicolon
 r_if
@@ -803,7 +795,7 @@ id|md-&gt;num_pages
 op_lshift
 id|EFI_PAGE_SHIFT
 )paren
-OG
+op_ge
 id|max_addr
 )paren
 (brace
@@ -811,7 +803,7 @@ r_if
 c_cond
 (paren
 id|md-&gt;phys_addr
-OG
+op_ge
 id|max_addr
 )paren
 r_continue
@@ -825,6 +817,10 @@ id|md-&gt;phys_addr
 )paren
 op_rshift
 id|EFI_PAGE_SHIFT
+suffix:semicolon
+id|first_non_wb_addr
+op_assign
+id|max_addr
 suffix:semicolon
 )brace
 r_if
@@ -836,34 +832,61 @@ id|mem_limit
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|total_mem
-op_add_assign
+op_plus
 (paren
 id|md-&gt;num_pages
 op_lshift
 id|EFI_PAGE_SHIFT
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|total_mem
 OG
 id|mem_limit
 )paren
 (brace
-id|md-&gt;num_pages
-op_sub_assign
-(paren
-(paren
-id|total_mem
-op_minus
+r_int
+r_int
+id|limit_addr
+op_assign
+id|md-&gt;phys_addr
+suffix:semicolon
+id|limit_addr
+op_add_assign
 id|mem_limit
+op_minus
+id|total_mem
+suffix:semicolon
+id|limit_addr
+op_assign
+id|GRANULEROUNDDOWN
+c_func
+(paren
+id|limit_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|md-&gt;phys_addr
+OG
+id|limit_addr
+)paren
+r_continue
+suffix:semicolon
+id|md-&gt;num_pages
+op_assign
+(paren
+id|limit_addr
+op_minus
+id|md-&gt;phys_addr
 )paren
 op_rshift
 id|EFI_PAGE_SHIFT
-)paren
 suffix:semicolon
+id|first_non_wb_addr
+op_assign
 id|max_addr
 op_assign
 id|md-&gt;phys_addr
@@ -875,6 +898,14 @@ id|EFI_PAGE_SHIFT
 )paren
 suffix:semicolon
 )brace
+id|total_mem
+op_add_assign
+(paren
+id|md-&gt;num_pages
+op_lshift
+id|EFI_PAGE_SHIFT
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1438,8 +1469,6 @@ comma
 op_amp
 id|end
 )paren
-op_minus
-l_int|2
 suffix:semicolon
 r_if
 c_cond
@@ -1478,6 +1507,9 @@ l_int|9
 suffix:semicolon
 id|max_addr
 op_assign
+id|GRANULEROUNDDOWN
+c_func
+(paren
 id|memparse
 c_func
 (paren
@@ -1486,8 +1518,7 @@ comma
 op_amp
 id|end
 )paren
-op_minus
-l_int|1
+)paren
 suffix:semicolon
 r_if
 c_cond

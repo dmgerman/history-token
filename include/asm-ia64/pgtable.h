@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PGTABLE_H
 DECL|macro|_ASM_IA64_PGTABLE_H
 mdefine_line|#define _ASM_IA64_PGTABLE_H
-multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt;.&n; *&n; * Copyright (C) 1998-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -391,7 +391,7 @@ op_or
 id|l1index
 suffix:semicolon
 )brace
-multiline_comment|/* The offset in the 1-level directory is given by the 3 region bits&n;   (61..63) and the seven level-1 bits (33-39).  */
+multiline_comment|/* The offset in the 1-level directory is given by the 3 region bits&n;   (61..63) and the level-1 bits.  */
 r_static
 r_inline
 id|pgd_t
@@ -419,7 +419,7 @@ id|address
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* In the kernel&squot;s mapped region we have a full 43 bit space available and completely&n;   ignore the region number (since we know its in region number 5). */
+multiline_comment|/* In the kernel&squot;s mapped region we completely ignore the region number&n;   (since we know it&squot;s in region number 5). */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(addr) &bslash;&n;&t;(init_mm.pgd + (((addr) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD - 1)))
 multiline_comment|/* Look up a pgd entry in the gate area.  On IA-64, the gate-area&n;   resides in the kernel-mapped segment, hence we use pgd_offset_k()&n;   here.  */

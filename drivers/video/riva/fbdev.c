@@ -761,6 +761,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_int
+id|noaccel
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
 DECL|variable|__initdata
 r_static
@@ -905,11 +913,6 @@ id|width
 op_assign
 op_minus
 l_int|1
-comma
-dot
-id|accel_flags
-op_assign
-id|FB_ACCELF_TEXT
 comma
 dot
 id|pixclock
@@ -5195,21 +5198,6 @@ id|par-&gt;state
 )paren
 suffix:semicolon
 macro_line|#endif
-id|riva_common_setup
-c_func
-(paren
-id|par
-)paren
-suffix:semicolon
-id|RivaGetConfig
-c_func
-(paren
-op_amp
-id|par-&gt;riva
-comma
-id|par-&gt;Chipset
-)paren
-suffix:semicolon
 multiline_comment|/* vgaHWunlock() + riva unlock (0x7F) */
 id|CRTCout
 c_func
@@ -5913,21 +5901,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|riva_common_setup
-c_func
-(paren
-id|par
-)paren
-suffix:semicolon
-id|RivaGetConfig
-c_func
-(paren
-op_amp
-id|par-&gt;riva
-comma
-id|par-&gt;Chipset
-)paren
-suffix:semicolon
 multiline_comment|/* vgaHWunlock() + riva unlock (0x7F) */
 id|CRTCout
 c_func
@@ -5956,12 +5929,24 @@ c_func
 id|info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|info-&gt;flags
+op_amp
+id|FBINFO_HWACCEL_DISABLED
+)paren
+)paren
+(brace
 id|riva_setup_accel
 c_func
 (paren
 id|info
 )paren
 suffix:semicolon
+)brace
 id|par-&gt;cursor_reset
 op_assign
 l_int|1
@@ -5990,6 +5975,22 @@ c_cond
 id|FB_VISUAL_PSEUDOCOLOR
 suffix:colon
 id|FB_VISUAL_DIRECTCOLOR
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;flags
+op_amp
+id|FBINFO_HWACCEL_DISABLED
+)paren
+id|info-&gt;pixmap.scan_align
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|info-&gt;pixmap.scan_align
+op_assign
+l_int|4
 suffix:semicolon
 id|NVTRACE_LEAVE
 c_func
@@ -6844,6 +6845,27 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|info-&gt;flags
+op_amp
+id|FBINFO_HWACCEL_DISABLED
+)paren
+)paren
+(brace
+id|cfb_fillrect
+c_func
+(paren
+id|info
+comma
+id|rect
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|info-&gt;var.bits_per_pixel
 op_eq
 l_int|8
@@ -7022,6 +7044,27 @@ op_star
 )paren
 id|info-&gt;par
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|info-&gt;flags
+op_amp
+id|FBINFO_HWACCEL_DISABLED
+)paren
+)paren
+(brace
+id|cfb_copyarea
+c_func
+(paren
+id|info
+comma
+id|region
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|RIVA_FIFO_FREE
 c_func
 (paren
@@ -7196,6 +7239,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|info-&gt;flags
+op_amp
+id|FBINFO_HWACCEL_DISABLED
+)paren
+op_logical_or
 id|image-&gt;depth
 op_ne
 l_int|1
@@ -8206,6 +8255,32 @@ id|FBINFO_HWACCEL_IMAGEBLIT
 op_or
 id|FBINFO_MISC_MODESWITCHLATE
 suffix:semicolon
+multiline_comment|/* Accel seems to not work properly on NV30 yet...*/
+r_if
+c_cond
+(paren
+(paren
+id|par-&gt;riva.Architecture
+op_eq
+id|NV_ARCH_30
+)paren
+op_logical_or
+id|noaccel
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;disabling acceleration&bslash;n&quot;
+)paren
+suffix:semicolon
+id|info-&gt;flags
+op_or_assign
+id|FBINFO_HWACCEL_DISABLED
+suffix:semicolon
+)brace
 id|info-&gt;var
 op_assign
 id|rivafb_default_var
@@ -8254,10 +8329,6 @@ op_star
 l_int|1024
 suffix:semicolon
 id|info-&gt;pixmap.buf_align
-op_assign
-l_int|4
-suffix:semicolon
-id|info-&gt;pixmap.scan_align
 op_assign
 l_int|4
 suffix:semicolon
@@ -8483,6 +8554,12 @@ id|par-&gt;EDID
 op_assign
 id|pedid
 suffix:semicolon
+id|NVTRACE
+c_func
+(paren
+l_string|&quot;LCD found.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -8574,7 +8651,8 @@ id|par-&gt;EDID
 id|printk
 c_func
 (paren
-l_string|&quot;rivafb: Found EDID Block from BUS %i&bslash;n&quot;
+id|PFX
+l_string|&quot;Found EDID Block from BUS %i&bslash;n&quot;
 comma
 id|i
 )paren
@@ -8747,10 +8825,6 @@ id|modedb
 )paren
 suffix:semicolon
 )brace
-id|var-&gt;accel_flags
-op_or_assign
-id|FB_ACCELF_TEXT
-suffix:semicolon
 id|NVTRACE_LEAVE
 c_func
 (paren
@@ -8796,7 +8870,8 @@ id|pdev
 id|printk
 c_func
 (paren
-l_string|&quot;rivafb: could not retrieve EDID from OF&bslash;n&quot;
+id|PFX
+l_string|&quot;could not retrieve EDID from OF&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#elif CONFIG_FB_RIVA_I2C
@@ -8813,7 +8888,8 @@ id|info
 id|printk
 c_func
 (paren
-l_string|&quot;rivafb: could not retrieve EDID from DDC/I2C&bslash;n&quot;
+id|PFX
+l_string|&quot;could not retrieve EDID from DDC/I2C&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9469,10 +9545,6 @@ r_goto
 id|err_out_free_nv3_pramin
 suffix:semicolon
 )brace
-id|rivafb_fix.accel
-op_assign
-id|FB_ACCEL_NV3
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -9510,10 +9582,6 @@ id|default_par-&gt;ctrl_base
 op_plus
 l_int|0x00710000
 )paren
-suffix:semicolon
-id|rivafb_fix.accel
-op_assign
-id|FB_ACCEL_NV4
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -10214,6 +10282,27 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;noaccel&quot;
+comma
+l_int|7
+)paren
+)paren
+(brace
+id|noaccel
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
 id|mode_option
 op_assign
 id|this_opt
@@ -10344,12 +10433,34 @@ c_func
 id|rivafb_exit
 )paren
 suffix:semicolon
-id|MODULE_PARM
+macro_line|#endif /* MODULE */
+id|module_param
+c_func
+(paren
+id|noaccel
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|noaccel
+comma
+l_string|&quot;bool: disable acceleration&quot;
+)paren
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|flatpanel
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -10360,12 +10471,15 @@ comma
 l_string|&quot;Enables experimental flat panel support for some chipsets. (0 or 1=enabled) (default=0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|forceCRTC
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -10377,12 +10491,14 @@ l_string|&quot;Forces usage of a particular CRTC in case autodetection fails. (0
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nomtrr
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -10394,12 +10510,14 @@ l_string|&quot;Disables MTRR support (0 or 1=disabled) (default=0)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|strictmode
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -10410,7 +10528,6 @@ comma
 l_string|&quot;Only use video modes from EDID&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 id|MODULE_AUTHOR
 c_func
 (paren

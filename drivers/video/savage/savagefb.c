@@ -7429,6 +7429,7 @@ id|par-&gt;bci_base
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -7495,6 +7496,7 @@ id|iounmap
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|par-&gt;mmio.vbase
@@ -7639,16 +7641,6 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Clear framebuffer, it&squot;s all white in memory after boot */
-id|memset
-(paren
-id|par-&gt;video.vbase
-comma
-l_int|0
-comma
-id|par-&gt;video.len
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

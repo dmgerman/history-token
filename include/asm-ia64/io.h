@@ -12,8 +12,10 @@ mdefine_line|#define __IA64_UNCACHED_OFFSET&t;0xc000000000000000UL&t;/* region 6
 multiline_comment|/*&n; * The legacy I/O space defined by the ia64 architecture supports only 65536 ports, but&n; * large machines may have multiple other I/O spaces so we can&squot;t place any a priori limit&n; * on IO_SPACE_LIMIT.  These additional spaces are described in ACPI.&n; */
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT&t;&t;0xffffffffffffffffUL
+DECL|macro|MAX_IO_SPACES_BITS
+mdefine_line|#define MAX_IO_SPACES_BITS&t;&t;4
 DECL|macro|MAX_IO_SPACES
-mdefine_line|#define MAX_IO_SPACES&t;&t;&t;16
+mdefine_line|#define MAX_IO_SPACES&t;&t;&t;(1UL &lt;&lt; MAX_IO_SPACES_BITS)
 DECL|macro|IO_SPACE_BITS
 mdefine_line|#define IO_SPACE_BITS&t;&t;&t;24
 DECL|macro|IO_SPACE_SIZE
@@ -55,10 +57,20 @@ r_int
 id|num_io_spaces
 suffix:semicolon
 macro_line|# ifdef __KERNEL__
+multiline_comment|/*&n; * All MMIO iomem cookies are in region 6; anything less is a PIO cookie:&n; *&t;0xCxxxxxxxxxxxxxxx&t;MMIO cookie (return from ioremap)&n; *&t;0x000000001SPPPPPP&t;PIO cookie (S=space number, P..P=port)&n; *&n; * ioread/writeX() uses the leading 1 in PIO cookies (PIO_OFFSET) to catch&n; * code that uses bare port numbers without the prerequisite pci_iomap().&n; */
+DECL|macro|PIO_OFFSET
+mdefine_line|#define PIO_OFFSET&t;&t;(1UL &lt;&lt; (MAX_IO_SPACES_BITS + IO_SPACE_BITS))
+DECL|macro|PIO_MASK
+mdefine_line|#define PIO_MASK&t;&t;(PIO_OFFSET - 1)
+DECL|macro|PIO_RESERVED
+mdefine_line|#define PIO_RESERVED&t;&t;__IA64_UNCACHED_OFFSET
+DECL|macro|HAVE_ARCH_PIO_SIZE
+mdefine_line|#define HAVE_ARCH_PIO_SIZE
 macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm-generic/iomap.h&gt;
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; */
 r_static
 r_inline
@@ -134,12 +146,12 @@ macro_line|# endif /* KERNEL */
 multiline_comment|/*&n; * Memory fence w/accept.  This should never be used in code that is&n; * not IA-64 specific.&n; */
 DECL|macro|__ia64_mf_a
 mdefine_line|#define __ia64_mf_a()&t;ia64_mfa()
-multiline_comment|/**&n; * __ia64_mmiowb - I/O write barrier&n; *&n; * Ensure ordering of I/O space writes.  This will make sure that writes&n; * following the barrier will arrive after all previous writes.  For most&n; * ia64 platforms, this is a simple &squot;mf.a&squot; instruction.&n; *&n; * See Documentation/DocBook/deviceiobook.tmpl for more information.&n; */
-DECL|function|__ia64_mmiowb
+multiline_comment|/**&n; * ___ia64_mmiowb - I/O write barrier&n; *&n; * Ensure ordering of I/O space writes.  This will make sure that writes&n; * following the barrier will arrive after all previous writes.  For most&n; * ia64 platforms, this is a simple &squot;mf.a&squot; instruction.&n; *&n; * See Documentation/DocBook/deviceiobook.tmpl for more information.&n; */
+DECL|function|___ia64_mmiowb
 r_static
 r_inline
 r_void
-id|__ia64_mmiowb
+id|___ia64_mmiowb
 c_func
 (paren
 r_void
@@ -278,6 +290,8 @@ DECL|macro|__ia64_writel
 mdefine_line|#define __ia64_writel&t;___ia64_writel
 DECL|macro|__ia64_writeq
 mdefine_line|#define __ia64_writeq&t;___ia64_writeq
+DECL|macro|__ia64_mmiowb
+mdefine_line|#define __ia64_mmiowb&t;___ia64_mmiowb
 multiline_comment|/*&n; * For the in/out routines, we need to do &quot;mf.a&quot; _after_ doing the I/O access to ensure&n; * that the access has completed before executing other I/O accesses.  Since we&squot;re doing&n; * the accesses through an uncachable (UC) translation, the CPU will execute them in&n; * program order.  However, we still need to tell the compiler not to shuffle them around&n; * during optimization, which is why we use &quot;volatile&quot; pointers.&n; */
 r_static
 r_inline

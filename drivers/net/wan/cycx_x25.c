@@ -760,9 +760,12 @@ id|card-&gt;u.x.connection_keys
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|card-&gt;u.x.lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Configure adapter. Here we set reasonable defaults, then parse&n;&t; * device configuration structure and set configuration options.&n;&t; * Most configuration options are verified and corrected (if&n;&t; * necessary) since we can&squot;t rely on the adapter to do so and don&squot;t&n;&t; * want it to fail either. */
 id|memset

@@ -61,8 +61,6 @@ DECL|macro|within_hugepage_high_range
 mdefine_line|#define within_hugepage_high_range(addr, len) (((addr) &gt;= TASK_HPAGE_BASE) &bslash;&n;&t;  &amp;&amp; ((addr)+(len) &lt;= TASK_HPAGE_END) &amp;&amp; ((addr)+(len) &gt;= (addr)))
 DECL|macro|is_hugepage_only_range
 mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;(touches_hugepage_high_range((addr), (len)) || &bslash;&n;&t;  touches_hugepage_low_range((addr), (len)))
-DECL|macro|hugetlb_free_pgtables
-mdefine_line|#define hugetlb_free_pgtables free_pgtables
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 DECL|macro|in_hugepage_area

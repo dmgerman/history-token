@@ -494,10 +494,6 @@ id|line
 op_star
 id|line
 suffix:semicolon
-r_char
-op_star
-r_new
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -669,8 +665,6 @@ op_amp
 id|line-&gt;sem
 )paren
 suffix:semicolon
-id|out_free
-suffix:colon
 r_return
 id|ret
 suffix:semicolon
@@ -972,6 +966,15 @@ id|line
 suffix:semicolon
 )brace
 r_else
+(brace
+id|free_irq_by_irq_and_dev
+c_func
+(paren
+id|line-&gt;driver-&gt;read_irq
+comma
+id|line
+)paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -980,6 +983,7 @@ comma
 id|line
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -998,6 +1002,15 @@ id|line
 suffix:semicolon
 )brace
 r_else
+(brace
+id|free_irq_by_irq_and_dev
+c_func
+(paren
+id|line-&gt;driver-&gt;write_irq
+comma
+id|line
+)paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -1006,6 +1019,7 @@ comma
 id|line
 )paren
 suffix:semicolon
+)brace
 id|line-&gt;have_irq
 op_assign
 l_int|0

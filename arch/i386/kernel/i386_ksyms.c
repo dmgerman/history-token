@@ -205,13 +205,6 @@ c_func
 id|dump_fpu
 )paren
 suffix:semicolon
-DECL|variable|dump_extended_fpu
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dump_extended_fpu
-)paren
-suffix:semicolon
 DECL|variable|kernel_fpu_begin
 id|EXPORT_SYMBOL_GPL
 c_func

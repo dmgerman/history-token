@@ -3417,11 +3417,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 multiline_comment|/* Any setup of logging members must be done before&n;&t; * substituting pointer. */
-id|smp_wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -3439,12 +3434,16 @@ id|pf
 )braket
 )paren
 (brace
+id|rcu_assign_pointer
+c_func
+(paren
 id|nf_logging
 (braket
 id|pf
 )braket
-op_assign
+comma
 id|logfn
+)paren
 suffix:semicolon
 id|ret
 op_assign

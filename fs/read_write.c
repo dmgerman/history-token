@@ -596,13 +596,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|variable|sys_lseek
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|sys_lseek
-)paren
-suffix:semicolon
 macro_line|#ifdef __ARCH_WANT_SYS_LLSEEK
 DECL|function|sys_llseek
 id|asmlinkage

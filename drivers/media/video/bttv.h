@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: bttv.h,v 1.9 2004/09/15 16:15:24 kraxel Exp $&n; *&n; *  bttv - Bt848 frame grabber driver&n; *&n; *  card ID&squot;s and external interfaces of the bttv driver&n; *  basically stuff needed by other drivers (i2c, lirc, ...)&n; *  and is supported not to change much over time.&n; *&n; *  Copyright (C) 1996,97 Ralph Metzler (rjkm@thp.uni-koeln.de)&n; *  (c) 1999,2000 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; */
+multiline_comment|/*&n; * $Id: bttv.h,v 1.10 2004/10/13 10:39:00 kraxel Exp $&n; *&n; *  bttv - Bt848 frame grabber driver&n; *&n; *  card ID&squot;s and external interfaces of the bttv driver&n; *  basically stuff needed by other drivers (i2c, lirc, ...)&n; *  and is supported not to change much over time.&n; *&n; *  Copyright (C) 1996,97 Ralph Metzler (rjkm@thp.uni-koeln.de)&n; *  (c) 1999,2000 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; */
 macro_line|#ifndef _BTTV_H_
 DECL|macro|_BTTV_H_
 mdefine_line|#define _BTTV_H_
@@ -17,11 +17,11 @@ mdefine_line|#define BTTV_STB           0x03
 DECL|macro|BTTV_INTEL
 mdefine_line|#define BTTV_INTEL         0x04
 DECL|macro|BTTV_DIAMOND
-mdefine_line|#define BTTV_DIAMOND       0x05 
+mdefine_line|#define BTTV_DIAMOND       0x05
 DECL|macro|BTTV_AVERMEDIA
-mdefine_line|#define BTTV_AVERMEDIA     0x06 
+mdefine_line|#define BTTV_AVERMEDIA     0x06
 DECL|macro|BTTV_MATRIX_VISION
-mdefine_line|#define BTTV_MATRIX_VISION 0x07 
+mdefine_line|#define BTTV_MATRIX_VISION 0x07
 DECL|macro|BTTV_FLYVIDEO
 mdefine_line|#define BTTV_FLYVIDEO      0x08
 DECL|macro|BTTV_TURBOTV
@@ -638,7 +638,7 @@ suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* exported by bttv-if.c                                      */
 multiline_comment|/* this obsolete -- please use the sysfs-based&n;   interface below for new code */
-multiline_comment|/* returns card type + card ID (for bt878-based ones)&n;   for possible values see lines below beginning with #define BTTV_UNKNOWN&n;   returns negative value if error occurred &n;*/
+multiline_comment|/* returns card type + card ID (for bt878-based ones)&n;   for possible values see lines below beginning with #define BTTV_UNKNOWN&n;   returns negative value if error occurred&n;*/
 r_extern
 r_int
 id|bttv_get_cardinfo
@@ -716,7 +716,7 @@ op_star
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/* sets GPDATA register to new value:&n;  (data &amp; mask) | (current_GPDATA_value &amp; ~mask)&n;  returns negative value if error occurred &n;*/
+multiline_comment|/* sets GPDATA register to new value:&n;  (data &amp; mask) | (current_GPDATA_value &amp; ~mask)&n;  returns negative value if error occurred&n;*/
 r_extern
 r_int
 id|bttv_write_gpio
@@ -735,7 +735,7 @@ r_int
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/* returns pointer to task queue which can be used as parameter to &n;   interruptible_sleep_on&n;   in interrupt handler if BT848_INT_GPINT bit is set - this queue is activated&n;   (wake_up_interruptible) and following call to the function bttv_read_gpio &n;   should return new value of GPDATA,&n;   returns NULL value if error occurred or queue is not available&n;   WARNING: because there is no buffer for GPIO data, one MUST &n;   process data ASAP&n;*/
+multiline_comment|/* returns pointer to task queue which can be used as parameter to&n;   interruptible_sleep_on&n;   in interrupt handler if BT848_INT_GPINT bit is set - this queue is activated&n;   (wake_up_interruptible) and following call to the function bttv_read_gpio&n;   should return new value of GPDATA,&n;   returns NULL value if error occurred or queue is not available&n;   WARNING: because there is no buffer for GPIO data, one MUST&n;   process data ASAP&n;*/
 r_extern
 id|wait_queue_head_t
 op_star

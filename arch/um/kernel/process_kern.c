@@ -829,18 +829,6 @@ id|current
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * although we are an idle CPU, we do not want to&n;&t;&t; * get into the scheduler unnecessarily.&n;&t;&t; */
-id|irq_stat
-(braket
-id|smp_processor_id
-c_func
-(paren
-)paren
-)braket
-dot
-id|idle_timestamp
-op_assign
-id|jiffies
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -2023,9 +2023,12 @@ l_string|&quot;      Use &bslash;&quot;ifconfig hw ether ...&bslash;&quot; to se
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|lp-&gt;devlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|MEM-&gt;init.mode
 op_assign

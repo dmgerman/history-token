@@ -854,13 +854,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|add_timer_on
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_timer_on
-)paren
-suffix:semicolon
 multiline_comment|/***&n; * mod_timer - modify a timer&squot;s timeout&n; * @timer: the timer to be modified&n; *&n; * mod_timer is a more efficient way to update the expire field of an&n; * active timer (if the timer is inactive it will be activated)&n; *&n; * mod_timer(timer, expires) is equivalent to:&n; *&n; *     del_timer(timer); timer-&gt;expires = expires; add_timer(timer);&n; *&n; * Note that if there are multiple unserialized concurrent users of the&n; * same timer, then mod_timer() is the only safe way to modify the timeout,&n; * since add_timer() cannot modify an already running timer.&n; *&n; * The function returns whether it has modified a pending timer or not.&n; * (ie. mod_timer() of an inactive timer returns 0, mod_timer() of an&n; * active timer returns 1.)&n; */
 DECL|function|mod_timer
 r_int

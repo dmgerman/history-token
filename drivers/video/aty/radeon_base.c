@@ -9638,7 +9638,19 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_break
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;radeonfb: no video RAM reported&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENXIO
+suffix:semicolon
+r_goto
+id|err_unmap_rom
 suffix:semicolon
 )brace
 )brace

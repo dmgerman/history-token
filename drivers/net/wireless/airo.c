@@ -12480,9 +12480,12 @@ id|ai-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|ai-&gt;aux_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|sema_init
 c_func

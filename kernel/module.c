@@ -3032,7 +3032,7 @@ id|symbol_put_addr
 suffix:semicolon
 DECL|function|show_refcnt
 r_static
-r_int
+id|ssize_t
 id|show_refcnt
 c_func
 (paren

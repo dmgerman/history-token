@@ -118,6 +118,8 @@ comma
 r_int
 comma
 r_int
+comma
+r_int
 )paren
 suffix:semicolon
 DECL|macro|CPU_VECTOR_TO_IRQ
