@@ -3,6 +3,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -13,11 +15,9 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/Naca.h&gt;
 macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;privinst.h&quot;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
 DECL|macro|scanhex
 mdefine_line|#define scanhex&t;xmon_scanhex
 DECL|macro|skipbl
@@ -653,14 +653,6 @@ suffix:semicolon
 r_static
 r_void
 id|mem_check_dup_rpn
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
-id|show_state
-c_func
 (paren
 r_void
 )paren
@@ -5676,6 +5668,10 @@ id|opd
 l_int|0
 )braket
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|instrs
 suffix:semicolon
 id|opd
@@ -5804,6 +5800,10 @@ id|opd
 l_int|0
 )braket
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|instrs
 suffix:semicolon
 id|opd
