@@ -265,6 +265,54 @@ l_int|1
 )brace
 comma
 (brace
+l_string|&quot;VIA694&quot;
+comma
+l_string|&quot;AWRDACPI&quot;
+comma
+l_int|0
+comma
+id|ACPI_DSDT
+comma
+id|all_versions
+comma
+l_string|&quot;Bogus table&quot;
+comma
+l_int|1
+)brace
+comma
+(brace
+l_string|&quot;ASUS&bslash;0&bslash;0&quot;
+comma
+l_string|&quot;P2B-S   &quot;
+comma
+l_int|0
+comma
+id|ACPI_DSDT
+comma
+id|all_versions
+comma
+l_string|&quot;Bogus PCI routing&quot;
+comma
+l_int|1
+)brace
+comma
+(brace
+l_string|&quot;COMPAQ&quot;
+comma
+l_string|&quot;DSDT&quot;
+comma
+l_int|0
+comma
+id|ACPI_DSDT
+comma
+id|all_versions
+comma
+l_string|&quot;Bogus PCI routing&quot;
+comma
+l_int|1
+)brace
+comma
+(brace
 l_string|&quot;&quot;
 )brace
 )brace
