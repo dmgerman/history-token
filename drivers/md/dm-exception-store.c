@@ -1870,12 +1870,12 @@ id|ps
 r_if
 c_cond
 (paren
-id|ps-&gt;callbacks
+id|ps-&gt;area
 )paren
-id|vfree
+id|free_area
 c_func
 (paren
-id|ps-&gt;callbacks
+id|ps
 )paren
 suffix:semicolon
 id|kfree
