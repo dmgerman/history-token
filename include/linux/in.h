@@ -319,7 +319,7 @@ suffix:semicolon
 multiline_comment|/* interface index */
 DECL|member|gr_group
 r_struct
-id|sockaddr_storage
+id|__kernel_sockaddr_storage
 id|gr_group
 suffix:semicolon
 multiline_comment|/* group address */
@@ -336,13 +336,13 @@ suffix:semicolon
 multiline_comment|/* interface index */
 DECL|member|gsr_group
 r_struct
-id|sockaddr_storage
+id|__kernel_sockaddr_storage
 id|gsr_group
 suffix:semicolon
 multiline_comment|/* group address */
 DECL|member|gsr_source
 r_struct
-id|sockaddr_storage
+id|__kernel_sockaddr_storage
 id|gsr_source
 suffix:semicolon
 multiline_comment|/* source address */
@@ -359,7 +359,7 @@ suffix:semicolon
 multiline_comment|/* interface index */
 DECL|member|gf_group
 r_struct
-id|sockaddr_storage
+id|__kernel_sockaddr_storage
 id|gf_group
 suffix:semicolon
 multiline_comment|/* multicast address */
@@ -375,7 +375,7 @@ suffix:semicolon
 multiline_comment|/* number of sources */
 DECL|member|gf_slist
 r_struct
-id|sockaddr_storage
+id|__kernel_sockaddr_storage
 id|gf_slist
 (braket
 l_int|1
@@ -385,7 +385,7 @@ multiline_comment|/* interface index */
 )brace
 suffix:semicolon
 DECL|macro|GROUP_FILTER_SIZE
-mdefine_line|#define GROUP_FILTER_SIZE(numsrc) &bslash;&n;&t;(sizeof(struct group_filter) - sizeof(struct sockaddr_storage) &bslash;&n;&t;+ (numsrc) * sizeof(struct sockaddr_storage))
+mdefine_line|#define GROUP_FILTER_SIZE(numsrc) &bslash;&n;&t;(sizeof(struct group_filter) - sizeof(struct __kernel_sockaddr_storage) &bslash;&n;&t;+ (numsrc) * sizeof(struct __kernel_sockaddr_storage))
 DECL|struct|in_pktinfo
 r_struct
 id|in_pktinfo
