@@ -475,10 +475,20 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
 id|addr-&gt;a
-op_assign
+comma
+r_new
+comma
+r_sizeof
+(paren
 op_star
 r_new
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Fix up the port if it has not yet been set.&n;&t; * Both v4 and v6 have the port at the same offset.&n;&t; */
 r_if
