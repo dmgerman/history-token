@@ -1525,6 +1525,18 @@ comma
 id|cmd
 )paren
 suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_CACHE_LINE_SIZE
+comma
+id|SMP_CACHE_BYTES
+op_rshift
+l_int|2
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Report what we did for this bus&n;&t; */
 id|printk

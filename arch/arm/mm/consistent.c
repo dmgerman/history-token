@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-multiline_comment|/*&n; * This allocates one page of cache-coherent memory space and returns&n; * both the virtual and a &quot;dma&quot; address to that space.  It is not clear&n; * whether this could be called from an interrupt context or not.  For&n; * now, we expressly forbid it, especially as some of the stuff we do&n; * here is not interrupt context safe.&n; *&n; * Note that this does *not* zero the allocated area!&n; */
+multiline_comment|/*&n; * This allocates one page of cache-coherent memory space and returns&n; * both the virtual and a &quot;dma&quot; address to that space.&n; *&n; * We should allow this function to be called from interrupt context.&n; * However, we call ioremap, which needs to fiddle around with various&n; * things (like the vmlist_lock, and allocating page tables).  These&n; * things aren&squot;t interrupt safe (yet).&n; *&n; * Note that this does *not* zero the allocated area!&n; */
 DECL|function|consistent_alloc
 r_void
 op_star
@@ -47,10 +47,8 @@ suffix:semicolon
 r_void
 op_star
 id|ret
-comma
-op_star
-id|virt
 suffix:semicolon
+multiline_comment|/* FIXME */
 r_if
 c_cond
 (paren
@@ -99,22 +97,13 @@ id|page
 r_goto
 id|no_page
 suffix:semicolon
-multiline_comment|/*&n;&t; * We could do with a page_to_phys and page_to_bus here.&n;&t; */
-id|virt
-op_assign
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 op_star
 id|dma_handle
 op_assign
-id|virt_to_bus
+id|page_to_bus
 c_func
 (paren
-id|virt
+id|page
 )paren
 suffix:semicolon
 id|ret
@@ -122,10 +111,10 @@ op_assign
 id|__ioremap
 c_func
 (paren
-id|virt_to_phys
+id|page_to_phys
 c_func
 (paren
-id|virt
+id|page
 )paren
 comma
 id|size
@@ -143,7 +132,18 @@ r_goto
 id|no_remap
 suffix:semicolon
 macro_line|#if 0 /* ioremap_does_flush_cache_all */
-multiline_comment|/*&n;&t; * we need to ensure that there are no cachelines in use, or&n;&t; * worse dirty in this area.  Really, we don&squot;t need to do&n;&t; * this since __ioremap does a flush_cache_all() anyway. --rmk&n;&t; */
+(brace
+r_void
+op_star
+id|virt
+op_assign
+id|page_address
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * we need to ensure that there are no cachelines in use, or&n;&t;&t; * worse dirty in this area.  Really, we don&squot;t need to do&n;&t;&t; * this since __ioremap does a flush_cache_all() anyway. --rmk&n;&t;&t; */
 id|invalidate_dcache_range
 c_func
 (paren
@@ -154,16 +154,9 @@ op_plus
 id|size
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * free wasted pages.  We skip the first page since we know&n;&t; * that it will have count = 1 and won&squot;t require freeing.&n;&t; * We also mark the pages in use as reserved so that&n;&t; * remap_page_range works.&n;&t; */
-id|page
-op_assign
-id|virt_to_page
-c_func
-(paren
-id|virt
-)paren
-suffix:semicolon
 id|free
 op_assign
 id|page
@@ -263,56 +256,36 @@ op_star
 id|handle
 )paren
 (brace
-r_void
-op_star
-id|__ret
-suffix:semicolon
 r_int
-id|__gfp
+id|gfp
 op_assign
 id|GFP_KERNEL
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
-(paren
 id|hwdev
-)paren
 op_eq
 l_int|NULL
 op_logical_or
-(paren
-id|hwdev
-)paren
-op_member_access_from_pointer
-id|dma_mask
+id|hwdev-&gt;dma_mask
 op_ne
 l_int|0xffffffff
 )paren
-macro_line|#endif
-id|__gfp
+id|gfp
 op_or_assign
 id|GFP_DMA
 suffix:semicolon
-id|__ret
-op_assign
+r_return
 id|consistent_alloc
 c_func
 (paren
-id|__gfp
+id|gfp
 comma
-(paren
 id|size
-)paren
 comma
-(paren
 id|handle
 )paren
-)paren
-suffix:semicolon
-r_return
-id|__ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * free a page as defined by the above mapping.  We expressly forbid&n; * calling this from interrupt context.&n; */
@@ -340,10 +313,6 @@ comma
 op_star
 id|end
 suffix:semicolon
-r_void
-op_star
-id|virt
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -355,14 +324,6 @@ c_func
 id|BUG
 c_func
 (paren
-)paren
-suffix:semicolon
-id|virt
-op_assign
-id|bus_to_virt
-c_func
-(paren
-id|handle
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * More messing around with the MM internals.  This is&n;&t; * sick, but then so is remap_page_range().&n;&t; */
@@ -379,7 +340,11 @@ op_assign
 id|virt_to_page
 c_func
 (paren
-id|virt
+id|bus_to_virt
+c_func
+(paren
+id|handle
+)paren
 )paren
 suffix:semicolon
 id|end

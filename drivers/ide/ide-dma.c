@@ -2499,20 +2499,6 @@ suffix:semicolon
 r_case
 id|ide_dma_begin
 suffix:colon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;ide_dma_begin: from %p&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2595,13 +2581,11 @@ id|ide_dma_write
 suffix:colon
 id|ar
 op_assign
-id|HWGROUP
+id|IDE_CUR_AR
 c_func
 (paren
 id|drive
 )paren
-op_member_access_from_pointer
-id|rq-&gt;special
 suffix:semicolon
 r_if
 c_cond
@@ -2740,20 +2724,6 @@ r_case
 id|ide_dma_end
 suffix:colon
 multiline_comment|/* returns 1 on error, 0 otherwise */
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;ide_dma_end: from %p&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2773,23 +2743,11 @@ op_member_access_from_pointer
 id|flags
 )paren
 )paren
-(brace
-id|printk
+id|BUG
 c_func
 (paren
-l_string|&quot;ide_dma_end: dma not going? %p&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 id|drive-&gt;waiting_for_dma
 op_assign
 l_int|0
@@ -2841,20 +2799,6 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/* purge DMA mappings */
-r_if
-c_cond
-(paren
-id|drive-&gt;tcq
-)paren
-id|IDE_SET_CUR_TAG
-c_func
-(paren
-id|drive
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
 r_return
 (paren
 id|dma_stat

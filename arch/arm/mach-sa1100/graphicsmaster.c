@@ -48,10 +48,18 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Probe for SA1111.&n;&t; */
 id|ret
 op_assign
-id|sa1111_probe
+id|sa1111_init
 c_func
 (paren
+l_int|NULL
+comma
 l_int|0x18000000
+comma
+id|ADS_EXT_IRQ
+c_func
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -63,35 +71,6 @@ l_int|0
 )paren
 r_return
 id|ret
-suffix:semicolon
-multiline_comment|/*&n;&t; * We found it.  Wake the chip up.&n;&t; */
-id|sa1111_wake
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * The SDRAM configuration of the SA1110 and the SA1111 must&n;&t; * match.  This is very important to ensure that SA1111 accesses&n;&t; * don&squot;t corrupt the SDRAM.  Note that this ungates the SA1111&squot;s&n;&t; * MBGNT signal, so we must have called sa1110_mb_disable()&n;&t; * beforehand.&n;&t; */
-id|sa1111_configure_smc
-c_func
-(paren
-l_int|1
-comma
-id|FExtr
-c_func
-(paren
-id|MDCNFG
-comma
-id|MDCNFG_SA1110_DRAC0
-)paren
-comma
-id|FExtr
-c_func
-(paren
-id|MDCNFG
-comma
-id|MDCNFG_SA1110_TDL0
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Enable PWM control for LCD&n;&t; */
 id|SKPCR
@@ -115,27 +94,6 @@ singleline_comment|// Backlight
 id|SKPEN1
 op_assign
 l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * We only need to turn on DCLK whenever we want to use the&n;&t; * DMA.  It can otherwise be held firmly in the off position.&n;&t; */
-id|SKPCR
-op_or_assign
-id|SKPCR_DCLKEN
-suffix:semicolon
-multiline_comment|/*&n;&t; * Enable the SA1110 memory bus request and grant signals.&n;&t; */
-id|sa1110_mb_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sa1111_init_irq
-c_func
-(paren
-id|ADS_EXT_IRQ
-c_func
-(paren
-l_int|0
-)paren
-)paren
 suffix:semicolon
 r_return
 l_int|0

@@ -685,32 +685,23 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * it&squot;s an ata drive, build command list&n;&t; */
-macro_line|#ifndef CONFIG_BLK_DEV_IDE_TCQ
 id|drive-&gt;queue_depth
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEPTH
+id|drive-&gt;queue_depth
+op_assign
+id|CONFIG_BLK_DEV_IDE_TCQ_DEPTH
+suffix:semicolon
 macro_line|#else
-macro_line|# ifndef CONFIG_BLK_DEV_IDE_TCQ_DEPTH
-macro_line|#  define CONFIG_BLK_DEV_IDE_TCQ_DEPTH 1
-macro_line|# endif
 id|drive-&gt;queue_depth
 op_assign
 id|drive-&gt;id-&gt;queue_depth
 op_plus
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;queue_depth
-OG
-id|CONFIG_BLK_DEV_IDE_TCQ_DEPTH
-)paren
-id|drive-&gt;queue_depth
-op_assign
-id|CONFIG_BLK_DEV_IDE_TCQ_DEPTH
-suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -722,11 +713,10 @@ id|drive-&gt;queue_depth
 op_assign
 id|IDE_MAX_TAG
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
-id|ide_build_commandlist
+id|ide_init_commandlist
 c_func
 (paren
 id|drive

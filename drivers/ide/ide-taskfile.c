@@ -3934,10 +3934,8 @@ c_func
 (paren
 id|argbuf
 comma
-l_int|0
-comma
 l_int|4
-op_plus
+comma
 id|SECTOR_WORDS
 op_star
 l_int|4

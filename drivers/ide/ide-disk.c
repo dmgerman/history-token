@@ -260,20 +260,15 @@ c_cond
 id|lba48bit
 )paren
 (brace
-r_if
-c_cond
-(paren
+id|command
+op_assign
 id|cmd
 op_eq
 id|READ
-)paren
-id|command
-op_assign
+ques
+c_cond
 id|WIN_READ_EXT
-suffix:semicolon
-r_else
-id|command
-op_assign
+suffix:colon
 id|WIN_WRITE_EXT
 suffix:semicolon
 r_if
@@ -307,10 +302,11 @@ op_add_assign
 l_int|5
 suffix:semicolon
 multiline_comment|/* WIN_MULT*_EXT */
+r_return
+id|command
+suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * 28-bit commands seem not to be, though...&n;&t;&t; */
+multiline_comment|/*&n;&t; * 28-bit commands seem not to be, though...&n;&t; */
 r_if
 c_cond
 (paren
@@ -394,7 +390,6 @@ id|command
 op_assign
 id|WIN_WRITE
 suffix:semicolon
-)brace
 )brace
 r_return
 id|command
@@ -4151,12 +4146,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cur_jif
+op_minus
 id|ar-&gt;ar_time
 OG
 id|max_jif
 )paren
 id|max_jif
 op_assign
+id|cur_jif
+op_minus
 id|ar-&gt;ar_time
 suffix:semicolon
 id|cmds
@@ -4175,6 +4174,22 @@ comma
 l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|out
+op_plus
+id|len
+comma
+l_string|&quot;Queue:&bslash;t&bslash;t&bslash;treleased [ %d ] - started [ %d ]&bslash;n&quot;
+comma
+id|drive-&gt;tcq-&gt;immed_rel
+comma
+id|drive-&gt;tcq-&gt;immed_comp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4191,7 +4206,7 @@ id|out
 op_plus
 id|len
 comma
-l_string|&quot;pending request and queue count mismatch (%d)&bslash;n&quot;
+l_string|&quot;pending request and queue count mismatch (counted: %d)&bslash;n&quot;
 comma
 id|cmds
 )paren
@@ -4251,11 +4266,6 @@ suffix:colon
 l_string|&quot;not &quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|max_jif
-)paren
 id|len
 op_add_assign
 id|sprintf
@@ -4265,10 +4275,8 @@ id|out
 op_plus
 id|len
 comma
-l_string|&quot;Oldest command:&bslash;t&bslash;t%lu&bslash;n&quot;
+l_string|&quot;Oldest command:&bslash;t&bslash;t%lu jiffies&bslash;n&quot;
 comma
-id|cur_jif
-op_minus
 id|max_jif
 )paren
 suffix:semicolon
@@ -4281,11 +4289,9 @@ id|out
 op_plus
 id|len
 comma
-l_string|&quot;immed rel %d, immed comp %d&bslash;n&quot;
+l_string|&quot;Oldest command ever:&bslash;t%lu&bslash;n&quot;
 comma
-id|drive-&gt;tcq-&gt;immed_rel
-comma
-id|drive-&gt;tcq-&gt;immed_comp
+id|drive-&gt;tcq-&gt;oldest_command
 )paren
 suffix:semicolon
 id|drive-&gt;tcq-&gt;max_last_depth
@@ -4772,9 +4778,26 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|arg
+op_eq
+id|drive-&gt;queue_depth
+op_logical_and
 id|drive-&gt;using_tcq
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|drive-&gt;queue_depth
 op_assign
 id|arg
+ques
+c_cond
+id|arg
+suffix:colon
+l_int|1
 suffix:semicolon
 r_if
 c_cond

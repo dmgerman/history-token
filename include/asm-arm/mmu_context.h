@@ -73,7 +73,7 @@ c_func
 (paren
 id|next-&gt;pgd
 comma
-id|tsk
+id|next
 )paren
 suffix:semicolon
 )brace
