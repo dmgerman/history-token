@@ -94,44 +94,76 @@ r_enum
 id|global_control_bits
 (brace
 DECL|enumerator|CHANNEL_IDX
-DECL|enumerator|OVERRUN_IE
 id|CHANNEL_IDX
 op_assign
 l_int|0x0000003f
 comma
+DECL|enumerator|OVERRUN_IE
 id|OVERRUN_IE
 op_assign
 l_int|0x00000400
 comma
+multiline_comment|/* interrupt enable: capture overrun */
 DECL|enumerator|UNDERRUN_IE
-DECL|enumerator|ENDLP_IE
 id|UNDERRUN_IE
 op_assign
 l_int|0x00000800
 comma
+multiline_comment|/* interrupt enable: playback underrun */
+DECL|enumerator|ENDLP_IE
 id|ENDLP_IE
 op_assign
 l_int|0x00001000
 comma
+multiline_comment|/* interrupt enable: end of buffer */
 DECL|enumerator|MIDLP_IE
-DECL|enumerator|ETOG_IE
 id|MIDLP_IE
 op_assign
 l_int|0x00002000
 comma
+multiline_comment|/* interrupt enable: middle buffer */
+DECL|enumerator|ETOG_IE
 id|ETOG_IE
 op_assign
 l_int|0x00004000
 comma
+multiline_comment|/* interrupt enable: envelope toggling */
 DECL|enumerator|EDROP_IE
-DECL|enumerator|BANK_B_EN
 id|EDROP_IE
 op_assign
 l_int|0x00008000
 comma
+multiline_comment|/* interrupt enable: envelope drop */
+DECL|enumerator|BANK_B_EN
 id|BANK_B_EN
 op_assign
 l_int|0x00010000
+comma
+multiline_comment|/* SiS: enable bank B (64 channels) */
+DECL|enumerator|PCMIN_B_MIX
+id|PCMIN_B_MIX
+op_assign
+l_int|0x00020000
+comma
+multiline_comment|/* SiS: PCM IN B mixing enable */
+DECL|enumerator|I2S_OUT_ASSIGN
+id|I2S_OUT_ASSIGN
+op_assign
+l_int|0x00040000
+comma
+multiline_comment|/* SiS: I2S Out contains surround PCM */
+DECL|enumerator|SPDIF_OUT_ASSIGN
+id|SPDIF_OUT_ASSIGN
+op_assign
+l_int|0x00080000
+comma
+multiline_comment|/* SiS: 0=S/PDIF L/R | 1=PCM Out FIFO */
+DECL|enumerator|MAIN_OUT_ASSIGN
+id|MAIN_OUT_ASSIGN
+op_assign
+l_int|0x00100000
+comma
+multiline_comment|/* SiS: 0=PCM Out FIFO | 1=MMC Out buffer */
 )brace
 suffix:semicolon
 DECL|enum|miscint_bits
@@ -1351,6 +1383,11 @@ r_int
 id|ChanPCMcnt
 suffix:semicolon
 multiline_comment|/* actual number of PCM channels */
+DECL|member|ac97_detect
+r_int
+id|ac97_detect
+suffix:semicolon
+multiline_comment|/* 1 = AC97 in detection phase */
 DECL|member|synth
 r_struct
 id|_snd_4dwave

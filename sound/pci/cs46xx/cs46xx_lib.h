@@ -1167,10 +1167,10 @@ op_star
 id|chip
 comma
 id|u16
-id|right
+id|left
 comma
 id|u16
-id|left
+id|right
 )paren
 suffix:semicolon
 r_int
@@ -1181,10 +1181,10 @@ op_star
 id|chip
 comma
 id|u16
-id|right
+id|left
 comma
 id|u16
-id|left
+id|right
 )paren
 suffix:semicolon
 macro_line|#endif /* __CS46XX_LIB_H__ */

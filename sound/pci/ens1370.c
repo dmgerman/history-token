@@ -6650,6 +6650,11 @@ id|__devinitdata
 op_assign
 (brace
 dot
+id|access
+op_assign
+id|SNDRV_CTL_ELEM_ACCESS_READ
+comma
+dot
 id|iface
 op_assign
 id|SNDRV_CTL_ELEM_IFACE_PCM
@@ -11641,7 +11646,7 @@ c_func
 (paren
 id|card-&gt;driver
 comma
-l_string|&quot;ES1370&quot;
+l_string|&quot;ENS1370&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -11651,7 +11656,7 @@ c_func
 (paren
 id|card-&gt;driver
 comma
-l_string|&quot;ES1371&quot;
+l_string|&quot;ENS1371&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
