@@ -413,14 +413,11 @@ r_return
 suffix:semicolon
 id|hh_len
 op_assign
+id|LL_RESERVED_SPACE
+c_func
 (paren
-id|rt-&gt;u.dst.dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|rt-&gt;u.dst.dev
 )paren
-op_amp
-op_complement
-l_int|15
 suffix:semicolon
 multiline_comment|/* We need a linear, writeable skb.  We also need to expand&n;&t;   headroom in case hh_len of incoming interface &lt; hh_len of&n;&t;   outgoing interface */
 id|nskb
@@ -1261,14 +1258,11 @@ l_int|576
 suffix:semicolon
 id|hh_len
 op_assign
+id|LL_RESERVED_SPACE
+c_func
 (paren
-id|rt-&gt;u.dst.dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|rt-&gt;u.dst.dev
 )paren
-op_amp
-op_complement
-l_int|15
 suffix:semicolon
 id|nskb
 op_assign
@@ -1276,8 +1270,6 @@ id|alloc_skb
 c_func
 (paren
 id|hh_len
-op_plus
-l_int|15
 op_plus
 id|length
 comma
