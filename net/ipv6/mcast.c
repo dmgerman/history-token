@@ -9721,6 +9721,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|__in6_dev_put
+c_func
+(paren
+id|idev
+)paren
+suffix:semicolon
 )brace
 DECL|function|mld_ifc_timer_expire
 r_static
@@ -9774,6 +9780,12 @@ id|idev-&gt;mc_maxdelay
 )paren
 suffix:semicolon
 )brace
+id|__in6_dev_put
+c_func
+(paren
+id|idev
+)paren
+suffix:semicolon
 )brace
 DECL|function|mld_ifc_event
 r_static
