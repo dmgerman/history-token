@@ -3328,7 +3328,7 @@ op_assign
 id|INPLL
 c_func
 (paren
-id|M_SPLL_REF_FB_DIV
+id|X_MPLL_REF_FB_DIV
 )paren
 suffix:semicolon
 id|ref_div
@@ -3641,7 +3641,7 @@ op_assign
 id|INREG
 c_func
 (paren
-id|RADEON_BIOS_4_SCRATCH
+id|BIOS_4_SCRATCH
 )paren
 suffix:semicolon
 id|printk
@@ -9278,7 +9278,7 @@ op_assign
 (paren
 id|TMDS_RAN_PAT_RST
 op_or
-id|ICHCSEL
+id|TMDS_ICHCSEL
 op_or
 id|TMDS_PLL_EN
 )paren

@@ -6110,6 +6110,21 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|fb_set_suspend
+r_void
+id|fb_set_suspend
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_int
+id|state
+)paren
+(brace
+)brace
 multiline_comment|/**&n; *&t;fbmem_init - init frame buffer subsystem&n; *&n; *&t;Initialize the frame buffer subsystem.&n; *&n; *&t;NOTE: This function is _only_ to be called by drivers/char/mem.c.&n; *&n; */
 r_void
 id|__init
@@ -6555,6 +6570,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|move_buf_aligned
+)paren
+suffix:semicolon
+DECL|variable|fb_set_suspend
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fb_set_suspend
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
