@@ -1348,6 +1348,14 @@ id|mm
 op_assign
 id|oldmm
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * There are cases where the PTL is held to ensure no&n;&t;&t; * new threads start up in user mode using an mm, which&n;&t;&t; * allows optimizing out ipis; the tlb_gather_mmu code&n;&t;&t; * is an example.&n;&t;&t; */
+id|spin_unlock_wait
+c_func
+(paren
+op_amp
+id|oldmm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_goto
 id|good_mm
 suffix:semicolon
