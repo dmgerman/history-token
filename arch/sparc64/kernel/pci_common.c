@@ -529,7 +529,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* If it is not in the OBP device tree then&n;&t;&t; * there must be a damn good reason for it.&n;&t;&t; *&n;&t;&t; * So what we do is delete the device from the&n;&t;&t; * PCI device tree completely.  This scenerio&n;&t;&t; * is seen, for example, on CP1500 for the&n;&t;&t; * second EBUS/HappyMeal pair if the external&n;&t;&t; * connector for it is not present.&n;&t;&t; */
+multiline_comment|/* If it is not in the OBP device tree then&n;&t;&t; * there must be a damn good reason for it.&n;&t;&t; *&n;&t;&t; * So what we do is delete the device from the&n;&t;&t; * PCI device tree completely.  This scenario&n;&t;&t; * is seen, for example, on CP1500 for the&n;&t;&t; * second EBUS/HappyMeal pair if the external&n;&t;&t; * connector for it is not present.&n;&t;&t; */
 id|pci_remove_bus_device
 c_func
 (paren
