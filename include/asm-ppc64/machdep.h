@@ -614,6 +614,33 @@ id|nvram_sync
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Exception handlers */
+DECL|member|system_reset_exception
+r_void
+(paren
+op_star
+id|system_reset_exception
+)paren
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+DECL|member|machine_check_exception
+r_int
+(paren
+op_star
+id|machine_check_exception
+)paren
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 multiline_comment|/* Motherboard/chipset features. This is a kind of general purpose&n;&t; * hook used to control some machine specific features (like reset&n;&t; * lines, chip power control, etc...).&n;&t; */
 DECL|member|feature_call
 r_int
