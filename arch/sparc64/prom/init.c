@@ -93,6 +93,9 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|bufadjust
+suffix:semicolon
 id|prom_vers
 op_assign
 id|PROM_P1275
@@ -236,12 +239,33 @@ l_int|4
 r_goto
 id|strange_version
 suffix:semicolon
-multiline_comment|/* Version field is expected to be &squot;OBP xx.yy.zz date...&squot; */
+multiline_comment|/*&n;&t; * Version field is expected to be &squot;OBP xx.yy.zz date...&squot;&n;&t; * However, Sun can&squot;t stick to this format very well, so&n;&t; * we need to check for &squot;OBP  xx.yy.zz date...&squot; and adjust&n;&t; * accordingly. -spot&n;&t; */
+r_if
+c_cond
+(paren
+id|strncmp
+(paren
+id|buffer
+comma
+l_string|&quot;OBP  &quot;
+comma
+l_int|5
+)paren
+)paren
+id|bufadjust
+op_assign
+l_int|4
+suffix:semicolon
+r_else
+id|bufadjust
+op_assign
+l_int|5
+suffix:semicolon
 id|p
 op_assign
 id|buffer
 op_plus
-l_int|4
+id|bufadjust
 suffix:semicolon
 r_while
 c_loop
@@ -345,7 +369,7 @@ l_string|&quot;PROMLIB: Sun IEEE Boot Prom %s&bslash;n&quot;
 comma
 id|buffer
 op_plus
-l_int|4
+id|bufadjust
 )paren
 suffix:semicolon
 id|prom_meminit
