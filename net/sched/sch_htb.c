@@ -1141,6 +1141,9 @@ id|u32
 )paren
 id|cl-&gt;mbuffer
 comma
+(paren
+r_void
+)paren
 l_int|0
 )paren
 suffix:semicolon
@@ -3340,6 +3343,9 @@ id|u32
 )paren
 id|cl-&gt;mbuffer
 comma
+(paren
+r_void
+)paren
 l_int|0
 )paren
 suffix:semicolon
@@ -3735,6 +3741,9 @@ id|u32
 )paren
 id|cl-&gt;mbuffer
 comma
+(paren
+r_void
+)paren
 l_int|0
 )paren
 suffix:semicolon
