@@ -42,10 +42,10 @@ op_star
 id|sdev
 )paren
 (brace
-multiline_comment|/*&n;&t; * Set default bflags. These can be overridden for individual&n;&t; * models and vendors via the scsi devinfo mechanism.  The only&n;&t; * flag we need is to force 36-byte INQUIRYs; we don&squot;t use any&n;&t; * of the extra data and many devices choke if asked for more or&n;&t; * less than 36 bytes.&n;&t; */
-id|sdev-&gt;sdev_bflags
+multiline_comment|/*&n;&t; * Set the INQUIRY transfer length to 36.  We don&squot;t use any of&n;&t; * the extra data and many devices choke if asked for more or&n;&t; * less than 36 bytes.&n;&t; */
+id|sdev-&gt;inquiry_len
 op_assign
-id|BLIST_INQUIRY_36
+l_int|36
 suffix:semicolon
 r_return
 l_int|0
@@ -236,10 +236,6 @@ multiline_comment|/* check for state-transition errors */
 r_if
 c_cond
 (paren
-id|us-&gt;sm_state
-op_ne
-id|US_STATE_IDLE
-op_logical_or
 id|us-&gt;srb
 op_ne
 l_int|NULL
@@ -250,12 +246,9 @@ c_func
 (paren
 id|KERN_ERR
 id|USB_STORAGE
-l_string|&quot;Error in %s: &quot;
-l_string|&quot;state = %d, us-&gt;srb = %p&bslash;n&quot;
+l_string|&quot;Error in %s: us-&gt;srb = %p&bslash;n&quot;
 comma
 id|__FUNCTION__
-comma
-id|us-&gt;sm_state
 comma
 id|us-&gt;srb
 )paren
@@ -323,7 +316,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Error handling functions&n; ***********************************************************************/
-multiline_comment|/* Command abort */
+multiline_comment|/* Command timeout and abort */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
 DECL|function|command_abort
 r_static
@@ -385,40 +378,15 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* Normally the current state is RUNNING.  If the control thread&n;&t; * hasn&squot;t even started processing this command, the state will be&n;&t; * IDLE.  Anything else is a bug. */
-r_if
-c_cond
-(paren
-id|us-&gt;sm_state
-op_ne
-id|US_STATE_RUNNING
-op_logical_and
-id|us-&gt;sm_state
-op_ne
-id|US_STATE_IDLE
-)paren
-(brace
-id|printk
+multiline_comment|/* Set the TIMED_OUT bit.  Also set the ABORTING bit, but only if&n;&t; * a device reset isn&squot;t already in progress (to avoid interfering&n;&t; * with the reset).  To prevent races with auto-reset, we must&n;&t; * stop any ongoing USB transfers while still holding the host&n;&t; * lock. */
+id|set_bit
 c_func
 (paren
-id|KERN_ERR
-id|USB_STORAGE
-l_string|&quot;Error in %s: &quot;
-l_string|&quot;invalid state %d&bslash;n&quot;
+id|US_FLIDX_TIMED_OUT
 comma
-id|__FUNCTION__
-comma
-id|us-&gt;sm_state
+op_amp
+id|us-&gt;flags
 )paren
-suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/* Set state to ABORTING and set the ABORTING bit, but only if&n;&t; * a device reset isn&squot;t already in progress (to avoid interfering&n;&t; * with the reset).  To prevent races with auto-reset, we must&n;&t; * stop any ongoing USB transfers while still holding the host&n;&t; * lock. */
-id|us-&gt;sm_state
-op_assign
-id|US_STATE_ABORTING
 suffix:semicolon
 r_if
 c_cond
@@ -480,6 +448,15 @@ op_amp
 id|us-&gt;flags
 )paren
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|US_FLIDX_TIMED_OUT
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -523,36 +500,6 @@ l_string|&quot;%s called&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|us-&gt;sm_state
-op_ne
-id|US_STATE_IDLE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|USB_STORAGE
-l_string|&quot;Error in %s: &quot;
-l_string|&quot;invalid state %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|us-&gt;sm_state
-)paren
-suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/* set the state and release the lock */
-id|us-&gt;sm_state
-op_assign
-id|US_STATE_RESETTING
 suffix:semicolon
 id|scsi_unlock
 c_func
@@ -614,16 +561,12 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* lock access to the state and clear it */
+multiline_comment|/* lock the host for the return */
 id|scsi_lock
 c_func
 (paren
 id|srb-&gt;device-&gt;host
 )paren
-suffix:semicolon
-id|us-&gt;sm_state
-op_assign
-id|US_STATE_IDLE
 suffix:semicolon
 r_return
 id|result
@@ -671,36 +614,6 @@ l_string|&quot;%s called&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|us-&gt;sm_state
-op_ne
-id|US_STATE_IDLE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|USB_STORAGE
-l_string|&quot;Error in %s: &quot;
-l_string|&quot;invalid state %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|us-&gt;sm_state
-)paren
-suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/* set the state and release the lock */
-id|us-&gt;sm_state
-op_assign
-id|US_STATE_RESETTING
 suffix:semicolon
 id|scsi_unlock
 c_func
@@ -837,16 +750,12 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* lock access to the state and clear it */
+multiline_comment|/* lock the host for the return */
 id|scsi_lock
 c_func
 (paren
 id|srb-&gt;device-&gt;host
 )paren
-suffix:semicolon
-id|us-&gt;sm_state
-op_assign
-id|US_STATE_IDLE
 suffix:semicolon
 r_return
 id|result

@@ -86,15 +86,8 @@ DECL|macro|ABORTING_OR_DISCONNECTING
 mdefine_line|#define ABORTING_OR_DISCONNECTING&t;((1UL &lt;&lt; US_FLIDX_ABORTING) | &bslash;&n;&t;&t;&t;&t;&t; (1UL &lt;&lt; US_FLIDX_DISCONNECTING))
 DECL|macro|US_FLIDX_RESETTING
 mdefine_line|#define US_FLIDX_RESETTING&t;22  /* 0x00400000  device reset in progress */
-multiline_comment|/* processing state machine states */
-DECL|macro|US_STATE_IDLE
-mdefine_line|#define US_STATE_IDLE&t;&t;1
-DECL|macro|US_STATE_RUNNING
-mdefine_line|#define US_STATE_RUNNING&t;2
-DECL|macro|US_STATE_RESETTING
-mdefine_line|#define US_STATE_RESETTING&t;3
-DECL|macro|US_STATE_ABORTING
-mdefine_line|#define US_STATE_ABORTING&t;4
+DECL|macro|US_FLIDX_TIMED_OUT
+mdefine_line|#define US_FLIDX_TIMED_OUT&t;23  /* 0x00800000  SCSI midlayer timed out  */
 DECL|macro|USB_STOR_STRING_LEN
 mdefine_line|#define USB_STOR_STRING_LEN 32
 multiline_comment|/*&n; * We provide a DMA-mapped I/O buffer for use with small USB transfers.&n; * It turns out that CB[I] needs a 12-byte buffer and Bulk-only needs a&n; * 31-byte buffer.  But Freecom needs a 64-byte buffer, so that&squot;s the&n; * size we&squot;ll allocate.&n; */
@@ -316,11 +309,6 @@ r_int
 id|pid
 suffix:semicolon
 multiline_comment|/* control thread&t; */
-DECL|member|sm_state
-r_int
-id|sm_state
-suffix:semicolon
-multiline_comment|/* what we are doing&t; */
 multiline_comment|/* control and bulk communications data */
 DECL|member|current_urb
 r_struct
