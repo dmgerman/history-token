@@ -296,6 +296,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_KMOD
 id|read_unlock
 c_func
 (paren
@@ -303,7 +304,6 @@ op_amp
 id|exec_domains_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KMOD
 id|sprintf
 c_func
 (paren
@@ -365,13 +365,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|exec_domains_lock
-)paren
-suffix:semicolon
 macro_line|#endif
 id|ep
 op_assign

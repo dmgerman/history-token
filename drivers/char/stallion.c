@@ -144,6 +144,24 @@ id|stl_drvversion
 op_assign
 l_string|&quot;5.6.0&quot;
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+DECL|variable|stl_serialname
+r_static
+r_char
+op_star
+id|stl_serialname
+op_assign
+l_string|&quot;tts/E%d&quot;
+suffix:semicolon
+DECL|variable|stl_calloutname
+r_static
+r_char
+op_star
+id|stl_calloutname
+op_assign
+l_string|&quot;cua/E%d&quot;
+suffix:semicolon
+macro_line|#else
 DECL|variable|stl_serialname
 r_static
 r_char
@@ -160,6 +178,7 @@ id|stl_calloutname
 op_assign
 l_string|&quot;cue&quot;
 suffix:semicolon
+macro_line|#endif
 DECL|variable|stl_serial
 r_static
 r_struct

@@ -52,6 +52,7 @@ id|rpc_program
 id|pmap_program
 suffix:semicolon
 DECL|variable|pmap_lock
+r_static
 id|spinlock_t
 id|pmap_lock
 op_assign

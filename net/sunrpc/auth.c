@@ -225,6 +225,7 @@ id|auth
 suffix:semicolon
 )brace
 DECL|variable|rpc_credcache_lock
+r_static
 id|spinlock_t
 id|rpc_credcache_lock
 op_assign

@@ -8534,9 +8534,15 @@ id|driver-&gt;major
 op_eq
 id|PTY_MASTER_MAJOR
 )paren
-id|flags
+id|mode
 op_or_assign
-id|DEVFS_FL_AUTO_OWNER
+id|S_IRGRP
+op_or
+id|S_IWGRP
+op_or
+id|S_IROTH
+op_or
+id|S_IWOTH
 suffix:semicolon
 r_break
 suffix:semicolon

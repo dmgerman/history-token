@@ -692,6 +692,20 @@ r_extern
 id|spinlock_t
 id|pagemap_lru_lock
 suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|mark_page_accessed
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * List add/del helper macros. These must be called&n; * with the pagemap_lru_lock held!&n; */
 DECL|macro|DEBUG_LRU_PAGE
 mdefine_line|#define DEBUG_LRU_PAGE(page)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (PageActive(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;&t;if (PageInactive(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;&t;if (page_count(page) == 0)&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;} while (0)

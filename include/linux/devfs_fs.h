@@ -29,6 +29,8 @@ DECL|macro|DEVFSD_NOTIFY_CHANGE
 mdefine_line|#define DEVFSD_NOTIFY_CHANGE        5
 DECL|macro|DEVFSD_NOTIFY_CREATE
 mdefine_line|#define DEVFSD_NOTIFY_CREATE        6
+DECL|macro|DEVFSD_NOTIFY_DELETE
+mdefine_line|#define DEVFSD_NOTIFY_DELETE        7
 DECL|macro|DEVFS_PATHLEN
 mdefine_line|#define DEVFS_PATHLEN               1024  /*  Never change this otherwise the&n;&t;&t;&t;&t;&t;      binary interface will change   */
 DECL|struct|devfsd_notify_struct

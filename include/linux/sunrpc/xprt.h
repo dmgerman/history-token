@@ -263,12 +263,6 @@ id|rpc_wait_queue
 id|backlog
 suffix:semicolon
 multiline_comment|/* waiting for slot */
-DECL|member|reconn
-r_struct
-id|rpc_wait_queue
-id|reconn
-suffix:semicolon
-multiline_comment|/* waiting for reconnect */
 DECL|member|free
 r_struct
 id|rpc_rqst
@@ -314,14 +308,8 @@ DECL|member|tcp_more
 id|tcp_more
 suffix:colon
 l_int|1
-comma
-multiline_comment|/* more record fragments */
-DECL|member|connecting
-id|connecting
-suffix:colon
-l_int|1
 suffix:semicolon
-multiline_comment|/* being reconnected */
+multiline_comment|/* more record fragments */
 multiline_comment|/*&n;&t; * State of TCP reply receive stuff&n;&t; */
 DECL|member|tcp_recm
 id|u32
@@ -354,6 +342,16 @@ id|rx_pending
 suffix:semicolon
 multiline_comment|/* receive pending list */
 multiline_comment|/*&n;&t; * Send stuff&n;&t; */
+DECL|member|sock_lock
+id|spinlock_t
+id|sock_lock
+suffix:semicolon
+multiline_comment|/* lock socket info */
+DECL|member|xprt_lock
+id|spinlock_t
+id|xprt_lock
+suffix:semicolon
+multiline_comment|/* lock xprt info */
 DECL|member|snd_task
 r_struct
 id|rpc_task
@@ -533,17 +531,19 @@ id|rpc_xprt
 op_star
 )paren
 suffix:semicolon
+r_int
+id|xprt_tcp_pending
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_void
 id|__rpciod_tcp_dispatcher
 c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|rpc_xprt_pending
 suffix:semicolon
 DECL|macro|XPRT_WSPACE
 mdefine_line|#define XPRT_WSPACE&t;0
@@ -563,26 +563,6 @@ DECL|macro|xprt_test_and_set_connected
 mdefine_line|#define xprt_test_and_set_connected(xp)&t;(test_and_set_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 DECL|macro|xprt_clear_connected
 mdefine_line|#define xprt_clear_connected(xp)&t;(clear_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
-r_static
-r_inline
-DECL|function|xprt_tcp_pending
-r_int
-id|xprt_tcp_pending
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|rpc_xprt_pending
-)paren
-suffix:semicolon
-)brace
 r_static
 r_inline
 DECL|function|rpciod_tcp_dispatcher

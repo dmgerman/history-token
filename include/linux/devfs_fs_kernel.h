@@ -17,22 +17,20 @@ DECL|macro|DEVFS_FL_NONE
 mdefine_line|#define DEVFS_FL_NONE           0x000 /* This helps to make code more readable&n;&t;&t;&t;&t;       */
 DECL|macro|DEVFS_FL_AUTO_OWNER
 mdefine_line|#define DEVFS_FL_AUTO_OWNER     0x001 /* When a closed inode is opened the&n;&t;&t;&t;&t;&t; ownerships are set to the opening&n;&t;&t;&t;&t;&t; process and the protection is set to&n;&t;&t;&t;&t;&t; that given in &lt;&lt;mode&gt;&gt;. When the inode&n;&t;&t;&t;&t;&t; is closed, ownership reverts back to&n;&t;&t;&t;&t;&t; &lt;&lt;uid&gt;&gt; and &lt;&lt;gid&gt;&gt; and the protection&n;&t;&t;&t;&t;&t; is set to read-write for all        */
-DECL|macro|DEVFS_FL_SHOW_UNREG
-mdefine_line|#define DEVFS_FL_SHOW_UNREG     0x002 /* Show unregistered entries in&n;&t;&t;&t;&t;&t; directory listings                  */
 DECL|macro|DEVFS_FL_HIDE
-mdefine_line|#define DEVFS_FL_HIDE           0x004 /* Do not show entry in directory list */
+mdefine_line|#define DEVFS_FL_HIDE           0x002 /* Do not show entry in directory list */
 DECL|macro|DEVFS_FL_AUTO_DEVNUM
-mdefine_line|#define DEVFS_FL_AUTO_DEVNUM    0x008 /* Automatically generate device number&n;&t;&t;&t;&t;       */
+mdefine_line|#define DEVFS_FL_AUTO_DEVNUM    0x004 /* Automatically generate device number&n;&t;&t;&t;&t;       */
 DECL|macro|DEVFS_FL_AOPEN_NOTIFY
-mdefine_line|#define DEVFS_FL_AOPEN_NOTIFY   0x010 /* Asynchronously notify devfsd on open&n;&t;&t;&t;&t;       */
+mdefine_line|#define DEVFS_FL_AOPEN_NOTIFY   0x008 /* Asynchronously notify devfsd on open&n;&t;&t;&t;&t;       */
 DECL|macro|DEVFS_FL_REMOVABLE
-mdefine_line|#define DEVFS_FL_REMOVABLE      0x020 /* This is a removable media device    */
+mdefine_line|#define DEVFS_FL_REMOVABLE      0x010 /* This is a removable media device    */
 DECL|macro|DEVFS_FL_WAIT
-mdefine_line|#define DEVFS_FL_WAIT           0x040 /* Wait for devfsd to finish           */
+mdefine_line|#define DEVFS_FL_WAIT           0x020 /* Wait for devfsd to finish           */
 DECL|macro|DEVFS_FL_NO_PERSISTENCE
-mdefine_line|#define DEVFS_FL_NO_PERSISTENCE 0x080 /* Forget changes after unregister     */
+mdefine_line|#define DEVFS_FL_NO_PERSISTENCE 0x040 /* Forget changes after unregister     */
 DECL|macro|DEVFS_FL_CURRENT_OWNER
-mdefine_line|#define DEVFS_FL_CURRENT_OWNER  0x100 /* Set initial ownership to current    */
+mdefine_line|#define DEVFS_FL_CURRENT_OWNER  0x080 /* Set initial ownership to current    */
 DECL|macro|DEVFS_FL_DEFAULT
 mdefine_line|#define DEVFS_FL_DEFAULT        DEVFS_FL_NONE
 DECL|macro|DEVFS_SPECIAL_CHR

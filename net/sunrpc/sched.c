@@ -135,6 +135,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * Spinlock for other critical sections of code.&n; */
 DECL|variable|rpc_sched_lock
+r_static
 id|spinlock_t
 id|rpc_sched_lock
 op_assign

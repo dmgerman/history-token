@@ -3293,13 +3293,6 @@ id|ret
 id|bdev-&gt;bd_openers
 op_increment
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|bdev-&gt;bd_count
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -3668,12 +3661,6 @@ c_func
 (paren
 op_amp
 id|bdev-&gt;bd_sem
-)paren
-suffix:semicolon
-id|bdput
-c_func
-(paren
-id|bdev
 )paren
 suffix:semicolon
 r_return

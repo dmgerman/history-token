@@ -9933,10 +9933,17 @@ id|rocket_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|rocket_driver.name
+op_assign
+l_string|&quot;tts/R%d&quot;
+suffix:semicolon
+macro_line|#else
 id|rocket_driver.name
 op_assign
 l_string|&quot;ttyR&quot;
 suffix:semicolon
+macro_line|#endif
 id|rocket_driver.major
 op_assign
 id|TTY_ROCKET_MAJOR
@@ -10071,10 +10078,17 @@ id|callout_driver
 op_assign
 id|rocket_driver
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|callout_driver.name
+op_assign
+l_string|&quot;cua/R%d&quot;
+suffix:semicolon
+macro_line|#else
 id|callout_driver.name
 op_assign
 l_string|&quot;cur&quot;
 suffix:semicolon
+macro_line|#endif
 id|callout_driver.major
 op_assign
 id|CUA_ROCKET_MAJOR
