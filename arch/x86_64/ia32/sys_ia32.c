@@ -6179,11 +6179,6 @@ id|len
 )paren
 suffix:semicolon
 )brace
-id|cond_syscall
-c_func
-(paren
-id|sys32_ipc
-)paren
 DECL|function|ia32_init
 r_static
 r_int

@@ -2473,6 +2473,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SYSVIPC
 DECL|function|sys32_ipc
 r_int
 id|sys32_ipc
@@ -2812,6 +2813,7 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Note: it is necessary to treat out_fd and in_fd as unsigned ints, &n; * with the corresponding cast to a signed int to insure that the &n; * proper conversion (sign extension) between the register representation of a signed int (msr in 32-bit mode)&n; * and the register representation of a signed int (msr in 64-bit mode) is performed.&n; */
 DECL|function|sys32_sendfile
 id|asmlinkage
