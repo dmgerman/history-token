@@ -1582,8 +1582,6 @@ c_func
 (paren
 id|type
 comma
-l_string|&quot;type&quot;
-comma
 id|S_IRUGO
 comma
 id|scsi_device_type_read
