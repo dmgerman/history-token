@@ -1721,8 +1721,6 @@ comma
 id|adv7175_command
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|adv7175_init
 r_static
 r_int

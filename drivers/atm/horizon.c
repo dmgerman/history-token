@@ -10548,8 +10548,6 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|maintainer_string
 id|MODULE_AUTHOR
 c_func

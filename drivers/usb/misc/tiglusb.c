@@ -1883,8 +1883,6 @@ id|MODULE_LICENSE
 id|DRIVER_LICENSE
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_PARM
 (paren
 id|timeout

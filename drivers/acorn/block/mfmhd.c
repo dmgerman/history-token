@@ -6108,8 +6108,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

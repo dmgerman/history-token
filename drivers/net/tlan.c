@@ -182,8 +182,6 @@ comma
 l_string|&quot;ThunderLAN use big buffer (0-1)&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/* Define this to enable Link beat monitoring */
 DECL|macro|MONITOR
 macro_line|#undef MONITOR

@@ -627,8 +627,6 @@ op_amp
 id|flash_fops
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|flash_init
 r_static
 r_int

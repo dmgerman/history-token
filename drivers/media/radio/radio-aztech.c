@@ -1178,8 +1178,6 @@ comma
 l_string|&quot;I/O address of the Aztech card (0x350 or 0x358)&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|aztech_cleanup
 r_static
 r_void

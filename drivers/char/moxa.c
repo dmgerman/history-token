@@ -551,8 +551,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;
 singleline_comment|//MODULE
 DECL|variable|moxaDriver

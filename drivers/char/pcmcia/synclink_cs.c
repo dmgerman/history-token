@@ -14065,8 +14065,6 @@ r_void
 id|servinfo_t
 id|serv
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 r_if
 c_cond
 (paren
