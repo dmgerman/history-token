@@ -680,13 +680,9 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#if defined(__i386__) || defined(__x86_64__)
-id|asm
-r_volatile
+id|wbinvd
+c_func
 (paren
-l_string|&quot;wbinvd&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 macro_line|#else
