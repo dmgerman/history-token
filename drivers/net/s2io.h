@@ -5,7 +5,7 @@ mdefine_line|#define _S2IO_H
 DECL|macro|TBD
 mdefine_line|#define TBD 0
 DECL|macro|BIT
-mdefine_line|#define BIT(loc)&t;&t;(1ULL &lt;&lt; (loc))
+mdefine_line|#define BIT(loc)&t;&t;(0x8000000000000000ULL &gt;&gt; (loc))
 DECL|macro|vBIT
 mdefine_line|#define vBIT(val, loc, sz)&t;(((u64)val) &lt;&lt; (64-loc-sz))
 macro_line|#ifndef BOOL
