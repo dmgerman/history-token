@@ -3456,6 +3456,14 @@ op_star
 l_int|5
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+id|ATA_FLAG_SATA_RESET
+)paren
+(brace
 id|scr_write
 c_func
 (paren
@@ -3472,7 +3480,7 @@ c_func
 (paren
 id|ap
 comma
-id|SCR_CONTROL
+id|SCR_STATUS
 )paren
 suffix:semicolon
 multiline_comment|/* dummy read; flush */
@@ -3483,6 +3491,7 @@ l_int|400
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: a guess */
+)brace
 id|scr_write
 c_func
 (paren
@@ -3493,7 +3502,7 @@ comma
 l_int|0x300
 )paren
 suffix:semicolon
-multiline_comment|/* issue phy wake/reset */
+multiline_comment|/* issue phy wake/clear reset */
 multiline_comment|/* wait for phy to become ready, if necessary */
 r_do
 (brace
