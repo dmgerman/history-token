@@ -27,7 +27,6 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -85,18 +84,6 @@ r_extern
 r_int
 r_int
 id|trapbase
-suffix:semicolon
-r_extern
-r_int
-id|serial_console
-suffix:semicolon
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|variable|prom_palette
 r_void
@@ -245,16 +232,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|rs_kgdb_hook
-c_func
-(paren
-r_int
-id|tty_num
-)paren
-suffix:semicolon
-multiline_comment|/* sparc/serial.c */
 DECL|variable|__initdata
 r_int
 r_int
@@ -267,12 +244,6 @@ DECL|macro|BOOTME_DEBUG
 mdefine_line|#define BOOTME_DEBUG  0x1
 DECL|macro|BOOTME_SINGLE
 mdefine_line|#define BOOTME_SINGLE 0x2
-DECL|macro|BOOTME_KGDBA
-mdefine_line|#define BOOTME_KGDBA  0x4
-DECL|macro|BOOTME_KGDBB
-mdefine_line|#define BOOTME_KGDBB  0x8
-DECL|macro|BOOTME_KGDB
-mdefine_line|#define BOOTME_KGDB   0xc
 DECL|variable|__initdata
 r_static
 r_int
@@ -290,35 +261,6 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-DECL|function|kernel_enter_debugger
-r_void
-id|kernel_enter_debugger
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|boot_flags
-op_amp
-id|BOOTME_KGDB
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;KGDB: Entered&bslash;n&quot;
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
 r_static
 r_void
 DECL|function|prom_console_write
@@ -386,29 +328,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|boot_flags
-op_amp
-id|BOOTME_KGDB
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;KGDB: system interrupted&bslash;n&quot;
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -591,87 +510,6 @@ op_star
 id|commands
 op_increment
 )paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|strlen
-c_func
-(paren
-id|commands
-)paren
-op_ge
-l_int|9
-op_logical_and
-op_logical_neg
-id|strncmp
-c_func
-(paren
-id|commands
-comma
-l_string|&quot;kgdb=tty&quot;
-comma
-l_int|8
-)paren
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|commands
-(braket
-l_int|8
-)braket
-)paren
-(brace
-macro_line|#ifdef CONFIG_SUN_SERIAL
-r_case
-l_char|&squot;a&squot;
-suffix:colon
-id|boot_flags
-op_or_assign
-id|BOOTME_KGDBA
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;KGDB: Using serial line /dev/ttya.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_char|&squot;b&squot;
-suffix:colon
-id|boot_flags
-op_or_assign
-id|BOOTME_KGDBB
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;KGDB: Using serial line /dev/ttyb.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
-r_default
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;KGDB: Unknown tty line.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|commands
-op_add_assign
-l_int|9
 suffix:semicolon
 )brace
 r_else
@@ -1704,40 +1542,6 @@ c_cond
 (paren
 id|boot_flags
 op_amp
-id|BOOTME_KGDBA
-)paren
-)paren
-(brace
-id|rs_kgdb_hook
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|boot_flags
-op_amp
-id|BOOTME_KGDBB
-)paren
-)paren
-(brace
-id|rs_kgdb_hook
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|boot_flags
-op_amp
 id|BOOTME_DEBUG
 )paren
 op_logical_and
@@ -1774,32 +1578,6 @@ op_star
 id|linux_dbvec-&gt;teach_debugger
 )paren
 )paren
-(paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|boot_flags
-op_amp
-id|BOOTME_KGDB
-)paren
-)paren
-(brace
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-id|prom_printf
-(paren
-l_string|&quot;Breakpoint!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
 (paren
 )paren
 suffix:semicolon

@@ -1356,33 +1356,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_SPARC64
-multiline_comment|/* Look for kgdb &squot;stop&squot; character.  */
-r_if
-c_cond
-(paren
-id|ZS_IS_KGDB
-c_func
-(paren
-id|up
-)paren
-op_logical_and
-(paren
-id|ch
-op_eq
-l_char|&squot;&bslash;003&squot;
-)paren
-)paren
-(brace
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* A real serial line, record the character and status.  */
 op_star
 id|tty-&gt;flip.char_buf_ptr
