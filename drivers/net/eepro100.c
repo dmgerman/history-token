@@ -6775,7 +6775,7 @@ id|sp-&gt;partner
 op_eq
 l_int|0
 )paren
-op_logical_or
+op_logical_and
 (paren
 id|sp-&gt;chip_id
 op_eq
@@ -6799,6 +6799,12 @@ comma
 id|ioaddr
 op_plus
 id|SCBCmd
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
