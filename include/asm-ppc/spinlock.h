@@ -68,11 +68,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;b&t;1f&t;&t;# spin_lock&bslash;n&bslash;&n;2:&quot;
-id|HMT_PRIO_LOW
-l_string|&quot;&t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;2b&bslash;n&quot;
-id|HMT_PRIO_MED
-l_string|&quot;1:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;2b&bslash;n&quot;
+l_string|&quot;b&t;1f&t;&t;# spin_lock&bslash;n&bslash;&n;2:&t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;2b&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;2b&bslash;n&quot;
 id|PPC405_ERR77
 c_func
 (paren
@@ -236,11 +232,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;b&t;2f&t;&t;# read_lock&bslash;n&bslash;&n;1:&quot;
-id|HMT_PRIO_LOW
-l_string|&quot;&t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;blt+&t;1b&bslash;n&quot;
-id|HMT_PRIO_MED
-l_string|&quot;2:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;addic.&t;%0,%0,1&bslash;n&bslash;&n;&t;ble-&t;1b&bslash;n&quot;
+l_string|&quot;b&t;2f&t;&t;# read_lock&bslash;n&bslash;&n;1:&t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;blt+&t;1b&bslash;n&bslash;&n;2:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;addic.&t;%0,%0,1&bslash;n&bslash;&n;&t;ble-&t;1b&bslash;n&quot;
 id|PPC405_ERR77
 c_func
 (paren
@@ -336,11 +328,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;b&t;2f&t;&t;# write_lock&bslash;n&bslash;&n;1:&quot;
-id|HMT_PRIO_LOW
-l_string|&quot;  &t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;1b&bslash;n&quot;
-id|HMT_PRIO_MED
-l_string|&quot;2:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;1b&bslash;n&quot;
+l_string|&quot;b&t;2f&t;&t;# write_lock&bslash;n&bslash;&n;1:  &t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;1b&bslash;n&bslash;&n;2:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;1b&bslash;n&quot;
 id|PPC405_ERR77
 c_func
 (paren

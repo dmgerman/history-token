@@ -633,7 +633,6 @@ c_func
 id|mm_ptov
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_PPC_ISERIES
 DECL|variable|ioremap
 id|EXPORT_SYMBOL
 c_func
@@ -655,7 +654,6 @@ c_func
 id|iounmap
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 DECL|variable|ppc_ide_md
 id|EXPORT_SYMBOL

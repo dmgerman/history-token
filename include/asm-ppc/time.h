@@ -6,10 +6,6 @@ mdefine_line|#define __ASM_TIME_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#ifdef CONFIG_PPC_ISERIES
-macro_line|#include &lt;asm/iSeries/Paca.h&gt;
-macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* time.c */
 r_extern
@@ -121,68 +117,6 @@ macro_line|#elif defined(CONFIG_8xx_CPU6)
 id|set_dec_cpu6
 c_func
 (paren
-id|val
-)paren
-suffix:semicolon
-macro_line|#elif defined(CONFIG_PPC_ISERIES)
-multiline_comment|/*&n; * Add code here to set the virtual decrementer in &n; * ItLpPaca if we have shared processors and to&n; * invoke the hypervisor as needed.&n; */
-r_struct
-id|Paca
-op_star
-id|paca
-suffix:semicolon
-r_int
-id|cur_dec
-suffix:semicolon
-id|paca
-op_assign
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
-c_func
-(paren
-id|SPRG1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|paca-&gt;xLpPaca.xSharedProc
-)paren
-(brace
-id|paca-&gt;xLpPaca.xVirtualDecr
-op_assign
-id|val
-suffix:semicolon
-id|cur_dec
-op_assign
-id|get_dec
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cur_dec
-OG
-id|val
-)paren
-id|HvCall_setVirtualDecr
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_else
-id|mtspr
-c_func
-(paren
-id|SPRN_DEC
-comma
 id|val
 )paren
 suffix:semicolon

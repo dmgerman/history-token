@@ -68,22 +68,6 @@ r_int
 r_int
 id|wall_jiffies
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
-r_extern
-id|u64
-id|get_tb64
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|u64
-id|next_jiffy_update_tb
-(braket
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|variable|time_offset
 r_static
 r_int
@@ -170,7 +154,6 @@ r_return
 id|delta
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_PPC_ISERIES&t;/* iSeries version is in iSeries_time.c */
 r_extern
 r_int
 r_int
@@ -559,7 +542,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC_ISERIES */
 multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution.&n; */
 DECL|function|do_gettimeofday
 r_void
@@ -606,24 +588,6 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
-id|delta
-op_assign
-id|tb_ticks_per_jiffy
-op_minus
-(paren
-id|next_jiffy_update_tb
-(braket
-l_int|0
-)braket
-op_minus
-id|get_tb64
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|delta
 op_assign
 id|tb_ticks_since
@@ -632,7 +596,6 @@ c_func
 id|tb_last_stamp
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* As long as timebases are not in sync, gettimeofday can only&n;&t; * have jiffy resolution on SMP.&n;&t; */
 r_if

@@ -64,26 +64,6 @@ r_int
 r_int
 id|pci_dram_offset
 suffix:semicolon
-macro_line|#if defined(CONFIG_PPC_ISERIES)
-macro_line|#include &lt;asm/iSeries.h&gt;
-macro_line|#if defined(CONFIG_PCI)
-macro_line|#include &lt;asm/iSeries/iSeries_io.h&gt;
-macro_line|#endif  /* defined(CONFIG_PCI) */
-macro_line|#endif /* CONFIG_PPC_ISERIES */
-macro_line|#if defined(CONFIG_PPC_ISERIES) &amp;&amp; defined(CONFIG_PCI)
-DECL|macro|readb
-mdefine_line|#define readb(addr)&t;     iSeries_Readb((u32*)(addr))
-DECL|macro|readw
-mdefine_line|#define readw(addr)&t;     iSeries_Readw((u32*)(addr))
-DECL|macro|readl
-mdefine_line|#define readl(addr)&t;     iSeries_Readl((u32*)(addr))
-DECL|macro|writeb
-mdefine_line|#define writeb(data, addr)   iSeries_Writeb(data,(u32*)(addr))
-DECL|macro|writew
-mdefine_line|#define writew(data, addr)   iSeries_Writew(data,(u32*)(addr))
-DECL|macro|writel
-mdefine_line|#define writel(data, addr)   iSeries_Writel(data,(u32*)(addr))
-macro_line|#else
 DECL|macro|readb
 mdefine_line|#define readb(addr) in_8((volatile u8 *)(addr))
 DECL|macro|writeb
@@ -106,8 +86,7 @@ DECL|macro|writew
 mdefine_line|#define writew(b,addr) out_le16((volatile u16 *)(addr),(b))
 DECL|macro|writel
 mdefine_line|#define writel(b,addr) out_le32((volatile u32 *)(addr),(b))
-macro_line|#endif
-macro_line|#endif  /* CONFIG_PPC_ISERIES &amp;&amp; defined(CONFIG_PCI) */
+macro_line|#endif /* CONFIG_APUS */
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb(addr)&t;(*(volatile unsigned char *)(addr))
 DECL|macro|__raw_readw
@@ -188,13 +167,6 @@ mdefine_line|#define inw(port)&t;&t;in_be16((u16 *)((port)+_IO_BASE))
 mdefine_line|#define outw(val, port)&t;&t;out_be16((u16 *)((port)+_IO_BASE), (val))
 mdefine_line|#define inl(port)&t;&t;in_be32((u32 *)((port)+_IO_BASE))
 mdefine_line|#define outl(val, port)&t;&t;out_be32((u32 *)((port)+_IO_BASE), (val))
-macro_line|#elif defined(CONFIG_PPC_ISERIES) &amp;&amp; defined(CONFIG_PCI)
-mdefine_line|#define inb(addr)&t;     iSeries_Readb((u32*)(addr))
-mdefine_line|#define inw(addr)&t;     iSeries_Readw((u32*)(addr))
-mdefine_line|#define inl(addr)&t;     iSeries_Readl((u32*)(addr))
-mdefine_line|#define outb(data,addr)&t;     iSeries_Writeb(data,(u32*)(addr))
-mdefine_line|#define outw(data,addr)&t;     iSeries_Writew(data,(u32*)(addr))
-mdefine_line|#define outl(data,addr)&t;     iSeries_Writel(data,(u32*)(addr))
 macro_line|#else /* not APUS or ALL_PPC */
 mdefine_line|#define inb(port)&t;&t;in_8((u8 *)((port)+_IO_BASE))
 mdefine_line|#define outb(val, port)&t;&t;out_8((u8 *)((port)+_IO_BASE), (val))
@@ -413,17 +385,10 @@ DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT ~0
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)       memset((void *)(a),(b),(c))
-macro_line|#ifdef CONFIG_PPC_ISERIES
-DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(a,b,c) iSeries_memcpy_fromio((void *)(a), (void *)(b), (c))
-DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(a,b,c) iSeries_memcpy_toio((void *)(a), (void *)(b), (c))
-macro_line|#else
 DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(a,b,c)   memcpy((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
-macro_line|#endif
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Map in an area of physical address space, for accessing&n; * I/O devices etc.&n; */
 r_extern

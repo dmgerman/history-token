@@ -249,7 +249,7 @@ id|spec
 )paren
 suffix:semicolon
 DECL|macro|CLASSIC_PPC
-mdefine_line|#define CLASSIC_PPC (!defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx) &amp;&amp; &bslash;&n;&t;&t;     !defined(CONFIG_POWER3) &amp;&amp; !defined(CONFIG_PPC_ISERIES))
+mdefine_line|#define CLASSIC_PPC (!defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx) &amp;&amp; &bslash;&n;&t;&t;     !defined(CONFIG_POWER3))
 multiline_comment|/* This table only contains &quot;desktop&quot; CPUs, it need to be filled with embedded&n; * ones as well...&n; */
 DECL|macro|COMMON_PPC
 mdefine_line|#define COMMON_PPC&t;(PPC_FEATURE_32 | PPC_FEATURE_HAS_FPU | &bslash;&n;&t;&t;&t; PPC_FEATURE_HAS_MMU)

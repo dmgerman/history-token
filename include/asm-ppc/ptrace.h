@@ -84,9 +84,6 @@ suffix:semicolon
 multiline_comment|/* Result of a system call */
 )brace
 suffix:semicolon
-multiline_comment|/* iSeries uses mq field for soft enable flag */
-DECL|macro|softEnable
-mdefine_line|#define softEnable mq
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef __KERNEL__
 DECL|macro|STACK_FRAME_OVERHEAD

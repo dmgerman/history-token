@@ -401,7 +401,6 @@ id|pte
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_PPC_ISERIES
 r_void
 op_star
 DECL|function|ioremap
@@ -778,7 +777,6 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC_ISERIES */
 r_int
 DECL|function|map_page
 id|map_page

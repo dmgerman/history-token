@@ -1864,7 +1864,6 @@ id|desc-&gt;lock
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_PPC_ISERIES&t;/* iSeries version is in iSeries_pic.c */
 DECL|function|do_IRQ
 r_void
 id|do_IRQ
@@ -1940,7 +1939,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC_ISERIES */
 DECL|function|probe_irq_on
 r_int
 r_int

@@ -25,9 +25,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#ifdef CONFIG_PPC_ISERIES
-macro_line|#include &lt;asm/iSeries/Paca.h&gt;
-macro_line|#endif
 r_int
 id|dump_fpu
 c_func
@@ -1435,25 +1432,6 @@ r_int
 )paren
 id|ret_from_fork
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
-id|kregs-&gt;softEnable
-op_assign
-(paren
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
-c_func
-(paren
-id|SPRG1
-)paren
-)paren
-op_member_access_from_pointer
-id|xProcEnabled
-suffix:semicolon
-macro_line|#endif&t;
 multiline_comment|/*&n;&t; * copy fpu info - assume lazy fpu switch now always&n;&t; *  -- Cort&n;&t; */
 r_if
 c_cond
@@ -1601,6 +1579,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|regs-&gt;ccr
+op_assign
+l_int|0
+suffix:semicolon
+id|regs-&gt;mq
 op_assign
 l_int|0
 suffix:semicolon

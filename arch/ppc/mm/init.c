@@ -34,16 +34,6 @@ macro_line|#endif
 macro_line|#endif
 DECL|macro|MAX_LOW_MEM
 mdefine_line|#define MAX_LOW_MEM&t;CONFIG_LOWMEM_SIZE
-macro_line|#ifdef CONFIG_PPC_ISERIES
-r_extern
-r_void
-id|create_virtual_bus_tce_table
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|mmu_gathers
 id|mmu_gather_t
 id|mmu_gathers
@@ -1894,13 +1884,6 @@ id|agp_special_page
 )paren
 suffix:semicolon
 macro_line|#endif /* defined(CONFIG_ALL_PPC) */
-macro_line|#ifdef CONFIG_PPC_ISERIES
-id|create_virtual_bus_tce_table
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_ISERIES */
 multiline_comment|/* Make sure all our pagetable pages have page-&gt;mapping&n;&t;   and page-&gt;index set correctly. */
 r_for
 c_loop

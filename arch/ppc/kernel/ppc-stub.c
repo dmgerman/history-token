@@ -3470,7 +3470,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_6xx) || defined(CONFIG_POWER3) || defined(CONFIG_ISERIES)
+macro_line|#if defined(CONFIG_6xx) || defined(CONFIG_POWER3)
 multiline_comment|/* This is used on arches which don&squot;t have a serial driver that maps&n; * the ports for us */
 r_void
 DECL|function|kgdb_map_scc

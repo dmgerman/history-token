@@ -1009,35 +1009,6 @@ DECL|macro|mfsrin
 mdefine_line|#define mfsrin(v)&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfsrin %0,%1&quot; : &quot;=r&quot; (rval) : &quot;r&quot; (v)); &bslash;&n;&t;&t;&t;&t;&t;rval;})
 DECL|macro|proc_trap
 mdefine_line|#define proc_trap()  &t;asm volatile(&quot;trap&quot;)
-macro_line|#ifdef CONFIG_PPC_ISERIES
-multiline_comment|/* Macros for adjusting thread priority (hardware multi-threading) */
-DECL|macro|HMT_PRIO_LOW
-mdefine_line|#define&t;HMT_PRIO_LOW&t;&quot;or 1,1,1&bslash;n&quot;&t;/* low prio, used for spin loops */
-DECL|macro|HMT_PRIO_MED
-mdefine_line|#define HMT_PRIO_MED&t;&quot;or 2,2,2&bslash;n&quot;&t;/* medium prio, for normal code */
-DECL|macro|HMT_PRIO_HIGH
-mdefine_line|#define HMT_PRIO_HIGH&t;&quot;or 3,3,3&bslash;n&quot;&t;/* high priority */
-DECL|macro|HMT_low
-mdefine_line|#define HMT_low()&t;asm volatile(&quot;or 1,1,1&quot;)
-DECL|macro|HMT_medium
-mdefine_line|#define HMT_medium()&t;asm volatile(&quot;or 2,2,2&quot;)
-DECL|macro|HMT_high
-mdefine_line|#define HMT_high()&t;asm volatile(&quot;or 3,3,3&quot;)
-multiline_comment|/* iSeries CTRL register (for runlatch) */
-DECL|macro|CTRLT
-mdefine_line|#define CTRLT&t;&t;0x098
-DECL|macro|CTRLF
-mdefine_line|#define CTRLF&t;&t;0x088
-DECL|macro|RUNLATCH
-mdefine_line|#define RUNLATCH&t;0x0001
-macro_line|#else /* !CONFIG_PPC_ISERIES */
-DECL|macro|HMT_PRIO_LOW
-mdefine_line|#define&t;HMT_PRIO_LOW
-DECL|macro|HMT_PRIO_MED
-mdefine_line|#define HMT_PRIO_MED
-DECL|macro|HMT_PRIO_HIGH
-mdefine_line|#define HMT_PRIO_HIGH
-macro_line|#endif /* CONFIG_PPC_ISERIES */
 multiline_comment|/* Segment Registers */
 DECL|macro|SR0
 mdefine_line|#define SR0&t;0
