@@ -2184,7 +2184,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|blk_congestion_wait
 c_func
 (paren

@@ -6637,7 +6637,7 @@ id|blk_put_request
 suffix:semicolon
 multiline_comment|/**&n; * blk_congestion_wait - wait for a queue to become uncongested&n; * @rw: READ or WRITE&n; * @timeout: timeout in jiffies&n; *&n; * Waits for up to @timeout jiffies for a queue (any queue) to exit congestion.&n; * If no queues are congested then just wait for the next request to be&n; * returned.&n; */
 DECL|function|blk_congestion_wait
-r_void
+r_int
 id|blk_congestion_wait
 c_func
 (paren
@@ -6648,6 +6648,9 @@ r_int
 id|timeout
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|DEFINE_WAIT
 c_func
 (paren
@@ -6680,6 +6683,8 @@ comma
 id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|io_schedule_timeout
 c_func
 (paren
@@ -6694,6 +6699,9 @@ comma
 op_amp
 id|wait
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|blk_congestion_wait
