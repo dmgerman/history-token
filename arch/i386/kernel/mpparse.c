@@ -3391,7 +3391,7 @@ l_int|0x10000
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t; * If it is an SMP machine we should know now, unless the&n;&t; * configuration is in an EISA/MCA bus machine with an&n;&t; * extended bios data area.&n;&t; *&n;&t; * there is a real-mode segmented pointer pointing to the&n;&t; * 4K EBDA area at 0x40E, calculate and scan it here.&n;&t; *&n;&t; * NOTE! There are Linux loaders that will corrupt the EBDA&n;&t; * area, and as such this kind of SMP config may be less&n;&t; * trustworthy, simply because the SMP table may have been&n;&t; * stomped on during early boot. These loaders are buggy and&n;&t; * should be fixed.&n;&t; */
+multiline_comment|/*&n;&t; * If it is an SMP machine we should know now, unless the&n;&t; * configuration is in an EISA/MCA bus machine with an&n;&t; * extended bios data area.&n;&t; *&n;&t; * there is a real-mode segmented pointer pointing to the&n;&t; * 4K EBDA area at 0x40E, calculate and scan it here.&n;&t; *&n;&t; * NOTE! There are Linux loaders that will corrupt the EBDA&n;&t; * area, and as such this kind of SMP config may be less&n;&t; * trustworthy, simply because the SMP table may have been&n;&t; * stomped on during early boot. These loaders are buggy and&n;&t; * should be fixed.&n;&t; *&n;&t; * MP1.4 SPEC states to only scan first 1K of 4K EBDA.&n;&t; */
 id|address
 op_assign
 op_star
@@ -3415,7 +3415,7 @@ c_func
 (paren
 id|address
 comma
-l_int|0x1000
+l_int|0x400
 )paren
 suffix:semicolon
 r_if
