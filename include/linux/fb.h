@@ -1614,6 +1614,12 @@ id|work_struct
 id|queue
 suffix:semicolon
 multiline_comment|/* Framebuffer event queue */
+DECL|member|cursor_timer
+r_struct
+id|timer_list
+id|cursor_timer
+suffix:semicolon
+multiline_comment|/* Cursor timer */
 DECL|member|pixmap
 r_struct
 id|fb_pixmap
