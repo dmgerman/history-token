@@ -3,6 +3,7 @@ macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/string.h&quot;
 macro_line|#include &quot;linux/smp_lock.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;asm/delay.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
@@ -353,11 +354,41 @@ c_func
 id|__read_lock_failed
 )paren
 suffix:semicolon
-DECL|variable|smp_num_cpus
+macro_line|#endif
+macro_line|#ifdef CONFIG_HIGHMEM
+DECL|variable|kmap
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|smp_num_cpus
+id|kmap
+)paren
+suffix:semicolon
+DECL|variable|kunmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap
+)paren
+suffix:semicolon
+DECL|variable|kmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_atomic
+)paren
+suffix:semicolon
+DECL|variable|kunmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap_atomic
+)paren
+suffix:semicolon
+DECL|variable|kmap_atomic_to_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_atomic_to_page
 )paren
 suffix:semicolon
 macro_line|#endif
