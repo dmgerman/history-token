@@ -225,7 +225,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|task_struct
+id|thread_info
 )paren
 suffix:semicolon
 )brace
