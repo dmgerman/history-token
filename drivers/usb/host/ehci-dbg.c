@@ -3106,13 +3106,15 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;irq normal %ld err %ld reclaim %ld&bslash;n&quot;
+l_string|&quot;irq normal %ld err %ld reclaim %ld (lost %ld)&bslash;n&quot;
 comma
 id|ehci-&gt;stats.normal
 comma
 id|ehci-&gt;stats.error
 comma
 id|ehci-&gt;stats.reclaim
+comma
+id|ehci-&gt;stats.lost_iaa
 )paren
 suffix:semicolon
 id|size

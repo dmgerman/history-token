@@ -825,6 +825,8 @@ suffix:semicolon
 multiline_comment|/* for HC bugs */
 DECL|macro|OHCI_QUIRK_AMD756
 mdefine_line|#define&t;OHCI_QUIRK_AMD756&t;0x01&t;&t;&t;/* erratum #4 */
+DECL|macro|OHCI_QUIRK_SUPERIO
+mdefine_line|#define&t;OHCI_QUIRK_SUPERIO&t;0x02&t;&t;&t;/* natsemi */
 singleline_comment|// there are also chip quirks/bugs in init logic
 multiline_comment|/*&n;&t; * framework state&n;&t; */
 DECL|member|hcd
@@ -836,15 +838,24 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|hcd_to_ohci
 mdefine_line|#define hcd_to_ohci(hcd_ptr) container_of(hcd_ptr, struct ohci_hcd, hcd)
-r_struct
-id|ohci_hcd
-op_star
-id|dev_to_ohci
-c_func
-(paren
-r_struct
-id|device
-op_star
-)paren
-suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#ifndef DEBUG
+DECL|macro|STUB_DEBUG_FILES
+mdefine_line|#define STUB_DEBUG_FILES
+macro_line|#endif&t;/* DEBUG */
+DECL|macro|ohci_dbg
+mdefine_line|#define ohci_dbg(ohci, fmt, args...) &bslash;&n;&t;dev_dbg ((ohci)-&gt;hcd.controller , fmt , ## args )
+DECL|macro|ohci_err
+mdefine_line|#define ohci_err(ohci, fmt, args...) &bslash;&n;&t;dev_err ((ohci)-&gt;hcd.controller , fmt , ## args )
+DECL|macro|ohci_info
+mdefine_line|#define ohci_info(ohci, fmt, args...) &bslash;&n;&t;dev_info ((ohci)-&gt;hcd.controller , fmt , ## args )
+DECL|macro|ohci_warn
+mdefine_line|#define ohci_warn(ohci, fmt, args...) &bslash;&n;&t;dev_warn ((ohci)-&gt;hcd.controller , fmt , ## args )
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
+DECL|macro|ohci_vdbg
+macro_line|#&t;define ohci_vdbg ohci_dbg
+macro_line|#else
+DECL|macro|ohci_vdbg
+macro_line|#&t;define ohci_vdbg(ohci, fmt, args...) do { } while (0)
+macro_line|#endif
 eof
