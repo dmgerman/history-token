@@ -206,6 +206,10 @@ id|decr_overclock_proc0_set
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|powersave_nap
+r_int
+id|powersave_nap
+suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
 r_extern
 r_void
