@@ -793,9 +793,14 @@ r_int
 id|set_aoe_iflist
 c_func
 (paren
+r_const
 r_char
+id|__user
 op_star
 id|str
+comma
+r_int
+id|size
 )paren
 suffix:semicolon
 id|u64

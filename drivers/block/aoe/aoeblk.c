@@ -804,6 +804,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -1058,6 +1059,10 @@ id|d-&gt;aoeminor
 comma
 id|d-&gt;fw_ver
 comma
+(paren
+r_int
+r_int
+)paren
 id|d-&gt;ssize
 )paren
 suffix:semicolon
