@@ -265,6 +265,12 @@ DECL|macro|SAA7134_BOARD_CINERGY400
 mdefine_line|#define SAA7134_BOARD_CINERGY400&t;8
 DECL|macro|SAA7134_BOARD_MD5044
 mdefine_line|#define SAA7134_BOARD_MD5044&t;&t;9
+DECL|macro|SAA7134_BOARD_KWORLD
+mdefine_line|#define SAA7134_BOARD_KWORLD           10
+DECL|macro|SAA7134_BOARD_CINERGY600
+mdefine_line|#define SAA7134_BOARD_CINERGY600       11
+DECL|macro|SAA7134_BOARD_MD7134
+mdefine_line|#define SAA7134_BOARD_MD7134           12
 DECL|macro|SAA7134_INPUT_MAX
 mdefine_line|#define SAA7134_INPUT_MAX 8
 DECL|struct|saa7134_input
@@ -377,7 +383,7 @@ mdefine_line|#define RESOURCE_OVERLAY       1
 DECL|macro|RESOURCE_VIDEO
 mdefine_line|#define RESOURCE_VIDEO         2
 DECL|macro|RESOURCE_VBI
-mdefine_line|#define RESOURCE_VBI           3
+mdefine_line|#define RESOURCE_VBI           4
 DECL|macro|INTERLACE_AUTO
 mdefine_line|#define INTERLACE_AUTO         0
 DECL|macro|INTERLACE_ON
@@ -584,11 +590,6 @@ r_int
 id|width
 comma
 id|height
-suffix:semicolon
-DECL|member|field
-r_enum
-id|v4l2_field
-id|field
 suffix:semicolon
 DECL|member|cap
 r_struct

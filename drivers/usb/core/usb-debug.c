@@ -850,6 +850,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;%s: %s&bslash;n&quot;

@@ -3684,7 +3684,7 @@ id|req
 suffix:semicolon
 id|data-&gt;args.pgbase
 op_assign
-id|req-&gt;wb_offset
+id|req-&gt;wb_pgbase
 suffix:semicolon
 id|data-&gt;args.pages
 op_assign
@@ -3960,7 +3960,7 @@ id|req
 suffix:semicolon
 id|data-&gt;args.pgbase
 op_assign
-id|req-&gt;wb_offset
+id|req-&gt;wb_pgbase
 suffix:semicolon
 id|data-&gt;args.count
 op_assign

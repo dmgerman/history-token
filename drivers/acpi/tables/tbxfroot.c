@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
@@ -25,6 +25,7 @@ r_char
 op_star
 id|oem_table_id
 comma
+r_struct
 id|acpi_table_header
 op_star
 op_star
@@ -34,6 +35,7 @@ id|table_ptr
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_table_header
 op_star
 id|table
@@ -181,27 +183,33 @@ comma
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_table_header
 op_star
 op_star
 id|table_pointer
 )paren
 (brace
+r_struct
 id|acpi_pointer
 id|rsdp_address
 suffix:semicolon
+r_struct
 id|acpi_pointer
 id|address
 suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
+r_struct
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
+r_struct
 id|acpi_table_desc
 id|rsdt_info
 suffix:semicolon
@@ -314,6 +322,7 @@ id|rsdp_address.pointer.physical
 comma
 r_sizeof
 (paren
+r_struct
 id|rsdp_descriptor
 )paren
 comma
@@ -548,7 +557,7 @@ id|address.pointer.value
 op_assign
 (paren
 (paren
-id|xsdt_descriptor
+id|XSDT_DESCRIPTOR
 op_star
 )paren
 id|rsdt_info.pointer
@@ -684,11 +693,13 @@ id|acpi_find_root_pointer
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_pointer
 op_star
 id|rsdp_address
 )paren
 (brace
+r_struct
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
@@ -881,6 +892,7 @@ id|acpi_status
 DECL|function|acpi_tb_find_rsdp
 id|acpi_tb_find_rsdp
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info

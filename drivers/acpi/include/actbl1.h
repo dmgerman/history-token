@@ -1,14 +1,16 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: actbl1.h - ACPI 1.0 tables&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL1_H__
 DECL|macro|__ACTBL1_H__
 mdefine_line|#define __ACTBL1_H__
 macro_line|#pragma pack(1)
 multiline_comment|/*&n; * ACPI 1.0 Root System Description Table (RSDT)&n; */
-r_typedef
+DECL|struct|rsdt_descriptor_rev1
 r_struct
+id|rsdt_descriptor_rev1
 (brace
 DECL|member|header
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
@@ -22,13 +24,12 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Array of pointers to other */
 multiline_comment|/* ACPI tables */
-DECL|typedef|RSDT_DESCRIPTOR_REV1
 )brace
-id|RSDT_DESCRIPTOR_REV1
 suffix:semicolon
 multiline_comment|/*&n; * ACPI 1.0 Firmware ACPI Control Structure (FACS)&n; */
-r_typedef
+DECL|struct|facs_descriptor_rev1
 r_struct
+id|facs_descriptor_rev1
 (brace
 DECL|member|signature
 r_char
@@ -80,15 +81,15 @@ l_int|40
 )braket
 suffix:semicolon
 multiline_comment|/* Reserved - must be zero */
-DECL|typedef|facs_descriptor_rev1
 )brace
-id|facs_descriptor_rev1
 suffix:semicolon
 multiline_comment|/*&n; * ACPI 1.0 Fixed ACPI Description Table (FADT)&n; */
-r_typedef
+DECL|struct|fadt_descriptor_rev1
 r_struct
+id|fadt_descriptor_rev1
 (brace
 DECL|member|header
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
@@ -353,9 +354,7 @@ suffix:colon
 l_int|23
 suffix:semicolon
 multiline_comment|/* Reserved - must be zero */
-DECL|typedef|fadt_descriptor_rev1
 )brace
-id|fadt_descriptor_rev1
 suffix:semicolon
 macro_line|#pragma pack()
 macro_line|#endif /* __ACTBL1_H__ */

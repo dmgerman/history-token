@@ -647,7 +647,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,30)
 r_if
 c_cond
 (paren
@@ -657,14 +656,6 @@ c_func
 (paren
 )paren
 )paren
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|intr_count
-)paren
-macro_line|#endif
 multiline_comment|/* Yes, I know, too much comments inside this function&n;&t;&t; * ...&n;&t;&t; * &n;&t;&t; * Yet another bug in the original driver. All that&n;&t;&t; * havoc is caused by the fact that the isr() sends&n;&t;&t; * itself a command to the floppy tape driver (pause,&n;&t;&t; * micro step pause).  Now, the problem is that&n;&t;&t; * commands are transmitted via the fdc_seek&n;&t;&t; * command. But: the fdc performs seeks in the&n;&t;&t; * background i.e. it doesn&squot;t signal busy while&n;&t;&t; * sending the step pulses to the drive. Therefore the&n;&t;&t; * non-interrupt level driver has no chance to tell&n;&t;&t; * whether the isr() just has issued a seek. Therefore&n;&t;&t; * we HAVE TO have a look at the ft_hide_interrupt&n;&t;&t; * flag: it signals the non-interrupt level part of&n;&t;&t; * the driver that it has to wait for the fdc until it&n;&t;&t; * has completet seeking.&n;&t;&t; *&n;&t;&t; * THIS WAS PRESUMABLY THE REASON FOR ALL THAT&n;&t;&t; * &quot;fdc_read timeout&quot; errors, I HOPE :-)&n;&t;&t; */
 r_if
 c_cond
@@ -845,7 +836,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,30)
 r_if
 c_cond
 (paren
@@ -862,21 +852,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|intr_count
-)paren
-(brace
-multiline_comment|/* shouldn&squot;t be cleared if called from isr&n;&t;&t; */
-id|ft_interrupt_seen
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -1345,7 +1320,6 @@ c_func
 id|ft_t_fdc_dma
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,0,16)
 r_if
 c_cond
 (paren
@@ -1369,26 +1343,6 @@ l_string|&quot;error: nested call&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|ftape_wait_intr
-)paren
-(brace
-id|TRACE_ABORT
-c_func
-(paren
-op_minus
-id|EIO
-comma
-id|ft_t_err
-comma
-l_string|&quot;error: nested call&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* timeout time will be up to USPT microseconds too long ! */
 id|timeout
 op_assign

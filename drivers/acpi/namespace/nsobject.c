@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
@@ -13,10 +13,12 @@ id|acpi_status
 DECL|function|acpi_ns_attach_object
 id|acpi_ns_attach_object
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -25,10 +27,12 @@ id|acpi_object_type
 id|type
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|last_obj_desc
@@ -178,6 +182,7 @@ id|ACPI_DESC_TYPE_NAMED
 op_logical_and
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -192,6 +197,7 @@ id|obj_desc
 op_assign
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -204,6 +210,7 @@ id|object_type
 op_assign
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -219,6 +226,7 @@ r_else
 id|obj_desc
 op_assign
 (paren
+r_union
 id|acpi_operand_object
 op_star
 )paren
@@ -314,11 +322,13 @@ r_void
 DECL|function|acpi_ns_detach_object
 id|acpi_ns_detach_object
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -422,11 +432,13 @@ id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_attached_object&n; *&n; * PARAMETERS:  Node             - Parent Node to be examined&n; *&n; * RETURN:      Current value of the object field from the Node whose&n; *              handle is passed&n; *&n; * DESCRIPTION: Obtain the object attached to a namespace node.&n; *&n; ******************************************************************************/
+r_union
 id|acpi_operand_object
 op_star
 DECL|function|acpi_ns_get_attached_object
 id|acpi_ns_get_attached_object
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -510,11 +522,13 @@ id|node-&gt;object
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_secondary_object&n; *&n; * PARAMETERS:  Node             - Parent Node to be examined&n; *&n; * RETURN:      Current value of the object field from the Node whose&n; *              handle is passed.&n; *&n; * DESCRIPTION: Obtain a secondary object associated with a namespace node.&n; *&n; ******************************************************************************/
+r_union
 id|acpi_operand_object
 op_star
 DECL|function|acpi_ns_get_secondary_object
 id|acpi_ns_get_secondary_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -576,6 +590,7 @@ id|acpi_status
 DECL|function|acpi_ns_attach_data
 id|acpi_ns_attach_data
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -588,14 +603,17 @@ op_star
 id|data
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|prev_obj_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|data_desc
@@ -708,6 +726,7 @@ id|acpi_status
 DECL|function|acpi_ns_detach_data
 id|acpi_ns_detach_data
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -716,10 +735,12 @@ id|acpi_object_handler
 id|handler
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|prev_obj_desc
@@ -806,6 +827,7 @@ id|acpi_status
 DECL|function|acpi_ns_get_attached_data
 id|acpi_ns_get_attached_data
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -819,6 +841,7 @@ op_star
 id|data
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc

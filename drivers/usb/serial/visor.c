@@ -136,6 +136,12 @@ r_struct
 id|usb_serial
 op_star
 id|serial
+comma
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|id
 )paren
 suffix:semicolon
 r_static
@@ -959,6 +965,7 @@ multiline_comment|/* this is needed for some brain dead Sony devices */
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;Device lied about number of ports, please use a lower one.&bslash;n&quot;
@@ -1029,6 +1036,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
@@ -1074,6 +1082,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting interrupt urb, error %d&bslash;n&quot;
@@ -1181,6 +1190,7 @@ id|transfer_buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
@@ -1245,7 +1255,7 @@ id|port-&gt;interrupt_in_urb
 suffix:semicolon
 )brace
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
-multiline_comment|/* dev_info (port-&gt;dev, &quot;Bytes In = %d  Bytes Out = %d&bslash;n&quot;, bytes_in, bytes_out); */
+multiline_comment|/* dev_info (&amp;port-&gt;dev, &quot;Bytes In = %d  Bytes Out = %d&bslash;n&quot;, bytes_in, bytes_out); */
 )brace
 DECL|function|visor_write
 r_static
@@ -1319,6 +1329,7 @@ id|buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;out of memory&bslash;n&quot;
@@ -1349,6 +1360,7 @@ id|urb
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;no more free urbs&bslash;n&quot;
@@ -1464,6 +1476,7 @@ id|status
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - usb_submit_urb(write bulk) failed with status = %d&bslash;n&quot;
@@ -1868,6 +1881,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
@@ -1983,6 +1997,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - Error %d submitting interrupt urb&bslash;n&quot;
@@ -2066,6 +2081,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
@@ -2085,6 +2101,12 @@ r_struct
 id|usb_serial
 op_star
 id|serial
+comma
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|id
 )paren
 (brace
 r_struct
@@ -2126,7 +2148,6 @@ id|transfer_buffer
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
@@ -2205,7 +2226,6 @@ l_int|0
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - error getting connection information&bslash;n&quot;
@@ -2246,7 +2266,6 @@ suffix:semicolon
 id|dev_info
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s: Number of ports: %d&bslash;n&quot;
@@ -2339,7 +2358,6 @@ suffix:semicolon
 id|dev_info
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s: port %d, is for %s use&bslash;n&quot;
@@ -2439,7 +2457,6 @@ l_int|0
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - error getting first unknown palm command&bslash;n&quot;
@@ -2502,7 +2519,6 @@ l_int|0
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - error getting second unknown palm command&bslash;n&quot;
@@ -2567,7 +2583,6 @@ l_int|0
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - error getting bytes available request&bslash;n&quot;
@@ -2709,7 +2724,6 @@ l_int|0
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s: get config number failed: %d&bslash;n&quot;
@@ -2734,7 +2748,6 @@ l_int|1
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s: get config number bad return length: %d&bslash;n&quot;
@@ -2795,7 +2808,6 @@ l_int|0
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s: get interface number failed: %d&bslash;n&quot;
@@ -2820,7 +2832,6 @@ l_int|1
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s: get interface number bad return length: %d&bslash;n&quot;

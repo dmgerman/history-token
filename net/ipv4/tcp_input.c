@@ -1221,7 +1221,6 @@ suffix:semicolon
 multiline_comment|/* Called to compute a smoothed rtt estimate. The data fed to this&n; * routine either comes from timestamps, or from segments that were&n; * known _not_ to have been retransmitted [see Karn/Partridge&n; * Proceedings SIGCOMM 87]. The algorithm is from the SIGCOMM 88&n; * piece by Van Jacobson.&n; * NOTE: the next three routines used to be one big routine.&n; * To save cycles in the RFC 1323 implementation it was better to break&n; * it up into three procedures. -- erics&n; */
 DECL|function|tcp_rtt_estimator
 r_static
-id|__inline__
 r_void
 id|tcp_rtt_estimator
 c_func
@@ -8610,7 +8609,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|tcp_store_ts_recent
@@ -8632,7 +8631,7 @@ op_assign
 id|xtime.tv_sec
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|tcp_replace_ts_recent
@@ -8808,7 +8807,7 @@ id|HZ
 suffix:semicolon
 )brace
 DECL|function|tcp_paws_discard
-r_extern
+r_static
 id|__inline__
 r_int
 id|tcp_paws_discard
@@ -13002,7 +13001,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Check if sending an ack is needed.&n; */
 DECL|function|__tcp_ack_snd_check
 r_static
-id|__inline__
 r_void
 id|__tcp_ack_snd_check
 c_func
@@ -13333,7 +13331,6 @@ suffix:semicolon
 multiline_comment|/* This is the &squot;fast&squot; part of urgent handling. */
 DECL|function|tcp_urg
 r_static
-r_inline
 r_void
 id|tcp_urg
 c_func

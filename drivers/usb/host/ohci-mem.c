@@ -430,7 +430,6 @@ suffix:semicolon
 r_else
 id|dev_dbg
 (paren
-op_star
 id|hc-&gt;hcd.controller
 comma
 l_string|&quot;bad hash for td %p&bslash;n&quot;

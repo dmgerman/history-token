@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: acparser.h - AML Parser subcomponent prototypes and defines&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACPARSER_H__
 DECL|macro|__ACPARSER_H__
 mdefine_line|#define __ACPARSER_H__
@@ -39,15 +39,18 @@ suffix:semicolon
 id|acpi_status
 id|acpi_psx_execute
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|method_node
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|params
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -60,6 +63,7 @@ id|u8
 op_star
 id|acpi_ps_get_next_package_end
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -68,6 +72,7 @@ suffix:semicolon
 id|u32
 id|acpi_ps_get_next_package_length
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -77,6 +82,7 @@ r_char
 op_star
 id|acpi_ps_get_next_namestring
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -85,6 +91,7 @@ suffix:semicolon
 r_void
 id|acpi_ps_get_next_simple_arg
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -92,6 +99,7 @@ comma
 id|u32
 id|arg_type
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|arg
@@ -100,14 +108,17 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ps_get_next_namepath
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|arg
@@ -116,10 +127,12 @@ id|u8
 id|method_call
 )paren
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_get_next_field
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -128,10 +141,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ps_get_next_arg
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -139,6 +154,7 @@ comma
 id|u32
 id|arg_type
 comma
+r_union
 id|acpi_parse_object
 op_star
 op_star
@@ -146,10 +162,12 @@ id|return_arg
 )paren
 suffix:semicolon
 multiline_comment|/* psfind */
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_find_name
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|scope
@@ -161,10 +179,12 @@ id|u32
 id|opcode
 )paren
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_get_parent
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -172,6 +192,7 @@ id|op
 suffix:semicolon
 multiline_comment|/* psopcode - AML Opcode information */
 r_const
+r_struct
 id|acpi_opcode_info
 op_star
 id|acpi_ps_get_opcode_info
@@ -199,10 +220,12 @@ suffix:semicolon
 r_void
 id|acpi_ps_complete_this_op
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -211,10 +234,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ps_next_parse_state
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -226,10 +251,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ps_find_object
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 op_star
@@ -239,6 +266,7 @@ suffix:semicolon
 r_void
 id|acpi_ps_delete_parse_tree
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|root
@@ -247,6 +275,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ps_parse_loop
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -255,6 +284,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ps_parse_aml
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -276,6 +306,7 @@ comma
 id|acpi_parse_upwards
 id|ascending_callback
 comma
+r_union
 id|acpi_parse_object
 op_star
 op_star
@@ -285,6 +316,7 @@ suffix:semicolon
 id|u16
 id|acpi_ps_peek_opcode
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|state
@@ -294,19 +326,23 @@ multiline_comment|/* psscope - Scope stack management routines */
 id|acpi_status
 id|acpi_ps_init_scope
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|root
 )paren
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_get_parent_scope
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|state
@@ -315,6 +351,7 @@ suffix:semicolon
 id|u8
 id|acpi_ps_has_completed_scope
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -323,10 +360,12 @@ suffix:semicolon
 r_void
 id|acpi_ps_pop_scope
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 op_star
@@ -344,10 +383,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ps_push_scope
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -362,6 +403,7 @@ suffix:semicolon
 r_void
 id|acpi_ps_cleanup_scope
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|state
@@ -372,19 +414,23 @@ r_void
 id|acpi_ps_append_arg
 c_func
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 )paren
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_find
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|scope
@@ -400,11 +446,13 @@ id|u32
 id|create
 )paren
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_get_arg
 c_func
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -413,23 +461,28 @@ id|u32
 id|argn
 )paren
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_get_child
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
 )paren
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_get_depth_next
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|origin
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -439,27 +492,33 @@ multiline_comment|/* pswalk - parse tree walk routines */
 id|acpi_status
 id|acpi_ps_walk_parsed_aml
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|start_op
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|end_op
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|mth_desc
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|start_node
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|params
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -478,10 +537,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ps_get_next_walk_op
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -493,12 +554,14 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ps_delete_completed_op
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/* psutils - parser utilities */
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_create_scope_op
@@ -509,6 +572,7 @@ suffix:semicolon
 r_void
 id|acpi_ps_init_op
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -517,6 +581,7 @@ id|u16
 id|opcode
 )paren
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_ps_alloc_op
@@ -528,6 +593,7 @@ suffix:semicolon
 r_void
 id|acpi_ps_free_op
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -557,6 +623,7 @@ id|u32
 id|acpi_ps_get_name
 c_func
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -566,6 +633,7 @@ r_void
 id|acpi_ps_set_name
 c_func
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -585,6 +653,7 @@ comma
 id|u32
 id|buffer_size
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -600,6 +669,7 @@ comma
 id|u32
 id|buffer_size
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -608,6 +678,7 @@ suffix:semicolon
 r_void
 id|acpi_ps_show
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op

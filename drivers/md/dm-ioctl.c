@@ -3307,6 +3307,35 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * You may ask the interface to drop its reference to an&n;&t; * in use device.  This is no different to unlinking a&n;&t; * file that someone still has open.  The device will not&n;&t; * actually be destroyed until the last opener closes it.&n;&t; * The name and uuid of the device (both are interface&n;&t; * properties) will be available for reuse immediately.&n;&t; *&n;&t; * You don&squot;t want to drop a _suspended_ device from the&n;&t; * interface, since that will leave you with no way of&n;&t; * resuming it.&n;&t; */
+r_if
+c_cond
+(paren
+id|dm_suspended
+c_func
+(paren
+id|hc-&gt;md
+)paren
+)paren
+(brace
+id|DMWARN
+c_func
+(paren
+l_string|&quot;refusing to remove a suspended device.&quot;
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|_hash_lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
 id|__hash_remove
 c_func
 (paren

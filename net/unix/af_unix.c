@@ -177,7 +177,6 @@ suffix:semicolon
 )brace
 DECL|function|unix_peer_get
 r_static
-r_inline
 id|unix_socket
 op_star
 id|unix_peer_get

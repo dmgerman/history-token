@@ -1761,8 +1761,6 @@ id|devnum
 op_minus
 id|BRLVGER_MINOR
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_do
 (brace
 id|down
@@ -1810,8 +1808,6 @@ comma
 id|n
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
@@ -1854,8 +1850,6 @@ l_string|&quot;Interrupted wait for device %d&quot;
 comma
 id|n
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|ret
@@ -1909,7 +1903,7 @@ id|priv-&gt;opened
 )paren
 (brace
 r_goto
-id|error
+id|out
 suffix:semicolon
 )brace
 id|dbg
@@ -1945,7 +1939,7 @@ l_string|&quot;Unable to allocate URB&quot;
 )paren
 suffix:semicolon
 r_goto
-id|error
+id|out
 suffix:semicolon
 )brace
 id|usb_fill_int_urb
@@ -2004,7 +1998,7 @@ id|ret
 )paren
 suffix:semicolon
 r_goto
-id|error
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Set voltage */
@@ -2029,7 +2023,7 @@ l_string|&quot;Unable to set voltage&quot;
 )paren
 suffix:semicolon
 r_goto
-id|error
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Turn display on */
@@ -2060,7 +2054,7 @@ id|ret
 )paren
 suffix:semicolon
 r_goto
-id|error
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Mark as opened, so disconnect cannot free priv. */
@@ -2078,10 +2072,6 @@ l_int|0
 suffix:semicolon
 r_goto
 id|out
-suffix:semicolon
-id|error
-suffix:colon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|out
 suffix:colon
@@ -2217,8 +2207,6 @@ id|priv-&gt;open_sem
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2265,7 +2253,8 @@ id|ret
 suffix:semicolon
 r_int
 id|rs
-comma
+suffix:semicolon
+id|loff_t
 id|off
 suffix:semicolon
 id|__u16

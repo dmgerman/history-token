@@ -707,7 +707,7 @@ comma
 op_amp
 id|temp_boot_pmds
 (braket
-l_int|1
+l_int|2
 )braket
 comma
 (paren

@@ -977,13 +977,15 @@ id|HAS_HOME_PNA
 id|PEGASUS_DEV
 c_func
 (paren
-l_string|&quot;Linksys USB Ethernet Adapter&quot;
+l_string|&quot;Linksys USB10T Ethernet Adapter&quot;
 comma
 id|VENDOR_LINKSYS
 comma
 l_int|0x2206
 comma
 id|LINKSYS_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 id|PEGASUS_DEV
 c_func

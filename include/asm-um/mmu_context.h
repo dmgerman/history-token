@@ -8,6 +8,8 @@ DECL|macro|get_mmu_context
 mdefine_line|#define get_mmu_context(task) do ; while(0)
 DECL|macro|activate_context
 mdefine_line|#define activate_context(tsk) do ; while(0)
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 DECL|function|activate_mm
 r_static
 r_inline

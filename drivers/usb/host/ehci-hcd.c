@@ -2044,15 +2044,23 @@ id|hcd
 suffix:semicolon
 id|u32
 id|status
+suffix:semicolon
+r_int
+id|bh
+suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
+suffix:semicolon
+id|status
 op_assign
 id|readl
 (paren
 op_amp
 id|ehci-&gt;regs-&gt;status
 )paren
-suffix:semicolon
-r_int
-id|bh
 suffix:semicolon
 multiline_comment|/* e.g. cardbus physical eject */
 r_if
@@ -2089,13 +2097,8 @@ op_logical_neg
 id|status
 )paren
 multiline_comment|/* irq sharing? */
-r_return
-suffix:semicolon
-id|spin_lock
-(paren
-op_amp
-id|ehci-&gt;lock
-)paren
+r_goto
+id|done
 suffix:semicolon
 multiline_comment|/* clear (just) interrupts */
 id|writel
@@ -2251,6 +2254,8 @@ comma
 id|regs
 )paren
 suffix:semicolon
+id|done
+suffix:colon
 id|spin_unlock
 (paren
 op_amp
