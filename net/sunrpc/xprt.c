@@ -2091,7 +2091,6 @@ l_int|1
 id|rpc_update_rtt
 c_func
 (paren
-op_amp
 id|clnt-&gt;cl_rtt
 comma
 id|timer
@@ -2107,7 +2106,6 @@ suffix:semicolon
 id|rpc_set_timeo
 c_func
 (paren
-op_amp
 id|clnt-&gt;cl_rtt
 comma
 id|timer
@@ -4869,7 +4867,6 @@ op_assign
 id|rpc_calc_rto
 c_func
 (paren
-op_amp
 id|clnt-&gt;cl_rtt
 comma
 id|timer
@@ -4880,7 +4877,6 @@ op_lshift_assign
 id|rpc_ntimeo
 c_func
 (paren
-op_amp
 id|clnt-&gt;cl_rtt
 comma
 id|timer

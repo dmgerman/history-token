@@ -107,6 +107,13 @@ c_func
 id|rpc_create_client
 )paren
 suffix:semicolon
+DECL|variable|rpc_clone_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rpc_clone_client
+)paren
+suffix:semicolon
 DECL|variable|rpc_destroy_client
 id|EXPORT_SYMBOL
 c_func
@@ -254,6 +261,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|rpcauth_unregister
+)paren
+suffix:semicolon
+DECL|variable|rpcauth_create
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rpcauth_create
 )paren
 suffix:semicolon
 DECL|variable|rpcauth_lookupcred

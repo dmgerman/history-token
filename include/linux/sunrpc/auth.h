@@ -160,6 +160,11 @@ id|rpc_authflavor_t
 id|au_flavor
 suffix:semicolon
 multiline_comment|/* pseudoflavor (note may&n;&t;&t;&t;&t;&t;&t; * differ from the flavor in&n;&t;&t;&t;&t;&t;&t; * au_ops-&gt;au_flavor in gss&n;&t;&t;&t;&t;&t;&t; * case) */
+DECL|member|au_count
+id|atomic_t
+id|au_count
+suffix:semicolon
+multiline_comment|/* Reference counter */
 multiline_comment|/* per-flavor data */
 )brace
 suffix:semicolon
