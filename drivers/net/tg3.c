@@ -38862,7 +38862,7 @@ id|tp-&gt;regs
 suffix:semicolon
 id|err_out_free_dev
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

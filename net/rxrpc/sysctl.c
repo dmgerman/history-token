@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;rxrpc/types.h&gt;
 macro_line|#include &lt;rxrpc/rxrpc.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;

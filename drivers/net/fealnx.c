@@ -2757,7 +2757,7 @@ id|np-&gt;rx_ring_dma
 suffix:semicolon
 id|err_out_free_dev
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

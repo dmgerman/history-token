@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_ULOG.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
