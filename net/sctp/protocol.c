@@ -415,7 +415,7 @@ op_assign
 id|dev-&gt;next
 )paren
 (brace
-id|list_for_each
+id|__list_for_each
 c_func
 (paren
 id|pos
