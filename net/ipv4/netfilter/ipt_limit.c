@@ -31,9 +31,24 @@ id|limit_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* Rusty: This is my (non-mathematically-inclined) understanding of&n;   this algorithm.  The `average rate&squot; in jiffies becomes your initial&n;   amount of credit `credit&squot; and the most credit you can ever have&n;   `credit_cap&squot;.  The `peak rate&squot; becomes the cost of passing the&n;   test, `cost&squot;.&n;&n;   `prev&squot; tracks the last packet hit: you gain one credit per jiffy.&n;   If you get credit balance more than this, the extra credit is&n;   discarded.  Every time the match passes, you lose `cost&squot; credits;&n;   if you don&squot;t have that many, the test fails.&n;&n;   See Alexey&squot;s formal explanation in net/sched/sch_tbf.c.&n;&n;   To avoid underflow, we multiply by 128 (ie. you get 128 credits per&n;   jiffy).  Hence a cost of 2^32-1, means one pass per 32768 seconds&n;   at 1024HZ (or one every 9 hours).  A cost of 1 means 12800 passes&n;   per second at 100HZ.  */
+multiline_comment|/* Rusty: This is my (non-mathematically-inclined) understanding of&n;   this algorithm.  The `average rate&squot; in jiffies becomes your initial&n;   amount of credit `credit&squot; and the most credit you can ever have&n;   `credit_cap&squot;.  The `peak rate&squot; becomes the cost of passing the&n;   test, `cost&squot;.&n;&n;   `prev&squot; tracks the last packet hit: you gain one credit per jiffy.&n;   If you get credit balance more than this, the extra credit is&n;   discarded.  Every time the match passes, you lose `cost&squot; credits;&n;   if you don&squot;t have that many, the test fails.&n;&n;   See Alexey&squot;s formal explanation in net/sched/sch_tbf.c.&n;&n;   To get the maxmum range, we multiply by this factor (ie. you get N&n;   credits per jiffy).  We want to allow a rate as low as 1 per day&n;   (slowest userspace tool allows), which means&n;   CREDITS_PER_JIFFY*HZ*60*60*24 &lt; 2^32. ie. */
+DECL|macro|MAX_CPJ
+mdefine_line|#define MAX_CPJ (0xFFFFFFFF / (HZ*60*60*24))
+multiline_comment|/* Repeated shift and or gives us all 1s, final shift and add 1 gives&n; * us the power of 2 below the theoretical max, so GCC simply does a&n; * shift. */
+DECL|macro|_POW2_BELOW2
+mdefine_line|#define _POW2_BELOW2(x) ((x)|((x)&gt;&gt;1))
+DECL|macro|_POW2_BELOW4
+mdefine_line|#define _POW2_BELOW4(x) (_POW2_BELOW2(x)|_POW2_BELOW2((x)&gt;&gt;2))
+DECL|macro|_POW2_BELOW8
+mdefine_line|#define _POW2_BELOW8(x) (_POW2_BELOW4(x)|_POW2_BELOW4((x)&gt;&gt;4))
+DECL|macro|_POW2_BELOW16
+mdefine_line|#define _POW2_BELOW16(x) (_POW2_BELOW8(x)|_POW2_BELOW8((x)&gt;&gt;8))
+DECL|macro|_POW2_BELOW32
+mdefine_line|#define _POW2_BELOW32(x) (_POW2_BELOW16(x)|_POW2_BELOW16((x)&gt;&gt;16))
+DECL|macro|POW2_BELOW32
+mdefine_line|#define POW2_BELOW32(x) ((_POW2_BELOW32(x)&gt;&gt;1) + 1)
 DECL|macro|CREDITS_PER_JIFFY
-mdefine_line|#define CREDITS_PER_JIFFY 128
+mdefine_line|#define CREDITS_PER_JIFFY POW2_BELOW32(MAX_CPJ)
 r_static
 r_int
 DECL|function|ipt_limit_match
@@ -293,7 +308,7 @@ id|r-&gt;avg
 id|printk
 c_func
 (paren
-l_string|&quot;Call rusty: overflow in ipt_limit: %u/%u&bslash;n&quot;
+l_string|&quot;Overflow in ipt_limit, try lower: %u/%u&bslash;n&quot;
 comma
 id|r-&gt;avg
 comma
