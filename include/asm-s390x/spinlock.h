@@ -3,7 +3,18 @@ macro_line|#ifndef __ASM_SPINLOCK_H
 DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
 multiline_comment|/*&n; * Grmph, take care of %&amp;#! user space programs that include&n; * asm/spinlock.h. The diagnose is only available in kernel&n; * context.&n; */
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/lowcore.h&gt;
+DECL|macro|__DIAG44_INSN
+mdefine_line|#define __DIAG44_INSN &quot;ex&quot;
+DECL|macro|__DIAG44_OPERAND
+mdefine_line|#define __DIAG44_OPERAND __LC_DIAG44_OPCODE
+macro_line|#else
+DECL|macro|__DIAG44_INSN
+mdefine_line|#define __DIAG44_INSN &quot;#&quot;
+DECL|macro|__DIAG44_OPERAND
+mdefine_line|#define __DIAG44_OPERAND 0
+macro_line|#endif
 multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, one clears IRQ&squot;s&n; * on the local processor, one does not.&n; *&n; * We make no fairness assumptions. They have a cost.&n; */
 r_typedef
 r_struct
@@ -58,7 +69,9 @@ id|__volatile
 c_func
 (paren
 l_string|&quot;    bras  %1,1f&bslash;n&quot;
-l_string|&quot;0:  # diag  0,0,68&bslash;n&quot;
+l_string|&quot;0:  &quot;
+id|__DIAG44_INSN
+l_string|&quot; 0,%4&bslash;n&quot;
 l_string|&quot;1:  slr   %0,%0&bslash;n&quot;
 l_string|&quot;    cs    %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;    jl    0b&bslash;n&quot;
@@ -82,6 +95,11 @@ l_string|&quot;a&quot;
 (paren
 op_amp
 id|lp-&gt;lock
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|__DIAG44_OPERAND
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
@@ -204,12 +222,12 @@ mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
 DECL|macro|rwlock_is_locked
 mdefine_line|#define rwlock_is_locked(x) ((x)-&gt;lock != 0)
 DECL|macro|_raw_read_lock
-mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: # diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: nihh  2,0x7fff&bslash;n&quot; /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;   /* one more reader */  &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot; &bslash;&n;                     &quot;1: nihh  2,0x7fff&bslash;n&quot; /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;   /* one more reader */  &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
 DECL|macro|_raw_read_unlock
-mdefine_line|#define _raw_read_unlock(rw) &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: # diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lgr   3,2&bslash;n&quot;    &bslash;&n;                     &quot;   bctgr 3,0&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_read_unlock(rw) &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot; &bslash;&n;                     &quot;1: lgr   3,2&bslash;n&quot;    &bslash;&n;                     &quot;   bctgr 3,0&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
 DECL|macro|_raw_write_lock
-mdefine_line|#define _raw_write_lock(rw) &bslash;&n;        asm volatile(&quot;   llihh 3,0x8000&bslash;n&quot; /* new lock value = 0x80...0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: # diag  0,0,68&bslash;n&quot;   &bslash;&n;                     &quot;1: slgr  2,2&bslash;n&quot;      /* old lock value must be 0 */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_write_lock(rw) &bslash;&n;        asm volatile(&quot;   llihh 3,0x8000&bslash;n&quot; /* new lock value = 0x80...0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot;   &bslash;&n;                     &quot;1: slgr  2,2&bslash;n&quot;      /* old lock value must be 0 */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
 DECL|macro|_raw_write_unlock
-mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slgr  3,3&bslash;n&quot;      /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: # diag  0,0,68&bslash;n&quot;   &bslash;&n;                     &quot;1: llihh 2,0x8000&bslash;n&quot; /* old lock value must be 0x8..0 */&bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slgr  3,3&bslash;n&quot;      /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot;   &bslash;&n;                     &quot;1: llihh 2,0x8000&bslash;n&quot; /* old lock value must be 0x8..0 */&bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
 macro_line|#endif /* __ASM_SPINLOCK_H */
 eof

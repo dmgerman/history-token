@@ -52,6 +52,8 @@ DECL|macro|__LC_IO_INT_WORD
 mdefine_line|#define __LC_IO_INT_WORD                0x0C0
 DECL|macro|__LC_MCCK_CODE
 mdefine_line|#define __LC_MCCK_CODE                  0x0E8
+DECL|macro|__LC_DIAG44_OPCODE
+mdefine_line|#define __LC_DIAG44_OPCODE&t;&t;0x214
 DECL|macro|__LC_SAVE_AREA
 mdefine_line|#define __LC_SAVE_AREA                  0xC00
 DECL|macro|__LC_KERNEL_STACK
@@ -452,16 +454,21 @@ id|__u32
 id|sync_io_word
 suffix:semicolon
 multiline_comment|/* 0x210 */
+DECL|member|diag44_opcode
+id|__u32
+id|diag44_opcode
+suffix:semicolon
+multiline_comment|/* 0x214 */
 DECL|member|pad8
 id|__u8
 id|pad8
 (braket
 l_int|0xc00
 op_minus
-l_int|0x214
+l_int|0x218
 )braket
 suffix:semicolon
-multiline_comment|/* 0x214 */
+multiline_comment|/* 0x218 */
 multiline_comment|/* System info area */
 DECL|member|save_area
 id|__u64
