@@ -556,7 +556,7 @@ id|ice1712_t
 op_star
 comma
 r_int
-r_char
+r_int
 )paren
 suffix:semicolon
 DECL|member|ops

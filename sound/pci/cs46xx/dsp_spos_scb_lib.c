@@ -2037,13 +2037,21 @@ comma
 l_int|0x04000000
 comma
 (brace
-l_int|0x8000
-comma
-l_int|0x8000
+l_int|0xffff
+op_minus
+id|ins-&gt;dac_volume_right
 comma
 l_int|0xffff
+op_minus
+id|ins-&gt;dac_volume_left
 comma
 l_int|0xffff
+op_minus
+id|ins-&gt;dac_volume_right
+comma
+l_int|0xffff
+op_minus
+id|ins-&gt;dac_volume_left
 )brace
 )brace
 suffix:semicolon
@@ -2239,9 +2247,9 @@ comma
 l_int|0x8000
 comma
 multiline_comment|/* F */
-l_int|0xffff
+l_int|0x8000
 comma
-l_int|0xffff
+l_int|0x8000
 )brace
 )brace
 suffix:semicolon
@@ -2799,9 +2807,9 @@ comma
 l_int|0x8000
 comma
 multiline_comment|/* Volume controls are unused at this time */
-l_int|0xffff
+l_int|0x8000
 comma
-l_int|0xffff
+l_int|0x8000
 )brace
 suffix:semicolon
 id|scb
@@ -2864,6 +2872,12 @@ r_int
 id|scb_child_type
 )paren
 (brace
+id|dsp_spos_instance_t
+op_star
+id|ins
+op_assign
+id|chip-&gt;dsp_spos_instance
+suffix:semicolon
 id|dsp_scb_descriptor_t
 op_star
 id|scb
@@ -2937,14 +2951,23 @@ multiline_comment|/* This should be automagically &n;&t;&t;&t;&t;&t;&t;&t;      
 multiline_comment|/* There is no correct initial value, it will depend upon the detected&n;&t;&t;   rate etc  */
 l_int|0x18000000
 comma
-multiline_comment|/* Mute stream */
-l_int|0x8000
-comma
-l_int|0x8000
+multiline_comment|/* Set IEC958 input volume */
+l_int|0xffff
+op_minus
+id|ins-&gt;spdif_input_volume_right
 comma
 l_int|0xffff
+op_minus
+id|ins-&gt;spdif_input_volume_left
 comma
 l_int|0xffff
+op_minus
+id|ins-&gt;spdif_input_volume_right
+comma
+l_int|0xffff
+op_minus
+id|ins-&gt;spdif_input_volume_left
+comma
 )brace
 suffix:semicolon
 id|scb
@@ -3703,6 +3726,7 @@ id|mixer_scb
 op_assign
 id|ins-&gt;asynch_tx_scb
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -3718,6 +3742,7 @@ l_string|&quot;IEC958 opened in AC3 mode&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/*src_scb = ins-&gt;asynch_tx_scb;&n;&t;&t;&t;  ins-&gt;asynch_tx_scb-&gt;ref_count ++;*/
 )brace
+macro_line|#endif
 r_break
 suffix:semicolon
 r_default
@@ -4066,20 +4091,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pcm_channel_id
-op_ne
-id|DSP_IEC958_CHANNEL
-op_logical_or
-op_logical_neg
-(paren
-id|ins-&gt;spdif_status_out
-op_amp
-id|DSP_SPDIF_STATUS_AC3_MODE
-)paren
-)paren
 id|cs46xx_dsp_set_src_sample_rate
 c_func
 (paren
@@ -5051,8 +5062,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* mute SCB */
-multiline_comment|/* cs46xx_dsp_scb_set_volume (chip,src,0,0); */
 id|snd_cs46xx_poke
 c_func
 (paren
@@ -5099,8 +5108,6 @@ comma
 id|phiIncr
 )paren
 suffix:semicolon
-multiline_comment|/* raise volume */
-multiline_comment|/* cs46xx_dsp_scb_set_volume (chip,src,0x7fff,0x7fff); */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5715,41 +5722,14 @@ comma
 id|SCB_ON_PARENT_NEXT_SCB
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ins-&gt;spdif_status_out
-op_amp
-id|DSP_SPDIF_STATUS_AC3_MODE
-)paren
-multiline_comment|/* set left (13), right validity bit (12) , and non-audio(1) and profsional bit (0) */
+multiline_comment|/* set spdif channel status value for streaming */
 id|cs46xx_poke_via_dsp
 (paren
 id|chip
 comma
 id|SP_SPDOUT_CSUV
 comma
-l_int|0x00000000
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|13
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|12
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|1
-)paren
-op_or
-l_int|1
+id|ins-&gt;spdif_csuv_stream
 )paren
 suffix:semicolon
 id|ins-&gt;spdif_status_out
@@ -5798,19 +5778,7 @@ id|chip
 comma
 id|SP_SPDOUT_CSUV
 comma
-l_int|0x00000000
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|13
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|12
-)paren
+id|ins-&gt;spdif_csuv_default
 )paren
 suffix:semicolon
 multiline_comment|/* deallocate stuff */

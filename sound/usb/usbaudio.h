@@ -396,5 +396,9 @@ mdefine_line|#define get_ep_desc(ep)&t;&t;(&amp;(ep)-&gt;desc)
 DECL|macro|get_cfg_desc
 mdefine_line|#define get_cfg_desc(cfg)&t;(&amp;(cfg)-&gt;desc)
 macro_line|#endif
+macro_line|#ifndef usb_pipe_needs_resubmit
+DECL|macro|usb_pipe_needs_resubmit
+mdefine_line|#define usb_pipe_needs_resubmit(pipe) 1
+macro_line|#endif
 macro_line|#endif /* __USBAUDIO_H */
 eof
