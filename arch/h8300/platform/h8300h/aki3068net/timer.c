@@ -38,7 +38,7 @@ op_star
 )paren
 )paren
 (brace
-id|outb
+id|ctrl_outb
 c_func
 (paren
 id|H8300_TIMER_COUNT_DATA
@@ -46,7 +46,7 @@ comma
 id|TCORA2
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 l_int|0x00
@@ -68,7 +68,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 l_int|0x40
