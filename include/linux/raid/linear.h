@@ -12,13 +12,11 @@ op_star
 id|rdev
 suffix:semicolon
 DECL|member|size
-r_int
-r_int
+id|sector_t
 id|size
 suffix:semicolon
 DECL|member|offset
-r_int
-r_int
+id|sector_t
 id|offset
 suffix:semicolon
 )brace

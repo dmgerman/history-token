@@ -8,9 +8,9 @@ macro_line|#include &lt;linux/if_bonding.h&gt;
 macro_line|#include &quot;bond_3ad.h&quot;
 macro_line|#include &quot;bond_alb.h&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;2.6.0&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;2.6.1&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;January 14, 2004&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;October 29, 2004&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;bonding&quot;
 DECL|macro|DRV_DESCRIPTION

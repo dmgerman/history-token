@@ -33,11 +33,14 @@ r_static
 r_int
 id|debug
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

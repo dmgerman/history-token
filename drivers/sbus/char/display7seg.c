@@ -28,11 +28,13 @@ suffix:semicolon
 multiline_comment|/* Solaris compatibility mode&t;*/
 macro_line|#ifdef MODULE
 multiline_comment|/* Solaris compatibility flag -&n; * The Solaris implementation omits support for several&n; * documented driver features (ref Sun doc 806-0180-03).  &n; * By default, this module supports the documented driver &n; * abilities, rather than the Solaris implementation:&n; *&n; * &t;1) Device ALWAYS reverts to OBP-specified FLIPPED mode&n; * &t;   upon closure of device or module unload.&n; * &t;2) Device ioctls D7SIOCRD/D7SIOCWR honor toggling of&n; * &t;   FLIP bit&n; *&n; * If you wish the device to operate as under Solaris,&n; * omitting above features, set this parameter to non-zero.&n; */
-id|MODULE_PARM
+id|module_param
 (paren
 id|sol_compat
 comma
-l_string|&quot;1i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

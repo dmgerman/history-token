@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: saa7134-input.c,v 1.9 2004/09/15 16:15:24 kraxel Exp $&n; *&n; * handle saa7134 IR remotes via linux kernel input layer.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; * $Id: saa7134-input.c,v 1.12 2004/11/07 13:17:15 kraxel Exp $&n; *&n; * handle saa7134 IR remotes via linux kernel input layer.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -15,12 +15,14 @@ id|disable_ir
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|disable_ir
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -39,12 +41,14 @@ id|ir_debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ir_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -194,7 +198,7 @@ l_int|19
 op_assign
 id|KEY_CHANNELDOWN
 comma
-singleline_comment|// Channel - 
+singleline_comment|// Channel -
 (braket
 l_int|6
 )braket
@@ -1654,6 +1658,9 @@ r_break
 suffix:semicolon
 r_case
 id|SAA7134_BOARD_MD2819
+suffix:colon
+r_case
+id|SAA7134_BOARD_AVERMEDIA_307
 suffix:colon
 id|ir_codes
 op_assign

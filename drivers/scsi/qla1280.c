@@ -760,12 +760,14 @@ op_star
 id|qla1280
 suffix:semicolon
 multiline_comment|/* insmod qla1280 options=verbose&quot; */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|qla1280
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#else

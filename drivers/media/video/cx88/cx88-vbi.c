@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cx88-vbi.c,v 1.12 2004/10/11 13:45:51 kraxel Exp $&n; */
+multiline_comment|/*&n; * $Id: cx88-vbi.c,v 1.14 2004/11/07 13:17:15 kraxel Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -662,9 +662,10 @@ DECL|function|vbi_setup
 id|vbi_setup
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_int
 r_int
@@ -735,9 +736,10 @@ DECL|function|vbi_prepare
 id|vbi_prepare
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -754,7 +756,7 @@ id|cx8800_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|cx8800_dev
@@ -768,12 +770,16 @@ id|cx88_buffer
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|cx88_buffer
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -903,9 +909,10 @@ DECL|function|vbi_queue
 id|vbi_queue
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|vq
 comma
 r_struct
 id|videobuf_buffer
@@ -918,12 +925,16 @@ id|cx88_buffer
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|cx88_buffer
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 r_struct
 id|cx88_buffer
@@ -935,7 +946,7 @@ id|cx8800_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|vq-&gt;priv_data
 suffix:semicolon
 r_struct
 id|cx8800_dev
@@ -1108,9 +1119,10 @@ r_void
 id|vbi_release
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -1123,19 +1135,23 @@ id|cx88_buffer
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|cx88_buffer
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 r_struct
 id|cx8800_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 id|cx88_free_buffer
 c_func

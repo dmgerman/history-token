@@ -4561,7 +4561,7 @@ suffix:semicolon
 id|intelfb_blank
 c_func
 (paren
-l_int|1
+id|FB_BLANK_POWERDOWN
 comma
 id|info
 )paren
@@ -4672,7 +4672,7 @@ suffix:semicolon
 id|intelfb_blank
 c_func
 (paren
-l_int|0
+id|FB_BLANK_UNBLANK
 comma
 id|info
 )paren

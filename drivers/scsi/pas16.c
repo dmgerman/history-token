@@ -1882,20 +1882,24 @@ comma
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 macro_line|#ifdef MODULE
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pas16_addr
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pas16_irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;asm/termios.h&gt;
 multiline_comment|/* Software state per channel */
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * This is our internal structure for each serial port&squot;s state.&n; * &n; * Many fields are paralleled by the structure used by the serial_struct&n; * structure.&n; *&n; * For definitions of the flags field, see tty.h&n; */
+multiline_comment|/*&n; * This is our internal structure for each serial port&squot;s state.&n; *&n; * Many fields are paralleled by the structure used by the serial_struct&n; * structure.&n; *&n; * For definitions of the flags field, see tty.h&n; */
 DECL|macro|SERIAL_RECV_DESCRIPTORS
 mdefine_line|#define SERIAL_RECV_DESCRIPTORS 8
 DECL|struct|etrax_recv_buffer
@@ -344,7 +344,7 @@ id|wait_queue
 op_star
 id|close_wait
 suffix:semicolon
-macro_line|#endif  
+macro_line|#endif
 DECL|member|char_time_usec
 r_int
 r_int

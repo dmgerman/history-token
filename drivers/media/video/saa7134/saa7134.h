@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: saa7134.h,v 1.20 2004/09/30 12:21:15 kraxel Exp $&n; *&n; * v4l2 device driver for philips saa7134 based TV cards&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134.h,v 1.27 2004/11/04 11:03:52 kraxel Exp $&n; *&n; * v4l2 device driver for philips saa7134 based TV cards&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|SAA7134_VERSION_CODE
 mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,12)
@@ -8,11 +8,12 @@ macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/id.h&gt;
 macro_line|#include &lt;media/ir-common.h&gt;
+macro_line|#include &lt;media/video-buf.h&gt;
+macro_line|#include &lt;media/video-buf-dvb.h&gt;
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 macro_line|# define TRUE (1==1)
@@ -371,8 +372,16 @@ DECL|macro|SAA7134_BOARD_SABRENT_SBTTVFM
 mdefine_line|#define SAA7134_BOARD_SABRENT_SBTTVFM  42
 DECL|macro|SAA7134_BOARD_ZOLID_XPERT_TV7134
 mdefine_line|#define SAA7134_BOARD_ZOLID_XPERT_TV7134 43
-DECL|macro|SAA7134_EMPIRE_PCI_TV_RADIO_LE
-mdefine_line|#define SAA7134_EMPIRE_PCI_TV_RADIO_LE 44
+DECL|macro|SAA7134_BOARD_EMPIRE_PCI_TV_RADIO_LE
+mdefine_line|#define SAA7134_BOARD_EMPIRE_PCI_TV_RADIO_LE 44
+DECL|macro|SAA7134_BOARD_AVERMEDIA_307
+mdefine_line|#define SAA7134_BOARD_AVERMEDIA_307    45
+DECL|macro|SAA7134_BOARD_AVERMEDIA_CARDBUS
+mdefine_line|#define SAA7134_BOARD_AVERMEDIA_CARDBUS 46
+DECL|macro|SAA7134_BOARD_CINERGY400_CARDBUS
+mdefine_line|#define SAA7134_BOARD_CINERGY400_CARDBUS 47
+DECL|macro|SAA7134_MAXBOARDS
+mdefine_line|#define SAA7134_MAXBOARDS 8
 DECL|macro|SAA7134_INPUT_MAX
 mdefine_line|#define SAA7134_INPUT_MAX 8
 DECL|struct|saa7134_input
@@ -406,6 +415,21 @@ id|tv
 suffix:colon
 l_int|1
 suffix:semicolon
+)brace
+suffix:semicolon
+DECL|enum|saa7134_mpeg_type
+r_enum
+id|saa7134_mpeg_type
+(brace
+DECL|enumerator|SAA7134_MPEG_UNUSED
+id|SAA7134_MPEG_UNUSED
+comma
+DECL|enumerator|SAA7134_MPEG_EMPRESS
+id|SAA7134_MPEG_EMPRESS
+comma
+DECL|enumerator|SAA7134_MPEG_DVB
+id|SAA7134_MPEG_DVB
+comma
 )brace
 suffix:semicolon
 DECL|struct|saa7134_board
@@ -446,17 +470,6 @@ r_struct
 id|saa7134_input
 id|mute
 suffix:semicolon
-multiline_comment|/* peripheral I/O */
-DECL|member|has_ts
-r_int
-r_int
-id|has_ts
-suffix:semicolon
-DECL|member|video_out
-r_enum
-id|saa7134_video_out
-id|video_out
-suffix:semicolon
 multiline_comment|/* i2c chip info */
 DECL|member|tuner_type
 r_int
@@ -468,12 +481,27 @@ r_int
 r_int
 id|tda9887_conf
 suffix:semicolon
+multiline_comment|/* peripheral I/O */
+DECL|member|video_out
+r_enum
+id|saa7134_video_out
+id|video_out
+suffix:semicolon
+DECL|member|mpeg
+r_enum
+id|saa7134_mpeg_type
+id|mpeg
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|card_has_radio
 mdefine_line|#define card_has_radio(dev)   (NULL != saa7134_boards[dev-&gt;board].radio.name)
-DECL|macro|card_has_ts
-mdefine_line|#define card_has_ts(dev)      (saa7134_boards[dev-&gt;board].has_ts)
+DECL|macro|card_is_empress
+mdefine_line|#define card_is_empress(dev)  (SAA7134_MPEG_EMPRESS == saa7134_boards[dev-&gt;board].mpeg)
+DECL|macro|card_is_dvb
+mdefine_line|#define card_is_dvb(dev)      (SAA7134_MPEG_DVB     == saa7134_boards[dev-&gt;board].mpeg)
+DECL|macro|card_has_mpeg
+mdefine_line|#define card_has_mpeg(dev)    (SAA7134_MPEG_UNUSED  != saa7134_boards[dev-&gt;board].mpeg)
 DECL|macro|card
 mdefine_line|#define card(dev)             (saa7134_boards[dev-&gt;board])
 DECL|macro|card_in
@@ -675,7 +703,7 @@ r_int
 r_int
 id|resources
 suffix:semicolon
-macro_line|#ifdef VIDIOC_G_PRIORITY 
+macro_line|#ifdef VIDIOC_G_PRIORITY
 DECL|member|prio
 r_enum
 id|v4l2_priority
@@ -736,33 +764,6 @@ DECL|member|pt_vbi
 r_struct
 id|saa7134_pgtable
 id|pt_vbi
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* TS status */
-DECL|struct|saa7134_ts
-r_struct
-id|saa7134_ts
-(brace
-DECL|member|users
-r_int
-r_int
-id|users
-suffix:semicolon
-multiline_comment|/* TS capture */
-DECL|member|ts
-r_struct
-id|videobuf_queue
-id|ts
-suffix:semicolon
-DECL|member|pt_ts
-r_struct
-id|saa7134_pgtable
-id|pt_ts
-suffix:semicolon
-DECL|member|started
-r_int
-id|started
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -938,6 +939,70 @@ id|timer
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* ts/mpeg status */
+DECL|struct|saa7134_ts
+r_struct
+id|saa7134_ts
+(brace
+multiline_comment|/* TS capture */
+DECL|member|pt_ts
+r_struct
+id|saa7134_pgtable
+id|pt_ts
+suffix:semicolon
+DECL|member|nr_packets
+r_int
+id|nr_packets
+suffix:semicolon
+DECL|member|nr_bufs
+r_int
+id|nr_bufs
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* ts/mpeg ops */
+DECL|struct|saa7134_mpeg_ops
+r_struct
+id|saa7134_mpeg_ops
+(brace
+DECL|member|type
+r_enum
+id|saa7134_mpeg_type
+id|type
+suffix:semicolon
+DECL|member|next
+r_struct
+id|list_head
+id|next
+suffix:semicolon
+DECL|member|init
+r_int
+(paren
+op_star
+id|init
+)paren
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+DECL|member|fini
+r_int
+(paren
+op_star
+id|fini
+)paren
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* global device status */
 DECL|struct|saa7134_dev
 r_struct
@@ -957,7 +1022,7 @@ DECL|member|slock
 id|spinlock_t
 id|slock
 suffix:semicolon
-macro_line|#ifdef VIDIOC_G_PRIORITY 
+macro_line|#ifdef VIDIOC_G_PRIORITY
 DECL|member|prio
 r_struct
 id|v4l2_prio_state
@@ -976,12 +1041,6 @@ id|video_device
 op_star
 id|video_dev
 suffix:semicolon
-DECL|member|ts_dev
-r_struct
-id|video_device
-op_star
-id|ts_dev
-suffix:semicolon
 DECL|member|radio_dev
 r_struct
 id|video_device
@@ -998,11 +1057,6 @@ DECL|member|oss
 r_struct
 id|saa7134_oss
 id|oss
-suffix:semicolon
-DECL|member|ts
-r_struct
-id|saa7134_ts
-id|ts
 suffix:semicolon
 multiline_comment|/* infrared remote */
 DECL|member|has_remote
@@ -1022,6 +1076,10 @@ id|name
 (braket
 l_int|32
 )braket
+suffix:semicolon
+DECL|member|nr
+r_int
+id|nr
 suffix:semicolon
 DECL|member|pci
 r_struct
@@ -1114,11 +1172,6 @@ DECL|member|video_q
 r_struct
 id|saa7134_dmaqueue
 id|video_q
-suffix:semicolon
-DECL|member|ts_q
-r_struct
-id|saa7134_dmaqueue
-id|ts_q
 suffix:semicolon
 DECL|member|vbi_q
 r_struct
@@ -1251,6 +1304,46 @@ suffix:semicolon
 DECL|member|last_carrier
 r_int
 id|last_carrier
+suffix:semicolon
+multiline_comment|/* SAA7134_MPEG_* */
+DECL|member|ts
+r_struct
+id|saa7134_ts
+id|ts
+suffix:semicolon
+DECL|member|ts_q
+r_struct
+id|saa7134_dmaqueue
+id|ts_q
+suffix:semicolon
+DECL|member|mops
+r_struct
+id|saa7134_mpeg_ops
+op_star
+id|mops
+suffix:semicolon
+multiline_comment|/* SAA7134_MPEG_EMPRESS only */
+DECL|member|empress_dev
+r_struct
+id|video_device
+op_star
+id|empress_dev
+suffix:semicolon
+DECL|member|empress_tsq
+r_struct
+id|videobuf_queue
+id|empress_tsq
+suffix:semicolon
+DECL|member|empress_users
+r_int
+r_int
+id|empress_users
+suffix:semicolon
+multiline_comment|/* SAA7134_MPEG_DVB only */
+DECL|member|dvb
+r_struct
+id|videobuf_dvb
+id|dvb
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1669,10 +1762,12 @@ id|status
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* saa7134-ts.c                                                */
+DECL|macro|TS_PACKET_SIZE
+mdefine_line|#define TS_PACKET_SIZE 188 /* TS packets 188 bytes */
 r_extern
 r_struct
-id|video_device
-id|saa7134_ts_template
+id|videobuf_queue_ops
+id|saa7134_ts_qops
 suffix:semicolon
 r_int
 id|saa7134_ts_init1
@@ -1706,6 +1801,26 @@ comma
 r_int
 r_int
 id|status
+)paren
+suffix:semicolon
+r_int
+id|saa7134_ts_register
+c_func
+(paren
+r_struct
+id|saa7134_mpeg_ops
+op_star
+id|ops
+)paren
+suffix:semicolon
+r_void
+id|saa7134_ts_unregister
+c_func
+(paren
+r_struct
+id|saa7134_mpeg_ops
+op_star
+id|ops
 )paren
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */

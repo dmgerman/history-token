@@ -1529,7 +1529,7 @@ id|retries
 suffix:semicolon
 r_extern
 r_void
-id|rsv_window_add
+id|ext3_rsv_window_add
 c_func
 (paren
 r_struct
@@ -1538,7 +1538,7 @@ op_star
 id|sb
 comma
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|rsv
 )paren

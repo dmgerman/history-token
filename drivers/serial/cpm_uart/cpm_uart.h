@@ -8,17 +8,10 @@ macro_line|#include &quot;cpm_uart_cpm2.h&quot;
 macro_line|#elif defined(CONFIG_8xx)
 macro_line|#include &quot;cpm_uart_cpm1.h&quot;
 macro_line|#endif
-macro_line|#ifndef CONFIG_SERIAL_8250
-DECL|macro|SERIAL_CPM_MAJOR
-mdefine_line|#define SERIAL_CPM_MAJOR&t;TTY_MAJOR
-DECL|macro|SERIAL_CPM_MINOR
-mdefine_line|#define SERIAL_CPM_MINOR&t;64
-macro_line|#else
 DECL|macro|SERIAL_CPM_MAJOR
 mdefine_line|#define SERIAL_CPM_MAJOR&t;204
 DECL|macro|SERIAL_CPM_MINOR
-mdefine_line|#define SERIAL_CPM_MINOR&t;42
-macro_line|#endif
+mdefine_line|#define SERIAL_CPM_MINOR&t;46
 DECL|macro|IS_SMC
 mdefine_line|#define IS_SMC(pinfo) &t;&t;(pinfo-&gt;flags &amp; FLAG_SMC)
 DECL|macro|IS_DISCARDING

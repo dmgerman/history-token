@@ -9200,7 +9200,7 @@ c_cond
 (paren
 id|blank
 op_amp
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 )paren
 id|state
 op_or_assign
@@ -9211,7 +9211,7 @@ c_cond
 (paren
 id|blank
 op_amp
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 )paren
 id|state
 op_or_assign
@@ -9222,7 +9222,7 @@ c_cond
 (paren
 id|blank
 op_amp
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 )paren
 id|state
 op_or_assign

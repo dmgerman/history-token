@@ -2395,12 +2395,14 @@ id|aic7xxx
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|aic7xxx
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif

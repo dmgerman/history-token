@@ -875,7 +875,10 @@ id|blank_mode
 )paren
 (brace
 r_case
-id|VESA_NO_BLANKING
+id|FB_BLANK_UNBLANKING
+suffix:colon
+r_case
+id|FB_BLANK_NORMAL
 suffix:colon
 id|lcd_enable
 c_func
@@ -894,10 +897,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 r_case
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 id|backlight_enable
 c_func
@@ -908,7 +911,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:colon
 id|backlight_enable
 c_func
@@ -933,7 +936,17 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/* let fbcon do a soft blank for us */
 r_return
+(paren
+id|blank_mode
+op_eq
+id|FB_BLANK_NORMAL
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace

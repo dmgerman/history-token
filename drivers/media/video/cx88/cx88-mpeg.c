@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cx88-mpeg.c,v 1.11 2004/10/12 07:33:22 kraxel Exp $&n; *&n; *  Support for the mpeg transport stream transfers&n; *  PCI function #2 of the cx2388x.&n; *&n; *    (c) 2004 Jelle Foks &lt;jelle@foks.8m.com&gt;&n; *    (c) 2004 Chris Pascoe &lt;c.pascoe@itee.uq.edu.au&gt;&n; *    (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88-mpeg.c,v 1.14 2004/10/25 11:26:36 kraxel Exp $&n; *&n; *  Support for the mpeg transport stream transfers&n; *  PCI function #2 of the cx2388x.&n; *&n; *    (c) 2004 Jelle Foks &lt;jelle@foks.8m.com&gt;&n; *    (c) 2004 Chris Pascoe &lt;c.pascoe@itee.uq.edu.au&gt;&n; *    (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -1009,9 +1009,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dev-&gt;timeout_count
-op_increment
-suffix:semicolon
 id|do_cancel_buffers
 c_func
 (paren
@@ -1216,9 +1213,6 @@ op_amp
 id|dev-&gt;slock
 )paren
 suffix:semicolon
-id|dev-&gt;stopper_count
-op_increment
-suffix:semicolon
 id|cx8802_restart_queue
 c_func
 (paren
@@ -1251,9 +1245,6 @@ c_func
 op_amp
 id|dev-&gt;slock
 )paren
-suffix:semicolon
-id|dev-&gt;error_count
-op_increment
 suffix:semicolon
 id|cx8802_stop_dma
 c_func

@@ -5498,7 +5498,7 @@ id|blank_mode
 )paren
 (brace
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 multiline_comment|/* powerdown - both sync lines down */
 id|seqflags
@@ -5551,7 +5551,7 @@ macro_line|#endif
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* hsync off */
 id|seqflags
@@ -5571,7 +5571,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* vsync off */
 id|seqflags
@@ -5591,7 +5591,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* just blank screen (backlight stays on) */
 id|seqflags
@@ -5614,7 +5614,7 @@ multiline_comment|/* no hsync/vsync suppression */
 r_break
 suffix:semicolon
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* unblank */
 id|seqflags

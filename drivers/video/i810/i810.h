@@ -306,6 +306,8 @@ DECL|macro|ALWAYS_SYNC
 mdefine_line|#define ALWAYS_SYNC                 4
 DECL|macro|LOCKUP
 mdefine_line|#define LOCKUP                      8
+DECL|macro|USE_HWCUR
+mdefine_line|#define USE_HWCUR                  16
 DECL|struct|gtt_data
 r_struct
 id|gtt_data

@@ -3556,17 +3556,16 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* Workaround for broken X servers */
 r_if
 c_cond
 (paren
 id|blank
 OG
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 )paren
 id|blank
 op_assign
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:semicolon
 r_if
 c_cond
