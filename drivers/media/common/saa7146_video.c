@@ -960,10 +960,9 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-DECL|function|start_preview
-r_static
+DECL|function|saa7146_start_preview
 r_int
-id|start_preview
+id|saa7146_start_preview
 c_func
 (paren
 r_struct
@@ -1153,10 +1152,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|stop_preview
-r_static
+DECL|function|saa7146_stop_preview
 r_int
-id|stop_preview
+id|saa7146_stop_preview
 c_func
 (paren
 r_struct
@@ -1183,7 +1181,7 @@ id|DEB_EE
 c_func
 (paren
 (paren
-l_string|&quot;saa7146.o: stop_preview()&bslash;n&quot;
+l_string|&quot;saa7146.o: saa7146_stop_preview()&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1494,13 +1492,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|stop_preview
+id|saa7146_stop_preview
 c_func
 (paren
 id|fh
 )paren
 suffix:semicolon
-id|start_preview
+id|saa7146_start_preview
 c_func
 (paren
 id|fh
@@ -2383,13 +2381,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|stop_preview
+id|saa7146_stop_preview
 c_func
 (paren
 id|fh
 )paren
 suffix:semicolon
-id|start_preview
+id|saa7146_start_preview
 c_func
 (paren
 id|fh
@@ -3441,7 +3439,7 @@ op_member_access_from_pointer
 id|ioctl
 c_func
 (paren
-id|dev
+id|fh
 comma
 id|cmd
 comma
@@ -3484,7 +3482,7 @@ op_member_access_from_pointer
 id|ioctl
 c_func
 (paren
-id|dev
+id|fh
 comma
 id|cmd
 comma
@@ -4357,7 +4355,7 @@ id|ov_fh
 op_assign
 id|vv-&gt;ov_data-&gt;fh
 suffix:semicolon
-id|stop_preview
+id|saa7146_stop_preview
 c_func
 (paren
 id|ov_fh
@@ -4445,7 +4443,7 @@ op_ne
 id|restart_overlay
 )paren
 (brace
-id|start_preview
+id|saa7146_start_preview
 c_func
 (paren
 id|ov_fh
@@ -4585,7 +4583,7 @@ id|flags
 suffix:semicolon
 id|err
 op_assign
-id|start_preview
+id|saa7146_start_preview
 c_func
 (paren
 id|fh
@@ -4636,7 +4634,7 @@ id|flags
 suffix:semicolon
 id|err
 op_assign
-id|stop_preview
+id|saa7146_stop_preview
 c_func
 (paren
 id|fh
@@ -5967,7 +5965,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|stop_preview
+id|saa7146_stop_preview
 c_func
 (paren
 id|fh
@@ -6174,7 +6172,7 @@ id|ov_fh
 op_assign
 id|vv-&gt;ov_data-&gt;fh
 suffix:semicolon
-id|stop_preview
+id|saa7146_stop_preview
 c_func
 (paren
 id|ov_fh
@@ -6234,7 +6232,7 @@ op_ne
 id|restart_overlay
 )paren
 (brace
-id|start_preview
+id|saa7146_start_preview
 c_func
 (paren
 id|ov_fh
@@ -6293,6 +6291,20 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|saa7146_video_uops
+)paren
+suffix:semicolon
+DECL|variable|saa7146_start_preview
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|saa7146_start_preview
+)paren
+suffix:semicolon
+DECL|variable|saa7146_stop_preview
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|saa7146_stop_preview
 )paren
 suffix:semicolon
 eof

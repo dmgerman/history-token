@@ -9,9 +9,9 @@ mdefine_line|#define MAX_SAA7146_CAPTURE_BUFFERS&t;32&t;/* arbitrary */
 DECL|macro|BUFFER_TIMEOUT
 mdefine_line|#define BUFFER_TIMEOUT     (HZ/2)  /* 0.5 seconds */
 DECL|macro|WRITE_RPS0
-mdefine_line|#define WRITE_RPS0(x) do { &bslash;&n;&t;static int count = 0;&t;&bslash;&n;&t;dev-&gt;d_rps0.cpu_addr[ count++ ] = cpu_to_le32(x); &bslash;&n;&t;} while (0);
+mdefine_line|#define WRITE_RPS0(x) do { &bslash;&n;&t;dev-&gt;d_rps0.cpu_addr[ count++ ] = cpu_to_le32(x); &bslash;&n;&t;} while (0);
 DECL|macro|WRITE_RPS1
-mdefine_line|#define WRITE_RPS1(x) do { &bslash;&n;&t;static int count = 0;&t;&bslash;&n;&t;dev-&gt;d_rps1.cpu_addr[ count++ ] = cpu_to_le32(x); &bslash;&n;&t;} while (0);
+mdefine_line|#define WRITE_RPS1(x) do { &bslash;&n;&t;dev-&gt;d_rps1.cpu_addr[ count++ ] = cpu_to_le32(x); &bslash;&n;&t;} while (0);
 DECL|struct|saa7146_video_dma
 r_struct
 id|saa7146_video_dma
@@ -457,7 +457,7 @@ id|ioctl
 )paren
 (paren
 r_struct
-id|saa7146_dev
+id|saa7146_fh
 op_star
 comma
 r_int
@@ -821,6 +821,26 @@ r_extern
 r_struct
 id|saa7146_use_ops
 id|saa7146_video_uops
+suffix:semicolon
+r_int
+id|saa7146_start_preview
+c_func
+(paren
+r_struct
+id|saa7146_fh
+op_star
+id|fh
+)paren
+suffix:semicolon
+r_int
+id|saa7146_stop_preview
+c_func
+(paren
+r_struct
+id|saa7146_fh
+op_star
+id|fh
+)paren
 suffix:semicolon
 multiline_comment|/* from saa7146_vbi.c */
 r_extern

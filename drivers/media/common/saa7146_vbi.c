@@ -35,6 +35,11 @@ id|dma_addr_t
 id|dma_addr
 suffix:semicolon
 r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 id|DECLARE_WAITQUEUE

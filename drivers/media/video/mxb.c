@@ -3450,9 +3450,9 @@ id|mxb_ioctl
 c_func
 (paren
 r_struct
-id|saa7146_dev
+id|saa7146_fh
 op_star
-id|dev
+id|fh
 comma
 r_int
 r_int
@@ -3463,6 +3463,13 @@ op_star
 id|arg
 )paren
 (brace
+r_struct
+id|saa7146_dev
+op_star
+id|dev
+op_assign
+id|fh-&gt;dev
+suffix:semicolon
 r_struct
 id|mxb
 op_star
