@@ -702,8 +702,7 @@ op_eq
 id|IPPROTO_ESP
 )paren
 )paren
-r_return
-l_int|0
+r_break
 suffix:semicolon
 id|hp
 op_assign
