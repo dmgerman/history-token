@@ -17432,6 +17432,10 @@ comma
 id|cmd
 )paren
 suffix:semicolon
+id|hscb-&gt;lun
+op_assign
+id|cmd-&gt;device-&gt;lun
+suffix:semicolon
 id|scb-&gt;hscb-&gt;task_management
 op_assign
 l_int|0
