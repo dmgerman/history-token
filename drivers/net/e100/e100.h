@@ -32,33 +32,21 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 multiline_comment|/*&n; *  Configure parameters for buffers per controller.&n; *  If the machine this is being used on is a faster machine (i.e. &gt; 150MHz)&n; *  and running on a 10MBS network then more queueing of data occurs. This&n; *  may indicate the some of the numbers below should be adjusted.  Here are&n; *  some typical numbers:&n; *                             MAX_TCB 64&n; *                             MAX_RFD 64&n; *  The default numbers give work well on most systems tests so no real&n; *  adjustments really need to take place.  Also, if the machine is connected&n; *  to a 100MBS network the numbers described above can be lowered from the&n; *  defaults as considerably less data will be queued.&n; */
-DECL|macro|MAX_TCB
-mdefine_line|#define MAX_TCB        64&t;/* number of transmit control blocks */
-DECL|macro|MAX_TBD
-mdefine_line|#define MAX_TBD        MAX_TCB
 DECL|macro|TX_FRAME_CNT
 mdefine_line|#define TX_FRAME_CNT   8&t;/* consecutive transmit frames per interrupt */
 multiline_comment|/* TX_FRAME_CNT must be less than MAX_TCB    */
-DECL|macro|MAX_RFD
-mdefine_line|#define MAX_RFD      64
 DECL|macro|E100_DEFAULT_TCB
-mdefine_line|#define E100_DEFAULT_TCB   MAX_TCB
+mdefine_line|#define E100_DEFAULT_TCB   64
 DECL|macro|E100_MIN_TCB
 mdefine_line|#define E100_MIN_TCB       2*TX_FRAME_CNT + 3&t;/* make room for at least 2 interrupts */
 DECL|macro|E100_MAX_TCB
 mdefine_line|#define E100_MAX_TCB       1024
 DECL|macro|E100_DEFAULT_RFD
-mdefine_line|#define E100_DEFAULT_RFD   MAX_RFD
+mdefine_line|#define E100_DEFAULT_RFD   64
 DECL|macro|E100_MIN_RFD
 mdefine_line|#define E100_MIN_RFD       8
-macro_line|#ifdef __ia64__
-multiline_comment|/* We can&squot;t use too many DMAble buffers on IA64 machines with &gt;4 GB mem */
-DECL|macro|E100_MAX_RFD
-mdefine_line|#define E100_MAX_RFD       64
-macro_line|#else
 DECL|macro|E100_MAX_RFD
 mdefine_line|#define E100_MAX_RFD       1024
-macro_line|#endif /*  __ia64__ */
 DECL|macro|E100_DEFAULT_XSUM
 mdefine_line|#define E100_DEFAULT_XSUM         true
 DECL|macro|E100_DEFAULT_BER
@@ -684,10 +672,6 @@ DECL|macro|RFD_POINTER
 mdefine_line|#define RFD_POINTER(skb,bdp)      ((rfd_t *) (((unsigned char *)((skb)-&gt;data))-((bdp)-&gt;rfd_size)))
 DECL|macro|SKB_RFD_STATUS
 mdefine_line|#define SKB_RFD_STATUS(skb,bdp)   ((RFD_POINTER((skb),(bdp)))-&gt;rfd_header.cb_status)
-DECL|macro|GET_SKB_DMA_ADDR
-mdefine_line|#define GET_SKB_DMA_ADDR(skb)&t;&t;( *(dma_addr_t *)( (skb)-&gt;cb) )
-DECL|macro|SET_SKB_DMA_ADDR
-mdefine_line|#define SET_SKB_DMA_ADDR(skb,dma_addr)&t;( *(dma_addr_t *)( (skb)-&gt;cb) = (dma_addr) )
 multiline_comment|/* ====================================================================== */
 multiline_comment|/*                              82557                                     */
 multiline_comment|/* ====================================================================== */
