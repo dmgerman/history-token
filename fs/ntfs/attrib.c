@@ -3855,10 +3855,10 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * map_runlist - map (a part of) a run list of an ntfs inode&n; * @ni:&t;&t;ntfs inode for which to map (part of) a run list&n; * @vcn:&t;map run list part containing this vcn&n; *&n; * Map the part of a run list containing the @vcn of the ntfs inode @ni.&n; *&n; * Return 0 on success and -errno on error.&n; */
-DECL|function|map_runlist
+multiline_comment|/**&n; * ntfs_map_runlist - map (a part of) a run list of an ntfs inode&n; * @ni:&t;&t;ntfs inode for which to map (part of) a run list&n; * @vcn:&t;map run list part containing this vcn&n; *&n; * Map the part of a run list containing the @vcn of the ntfs inode @ni.&n; *&n; * Return 0 on success and -errno on error.&n; */
+DECL|function|ntfs_map_runlist
 r_int
-id|map_runlist
+id|ntfs_map_runlist
 c_func
 (paren
 id|ntfs_inode

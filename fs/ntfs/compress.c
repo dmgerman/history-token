@@ -1976,7 +1976,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|map_runlist
+id|ntfs_map_runlist
 c_func
 (paren
 id|ni
@@ -3296,8 +3296,8 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;map_runlist() failed. Cannot read compression &quot;
-l_string|&quot;block.&quot;
+l_string|&quot;ntfs_map_runlist() failed. Cannot read &quot;
+l_string|&quot;compression block.&quot;
 )paren
 suffix:semicolon
 r_goto

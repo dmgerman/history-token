@@ -1039,7 +1039,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|map_runlist
+id|ntfs_map_runlist
 c_func
 (paren
 id|ni
@@ -2380,7 +2380,7 @@ id|ni-&gt;runlist.lock
 suffix:semicolon
 id|err
 op_assign
-id|map_runlist
+id|ntfs_map_runlist
 c_func
 (paren
 id|ni
@@ -5327,7 +5327,7 @@ id|ni-&gt;runlist.lock
 suffix:semicolon
 id|err
 op_assign
-id|map_runlist
+id|ntfs_map_runlist
 c_func
 (paren
 id|ni

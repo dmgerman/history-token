@@ -132,7 +132,7 @@ id|old_rl
 suffix:semicolon
 r_extern
 r_int
-id|map_runlist
+id|ntfs_map_runlist
 c_func
 (paren
 id|ntfs_inode
