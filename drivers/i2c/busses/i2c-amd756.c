@@ -1109,11 +1109,10 @@ id|amd756_func
 comma
 )brace
 suffix:semicolon
-DECL|variable|amd756_adapter
-r_static
+DECL|variable|amd756_smbus
 r_struct
 id|i2c_adapter
-id|amd756_adapter
+id|amd756_smbus
 op_assign
 (brace
 dot
@@ -1517,7 +1516,7 @@ id|amd756_ioport
 )paren
 suffix:semicolon
 multiline_comment|/* set up the driverfs linkage to our parent device */
-id|amd756_adapter.dev.parent
+id|amd756_smbus.dev.parent
 op_assign
 op_amp
 id|pdev-&gt;dev
@@ -1525,7 +1524,7 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|amd756_adapter.name
+id|amd756_smbus.name
 comma
 l_string|&quot;SMBus %s adapter at %04x&quot;
 comma
@@ -1543,7 +1542,7 @@ id|i2c_add_adapter
 c_func
 (paren
 op_amp
-id|amd756_adapter
+id|amd756_smbus
 )paren
 suffix:semicolon
 r_if
@@ -1599,7 +1598,7 @@ id|i2c_del_adapter
 c_func
 (paren
 op_amp
-id|amd756_adapter
+id|amd756_smbus
 )paren
 suffix:semicolon
 id|release_region
@@ -1697,6 +1696,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|amd756_smbus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|amd756_smbus
 )paren
 suffix:semicolon
 id|module_init

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * &t;w1_family.c&n; *&n; * Copyright (c) 2004 Evgeniy Polyakov &lt;johnpol@2ka.mipt.ru&gt;&n; * &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;w1_family.h&quot;
 DECL|variable|w1_flock
 id|spinlock_t
@@ -294,25 +295,13 @@ id|fent-&gt;refcnt
 )paren
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|signal_pending
+id|msleep_interruptible
 c_func
 (paren
-id|current
+l_int|1000
 )paren
 )paren
 id|flush_signals
