@@ -135,16 +135,8 @@ suffix:semicolon
 multiline_comment|/* For the default policy, we want at least some processing power&n; * - let&squot;s say 5%. (min = maxfreq / POLICY_MIN_DIV)&n; */
 DECL|macro|POLICY_MIN_DIV
 mdefine_line|#define POLICY_MIN_DIV 20
-multiline_comment|/* DEBUG&n; *   Define it if you want verbose debug output&n; */
-DECL|macro|SUSPMOD_DEBUG
-mdefine_line|#define SUSPMOD_DEBUG 1
-macro_line|#ifdef SUSPMOD_DEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(KERN_DEBUG &quot;cpufreq:&quot; msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;gx-suspmod&quot;, msg)
 multiline_comment|/**&n; *      we can detect a core multipiler from dir0_lsb &n; *      from GX1 datasheet p.56, &n; *&t;   MULT[3:0]:&n; *&t;   0000 = SYSCLK multiplied by 4 (test only)&n; *&t;   0001 = SYSCLK multiplied by 10&n; *&t;   0010 = SYSCLK multiplied by 4&n; *&t;   0011 = SYSCLK multiplied by 6&n; *&t;   0100 = SYSCLK multiplied by 9&n; *&t;   0101 = SYSCLK multiplied by 5&n; *&t;   0110 = SYSCLK multiplied by 7&n; *&t;   0111 = SYSCLK multiplied by 8&n; *              of 33.3MHz&n; **/
 DECL|variable|gx_freq_mult
 r_static
@@ -273,11 +265,10 @@ id|X86_VENDOR_CYRIX
 )paren
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;gx-suspmod: error: no MediaGX/Geode processor found!&bslash;n&quot;
+l_string|&quot;error: no MediaGX/Geode processor found!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -328,8 +319,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;gx-suspmod: error: no supported chipset found!&bslash;n&quot;
+l_string|&quot;error: no supported chipset found!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
