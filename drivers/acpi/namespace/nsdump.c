@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 141 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 145 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -255,46 +255,17 @@ id|u32
 id|bytes_to_dump
 suffix:semicolon
 id|u32
-id|downstream_sibling_mask
-op_assign
-l_int|0
-suffix:semicolon
-id|u32
-id|level_tmp
-suffix:semicolon
-id|u32
-id|which_bit
+id|dbg_level
 suffix:semicolon
 id|u32
 id|i
-suffix:semicolon
-id|u32
-id|dbg_level
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ns_dump_one_object&quot;
 )paren
 suffix:semicolon
-id|this_node
-op_assign
-id|acpi_ns_map_handle_to_node
-(paren
-id|obj_handle
-)paren
-suffix:semicolon
-id|level_tmp
-op_assign
-id|level
-suffix:semicolon
-id|type
-op_assign
-id|this_node-&gt;type
-suffix:semicolon
-id|which_bit
-op_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* Is output enabled? */
 r_if
 c_cond
 (paren
@@ -334,6 +305,17 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+id|this_node
+op_assign
+id|acpi_ns_map_handle_to_node
+(paren
+id|obj_handle
+)paren
+suffix:semicolon
+id|type
+op_assign
+id|this_node-&gt;type
+suffix:semicolon
 multiline_comment|/* Check if the owner matches */
 r_if
 c_cond
@@ -358,160 +340,39 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Indent the object according to the level */
-r_while
-c_loop
-(paren
-id|level_tmp
-op_decrement
-)paren
-(brace
-multiline_comment|/* Print appropriate characters to form tree structure */
-r_if
-c_cond
-(paren
-id|level_tmp
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|downstream_sibling_mask
-op_amp
-id|which_bit
-)paren
-(brace
 id|acpi_os_printf
 (paren
-l_string|&quot;|&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|acpi_os_printf
-(paren
+l_string|&quot;%2d%*s&quot;
+comma
+id|level
+op_minus
+l_int|1
+comma
+id|level
+op_star
+l_int|2
+comma
 l_string|&quot; &quot;
 )paren
 suffix:semicolon
-)brace
-id|which_bit
-op_lshift_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|acpi_ns_exist_downstream_sibling
-(paren
-id|this_node
-op_plus
-l_int|1
-)paren
-)paren
-(brace
-id|downstream_sibling_mask
-op_or_assign
-(paren
-(paren
-id|u32
-)paren
-l_int|1
-op_lshift
-(paren
-id|level
-op_minus
-l_int|1
-)paren
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;+&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|downstream_sibling_mask
-op_and_assign
-id|ACPI_UINT32_MAX
-op_xor
-(paren
-(paren
-id|u32
-)paren
-l_int|1
-op_lshift
-(paren
-id|level
-op_minus
-l_int|1
-)paren
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;+&quot;
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|this_node-&gt;child
-op_eq
-l_int|NULL
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot;-&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|acpi_ns_exist_downstream_sibling
-(paren
-id|this_node-&gt;child
-)paren
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot;+&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot;-&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-)brace
-multiline_comment|/* Check the integrity of our data */
+multiline_comment|/* Check the node type and name */
 r_if
 c_cond
 (paren
 id|type
 OG
-id|INTERNAL_TYPE_MAX
+id|ACPI_TYPE_LOCAL_MAX
 )paren
 (brace
+id|ACPI_REPORT_WARNING
+(paren
+(paren
+l_string|&quot;Invalid ACPI Type %08X&bslash;n&quot;
+comma
 id|type
-op_assign
-id|INTERNAL_TYPE_DEF_ANY
+)paren
+)paren
 suffix:semicolon
-multiline_comment|/* prints as *ERROR* */
 )brace
 r_if
 c_cond
@@ -536,7 +397,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Now we can print out the pertinent information&n;&t; */
 id|acpi_os_printf
 (paren
-l_string|&quot; %4.4s %-12s %p&quot;
+l_string|&quot;%4.4s %-12s %p &quot;
 comma
 id|this_node-&gt;name.ascii
 comma
@@ -606,7 +467,7 @@ id|ACPI_TYPE_PROCESSOR
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; ID %X Len %.4X Addr %p&bslash;n&quot;
+l_string|&quot;ID %X Len %.4X Addr %p&bslash;n&quot;
 comma
 id|obj_desc-&gt;processor.proc_id
 comma
@@ -626,7 +487,7 @@ id|ACPI_TYPE_DEVICE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Notification object: %p&quot;
+l_string|&quot;Notify object: %p&quot;
 comma
 id|obj_desc
 )paren
@@ -638,7 +499,7 @@ id|ACPI_TYPE_METHOD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Args %X Len %.4X Aml %p&bslash;n&quot;
+l_string|&quot;Args %X Len %.4X Aml %p&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -657,7 +518,7 @@ id|ACPI_TYPE_INTEGER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; = %8.8X%8.8X&bslash;n&quot;
+l_string|&quot;= %8.8X%8.8X&bslash;n&quot;
 comma
 id|ACPI_HIDWORD
 (paren
@@ -685,7 +546,7 @@ id|AOPOBJ_DATA_VALID
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot; Elements %.2X&bslash;n&quot;
+l_string|&quot;Elements %.2X&bslash;n&quot;
 comma
 id|obj_desc-&gt;package.count
 )paren
@@ -695,7 +556,7 @@ r_else
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot; [Length not yet evaluated]&bslash;n&quot;
+l_string|&quot;[Length not yet evaluated]&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -714,7 +575,7 @@ id|AOPOBJ_DATA_VALID
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot; Len %.2X&quot;
+l_string|&quot;Len %.2X&quot;
 comma
 id|obj_desc-&gt;buffer.length
 )paren
@@ -776,7 +637,7 @@ r_else
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot; [Length not yet evaluated]&bslash;n&quot;
+l_string|&quot;[Length not yet evaluated]&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -787,41 +648,18 @@ id|ACPI_TYPE_STRING
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Len %.2X&quot;
+l_string|&quot;Len %.2X &quot;
 comma
 id|obj_desc-&gt;string.length
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|acpi_ut_print_string
 (paren
-id|obj_desc-&gt;string.length
-OG
-l_int|0
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot; = &bslash;&quot;%.32s&bslash;&quot;&quot;
-comma
 id|obj_desc-&gt;string.pointer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|obj_desc-&gt;string.length
-OG
+comma
 l_int|32
 )paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot;...&quot;
-)paren
 suffix:semicolon
-)brace
-)brace
 id|acpi_os_printf
 (paren
 l_string|&quot;&bslash;n&quot;
@@ -834,7 +672,7 @@ id|ACPI_TYPE_REGION
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; [%s]&quot;
+l_string|&quot;[%s]&quot;
 comma
 id|acpi_ut_get_region_name
 (paren
@@ -879,11 +717,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; [%s]&bslash;n&quot;
+l_string|&quot;[%s]&bslash;n&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -906,7 +744,7 @@ id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.node
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot; Buf [%4.4s]&quot;
+l_string|&quot;Buf [%4.4s]&quot;
 comma
 id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.node-&gt;name.ascii
 )paren
@@ -915,11 +753,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Rgn [%4.4s]&quot;
+l_string|&quot;Rgn [%4.4s]&quot;
 comma
 id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name.ascii
 )paren
@@ -927,11 +765,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Rgn [%4.4s] Bnk [%4.4s]&quot;
+l_string|&quot;Rgn [%4.4s] Bnk [%4.4s]&quot;
 comma
 id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name.ascii
 comma
@@ -941,11 +779,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Idx [%4.4s] Dat [%4.4s]&quot;
+l_string|&quot;Idx [%4.4s] Dat [%4.4s]&quot;
 comma
 id|obj_desc-&gt;index_field.index_obj-&gt;common_field.node-&gt;name.ascii
 comma
@@ -955,11 +793,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_ALIAS
+id|ACPI_TYPE_LOCAL_ALIAS
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Target %4.4s (%p)&bslash;n&quot;
+l_string|&quot;Target %4.4s (%p)&bslash;n&quot;
 comma
 (paren
 (paren
@@ -980,7 +818,7 @@ r_default
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Object %p&bslash;n&quot;
+l_string|&quot;Object %p&bslash;n&quot;
 comma
 id|obj_desc
 )paren
@@ -999,13 +837,13 @@ r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1038,9 +876,7 @@ id|ACPI_DISPLAY_OBJECTS
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;%p O:%p&quot;
-comma
-id|this_node
+l_string|&quot;O:%p&quot;
 comma
 id|obj_desc
 )paren
@@ -1211,7 +1047,7 @@ id|obj_desc
 (brace
 id|obj_type
 op_assign
-id|INTERNAL_TYPE_INVALID
+id|ACPI_TYPE_INVALID
 suffix:semicolon
 id|acpi_os_printf
 (paren
@@ -1262,7 +1098,7 @@ c_cond
 (paren
 id|obj_type
 OG
-id|INTERNAL_TYPE_MAX
+id|ACPI_TYPE_LOCAL_MAX
 )paren
 (brace
 id|acpi_os_printf
@@ -1411,7 +1247,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 id|obj_desc
 op_assign
@@ -1424,7 +1260,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
 id|obj_desc
 op_assign
@@ -1437,7 +1273,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|obj_desc
 op_assign
@@ -1457,7 +1293,7 @@ suffix:semicolon
 )brace
 id|obj_type
 op_assign
-id|INTERNAL_TYPE_INVALID
+id|ACPI_TYPE_INVALID
 suffix:semicolon
 multiline_comment|/* Terminate loop after next pass */
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: excreate - Named object creation&n; *              $Revision: 94 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: excreate - Named object creation&n; *              $Revision: 97 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -33,6 +33,8 @@ id|alias_node
 suffix:semicolon
 id|acpi_status
 id|status
+op_assign
+id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -67,7 +69,7 @@ c_cond
 (paren
 id|target_node-&gt;type
 op_eq
-id|INTERNAL_TYPE_ALIAS
+id|ACPI_TYPE_LOCAL_ALIAS
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Dereference an existing alias so that we don&squot;t create a chain&n;&t;&t; * of aliases.  With this code, we guarantee that an alias is&n;&t;&t; * always exactly one level of indirection away from the&n;&t;&t; * actual aliased name.&n;&t;&t; */
@@ -105,15 +107,16 @@ suffix:colon
 multiline_comment|/*&n;&t;&t; * The new alias has the type ALIAS and points to the original&n;&t;&t; * NS node, not the object itself.  This is because for these&n;&t;&t; * types, the object can change dynamically via a Store.&n;&t;&t; */
 id|alias_node-&gt;type
 op_assign
-id|INTERNAL_TYPE_ALIAS
+id|ACPI_TYPE_LOCAL_ALIAS
 suffix:semicolon
 id|alias_node-&gt;object
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_operand_object
-op_star
-)paren
+comma
 id|target_node
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -141,7 +144,7 @@ suffix:semicolon
 multiline_comment|/* Since both operands are Nodes, we don&squot;t need to delete them */
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -336,10 +339,8 @@ l_int|1
 op_member_access_from_pointer
 id|integer.value
 suffix:semicolon
-id|status
+id|obj_desc-&gt;mutex.node
 op_assign
-id|acpi_ns_attach_object
-(paren
 (paren
 id|acpi_namespace_node
 op_star
@@ -348,6 +349,12 @@ id|walk_state-&gt;operands
 (braket
 l_int|0
 )braket
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ns_attach_object
+(paren
+id|obj_desc-&gt;mutex.node
 comma
 id|obj_desc
 comma
