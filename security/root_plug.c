@@ -216,11 +216,6 @@ op_assign
 id|cap_task_post_setuid
 comma
 dot
-id|task_kmod_set_label
-op_assign
-id|cap_task_kmod_set_label
-comma
-dot
 id|task_reparent_to_init
 op_assign
 id|cap_task_reparent_to_init
@@ -367,7 +362,7 @@ l_string|&quot;Root Plug module removed&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|variable|rootplug_init
-id|module_init
+id|security_initcall
 (paren
 id|rootplug_init
 )paren

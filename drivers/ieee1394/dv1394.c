@@ -8994,20 +8994,37 @@ id|MAX_PACKETS
 suffix:semicolon
 id|xferstatus
 op_assign
-id|le16_to_cpu
+id|le32_to_cpu
 c_func
 (paren
 id|block-&gt;u.in.il.q
 (braket
 l_int|3
 )braket
+)paren
 op_rshift
 l_int|16
-)paren
 suffix:semicolon
 id|xferstatus
 op_and_assign
 l_int|0x1F
+suffix:semicolon
+id|irq_printk
+c_func
+(paren
+l_string|&quot;ir_tasklet_func: xferStatus/resCount [%d] = 0x%08x&bslash;n&quot;
+comma
+id|i
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|block-&gt;u.in.il.q
+(braket
+l_int|3
+)braket
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* get the current frame */
 id|f
@@ -9030,23 +9047,6 @@ op_eq
 l_int|0x11
 )paren
 (brace
-id|irq_printk
-c_func
-(paren
-l_string|&quot;ir_tasklet_func: xferStatus/resCount [%d] = 0x%08x&bslash;n&quot;
-comma
-id|i
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|block-&gt;u.in.il.q
-(braket
-l_int|3
-)braket
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* check for start of frame */
 multiline_comment|/* DRD&gt; Changed to check section type ([0]&gt;&gt;5==0) &n;&t;&t;&t;&t;   and dif sequence ([1]&gt;&gt;4==0) */
 id|sof
@@ -9479,12 +9479,10 @@ id|prev-&gt;u.in.il.q
 l_int|2
 )braket
 op_assign
-(paren
 id|cpu_to_le32
 c_func
 (paren
 id|next_dma
-)paren
 op_or
 l_int|1
 )paren
