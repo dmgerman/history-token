@@ -1746,6 +1746,13 @@ op_assign
 id|PSMOUSE_IMEX
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Make sure that touchpad is in relative mode, gestures (taps) are enabled&n; */
+id|synaptics_reset
+c_func
+(paren
+id|psmouse
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
