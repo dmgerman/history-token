@@ -5159,6 +5159,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_MULTICAST
 id|in_dev-&gt;mr_ifc_count
 op_assign
 l_int|0
@@ -5201,6 +5202,7 @@ op_amp
 id|in_dev-&gt;refcnt
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
