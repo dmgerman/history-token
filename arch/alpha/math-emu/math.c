@@ -337,6 +337,7 @@ id|insn
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|pc
@@ -1455,6 +1456,7 @@ id|insn
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 (paren
