@@ -537,6 +537,10 @@ id|addr
 )paren
 )paren
 r_return
+(paren
+r_void
+op_star
+)paren
 id|IO_TOKEN_TO_ADDR
 c_func
 (paren
