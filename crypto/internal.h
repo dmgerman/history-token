@@ -4,6 +4,7 @@ DECL|macro|_CRYPTO_INTERNAL_H
 mdefine_line|#define _CRYPTO_INTERNAL_H
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
 DECL|function|crypto_kmap
