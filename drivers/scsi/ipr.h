@@ -149,8 +149,6 @@ DECL|macro|IPR_ID_HOST_RR_Q
 mdefine_line|#define IPR_ID_HOST_RR_Q&t;&t;&t;&t;0xC4
 DECL|macro|IPR_QUERY_IOA_CONFIG
 mdefine_line|#define IPR_QUERY_IOA_CONFIG&t;&t;&t;&t;0xC5
-DECL|macro|IPR_ABORT_TASK
-mdefine_line|#define IPR_ABORT_TASK&t;&t;&t;&t;&t;0xC7
 DECL|macro|IPR_CANCEL_ALL_REQUESTS
 mdefine_line|#define IPR_CANCEL_ALL_REQUESTS&t;&t;&t;0xCE
 DECL|macro|IPR_HOST_CONTROLLED_ASYNC
