@@ -8,6 +8,10 @@ macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+DECL|macro|ISA_START_ADDRESS
+mdefine_line|#define ISA_START_ADDRESS      0xa0000
+DECL|macro|ISA_END_ADDRESS
+mdefine_line|#define ISA_END_ADDRESS                0x100000
 DECL|function|remap_area_pte
 r_static
 r_inline
@@ -798,11 +802,11 @@ c_cond
 (paren
 id|phys_addr
 op_ge
-l_int|0xA0000
+id|ISA_START_ADDRESS
 op_logical_and
 id|last_addr
 OL
-l_int|0x100000
+id|ISA_END_ADDRESS
 )paren
 r_return
 (paren
@@ -1103,6 +1107,27 @@ c_cond
 id|addr
 op_le
 id|high_memory
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+op_ge
+id|phys_to_virt
+c_func
+(paren
+id|ISA_START_ADDRESS
+)paren
+op_logical_and
+id|addr
+OL
+id|phys_to_virt
+c_func
+(paren
+id|ISA_END_ADDRESS
+)paren
 )paren
 r_return
 suffix:semicolon

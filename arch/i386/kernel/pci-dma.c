@@ -52,6 +52,8 @@ op_star
 id|dma_handle
 comma
 r_int
+r_int
+id|__nocast
 id|gfp
 )paren
 (brace

@@ -441,22 +441,6 @@ multiline_comment|/* ISA-to-PCI Addr Decoder Control */
 l_int|0xf0
 )paren
 suffix:semicolon
-multiline_comment|/* Enable RTC and Keyboard address locations.  */
-id|early_write_config_byte
-c_func
-(paren
-id|hose
-comma
-l_int|0
-comma
-id|devfn
-comma
-l_int|0x4d
-comma
-multiline_comment|/* Chip Select Control Register */
-l_int|0x00
-)paren
-suffix:semicolon
 multiline_comment|/* Enable Port 92.  */
 id|early_write_config_byte
 c_func

@@ -12659,17 +12659,16 @@ op_star
 id|lock
 )paren
 (brace
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
 r_if
 c_cond
 (paren
-id|lock-&gt;break_lock
+id|need_lockbreak
+c_func
+(paren
+id|lock
+)paren
 )paren
 (brace
-id|lock-&gt;break_lock
-op_assign
-l_int|0
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -12688,7 +12687,6 @@ id|lock
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -932,6 +932,34 @@ c_func
 (paren
 id|s
 comma
+l_string|&quot;  Skbs sent in SG mode                   : %i&bslash;n&quot;
+l_string|&quot;  Skb fragments sent in SG mode          : %i&bslash;n&bslash;n&quot;
+comma
+id|card-&gt;perf_stats.sg_skbs_sent
+comma
+id|card-&gt;perf_stats.sg_frags_sent
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|s
+comma
+l_string|&quot;  large_send tx (in Kbytes)              : %i&bslash;n&quot;
+l_string|&quot;  large_send count                       : %i&bslash;n&bslash;n&quot;
+comma
+id|card-&gt;perf_stats.large_send_bytes
+op_rshift
+l_int|10
+comma
+id|card-&gt;perf_stats.large_send_cnt
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|s
+comma
 l_string|&quot;  Packing state changes no pkg.-&gt;packing : %i/%i&bslash;n&quot;
 l_string|&quot;  Watermarks L/H                         : %i/%i&bslash;n&quot;
 l_string|&quot;  Current buffer usage (outbound q&squot;s)    : &quot;
@@ -1035,7 +1063,7 @@ l_string|&quot;  Outbound handler count                 : %i&bslash;n&bslash;n&q
 l_string|&quot;  Outbound time (in us, incl QDIO)       : %i&bslash;n&quot;
 l_string|&quot;  Outbound count                         : %i&bslash;n&quot;
 l_string|&quot;  Outbound do_QDIO time (in us)          : %i&bslash;n&quot;
-l_string|&quot;  Outbound do_QDIO count                 : %i&bslash;n&quot;
+l_string|&quot;  Outbound do_QDIO count                 : %i&bslash;n&bslash;n&quot;
 comma
 id|card-&gt;perf_stats.inbound_time
 comma

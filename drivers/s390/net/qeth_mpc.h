@@ -4,7 +4,7 @@ DECL|macro|__QETH_MPC_H__
 mdefine_line|#define __QETH_MPC_H__
 macro_line|#include &lt;asm/qeth.h&gt;
 DECL|macro|VERSION_QETH_MPC_H
-mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.38 $&quot;
+mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.43 $&quot;
 r_extern
 r_const
 r_char
@@ -588,6 +588,21 @@ DECL|enumerator|IPA_OSA_MC_ROUTER
 id|IPA_OSA_MC_ROUTER
 op_assign
 l_int|0x00020000L
+comma
+DECL|enumerator|IPA_QUERY_ARP_ASSIST
+id|IPA_QUERY_ARP_ASSIST
+op_assign
+l_int|0x00040000L
+comma
+DECL|enumerator|IPA_INBOUND_TSO
+id|IPA_INBOUND_TSO
+op_assign
+l_int|0x00080000L
+comma
+DECL|enumerator|IPA_OUTBOUND_TSO
+id|IPA_OUTBOUND_TSO
+op_assign
+l_int|0x00100000L
 comma
 )brace
 suffix:semicolon

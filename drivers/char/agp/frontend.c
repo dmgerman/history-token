@@ -2297,7 +2297,7 @@ r_else
 r_if
 c_cond
 (paren
-id|remap_pfn_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma
@@ -2381,7 +2381,7 @@ r_else
 r_if
 c_cond
 (paren
-id|remap_pfn_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma

@@ -100,6 +100,8 @@ r_int
 id|size
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 id|pgprot_t
@@ -118,6 +120,8 @@ op_star
 id|area
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 id|pgprot_t

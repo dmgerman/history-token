@@ -160,7 +160,11 @@ DECL|member|xmit_cnt
 r_int
 id|xmit_cnt
 suffix:semicolon
-multiline_comment|/*  struct semaphore        port_write_sem; */
+DECL|member|port_write_sem
+r_struct
+id|semaphore
+id|port_write_sem
+suffix:semicolon
 DECL|member|flags
 r_int
 id|flags
@@ -223,6 +227,10 @@ DECL|member|custom_divisor
 r_int
 id|custom_divisor
 suffix:semicolon
+DECL|member|driver_lock
+id|spinlock_t
+id|driver_lock
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Flags */
@@ -247,6 +255,8 @@ DECL|macro|GS_DEBUG_CLOSE
 mdefine_line|#define GS_DEBUG_CLOSE   0x00000010
 DECL|macro|GS_DEBUG_FLOW
 mdefine_line|#define GS_DEBUG_FLOW    0x00000020
+DECL|macro|GS_DEBUG_WRITE
+mdefine_line|#define GS_DEBUG_WRITE   0x00000040
 r_void
 id|gs_put_char
 c_func

@@ -69,6 +69,7 @@ mdefine_line|#define HAS_INVERSION(reg0)&t;&t;(!(reg0 &amp; 0x20))
 DECL|macro|FIN
 mdefine_line|#define FIN (XIN &gt;&gt; 4)
 DECL|variable|tda10021_inittab_size
+r_static
 r_int
 id|tda10021_inittab_size
 op_assign
@@ -119,7 +120,7 @@ l_int|0xb8
 comma
 l_int|0x3f
 comma
-l_int|0xa1
+l_int|0xa0
 comma
 l_int|0x00
 comma
@@ -2236,11 +2237,6 @@ id|state-&gt;frontend
 suffix:semicolon
 id|error
 suffix:colon
-r_if
-c_cond
-(paren
-id|state
-)paren
 id|kfree
 c_func
 (paren

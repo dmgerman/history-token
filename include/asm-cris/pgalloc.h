@@ -1,7 +1,6 @@
 macro_line|#ifndef _CRIS_PGALLOC_H
 DECL|macro|_CRIS_PGALLOC_H
 mdefine_line|#define _CRIS_PGALLOC_H
-macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 DECL|macro|pmd_populate_kernel

@@ -744,7 +744,13 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
+(paren
 id|count
+op_div
+l_int|100
+)paren
+op_star
+id|sysctl_vfs_cache_pressure
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * mb_cache_create()  create a new cache&n; *&n; * All entries in one cache are equal size. Cache entries may be from&n; * multiple devices. If this is the first mbcache created, registers&n; * the cache with kernel memory management. Returns NULL if no more&n; * memory was available.&n; *&n; * @name: name of the cache (informal)&n; * @cache_op: contains the callback called when freeing a cache entry&n; * @entry_size: The size of a cache entry, including&n; *              struct mb_cache_entry&n; * @indexes_count: number of additional indexes in the cache. Must equal&n; *                 MB_CACHE_INDEXES_COUNT if the number of indexes is&n; *                 hardwired.&n; * @bucket_bits: log2(number of hash buckets)&n; */

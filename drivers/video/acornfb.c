@@ -3468,7 +3468,7 @@ multiline_comment|/*&n;&t; * Don&squot;t alter the page protection flags; we wan
 r_if
 c_cond
 (paren
-id|io_remap_page_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma
@@ -3476,6 +3476,8 @@ comma
 id|vma-&gt;vm_start
 comma
 id|off
+op_rshift
+id|PAGE_SHIFT
 comma
 id|vma-&gt;vm_end
 op_minus

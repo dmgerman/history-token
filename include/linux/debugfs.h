@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  debugfs.h - a tiny little debug file system&n; *&n; *
 macro_line|#ifndef _DEBUGFS_H_
 DECL|macro|_DEBUGFS_H_
 mdefine_line|#define _DEBUGFS_H_
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#if defined(CONFIG_DEBUG_FS)
 r_struct
 id|dentry

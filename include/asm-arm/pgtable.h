@@ -593,6 +593,14 @@ mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 multiline_comment|/*&n; * remap a physical address `phys&squot; of size `size&squot; with page protection `prot&squot;&n; * into virtual address `from&squot;&n; */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range(vma,from,phys,size,prot) &bslash;&n;&t;&t;remap_pfn_range(vma, from, (phys) &gt;&gt; PAGE_SHIFT, size, prot)
+DECL|macro|io_remap_pfn_range
+mdefine_line|#define io_remap_pfn_range(vma,from,pfn,size,prot) &bslash;&n;&t;&t;remap_pfn_range(vma, from, pfn, size, prot)
+DECL|macro|MK_IOSPACE_PFN
+mdefine_line|#define MK_IOSPACE_PFN(space, pfn)&t;(pfn)
+DECL|macro|GET_IOSPACE
+mdefine_line|#define GET_IOSPACE(pfn)&t;&t;0
+DECL|macro|GET_PFN
+mdefine_line|#define GET_PFN(pfn)&t;&t;&t;(pfn)
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init() do { } while (0)
 macro_line|#endif /* !__ASSEMBLY__ */

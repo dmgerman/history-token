@@ -283,6 +283,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize the role table.&n; */
 DECL|function|roles_init
+r_static
 r_int
 id|roles_init
 c_func
@@ -460,6 +461,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize a policy database structure.&n; */
 DECL|function|policydb_init
+r_static
 r_int
 id|policydb_init
 c_func
@@ -1168,6 +1170,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Define the common val_to_name array and the class&n; * val_to_name and val_to_struct arrays in a policy&n; * database structure.&n; *&n; * Caller must clean up upon failure.&n; */
 DECL|function|policydb_index_classes
+r_static
 r_int
 id|policydb_index_classes
 c_func
@@ -1399,6 +1402,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Define the other val_to_name and val_to_struct arrays&n; * in a policy database structure.&n; *&n; * Caller must clean up on failure.&n; */
 DECL|function|policydb_index_others
+r_static
 r_int
 id|policydb_index_others
 c_func
@@ -2263,6 +2267,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|ocontext_destroy
+r_static
 r_void
 id|ocontext_destroy
 c_func

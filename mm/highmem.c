@@ -28,6 +28,8 @@ id|page_pool_alloc
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 r_void
@@ -36,11 +38,13 @@ id|data
 )paren
 (brace
 r_int
+r_int
 id|gfp
 op_assign
 id|gfp_mask
 op_or
 (paren
+r_int
 r_int
 )paren
 (paren

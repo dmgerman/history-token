@@ -34,7 +34,24 @@ DECL|typedef|irq_cpustat_t
 id|____cacheline_aligned
 id|irq_cpustat_t
 suffix:semicolon
-macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
+id|DECLARE_PER_CPU
+c_func
+(paren
+id|irq_cpustat_t
+comma
+id|irq_stat
+)paren
+suffix:semicolon
+r_extern
+id|irq_cpustat_t
+id|irq_stat
+(braket
+)braket
+suffix:semicolon
+DECL|macro|__ARCH_IRQ_STAT
+mdefine_line|#define __ARCH_IRQ_STAT
+DECL|macro|__IRQ_STAT
+mdefine_line|#define __IRQ_STAT(cpu, member) (per_cpu(irq_stat, cpu).member)
 r_void
 id|ack_bad_irq
 c_func
@@ -44,5 +61,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
+macro_line|#include &lt;linux/irq_cpustat.h&gt;
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof

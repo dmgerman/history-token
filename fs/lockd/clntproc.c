@@ -1515,6 +1515,12 @@ c_func
 id|NLMCLNT_GRACE_WAIT
 )paren
 suffix:semicolon
+id|try_to_freeze
+c_func
+(paren
+id|PF_FREEZE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

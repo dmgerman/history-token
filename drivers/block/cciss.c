@@ -1345,6 +1345,8 @@ singleline_comment|// above 3 lines ensure safety
 r_if
 c_cond
 (paren
+id|len
+op_logical_and
 id|cmd
 (braket
 id|len

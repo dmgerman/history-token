@@ -1,6 +1,8 @@
 macro_line|#ifndef _PPC64_HVCALL_H
 DECL|macro|_PPC64_HVCALL_H
 mdefine_line|#define _PPC64_HVCALL_H
+DECL|macro|HVSC
+mdefine_line|#define HVSC&t;&t;&t;.long 0x44000022
 DECL|macro|H_Success
 mdefine_line|#define H_Success&t;0
 DECL|macro|H_Busy
@@ -62,7 +64,7 @@ multiline_comment|/* Flags */
 DECL|macro|H_LARGE_PAGE
 mdefine_line|#define H_LARGE_PAGE&t;&t;(1UL&lt;&lt;(63-16))
 DECL|macro|H_EXACT
-mdefine_line|#define H_EXACT&t;&t;    (1UL&lt;&lt;(63-24))&t;/* Use exact PTE or return H_PTEG_FULL */
+mdefine_line|#define H_EXACT&t;&t;&t;(1UL&lt;&lt;(63-24))&t;/* Use exact PTE or return H_PTEG_FULL */
 DECL|macro|H_R_XLATE
 mdefine_line|#define H_R_XLATE&t;&t;(1UL&lt;&lt;(63-25))&t;/* include a valid logical page num in the pte if the valid bit is set */
 DECL|macro|H_READ_4
@@ -186,6 +188,7 @@ DECL|macro|H_FREE_VTERM
 mdefine_line|#define H_FREE_VTERM&t;&t;0x158
 DECL|macro|H_POLL_PENDING
 mdefine_line|#define H_POLL_PENDING&t;        0x1D8
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* plpar_hcall() -- Generic call interface using above opcodes&n; *&n; * The actual call interface is a hypervisor call instruction with&n; * the opcode in R3 and input args in R4-R7.&n; * Status is returned in R3 with variable output values in R4-R11.&n; * Only H_PTE_READ with H_READ_4 uses R6-R11 so we ignore it for now&n; * and return only two out args which MUST ALWAYS BE PROVIDED.&n; */
 r_int
 id|plpar_hcall
@@ -227,8 +230,6 @@ op_star
 id|out3
 )paren
 suffix:semicolon
-DECL|macro|HVSC
-mdefine_line|#define HVSC&t;&t;&t;&quot;.long 0x44000022&bslash;n&quot;
 multiline_comment|/* Same as plpar_hcall but for those opcodes that return no values&n; * other than status.  Slightly more efficient.&n; */
 r_int
 id|plpar_hcall_norets
@@ -336,5 +337,6 @@ op_star
 id|out4
 )paren
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _PPC64_HVCALL_H */
 eof

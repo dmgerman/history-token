@@ -17,6 +17,10 @@ DECL|macro|cputime_add
 mdefine_line|#define cputime_add(__a, __b)&t;&t;((__a) +  (__b))
 DECL|macro|cputime_sub
 mdefine_line|#define cputime_sub(__a, __b)&t;&t;((__a) -  (__b))
+DECL|macro|cputime_div
+mdefine_line|#define cputime_div(__a, __n)&t;&t;((__a) /  (__n))
+DECL|macro|cputime_halve
+mdefine_line|#define cputime_halve(__a)&t;&t;((__a) &gt;&gt; 1)
 DECL|macro|cputime_eq
 mdefine_line|#define cputime_eq(__a, __b)&t;&t;((__a) == (__b))
 DECL|macro|cputime_gt

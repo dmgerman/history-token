@@ -3386,7 +3386,8 @@ op_logical_neg
 id|len
 )paren
 r_return
-id|addr
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* Careful about overflows.. */
 id|len
@@ -3409,7 +3410,7 @@ id|TASK_SIZE
 )paren
 r_return
 op_minus
-id|EINVAL
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/* offset overflow? */
 r_if
@@ -3429,7 +3430,7 @@ id|pgoff
 )paren
 r_return
 op_minus
-id|EINVAL
+id|EOVERFLOW
 suffix:semicolon
 multiline_comment|/* Too many mappings? */
 r_if
@@ -5060,6 +5061,8 @@ op_assign
 id|is_hugepage_only_range
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|addr
 comma
 id|len
@@ -6508,6 +6511,8 @@ c_cond
 id|is_hugepage_only_range
 c_func
 (paren
+id|mm
+comma
 id|start
 comma
 id|end
@@ -7851,9 +7856,15 @@ id|mm-&gt;mm_rb
 op_assign
 id|RB_ROOT
 suffix:semicolon
-id|mm-&gt;rss
-op_assign
+id|set_mm_counter
+c_func
+(paren
+id|mm
+comma
+id|rss
+comma
 l_int|0
+)paren
 suffix:semicolon
 id|mm-&gt;total_vm
 op_assign

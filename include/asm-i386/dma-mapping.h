@@ -27,6 +27,8 @@ op_star
 id|dma_handle
 comma
 r_int
+r_int
+id|__nocast
 id|flag
 )paren
 suffix:semicolon

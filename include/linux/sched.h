@@ -456,6 +456,22 @@ op_star
 id|area
 )paren
 suffix:semicolon
+DECL|macro|set_mm_counter
+mdefine_line|#define set_mm_counter(mm, member, value) (mm)-&gt;_##member = (value)
+DECL|macro|get_mm_counter
+mdefine_line|#define get_mm_counter(mm, member) ((mm)-&gt;_##member)
+DECL|macro|add_mm_counter
+mdefine_line|#define add_mm_counter(mm, member, value) (mm)-&gt;_##member += (value)
+DECL|macro|inc_mm_counter
+mdefine_line|#define inc_mm_counter(mm, member) (mm)-&gt;_##member++
+DECL|macro|dec_mm_counter
+mdefine_line|#define dec_mm_counter(mm, member) (mm)-&gt;_##member--
+DECL|typedef|mm_counter_t
+r_typedef
+r_int
+r_int
+id|mm_counter_t
+suffix:semicolon
 DECL|struct|mm_struct
 r_struct
 id|mm_struct
@@ -563,7 +579,7 @@ DECL|member|page_table_lock
 id|spinlock_t
 id|page_table_lock
 suffix:semicolon
-multiline_comment|/* Protects page tables, mm-&gt;rss, mm-&gt;anon_rss */
+multiline_comment|/* Protects page tables and some counters */
 DECL|member|mmlist
 r_struct
 id|list_head
@@ -609,17 +625,11 @@ id|env_start
 comma
 id|env_end
 suffix:semicolon
-DECL|member|rss
-DECL|member|anon_rss
 DECL|member|total_vm
 DECL|member|locked_vm
 DECL|member|shared_vm
 r_int
 r_int
-id|rss
-comma
-id|anon_rss
-comma
 id|total_vm
 comma
 id|locked_vm
@@ -642,6 +652,15 @@ comma
 id|def_flags
 comma
 id|nr_ptes
+suffix:semicolon
+multiline_comment|/* Special counters protected by the page_table_lock */
+DECL|member|_rss
+id|mm_counter_t
+id|_rss
+suffix:semicolon
+DECL|member|_anon_rss
+id|mm_counter_t
+id|_anon_rss
 suffix:semicolon
 DECL|member|saved_auxv
 r_int

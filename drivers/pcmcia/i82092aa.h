@@ -163,16 +163,5 @@ op_star
 id|socket
 )paren
 suffix:semicolon
-r_static
-r_int
-id|i82092aa_suspend
-c_func
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|socket
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

@@ -455,7 +455,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Common functions for the dib3000mb/dib3000mc dvb frontend drivers&quot;
+l_string|&quot;Common functions for the dib3000mb/dib3000mc dvb-frontend drivers&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

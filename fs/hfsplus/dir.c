@@ -132,6 +132,8 @@ suffix:semicolon
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd.search_key
 comma
 id|dir-&gt;i_ino
@@ -378,6 +380,8 @@ suffix:semicolon
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd.search_key
 comma
 id|HFSPLUS_SB
@@ -602,6 +606,8 @@ suffix:semicolon
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd.search_key
 comma
 id|inode-&gt;i_ino
@@ -861,6 +867,8 @@ op_assign
 id|hfsplus_uni2asc
 c_func
 (paren
+id|sb
+comma
 op_amp
 id|fd.key-&gt;cat.name
 comma

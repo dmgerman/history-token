@@ -2118,6 +2118,8 @@ r_int
 id|size
 comma
 r_int
+r_int
+id|__nocast
 id|type
 )paren
 (brace

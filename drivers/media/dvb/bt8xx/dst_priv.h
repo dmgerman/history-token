@@ -93,16 +93,4 @@ op_star
 id|mp
 )paren
 suffix:semicolon
-r_struct
-id|bt878
-op_star
-id|bt878_find_by_i2c_adap
-c_func
-(paren
-r_struct
-id|i2c_adapter
-op_star
-id|adap
-)paren
-suffix:semicolon
 eof

@@ -31,9 +31,6 @@ id|dib
 op_assign
 id|urb-&gt;context
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 id|deb_ts
 c_func
 (paren
@@ -54,7 +51,7 @@ c_cond
 (paren
 id|urb_compl_count
 op_mod
-l_int|500
+l_int|1000
 op_eq
 l_int|0
 )paren
@@ -87,7 +84,7 @@ r_case
 op_minus
 id|ECONNRESET
 suffix:colon
-multiline_comment|/* unlink */
+multiline_comment|/* kill */
 r_case
 op_minus
 id|ENOENT
@@ -101,13 +98,15 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* error */
-id|warn
+id|deb_ts
 c_func
 (paren
 l_string|&quot;urb completition error %d.&quot;
 comma
 id|urb-&gt;status
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 r_if
@@ -116,38 +115,12 @@ c_cond
 id|dib-&gt;feedcount
 OG
 l_int|0
+op_logical_and
+id|urb-&gt;actual_length
+OG
+l_int|0
 )paren
 (brace
-id|deb_ts
-c_func
-(paren
-l_string|&quot;URB return len: %d&bslash;n&quot;
-comma
-id|urb-&gt;actual_length
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|urb-&gt;actual_length
-op_mod
-l_int|188
-)paren
-id|deb_ts
-c_func
-(paren
-l_string|&quot;TS Packets: %d, %d&bslash;n&quot;
-comma
-id|urb-&gt;actual_length
-op_div
-l_int|188
-comma
-id|urb-&gt;actual_length
-op_mod
-l_int|188
-)paren
-suffix:semicolon
-multiline_comment|/* Francois recommends to drop not full-filled packets, even if they may &n;&t;&t; * contain valid TS packets, at least for USB1.1&n;&t;&t; *&n;&t;&t; * if (urb-&gt;actual_length == dib-&gt;dibdev-&gt;parm-&gt;default_size &amp;&amp; dib-&gt;dvb_is_ready) */
 r_if
 c_cond
 (paren
@@ -170,18 +143,6 @@ comma
 id|urb-&gt;actual_length
 )paren
 suffix:semicolon
-r_else
-id|deb_ts
-c_func
-(paren
-l_string|&quot;URB dropped because of the &quot;
-l_string|&quot;actual_length or !dvb_is_ready (%d).&bslash;n&quot;
-comma
-id|dib-&gt;init_state
-op_amp
-id|DIBUSB_STATE_DVB
-)paren
-suffix:semicolon
 )brace
 r_else
 id|deb_ts
@@ -190,22 +151,12 @@ c_func
 l_string|&quot;URB dropped because of feedcount.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
 id|usb_submit_urb
 c_func
 (paren
 id|urb
 comma
 id|GFP_ATOMIC
-)paren
-suffix:semicolon
-id|deb_ts
-c_func
-(paren
-l_string|&quot;urb resubmitted, (%d)&bslash;n&quot;
-comma
-id|ret
 )paren
 suffix:semicolon
 )brace
@@ -260,7 +211,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * stop feed before setting a new pid if there will be no pid anymore &n;&t; */
-singleline_comment|//&t;if ((dib-&gt;dibdev-&gt;parm-&gt;firmware_bug &amp;&amp; dib-&gt;feedcount) || 
 r_if
 c_cond
 (paren
@@ -309,29 +259,63 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
+id|dibusb_streaming
+c_func
+(paren
+id|dib
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 id|dib-&gt;feedcount
 op_assign
 id|newfeedcount
 suffix:semicolon
-multiline_comment|/* get a free pid from the list and activate it on the device&n;&t; * specific pid_filter&n;&t; */
+multiline_comment|/* activate the pid on the device specific pid_filter */
+id|deb_ts
+c_func
+(paren
+l_string|&quot;setting pid: %5d %04x at index %d &squot;%s&squot;&bslash;n&quot;
+comma
+id|dvbdmxfeed-&gt;pid
+comma
+id|dvbdmxfeed-&gt;pid
+comma
+id|dvbdmxfeed-&gt;index
+comma
+id|onoff
+ques
+c_cond
+l_string|&quot;on&quot;
+suffix:colon
+l_string|&quot;off&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|dib-&gt;pid_parse
+op_logical_and
+id|dib-&gt;xfer_ops.pid_ctrl
+op_ne
+l_int|NULL
 )paren
-id|dibusb_ctrl_pid
+id|dib-&gt;xfer_ops
+dot
+id|pid_ctrl
 c_func
 (paren
-id|dib
+id|dib-&gt;fe
 comma
-id|dvbdmxfeed
+id|dvbdmxfeed-&gt;index
+comma
+id|dvbdmxfeed-&gt;pid
 comma
 id|onoff
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * start the feed, either if there is the firmware bug or &n;&t; * if this was the first pid to set and there is still a pid for &n;&t; * reception.&n;&t; */
-singleline_comment|//&t;if ((dib-&gt;dibdev-&gt;parm-&gt;firmware_bug)
+multiline_comment|/* &n;&t; * start the feed if this was the first pid to set and there is still a pid&n;&t; * for reception.&n;&t; */
 r_if
 c_cond
 (paren
@@ -517,27 +501,6 @@ id|urb_compl_count
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,6,4)
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
-id|dvb_register_adapter
-c_func
-(paren
-op_amp
-id|dib-&gt;adapter
-comma
-id|DRIVER_DESC
-)paren
-)paren
-OL
-l_int|0
-)paren
-(brace
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -559,7 +522,6 @@ OL
 l_int|0
 )paren
 (brace
-macro_line|#endif
 id|deb_info
 c_func
 (paren

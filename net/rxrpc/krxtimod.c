@@ -248,6 +248,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|try_to_freeze
+c_func
+(paren
+id|PF_FREEZE
+)paren
+suffix:semicolon
 multiline_comment|/* discard pending signals */
 id|rxrpc_discard_my_signals
 c_func

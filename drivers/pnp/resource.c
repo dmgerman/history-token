@@ -12,12 +12,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &quot;base.h&quot;
-DECL|variable|pnp_skip_pci_scan
-r_static
-r_int
-id|pnp_skip_pci_scan
-suffix:semicolon
-multiline_comment|/* skip PCI resource scanning */
 DECL|variable|pnp_reserve_irq
 r_static
 r_int
@@ -1724,12 +1718,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* check if the resource is being used by a pci device */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pnp_skip_pci_scan
-)paren
 (brace
 r_struct
 id|pci_dev
@@ -1738,24 +1726,10 @@ id|pci
 op_assign
 l_int|NULL
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|pci
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|pci
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 r_if

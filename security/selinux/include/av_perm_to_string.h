@@ -236,6 +236,15 @@ l_string|&quot;node_bind&quot;
 id|S_
 c_func
 (paren
+id|SECCLASS_TCP_SOCKET
+comma
+id|TCP_SOCKET__NAME_CONNECT
+comma
+l_string|&quot;name_connect&quot;
+)paren
+id|S_
+c_func
+(paren
 id|SECCLASS_UDP_SOCKET
 comma
 id|UDP_SOCKET__NODE_BIND

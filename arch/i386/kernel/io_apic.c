@@ -994,7 +994,7 @@ mdefine_line|#define LAST_CPU_IRQ(cpu,irq)   (irq_cpu_data[cpu].last_irq[irq])
 DECL|macro|IRQ_DELTA
 mdefine_line|#define IRQ_DELTA(cpu,irq) &t;(irq_cpu_data[cpu].irq_delta[irq])
 DECL|macro|IDLE_ENOUGH
-mdefine_line|#define IDLE_ENOUGH(cpu,now) &bslash;&n;&t;&t;(idle_cpu(cpu) &amp;&amp; ((now) - irq_stat[(cpu)].idle_timestamp &gt; 1))
+mdefine_line|#define IDLE_ENOUGH(cpu,now) &bslash;&n;&t;(idle_cpu(cpu) &amp;&amp; ((now) - per_cpu(irq_stat, (cpu)).idle_timestamp &gt; 1))
 DECL|macro|IRQ_ALLOWED
 mdefine_line|#define IRQ_ALLOWED(cpu, allowed_mask)&t;cpu_isset(cpu, allowed_mask)
 DECL|macro|CPU_TO_PACKAGEINDEX

@@ -28,6 +28,7 @@ macro_line|#include &quot;stv0299.h&quot;
 macro_line|#include &quot;tda8083.h&quot;
 macro_line|#include &quot;sp8870.h&quot;
 macro_line|#include &quot;stv0297.h&quot;
+macro_line|#include &quot;l64781.h&quot;
 macro_line|#include &lt;media/saa7146_vv.h&gt;
 DECL|macro|ANALOG_TUNER_VES1820
 mdefine_line|#define ANALOG_TUNER_VES1820 1
@@ -613,11 +614,6 @@ id|u32
 id|ir_config
 suffix:semicolon
 multiline_comment|/* firmware stuff */
-DECL|member|device_initialized
-r_int
-r_int
-id|device_initialized
-suffix:semicolon
 DECL|member|bin_fw
 r_int
 r_char

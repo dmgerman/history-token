@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * .h-files for the common use of the frontend drivers made by DiBcom&n; * DiBcom 3000-MB/MC/P&n; *&n; * DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
+multiline_comment|/*&n; * .h-files for the common use of the frontend drivers made by DiBcom&n; * DiBcom 3000M-B/C, 3000P&n; *&n; * DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
 macro_line|#ifndef DIB3000_COMMON_H
 DECL|macro|DIB3000_COMMON_H
 mdefine_line|#define DIB3000_COMMON_H
@@ -6,11 +6,11 @@ macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dib3000.h&quot;
 multiline_comment|/* info and err, taken from usb.h, if there is anything available like by default. */
 DECL|macro|err
-mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;dib3000mX: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define err(format, arg...)  printk(KERN_ERR     &quot;dib3000: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|info
-mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;dib3000mX: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define info(format, arg...) printk(KERN_INFO    &quot;dib3000: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|warn
-mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;dib3000mX: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;dib3000: &quot; format &quot;&bslash;n&quot; , ## arg)
 multiline_comment|/* frontend state */
 DECL|struct|dib3000_state
 r_struct

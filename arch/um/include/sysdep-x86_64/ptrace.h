@@ -184,59 +184,59 @@ r_int
 id|mode_tt
 suffix:semicolon
 DECL|macro|UPT_RBX
-mdefine_line|#define UPT_RBX(r) CHOOSE_MODE(SC_RBX(UPT_SC(r)), REGS_RBX((r)-&gt;skas.regs))
+mdefine_line|#define UPT_RBX(r) __CHOOSE_MODE(SC_RBX(UPT_SC(r)), REGS_RBX((r)-&gt;skas.regs))
 DECL|macro|UPT_RCX
-mdefine_line|#define UPT_RCX(r) CHOOSE_MODE(SC_RCX(UPT_SC(r)), REGS_RCX((r)-&gt;skas.regs))
+mdefine_line|#define UPT_RCX(r) __CHOOSE_MODE(SC_RCX(UPT_SC(r)), REGS_RCX((r)-&gt;skas.regs))
 DECL|macro|UPT_RDX
-mdefine_line|#define UPT_RDX(r) CHOOSE_MODE(SC_RDX(UPT_SC(r)), REGS_RDX((r)-&gt;skas.regs))
+mdefine_line|#define UPT_RDX(r) __CHOOSE_MODE(SC_RDX(UPT_SC(r)), REGS_RDX((r)-&gt;skas.regs))
 DECL|macro|UPT_RSI
-mdefine_line|#define UPT_RSI(r) CHOOSE_MODE(SC_RSI(UPT_SC(r)), REGS_RSI((r)-&gt;skas.regs))
+mdefine_line|#define UPT_RSI(r) __CHOOSE_MODE(SC_RSI(UPT_SC(r)), REGS_RSI((r)-&gt;skas.regs))
 DECL|macro|UPT_RDI
-mdefine_line|#define UPT_RDI(r) CHOOSE_MODE(SC_RDI(UPT_SC(r)), REGS_RDI((r)-&gt;skas.regs))
+mdefine_line|#define UPT_RDI(r) __CHOOSE_MODE(SC_RDI(UPT_SC(r)), REGS_RDI((r)-&gt;skas.regs))
 DECL|macro|UPT_RBP
-mdefine_line|#define UPT_RBP(r) CHOOSE_MODE(SC_RBP(UPT_SC(r)), REGS_RBP((r)-&gt;skas.regs))
+mdefine_line|#define UPT_RBP(r) __CHOOSE_MODE(SC_RBP(UPT_SC(r)), REGS_RBP((r)-&gt;skas.regs))
 DECL|macro|UPT_RAX
-mdefine_line|#define UPT_RAX(r) CHOOSE_MODE(SC_RAX(UPT_SC(r)), REGS_RAX((r)-&gt;skas.regs))
+mdefine_line|#define UPT_RAX(r) __CHOOSE_MODE(SC_RAX(UPT_SC(r)), REGS_RAX((r)-&gt;skas.regs))
 DECL|macro|UPT_R8
-mdefine_line|#define UPT_R8(r) CHOOSE_MODE(SC_R8(UPT_SC(r)), REGS_R8((r)-&gt;skas.regs))
+mdefine_line|#define UPT_R8(r) __CHOOSE_MODE(SC_R8(UPT_SC(r)), REGS_R8((r)-&gt;skas.regs))
 DECL|macro|UPT_R9
-mdefine_line|#define UPT_R9(r) CHOOSE_MODE(SC_R9(UPT_SC(r)), REGS_R9((r)-&gt;skas.regs))
+mdefine_line|#define UPT_R9(r) __CHOOSE_MODE(SC_R9(UPT_SC(r)), REGS_R9((r)-&gt;skas.regs))
 DECL|macro|UPT_R10
-mdefine_line|#define UPT_R10(r) CHOOSE_MODE(SC_R10(UPT_SC(r)), REGS_R10((r)-&gt;skas.regs))
+mdefine_line|#define UPT_R10(r) __CHOOSE_MODE(SC_R10(UPT_SC(r)), REGS_R10((r)-&gt;skas.regs))
 DECL|macro|UPT_R11
-mdefine_line|#define UPT_R11(r) CHOOSE_MODE(SC_R11(UPT_SC(r)), REGS_R11((r)-&gt;skas.regs))
+mdefine_line|#define UPT_R11(r) __CHOOSE_MODE(SC_R11(UPT_SC(r)), REGS_R11((r)-&gt;skas.regs))
 DECL|macro|UPT_R12
-mdefine_line|#define UPT_R12(r) CHOOSE_MODE(SC_R12(UPT_SC(r)), REGS_R12((r)-&gt;skas.regs))
+mdefine_line|#define UPT_R12(r) __CHOOSE_MODE(SC_R12(UPT_SC(r)), REGS_R12((r)-&gt;skas.regs))
 DECL|macro|UPT_R13
-mdefine_line|#define UPT_R13(r) CHOOSE_MODE(SC_R13(UPT_SC(r)), REGS_R13((r)-&gt;skas.regs))
+mdefine_line|#define UPT_R13(r) __CHOOSE_MODE(SC_R13(UPT_SC(r)), REGS_R13((r)-&gt;skas.regs))
 DECL|macro|UPT_R14
-mdefine_line|#define UPT_R14(r) CHOOSE_MODE(SC_R14(UPT_SC(r)), REGS_R14((r)-&gt;skas.regs))
+mdefine_line|#define UPT_R14(r) __CHOOSE_MODE(SC_R14(UPT_SC(r)), REGS_R14((r)-&gt;skas.regs))
 DECL|macro|UPT_R15
-mdefine_line|#define UPT_R15(r) CHOOSE_MODE(SC_R15(UPT_SC(r)), REGS_R15((r)-&gt;skas.regs))
+mdefine_line|#define UPT_R15(r) __CHOOSE_MODE(SC_R15(UPT_SC(r)), REGS_R15((r)-&gt;skas.regs))
 DECL|macro|UPT_CS
-mdefine_line|#define UPT_CS(r) CHOOSE_MODE(SC_CS(UPT_SC(r)), REGS_CS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_CS(r) __CHOOSE_MODE(SC_CS(UPT_SC(r)), REGS_CS((r)-&gt;skas.regs))
 DECL|macro|UPT_FS
-mdefine_line|#define UPT_FS(r) CHOOSE_MODE(SC_FS(UPT_SC(r)), REGS_FS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_FS(r) __CHOOSE_MODE(SC_FS(UPT_SC(r)), REGS_FS((r)-&gt;skas.regs))
 DECL|macro|UPT_GS
-mdefine_line|#define UPT_GS(r) CHOOSE_MODE(SC_GS(UPT_SC(r)), REGS_GS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_GS(r) __CHOOSE_MODE(SC_GS(UPT_SC(r)), REGS_GS((r)-&gt;skas.regs))
 DECL|macro|UPT_DS
-mdefine_line|#define UPT_DS(r) CHOOSE_MODE(SC_DS(UPT_SC(r)), REGS_DS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_DS(r) __CHOOSE_MODE(SC_DS(UPT_SC(r)), REGS_DS((r)-&gt;skas.regs))
 DECL|macro|UPT_ES
-mdefine_line|#define UPT_ES(r) CHOOSE_MODE(SC_ES(UPT_SC(r)), REGS_ES((r)-&gt;skas.regs))
+mdefine_line|#define UPT_ES(r) __CHOOSE_MODE(SC_ES(UPT_SC(r)), REGS_ES((r)-&gt;skas.regs))
 DECL|macro|UPT_CS
-mdefine_line|#define UPT_CS(r) CHOOSE_MODE(SC_CS(UPT_SC(r)), REGS_CS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_CS(r) __CHOOSE_MODE(SC_CS(UPT_SC(r)), REGS_CS((r)-&gt;skas.regs))
 DECL|macro|UPT_ORIG_RAX
-mdefine_line|#define UPT_ORIG_RAX(r) &bslash;&n;&t;CHOOSE_MODE((r)-&gt;tt.orig_rax, REGS_ORIG_RAX((r)-&gt;skas.regs))
+mdefine_line|#define UPT_ORIG_RAX(r) &bslash;&n;&t;__CHOOSE_MODE((r)-&gt;tt.orig_rax, REGS_ORIG_RAX((r)-&gt;skas.regs))
 DECL|macro|UPT_IP
-mdefine_line|#define UPT_IP(r) CHOOSE_MODE(SC_IP(UPT_SC(r)), REGS_IP((r)-&gt;skas.regs))
+mdefine_line|#define UPT_IP(r) __CHOOSE_MODE(SC_IP(UPT_SC(r)), REGS_IP((r)-&gt;skas.regs))
 DECL|macro|UPT_SP
-mdefine_line|#define UPT_SP(r) CHOOSE_MODE(SC_SP(UPT_SC(r)), REGS_SP((r)-&gt;skas.regs))
+mdefine_line|#define UPT_SP(r) __CHOOSE_MODE(SC_SP(UPT_SC(r)), REGS_SP((r)-&gt;skas.regs))
 DECL|macro|UPT_EFLAGS
-mdefine_line|#define UPT_EFLAGS(r) &bslash;&n;&t;CHOOSE_MODE(SC_EFLAGS(UPT_SC(r)), REGS_EFLAGS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_EFLAGS(r) &bslash;&n;&t;__CHOOSE_MODE(SC_EFLAGS(UPT_SC(r)), REGS_EFLAGS((r)-&gt;skas.regs))
 DECL|macro|UPT_SC
 mdefine_line|#define UPT_SC(r) ((r)-&gt;tt.sc)
 DECL|macro|UPT_SYSCALL_NR
-mdefine_line|#define UPT_SYSCALL_NR(r) CHOOSE_MODE((r)-&gt;tt.syscall, (r)-&gt;skas.syscall)
+mdefine_line|#define UPT_SYSCALL_NR(r) __CHOOSE_MODE((r)-&gt;tt.syscall, (r)-&gt;skas.syscall)
 r_extern
 r_int
 id|user_context
@@ -288,13 +288,13 @@ mdefine_line|#define UPT_RESTART_SYSCALL(r) &bslash;&n;&t;CHOOSE_MODE(SC_RESTART
 DECL|macro|UPT_SEGV_IS_FIXABLE
 mdefine_line|#define UPT_SEGV_IS_FIXABLE(r) &bslash;&n;&t;CHOOSE_MODE(SC_SEGV_IS_FIXABLE(UPT_SC(r)), &bslash;&n;                    REGS_SEGV_IS_FIXABLE(&amp;r-&gt;skas))
 DECL|macro|UPT_FAULT_ADDR
-mdefine_line|#define UPT_FAULT_ADDR(r) &bslash;&n;&t;CHOOSE_MODE(SC_FAULT_ADDR(UPT_SC(r)), REGS_FAULT_ADDR(&amp;r-&gt;skas))
+mdefine_line|#define UPT_FAULT_ADDR(r) &bslash;&n;&t;__CHOOSE_MODE(SC_FAULT_ADDR(UPT_SC(r)), REGS_FAULT_ADDR(&amp;r-&gt;skas))
 DECL|macro|UPT_FAULT_WRITE
 mdefine_line|#define UPT_FAULT_WRITE(r) &bslash;&n;&t;CHOOSE_MODE(SC_FAULT_WRITE(UPT_SC(r)), REGS_FAULT_WRITE(&amp;r-&gt;skas))
 DECL|macro|UPT_TRAP
-mdefine_line|#define UPT_TRAP(r) CHOOSE_MODE(SC_TRAP_TYPE(UPT_SC(r)), REGS_TRAP(&amp;r-&gt;skas))
+mdefine_line|#define UPT_TRAP(r) __CHOOSE_MODE(SC_TRAP_TYPE(UPT_SC(r)), REGS_TRAP(&amp;r-&gt;skas))
 DECL|macro|UPT_ERR
-mdefine_line|#define UPT_ERR(r) CHOOSE_MODE(SC_FAULT_TYPE(UPT_SC(r)), REGS_ERR(&amp;r-&gt;skas))
+mdefine_line|#define UPT_ERR(r) __CHOOSE_MODE(SC_FAULT_TYPE(UPT_SC(r)), REGS_ERR(&amp;r-&gt;skas))
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

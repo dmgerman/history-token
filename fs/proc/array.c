@@ -1837,7 +1837,13 @@ comma
 id|mm
 ques
 c_cond
-id|mm-&gt;rss
+id|get_mm_counter
+c_func
+(paren
+id|mm
+comma
+id|rss
+)paren
 suffix:colon
 l_int|0
 comma

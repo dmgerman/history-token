@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 DECL|macro|TPM_TIMEOUT
 mdefine_line|#define TPM_TIMEOUT msecs_to_jiffies(5)

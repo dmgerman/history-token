@@ -121,6 +121,7 @@ l_string|&quot;W6692 V11&quot;
 suffix:semicolon
 r_static
 r_void
+id|__init
 DECL|function|W6692Version
 id|W6692Version
 c_func

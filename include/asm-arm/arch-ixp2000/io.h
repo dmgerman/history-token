@@ -6,7 +6,6 @@ DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT&t;&t;0xffffffff
 DECL|macro|__mem_pci
 mdefine_line|#define __mem_pci(a)&t;&t;(a)
-multiline_comment|/*&n; * Pick up VMALLOC_END&n; */
 DECL|macro|___io
 mdefine_line|#define ___io(p)&t;&t;((void __iomem *)((p)+IXP2000_PCI_IO_VIRT_BASE))
 multiline_comment|/*&n; * The IXP2400 before revision B0 asserts byte lanes for PCI I/O&n; * transactions the other way round (MEM transactions don&squot;t have this&n; * issue), so we need to override the standard functions.  B0 and later&n; * have a bit that can be set to 1 to get the &squot;proper&squot; behavior, but&n; * since that isn&squot;t available on the A? revisions we just keep doing&n; * things manually.&n; */
@@ -39,7 +38,7 @@ mdefine_line|#define insw(p,d,l)&t;&t;__raw_readsw(alignw(___io(p)),d,l)
 DECL|macro|insl
 mdefine_line|#define insl(p,d,l)&t;&t;__raw_readsl(___io(p),d,l)
 macro_line|#ifdef CONFIG_ARCH_IXDP2X01
-multiline_comment|/*&n; * This is an ugly hack but the CS8900 on the 2x01&squot;s does not sit in any sort&n; * of &quot;I/O space&quot; and is just direct mapped into a 32-bit-only addressable&n; * bus. The address space for this bus is such that we can&squot;t really easilly&n; * make it contigous to the PCI I/O address range, and it also does not&n; * need swapping like PCI addresses do (IXDP2x01 is a BE platform).&n; * B/C of this we can&squot;t use the standard in/out functions and need to&n; * runtime check if the incoming address is a PCI address or for&n; * the CS89x0.&n; */
+multiline_comment|/*&n; * This is an ugly hack but the CS8900 on the 2x01&squot;s does not sit in any sort&n; * of &quot;I/O space&quot; and is just direct mapped into a 32-bit-only addressable&n; * bus. The address space for this bus is such that we can&squot;t really easily&n; * make it contiguous to the PCI I/O address range, and it also does not&n; * need swapping like PCI addresses do (IXDP2x01 is a BE platform).&n; * B/C of this we can&squot;t use the standard in/out functions and need to&n; * runtime check if the incoming address is a PCI address or for&n; * the CS89x0.&n; */
 DECL|macro|inw
 macro_line|#undef inw
 DECL|macro|outw

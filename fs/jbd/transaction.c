@@ -2849,11 +2849,16 @@ comma
 l_string|&quot;unfile from commit&quot;
 )paren
 suffix:semicolon
-id|__journal_unfile_buffer
+id|__journal_temp_unlink_buffer
 c_func
 (paren
 id|jh
 )paren
+suffix:semicolon
+multiline_comment|/* It still points to the committing&n;&t;&t;&t;&t; * transaction; move it to this one so&n;&t;&t;&t;&t; * that the refile assert checks are&n;&t;&t;&t;&t; * happy. */
+id|jh-&gt;b_transaction
+op_assign
+id|handle-&gt;h_transaction
 suffix:semicolon
 )brace
 multiline_comment|/* The buffer will be refiled below */
@@ -2889,11 +2894,15 @@ op_ne
 id|BJ_Shadow
 )paren
 suffix:semicolon
-id|__journal_unfile_buffer
+id|__journal_temp_unlink_buffer
 c_func
 (paren
 id|jh
 )paren
+suffix:semicolon
+id|jh-&gt;b_transaction
+op_assign
+id|handle-&gt;h_transaction
 suffix:semicolon
 id|JBUFFER_TRACE
 c_func
@@ -3418,12 +3427,6 @@ comma
 l_string|&quot;belongs to current transaction: unfile&quot;
 )paren
 suffix:semicolon
-id|__journal_unfile_buffer
-c_func
-(paren
-id|jh
-)paren
-suffix:semicolon
 id|drop_reserve
 op_assign
 l_int|1
@@ -3435,6 +3438,12 @@ c_cond
 id|jh-&gt;b_cp_transaction
 )paren
 (brace
+id|__journal_temp_unlink_buffer
+c_func
+(paren
+id|jh
+)paren
+suffix:semicolon
 id|__journal_file_buffer
 c_func
 (paren
@@ -3448,6 +3457,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|__journal_unfile_buffer
+c_func
+(paren
+id|jh
+)paren
+suffix:semicolon
 id|journal_remove_journal_head
 c_func
 (paren
@@ -4084,9 +4099,9 @@ id|jh-&gt;b_tprev
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Remove a buffer from the appropriate transaction list.&n; *&n; * Note that this function can *change* the value of&n; * bh-&gt;b_transaction-&gt;t_sync_datalist, t_buffers, t_forget,&n; * t_iobuf_list, t_shadow_list, t_log_list or t_reserved_list.  If the caller&n; * is holding onto a copy of one of thee pointers, it could go bad.&n; * Generally the caller needs to re-read the pointer from the transaction_t.&n; *&n; * Called under j_list_lock.  The journal may not be locked.&n; */
-DECL|function|__journal_unfile_buffer
+DECL|function|__journal_temp_unlink_buffer
 r_void
-id|__journal_unfile_buffer
+id|__journal_temp_unlink_buffer
 c_func
 (paren
 r_struct
@@ -4182,8 +4197,7 @@ id|jh-&gt;b_jlist
 r_case
 id|BJ_None
 suffix:colon
-r_goto
-id|out
+r_return
 suffix:semicolon
 r_case
 id|BJ_SyncData
@@ -4307,8 +4321,24 @@ id|bh
 )paren
 suffix:semicolon
 multiline_comment|/* Expose it to the VM */
-id|out
-suffix:colon
+)brace
+DECL|function|__journal_unfile_buffer
+r_void
+id|__journal_unfile_buffer
+c_func
+(paren
+r_struct
+id|journal_head
+op_star
+id|jh
+)paren
+(brace
+id|__journal_temp_unlink_buffer
+c_func
+(paren
+id|jh
+)paren
+suffix:semicolon
 id|jh-&gt;b_transaction
 op_assign
 l_int|NULL
@@ -4964,6 +4994,12 @@ comma
 id|journal-&gt;j_running_transaction
 )paren
 suffix:semicolon
+id|journal_put_journal_head
+c_func
+(paren
+id|jh
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -4982,12 +5018,6 @@ c_func
 (paren
 op_amp
 id|journal-&gt;j_state_lock
-)paren
-suffix:semicolon
-id|journal_put_journal_head
-c_func
-(paren
-id|jh
 )paren
 suffix:semicolon
 r_return
@@ -5021,6 +5051,12 @@ comma
 id|journal-&gt;j_committing_transaction
 )paren
 suffix:semicolon
+id|journal_put_journal_head
+c_func
+(paren
+id|jh
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -5039,12 +5075,6 @@ c_func
 (paren
 op_amp
 id|journal-&gt;j_state_lock
-)paren
-suffix:semicolon
-id|journal_put_journal_head
-c_func
-(paren
-id|jh
 )paren
 suffix:semicolon
 r_return
@@ -5109,6 +5139,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|journal_put_journal_head
+c_func
+(paren
+id|jh
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -5127,12 +5163,6 @@ c_func
 (paren
 op_amp
 id|journal-&gt;j_state_lock
-)paren
-suffix:semicolon
-id|journal_put_journal_head
-c_func
-(paren
-id|jh
 )paren
 suffix:semicolon
 r_return
@@ -5567,7 +5597,7 @@ c_cond
 (paren
 id|jh-&gt;b_transaction
 )paren
-id|__journal_unfile_buffer
+id|__journal_temp_unlink_buffer
 c_func
 (paren
 id|jh
@@ -5854,7 +5884,7 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|__journal_unfile_buffer
+id|__journal_temp_unlink_buffer
 c_func
 (paren
 id|jh

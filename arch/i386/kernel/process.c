@@ -365,10 +365,11 @@ id|idle
 op_assign
 id|default_idle
 suffix:semicolon
+id|__get_cpu_var
+c_func
+(paren
 id|irq_stat
-(braket
-id|cpu
-)braket
+)paren
 dot
 id|idle_timestamp
 op_assign

@@ -1103,7 +1103,7 @@ macro_line|#endif /* PARANOID */
 )brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|1
@@ -2486,7 +2486,7 @@ suffix:semicolon
 multiline_comment|/* defaults */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|1
@@ -2610,7 +2610,7 @@ op_increment
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|1
@@ -2801,7 +2801,7 @@ id|newtop
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -3096,7 +3096,7 @@ id|offset
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE

@@ -1,4 +1,5 @@
 multiline_comment|/*  Kernel module help for M32R.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/moduleloader.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -32,6 +33,7 @@ l_int|0
 r_return
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_MMU
 r_return
 id|vmalloc_exec
 c_func
@@ -39,6 +41,15 @@ c_func
 id|size
 )paren
 suffix:semicolon
+macro_line|#else
+r_return
+id|vmalloc
+c_func
+(paren
+id|size
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Free memory returned from module_alloc */
 DECL|function|module_free

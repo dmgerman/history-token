@@ -1554,7 +1554,7 @@ r_return
 id|dev_addr
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Since DMA is i-cache coherent, any (complete) pages that were written via&n; * DMA can be marked as &quot;clean&quot; so that update_mmu_cache() doesn&squot;t have to&n; * flush them when they get mapped into an executable vm-area.&n; */
+multiline_comment|/*&n; * Since DMA is i-cache coherent, any (complete) pages that were written via&n; * DMA can be marked as &quot;clean&quot; so that lazy_mmu_prot_update() doesn&squot;t have to&n; * flush them when they get mapped into an executable vm-area.&n; */
 r_static
 r_void
 DECL|function|mark_clean

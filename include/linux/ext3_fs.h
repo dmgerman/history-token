@@ -665,6 +665,8 @@ DECL|macro|EXT3_MOUNT_RESERVATION
 mdefine_line|#define EXT3_MOUNT_RESERVATION&t;&t;0x10000&t;/* Preallocation */
 DECL|macro|EXT3_MOUNT_BARRIER
 mdefine_line|#define EXT3_MOUNT_BARRIER&t;&t;0x20000 /* Use block barriers */
+DECL|macro|EXT3_MOUNT_NOBH
+mdefine_line|#define EXT3_MOUNT_NOBH&t;&t;&t;0x40000 /* No bufferheads */
 multiline_comment|/* Compatibility, for having both ext2_fs.h and ext3_fs.h included at once */
 macro_line|#ifndef _LINUX_EXT2_FS_H
 DECL|macro|clear_opt

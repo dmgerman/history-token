@@ -401,6 +401,16 @@ mdefine_line|#define ___pa(vaddr) ((vaddr)-PPC_MEMOFFSET)
 DECL|macro|___va
 mdefine_line|#define ___va(paddr) ((paddr)+PPC_MEMOFFSET)
 macro_line|#endif
+r_extern
+r_int
+id|page_is_ram
+c_func
+(paren
+r_int
+r_int
+id|pfn
+)paren
+suffix:semicolon
 DECL|macro|__pa
 mdefine_line|#define __pa(x) ___pa((unsigned long)(x))
 DECL|macro|__va

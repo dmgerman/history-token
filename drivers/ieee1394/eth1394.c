@@ -2427,7 +2427,7 @@ suffix:semicolon
 )brace
 id|ETH1394_PRINT
 (paren
-id|KERN_ERR
+id|KERN_INFO
 comma
 id|dev-&gt;name
 comma

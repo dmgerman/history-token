@@ -26,12 +26,11 @@ mdefine_line|#define GDT_ENTRY_TLS 1
 DECL|macro|GDT_ENTRY_TSS
 mdefine_line|#define GDT_ENTRY_TSS 8&t;/* needs two entries */
 DECL|macro|GDT_ENTRY_LDT
-mdefine_line|#define GDT_ENTRY_LDT 10
+mdefine_line|#define GDT_ENTRY_LDT 10 /* needs two entries */
 DECL|macro|GDT_ENTRY_TLS_MIN
-mdefine_line|#define GDT_ENTRY_TLS_MIN 11
+mdefine_line|#define GDT_ENTRY_TLS_MIN 12
 DECL|macro|GDT_ENTRY_TLS_MAX
-mdefine_line|#define GDT_ENTRY_TLS_MAX 13
-multiline_comment|/* 14 free */
+mdefine_line|#define GDT_ENTRY_TLS_MAX 14
 DECL|macro|GDT_ENTRY_KERNELCS16
 mdefine_line|#define GDT_ENTRY_KERNELCS16 15
 DECL|macro|GDT_ENTRY_TLS_ENTRIES
