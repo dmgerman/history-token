@@ -35,7 +35,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by Brad Hards, Rory Bolt, and others.&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-11-29&t;Correct handling for hw async_next register.&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Nov-29&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2003-Jan-22&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -60,13 +60,15 @@ multiline_comment|/* magic numbers that can affect system performance */
 DECL|macro|EHCI_TUNE_CERR
 mdefine_line|#define&t;EHCI_TUNE_CERR&t;&t;3&t;/* 0-3 qtd retries; 0 == don&squot;t stop */
 DECL|macro|EHCI_TUNE_RL_HS
-mdefine_line|#define&t;EHCI_TUNE_RL_HS&t;&t;0&t;/* nak throttle; see 4.9 */
+mdefine_line|#define&t;EHCI_TUNE_RL_HS&t;&t;4&t;/* nak throttle; see 4.9 */
 DECL|macro|EHCI_TUNE_RL_TT
 mdefine_line|#define&t;EHCI_TUNE_RL_TT&t;&t;0
 DECL|macro|EHCI_TUNE_MULT_HS
 mdefine_line|#define&t;EHCI_TUNE_MULT_HS&t;1&t;/* 1-3 transactions/uframe; 4.10.3 */
 DECL|macro|EHCI_TUNE_MULT_TT
 mdefine_line|#define&t;EHCI_TUNE_MULT_TT&t;1
+DECL|macro|EHCI_TUNE_FLS
+mdefine_line|#define&t;EHCI_TUNE_FLS&t;&t;2&t;/* (small) 256 frame schedule */
 DECL|macro|EHCI_WATCHDOG_JIFFIES
 mdefine_line|#define EHCI_WATCHDOG_JIFFIES&t;(HZ/100)&t;/* arbitrary; ~10 msec */
 DECL|macro|EHCI_ASYNC_JIFFIES
@@ -1168,6 +1170,12 @@ l_string|&quot;enabled 64bit PCI DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* help hc dma work well with cachelines */
+id|pci_set_mwi
+(paren
+id|ehci-&gt;hcd.pdev
+)paren
+suffix:semicolon
 multiline_comment|/* clear interrupt enables, set irq latency */
 id|temp
 op_assign
@@ -1201,7 +1209,74 @@ id|log2_irq_thresh
 )paren
 suffix:semicolon
 singleline_comment|// if hc can park (ehci &gt;= 0.96), default is 3 packets per async QH 
-singleline_comment|// keeping default periodic framelist size
+r_if
+c_cond
+(paren
+id|HCC_PGM_FRAMELISTLEN
+(paren
+id|hcc_params
+)paren
+)paren
+(brace
+multiline_comment|/* periodic schedule size can be smaller than default */
+id|temp
+op_and_assign
+op_complement
+(paren
+l_int|3
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+id|temp
+op_or_assign
+(paren
+id|EHCI_TUNE_FLS
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|EHCI_TUNE_FLS
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+id|ehci-&gt;periodic_size
+op_assign
+l_int|1024
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|ehci-&gt;periodic_size
+op_assign
+l_int|512
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|ehci-&gt;periodic_size
+op_assign
+l_int|256
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|BUG
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
 id|temp
 op_and_assign
 op_complement
@@ -2474,11 +2549,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-id|maybe_irq
-op_assign
-l_int|1
-suffix:semicolon
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -2517,8 +2587,9 @@ id|qh
 )paren
 r_break
 suffix:semicolon
-r_while
-c_loop
+multiline_comment|/* if we need to use IAA and it&squot;s busy, defer */
+r_if
+c_cond
 (paren
 id|qh-&gt;qh_state
 op_eq
@@ -2532,51 +2603,37 @@ id|ehci-&gt;hcd.state
 )paren
 )paren
 (brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
+r_struct
+id|ehci_qh
+op_star
+id|last
 suffix:semicolon
-r_if
-c_cond
+r_for
+c_loop
 (paren
-id|maybe_irq
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|in_interrupt
-(paren
-)paren
-)paren
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-id|maybe_irq
+id|last
 op_assign
-l_int|0
+id|ehci-&gt;reclaim
 suffix:semicolon
-)brace
-multiline_comment|/* let pending unlinks complete, so this can start */
-id|wait_ms
-(paren
-l_int|1
+id|last-&gt;reclaim
+suffix:semicolon
+id|last
+op_assign
+id|last-&gt;reclaim
 )paren
+r_continue
 suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
+id|qh-&gt;qh_state
+op_assign
+id|QH_STATE_UNLINK_WAIT
 suffix:semicolon
+id|last-&gt;reclaim
+op_assign
+id|qh
+suffix:semicolon
+multiline_comment|/* bypass IAA if the hc can&squot;t care */
 )brace
+r_else
 r_if
 c_cond
 (paren

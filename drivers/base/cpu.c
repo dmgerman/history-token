@@ -86,7 +86,7 @@ id|root
 (brace
 id|cpu-&gt;node_id
 op_assign
-id|__cpu_to_node
+id|cpu_to_node
 c_func
 (paren
 id|num

@@ -7547,6 +7547,7 @@ suffix:semicolon
 r_int
 id|limit
 suffix:semicolon
+multiline_comment|/* The head array serves three purposes:&n;&t; * - create a LIFO ordering, i.e. return objects that are cache-warm&n;&t; * - reduce the number of spinlock operations.&n;&t; * - reduce the number of linked list operations on the slab and &n;&t; *   bufctl chains: array operations are cheaper.&n;&t; * The numbers are guessed, we should auto-tune as described by&n;&t; * Bonwick.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7587,6 +7588,20 @@ id|limit
 op_assign
 l_int|248
 suffix:semicolon
+macro_line|#ifndef DEBUG
+multiline_comment|/* With debugging enabled, large batchcount lead to excessively&n;&t; * long periods with disabled local interrupts. Limit the &n;&t; * batchcount&n;&t; */
+r_if
+c_cond
+(paren
+id|limit
+OG
+l_int|32
+)paren
+id|limit
+op_assign
+l_int|32
+suffix:semicolon
+macro_line|#endif
 id|err
 op_assign
 id|do_tune_cpucache

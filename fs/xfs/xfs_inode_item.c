@@ -1624,6 +1624,7 @@ id|iip-&gt;ili_inode
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called to unpin the inode associated with the inode log&n; * item which was previously pinned with a call to xfs_inode_item_pin().&n; * Just call xfs_iunpin() on the inode to do this.&n; */
+multiline_comment|/* ARGSUSED */
 id|STATIC
 r_void
 DECL|function|xfs_inode_item_unpin
@@ -1633,6 +1634,9 @@ c_func
 id|xfs_inode_log_item_t
 op_star
 id|iip
+comma
+r_int
+id|stale
 )paren
 (brace
 id|xfs_iunpin
@@ -2613,6 +2617,8 @@ op_star
 (paren
 id|xfs_log_item_t
 op_star
+comma
+r_int
 )paren
 )paren
 id|xfs_inode_item_unpin

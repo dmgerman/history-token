@@ -672,7 +672,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* The Freecom device will only fail if there is something wrong in&n;         * USB land.  It returns the status in its own registers, which&n;         * come back in the bulk pipe. */
+multiline_comment|/* The Freecom device will only fail if there is something wrong in&n;&t; * USB land.  It returns the status in its own registers, which&n;&t; * come back in the bulk pipe. */
 r_if
 c_cond
 (paren
@@ -690,7 +690,7 @@ r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
-multiline_comment|/* There are times we can optimize out this status read, but it&n;         * doesn&squot;t hurt us to always do it now. */
+multiline_comment|/* There are times we can optimize out this status read, but it&n;&t; * doesn&squot;t hurt us to always do it now. */
 id|result
 op_assign
 id|usb_stor_bulk_transfer_buf
@@ -917,7 +917,7 @@ r_return
 id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* The device might not have as much data available as we&n;         * requested.  If you ask for more than the device has, this reads&n;         * and such will hang. */
+multiline_comment|/* The device might not have as much data available as we&n;&t; * requested.  If you ask for more than the device has, this reads&n;&t; * and such will hang. */
 id|US_DEBUGP
 c_func
 (paren
@@ -995,7 +995,7 @@ id|length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* What we do now depends on what direction the data is supposed to&n;         * move in. */
+multiline_comment|/* What we do now depends on what direction the data is supposed to&n;&t; * move in. */
 r_switch
 c_cond
 (paren
@@ -1005,7 +1005,7 @@ id|us-&gt;srb-&gt;sc_data_direction
 r_case
 id|SCSI_DATA_READ
 suffix:colon
-multiline_comment|/* Make sure that the status indicates that the device&n;                 * wants data as well. */
+multiline_comment|/* Make sure that the status indicates that the device&n;&t;&t; * wants data as well. */
 r_if
 c_cond
 (paren
@@ -1167,7 +1167,7 @@ suffix:semicolon
 r_case
 id|SCSI_DATA_WRITE
 suffix:colon
-multiline_comment|/* Make sure the status indicates that the device wants to&n;                 * send us data. */
+multiline_comment|/* Make sure the status indicates that the device wants to&n;&t;&t; * send us data. */
 multiline_comment|/* !!IMPLEMENT!! */
 id|result
 op_assign
@@ -1327,7 +1327,7 @@ id|buffer
 l_int|33
 )braket
 suffix:semicolon
-multiline_comment|/* Allocate a buffer for us.  The upper usb transport code will&n;         * free this for us when cleaning up. */
+multiline_comment|/* Allocate a buffer for us.  The upper usb transport code will&n;&t; * free this for us when cleaning up. */
 r_if
 c_cond
 (paren

@@ -1379,7 +1379,7 @@ comma
 id|link
 )paren
 suffix:semicolon
-macro_line|#warning This doesn&squot;t protect you.  You need some real fix for your races.
+macro_line|#warning This does not protect you.  You need some real fix for your races.
 macro_line|#if 0
 r_if
 c_cond

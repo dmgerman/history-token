@@ -1622,10 +1622,10 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|function|__vma_unlink
 r_static
 r_inline
 r_void
+DECL|function|__vma_unlink
 id|__vma_unlink
 c_func
 (paren
@@ -1671,10 +1671,10 @@ op_assign
 id|prev
 suffix:semicolon
 )brace
-DECL|function|can_vma_merge
 r_static
 r_inline
 r_int
+DECL|function|can_vma_merge
 id|can_vma_merge
 c_func
 (paren

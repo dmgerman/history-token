@@ -51,20 +51,20 @@ mdefine_line|#define node_mem_map(nid)&t;(NODE_DATA(nid)-&gt;node_mem_map)
 DECL|macro|node_start_pfn
 mdefine_line|#define node_start_pfn(nid)&t;(NODE_DATA(nid)-&gt;node_start_pfn)
 DECL|macro|node_end_pfn
-mdefine_line|#define node_end_pfn(nid)       (NODE_DATA(nid)-&gt;node_start_pfn + &bslash;&n;&t;&t;&t;&t; NODE_DATA(nid)-&gt;node_size)
+mdefine_line|#define node_end_pfn(nid)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pg_data_t *__pgdat = NODE_DATA(nid);&t;&t;&t;&t;&bslash;&n;&t;__pgdat-&gt;node_start_pfn + __pgdat-&gt;node_size;&t;&t;&t;&bslash;&n;})
 DECL|macro|local_mapnr
-mdefine_line|#define local_mapnr(kvaddr) &bslash;&n;&t;( (__pa(kvaddr) &gt;&gt; PAGE_SHIFT) - node_start_pfn(kvaddr_to_nid(kvaddr)) )
+mdefine_line|#define local_mapnr(kvaddr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pfn = __pa(kvaddr) &gt;&gt; PAGE_SHIFT;&t;&t;&bslash;&n;&t;(__pfn - node_start_pfn(pfn_to_nid(__pfn)));&t;&t;&t;&bslash;&n;})
 DECL|macro|kern_addr_valid
-mdefine_line|#define kern_addr_valid(kaddr)&t;test_bit(local_mapnr(kaddr), &bslash;&n;&t;&t; NODE_DATA(kvaddr_to_nid(kaddr))-&gt;valid_addr_bitmap)
+mdefine_line|#define kern_addr_valid(kaddr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __kaddr = (unsigned long)(kaddr);&t;&t;&t;&bslash;&n;&t;pg_data_t *__pgdat = NODE_DATA(kvaddr_to_nid(__kaddr));&t;&t;&bslash;&n;&t;test_bit(local_mapnr(__kaddr), __pgdat-&gt;valid_addr_bitmap);&t;&bslash;&n;})
 DECL|macro|pfn_to_page
-mdefine_line|#define pfn_to_page(pfn)&t;(node_mem_map(pfn_to_nid(pfn)) + node_localnr(pfn, pfn_to_nid(pfn)))
+mdefine_line|#define pfn_to_page(pfn)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pfn = pfn;&t;&t;&t;&t;&t;&bslash;&n;&t;int __node  = pfn_to_nid(__pfn);&t;&t;&t;&t;&bslash;&n;&t;&amp;node_mem_map(__node)[node_localnr(__pfn,__node)];&t;&t;&bslash;&n;})
 DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(page)&t;((page - page_zone(page)-&gt;zone_mem_map) + page_zone(page)-&gt;zone_start_pfn)
+mdefine_line|#define page_to_pfn(pg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page *__page = pg;&t;&t;&t;&t;&t;&bslash;&n;&t;struct zone *__zone = page_zone(__page);&t;&t;&t;&bslash;&n;&t;(unsigned long)(__page - __zone-&gt;zone_mem_map)&t;&t;&t;&bslash;&n;&t;&t;+ __zone-&gt;zone_start_pfn;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;(pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
-multiline_comment|/*&n; * pfn_valid should be made as fast as possible, and the current definition &n; * is valid for machines that are NUMA, but still contiguous, which is what&n; * is currently supported. A more generalised, but slower definition would&n; * be something like this - mbligh:&n; * ( pfn_to_pgdat(pfn) &amp;&amp; (pfn &lt; node_end_pfn(pfn_to_nid(pfn))) ) &n; */
+multiline_comment|/*&n; * pfn_valid should be made as fast as possible, and the current definition &n; * is valid for machines that are NUMA, but still contiguous, which is what&n; * is currently supported. A more generalised, but slower definition would&n; * be something like this - mbligh:&n; * ( pfn_to_pgdat(pfn) &amp;&amp; ((pfn) &lt; node_end_pfn(pfn_to_nid(pfn))) ) &n; */
 DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)          (pfn &lt; num_physpages)
+mdefine_line|#define pfn_valid(pfn)          ((pfn) &lt; num_physpages)
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_MMZONE_H_ */
 eof

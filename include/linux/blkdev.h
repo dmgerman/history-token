@@ -736,7 +736,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_inline
+r_extern
 r_void
 id|blk_queue_bounce
 c_func

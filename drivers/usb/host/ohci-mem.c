@@ -311,9 +311,6 @@ c_cond
 id|td
 )paren
 (brace
-r_int
-id|hash
-suffix:semicolon
 multiline_comment|/* in case hc fetches it, make it look dead */
 id|memset
 (paren
@@ -337,28 +334,7 @@ id|td-&gt;td_dma
 op_assign
 id|dma
 suffix:semicolon
-multiline_comment|/* hash it for later reverse mapping */
-id|hash
-op_assign
-id|TD_HASH_FUNC
-(paren
-id|dma
-)paren
-suffix:semicolon
-id|td-&gt;td_hash
-op_assign
-id|hc-&gt;td_hash
-(braket
-id|hash
-)braket
-suffix:semicolon
-id|hc-&gt;td_hash
-(braket
-id|hash
-)braket
-op_assign
-id|td
-suffix:semicolon
+multiline_comment|/* hashed in td_fill */
 )brace
 r_return
 id|td

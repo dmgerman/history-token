@@ -5370,7 +5370,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;eventpoll epi&quot;
+l_string|&quot;eventpoll_epi&quot;
 comma
 r_sizeof
 (paren
@@ -5409,7 +5409,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;eventpoll pwq&quot;
+l_string|&quot;eventpoll_pwq&quot;
 comma
 r_sizeof
 (paren

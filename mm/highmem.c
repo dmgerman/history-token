@@ -1283,6 +1283,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|__blk_queue_bounce
+r_static
 r_void
 id|__blk_queue_bounce
 c_func
@@ -1296,9 +1297,6 @@ id|bio
 op_star
 op_star
 id|bio_orig
-comma
-r_int
-id|bio_gfp
 comma
 id|mempool_t
 op_star
@@ -1394,7 +1392,7 @@ op_assign
 id|bio_alloc
 c_func
 (paren
-id|bio_gfp
+id|GFP_NOIO
 comma
 (paren
 op_star
@@ -1644,7 +1642,6 @@ id|bio
 suffix:semicolon
 )brace
 DECL|function|blk_queue_bounce
-r_inline
 r_void
 id|blk_queue_bounce
 c_func
@@ -1663,9 +1660,6 @@ id|bio_orig
 id|mempool_t
 op_star
 id|pool
-suffix:semicolon
-r_int
-id|bio_gfp
 suffix:semicolon
 multiline_comment|/*&n;&t; * for non-isa bounce case, just check if the bounce pfn is equal&n;&t; * to or bigger than the highest pfn in the system -- in that case,&n;&t; * don&squot;t waste time iterating over bio segments&n;&t; */
 r_if
@@ -1688,10 +1682,6 @@ id|blk_max_pfn
 )paren
 r_return
 suffix:semicolon
-id|bio_gfp
-op_assign
-id|GFP_NOHIGHIO
-suffix:semicolon
 id|pool
 op_assign
 id|page_pool
@@ -1706,10 +1696,6 @@ op_logical_neg
 id|isa_page_pool
 )paren
 suffix:semicolon
-id|bio_gfp
-op_assign
-id|GFP_NOIO
-suffix:semicolon
 id|pool
 op_assign
 id|isa_page_pool
@@ -1722,8 +1708,6 @@ c_func
 id|q
 comma
 id|bio_orig
-comma
-id|bio_gfp
 comma
 id|pool
 )paren

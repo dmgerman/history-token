@@ -163,6 +163,9 @@ c_func
 id|xfs_efi_log_item_t
 op_star
 id|efip
+comma
+r_int
+id|stale
 )paren
 (brace
 r_int
@@ -694,6 +697,8 @@ op_star
 (paren
 id|xfs_log_item_t
 op_star
+comma
+r_int
 )paren
 )paren
 id|xfs_efi_item_unpin
@@ -1380,6 +1385,9 @@ c_func
 id|xfs_efd_log_item_t
 op_star
 id|efdp
+comma
+r_int
+id|stale
 )paren
 (brace
 r_return
@@ -1745,6 +1753,8 @@ op_star
 (paren
 id|xfs_log_item_t
 op_star
+comma
+r_int
 )paren
 )paren
 id|xfs_efd_item_unpin

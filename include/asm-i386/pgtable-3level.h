@@ -318,11 +318,5 @@ id|pgprot
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_struct
-id|kmem_cache_s
-op_star
-id|pae_pgd_cachep
-suffix:semicolon
 macro_line|#endif /* _I386_PGTABLE_3LEVEL_H */
 eof

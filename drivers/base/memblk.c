@@ -87,7 +87,7 @@ id|root
 (brace
 id|memblk-&gt;node_id
 op_assign
-id|__memblk_to_node
+id|memblk_to_node
 c_func
 (paren
 id|num
