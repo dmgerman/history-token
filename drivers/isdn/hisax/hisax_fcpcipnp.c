@@ -4684,19 +4684,6 @@ macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#if !defined(CONFIG_HOTPLUG) || defined(MODULE)
-id|out_unregister_isapnp
-suffix:colon
-macro_line|#ifdef __ISAPNP__
-id|pnp_unregister_driver
-c_func
-(paren
-op_amp
-id|fcpnp_driver
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 id|out_unregister_pci
 suffix:colon
 id|pci_unregister_driver
