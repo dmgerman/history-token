@@ -4897,6 +4897,28 @@ comma
 id|pbuf
 )paren
 suffix:semicolon
+id|ifdebug
+c_func
+(paren
+id|CACHE
+)paren
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;# expiry=%ld refcnt=%d&bslash;n&quot;
+comma
+id|cp-&gt;expiry_time
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cp-&gt;refcnt
+)paren
+)paren
+suffix:semicolon
 id|cache_get
 c_func
 (paren
@@ -4916,9 +4938,16 @@ comma
 l_int|NULL
 )paren
 )paren
-r_return
-l_int|0
+multiline_comment|/* cache_check does a cache_put on failure */
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;# &quot;
+)paren
 suffix:semicolon
+r_else
 id|cache_put
 c_func
 (paren
