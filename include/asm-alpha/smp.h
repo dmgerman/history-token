@@ -87,14 +87,6 @@ r_int
 r_int
 id|ipi_count
 suffix:semicolon
-DECL|member|irq_attempt
-r_int
-r_int
-id|irq_attempt
-(braket
-id|NR_IRQS
-)braket
-suffix:semicolon
 DECL|member|prof_multiplier
 r_int
 r_int
