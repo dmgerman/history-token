@@ -1,4 +1,4 @@
-multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;Tomasz Wrona, &lt;tw@eter.tym.pl&gt;&n; *&t;&t;&t;created test case so that I was able to fix nasty bug&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.17 2003/01/29 09:22:18 devik Exp devik $&n; */
+multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *              Stef Coene &lt;stef.coene@docum.org&gt;&n; *&t;&t;&t;HTB support at LARTC mailing list&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;Tomasz Wrona, &lt;tw@eter.tym.pl&gt;&n; *&t;&t;&t;created test case so that I was able to fix nasty bug&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.20 2003/06/18 19:55:49 devik Exp devik $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -44,7 +44,7 @@ mdefine_line|#define HTB_QLOCK(S) spin_lock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_QUNLOCK
 mdefine_line|#define HTB_QUNLOCK(S) spin_unlock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_VER
-mdefine_line|#define HTB_VER 0x3000a&t;/* major must be matched with number suplied by TC as version */
+mdefine_line|#define HTB_VER 0x3000c&t;/* major must be matched with number suplied by TC as version */
 macro_line|#if HTB_VER &gt;&gt; 16 != TC_HTB_PROTOVER
 macro_line|#error &quot;Mismatched sch_htb.c and pkt_sch.h&quot;
 macro_line|#endif
@@ -475,6 +475,12 @@ id|near_ev_cache
 (braket
 id|TC_HTB_MAXDEPTH
 )braket
+suffix:semicolon
+multiline_comment|/* cached value of jiffies in dequeue */
+DECL|member|jiffies
+r_int
+r_int
+id|jiffies
 suffix:semicolon
 multiline_comment|/* whether we hit non-work conserving class during this dequeue; we use */
 DECL|member|nwc_hit
@@ -937,9 +943,11 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;htb*g j=%lu&bslash;n&quot;
+l_string|&quot;htb*g j=%lu lj=%lu&bslash;n&quot;
 comma
 id|jiffies
+comma
+id|q-&gt;jiffies
 )paren
 suffix:semicolon
 multiline_comment|/* rows */
@@ -1544,7 +1552,7 @@ suffix:semicolon
 macro_line|#endif
 id|cl-&gt;pq_key
 op_assign
-id|jiffies
+id|q-&gt;jiffies
 op_plus
 id|PSCHED_US2JIFFIE
 c_func
@@ -1557,7 +1565,7 @@ c_cond
 (paren
 id|cl-&gt;pq_key
 op_eq
-id|jiffies
+id|q-&gt;jiffies
 )paren
 id|cl-&gt;pq_key
 op_increment
@@ -2366,7 +2374,7 @@ id|diff
 )paren
 OL
 (paren
-macro_line|#ifdef HTB_HYSTERESIS
+macro_line|#if HTB_HYSTERESIS
 id|cl-&gt;cmode
 op_ne
 id|HTB_CANT_SEND
@@ -2405,7 +2413,7 @@ id|diff
 )paren
 op_ge
 (paren
-macro_line|#ifdef HTB_HYSTERESIS
+macro_line|#if HTB_HYSTERESIS
 id|cl-&gt;cmode
 op_eq
 id|HTB_CAN_SEND
@@ -3317,7 +3325,7 @@ r_int
 )paren
 id|cl-&gt;t_c
 comma
-id|jiffies
+id|q-&gt;jiffies
 )paren
 suffix:semicolon
 id|diff
@@ -3491,7 +3499,7 @@ id|cl-&gt;parent
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * htb_do_events - make mode changes to classes at the level&n; *&n; * Scans event queue for pending events and applies them. Returns jiffies to&n; * next pending event (0 for no event in pq).&n; */
+multiline_comment|/**&n; * htb_do_events - make mode changes to classes at the level&n; *&n; * Scans event queue for pending events and applies them. Returns jiffies to&n; * next pending event (0 for no event in pq).&n; * Note: Aplied are events whose have cl-&gt;pq_key &lt;= jiffies.&n; */
 DECL|function|htb_do_events
 r_static
 r_int
@@ -3606,7 +3614,7 @@ c_cond
 id|cl-&gt;pq_key
 op_minus
 (paren
-id|jiffies
+id|q-&gt;jiffies
 op_plus
 l_int|1
 )paren
@@ -3625,13 +3633,13 @@ l_string|&quot;htb_do_ev_ret delay=%ld&bslash;n&quot;
 comma
 id|cl-&gt;pq_key
 op_minus
-id|jiffies
+id|q-&gt;jiffies
 )paren
 suffix:semicolon
 r_return
 id|cl-&gt;pq_key
 op_minus
-id|jiffies
+id|q-&gt;jiffies
 suffix:semicolon
 )brace
 id|htb_safe_rb_erase
@@ -3714,7 +3722,7 @@ r_int
 )paren
 id|cl-&gt;t_c
 comma
-id|jiffies
+id|q-&gt;jiffies
 )paren
 suffix:semicolon
 id|diff
@@ -4384,13 +4392,14 @@ op_star
 id|HZ
 suffix:semicolon
 )brace
+multiline_comment|/* why don&squot;t use jiffies here ? because expires can be in past */
 id|mod_timer
 c_func
 (paren
 op_amp
 id|q-&gt;timer
 comma
-id|jiffies
+id|q-&gt;jiffies
 op_plus
 id|delay
 )paren
@@ -4461,6 +4470,10 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+id|q-&gt;jiffies
+op_assign
+id|jiffies
+suffix:semicolon
 id|HTB_DBG
 c_func
 (paren
@@ -4558,7 +4571,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|jiffies
+id|q-&gt;jiffies
 op_minus
 id|q-&gt;near_ev_cache
 (braket
@@ -4584,13 +4597,17 @@ id|q-&gt;near_ev_cache
 (braket
 id|level
 )braket
-op_add_assign
+op_assign
+id|q-&gt;jiffies
+op_plus
+(paren
 id|delay
 ques
 c_cond
 id|delay
 suffix:colon
 id|HZ
+)paren
 suffix:semicolon
 macro_line|#ifdef HTB_DEBUG
 id|evs_used
@@ -4606,7 +4623,7 @@ id|q-&gt;near_ev_cache
 id|level
 )braket
 op_minus
-id|jiffies
+id|q-&gt;jiffies
 suffix:semicolon
 r_if
 c_cond
@@ -4726,9 +4743,13 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;HTB: dequeue bug (%d), report it please !&bslash;n&quot;
+l_string|&quot;HTB: dequeue bug (%d,%lu,%lu), report it please !&bslash;n&quot;
 comma
 id|evs_used
+comma
+id|q-&gt;jiffies
+comma
+id|jiffies
 )paren
 suffix:semicolon
 id|htb_debug_dump
@@ -4782,7 +4803,7 @@ l_string|&quot;htb_deq_end %s j=%lu skb=%p&bslash;n&quot;
 comma
 id|sch-&gt;dev-&gt;name
 comma
-id|jiffies
+id|q-&gt;jiffies
 comma
 id|skb
 )paren
@@ -7000,7 +7021,7 @@ l_int|0
 comma
 l_int|1
 comma
-l_string|&quot;htb_chg cl=%p, clid=%X, opt/prio=%d, rate=%u, buff=%d, quant=%d&bslash;n&quot;
+l_string|&quot;htb_chg cl=%p(%X), clid=%X, parid=%X, opt/prio=%d, rate=%u, buff=%d, quant=%d&bslash;n&quot;
 comma
 id|cl
 comma
@@ -7010,6 +7031,10 @@ c_cond
 id|cl-&gt;classid
 suffix:colon
 l_int|0
+comma
+id|classid
+comma
+id|parentid
 comma
 (paren
 r_int
