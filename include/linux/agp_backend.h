@@ -60,6 +60,9 @@ comma
 DECL|enumerator|INTEL_I860
 id|INTEL_I860
 comma
+DECL|enumerator|INTEL_460GX
+id|INTEL_460GX
+comma
 DECL|enumerator|VIA_GENERIC
 id|VIA_GENERIC
 comma

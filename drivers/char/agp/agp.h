@@ -624,6 +624,10 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_82443GX_1
 DECL|macro|PCI_DEVICE_ID_INTEL_82443GX_1
 mdefine_line|#define PCI_DEVICE_ID_INTEL_82443GX_1   0x71a1
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_460GX
+DECL|macro|PCI_DEVICE_ID_INTEL_460GX
+mdefine_line|#define PCI_DEVICE_ID_INTEL_460GX&t; 0x84ea
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_AMD_IRONGATE_0
 DECL|macro|PCI_DEVICE_ID_AMD_IRONGATE_0
 mdefine_line|#define PCI_DEVICE_ID_AMD_IRONGATE_0    0x7006
@@ -685,6 +689,21 @@ DECL|macro|INTEL_NBXCFG
 mdefine_line|#define INTEL_NBXCFG    0x50
 DECL|macro|INTEL_ERRSTS
 mdefine_line|#define INTEL_ERRSTS    0x91
+multiline_comment|/* Intel 460GX Registers */
+DECL|macro|INTEL_I460_APBASE
+mdefine_line|#define INTEL_I460_APBASE&t;&t;0x10
+DECL|macro|INTEL_I460_BAPBASE
+mdefine_line|#define INTEL_I460_BAPBASE&t;&t;0x98
+DECL|macro|INTEL_I460_GXBCTL
+mdefine_line|#define INTEL_I460_GXBCTL&t;&t;0xa0
+DECL|macro|INTEL_I460_AGPSIZ
+mdefine_line|#define INTEL_I460_AGPSIZ&t;&t;0xa2
+DECL|macro|INTEL_I460_ATTBASE
+mdefine_line|#define INTEL_I460_ATTBASE&t;&t;0xfe200000
+DECL|macro|INTEL_I460_GATT_VALID
+mdefine_line|#define INTEL_I460_GATT_VALID&t;&t;(1UL &lt;&lt; 24)
+DECL|macro|INTEL_I460_GATT_COHERENT
+mdefine_line|#define INTEL_I460_GATT_COHERENT&t;(1UL &lt;&lt; 25)
 multiline_comment|/* intel i830 registers */
 DECL|macro|I830_GMCH_CTRL
 mdefine_line|#define I830_GMCH_CTRL             0x52

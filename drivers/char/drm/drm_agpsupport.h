@@ -1506,6 +1506,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|INTEL_460GX
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;Intel 460GX&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|VIA_GENERIC
 suffix:colon
 id|head-&gt;chipset
