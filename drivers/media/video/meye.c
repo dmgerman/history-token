@@ -6581,7 +6581,11 @@ id|cap-&gt;bus_info
 comma
 l_string|&quot;PCI:%s&quot;
 comma
-id|meye.mchip_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|meye.mchip_dev
+)paren
 )paren
 suffix:semicolon
 id|cap-&gt;version

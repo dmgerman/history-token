@@ -322,9 +322,6 @@ c_cond
 (paren
 op_logical_neg
 id|buf
-op_logical_or
-op_logical_neg
-id|client
 )paren
 (brace
 id|ret
@@ -414,9 +411,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|client
-op_logical_or
 op_logical_neg
 id|data
 op_logical_or
@@ -719,10 +713,6 @@ comma
 id|d
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|rtc8564_driver.id
-suffix:semicolon
 id|new_client-&gt;flags
 op_assign
 id|I2C_CLIENT_ALLOW_USE
@@ -750,16 +740,6 @@ comma
 l_string|&quot;client=%p&quot;
 comma
 id|new_client
-)paren
-suffix:semicolon
-id|_DBG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;client.id=%d&quot;
-comma
-id|new_client-&gt;id
 )paren
 suffix:semicolon
 multiline_comment|/* init ctrl1 reg */
@@ -1015,9 +995,6 @@ c_cond
 (paren
 op_logical_neg
 id|dt
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1240,9 +1217,6 @@ c_cond
 (paren
 op_logical_neg
 id|dt
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1497,9 +1471,6 @@ c_cond
 (paren
 op_logical_neg
 id|ctrl
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1554,9 +1525,6 @@ c_cond
 (paren
 op_logical_neg
 id|ctrl
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1627,9 +1595,6 @@ c_cond
 (paren
 op_logical_neg
 id|mem
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1671,9 +1636,6 @@ c_cond
 (paren
 op_logical_neg
 id|mem
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus

@@ -229,11 +229,6 @@ id|pcf8591_detach_client
 comma
 )brace
 suffix:semicolon
-DECL|variable|pcf8591_id
-r_static
-r_int
-id|pcf8591_id
-suffix:semicolon
 multiline_comment|/* following are the sysfs callback functions */
 DECL|macro|show_in_channel
 mdefine_line|#define show_in_channel(channel)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_in##channel##_input(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, pcf8591_read_channel(dev, channel));&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(in##channel##_input, S_IRUGO,&t;&t;&t;&bslash;&n;&t;&t;   show_in##channel##_input, NULL);
@@ -733,11 +728,6 @@ l_string|&quot;pcf8591&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|pcf8591_id
-op_increment
 suffix:semicolon
 id|init_MUTEX
 c_func

@@ -82,9 +82,8 @@ id|adap
 comma
 r_struct
 id|i2c_msg
-id|msg
-(braket
-)braket
+op_star
+id|msgs
 comma
 r_int
 id|num
@@ -402,11 +401,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|to_i2c_driver
 mdefine_line|#define to_i2c_driver(d) container_of(d, struct i2c_driver, driver)
-r_extern
-r_struct
-id|bus_type
-id|i2c_bus_type
-suffix:semicolon
 DECL|macro|I2C_NAME_SIZE
 mdefine_line|#define I2C_NAME_SIZE&t;50
 multiline_comment|/*&n; * i2c_client identifies a single device (i.e. chip) that is connected to an &n; * i2c bus. The behaviour is defined by the routines of the driver. This&n; * function is mainly used for lookup &amp; other admin. functions.&n; */
@@ -414,10 +408,6 @@ DECL|struct|i2c_client
 r_struct
 id|i2c_client
 (brace
-DECL|member|id
-r_int
-id|id
-suffix:semicolon
 DECL|member|flags
 r_int
 r_int
@@ -568,7 +558,7 @@ r_int
 r_int
 id|id
 suffix:semicolon
-multiline_comment|/* If an adapter algorithm can&squot;t to I2C-level access, set master_xfer&n;&t;   to NULL. If an adapter algorithm can do SMBus access, set &n;&t;   smbus_xfer. If set to NULL, the SMBus protocol is simulated&n;&t;   using common I2C messages */
+multiline_comment|/* If an adapter algorithm can&squot;t do I2C-level access, set master_xfer&n;&t;   to NULL. If an adapter algorithm can do SMBus access, set &n;&t;   smbus_xfer. If set to NULL, the SMBus protocol is simulated&n;&t;   using common I2C messages */
 DECL|member|master_xfer
 r_int
 (paren
@@ -583,9 +573,8 @@ id|adap
 comma
 r_struct
 id|i2c_msg
+op_star
 id|msgs
-(braket
-)braket
 comma
 r_int
 id|num
@@ -961,9 +950,9 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Internal numbers to terminate lists */
 DECL|macro|I2C_CLIENT_END
-mdefine_line|#define I2C_CLIENT_END&t;&t;0xfffe
+mdefine_line|#define I2C_CLIENT_END&t;&t;0xfffeU
 DECL|macro|I2C_CLIENT_ISA_END
-mdefine_line|#define I2C_CLIENT_ISA_END&t;0xfffefffe
+mdefine_line|#define I2C_CLIENT_ISA_END&t;0xfffefffeU
 multiline_comment|/* The numbers to use to set I2C bus address */
 DECL|macro|ANY_I2C_BUS
 mdefine_line|#define ANY_I2C_BUS&t;&t;0xffff
@@ -1308,21 +1297,21 @@ mdefine_line|#define I2C_FUNC_SMBUS_READ_BLOCK_DATA_PEC  0x40000000 /* SMBus 2.0
 DECL|macro|I2C_FUNC_SMBUS_WRITE_BLOCK_DATA_PEC
 mdefine_line|#define I2C_FUNC_SMBUS_WRITE_BLOCK_DATA_PEC 0x80000000 /* SMBus 2.0 */
 DECL|macro|I2C_FUNC_SMBUS_BYTE
-mdefine_line|#define I2C_FUNC_SMBUS_BYTE I2C_FUNC_SMBUS_READ_BYTE | &bslash;&n;                            I2C_FUNC_SMBUS_WRITE_BYTE
+mdefine_line|#define I2C_FUNC_SMBUS_BYTE (I2C_FUNC_SMBUS_READ_BYTE | &bslash;&n;                             I2C_FUNC_SMBUS_WRITE_BYTE)
 DECL|macro|I2C_FUNC_SMBUS_BYTE_DATA
-mdefine_line|#define I2C_FUNC_SMBUS_BYTE_DATA I2C_FUNC_SMBUS_READ_BYTE_DATA | &bslash;&n;                                 I2C_FUNC_SMBUS_WRITE_BYTE_DATA
+mdefine_line|#define I2C_FUNC_SMBUS_BYTE_DATA (I2C_FUNC_SMBUS_READ_BYTE_DATA | &bslash;&n;                                  I2C_FUNC_SMBUS_WRITE_BYTE_DATA)
 DECL|macro|I2C_FUNC_SMBUS_WORD_DATA
-mdefine_line|#define I2C_FUNC_SMBUS_WORD_DATA I2C_FUNC_SMBUS_READ_WORD_DATA | &bslash;&n;                                 I2C_FUNC_SMBUS_WRITE_WORD_DATA
+mdefine_line|#define I2C_FUNC_SMBUS_WORD_DATA (I2C_FUNC_SMBUS_READ_WORD_DATA | &bslash;&n;                                  I2C_FUNC_SMBUS_WRITE_WORD_DATA)
 DECL|macro|I2C_FUNC_SMBUS_BLOCK_DATA
-mdefine_line|#define I2C_FUNC_SMBUS_BLOCK_DATA I2C_FUNC_SMBUS_READ_BLOCK_DATA | &bslash;&n;                                  I2C_FUNC_SMBUS_WRITE_BLOCK_DATA
+mdefine_line|#define I2C_FUNC_SMBUS_BLOCK_DATA (I2C_FUNC_SMBUS_READ_BLOCK_DATA | &bslash;&n;                                   I2C_FUNC_SMBUS_WRITE_BLOCK_DATA)
 DECL|macro|I2C_FUNC_SMBUS_I2C_BLOCK
-mdefine_line|#define I2C_FUNC_SMBUS_I2C_BLOCK I2C_FUNC_SMBUS_READ_I2C_BLOCK | &bslash;&n;                                  I2C_FUNC_SMBUS_WRITE_I2C_BLOCK
+mdefine_line|#define I2C_FUNC_SMBUS_I2C_BLOCK (I2C_FUNC_SMBUS_READ_I2C_BLOCK | &bslash;&n;                                  I2C_FUNC_SMBUS_WRITE_I2C_BLOCK)
 DECL|macro|I2C_FUNC_SMBUS_I2C_BLOCK_2
-mdefine_line|#define I2C_FUNC_SMBUS_I2C_BLOCK_2 I2C_FUNC_SMBUS_READ_I2C_BLOCK_2 | &bslash;&n;                                   I2C_FUNC_SMBUS_WRITE_I2C_BLOCK_2
+mdefine_line|#define I2C_FUNC_SMBUS_I2C_BLOCK_2 (I2C_FUNC_SMBUS_READ_I2C_BLOCK_2 | &bslash;&n;                                    I2C_FUNC_SMBUS_WRITE_I2C_BLOCK_2)
 DECL|macro|I2C_FUNC_SMBUS_BLOCK_DATA_PEC
-mdefine_line|#define I2C_FUNC_SMBUS_BLOCK_DATA_PEC I2C_FUNC_SMBUS_READ_BLOCK_DATA_PEC | &bslash;&n;                                      I2C_FUNC_SMBUS_WRITE_BLOCK_DATA_PEC
+mdefine_line|#define I2C_FUNC_SMBUS_BLOCK_DATA_PEC (I2C_FUNC_SMBUS_READ_BLOCK_DATA_PEC | &bslash;&n;                                       I2C_FUNC_SMBUS_WRITE_BLOCK_DATA_PEC)
 DECL|macro|I2C_FUNC_SMBUS_WORD_DATA_PEC
-mdefine_line|#define I2C_FUNC_SMBUS_WORD_DATA_PEC  I2C_FUNC_SMBUS_READ_WORD_DATA_PEC | &bslash;&n;                                      I2C_FUNC_SMBUS_WRITE_WORD_DATA_PEC
+mdefine_line|#define I2C_FUNC_SMBUS_WORD_DATA_PEC  (I2C_FUNC_SMBUS_READ_WORD_DATA_PEC | &bslash;&n;                                       I2C_FUNC_SMBUS_WRITE_WORD_DATA_PEC)
 DECL|macro|I2C_FUNC_SMBUS_READ_BYTE_PEC
 mdefine_line|#define I2C_FUNC_SMBUS_READ_BYTE_PEC&t;&t;I2C_FUNC_SMBUS_READ_BYTE_DATA
 DECL|macro|I2C_FUNC_SMBUS_WRITE_BYTE_PEC
@@ -1336,7 +1325,7 @@ mdefine_line|#define I2C_FUNC_SMBUS_BYTE_PEC&t;&t;&t;I2C_FUNC_SMBUS_BYTE_DATA
 DECL|macro|I2C_FUNC_SMBUS_BYTE_DATA_PEC
 mdefine_line|#define I2C_FUNC_SMBUS_BYTE_DATA_PEC&t;&t;I2C_FUNC_SMBUS_WORD_DATA
 DECL|macro|I2C_FUNC_SMBUS_EMUL
-mdefine_line|#define I2C_FUNC_SMBUS_EMUL I2C_FUNC_SMBUS_QUICK | &bslash;&n;                            I2C_FUNC_SMBUS_BYTE | &bslash;&n;                            I2C_FUNC_SMBUS_BYTE_DATA | &bslash;&n;                            I2C_FUNC_SMBUS_WORD_DATA | &bslash;&n;                            I2C_FUNC_SMBUS_PROC_CALL | &bslash;&n;                            I2C_FUNC_SMBUS_WRITE_BLOCK_DATA | &bslash;&n;                            I2C_FUNC_SMBUS_WRITE_BLOCK_DATA_PEC | &bslash;&n;                            I2C_FUNC_SMBUS_I2C_BLOCK
+mdefine_line|#define I2C_FUNC_SMBUS_EMUL (I2C_FUNC_SMBUS_QUICK | &bslash;&n;                             I2C_FUNC_SMBUS_BYTE | &bslash;&n;                             I2C_FUNC_SMBUS_BYTE_DATA | &bslash;&n;                             I2C_FUNC_SMBUS_WORD_DATA | &bslash;&n;                             I2C_FUNC_SMBUS_PROC_CALL | &bslash;&n;                             I2C_FUNC_SMBUS_WRITE_BLOCK_DATA | &bslash;&n;                             I2C_FUNC_SMBUS_WRITE_BLOCK_DATA_PEC | &bslash;&n;                             I2C_FUNC_SMBUS_I2C_BLOCK)
 multiline_comment|/* &n; * Data for SMBus Messages &n; */
 DECL|macro|I2C_SMBUS_BLOCK_MAX
 mdefine_line|#define I2C_SMBUS_BLOCK_MAX&t;32&t;/* As specified in SMBus standard */&t;

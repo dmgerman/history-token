@@ -959,12 +959,6 @@ id|client_template
 op_assign
 (brace
 dot
-id|id
-op_assign
-op_minus
-l_int|1
-comma
-dot
 id|driver
 op_assign
 op_amp

@@ -79,14 +79,6 @@ r_struct
 id|i2c_client
 id|client_template
 suffix:semicolon
-multiline_comment|/* unique ID allocation */
-DECL|variable|tea6415c_id
-r_static
-r_int
-id|tea6415c_id
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* this function is called by i2c_probe */
 DECL|function|detect
 r_static
@@ -180,11 +172,6 @@ r_struct
 id|i2c_client
 )paren
 )paren
-suffix:semicolon
-id|client-&gt;id
-op_assign
-id|tea6415c_id
-op_increment
 suffix:semicolon
 id|client-&gt;addr
 op_assign
