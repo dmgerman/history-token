@@ -2034,7 +2034,7 @@ id|regs
 )paren
 (brace
 r_return
-id|IRQ_NONE
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|pnp_check_irq
