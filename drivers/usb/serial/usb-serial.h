@@ -16,6 +16,7 @@ mdefine_line|#define USB_SERIAL_PORT_MAGIC&t;0x7301&t;/* magic number for usb_se
 multiline_comment|/* parity check flag */
 DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag)&t;(iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
+multiline_comment|/**&n; * usb_serial_port: structure for the specific ports of a device.&n; * @magic: magic number for internal validity of this pointer.&n; * @serial: pointer back to the struct usb_serial owner of this port.&n; * @tty: pointer to the coresponding tty for this port.&n; * @number: the number of the port (the minor number).&n; * @interrupt_in_buffer: pointer to the interrupt in buffer for this port.&n; * @interrupt_in_urb: pointer to the interrupt in struct urb for this port.&n; * @interrupt_in_endpointAddress: endpoint address for the interrupt in pipe&n; *&t;for this port.&n; * @bulk_in_buffer: pointer to the bulk in buffer for this port.&n; * @read_urb: pointer to the bulk in struct urb for this port.&n; * @bulk_in_endpointAddress: endpoint address for the bulk in pipe for this&n; *&t;port.&n; * @bulk_out_buffer: pointer to the bulk out buffer for this port.&n; * @bulk_out_size: the size of the bulk_out_buffer, in bytes.&n; * @write_urb: pointer to the bulk out struct urb for this port.&n; * @bulk_out_endpointAddress: endpoint address for the bulk out pipe for this&n; *&t;port.&n; * @write_wait: a wait_queue_head_t used by the port.&n; * @tqueue: task queue for the line discipline waking up.&n; * @open_count: number of times this port has been opened.&n; * @sem: struct semaphore used to lock this structure.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.&n; *&n; * This structure is used by the usb-serial core and drivers for the specific&n; * ports of a device.&n; */
 DECL|struct|usb_serial_port
 r_struct
 id|usb_serial_port
@@ -30,14 +31,12 @@ id|usb_serial
 op_star
 id|serial
 suffix:semicolon
-multiline_comment|/* pointer back to the owner of this port */
 DECL|member|tty
 r_struct
 id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-multiline_comment|/* the coresponding tty for this port */
 DECL|member|number
 r_int
 r_char
@@ -104,26 +103,23 @@ r_struct
 id|tq_struct
 id|tqueue
 suffix:semicolon
-multiline_comment|/* task queue for line discipline waking up */
 DECL|member|open_count
 r_int
 id|open_count
 suffix:semicolon
-multiline_comment|/* number of times this port has been opened */
 DECL|member|sem
 r_struct
 id|semaphore
 id|sem
 suffix:semicolon
-multiline_comment|/* locks this structure */
 DECL|member|private
 r_void
 op_star
 r_private
 suffix:semicolon
-multiline_comment|/* data private to the specific port */
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @magic: magic number for internal validity of this pointer.&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @vendor: vendor id of this device&n; * @product: product id of this device&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.&n; */
 DECL|struct|usb_serial
 r_struct
 id|usb_serial
@@ -144,58 +140,42 @@ id|usb_serial_device_type
 op_star
 id|type
 suffix:semicolon
-multiline_comment|/* the type of usb serial device this is */
 DECL|member|interface
 r_struct
 id|usb_interface
 op_star
 id|interface
 suffix:semicolon
-multiline_comment|/* the interface for this device */
-DECL|member|tty_driver
-r_struct
-id|tty_driver
-op_star
-id|tty_driver
-suffix:semicolon
-multiline_comment|/* the tty_driver for this device */
 DECL|member|minor
 r_int
 r_char
 id|minor
 suffix:semicolon
-multiline_comment|/* the starting minor number for this device */
 DECL|member|num_ports
 r_int
 r_char
 id|num_ports
 suffix:semicolon
-multiline_comment|/* the number of ports this device has */
 DECL|member|num_interrupt_in
 r_char
 id|num_interrupt_in
 suffix:semicolon
-multiline_comment|/* number of interrupt in endpoints we have */
 DECL|member|num_bulk_in
 r_char
 id|num_bulk_in
 suffix:semicolon
-multiline_comment|/* number of bulk in endpoints we have */
 DECL|member|num_bulk_out
 r_char
 id|num_bulk_out
 suffix:semicolon
-multiline_comment|/* number of bulk out endpoints we have */
 DECL|member|vendor
 id|__u16
 id|vendor
 suffix:semicolon
-multiline_comment|/* vendor id of this device */
 DECL|member|product
 id|__u16
 id|product
 suffix:semicolon
-multiline_comment|/* product id of this device */
 DECL|member|port
 r_struct
 id|usb_serial_port
@@ -209,7 +189,6 @@ r_void
 op_star
 r_private
 suffix:semicolon
-multiline_comment|/* data private to the specific driver */
 )brace
 suffix:semicolon
 DECL|macro|NUM_DONT_CARE
