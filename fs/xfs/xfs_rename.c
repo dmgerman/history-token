@@ -25,7 +25,6 @@ macro_line|#include &quot;xfs_utils.h&quot;
 macro_line|#include &quot;xfs_trans_space.h&quot;
 macro_line|#include &quot;xfs_da_btree.h&quot;
 macro_line|#include &quot;xfs_dir_leaf.h&quot;
-macro_line|#include &quot;xfs_dmapi.h&quot;
 multiline_comment|/*&n; * Given an array of up to 4 inode pointers, unlock the pointed to inodes.&n; * If there are fewer than 4 entries in the array, the empty entries will&n; * be at the end and will have NULL pointers in them.&n; */
 id|STATIC
 r_void
@@ -931,11 +930,11 @@ id|mp
 comma
 id|DM_EVENT_RENAME
 comma
-id|src_dir_bdp
+id|src_dir_vp
 comma
 id|DM_RIGHT_NULL
 comma
-id|target_dir_bdp
+id|target_dir_vp
 comma
 id|DM_RIGHT_NULL
 comma
@@ -2135,11 +2134,11 @@ id|mp
 comma
 id|DM_EVENT_POSTRENAME
 comma
-id|src_dir_bdp
+id|src_dir_vp
 comma
 id|DM_RIGHT_NULL
 comma
-id|target_dir_bdp
+id|target_dir_vp
 comma
 id|DM_RIGHT_NULL
 comma

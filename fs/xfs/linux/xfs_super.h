@@ -50,9 +50,14 @@ macro_line|#else
 DECL|macro|XFS_REALTIME_STRING
 macro_line|# define XFS_REALTIME_STRING
 macro_line|#endif
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
+macro_line|# if XFS_BIG_INUMS
 DECL|macro|XFS_BIGFS_STRING
-macro_line|# define XFS_BIGFS_STRING&t;&quot;big filesystems, &quot;
+macro_line|#  define XFS_BIGFS_STRING&t;&quot;large block/inode numbers, &quot;
+macro_line|# else
+DECL|macro|XFS_BIGFS_STRING
+macro_line|#  define XFS_BIGFS_STRING&t;&quot;large block numbers, &quot;
+macro_line|# endif
 macro_line|#else
 DECL|macro|XFS_BIGFS_STRING
 macro_line|# define XFS_BIGFS_STRING

@@ -1665,7 +1665,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;MM: not creating mapping for &quot;
+l_string|&quot;BUG: not creating mapping for &quot;
 l_string|&quot;0x%08lx at 0x%08lx in user region&bslash;n&quot;
 comma
 id|md-&gt;physical
@@ -1676,6 +1676,41 @@ r_virtual
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|md-&gt;type
+op_eq
+id|MT_DEVICE
+op_logical_and
+id|md
+op_member_access_from_pointer
+r_virtual
+op_ge
+id|PAGE_OFFSET
+op_logical_and
+id|md
+op_member_access_from_pointer
+r_virtual
+OL
+id|VMALLOC_END
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;BUG: mapping for 0x%08lx at 0x%08lx &quot;
+l_string|&quot;overlaps vmalloc space&bslash;n&quot;
+comma
+id|md-&gt;physical
+comma
+id|md
+op_member_access_from_pointer
+r_virtual
+)paren
 suffix:semicolon
 )brace
 id|domain
@@ -1785,7 +1820,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;MM: map for 0x%08lx at 0x%08lx can not &quot;
+l_string|&quot;BUG: map for 0x%08lx at 0x%08lx can not &quot;
 l_string|&quot;be mapped using pages, ignoring.&bslash;n&quot;
 comma
 id|md-&gt;physical

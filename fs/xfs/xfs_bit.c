@@ -1240,7 +1240,7 @@ r_if
 c_cond
 (paren
 id|n
-op_eq
+op_le
 l_int|0
 )paren
 (brace
@@ -1267,6 +1267,15 @@ l_int|32
 suffix:semicolon
 )brace
 r_return
+(paren
+id|n
+op_le
+l_int|0
+)paren
+ques
+c_cond
+id|n
+suffix:colon
 id|n
 op_minus
 l_int|1

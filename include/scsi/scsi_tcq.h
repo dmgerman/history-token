@@ -51,6 +51,8 @@ c_func
 id|sdev-&gt;request_queue
 comma
 id|depth
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|scsi_adjust_queue_depth

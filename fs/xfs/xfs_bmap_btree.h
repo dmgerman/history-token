@@ -134,7 +134,7 @@ multiline_comment|/*&n; * Values and macros for delayed-allocation startblock fi
 DECL|macro|STARTBLOCKVALBITS
 mdefine_line|#define STARTBLOCKVALBITS&t;17
 DECL|macro|STARTBLOCKMASKBITS
-mdefine_line|#define STARTBLOCKMASKBITS&t;(15 + XFS_BIG_FILESYSTEMS * 20)
+mdefine_line|#define STARTBLOCKMASKBITS&t;(15 + XFS_BIG_BLKNOS * 20)
 DECL|macro|DSTARTBLOCKMASKBITS
 mdefine_line|#define DSTARTBLOCKMASKBITS&t;(15 + 20)
 DECL|macro|STARTBLOCKMASK
