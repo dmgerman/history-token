@@ -709,7 +709,7 @@ op_amp
 id|dst_prev-&gt;metrics
 comma
 op_amp
-id|rt-&gt;u.dst.metrics
+id|x-&gt;route-&gt;metrics
 comma
 r_sizeof
 (paren
