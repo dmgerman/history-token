@@ -1208,8 +1208,9 @@ id|tq_struct
 id|cad_tq
 op_assign
 (brace
+dot
 id|routine
-suffix:colon
+op_assign
 id|deferred_cad
 comma
 )brace

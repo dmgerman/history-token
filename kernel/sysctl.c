@@ -379,12 +379,14 @@ id|file_operations
 id|proc_sys_file_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|proc_readsys
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|proc_writesys
 comma
 )brace
@@ -396,8 +398,9 @@ id|inode_operations
 id|proc_sys_inode_operations
 op_assign
 (brace
+dot
 id|permission
-suffix:colon
+op_assign
 id|proc_sys_permission
 comma
 )brace
