@@ -7311,7 +7311,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|words
+id|buf_words
 suffix:semicolon
 id|i
 op_increment
