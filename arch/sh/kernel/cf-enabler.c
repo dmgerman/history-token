@@ -1,11 +1,11 @@
-multiline_comment|/* $Id: cf-enabler.c,v 1.8 2001/07/18 12:32:21 gniibe Exp $&n; *&n; *  linux/drivers/block/cf-enabler.c&n; *&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2000  Toshiharu Nozawa&n; *  Copyright (C) 2001  A&amp;D Co., Ltd.&n; *&n; *  Enable the CF configuration.&n; */
+multiline_comment|/* $Id: cf-enabler.c,v 1.3 2003/05/04 19:29:52 lethal Exp $&n; *&n; *  linux/drivers/block/cf-enabler.c&n; *&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2000  Toshiharu Nozawa&n; *  Copyright (C) 2001  A&amp;D Co., Ltd.&n; *&n; *  Enable the CF configuration.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * You can connect Compact Flash directly to the bus of SuperH.&n; * This is the enabler for that.&n; *&n; * SIM: How generic is this really? It looks pretty board, or at&n; * least SH sub-type, specific to me.&n; * I know it doesn&squot;t work on the Overdrive!&n; */
 multiline_comment|/*&n; * 0xB8000000 : Attribute&n; * 0xB8001000 : Common Memory&n; * 0xBA000000 : I/O&n; */
-macro_line|#if defined(CONFIG_IDE) &amp;&amp; defined(__SH4__)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; defined(CONFIG_CPU_SH4)
 multiline_comment|/* SH4 can&squot;t access PCMCIA interface through P2 area.&n; * we must remap it with appropreate attribute bit of the page set.&n; * this part is based on Greg Banks&squot; hd64465_ss.c implementation - Masahiro Abe */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -136,7 +136,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* You must have enabled the card, and set the level interrupt&n; * before reaching this point. Possibly in boot ROM or boot loader.&n; */
-macro_line|#if defined(CONFIG_IDE) &amp;&amp; defined(__SH4__)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; defined(CONFIG_CPU_SH4)
 id|allocate_cf_area
 c_func
 (paren
@@ -162,7 +162,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SH_GENERIC) || defined(CONFIG_SH_SOLUTION_ENGINE)
+macro_line|#if defined(CONFIG_SH_SOLUTION_ENGINE)
 macro_line|#include &lt;asm/hitachi_se.h&gt;
 multiline_comment|/*&n; * SolutionEngine&n; *&n; * 0xB8400000 : Common Memory&n; * 0xB8500000 : Attribute&n; * 0xB8600000 : I/O&n; */
 DECL|function|cf_init_se
@@ -418,7 +418,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_SH_GENERIC) || defined(CONFIG_SH_SOLUTION_ENGINE)
+macro_line|#if defined(CONFIG_SH_SOLUTION_ENGINE)
 r_if
 c_cond
 (paren

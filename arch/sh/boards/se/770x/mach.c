@@ -168,10 +168,6 @@ suffix:colon
 id|heartbeat_se
 comma
 macro_line|#endif
-id|mv_hw_se
-suffix:colon
-l_int|1
-comma
 )brace
 suffix:semicolon
 id|ALIAS_MV

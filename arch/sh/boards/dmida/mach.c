@@ -132,10 +132,6 @@ id|mv_rtc_settimeofday
 suffix:colon
 id|sh_rtc_settimeofday
 comma
-id|mv_hw_hd64465
-suffix:colon
-l_int|1
-comma
 )brace
 suffix:semicolon
 id|ALIAS_MV

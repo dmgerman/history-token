@@ -321,6 +321,18 @@ id|index
 op_increment
 )paren
 (brace
+id|memset
+c_func
+(paren
+op_amp
+id|hw
+comma
+l_int|0
+comma
+r_sizeof
+id|hw
+)paren
+suffix:semicolon
 id|ide_init_hwif_ports
 c_func
 (paren
@@ -355,11 +367,14 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PCI */
 )brace
+macro_line|#include &lt;asm-generic/ide_iops.h&gt;
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_IDE_H */
 eof

@@ -1,7 +1,11 @@
 macro_line|#ifndef __ASM_SH_DMA_H
 DECL|macro|__ASM_SH_DMA_H
 mdefine_line|#define __ASM_SH_DMA_H
+macro_line|#ifdef CONFIG_SH_MPC1211
+macro_line|#include &lt;asm/mpc1211/dma.h&gt;
+macro_line|#else
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/cpu/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* need byte IO */
 DECL|macro|MAX_DMA_CHANNELS
 mdefine_line|#define MAX_DMA_CHANNELS 8
@@ -13,29 +17,6 @@ multiline_comment|/* But... */
 multiline_comment|/* XXX: This is not applicable to SuperH, just needed for alloc_bootmem */
 DECL|macro|MAX_DMA_ADDRESS
 mdefine_line|#define MAX_DMA_ADDRESS      (PAGE_OFFSET+0x10000000)
-macro_line|#if defined(__sh3__)
-DECL|macro|SAR
-mdefine_line|#define SAR ((unsigned long[]){0xa4000020,0xa4000030,0xa4000040,0xa4000050})
-DECL|macro|DAR
-mdefine_line|#define DAR ((unsigned long[]){0xa4000024,0xa4000034,0xa4000044,0xa4000054})
-DECL|macro|DMATCR
-mdefine_line|#define DMATCR ((unsigned long[]){0xa4000028,0xa4000038,0xa4000048,0xa4000058})
-DECL|macro|CHCR
-mdefine_line|#define CHCR ((unsigned long[]){0xa400002c,0xa400003c,0xa400004c,0xa400005c})
-DECL|macro|DMAOR
-mdefine_line|#define DMAOR 0xa4000060UL
-macro_line|#elif defined(__SH4__)
-DECL|macro|SAR
-mdefine_line|#define SAR ((unsigned long[]){0xbfa00000,0xbfa00010,0xbfa00020,0xbfa00030})
-DECL|macro|DAR
-mdefine_line|#define DAR ((unsigned long[]){0xbfa00004,0xbfa00014,0xbfa00024,0xbfa00034})
-DECL|macro|DMATCR
-mdefine_line|#define DMATCR ((unsigned long[]){0xbfa00008,0xbfa00018,0xbfa00028,0xbfa00038})
-DECL|macro|CHCR
-mdefine_line|#define CHCR ((unsigned long[]){0xbfa0000c,0xbfa0001c,0xbfa0002c,0xbfa0003c})
-DECL|macro|DMAOR
-mdefine_line|#define DMAOR 0xbfa00040UL
-macro_line|#endif
 DECL|macro|DMTE_IRQ
 mdefine_line|#define DMTE_IRQ ((int[]){DMTE0_IRQ,DMTE1_IRQ,DMTE2_IRQ,DMTE3_IRQ})
 DECL|macro|DMA_MODE_READ
@@ -108,16 +89,6 @@ DECL|member|chan
 r_int
 r_int
 id|chan
-suffix:semicolon
-DECL|member|mode_read
-r_int
-r_int
-id|mode_read
-suffix:semicolon
-DECL|member|mode_write
-r_int
-r_int
-id|mode_write
 suffix:semicolon
 DECL|member|dev_addr
 r_int
@@ -260,5 +231,6 @@ macro_line|#else
 DECL|macro|isa_dma_bridge_buggy
 mdefine_line|#define isa_dma_bridge_buggy &t;(0)
 macro_line|#endif
+macro_line|#endif /* CONFIG_SH_MPC1211 */
 macro_line|#endif /* __ASM_SH_DMA_H */
 eof

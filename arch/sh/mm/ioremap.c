@@ -1,7 +1,11 @@
-multiline_comment|/* $Id: ioremap.c,v 1.4 2001/06/30 09:18:39 gniibe Exp $&n; *&n; * arch/sh/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; */
+multiline_comment|/* $Id: ioremap.c,v 1.6 2003/05/04 19:29:55 lethal Exp $&n; *&n; * arch/sh/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|remap_area_pte
 r_static
 r_inline
@@ -239,7 +243,7 @@ id|pte_t
 op_star
 id|pte
 op_assign
-id|pte_alloc
+id|pte_alloc_kernel
 c_func
 (paren
 op_amp

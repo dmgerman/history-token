@@ -1,6 +1,84 @@
 macro_line|#ifndef __ASM_SH_ELF_H
 DECL|macro|__ASM_SH_ELF_H
 mdefine_line|#define __ASM_SH_ELF_H
+multiline_comment|/* SH relocation types  */
+DECL|macro|R_SH_NONE
+mdefine_line|#define&t;R_SH_NONE&t;&t;0
+DECL|macro|R_SH_DIR32
+mdefine_line|#define&t;R_SH_DIR32&t;&t;1
+DECL|macro|R_SH_REL32
+mdefine_line|#define&t;R_SH_REL32&t;&t;2
+DECL|macro|R_SH_DIR8WPN
+mdefine_line|#define&t;R_SH_DIR8WPN&t;&t;3
+DECL|macro|R_SH_IND12W
+mdefine_line|#define&t;R_SH_IND12W&t;&t;4
+DECL|macro|R_SH_DIR8WPL
+mdefine_line|#define&t;R_SH_DIR8WPL&t;&t;5
+DECL|macro|R_SH_DIR8WPZ
+mdefine_line|#define&t;R_SH_DIR8WPZ&t;&t;6
+DECL|macro|R_SH_DIR8BP
+mdefine_line|#define&t;R_SH_DIR8BP&t;&t;7
+DECL|macro|R_SH_DIR8W
+mdefine_line|#define&t;R_SH_DIR8W&t;&t;8
+DECL|macro|R_SH_DIR8L
+mdefine_line|#define&t;R_SH_DIR8L&t;&t;9
+DECL|macro|R_SH_SWITCH16
+mdefine_line|#define&t;R_SH_SWITCH16&t;&t;25
+DECL|macro|R_SH_SWITCH32
+mdefine_line|#define&t;R_SH_SWITCH32&t;&t;26
+DECL|macro|R_SH_USES
+mdefine_line|#define&t;R_SH_USES&t;&t;27
+DECL|macro|R_SH_COUNT
+mdefine_line|#define&t;R_SH_COUNT&t;&t;28
+DECL|macro|R_SH_ALIGN
+mdefine_line|#define&t;R_SH_ALIGN&t;&t;29
+DECL|macro|R_SH_CODE
+mdefine_line|#define&t;R_SH_CODE&t;&t;30
+DECL|macro|R_SH_DATA
+mdefine_line|#define&t;R_SH_DATA&t;&t;31
+DECL|macro|R_SH_LABEL
+mdefine_line|#define&t;R_SH_LABEL&t;&t;32
+DECL|macro|R_SH_SWITCH8
+mdefine_line|#define&t;R_SH_SWITCH8&t;&t;33
+DECL|macro|R_SH_GNU_VTINHERIT
+mdefine_line|#define&t;R_SH_GNU_VTINHERIT&t;34
+DECL|macro|R_SH_GNU_VTENTRY
+mdefine_line|#define&t;R_SH_GNU_VTENTRY&t;35
+DECL|macro|R_SH_TLS_GD_32
+mdefine_line|#define&t;R_SH_TLS_GD_32&t;&t;144
+DECL|macro|R_SH_TLS_LD_32
+mdefine_line|#define&t;R_SH_TLS_LD_32&t;&t;145
+DECL|macro|R_SH_TLS_LDO_32
+mdefine_line|#define&t;R_SH_TLS_LDO_32&t;&t;146
+DECL|macro|R_SH_TLS_IE_32
+mdefine_line|#define&t;R_SH_TLS_IE_32&t;&t;147
+DECL|macro|R_SH_TLS_LE_32
+mdefine_line|#define&t;R_SH_TLS_LE_32&t;&t;148
+DECL|macro|R_SH_TLS_DTPMOD32
+mdefine_line|#define&t;R_SH_TLS_DTPMOD32&t;149
+DECL|macro|R_SH_TLS_DTPOFF32
+mdefine_line|#define&t;R_SH_TLS_DTPOFF32&t;150
+DECL|macro|R_SH_TLS_TPOFF32
+mdefine_line|#define&t;R_SH_TLS_TPOFF32&t;151
+DECL|macro|R_SH_GOT32
+mdefine_line|#define&t;R_SH_GOT32&t;&t;160
+DECL|macro|R_SH_PLT32
+mdefine_line|#define&t;R_SH_PLT32&t;&t;161
+DECL|macro|R_SH_COPY
+mdefine_line|#define&t;R_SH_COPY&t;&t;162
+DECL|macro|R_SH_GLOB_DAT
+mdefine_line|#define&t;R_SH_GLOB_DAT&t;&t;163
+DECL|macro|R_SH_JMP_SLOT
+mdefine_line|#define&t;R_SH_JMP_SLOT&t;&t;164
+DECL|macro|R_SH_RELATIVE
+mdefine_line|#define&t;R_SH_RELATIVE&t;&t;165
+DECL|macro|R_SH_GOTOFF
+mdefine_line|#define&t;R_SH_GOTOFF&t;&t;166
+DECL|macro|R_SH_GOTPC
+mdefine_line|#define&t;R_SH_GOTPC&t;&t;167
+multiline_comment|/* Keep this the last entry.  */
+DECL|macro|R_SH_NUM
+mdefine_line|#define&t;R_SH_NUM&t;&t;256
 multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
@@ -61,6 +139,34 @@ mdefine_line|#define ELF_PLAT_INIT(_r, load_addr) &bslash;&n;  do { _r-&gt;regs[
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality(PER_LINUX_32BIT)
+r_extern
+r_int
+id|dump_task_regs
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_gregset_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dump_task_fpu
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_fpregset_t
+op_star
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_COPY_TASK_REGS
+mdefine_line|#define ELF_CORE_COPY_TASK_REGS(tsk, elf_regs) dump_task_regs(tsk, elf_regs)
+DECL|macro|ELF_CORE_COPY_FPREGS
+mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
 macro_line|#endif
 macro_line|#endif /* __ASM_SH_ELF_H */
 eof

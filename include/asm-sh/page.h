@@ -39,12 +39,15 @@ op_star
 id|from
 )paren
 suffix:semicolon
-macro_line|#if defined(__sh3__)
+macro_line|#if defined(CONFIG_CPU_SH3)
 DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(page, vaddr)&t;clear_page(page)
+mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
 DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to, from, vaddr)&t;copy_page(to, from)
-macro_line|#elif defined(__SH4__)
+mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
+macro_line|#elif defined(CONFIG_CPU_SH4)
+r_struct
+id|page
+suffix:semicolon
 r_extern
 r_void
 id|clear_user_page
@@ -57,6 +60,11 @@ comma
 r_int
 r_int
 id|address
+comma
+r_struct
+id|page
+op_star
+id|pg
 )paren
 suffix:semicolon
 r_extern
@@ -75,6 +83,11 @@ comma
 r_int
 r_int
 id|address
+comma
+r_struct
+id|page
+op_star
+id|pg
 )paren
 suffix:semicolon
 r_extern
@@ -197,16 +210,29 @@ DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x)-PAGE_OFFSET)
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long)(x)+PAGE_OFFSET))
+DECL|macro|MAP_NR
+mdefine_line|#define MAP_NR(addr)&t;&t;(((unsigned long)(addr)-PAGE_OFFSET) &gt;&gt; PAGE_SHIFT)
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|phys_to_page
 mdefine_line|#define phys_to_page(phys)&t;(mem_map + (((phys)-__MEMORY_START) &gt;&gt; PAGE_SHIFT))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;(((page - mem_map) &lt;&lt; PAGE_SHIFT) + __MEMORY_START)
 macro_line|#endif
+multiline_comment|/* PFN start number, because of __MEMORY_START */
+DECL|macro|PFN_START
+mdefine_line|#define PFN_START&t;&t;(__MEMORY_START &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn) - PFN_START)
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map) + PFN_START)
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;phys_to_page(__pa(kaddr))
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;(((pfn) - PFN_START) &lt; max_mapnr)
+DECL|macro|virt_addr_valid
+mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|VM_DATA_DEFAULT_FLAGS
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order

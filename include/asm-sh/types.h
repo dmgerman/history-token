@@ -123,6 +123,15 @@ r_typedef
 id|u32
 id|dma_addr_t
 suffix:semicolon
+macro_line|#ifdef CONFIG_LBD
+DECL|typedef|sector_t
+r_typedef
+id|u64
+id|sector_t
+suffix:semicolon
+DECL|macro|HAVE_SECTOR_T
+mdefine_line|#define HAVE_SECTOR_T
+macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_TYPES_H */

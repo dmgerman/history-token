@@ -12,12 +12,30 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|__bad_ndelay
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__udelay
 c_func
 (paren
 r_int
 r_int
 id|usecs
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__ndelay
+c_func
+(paren
+r_int
+r_int
+id|nsecs
 )paren
 suffix:semicolon
 r_extern
@@ -42,5 +60,7 @@ id|loops
 suffix:semicolon
 DECL|macro|udelay
 mdefine_line|#define udelay(n) (__builtin_constant_p(n) ? &bslash;&n;&t;((n) &gt; 20000 ? __bad_udelay() : __const_udelay((n) * 0x10c6ul)) : &bslash;&n;&t;__udelay(n))
+DECL|macro|ndelay
+mdefine_line|#define ndelay(n) (__builtin_constant_p(n) ? &bslash;&n;&t;((n) &gt; 20000 ? __bad_ndelay() : __const_udelay((n) * 5ul)) : &bslash;&n;&t;__ndelay(n))
 macro_line|#endif /* __ASM_SH_DELAY_H */
 eof

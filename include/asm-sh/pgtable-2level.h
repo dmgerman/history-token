@@ -113,6 +113,12 @@ op_star
 id|dir
 suffix:semicolon
 )brace
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)(((x).pte &gt;&gt; PAGE_SHIFT)))
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
+DECL|macro|pfn_pmd
+mdefine_line|#define pfn_pmd(pfn, prot)&t;__pmd(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __ASM_SH_PGTABLE_2LEVEL_H */
 eof

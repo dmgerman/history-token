@@ -41,7 +41,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -56,7 +56,7 @@ id|v
 op_add_assign
 id|i
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -82,7 +82,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -97,7 +97,7 @@ id|v
 op_sub_assign
 id|i
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -125,7 +125,7 @@ id|temp
 comma
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -153,7 +153,7 @@ id|v
 op_assign
 id|temp
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -184,7 +184,7 @@ id|temp
 comma
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -212,7 +212,7 @@ id|v
 op_assign
 id|temp
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -254,7 +254,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -270,7 +270,7 @@ op_and_assign
 op_complement
 id|mask
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -297,7 +297,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -312,7 +312,7 @@ id|v
 op_or_assign
 id|mask
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

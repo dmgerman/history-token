@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Just taken from alpha implementation.&n; * This can&squot;t work well, perhaps.&n; */
 multiline_comment|/*&n; *  Generic semaphore code. Buyer beware. Do your own&n; * specific changes in &lt;asm/semaphore-helper.h&gt;&n; */
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
