@@ -15066,6 +15066,16 @@ id|err
 comma
 id|i
 suffix:semicolon
+id|u32
+id|orig_tg3_flags
+op_assign
+id|tp-&gt;tg3_flags
+suffix:semicolon
+multiline_comment|/* Force use of PCI config space for indirect register&n;&t; * write calls.&n;&t; */
+id|tp-&gt;tg3_flags
+op_or_assign
+id|TG3_FLAG_PCIX_TARGET_HWBUG
+suffix:semicolon
 id|err
 op_assign
 id|tg3_reset_cpu
@@ -15081,8 +15091,8 @@ c_cond
 (paren
 id|err
 )paren
-r_return
-id|err
+r_goto
+id|out
 suffix:semicolon
 r_for
 c_loop
@@ -15316,8 +15326,18 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+id|tp-&gt;tg3_flags
+op_assign
+id|orig_tg3_flags
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* tp-&gt;lock is held. */
