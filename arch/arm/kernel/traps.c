@@ -847,6 +847,11 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|die_lock
 id|spinlock_t
