@@ -2425,6 +2425,18 @@ id|INTERPRETER_ELF
 suffix:semicolon
 )brace
 )brace
+r_else
+(brace
+multiline_comment|/* Executables without an interpreter also need a personality  */
+id|SET_PERSONALITY
+c_func
+(paren
+id|elf_ex
+comma
+id|ibcs2_interpreter
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* OK, we are done with that, now set up the arg stuff,&n;&t;   and then start this sucker up */
 r_if
 c_cond
