@@ -1,11 +1,30 @@
 multiline_comment|/***************************************************************************&bslash;&n;|*                                                                           *|&n;|*       Copyright 1993-1999 NVIDIA, Corporation.  All rights reserved.      *|&n;|*                                                                           *|&n;|*     NOTICE TO USER:   The source code  is copyrighted under  U.S. and     *|&n;|*     international laws.  Users and possessors of this source code are     *|&n;|*     hereby granted a nonexclusive,  royalty-free copyright license to     *|&n;|*     use this code in individual and commercial software.                  *|&n;|*                                                                           *|&n;|*     Any use of this source code must include,  in the user documenta-     *|&n;|*     tion and  internal comments to the code,  notices to the end user     *|&n;|*     as follows:                                                           *|&n;|*                                                                           *|&n;|*       Copyright 1993-1999 NVIDIA, Corporation.  All rights reserved.      *|&n;|*                                                                           *|&n;|*     NVIDIA, CORPORATION MAKES NO REPRESENTATION ABOUT THE SUITABILITY     *|&n;|*     OF  THIS SOURCE  CODE  FOR ANY PURPOSE.  IT IS  PROVIDED  &quot;AS IS&quot;     *|&n;|*     WITHOUT EXPRESS OR IMPLIED WARRANTY OF ANY KIND.  NVIDIA, CORPOR-     *|&n;|*     ATION DISCLAIMS ALL WARRANTIES  WITH REGARD  TO THIS SOURCE CODE,     *|&n;|*     INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY, NONINFRINGE-     *|&n;|*     MENT,  AND FITNESS  FOR A PARTICULAR PURPOSE.   IN NO EVENT SHALL     *|&n;|*     NVIDIA, CORPORATION  BE LIABLE FOR ANY SPECIAL,  INDIRECT,  INCI-     *|&n;|*     DENTAL, OR CONSEQUENTIAL DAMAGES,  OR ANY DAMAGES  WHATSOEVER RE-     *|&n;|*     SULTING FROM LOSS OF USE,  DATA OR PROFITS,  WHETHER IN AN ACTION     *|&n;|*     OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,  ARISING OUT OF     *|&n;|*     OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOURCE CODE.     *|&n;|*                                                                           *|&n;|*     U.S. Government  End  Users.   This source code  is a &quot;commercial     *|&n;|*     item,&quot;  as that  term is  defined at  48 C.F.R. 2.101 (OCT 1995),     *|&n;|*     consisting  of &quot;commercial  computer  software&quot;  and  &quot;commercial     *|&n;|*     computer  software  documentation,&quot;  as such  terms  are  used in     *|&n;|*     48 C.F.R. 12.212 (SEPT 1995)  and is provided to the U.S. Govern-     *|&n;|*     ment only as  a commercial end item.   Consistent with  48 C.F.R.     *|&n;|*     12.212 and  48 C.F.R. 227.7202-1 through  227.7202-4 (JUNE 1995),     *|&n;|*     all U.S. Government End Users  acquire the source code  with only     *|&n;|*     those rights set forth herein.                                        *|&n;|*                                                                           *|&n;&bslash;***************************************************************************/
 multiline_comment|/*&n; * GPL licensing note -- nVidia is allowing a liberal interpretation of&n; * the documentation restriction above, to merely say that this nVidia&squot;s&n; * copyright and disclaimer should be included with all code derived&n; * from this source.  -- Jeff Garzik &lt;jgarzik@pobox.com&gt;, 01/Nov/99 &n; */
-multiline_comment|/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/nv/riva_hw.h,v 1.6 2000/02/08 17:19:12 dawes Exp $ */
+multiline_comment|/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/nv/riva_hw.h,v 1.21 2002/10/14 18:22:46 mvojkovi Exp $ */
 macro_line|#ifndef __RIVA_HW_H__
 DECL|macro|__RIVA_HW_H__
 mdefine_line|#define __RIVA_HW_H__
 DECL|macro|RIVA_SW_VERSION
 mdefine_line|#define RIVA_SW_VERSION 0x00010003
+macro_line|#ifndef Bool
+DECL|typedef|Bool
+r_typedef
+r_int
+id|Bool
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifndef TRUE
+DECL|macro|TRUE
+mdefine_line|#define TRUE 1
+macro_line|#endif
+macro_line|#ifndef FALSE
+DECL|macro|FALSE
+mdefine_line|#define FALSE 0
+macro_line|#endif
+macro_line|#ifndef NULL
+DECL|macro|NULL
+mdefine_line|#define NULL 0
+macro_line|#endif
 multiline_comment|/*&n; * Typedefs to force certain sized values.&n; */
 DECL|typedef|U008
 r_typedef
@@ -26,10 +45,18 @@ r_int
 id|U032
 suffix:semicolon
 multiline_comment|/*&n; * HW access macros.&n; */
+macro_line|#if defined(__powerpc__)
+macro_line|#include &lt;asm/io.h&gt;
+DECL|macro|NV_WR08
+mdefine_line|#define NV_WR08(p,i,d)&t;out_8(p+i, d)
+DECL|macro|NV_RD08
+mdefine_line|#define NV_RD08(p,i)&t;in_8(p+i)
+macro_line|#else
 DECL|macro|NV_WR08
 mdefine_line|#define NV_WR08(p,i,d)  (((U008 *)(p))[i]=(d))
 DECL|macro|NV_RD08
 mdefine_line|#define NV_RD08(p,i)    (((U008 *)(p))[i])
+macro_line|#endif
 DECL|macro|NV_WR16
 mdefine_line|#define NV_WR16(p,i,d)  (((U016 *)(p))[(i)/2]=(d))
 DECL|macro|NV_RD16
@@ -64,6 +91,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -72,6 +105,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -99,6 +133,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -107,6 +147,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -156,6 +197,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -164,6 +211,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -195,6 +243,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -206,6 +260,7 @@ id|Nop
 l_int|1
 )braket
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -248,6 +303,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -256,6 +317,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -291,6 +353,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -302,6 +370,7 @@ id|Nop
 l_int|1
 )braket
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -348,6 +417,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -356,6 +431,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -592,6 +668,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -600,6 +682,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -690,6 +773,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -698,6 +787,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -806,6 +896,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -817,6 +913,7 @@ id|Nop
 l_int|1
 )braket
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -954,6 +1051,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -962,6 +1065,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -988,6 +1092,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -996,6 +1106,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -1020,6 +1131,10 @@ DECL|typedef|RivaSurface3D
 id|RivaSurface3D
 suffix:semicolon
 multiline_comment|/***************************************************************************&bslash;&n;*                                                                           *&n;*                        Virtualized RIVA H/W interface.                    *&n;*                                                                           *&n;&bslash;***************************************************************************/
+DECL|macro|FP_ENABLE
+mdefine_line|#define FP_ENABLE  1
+DECL|macro|FP_DITHER
+mdefine_line|#define FP_DITHER  2
 r_struct
 id|_riva_hw_inst
 suffix:semicolon
@@ -1040,6 +1155,10 @@ suffix:semicolon
 DECL|member|Version
 id|U032
 id|Version
+suffix:semicolon
+DECL|member|Chipset
+id|U032
+id|Chipset
 suffix:semicolon
 DECL|member|CrystalFreqKHz
 id|U032
@@ -1077,18 +1196,36 @@ DECL|member|FifoEmptyCount
 id|U032
 id|FifoEmptyCount
 suffix:semicolon
+DECL|member|CursorStart
+id|U032
+id|CursorStart
+suffix:semicolon
+DECL|member|flatPanel
+id|U032
+id|flatPanel
+suffix:semicolon
+DECL|member|twoHeads
+id|Bool
+id|twoHeads
+suffix:semicolon
 multiline_comment|/*&n;     * Non-FIFO registers.&n;     */
+DECL|member|PCRTC0
+r_volatile
+id|U032
+op_star
+id|PCRTC0
+suffix:semicolon
 DECL|member|PCRTC
 r_volatile
 id|U032
 op_star
 id|PCRTC
 suffix:semicolon
-DECL|member|PRAMDAC
+DECL|member|PRAMDAC0
 r_volatile
 id|U032
 op_star
-id|PRAMDAC
+id|PRAMDAC0
 suffix:semicolon
 DECL|member|PFB
 r_volatile
@@ -1144,23 +1281,11 @@ id|U032
 op_star
 id|CURSOR
 suffix:semicolon
-DECL|member|CURSORPOS
+DECL|member|PCIO0
 r_volatile
-id|U032
+id|U008
 op_star
-id|CURSORPOS
-suffix:semicolon
-DECL|member|VBLANKENABLE
-r_volatile
-id|U032
-op_star
-id|VBLANKENABLE
-suffix:semicolon
-DECL|member|VBLANK
-r_volatile
-id|U032
-op_star
-id|VBLANK
+id|PCIO0
 suffix:semicolon
 DECL|member|PCIO
 r_volatile
@@ -1174,11 +1299,23 @@ id|U008
 op_star
 id|PVIO
 suffix:semicolon
+DECL|member|PDIO0
+r_volatile
+id|U008
+op_star
+id|PDIO0
+suffix:semicolon
 DECL|member|PDIO
 r_volatile
 id|U008
 op_star
 id|PDIO
+suffix:semicolon
+DECL|member|PRAMDAC
+r_volatile
+id|U032
+op_star
+id|PRAMDAC
 suffix:semicolon
 multiline_comment|/*&n;     * Common chip functions.&n;     */
 DECL|member|Busy
@@ -1207,22 +1344,6 @@ comma
 r_struct
 id|_riva_hw_state
 op_star
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
 comma
 r_int
 comma
@@ -1416,6 +1537,10 @@ DECL|member|height
 id|U032
 id|height
 suffix:semicolon
+DECL|member|interlace
+id|U032
+id|interlace
+suffix:semicolon
 DECL|member|repaint0
 id|U032
 id|repaint0
@@ -1427,6 +1552,18 @@ suffix:semicolon
 DECL|member|screen
 id|U032
 id|screen
+suffix:semicolon
+DECL|member|scale
+id|U032
+id|scale
+suffix:semicolon
+DECL|member|dither
+id|U032
+id|dither
+suffix:semicolon
+DECL|member|extra
+id|U032
+id|extra
 suffix:semicolon
 DECL|member|pixel
 id|U032
@@ -1448,6 +1585,10 @@ DECL|member|vpll
 id|U032
 id|vpll
 suffix:semicolon
+DECL|member|vpll2
+id|U032
+id|vpll2
+suffix:semicolon
 DECL|member|pllsel
 id|U032
 id|pllsel
@@ -1456,9 +1597,25 @@ DECL|member|general
 id|U032
 id|general
 suffix:semicolon
+DECL|member|crtcOwner
+id|U032
+id|crtcOwner
+suffix:semicolon
+DECL|member|head
+id|U032
+id|head
+suffix:semicolon
+DECL|member|head2
+id|U032
+id|head2
+suffix:semicolon
 DECL|member|config
 id|U032
 id|config
+suffix:semicolon
+DECL|member|cursorConfig
+id|U032
+id|cursorConfig
 suffix:semicolon
 DECL|member|cursor0
 id|U032
@@ -1515,10 +1672,13 @@ c_func
 (paren
 id|RIVA_HW_INST
 op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * FIFO Free Count. Should attempt to yield processor if RIVA is busy.&n; */
 DECL|macro|RIVA_FIFO_FREE
-mdefine_line|#define RIVA_FIFO_FREE(hwinst,hwptr,cnt)                           &bslash;&n;{                                                                  &bslash;&n;   while ((hwinst).FifoFreeCount &lt; (cnt))                          &bslash;&n;&t;(hwinst).FifoFreeCount = (hwinst).hwptr-&gt;FifoFree &gt;&gt; 2;        &bslash;&n;   (hwinst).FifoFreeCount -= (cnt);                                &bslash;&n;}
+mdefine_line|#define RIVA_FIFO_FREE(hwinst,hwptr,cnt)                            &bslash;&n;{                                                                   &bslash;&n;    while ((hwinst).FifoFreeCount &lt; (cnt))                          &bslash;&n;        (hwinst).FifoFreeCount = (hwinst).hwptr-&gt;FifoFree &gt;&gt; 2;     &bslash;&n;    (hwinst).FifoFreeCount -= (cnt);                                &bslash;&n;}
 macro_line|#endif /* __RIVA_HW_H__ */
 eof

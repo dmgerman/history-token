@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
-macro_line|#include &quot;font.h&quot;
+macro_line|#include &lt;linux/font.h&gt;
 DECL|macro|NO_FONTS
 mdefine_line|#define NO_FONTS
 DECL|variable|fonts

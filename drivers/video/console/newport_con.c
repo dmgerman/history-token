@@ -18,7 +18,7 @@ macro_line|#include &lt;video/newport.h&gt;
 DECL|macro|INCLUDE_LINUX_LOGO_DATA
 mdefine_line|#define INCLUDE_LINUX_LOGO_DATA
 macro_line|#include &lt;asm/linux_logo.h&gt;
-macro_line|#include &quot;font.h&quot;
+macro_line|#include &lt;linux/font.h&gt;
 DECL|macro|LOGO_W
 mdefine_line|#define LOGO_W&t;&t;80
 DECL|macro|LOGO_H
