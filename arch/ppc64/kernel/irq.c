@@ -3057,7 +3057,7 @@ op_logical_and
 id|cpu_isset
 c_func
 (paren
-l_int|1
+id|i
 comma
 id|new_value
 )paren
