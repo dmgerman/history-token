@@ -2547,6 +2547,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4091,7 +4097,6 @@ op_amp
 l_int|0xffff
 suffix:semicolon
 )brace
-"&f;"
 r_static
 r_int
 DECL|function|speedo_open
@@ -4141,8 +4146,6 @@ id|dev-&gt;name
 comma
 id|dev-&gt;irq
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|pci_set_power_state
 c_func
@@ -4204,8 +4207,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -9086,8 +9087,6 @@ id|sp-&gt;pdev
 comma
 l_int|2
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
