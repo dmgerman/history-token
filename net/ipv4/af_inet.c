@@ -4668,7 +4668,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|tcp_proc_init
+id|tcp4_proc_init
 c_func
 (paren
 r_void
@@ -4676,7 +4676,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|tcp_proc_exit
+id|tcp4_proc_exit
 c_func
 (paren
 r_void
@@ -4726,7 +4726,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcp_proc_init
+id|tcp4_proc_init
 c_func
 (paren
 )paren
@@ -4788,7 +4788,7 @@ c_func
 suffix:semicolon
 id|out_udp
 suffix:colon
-id|tcp_proc_exit
+id|tcp4_proc_exit
 c_func
 (paren
 )paren

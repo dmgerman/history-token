@@ -1168,6 +1168,20 @@ c_func
 id|udp_proc_unregister
 )paren
 suffix:semicolon
+DECL|variable|tcp_proc_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_proc_register
+)paren
+suffix:semicolon
+DECL|variable|tcp_proc_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_proc_unregister
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* needed for ip_gre -cw */
 DECL|variable|ip_statistics
