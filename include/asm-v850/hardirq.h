@@ -35,9 +35,5 @@ multiline_comment|/*&n; * The hardirq mask has to be large enough to have&n; * s
 macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
 macro_line|# error HARDIRQ_BITS is too low!
 macro_line|#endif
-DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
-DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;      &bslash;&n;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id()))&t;      &bslash;&n;&t;&t;do_softirq();&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;      &bslash;&n;} while (0)
 macro_line|#endif /* __V850_HARDIRQ_H__ */
 eof
