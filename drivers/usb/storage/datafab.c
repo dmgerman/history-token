@@ -1,7 +1,6 @@
 multiline_comment|/* Driver for Datafab USB Compact Flash reader&n; *&n; * $Id: datafab.c,v 1.7 2002/02/25 00:40:13 mdharm Exp $&n; *&n; * datafab driver v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Jimmie Mayfield (mayfield+datafab@sackheads.org)&n; *&n; *   Many thanks to Robert Baruch for the SanDisk SmartMedia reader driver&n; *   which I used as a template for this driver.&n; *&n; *   Some bugfixes and scatter-gather code by Gregory P. Smith &n; *   (greg-usb@electricrain.com)&n; *&n; *   Fix for media change by Joerg Schneider (js@joergschneider.com)&n; *&n; * Other contributors:&n; *   (c) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; * This driver attempts to support USB CompactFlash reader/writer devices&n; * based on Datafab USB-to-ATA chips.  It was specifically developed for the &n; * Datafab MDCFE-B USB CompactFlash reader but has since been found to work &n; * with a variety of Datafab-based devices from a number of manufacturers.&n; * I&squot;ve received a report of this driver working with a Datafab-based&n; * SmartMedia device though please be aware that I&squot;m personally unable to&n; * test SmartMedia support.&n; *&n; * This driver supports reading and writing.  If you&squot;re truly paranoid,&n; * however, you can force the driver into a write-protected state by setting&n; * the WP enable bits in datafab_handle_mode_sense().  Basically this means&n; * setting mode_param_header[3] = 0x80.&n; */
 macro_line|#include &quot;transport.h&quot;
-macro_line|#include &quot;raw_bulk.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
@@ -162,7 +161,7 @@ comma
 r_int
 r_char
 op_star
-id|dest
+id|buffer
 comma
 r_int
 id|use_sg
@@ -177,27 +176,20 @@ id|us-&gt;iobuf
 suffix:semicolon
 r_int
 r_char
-op_star
-id|buffer
-op_assign
-l_int|NULL
-suffix:semicolon
-r_int
-r_char
-op_star
-id|ptr
-suffix:semicolon
-r_int
-r_char
 id|thistime
 suffix:semicolon
 r_int
+r_int
 id|totallen
 comma
+id|alloclen
+suffix:semicolon
+r_int
 id|len
 comma
 id|result
 suffix:semicolon
+r_int
 r_int
 id|sg_idx
 op_assign
@@ -206,9 +198,6 @@ comma
 id|sg_offset
 op_assign
 l_int|0
-suffix:semicolon
-r_int
-id|rc
 suffix:semicolon
 singleline_comment|// we&squot;re working in LBA mode.  according to the ATA spec, 
 singleline_comment|// we can support up to 28-bit addressing.  I don&squot;t know if Datafab
@@ -234,7 +223,7 @@ op_minus
 l_int|1
 )paren
 (brace
-id|rc
+id|result
 op_assign
 id|datafab_determine_lun
 c_func
@@ -247,12 +236,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rc
+id|result
 op_ne
 id|USB_STOR_TRANSPORT_GOOD
 )paren
 r_return
-id|rc
+id|result
 suffix:semicolon
 )brace
 id|totallen
@@ -261,39 +250,32 @@ id|sectors
 op_star
 id|info-&gt;ssize
 suffix:semicolon
-r_do
-(brace
-singleline_comment|// loop, never allocate or transfer more than 64k at once
-singleline_comment|// (min(128k, 255*info-&gt;ssize) is the real limit)
-id|len
+singleline_comment|// Since we don&squot;t read more than 64 KB at a time, we have to create
+singleline_comment|// a bounce buffer if the transfer uses scatter-gather.
+id|alloclen
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|totallen
 comma
-l_int|65536
+l_int|65536u
 )paren
 suffix:semicolon
-id|ptr
-op_assign
-id|buffer
-op_assign
+r_if
+c_cond
 (paren
 id|use_sg
-ques
-c_cond
+)paren
+(brace
+id|buffer
+op_assign
 id|kmalloc
 c_func
 (paren
-id|len
+id|alloclen
 comma
 id|GFP_NOIO
-)paren
-suffix:colon
-id|dest
 )paren
 suffix:semicolon
 r_if
@@ -305,6 +287,21 @@ l_int|NULL
 )paren
 r_return
 id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
+)brace
+r_do
+(brace
+singleline_comment|// loop, never allocate or transfer more than 64k at once
+singleline_comment|// (min(128k, 255*info-&gt;ssize) is the real limit)
+id|len
+op_assign
+id|min
+c_func
+(paren
+id|totallen
+comma
+id|alloclen
+)paren
 suffix:semicolon
 id|thistime
 op_assign
@@ -436,7 +433,7 @@ c_func
 (paren
 id|us
 comma
-id|ptr
+id|buffer
 comma
 id|len
 )paren
@@ -451,28 +448,19 @@ id|USB_STOR_XFER_GOOD
 r_goto
 id|leave
 suffix:semicolon
-id|sectors
-op_sub_assign
-id|thistime
-suffix:semicolon
-id|sector
-op_add_assign
-id|thistime
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|use_sg
 )paren
-(brace
-id|us_copy_to_sgbuf
+id|usb_stor_access_xfer_buf
 c_func
 (paren
 id|buffer
 comma
 id|len
 comma
-id|dest
+id|us-&gt;srb
 comma
 op_amp
 id|sg_idx
@@ -480,23 +468,18 @@ comma
 op_amp
 id|sg_offset
 comma
-id|use_sg
+id|TO_XFER_BUF
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
-)brace
 r_else
-(brace
-id|dest
+id|buffer
 op_add_assign
 id|len
 suffix:semicolon
-)brace
+id|sector
+op_add_assign
+id|thistime
+suffix:semicolon
 id|totallen
 op_sub_assign
 id|len
@@ -508,6 +491,17 @@ c_loop
 id|totallen
 OG
 l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|use_sg
+)paren
+id|kfree
+c_func
+(paren
+id|buffer
 )paren
 suffix:semicolon
 r_return
@@ -555,7 +549,7 @@ comma
 r_int
 r_char
 op_star
-id|src
+id|buffer
 comma
 r_int
 id|use_sg
@@ -577,29 +571,20 @@ id|us-&gt;iobuf
 suffix:semicolon
 r_int
 r_char
-op_star
-id|buffer
-op_assign
-l_int|NULL
-suffix:semicolon
-r_int
-r_char
-op_star
-id|ptr
-suffix:semicolon
-r_int
-r_char
 id|thistime
 suffix:semicolon
 r_int
+r_int
 id|totallen
 comma
+id|alloclen
+suffix:semicolon
+r_int
 id|len
 comma
 id|result
-comma
-id|rc
 suffix:semicolon
+r_int
 r_int
 id|sg_idx
 op_assign
@@ -633,7 +618,7 @@ op_minus
 l_int|1
 )paren
 (brace
-id|rc
+id|result
 op_assign
 id|datafab_determine_lun
 c_func
@@ -646,60 +631,46 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rc
+id|result
 op_ne
 id|USB_STOR_TRANSPORT_GOOD
 )paren
 r_return
-id|rc
+id|result
 suffix:semicolon
 )brace
-singleline_comment|// If we&squot;re using scatter-gather, we have to create a new
-singleline_comment|// buffer to read all of the data in first, since a
-singleline_comment|// scatter-gather buffer could in theory start in the middle
-singleline_comment|// of a page, which would be bad. A developer who wants a
-singleline_comment|// challenge might want to write a limited-buffer
-singleline_comment|// version of this code.
 id|totallen
 op_assign
 id|sectors
 op_star
 id|info-&gt;ssize
 suffix:semicolon
-r_do
-(brace
-singleline_comment|// loop, never allocate or transfer more than 64k at once
-singleline_comment|// (min(128k, 255*info-&gt;ssize) is the real limit)
-id|len
+singleline_comment|// Since we don&squot;t write more than 64 KB at a time, we have to create
+singleline_comment|// a bounce buffer if the transfer uses scatter-gather.
+id|alloclen
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|totallen
 comma
-l_int|65536
+l_int|65536u
 )paren
 suffix:semicolon
-singleline_comment|// if we are using scatter-gather,
-singleline_comment|// first copy all to one big buffer
+r_if
+c_cond
+(paren
+id|use_sg
+)paren
+(brace
 id|buffer
 op_assign
-id|us_copy_from_sgbuf
+id|kmalloc
 c_func
 (paren
-id|src
+id|alloclen
 comma
-id|len
-comma
-op_amp
-id|sg_idx
-comma
-op_amp
-id|sg_offset
-comma
-id|use_sg
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -712,9 +683,20 @@ l_int|NULL
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
-id|ptr
+)brace
+r_do
+(brace
+singleline_comment|// loop, never allocate or transfer more than 64k at once
+singleline_comment|// (min(128k, 255*info-&gt;ssize) is the real limit)
+id|len
 op_assign
-id|buffer
+id|min
+c_func
+(paren
+id|totallen
+comma
+id|alloclen
+)paren
 suffix:semicolon
 id|thistime
 op_assign
@@ -725,6 +707,29 @@ id|info-&gt;ssize
 )paren
 op_amp
 l_int|0xff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|use_sg
+)paren
+id|usb_stor_access_xfer_buf
+c_func
+(paren
+id|buffer
+comma
+id|len
+comma
+id|us-&gt;srb
+comma
+op_amp
+id|sg_idx
+comma
+op_amp
+id|sg_offset
+comma
+id|FROM_XFER_BUF
+)paren
 suffix:semicolon
 id|command
 (braket
@@ -846,7 +851,7 @@ c_func
 (paren
 id|us
 comma
-id|ptr
+id|buffer
 comma
 id|len
 )paren
@@ -927,29 +932,19 @@ r_goto
 id|leave
 suffix:semicolon
 )brace
-id|sectors
-op_sub_assign
-id|thistime
+r_if
+c_cond
+(paren
+op_logical_neg
+id|use_sg
+)paren
+id|buffer
+op_add_assign
+id|len
 suffix:semicolon
 id|sector
 op_add_assign
 id|thistime
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
-id|kfree
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
-r_else
-id|src
-op_add_assign
-id|len
 suffix:semicolon
 id|totallen
 op_sub_assign
@@ -962,6 +957,17 @@ c_loop
 id|totallen
 OG
 l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|use_sg
+)paren
+id|kfree
+c_func
+(paren
+id|buffer
 )paren
 suffix:semicolon
 r_return
