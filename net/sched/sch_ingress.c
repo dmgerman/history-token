@@ -908,8 +908,9 @@ c_func
 l_string|&quot;You MUST compile classifier actions into the kernel&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|error
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 macro_line|#else
 id|printk
@@ -948,8 +949,9 @@ c_func
 l_string|&quot;ingress qdisc registration error &bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|error
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|nf_registered
@@ -977,12 +979,6 @@ id|noop_qdisc
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|error
-suffix:colon
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|ingress_reset
