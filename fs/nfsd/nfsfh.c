@@ -2199,7 +2199,7 @@ suffix:semicolon
 multiline_comment|/* keep this filehandle for possible reference  when encoding attributes */
 id|rqstp-&gt;rq_reffh
 op_assign
-id|fhp
+id|fh
 suffix:semicolon
 r_if
 c_cond
