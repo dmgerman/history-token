@@ -3855,11 +3855,23 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
-id|down
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|down_trylock
 c_func
 (paren
 op_amp
 id|hub-&gt;khubd_sem
+)paren
+)paren
+)paren
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* never blocks, we were on list */
