@@ -5,6 +5,9 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#endif
 multiline_comment|/* &n; * EDID parser&n; *&n; * portions of this file were based on the EDID parser by&n; * John Fremlin &lt;vii@users.sourceforge.net&gt; and Ani Joshi &lt;ajoshi@unixbox.com&gt;&n; */
 DECL|macro|EDID_LENGTH
 mdefine_line|#define EDID_LENGTH&t;&t;&t;&t;0x80

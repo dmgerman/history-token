@@ -13,9 +13,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/vga.h&gt;
-DECL|macro|INCLUDE_LINUX_LOGO_DATA
-mdefine_line|#define INCLUDE_LINUX_LOGO_DATA
-macro_line|#include &lt;linux/linux_logo.h&gt;
 macro_line|#if 0
 mdefine_line|#define DPRINTK(args...) printk(KERN_DEBUG __FILE__&quot;: &quot; ##args)
 macro_line|#else
@@ -920,79 +917,7 @@ op_star
 id|info
 )paren
 (brace
-r_int
-r_int
-id|dest
-op_assign
-id|hga_vram_base
-suffix:semicolon
-r_char
-op_star
-id|logo
-op_assign
-id|linux_logo_bw
-suffix:semicolon
-r_int
-id|x
-comma
-id|y
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|y
-op_assign
-l_int|134
-suffix:semicolon
-id|y
-OL
-l_int|134
-op_plus
-l_int|80
-suffix:semicolon
-id|y
-op_increment
-)paren
-multiline_comment|/* this needs some cleanup */
-r_for
-c_loop
-(paren
-id|x
-op_assign
-l_int|0
-suffix:semicolon
-id|x
-OL
-l_int|10
-suffix:semicolon
-id|x
-op_increment
-)paren
-id|isa_writeb
-c_func
-(paren
-op_complement
-op_star
-(paren
-id|logo
-op_increment
-)paren
-comma
-(paren
-id|dest
-op_plus
-id|HGA_ROWADDR
-c_func
-(paren
-id|y
-)paren
-op_plus
-id|x
-op_plus
-l_int|40
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;unsigned long dest = hga_vram_base;&n;&t;char *logo = linux_logo_bw;&n;&t;int x, y;&n;&t;&n;&t;for (y = 134; y &lt; 134 + 80 ; y++) * this needs some cleanup *&n;&t;&t;for (x = 0; x &lt; 10 ; x++)&n;&t;&t;&t;isa_writeb(~*(logo++),(dest + HGA_ROWADDR(y) + x + 40));&n;*/
 )brace
 DECL|function|hga_pan
 r_static
@@ -1670,6 +1595,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_fillrect
 op_star

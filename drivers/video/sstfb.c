@@ -3833,6 +3833,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_fillrect
 op_star
@@ -7760,6 +7761,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_fillrect
 op_star
@@ -7775,10 +7777,6 @@ r_int
 r_int
 )paren
 id|info-&gt;screen_base
-suffix:semicolon
-r_int
-r_int
-id|p
 suffix:semicolon
 r_int
 id|x
@@ -7800,6 +7798,14 @@ id|u32
 id|color
 op_assign
 id|rect-&gt;color
+comma
+id|height
+op_assign
+id|rect-&gt;height
+suffix:semicolon
+r_int
+r_int
+id|p
 suffix:semicolon
 r_if
 c_cond
@@ -7821,12 +7827,12 @@ id|y
 op_assign
 id|rect-&gt;dy
 suffix:semicolon
-id|rect-&gt;height
+id|height
 suffix:semicolon
 id|y
 op_increment
 comma
-id|rect-&gt;height
+id|height
 op_decrement
 )paren
 (brace

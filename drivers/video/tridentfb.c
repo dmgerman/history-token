@@ -2260,6 +2260,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_fillrect
 op_star

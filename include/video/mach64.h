@@ -867,7 +867,7 @@ mdefine_line|#define CRTC_PIX_BY_2_EN&t;0x00000020&t;/* unused on RAGE */
 DECL|macro|CRTC_DISPLAY_DIS
 mdefine_line|#define CRTC_DISPLAY_DIS&t;0x00000040
 DECL|macro|CRTC_VGA_XOVERSCAN
-mdefine_line|#define CRTC_VGA_XOVERSCAN&t;0x00000040
+mdefine_line|#define CRTC_VGA_XOVERSCAN&t;0x00000080
 DECL|macro|CRTC_PIX_WIDTH_MASK
 mdefine_line|#define CRTC_PIX_WIDTH_MASK&t;0x00000700
 DECL|macro|CRTC_PIX_WIDTH_4BPP
@@ -1857,6 +1857,109 @@ DECL|macro|APC_LUT_MN
 mdefine_line|#define APC_LUT_MN&t;&t;0x39
 DECL|macro|APC_LUT_OP
 mdefine_line|#define APC_LUT_OP&t;&t;0x3A
+multiline_comment|/* Values in LCD_GEN_CTRL */
+DECL|macro|CRT_ON
+mdefine_line|#define CRT_ON                          0x00000001ul
+DECL|macro|LCD_ON
+mdefine_line|#define LCD_ON                          0x00000002ul
+DECL|macro|HORZ_DIVBY2_EN
+mdefine_line|#define HORZ_DIVBY2_EN                  0x00000004ul
+DECL|macro|DONT_DS_ICON
+mdefine_line|#define DONT_DS_ICON                    0x00000008ul
+DECL|macro|LOCK_8DOT
+mdefine_line|#define LOCK_8DOT                       0x00000010ul
+DECL|macro|ICON_ENABLE
+mdefine_line|#define ICON_ENABLE                     0x00000020ul
+DECL|macro|DONT_SHADOW_VPAR
+mdefine_line|#define DONT_SHADOW_VPAR                0x00000040ul
+DECL|macro|V2CLK_PM_EN
+mdefine_line|#define V2CLK_PM_EN                     0x00000080ul
+DECL|macro|RST_FM
+mdefine_line|#define RST_FM                          0x00000100ul
+DECL|macro|DISABLE_PCLK_RESET
+mdefine_line|#define DISABLE_PCLK_RESET              0x00000200ul    /* XC/XL */
+DECL|macro|DIS_HOR_CRT_DIVBY2
+mdefine_line|#define DIS_HOR_CRT_DIVBY2              0x00000400ul
+DECL|macro|SCLK_SEL
+mdefine_line|#define SCLK_SEL                        0x00000800ul
+DECL|macro|SCLK_DELAY
+mdefine_line|#define SCLK_DELAY                      0x0000f000ul
+DECL|macro|TVCLK_PM_EN
+mdefine_line|#define TVCLK_PM_EN                     0x00010000ul
+DECL|macro|VCLK_DAC_PM_EN
+mdefine_line|#define VCLK_DAC_PM_EN                  0x00020000ul
+DECL|macro|VCLK_LCD_OFF
+mdefine_line|#define VCLK_LCD_OFF                    0x00040000ul
+DECL|macro|SELECT_WAIT_4MS
+mdefine_line|#define SELECT_WAIT_4MS                 0x00080000ul
+DECL|macro|XTALIN_PM_EN
+mdefine_line|#define XTALIN_PM_EN                    0x00080000ul    /* XC/XL */
+DECL|macro|V2CLK_DAC_PM_EN
+mdefine_line|#define V2CLK_DAC_PM_EN                 0x00100000ul
+DECL|macro|LVDS_EN
+mdefine_line|#define LVDS_EN                         0x00200000ul
+DECL|macro|LVDS_PLL_EN
+mdefine_line|#define LVDS_PLL_EN                     0x00400000ul
+DECL|macro|LVDS_PLL_RESET
+mdefine_line|#define LVDS_PLL_RESET                  0x00800000ul
+DECL|macro|LVDS_RESERVED_BITS
+mdefine_line|#define LVDS_RESERVED_BITS              0x07000000ul
+DECL|macro|CRTC_RW_SELECT
+mdefine_line|#define CRTC_RW_SELECT                  0x08000000ul    /* LTPro */
+DECL|macro|USE_SHADOWED_VEND
+mdefine_line|#define USE_SHADOWED_VEND               0x10000000ul
+DECL|macro|USE_SHADOWED_ROWCUR
+mdefine_line|#define USE_SHADOWED_ROWCUR             0x20000000ul
+DECL|macro|SHADOW_EN
+mdefine_line|#define SHADOW_EN                       0x40000000ul
+DECL|macro|SHADOW_RW_EN
+mdefine_line|#define SHADOW_RW_EN                    0x80000000ul
+multiline_comment|/* Values in HORZ_STRETCHING */
+DECL|macro|HORZ_STRETCH_BLEND
+mdefine_line|#define HORZ_STRETCH_BLEND              0x00000ffful
+DECL|macro|HORZ_STRETCH_RATIO
+mdefine_line|#define HORZ_STRETCH_RATIO              0x0000fffful
+DECL|macro|HORZ_STRETCH_LOOP
+mdefine_line|#define HORZ_STRETCH_LOOP               0x00070000ul
+DECL|macro|HORZ_STRETCH_LOOP09
+mdefine_line|#define HORZ_STRETCH_LOOP09                     0x00000000ul
+DECL|macro|HORZ_STRETCH_LOOP11
+mdefine_line|#define HORZ_STRETCH_LOOP11                     0x00010000ul
+DECL|macro|HORZ_STRETCH_LOOP12
+mdefine_line|#define HORZ_STRETCH_LOOP12                     0x00020000ul
+DECL|macro|HORZ_STRETCH_LOOP14
+mdefine_line|#define HORZ_STRETCH_LOOP14                     0x00030000ul
+DECL|macro|HORZ_STRETCH_LOOP15
+mdefine_line|#define HORZ_STRETCH_LOOP15                     0x00040000ul
+multiline_comment|/*      ?                                       0x00050000ul */
+multiline_comment|/*      ?                                       0x00060000ul */
+multiline_comment|/*      ?                                       0x00070000ul */
+multiline_comment|/*      ?                               0x00080000ul */
+DECL|macro|HORZ_PANEL_SIZE
+mdefine_line|#define HORZ_PANEL_SIZE                 0x0ff00000ul    /* XC/XL */
+multiline_comment|/*      ?                               0x10000000ul */
+DECL|macro|AUTO_HORZ_RATIO
+mdefine_line|#define AUTO_HORZ_RATIO                 0x20000000ul    /* XC/XL */
+DECL|macro|HORZ_STRETCH_MODE
+mdefine_line|#define HORZ_STRETCH_MODE               0x40000000ul
+DECL|macro|HORZ_STRETCH_EN
+mdefine_line|#define HORZ_STRETCH_EN                 0x80000000ul
+multiline_comment|/* Values in VERT_STRETCHING */
+DECL|macro|VERT_STRETCH_RATIO0
+mdefine_line|#define VERT_STRETCH_RATIO0             0x000003fful
+DECL|macro|VERT_STRETCH_RATIO1
+mdefine_line|#define VERT_STRETCH_RATIO1             0x000ffc00ul
+DECL|macro|VERT_STRETCH_RATIO2
+mdefine_line|#define VERT_STRETCH_RATIO2             0x3ff00000ul
+DECL|macro|VERT_STRETCH_USE0
+mdefine_line|#define VERT_STRETCH_USE0               0x40000000ul
+DECL|macro|VERT_STRETCH_EN
+mdefine_line|#define VERT_STRETCH_EN                 0x80000000ul
+multiline_comment|/* Values in EXT_VERT_STRETCH */
+DECL|macro|AUTO_VERT_RATIO
+mdefine_line|#define AUTO_VERT_RATIO                 0x00400000ul
+DECL|macro|VERT_STRETCH_MODE
+mdefine_line|#define VERT_STRETCH_MODE&t;&t;0x00000400ul
 multiline_comment|/* Values in LCD_MISC_CNTL */
 DECL|macro|BIAS_MOD_LEVEL_MASK
 mdefine_line|#define BIAS_MOD_LEVEL_MASK&t;0x0000ff00
