@@ -82,6 +82,10 @@ id|alloc_blocks
 comma
 id|clump_blocks
 suffix:semicolon
+DECL|member|fs_blocks
+id|sector_t
+id|fs_blocks
+suffix:semicolon
 multiline_comment|/* Allocation extents from catlog record or volume header */
 DECL|member|first_extents
 id|hfs_extent_rec

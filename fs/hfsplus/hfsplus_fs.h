@@ -413,6 +413,10 @@ id|clump_blocks
 comma
 id|alloc_blocks
 suffix:semicolon
+DECL|member|fs_blocks
+id|sector_t
+id|fs_blocks
+suffix:semicolon
 multiline_comment|/* Allocation extents from catalog record or volume header */
 DECL|member|first_extents
 id|hfsplus_extent_rec
