@@ -822,7 +822,7 @@ comma
 id|nls_name.len
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Note: No need for dparent_lock as i_sem is held on the parent inode.&n;&t; */
+multiline_comment|/*&n;&t; * Note: No need for dent-&gt;d_lock lock as i_sem is held on the&n;&t; * parent inode.&n;&t; */
 multiline_comment|/* Does a dentry matching the nls_name exist already? */
 id|real_dent
 op_assign

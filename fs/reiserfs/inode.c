@@ -5703,11 +5703,11 @@ id|need_parent
 r_return
 l_int|3
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
-id|dparent_lock
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 id|inode
@@ -5763,11 +5763,11 @@ op_assign
 l_int|6
 suffix:semicolon
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|dparent_lock
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 r_return

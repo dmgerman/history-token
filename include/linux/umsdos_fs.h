@@ -43,7 +43,7 @@ macro_line|#&t;else
 DECL|macro|Printk
 macro_line|#&t;&t;define Printk(x)
 macro_line|#&t;endif
-macro_line|#endif
+macro_line|#endif&t;/* __KERNEL__ */
 DECL|struct|umsdos_fake_info
 r_struct
 id|umsdos_fake_info
@@ -114,11 +114,11 @@ id|ctime
 suffix:semicolon
 multiline_comment|/* Creation time */
 DECL|member|rdev
-id|dev_t
+r_int
+r_int
 id|rdev
 suffix:semicolon
-multiline_comment|/* major and minor number of a device */
-multiline_comment|/* special file */
+multiline_comment|/* major and minor of a device special file */
 DECL|member|mode
 id|umode_t
 id|mode
@@ -224,26 +224,24 @@ r_struct
 id|umsdos_dirent
 id|umsdos_dirent
 suffix:semicolon
-multiline_comment|/* The following structure is used to exchange some data&n;&t; * with utilities (umsdos_progs/util/umsdosio.c). The first&n;&t; * releases were using struct stat from &quot;sys/stat.h&quot;. This was&n;&t; * causing some problem for cross compilation of the kernel&n;&t; * Since I am not really using the structure stat, but only some field&n;&t; * of it, I have decided to replicate the structure here&n;&t; * for compatibility with the binaries out there&n;&t; * FIXME PTW 1998, this has probably changed&n;&t; */
+multiline_comment|/* The following structure is used to exchange some data with&n;&t; * utilities (umsdos_progs/util/umsdosio.c). The first releases&n;&t; * were using struct stat from &quot;sys/stat.h&quot;. This was causing&n;&t; * some problem for cross compilation of the kernel.&n;&t; * Since I am not really using the structure stat, but only&n;&t; * some fields of it, I have decided to replicate the structure&n;&t; * here for compatibility with the binaries out there.&n;&t; * FIXME PTW 1998, this has probably changed&n;&t; */
 r_struct
 (brace
 DECL|member|st_dev
-id|dev_t
+r_int
+r_int
 id|st_dev
-suffix:semicolon
-DECL|member|__pad1
-r_int
-r_int
-id|__pad1
 suffix:semicolon
 DECL|member|st_ino
 id|ino_t
 id|st_ino
 suffix:semicolon
+multiline_comment|/* used */
 DECL|member|st_mode
 id|umode_t
 id|st_mode
 suffix:semicolon
+multiline_comment|/* used */
 DECL|member|st_nlink
 id|nlink_t
 id|st_nlink
@@ -257,18 +255,15 @@ id|__kernel_gid_t
 id|st_gid
 suffix:semicolon
 DECL|member|st_rdev
-id|dev_t
+r_int
+r_int
 id|st_rdev
-suffix:semicolon
-DECL|member|__pad2
-r_int
-r_int
-id|__pad2
 suffix:semicolon
 DECL|member|st_size
 id|off_t
 id|st_size
 suffix:semicolon
+multiline_comment|/* used */
 DECL|member|st_blksize
 r_int
 r_int
@@ -283,6 +278,7 @@ DECL|member|st_atime
 id|time_t
 id|st_atime
 suffix:semicolon
+multiline_comment|/* used */
 DECL|member|__unused1
 r_int
 r_int
@@ -292,6 +288,7 @@ DECL|member|st_mtime
 id|time_t
 id|st_mtime
 suffix:semicolon
+multiline_comment|/* used */
 DECL|member|__unused2
 r_int
 r_int
@@ -301,6 +298,7 @@ DECL|member|st_ctime
 id|time_t
 id|st_ctime
 suffix:semicolon
+multiline_comment|/* used */
 DECL|member|__unused3
 r_int
 r_int

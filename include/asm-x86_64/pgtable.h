@@ -349,7 +349,7 @@ mdefine_line|#define _PAGE_DIRTY&t;0x040
 DECL|macro|_PAGE_PSE
 mdefine_line|#define _PAGE_PSE&t;0x080&t;/* 2MB page */
 DECL|macro|_PAGE_FILE
-mdefine_line|#define _PAGE_FILE&t;0x040&t;/* pagecache or swap */
+mdefine_line|#define _PAGE_FILE&t;0x040&t;/* set:pagecache, unset:swap */
 DECL|macro|_PAGE_GLOBAL
 mdefine_line|#define _PAGE_GLOBAL&t;0x100&t;/* Global TLB entry */
 DECL|macro|_PAGE_PROTNONE
