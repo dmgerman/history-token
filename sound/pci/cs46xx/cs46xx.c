@@ -148,7 +148,7 @@ l_int|1
 )paren
 )braket
 op_assign
-l_int|0
+l_int|1
 )brace
 suffix:semicolon
 id|MODULE_PARM
@@ -334,7 +334,7 @@ id|mmap_valid
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
+id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
 DECL|variable|snd_cs46xx_ids
