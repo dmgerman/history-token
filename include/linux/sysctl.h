@@ -1993,6 +1993,19 @@ DECL|enumerator|NET_NEIGH_GC_THRESH3
 id|NET_NEIGH_GC_THRESH3
 op_assign
 l_int|16
+comma
+DECL|enumerator|NET_NEIGH_RETRANS_TIME_MS
+id|NET_NEIGH_RETRANS_TIME_MS
+op_assign
+l_int|17
+comma
+DECL|enumerator|NET_NEIGH_REACHABLE_TIME_MS
+id|NET_NEIGH_REACHABLE_TIME_MS
+op_assign
+l_int|18
+comma
+DECL|enumerator|__NET_NEIGH_MAX
+id|__NET_NEIGH_MAX
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipx */
