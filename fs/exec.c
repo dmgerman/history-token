@@ -5038,11 +5038,13 @@ suffix:semicolon
 id|acct_update_integrals
 c_func
 (paren
+id|current
 )paren
 suffix:semicolon
 id|update_mem_hiwater
 c_func
 (paren
+id|current
 )paren
 suffix:semicolon
 id|kfree
