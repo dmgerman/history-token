@@ -1461,7 +1461,7 @@ l_int|4
 op_logical_or
 id|image-&gt;depth
 op_ne
-l_int|0
+l_int|1
 )paren
 r_return
 id|cfb_imageblit

@@ -1438,7 +1438,7 @@ c_cond
 (paren
 id|image-&gt;depth
 op_eq
-l_int|0
+l_int|1
 )paren
 (brace
 r_if
@@ -1573,7 +1573,7 @@ r_if
 c_cond
 (paren
 id|image-&gt;depth
-op_eq
+op_le
 id|bpp
 )paren
 id|color_imageblit

@@ -59,11 +59,11 @@ r_struct
 id|linux_logo
 op_star
 id|__init
-id|fb_find_logo
+id|find_logo
 c_func
 (paren
 r_int
-id|type
+id|depth
 )paren
 suffix:semicolon
 macro_line|#endif /* _LINUX_LINUX_LOGO_H */

@@ -73,17 +73,17 @@ r_struct
 id|linux_logo
 id|logo_superh_clut224
 suffix:semicolon
-DECL|function|fb_find_logo
+DECL|function|find_logo
 r_const
 r_struct
 id|linux_logo
 op_star
 id|__init
-id|fb_find_logo
+id|find_logo
 c_func
 (paren
 r_int
-id|type
+id|depth
 )paren
 (brace
 r_const
@@ -94,15 +94,14 @@ id|logo
 op_assign
 l_int|0
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
-id|type
+id|depth
+op_ge
+l_int|1
 )paren
 (brace
-r_case
-id|LINUX_LOGO_MONO
-suffix:colon
 macro_line|#ifdef CONFIG_LOGO_LINUX_MONO
 multiline_comment|/* Generic Linux logo */
 id|logo
@@ -119,11 +118,15 @@ op_amp
 id|logo_superh_mono
 suffix:semicolon
 macro_line|#endif
-r_break
-suffix:semicolon
-r_case
-id|LINUX_LOGO_VGA16
-suffix:colon
+)brace
+r_if
+c_cond
+(paren
+id|depth
+op_ge
+l_int|4
+)paren
+(brace
 macro_line|#ifdef CONFIG_LOGO_LINUX_VGA16
 multiline_comment|/* Generic Linux logo */
 id|logo
@@ -140,11 +143,15 @@ op_amp
 id|logo_superh_vga16
 suffix:semicolon
 macro_line|#endif
-r_break
-suffix:semicolon
-r_case
-id|LINUX_LOGO_CLUT224
-suffix:colon
+)brace
+r_if
+c_cond
+(paren
+id|depth
+op_ge
+l_int|8
+)paren
+(brace
 macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
 multiline_comment|/* Generic Linux logo */
 id|logo
@@ -220,8 +227,6 @@ op_amp
 id|logo_superh_clut224
 suffix:semicolon
 macro_line|#endif
-r_break
-suffix:semicolon
 )brace
 r_return
 id|logo

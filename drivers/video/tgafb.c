@@ -3376,7 +3376,7 @@ c_cond
 (paren
 id|image-&gt;depth
 OG
-l_int|0
+l_int|1
 )paren
 (brace
 id|cfb_imageblit

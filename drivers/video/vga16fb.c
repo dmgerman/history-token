@@ -6462,7 +6462,7 @@ c_cond
 (paren
 id|image-&gt;depth
 op_eq
-l_int|0
+l_int|1
 )paren
 id|vga_imageblit_expand
 c_func
@@ -6477,7 +6477,8 @@ r_if
 c_cond
 (paren
 id|image-&gt;depth
-op_eq
+op_assign
+OL
 id|info-&gt;var.bits_per_pixel
 )paren
 id|vga_imageblit_color

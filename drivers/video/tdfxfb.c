@@ -5337,7 +5337,7 @@ r_const
 r_struct
 id|fb_image
 op_star
-id|pixmap
+id|image
 )paren
 (brace
 r_struct
@@ -5355,13 +5355,13 @@ suffix:semicolon
 r_int
 id|size
 op_assign
-id|pixmap-&gt;height
+id|image-&gt;height
 op_star
 (paren
 (paren
-id|pixmap-&gt;width
+id|image-&gt;width
 op_star
-id|pixmap-&gt;depth
+id|image-&gt;depth
 op_plus
 l_int|7
 )paren
@@ -5415,7 +5415,7 @@ op_assign
 id|u8
 op_star
 )paren
-id|pixmap-&gt;data
+id|image-&gt;data
 suffix:semicolon
 id|u32
 id|srcfmt
@@ -5423,9 +5423,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pixmap-&gt;depth
+id|image-&gt;depth
 op_ne
-l_int|0
+l_int|1
 )paren
 (brace
 singleline_comment|//banshee_make_room(par, 6 + ((size + 3) &gt;&gt; 2));
@@ -5435,7 +5435,7 @@ c_func
 (paren
 id|info
 comma
-id|pixmap
+id|image
 )paren
 suffix:semicolon
 r_return
@@ -5468,7 +5468,7 @@ id|par
 comma
 id|COLORFORE
 comma
-id|pixmap-&gt;fg_color
+id|image-&gt;fg_color
 )paren
 suffix:semicolon
 id|tdfx_outl
@@ -5478,7 +5478,7 @@ id|par
 comma
 id|COLORBACK
 comma
-id|pixmap-&gt;bg_color
+id|image-&gt;bg_color
 )paren
 suffix:semicolon
 id|srcfmt
@@ -5503,10 +5503,10 @@ id|par
 comma
 id|DSTXY
 comma
-id|pixmap-&gt;dx
+id|image-&gt;dx
 op_or
 (paren
-id|pixmap-&gt;dy
+id|image-&gt;dy
 op_lshift
 l_int|16
 )paren
@@ -5555,10 +5555,10 @@ id|par
 comma
 id|DSTSIZE
 comma
-id|pixmap-&gt;width
+id|image-&gt;width
 op_or
 (paren
-id|pixmap-&gt;height
+id|image-&gt;height
 op_lshift
 l_int|16
 )paren
