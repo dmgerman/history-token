@@ -2572,12 +2572,17 @@ id|tsk-&gt;state
 op_assign
 id|TASK_ZOMBIE
 suffix:semicolon
-multiline_comment|/*&n;&t; * No need to unlock IRQs, we&squot;ll schedule() immediately&n;&t; * anyway. In the preemption case this also makes it&n;&t; * impossible for the task to get runnable again (thus&n;&t; * the &quot;_raw_&quot; unlock - to make sure we don&squot;t try to&n;&t; * preempt here).&n;&t; */
+multiline_comment|/*&n;&t; * In the preemption case it must be impossible for the task&n;&t; * to get runnable again, so use &quot;_raw_&quot; unlock to keep&n;&t; * preempt_count elevated until we schedule().&n;&t; *&n;&t; * To avoid deadlock on SMP, interrupts must be unmasked.  If we&n;&t; * don&squot;t, subsequently called functions (e.g, wait_task_inactive()&n;&t; * via release_task()) will spin, with interrupt flags&n;&t; * unwittingly blocked, until the other task sleeps.  That task&n;&t; * may itself be waiting for smp_call_function() to answer and&n;&t; * complete, and with interrupts blocked that will never happen.&n;&t; */
 id|_raw_write_unlock
 c_func
 (paren
 op_amp
 id|tasklist_lock
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -2805,11 +2810,6 @@ id|exit_notify
 c_func
 (paren
 id|tsk
-)paren
-suffix:semicolon
-id|preempt_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
