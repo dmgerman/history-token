@@ -117,7 +117,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
 DECL|function|timer_interrupt
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren
@@ -308,6 +308,9 @@ c_func
 op_amp
 id|xtime_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_void
