@@ -3,6 +3,7 @@ macro_line|#ifndef _SPARC_IOMMU_H
 DECL|macro|_SPARC_IOMMU_H
 mdefine_line|#define _SPARC_IOMMU_H
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/bitext.h&gt;
 multiline_comment|/* The iommu handles all virtual to physical address translations&n; * that occur between the SBUS and physical memory.  Access by&n; * the cpu to IO registers and similar go over the mbus so are&n; * translated by the on chip SRMMU.  The iommu and the srmmu do&n; * not need to have the same translations at all, in fact most&n; * of the time the translations they handle are a disjunct set.&n; * Basically the iommu handles all dvma sbus activity.&n; */
 multiline_comment|/* The IOMMU registers occupy three pages in IO space. */
 DECL|struct|iommu_regs
@@ -246,17 +247,6 @@ id|iopte_t
 op_star
 id|page_table
 suffix:semicolon
-DECL|member|lowest
-id|iopte_t
-op_star
-id|lowest
-suffix:semicolon
-multiline_comment|/* to speed up searches... */
-DECL|member|plow
-r_int
-r_int
-id|plow
-suffix:semicolon
 multiline_comment|/* For convenience */
 DECL|member|start
 r_int
@@ -270,6 +260,11 @@ r_int
 id|end
 suffix:semicolon
 multiline_comment|/* Last managed virtual address */
+DECL|member|usemap
+r_struct
+id|bit_map
+id|usemap
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|iommu_invalidate
@@ -304,13 +299,13 @@ id|regs
 comma
 r_int
 r_int
-id|page
+id|ba
 )paren
 (brace
 id|regs-&gt;pageflush
 op_assign
 (paren
-id|page
+id|ba
 op_amp
 id|PAGE_MASK
 )paren

@@ -4,7 +4,8 @@ DECL|macro|_SPARC_SBUS_H
 mdefine_line|#define _SPARC_SBUS_H
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
-macro_line|#include &lt;asm/iommu.h&gt;
+multiline_comment|/* #include &lt;asm/iommu.h&gt; */
+multiline_comment|/* Unused since we use opaque iommu (|io-unit) */
 macro_line|#include &lt;asm/scatterlist.h&gt;
 multiline_comment|/* We scan which devices are on the SBus using the PROM node device&n; * tree.  SBus devices are described in two different ways.  You can&n; * either get an absolute address at which to access the device, or&n; * you can get a SBus &squot;slot&squot; number and an offset within that slot.&n; */
 multiline_comment|/* The base address at which to calculate device OBIO addresses. */
