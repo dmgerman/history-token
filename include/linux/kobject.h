@@ -6,6 +6,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;linux/kobject_uevent.h&gt;
@@ -358,6 +359,10 @@ DECL|member|list
 r_struct
 id|list_head
 id|list
+suffix:semicolon
+DECL|member|list_lock
+id|spinlock_t
+id|list_lock
 suffix:semicolon
 DECL|member|kobj
 r_struct
