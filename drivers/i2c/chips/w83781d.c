@@ -3909,6 +3909,24 @@ l_string|&quot;w83781d&quot;
 )paren
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Request of region &quot;
+l_string|&quot;0x%x-0x%x for w83781d failed&bslash;n&quot;
+comma
+id|address
+comma
+id|address
+op_plus
+id|W83781D_EXTENT
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -3958,20 +3976,7 @@ l_int|2
 )paren
 op_ne
 id|i
-)paren
-(brace
-id|err
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|ERROR1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|inb_p
 c_func
 (paren
@@ -3981,20 +3986,7 @@ l_int|3
 )paren
 op_ne
 id|i
-)paren
-(brace
-id|err
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|ERROR1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|inb_p
 c_func
 (paren
@@ -4006,6 +3998,16 @@ op_ne
 id|i
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Detection of w83781d &quot;
+l_string|&quot;chip failed at step 1&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4043,10 +4045,8 @@ op_plus
 l_int|5
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
+id|val2
+op_assign
 id|inb_p
 c_func
 (paren
@@ -4056,7 +4056,11 @@ l_int|5
 )paren
 op_amp
 l_int|0x7f
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val2
 op_ne
 (paren
 op_complement
@@ -4070,6 +4074,28 @@ id|outb_p
 c_func
 (paren
 id|i
+comma
+id|address
+op_plus
+l_int|5
+)paren
+suffix:semicolon
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Detection of w83781d &quot;
+l_string|&quot;chip failed at step 2 (0x%x != &quot;
+l_string|&quot;0x%x at 0x%x)&bslash;n&quot;
+comma
+id|val2
+comma
+op_complement
+id|i
+op_amp
+l_int|0x7f
 comma
 id|address
 op_plus
@@ -4193,6 +4219,16 @@ op_amp
 l_int|0x80
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+l_string|&quot;Detection failed at step &quot;
+l_string|&quot;3&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4281,6 +4317,16 @@ l_int|0x12
 )paren
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+l_string|&quot;Detection failed at step &quot;
+l_string|&quot;4&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4346,6 +4392,16 @@ op_ne
 id|address
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+l_string|&quot;Detection failed &quot;
+l_string|&quot;at step 5&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4425,6 +4481,16 @@ id|asus
 suffix:semicolon
 r_else
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+l_string|&quot;Chip was made by neither &quot;
+l_string|&quot;Winbond nor Asus?&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4578,7 +4644,8 @@ c_func
 op_amp
 id|new_client-&gt;dev
 comma
-l_string|&quot;Ignoring &squot;force&squot; parameter for unknown chip at&quot;
+l_string|&quot;Ignoring &squot;force&squot; &quot;
+l_string|&quot;parameter for unknown chip at &quot;
 l_string|&quot;adapter %d, address 0x%02x&bslash;n&quot;
 comma
 id|i2c_adapter_id
