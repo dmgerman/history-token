@@ -68,12 +68,14 @@ DECL|macro|LIMIT_RGB
 mdefine_line|#define LIMIT_RGB(x) (((x) &lt; 0) ? 0 : (((x) &gt; 255) ? 255 : (x)))
 DECL|macro|YUV_TO_RGB_BY_THE_BOOK
 mdefine_line|#define YUV_TO_RGB_BY_THE_BOOK(my,mu,mv,mr,mg,mb) { &bslash;&n;    int mm_y, mm_yc, mm_u, mm_v, mm_r, mm_g, mm_b; &bslash;&n;    mm_y = (my) - 16;  &bslash;&n;    mm_u = (mu) - 128; &bslash;&n;    mm_v = (mv) - 128; &bslash;&n;    mm_yc= mm_y * 76284; &bslash;&n;    mm_b = (mm_yc&t;&t;+ 132252*mm_v&t;) &gt;&gt; 16; &bslash;&n;    mm_g = (mm_yc -  53281*mm_u -  25625*mm_v&t;) &gt;&gt; 16; &bslash;&n;    mm_r = (mm_yc + 104595*mm_u&t;&t;&t;) &gt;&gt; 16; &bslash;&n;    mb = LIMIT_RGB(mm_b); &bslash;&n;    mg = LIMIT_RGB(mm_g); &bslash;&n;    mr = LIMIT_RGB(mm_r); &bslash;&n;}
+DECL|macro|RING_QUEUE_SIZE
+mdefine_line|#define&t;RING_QUEUE_SIZE&t;&t;(128*1024)&t;/* Must be a power of 2 */
 DECL|macro|RING_QUEUE_ADVANCE_INDEX
-mdefine_line|#define&t;RING_QUEUE_ADVANCE_INDEX(rq,ind,n) (rq)-&gt;ind = ((rq)-&gt;ind + (n)) % (rq)-&gt;length
+mdefine_line|#define&t;RING_QUEUE_ADVANCE_INDEX(rq,ind,n) (rq)-&gt;ind = ((rq)-&gt;ind + (n)) &amp; ((rq)-&gt;length-1)
 DECL|macro|RING_QUEUE_DEQUEUE_BYTES
 mdefine_line|#define&t;RING_QUEUE_DEQUEUE_BYTES(rq,n) RING_QUEUE_ADVANCE_INDEX(rq,ri,n)
 DECL|macro|RING_QUEUE_PEEK
-mdefine_line|#define&t;RING_QUEUE_PEEK(rq,ofs) ((rq)-&gt;queue[((ofs) + (rq)-&gt;ri) % (rq)-&gt;length])
+mdefine_line|#define&t;RING_QUEUE_PEEK(rq,ofs) ((rq)-&gt;queue[((ofs) + (rq)-&gt;ri) &amp; ((rq)-&gt;length-1)])
 r_typedef
 r_struct
 (brace
@@ -807,6 +809,23 @@ op_star
 id|uvd
 )paren
 suffix:semicolon
+DECL|member|setVideoMode
+r_int
+(paren
+op_star
+id|setVideoMode
+)paren
+(paren
+id|uvd_t
+op_star
+id|uvd
+comma
+r_struct
+id|video_window
+op_star
+id|vw
+)paren
+suffix:semicolon
 DECL|typedef|usbvideo_cb_t
 )brace
 id|usbvideo_cb_t
@@ -925,16 +944,6 @@ r_int
 id|n
 )paren
 suffix:semicolon
-r_int
-id|RingQueue_GetLength
-c_func
-(paren
-r_const
-id|RingQueue_t
-op_star
-id|rq
-)paren
-suffix:semicolon
 r_void
 id|RingQueue_WakeUpInterruptible
 c_func
@@ -944,6 +953,67 @@ op_star
 id|rq
 )paren
 suffix:semicolon
+r_void
+id|RingQueue_Flush
+c_func
+(paren
+id|RingQueue_t
+op_star
+id|rq
+)paren
+suffix:semicolon
+DECL|function|RingQueue_GetLength
+r_static
+r_inline
+r_int
+id|RingQueue_GetLength
+c_func
+(paren
+r_const
+id|RingQueue_t
+op_star
+id|rq
+)paren
+(brace
+r_return
+(paren
+id|rq-&gt;wi
+op_minus
+id|rq-&gt;ri
+op_plus
+id|rq-&gt;length
+)paren
+op_amp
+(paren
+id|rq-&gt;length
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+DECL|function|RingQueue_GetFreeSpace
+r_static
+r_inline
+r_int
+id|RingQueue_GetFreeSpace
+c_func
+(paren
+r_const
+id|RingQueue_t
+op_star
+id|rq
+)paren
+(brace
+r_return
+id|rq-&gt;length
+op_minus
+id|RingQueue_GetLength
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+)brace
 r_void
 id|usbvideo_DrawLine
 c_func

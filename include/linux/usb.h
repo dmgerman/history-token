@@ -73,41 +73,6 @@ DECL|macro|USB_ENDPOINT_XFER_BULK
 mdefine_line|#define USB_ENDPOINT_XFER_BULK&t;&t;2
 DECL|macro|USB_ENDPOINT_XFER_INT
 mdefine_line|#define USB_ENDPOINT_XFER_INT&t;&t;3
-multiline_comment|/*&n; * USB Packet IDs (PIDs)&n; */
-DECL|macro|USB_PID_UNDEF_0
-mdefine_line|#define USB_PID_UNDEF_0&t;&t;&t;0xf0
-DECL|macro|USB_PID_OUT
-mdefine_line|#define USB_PID_OUT&t;&t;&t;0xe1
-DECL|macro|USB_PID_ACK
-mdefine_line|#define USB_PID_ACK&t;&t;&t;0xd2
-DECL|macro|USB_PID_DATA0
-mdefine_line|#define USB_PID_DATA0&t;&t;&t;0xc3
-DECL|macro|USB_PID_PING
-mdefine_line|#define USB_PID_PING&t;&t;&t;0xb4&t;/* USB 2.0 */
-DECL|macro|USB_PID_SOF
-mdefine_line|#define USB_PID_SOF&t;&t;&t;0xa5
-DECL|macro|USB_PID_NYET
-mdefine_line|#define USB_PID_NYET&t;&t;&t;0x96&t;/* USB 2.0 */
-DECL|macro|USB_PID_DATA2
-mdefine_line|#define USB_PID_DATA2&t;&t;&t;0x87&t;/* USB 2.0 */
-DECL|macro|USB_PID_SPLIT
-mdefine_line|#define USB_PID_SPLIT&t;&t;&t;0x78&t;/* USB 2.0 */
-DECL|macro|USB_PID_IN
-mdefine_line|#define USB_PID_IN&t;&t;&t;0x69
-DECL|macro|USB_PID_NAK
-mdefine_line|#define USB_PID_NAK&t;&t;&t;0x5a
-DECL|macro|USB_PID_DATA1
-mdefine_line|#define USB_PID_DATA1&t;&t;&t;0x4b
-DECL|macro|USB_PID_PREAMBLE
-mdefine_line|#define USB_PID_PREAMBLE&t;&t;0x3c&t;/* Token mode */
-DECL|macro|USB_PID_ERR
-mdefine_line|#define USB_PID_ERR&t;&t;&t;0x3c&t;/* USB 2.0: handshake mode */
-DECL|macro|USB_PID_SETUP
-mdefine_line|#define USB_PID_SETUP&t;&t;&t;0x2d
-DECL|macro|USB_PID_STALL
-mdefine_line|#define USB_PID_STALL&t;&t;&t;0x1e
-DECL|macro|USB_PID_MDATA
-mdefine_line|#define USB_PID_MDATA&t;&t;&t;0x0f&t;/* USB 2.0 */
 multiline_comment|/*&n; * Standard requests&n; */
 DECL|macro|USB_REQ_GET_STATUS
 mdefine_line|#define USB_REQ_GET_STATUS&t;&t;0x00
@@ -872,8 +837,6 @@ multiline_comment|/* Host Controller Driver (HCD) support */
 r_struct
 id|usb_operations
 suffix:semicolon
-DECL|macro|DEVNUM_ROUND_ROBIN
-mdefine_line|#define DEVNUM_ROUND_ROBIN&t;/***** OPTION *****/
 multiline_comment|/*&n; * Allocated per bus we have&n; */
 DECL|struct|usb_bus
 r_struct
@@ -890,13 +853,11 @@ op_star
 id|bus_name
 suffix:semicolon
 multiline_comment|/* stable id (PCI slot_name etc) */
-macro_line|#ifdef DEVNUM_ROUND_ROBIN
 DECL|member|devnum_next
 r_int
 id|devnum_next
 suffix:semicolon
 multiline_comment|/* Next open device number in round-robin allocation */
-macro_line|#endif /* DEVNUM_ROUND_ROBIN */
 DECL|member|devmap
 r_struct
 id|usb_devmap
@@ -963,31 +924,6 @@ id|atomic_t
 id|refcnt
 suffix:semicolon
 )brace
-suffix:semicolon
-singleline_comment|// FIXME:  root_hub_string vanishes when &quot;usb_hcd&quot; conversion is done,
-singleline_comment|// along with pre-hcd versions of the OHCI and UHCI drivers.
-r_extern
-r_int
-id|usb_root_hub_string
-c_func
-(paren
-r_int
-id|id
-comma
-r_int
-id|serial
-comma
-r_char
-op_star
-id|type
-comma
-id|__u8
-op_star
-id|data
-comma
-r_int
-id|len
-)paren
 suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/* This is arbitrary.&n; * From USB 2.0 spec Table 11-13, offset 7, a hub can&n; * have up to 255 ports. The most yet reported is 10.&n; */
@@ -1721,7 +1657,7 @@ id|urb
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * struct urb - USB Request Block&n; * @urb_list: For use by current owner of the URB.&n; * @pipe: Holds endpoint number, direction, type, and max packet size.&n; *&t;Create these values with the eight macros available;&n; *&t;usb_{snd,rcv}TYPEpipe(dev,endpoint), where the type is &quot;ctrl&quot;&n; *&t;(control), &quot;bulk&quot;, &quot;int&quot; (interrupt), or &quot;iso&quot; (isochronous).&n; *&t;For example usb_sndbulkpipe() or usb_rcvintpipe().  Endpoint&n; *&t;numbers range from zero to fifteen.  Note that &quot;in&quot; endpoint two&n; *&t;is a different endpoint (and pipe) from &quot;out&quot; endpoint two.&n; *&t;The current configuration controls the existence, type, and&n; *&t;maximum packet size of any given endpoint.&n; * @dev: Identifies the USB device to perform the request.&n; * @status: This is read in non-iso completion functions to get the&n; *&t;status of the particular request.  ISO requests only use it&n; *&t;to tell whether the URB was unlinked; detailed status for&n; *&t;each frame is in the fields of the iso_frame-desc.&n; * @transfer_flags: A variety of flags may be used to affect how URB&n; *&t;submission, unlinking, or operation are handled.  Different&n; *&t;kinds of URB can use different flags.&n; * @transfer_buffer:  This identifies the buffer to (or from) which&n; * &t;the I/O request will be performed (unless URB_NO_DMA_MAP is set).&n; *&t;This buffer must be suitable for DMA; allocate it with kmalloc()&n; *&t;or equivalent.  For transfers to &quot;in&quot; endpoints, contents of&n; *&t;this buffer will be modified.  This buffer is used for data&n; *&t;phases of control transfers.&n; * @transfer_dma: When transfer_flags includes URB_NO_DMA_MAP, the device&n; * &t;driver is saying that it provided this DMA address, which the host&n; * &t;controller driver should use instead of the transfer_buffer.&n; * @transfer_buffer_length: How big is transfer_buffer.  The transfer may&n; *&t;be broken up into chunks according to the current maximum packet&n; *&t;size for the endpoint, which is a function of the configuration&n; *&t;and is encoded in the pipe.&n; * @actual_length: This is read in non-iso completion functions, and&n; *&t;it tells how many bytes (out of transfer_buffer_length) were&n; *&t;transferred.  It will normally be the same as requested, unless&n; *&t;either an error was reported or a short read was performed.&n; *&t;The URB_SHORT_NOT_OK transfer flag may be used to make such&n; *&t;short reads be reported as errors. &n; * @setup_packet: Only used for control transfers, this points to eight bytes&n; *&t;of setup data.  Control transfers always start by sending this data&n; *&t;to the device.  Then transfer_buffer is read or written, if needed.&n; *&t;(Not used when URB_NO_DMA_MAP is set.)&n; * @setup_dma: For control transfers with URB_NO_DMA_MAP set, the device&n; * &t;driver has provided this DMA address for the setup packet.  The&n; * &t;host controller driver should use instead of setup_buffer.&n; * &t;If there is a data phase, its buffer is identified by transfer_dma.&n; * @start_frame: Returns the initial frame for interrupt or isochronous&n; *&t;transfers.&n; * @number_of_packets: Lists the number of ISO transfer buffers.&n; * @interval: Specifies the polling interval for interrupt or isochronous&n; *&t;transfers.  The units are frames (milliseconds) for for full and low&n; *&t;speed devices, and microframes (1/8 millisecond) for highspeed ones.&n; * @error_count: Returns the number of ISO transfers that reported errors.&n; * @context: For use in completion functions.  This normally points to&n; *&t;request-specific driver context.&n; * @complete: Completion handler. This URB is passed as the parameter to the&n; *&t;completion function.  Except for interrupt or isochronous transfers&n; *&t;that aren&squot;t being unlinked, the completion function may then do what&n; *&t;it likes with the URB, including resubmitting or freeing it.&n; * @iso_frame_desc: Used to provide arrays of ISO transfer buffers and to &n; *&t;collect the transfer status for each buffer.&n; *&n; * This structure identifies USB transfer requests.  URBs must be allocated by&n; * calling usb_alloc_urb() and freed with a call to usb_free_urb().&n; * Initialization may be done using various usb_fill_*_urb() functions.  URBs&n; * are submitted using usb_submit_urb(), and pending requests may be canceled&n; * using usb_unlink_urb().&n; *&n; * Data Transfer Buffers:&n; *&n; * Normally drivers provide I/O buffers allocated with kmalloc() or otherwise&n; * taken from the general page pool.  That is provided by transfer_buffer&n; * (control requests also use setup_packet), and host controller drivers&n; * perform a dma mapping (and unmapping) for each buffer transferred.  Those&n; * mapping operations can be expensive on some platforms (such using a dma&n; * bounce buffer), although they&squot;re cheap on commodity x86 and ppc hardware.&n; *&n; * Alternatively, drivers may pass the URB_NO_DMA_MAP transfer flag, which&n; * tells the host controller driver that no such mapping is needed since&n; * the device driver is DMA-aware.  For example, they might allocate a DMA&n; * buffer with usb_buffer_alloc(), or call usb_buffer_map().&n; * When this transfer flag is provided, host controller drivers will use the&n; * dma addresses found in the transfer_dma and/or setup_dma fields rather than&n; * determing a dma address themselves.&n; *&n; * Initialization:&n; *&n; * All URBs submitted must initialize dev, pipe,&n; * transfer_flags (may be zero), complete, timeout (may be zero).&n; * The USB_ASYNC_UNLINK transfer flag affects later invocations of&n; * the usb_unlink_urb() routine.&n; *&n; * All URBs must also initialize &n; * transfer_buffer and transfer_buffer_length.  They may provide the&n; * URB_SHORT_NOT_OK transfer flag, indicating that short reads are&n; * to be treated as errors; that flag is invalid for write requests.&n; *&n; * Bulk URBs may&n; * use the USB_ZERO_PACKET transfer flag, indicating that bulk OUT transfers&n; * should always terminate with a short packet, even if it means adding an&n; * extra zero length packet.&n; *&n; * Control URBs must provide a setup_packet.&n; *&n; * Interrupt UBS must provide an interval, saying how often (in milliseconds&n; * or, for highspeed devices, 125 microsecond units)&n; * to poll for transfers.  After the URB has been submitted, the interval&n; * and start_frame fields reflect how the transfer was actually scheduled.&n; * The polling interval may be more frequent than requested.&n; * For example, some controllers have a maximum interval of 32 microseconds,&n; * while others support intervals of up to 1024 microseconds.&n; * Isochronous URBs also have transfer intervals.  (Note that for isochronous&n; * endpoints, as well as high speed interrupt endpoints, the encoding of&n; * the transfer interval in the endpoint descriptor is logarithmic.)&n; *&n; * Isochronous URBs normally use the USB_ISO_ASAP transfer flag, telling&n; * the host controller to schedule the transfer as soon as bandwidth&n; * utilization allows, and then set start_frame to reflect the actual frame&n; * selected during submission.  Otherwise drivers must specify the start_frame&n; * and handle the case where the transfer can&squot;t begin then.  However, drivers&n; * won&squot;t know how bandwidth is currently allocated, and while they can&n; * find the current frame using usb_get_current_frame_number () they can&squot;t&n; * know the range for that frame number.  (Ranges for frame counter values&n; * are HC-specific, and can go from 256 to 65536 frames from &quot;now&quot;.)&n; *&n; * Isochronous URBs have a different data transfer model, in part because&n; * the quality of service is only &quot;best effort&quot;.  Callers provide specially&n; * allocated URBs, with number_of_packets worth of iso_frame_desc structures&n; * at the end.  Each such packet is an individual ISO transfer.  Isochronous&n; * URBs are normally queued, submitted by drivers to arrange that&n; * transfers are at least double buffered, and then explicitly resubmitted&n; * in completion handlers, so&n; * that data (such as audio or video) streams at as constant a rate as the&n; * host controller scheduler can support.&n; *&n; * Completion Callbacks:&n; *&n; * The completion callback is made in_interrupt(), and one of the first&n; * things that a completion handler should do is check the status field.&n; * The status field is provided for all URBs.  It is used to report&n; * unlinked URBs, and status for all non-ISO transfers.  It should not&n; * be examined outside of the completion handler.&n; *&n; * The context field is normally used to link URBs back to the relevant&n; * driver or request state.&n; *&n; * When completion callback is invoked for non-isochronous URBs, the&n; * actual_length field tells how many bytes were transferred.&n; *&n; * For interrupt URBs, the URB provided to the callback&n; * function is still &quot;owned&quot; by the USB core subsystem unless the status&n; * indicates that the URB has been unlinked.  Completion handlers should&n; * not modify such URBs until they have been unlinked.&n; *&n; * ISO transfer status is reported in the status and actual_length fields&n; * of the iso_frame_desc array, and the number of errors is reported in&n; * error_count.  Completion callbacks for ISO transfers will normally&n; * (re)submit URBs to ensure a constant transfer rate.&n; */
+multiline_comment|/**&n; * struct urb - USB Request Block&n; * @urb_list: For use by current owner of the URB.&n; * @pipe: Holds endpoint number, direction, type, and more.&n; *&t;Create these values with the eight macros available;&n; *&t;usb_{snd,rcv}TYPEpipe(dev,endpoint), where the type is &quot;ctrl&quot;&n; *&t;(control), &quot;bulk&quot;, &quot;int&quot; (interrupt), or &quot;iso&quot; (isochronous).&n; *&t;For example usb_sndbulkpipe() or usb_rcvintpipe().  Endpoint&n; *&t;numbers range from zero to fifteen.  Note that &quot;in&quot; endpoint two&n; *&t;is a different endpoint (and pipe) from &quot;out&quot; endpoint two.&n; *&t;The current configuration controls the existence, type, and&n; *&t;maximum packet size of any given endpoint.&n; * @dev: Identifies the USB device to perform the request.&n; * @status: This is read in non-iso completion functions to get the&n; *&t;status of the particular request.  ISO requests only use it&n; *&t;to tell whether the URB was unlinked; detailed status for&n; *&t;each frame is in the fields of the iso_frame-desc.&n; * @transfer_flags: A variety of flags may be used to affect how URB&n; *&t;submission, unlinking, or operation are handled.  Different&n; *&t;kinds of URB can use different flags.&n; * @transfer_buffer:  This identifies the buffer to (or from) which&n; * &t;the I/O request will be performed (unless URB_NO_DMA_MAP is set).&n; *&t;This buffer must be suitable for DMA; allocate it with kmalloc()&n; *&t;or equivalent.  For transfers to &quot;in&quot; endpoints, contents of&n; *&t;this buffer will be modified.  This buffer is used for data&n; *&t;phases of control transfers.&n; * @transfer_dma: When transfer_flags includes URB_NO_DMA_MAP, the device&n; * &t;driver is saying that it provided this DMA address, which the host&n; * &t;controller driver should use instead of the transfer_buffer.&n; * @transfer_buffer_length: How big is transfer_buffer.  The transfer may&n; *&t;be broken up into chunks according to the current maximum packet&n; *&t;size for the endpoint, which is a function of the configuration&n; *&t;and is encoded in the pipe.  When the length is zero, neither&n; *&t;transfer_buffer nor transfer_dma is used.&n; * @actual_length: This is read in non-iso completion functions, and&n; *&t;it tells how many bytes (out of transfer_buffer_length) were&n; *&t;transferred.  It will normally be the same as requested, unless&n; *&t;either an error was reported or a short read was performed.&n; *&t;The URB_SHORT_NOT_OK transfer flag may be used to make such&n; *&t;short reads be reported as errors. &n; * @setup_packet: Only used for control transfers, this points to eight bytes&n; *&t;of setup data.  Control transfers always start by sending this data&n; *&t;to the device.  Then transfer_buffer is read or written, if needed.&n; *&t;(Not used when URB_NO_DMA_MAP is set.)&n; * @setup_dma: For control transfers with URB_NO_DMA_MAP set, the device&n; * &t;driver has provided this DMA address for the setup packet.  The&n; * &t;host controller driver should use this instead of setup_buffer.&n; * &t;If there is a data phase, its buffer is identified by transfer_dma.&n; * @start_frame: Returns the initial frame for interrupt or isochronous&n; *&t;transfers.&n; * @number_of_packets: Lists the number of ISO transfer buffers.&n; * @interval: Specifies the polling interval for interrupt or isochronous&n; *&t;transfers.  The units are frames (milliseconds) for for full and low&n; *&t;speed devices, and microframes (1/8 millisecond) for highspeed ones.&n; * @error_count: Returns the number of ISO transfers that reported errors.&n; * @context: For use in completion functions.  This normally points to&n; *&t;request-specific driver context.&n; * @complete: Completion handler. This URB is passed as the parameter to the&n; *&t;completion function.  Except for interrupt or isochronous transfers&n; *&t;that aren&squot;t being unlinked, the completion function may then do what&n; *&t;it likes with the URB, including resubmitting or freeing it.&n; * @iso_frame_desc: Used to provide arrays of ISO transfer buffers and to &n; *&t;collect the transfer status for each buffer.&n; *&n; * This structure identifies USB transfer requests.  URBs must be allocated by&n; * calling usb_alloc_urb() and freed with a call to usb_free_urb().&n; * Initialization may be done using various usb_fill_*_urb() functions.  URBs&n; * are submitted using usb_submit_urb(), and pending requests may be canceled&n; * using usb_unlink_urb().&n; *&n; * Data Transfer Buffers:&n; *&n; * Normally drivers provide I/O buffers allocated with kmalloc() or otherwise&n; * taken from the general page pool.  That is provided by transfer_buffer&n; * (control requests also use setup_packet), and host controller drivers&n; * perform a dma mapping (and unmapping) for each buffer transferred.  Those&n; * mapping operations can be expensive on some platforms (perhaps using a dma&n; * bounce buffer or talking to an IOMMU),&n; * although they&squot;re cheap on commodity x86 and ppc hardware.&n; *&n; * Alternatively, drivers may pass the URB_NO_DMA_MAP transfer flag, which&n; * tells the host controller driver that no such mapping is needed since&n; * the device driver is DMA-aware.  For example, they might allocate a DMA&n; * buffer with usb_buffer_alloc(), or call usb_buffer_map().&n; * When this transfer flag is provided, host controller drivers will use the&n; * dma addresses found in the transfer_dma and/or setup_dma fields rather than&n; * determing a dma address themselves.&n; *&n; * Initialization:&n; *&n; * All URBs submitted must initialize dev, pipe,&n; * transfer_flags (may be zero), complete, timeout (may be zero).&n; * The USB_ASYNC_UNLINK transfer flag affects later invocations of&n; * the usb_unlink_urb() routine.&n; *&n; * All URBs must also initialize &n; * transfer_buffer and transfer_buffer_length.  They may provide the&n; * URB_SHORT_NOT_OK transfer flag, indicating that short reads are&n; * to be treated as errors; that flag is invalid for write requests.&n; *&n; * Bulk URBs may&n; * use the USB_ZERO_PACKET transfer flag, indicating that bulk OUT transfers&n; * should always terminate with a short packet, even if it means adding an&n; * extra zero length packet.&n; *&n; * Control URBs must provide a setup_packet.&n; *&n; * Interrupt UBS must provide an interval, saying how often (in milliseconds&n; * or, for highspeed devices, 125 microsecond units)&n; * to poll for transfers.  After the URB has been submitted, the interval&n; * and start_frame fields reflect how the transfer was actually scheduled.&n; * The polling interval may be more frequent than requested.&n; * For example, some controllers have a maximum interval of 32 microseconds,&n; * while others support intervals of up to 1024 microseconds.&n; * Isochronous URBs also have transfer intervals.  (Note that for isochronous&n; * endpoints, as well as high speed interrupt endpoints, the encoding of&n; * the transfer interval in the endpoint descriptor is logarithmic.)&n; *&n; * Isochronous URBs normally use the USB_ISO_ASAP transfer flag, telling&n; * the host controller to schedule the transfer as soon as bandwidth&n; * utilization allows, and then set start_frame to reflect the actual frame&n; * selected during submission.  Otherwise drivers must specify the start_frame&n; * and handle the case where the transfer can&squot;t begin then.  However, drivers&n; * won&squot;t know how bandwidth is currently allocated, and while they can&n; * find the current frame using usb_get_current_frame_number () they can&squot;t&n; * know the range for that frame number.  (Ranges for frame counter values&n; * are HC-specific, and can go from 256 to 65536 frames from &quot;now&quot;.)&n; *&n; * Isochronous URBs have a different data transfer model, in part because&n; * the quality of service is only &quot;best effort&quot;.  Callers provide specially&n; * allocated URBs, with number_of_packets worth of iso_frame_desc structures&n; * at the end.  Each such packet is an individual ISO transfer.  Isochronous&n; * URBs are normally queued, submitted by drivers to arrange that&n; * transfers are at least double buffered, and then explicitly resubmitted&n; * in completion handlers, so&n; * that data (such as audio or video) streams at as constant a rate as the&n; * host controller scheduler can support.&n; *&n; * Completion Callbacks:&n; *&n; * The completion callback is made in_interrupt(), and one of the first&n; * things that a completion handler should do is check the status field.&n; * The status field is provided for all URBs.  It is used to report&n; * unlinked URBs, and status for all non-ISO transfers.  It should not&n; * be examined before the URB is returned to the completion handler.&n; *&n; * The context field is normally used to link URBs back to the relevant&n; * driver or request state.&n; *&n; * When completion callback is invoked for non-isochronous URBs, the&n; * actual_length field tells how many bytes were transferred.&n; *&n; * For interrupt URBs, the URB provided to the callback&n; * function is still &quot;owned&quot; by the USB core subsystem unless the status&n; * indicates that the URB has been unlinked.  Completion handlers should&n; * not modify such URBs until they have been unlinked.&n; *&n; * ISO transfer status is reported in the status and actual_length fields&n; * of the iso_frame_desc array, and the number of errors is reported in&n; * error_count.  Completion callbacks for ISO transfers will normally&n; * (re)submit URBs to ensure a constant transfer rate.&n; */
 DECL|struct|urb
 r_struct
 id|urb
@@ -2313,20 +2249,6 @@ suffix:semicolon
 multiline_comment|/* wrappers around usb_control_msg() for the most common standard requests */
 r_extern
 r_int
-id|usb_clear_halt
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|pipe
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|usb_get_descriptor
 c_func
 (paren
@@ -2430,6 +2352,21 @@ r_int
 id|size
 )paren
 suffix:semicolon
+multiline_comment|/* wrappers that also update important state inside usbcore */
+r_extern
+r_int
+id|usb_clear_halt
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_int
+id|pipe
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|usb_set_configuration
@@ -2472,7 +2409,7 @@ macro_line|#endif
 DECL|macro|USB_CTRL_SET_TIMEOUT
 mdefine_line|#define USB_CTRL_SET_TIMEOUT&t;3
 multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit) [Historical and specific to USB 1.1; now gone.]&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;[Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In])&n; *  - device:&t;&t;bits 8-14&n; *  - endpoint:&t;&t;bits 15-18&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - lowspeed:&t;&t;bit 26&t;&t;[Historical; now gone. ]&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
+multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit) [Historical and specific to USB 1.1; now gone.]&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;[Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In] ...&n; *&t;&t;&t;&t;&t;like endpoint bEndpointAddress)&n; *  - device:&t;&t;bits 8-14       ... bit positions known to uhci-hcd&n; *  - endpoint:&t;&t;bits 15-18      ... bit positions known to uhci-hcd&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - lowspeed:&t;&t;bit 26&t;&t;[Historical; now gone. ]&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
 multiline_comment|/* NOTE:  these are not the standard USB_ENDPOINT_XFER_* values!! */
 DECL|macro|PIPE_ISOCHRONOUS
 mdefine_line|#define PIPE_ISOCHRONOUS&t;&t;0
@@ -2484,12 +2421,10 @@ DECL|macro|PIPE_BULK
 mdefine_line|#define PIPE_BULK&t;&t;&t;3
 DECL|macro|usb_maxpacket
 mdefine_line|#define usb_maxpacket(dev, pipe, out)&t;(out &bslash;&n;&t;&t;&t;&t;? (dev)-&gt;epmaxpacketout[usb_pipeendpoint(pipe)] &bslash;&n;&t;&t;&t;&t;: (dev)-&gt;epmaxpacketin [usb_pipeendpoint(pipe)] )
-DECL|macro|usb_packetid
-mdefine_line|#define usb_packetid(pipe)&t;(((pipe) &amp; USB_DIR_IN) ? USB_PID_IN : USB_PID_OUT)
-DECL|macro|usb_pipeout
-mdefine_line|#define usb_pipeout(pipe)&t;((((pipe) &gt;&gt; 7) &amp; 1) ^ 1)
 DECL|macro|usb_pipein
-mdefine_line|#define usb_pipein(pipe)&t;(((pipe) &gt;&gt; 7) &amp; 1)
+mdefine_line|#define usb_pipein(pipe)&t;((pipe) &amp; USB_DIR_IN)
+DECL|macro|usb_pipeout
+mdefine_line|#define usb_pipeout(pipe)&t;(!usb_pipein(pipe))
 DECL|macro|usb_pipedevice
 mdefine_line|#define usb_pipedevice(pipe)&t;(((pipe) &gt;&gt; 8) &amp; 0x7f)
 DECL|macro|usb_pipeendpoint
@@ -2504,20 +2439,14 @@ DECL|macro|usb_pipecontrol
 mdefine_line|#define usb_pipecontrol(pipe)&t;(usb_pipetype((pipe)) == PIPE_CONTROL)
 DECL|macro|usb_pipebulk
 mdefine_line|#define usb_pipebulk(pipe)&t;(usb_pipetype((pipe)) == PIPE_BULK)
-DECL|macro|PIPE_DEVEP_MASK
-mdefine_line|#define PIPE_DEVEP_MASK&t;&t;0x0007ff00
-multiline_comment|/* The D0/D1 toggle bits */
+multiline_comment|/* The D0/D1 toggle bits ... USE WITH CAUTION (they&squot;re almost hcd-internal) */
 DECL|macro|usb_gettoggle
 mdefine_line|#define usb_gettoggle(dev, ep, out) (((dev)-&gt;toggle[out] &gt;&gt; (ep)) &amp; 1)
 DECL|macro|usb_dotoggle
 mdefine_line|#define&t;usb_dotoggle(dev, ep, out)  ((dev)-&gt;toggle[out] ^= (1 &lt;&lt; (ep)))
 DECL|macro|usb_settoggle
 mdefine_line|#define usb_settoggle(dev, ep, out, bit) ((dev)-&gt;toggle[out] = ((dev)-&gt;toggle[out] &amp; ~(1 &lt;&lt; (ep))) | ((bit) &lt;&lt; (ep)))
-multiline_comment|/* Endpoint halt control/status */
-DECL|macro|usb_endpoint_out
-mdefine_line|#define usb_endpoint_out(ep_dir)&t;((((ep_dir) &gt;&gt; 7) &amp; 1) ^ 1)
-DECL|macro|usb_endpoint_halt
-mdefine_line|#define usb_endpoint_halt(dev, ep, out) ((dev)-&gt;halted[out] |= (1 &lt;&lt; (ep)))
+multiline_comment|/* Endpoint halt control/status ... likewise USE WITH CAUTION */
 DECL|macro|usb_endpoint_running
 mdefine_line|#define usb_endpoint_running(dev, ep, out) ((dev)-&gt;halted[out] &amp;= ~(1 &lt;&lt; (ep)))
 DECL|macro|usb_endpoint_halted
@@ -2652,176 +2581,6 @@ DECL|macro|info
 mdefine_line|#define info(format, arg...) printk(KERN_INFO __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|warn
 mdefine_line|#define warn(format, arg...) printk(KERN_WARNING __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
-multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/*&n; * driver list&n; * exported only for usbfs (not visible outside usbcore)&n; */
-r_extern
-r_struct
-id|list_head
-id|usb_driver_list
-suffix:semicolon
-multiline_comment|/*&n; * USB device fs stuff&n; */
-macro_line|#ifdef CONFIG_USB_DEVICEFS
-multiline_comment|/*&n; * these are expected to be called from the USB core/hub thread&n; * with the kernel lock held&n; */
-r_extern
-r_void
-id|usbfs_add_bus
-c_func
-(paren
-r_struct
-id|usb_bus
-op_star
-id|bus
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usbfs_remove_bus
-c_func
-(paren
-r_struct
-id|usb_bus
-op_star
-id|bus
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usbfs_add_device
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usbfs_remove_device
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usbfs_update_special
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usbfs_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usbfs_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#else /* CONFIG_USB_DEVICEFS */
-DECL|function|usbfs_add_bus
-r_static
-r_inline
-r_void
-id|usbfs_add_bus
-c_func
-(paren
-r_struct
-id|usb_bus
-op_star
-id|bus
-)paren
-(brace
-)brace
-DECL|function|usbfs_remove_bus
-r_static
-r_inline
-r_void
-id|usbfs_remove_bus
-c_func
-(paren
-r_struct
-id|usb_bus
-op_star
-id|bus
-)paren
-(brace
-)brace
-DECL|function|usbfs_add_device
-r_static
-r_inline
-r_void
-id|usbfs_add_device
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-)brace
-DECL|function|usbfs_remove_device
-r_static
-r_inline
-r_void
-id|usbfs_remove_device
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-)brace
-DECL|function|usbfs_update_special
-r_static
-r_inline
-r_void
-id|usbfs_update_special
-(paren
-r_void
-)paren
-(brace
-)brace
-DECL|function|usbfs_init
-r_static
-r_inline
-r_int
-id|usbfs_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|usbfs_cleanup
-r_static
-r_inline
-r_void
-id|usbfs_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-macro_line|#endif /* CONFIG_USB_DEVICEFS */
 macro_line|#endif  /* __KERNEL__ */
 macro_line|#endif
 eof

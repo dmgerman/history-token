@@ -503,15 +503,15 @@ op_star
 id|data
 op_increment
 op_assign
-l_int|0
+l_int|0x09
 suffix:semicolon
 op_star
 id|data
 op_increment
 op_assign
-l_int|0
+l_int|0x04
 suffix:semicolon
-multiline_comment|/* some language id */
+multiline_comment|/* MSFT-speak for &quot;en-us&quot; */
 r_return
 l_int|4
 suffix:semicolon
@@ -1658,12 +1658,10 @@ id|usb_devmap
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEVNUM_ROUND_ROBIN
 id|bus-&gt;devnum_next
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /* DEVNUM_ROUND_ROBIN */
 id|bus-&gt;root_hub
 op_assign
 l_int|NULL
@@ -2050,7 +2048,7 @@ id|usb_register_root_hub
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_calc_bus_time: approximate periodic transaction time in nanoseconds&n; * @speed: from dev-&gt;speed; USB_SPEED_{LOW,FULL,HIGH}&n; * @is_input: true iff the transaction sends data to the host&n; * @is_isoc: true for isochronous transactions, false for interrupt ones&n; * @bytecount: how many bytes in the transaction.&n; *&n; * Returns approximate bus time in nanoseconds for a periodic transaction.&n; * See USB 2.0 spec section 5.11.3; only periodic transfers need to be&n; * scheduled in software, this function is only used for such scheduling.&n; */
+multiline_comment|/**&n; * usb_calc_bus_time - approximate periodic transaction time in nanoseconds&n; * @speed: from dev-&gt;speed; USB_SPEED_{LOW,FULL,HIGH}&n; * @is_input: true iff the transaction sends data to the host&n; * @isoc: true for isochronous transactions, false for interrupt ones&n; * @bytecount: how many bytes in the transaction.&n; *&n; * Returns approximate bus time in nanoseconds for a periodic transaction.&n; * See USB 2.0 spec section 5.11.3; only periodic transfers need to be&n; * scheduled in software, this function is only used for such scheduling.&n; */
 DECL|function|usb_calc_bus_time
 r_int
 id|usb_calc_bus_time
@@ -3767,7 +3765,7 @@ id|usb_hcd_operations
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause deadlocks if it resubmits this URB,&n; * and won&squot;t confuse things by modifying and resubmitting this one.&n; * Bandwidth and other resources will be deallocated.&n; *&n; * HCDs must not use this for periodic URBs that are still scheduled&n; * and will be reissued.  They should just call their completion handlers&n; * until the urb is returned to the device driver by unlinking.&n; */
+multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause problems if it frees, modifies,&n; * or resubmits this URB.&n; * Bandwidth and other resources will be deallocated.&n; *&n; * HCDs must not use this for periodic URBs that are still scheduled&n; * and will be reissued.  They should just call their completion handlers&n; * until the urb is returned to the device driver by unlinking.&n; */
 DECL|function|usb_hcd_giveback_urb
 r_void
 id|usb_hcd_giveback_urb
