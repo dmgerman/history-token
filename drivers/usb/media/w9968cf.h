@@ -12,8 +12,8 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/rwsem.h&gt;
 macro_line|#include &lt;media/ovcamchip.h&gt;
 macro_line|#include &quot;w9968cf_vpp.h&quot;
 multiline_comment|/****************************************************************************&n; * Default values                                                           *&n; ****************************************************************************/
