@@ -420,16 +420,19 @@ comma
 id|command
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Weird: on 648(fx) and 746(fx) chipsets any rate change in the target&n;&t;&t; * command register triggers a 5ms screwup during which the master&n;&t;&t; * cannot be configured&t;&t; &n;&t;&t; */
 r_if
 c_cond
 (paren
 id|device-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SI_648
+op_logical_or
+id|device-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SI_746
 )paren
 (brace
-singleline_comment|// weird: on 648 and 648fx chipsets any rate change in the target command register
-singleline_comment|// triggers a 5ms screwup during which the master cannot be configured
 id|printk
 c_func
 (paren
