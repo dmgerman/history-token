@@ -642,7 +642,7 @@ suffix:semicolon
 multiline_comment|/* Who we notify when we exit. */
 id|retval-&gt;host_blocked
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|retval-&gt;host_self_blocked
 op_assign

@@ -1390,7 +1390,7 @@ suffix:semicolon
 )brace
 id|host-&gt;host_blocked
 op_assign
-id|TRUE
+id|SCSI_START_HOST_BLOCKED
 suffix:semicolon
 )brace
 r_else
@@ -3541,7 +3541,7 @@ suffix:semicolon
 multiline_comment|/*&n;         * Clear the flags which say that the device/host is no longer&n;         * capable of accepting new commands.  These are set in scsi_queue.c&n;         * for both the queue full condition on a device, and for a&n;         * host full condition on the host.&n;         */
 id|host-&gt;host_blocked
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|device-&gt;device_blocked
 op_assign
