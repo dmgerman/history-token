@@ -4286,7 +4286,6 @@ op_assign
 l_int|8192
 comma
 macro_line|#endif
-macro_line|#if defined CONFIG_HIGHIO
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,18)
 multiline_comment|/* Assume RedHat Distribution with its different HIGHIO conventions. */
 dot
@@ -4305,7 +4304,6 @@ id|highmem_io
 op_assign
 l_int|1
 comma
-macro_line|#endif
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 dot
