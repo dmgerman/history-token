@@ -390,6 +390,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -483,6 +489,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
