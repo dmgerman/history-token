@@ -270,7 +270,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_S3C2410_PM_DEBUG
-multiline_comment|/* debug&n; *&n; */
+multiline_comment|/* debug&n; *&n; * we send the debug to printascii() to allow it to be seen if the&n; * system never wakes up from the sleep&n;*/
 r_extern
 r_void
 id|printascii
@@ -1077,7 +1077,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;saved %08x value %08x&bslash;n&quot;
+l_string|&quot;saved %08lx value %08lx&bslash;n&quot;
 comma
 id|ptr-&gt;reg
 comma
@@ -1119,7 +1119,7 @@ op_increment
 id|DBG
 c_func
 (paren
-l_string|&quot;restore %08x (restore %08x, current %08x)&bslash;n&quot;
+l_string|&quot;restore %08lx (restore %08lx, current %08x)&bslash;n&quot;
 comma
 id|ptr-&gt;reg
 comma
@@ -1532,7 +1532,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;s3c2410_sleep_save_phys=0x%08x&bslash;n&quot;
+l_string|&quot;s3c2410_sleep_save_phys=0x%08lx&bslash;n&quot;
 comma
 id|s3c2410_sleep_save_phys
 )paren
@@ -1553,7 +1553,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;GSTATUS3 0x%08lx&bslash;n&quot;
+l_string|&quot;GSTATUS3 0x%08x&bslash;n&quot;
 comma
 id|__raw_readl
 c_func
@@ -1565,7 +1565,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;GSTATUS4 0x%08lx&bslash;n&quot;
+l_string|&quot;GSTATUS4 0x%08x&bslash;n&quot;
 comma
 id|__raw_readl
 c_func
@@ -1709,7 +1709,7 @@ multiline_comment|/* check what irq (if any) restored the system */
 id|DBG
 c_func
 (paren
-l_string|&quot;post sleep: IRQs 0x%08lx, 0x%08lx&bslash;n&quot;
+l_string|&quot;post sleep: IRQs 0x%08x, 0x%08x&bslash;n&quot;
 comma
 id|__raw_readl
 c_func
