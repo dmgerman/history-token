@@ -5934,12 +5934,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
+multiline_comment|/* This will also free the co-allocated &squot;dev-&gt;priv&squot; */
 id|kfree
 c_func
 (paren
@@ -6174,16 +6169,11 @@ c_func
 id|root_myri_dev-&gt;dev
 )paren
 suffix:semicolon
+multiline_comment|/* this will also free the co-allocated &squot;root_myri_dev&squot; */
 id|kfree
 c_func
 (paren
 id|root_myri_dev-&gt;dev
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|root_myri_dev
 )paren
 suffix:semicolon
 id|root_myri_dev
