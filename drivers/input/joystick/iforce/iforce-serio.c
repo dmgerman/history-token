@@ -443,9 +443,9 @@ op_star
 id|serio
 comma
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -524,7 +524,7 @@ c_func
 (paren
 id|serio
 comma
-id|dev
+id|drv
 )paren
 )paren
 (brace
@@ -604,10 +604,10 @@ id|iforce
 )paren
 suffix:semicolon
 )brace
-DECL|variable|iforce_serio_dev
+DECL|variable|iforce_serio_drv
 r_struct
-id|serio_dev
-id|iforce_serio_dev
+id|serio_driver
+id|iforce_serio_drv
 op_assign
 (brace
 dot

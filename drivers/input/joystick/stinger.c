@@ -522,9 +522,9 @@ op_star
 id|serio
 comma
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -794,7 +794,7 @@ c_func
 (paren
 id|serio
 comma
-id|dev
+id|drv
 )paren
 )paren
 (brace
@@ -827,11 +827,11 @@ id|serio-&gt;phys
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The serio device structure.&n; */
-DECL|variable|stinger_dev
+DECL|variable|stinger_drv
 r_static
 r_struct
-id|serio_dev
-id|stinger_dev
+id|serio_driver
+id|stinger_drv
 op_assign
 (brace
 dot
@@ -861,11 +861,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_register_device
+id|serio_register_driver
 c_func
 (paren
 op_amp
-id|stinger_dev
+id|stinger_drv
 )paren
 suffix:semicolon
 r_return
@@ -881,11 +881,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_unregister_device
+id|serio_unregister_driver
 c_func
 (paren
 op_amp
-id|stinger_dev
+id|stinger_drv
 )paren
 suffix:semicolon
 )brace

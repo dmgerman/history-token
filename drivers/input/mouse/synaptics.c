@@ -2661,7 +2661,7 @@ c_cond
 (paren
 id|psmouse-&gt;ptport
 op_logical_and
-id|psmouse-&gt;ptport-&gt;serio.dev
+id|psmouse-&gt;ptport-&gt;serio.drv
 op_logical_and
 id|synaptics_is_pt_packet
 c_func

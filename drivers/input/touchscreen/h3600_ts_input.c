@@ -1110,9 +1110,9 @@ op_star
 id|serio
 comma
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -1528,7 +1528,7 @@ c_func
 (paren
 id|serio
 comma
-id|dev
+id|drv
 )paren
 )paren
 (brace
@@ -1658,11 +1658,11 @@ id|ts
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The serio device structure.&n; */
-DECL|variable|h3600ts_dev
+DECL|variable|h3600ts_drv
 r_static
 r_struct
-id|serio_dev
-id|h3600ts_dev
+id|serio_driver
+id|h3600ts_drv
 op_assign
 (brace
 dot
@@ -1693,11 +1693,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_register_device
+id|serio_register_driver
 c_func
 (paren
 op_amp
-id|h3600ts_dev
+id|h3600ts_drv
 )paren
 suffix:semicolon
 r_return
@@ -1714,11 +1714,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_unregister_device
+id|serio_unregister_driver
 c_func
 (paren
 op_amp
-id|h3600ts_dev
+id|h3600ts_drv
 )paren
 suffix:semicolon
 )brace

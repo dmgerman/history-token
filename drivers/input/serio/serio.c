@@ -77,18 +77,18 @@ c_func
 id|__serio_unregister_port
 )paren
 suffix:semicolon
-DECL|variable|serio_register_device
+DECL|variable|serio_register_driver
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|serio_register_device
+id|serio_register_driver
 )paren
 suffix:semicolon
-DECL|variable|serio_unregister_device
+DECL|variable|serio_unregister_driver
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|serio_unregister_device
+id|serio_unregister_driver
 )paren
 suffix:semicolon
 DECL|variable|serio_open
@@ -126,7 +126,7 @@ c_func
 id|serio_sem
 )paren
 suffix:semicolon
-multiline_comment|/* protects serio_list and serio_dev_list */
+multiline_comment|/* protects serio_list and serio_diriver_list */
 r_static
 id|LIST_HEAD
 c_func
@@ -138,14 +138,14 @@ r_static
 id|LIST_HEAD
 c_func
 (paren
-id|serio_dev_list
+id|serio_driver_list
 )paren
 suffix:semicolon
-multiline_comment|/* serio_find_dev() must be called with serio_sem down.  */
-DECL|function|serio_find_dev
+multiline_comment|/* serio_find_driver() must be called with serio_sem down.  */
+DECL|function|serio_find_driver
 r_static
 r_void
-id|serio_find_dev
+id|serio_find_driver
 c_func
 (paren
 r_struct
@@ -155,17 +155,17 @@ id|serio
 )paren
 (brace
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 suffix:semicolon
 id|list_for_each_entry
 c_func
 (paren
-id|dev
+id|drv
 comma
 op_amp
-id|serio_dev_list
+id|serio_driver_list
 comma
 id|node
 )paren
@@ -173,18 +173,18 @@ id|node
 r_if
 c_cond
 (paren
-id|serio-&gt;dev
+id|serio-&gt;drv
 )paren
 r_break
 suffix:semicolon
-id|dev
+id|drv
 op_member_access_from_pointer
 id|connect
 c_func
 (paren
 id|serio
 comma
-id|dev
+id|drv
 )paren
 suffix:semicolon
 )brace
@@ -514,14 +514,14 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|event-&gt;serio-&gt;dev
+id|event-&gt;serio-&gt;drv
 op_logical_and
-id|event-&gt;serio-&gt;dev-&gt;reconnect
+id|event-&gt;serio-&gt;drv-&gt;reconnect
 )paren
 r_if
 c_cond
 (paren
-id|event-&gt;serio-&gt;dev
+id|event-&gt;serio-&gt;drv
 op_member_access_from_pointer
 id|reconnect
 c_func
@@ -540,9 +540,9 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|event-&gt;serio-&gt;dev
+id|event-&gt;serio-&gt;drv
 )paren
-id|event-&gt;serio-&gt;dev
+id|event-&gt;serio-&gt;drv
 op_member_access_from_pointer
 id|disconnect
 c_func
@@ -550,7 +550,7 @@ c_func
 id|event-&gt;serio
 )paren
 suffix:semicolon
-id|serio_find_dev
+id|serio_find_driver
 c_func
 (paren
 id|event-&gt;serio
@@ -891,7 +891,7 @@ op_amp
 id|serio_list
 )paren
 suffix:semicolon
-id|serio_find_dev
+id|serio_find_driver
 c_func
 (paren
 id|serio
@@ -979,9 +979,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|serio-&gt;dev
+id|serio-&gt;drv
 )paren
-id|serio-&gt;dev
+id|serio-&gt;drv
 op_member_access_from_pointer
 id|disconnect
 c_func
@@ -990,16 +990,16 @@ id|serio
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Serio device operations&n; */
-DECL|function|serio_register_device
+multiline_comment|/*&n; * Serio driver operations&n; */
+DECL|function|serio_register_driver
 r_void
-id|serio_register_device
+id|serio_register_driver
 c_func
 (paren
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -1018,10 +1018,10 @@ id|list_add_tail
 c_func
 (paren
 op_amp
-id|dev-&gt;node
+id|drv-&gt;node
 comma
 op_amp
-id|serio_dev_list
+id|serio_driver_list
 )paren
 suffix:semicolon
 id|list_for_each_entry
@@ -1038,16 +1038,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|serio-&gt;dev
+id|serio-&gt;drv
 )paren
-id|dev
+id|drv
 op_member_access_from_pointer
 id|connect
 c_func
 (paren
 id|serio
 comma
-id|dev
+id|drv
 )paren
 suffix:semicolon
 id|up
@@ -1058,15 +1058,15 @@ id|serio_sem
 )paren
 suffix:semicolon
 )brace
-DECL|function|serio_unregister_device
+DECL|function|serio_unregister_driver
 r_void
-id|serio_unregister_device
+id|serio_unregister_driver
 c_func
 (paren
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -1085,7 +1085,7 @@ id|list_del_init
 c_func
 (paren
 op_amp
-id|dev-&gt;node
+id|drv-&gt;node
 )paren
 suffix:semicolon
 id|list_for_each_entry
@@ -1102,11 +1102,11 @@ id|node
 r_if
 c_cond
 (paren
-id|serio-&gt;dev
+id|serio-&gt;drv
 op_eq
-id|dev
+id|drv
 )paren
-id|dev
+id|drv
 op_member_access_from_pointer
 id|disconnect
 c_func
@@ -1114,7 +1114,7 @@ c_func
 id|serio
 )paren
 suffix:semicolon
-id|serio_find_dev
+id|serio_find_driver
 c_func
 (paren
 id|serio
@@ -1129,7 +1129,7 @@ id|serio_sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* called from serio_dev-&gt;connect/disconnect methods under serio_sem */
+multiline_comment|/* called from serio_driver-&gt;connect/disconnect methods under serio_sem */
 DECL|function|serio_open
 r_int
 id|serio_open
@@ -1141,9 +1141,9 @@ op_star
 id|serio
 comma
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_int
@@ -1159,9 +1159,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|serio-&gt;dev
+id|serio-&gt;drv
 op_assign
-id|dev
+id|drv
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -1195,7 +1195,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|serio-&gt;dev
+id|serio-&gt;drv
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1217,7 +1217,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* called from serio_dev-&gt;connect/disconnect methods under serio_sem */
+multiline_comment|/* called from serio_driver-&gt;connect/disconnect methods under serio_sem */
 DECL|function|serio_close
 r_void
 id|serio_close
@@ -1255,7 +1255,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|serio-&gt;dev
+id|serio-&gt;drv
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1317,13 +1317,13 @@ c_cond
 id|likely
 c_func
 (paren
-id|serio-&gt;dev
+id|serio-&gt;drv
 )paren
 )paren
 (brace
 id|ret
 op_assign
-id|serio-&gt;dev
+id|serio-&gt;drv
 op_member_access_from_pointer
 id|interrupt
 c_func

@@ -613,7 +613,7 @@ op_star
 )paren
 id|tty-&gt;disc_data
 suffix:semicolon
-id|serio_dev_write_wakeup
+id|serio_drv_write_wakeup
 c_func
 (paren
 op_amp
