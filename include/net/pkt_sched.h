@@ -1,14 +1,6 @@
 macro_line|#ifndef __NET_PKT_SCHED_H
 DECL|macro|__NET_PKT_SCHED_H
 mdefine_line|#define __NET_PKT_SCHED_H
-DECL|macro|PSCHED_GETTIMEOFDAY
-mdefine_line|#define PSCHED_GETTIMEOFDAY&t;1
-DECL|macro|PSCHED_JIFFIES
-mdefine_line|#define PSCHED_JIFFIES &t;&t;2
-DECL|macro|PSCHED_CPU
-mdefine_line|#define PSCHED_CPU &t;&t;3
-DECL|macro|PSCHED_CLOCK_SOURCE
-mdefine_line|#define PSCHED_CLOCK_SOURCE&t;PSCHED_JIFFIES
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -17,9 +9,6 @@ macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/pkt_cls.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
-macro_line|#ifdef CONFIG_X86_TSC
-macro_line|#include &lt;asm/msr.h&gt;
-macro_line|#endif
 r_struct
 id|rtattr
 suffix:semicolon
@@ -812,9 +801,9 @@ r_return
 id|old_cl
 suffix:semicolon
 )brace
-multiline_comment|/* &n;   Timer resolution MUST BE &lt; 10% of min_schedulable_packet_size/bandwidth&n;   &n;   Normal IP packet size ~ 512byte, hence:&n;&n;   0.5Kbyte/1Mbyte/sec = 0.5msec, so that we need 50usec timer for&n;   10Mbit ethernet.&n;&n;   10msec resolution -&gt; &lt;50Kbit/sec.&n;   &n;   The result: [34]86 is not good choice for QoS router :-(&n;&n;   The things are not so bad, because we may use artifical&n;   clock evaluated by integration of network data flow&n;   in the most critical places.&n;&n;   Note: we do not use fastgettimeofday.&n;   The reason is that, when it is not the same thing as&n;   gettimeofday, it returns invalid timestamp, which is&n;   not updated, when net_bh is active.&n;&n;   So, use PSCHED_CLOCK_SOURCE = PSCHED_CPU on alpha and pentiums&n;   with rtdsc. And PSCHED_JIFFIES on all other architectures, including [34]86&n;   and pentiums without rtdsc.&n;   You can use PSCHED_GETTIMEOFDAY on another architectures,&n;   which have fast and precise clock source, but it is too expensive.&n; */
-multiline_comment|/* General note about internal clock.&n;&n;   Any clock source returns time intervals, measured in units&n;   close to 1usec. With source PSCHED_GETTIMEOFDAY it is precisely&n;   microseconds, otherwise something close but different chosen to minimize&n;   arithmetic cost. Ratio usec/internal untis in form nominator/denominator&n;   may be read from /proc/net/psched.&n; */
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_GETTIMEOFDAY
+multiline_comment|/* &n;   Timer resolution MUST BE &lt; 10% of min_schedulable_packet_size/bandwidth&n;   &n;   Normal IP packet size ~ 512byte, hence:&n;&n;   0.5Kbyte/1Mbyte/sec = 0.5msec, so that we need 50usec timer for&n;   10Mbit ethernet.&n;&n;   10msec resolution -&gt; &lt;50Kbit/sec.&n;   &n;   The result: [34]86 is not good choice for QoS router :-(&n;&n;   The things are not so bad, because we may use artifical&n;   clock evaluated by integration of network data flow&n;   in the most critical places.&n;&n;   Note: we do not use fastgettimeofday.&n;   The reason is that, when it is not the same thing as&n;   gettimeofday, it returns invalid timestamp, which is&n;   not updated, when net_bh is active.&n; */
+multiline_comment|/* General note about internal clock.&n;&n;   Any clock source returns time intervals, measured in units&n;   close to 1usec. With source CONFIG_NET_SCH_CLK_GETTIMEOFDAY it is precisely&n;   microseconds, otherwise something close but different chosen to minimize&n;   arithmetic cost. Ratio usec/internal untis in form nominator/denominator&n;   may be read from /proc/net/psched.&n; */
+macro_line|#ifdef CONFIG_NET_SCH_CLK_GETTIMEOFDAY
 DECL|typedef|psched_time_t
 r_typedef
 r_struct
@@ -832,7 +821,7 @@ DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(usecs) (((usecs)+(1000000/HZ-1))/(1000000/HZ))
 DECL|macro|PSCHED_JIFFIE2US
 mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)*(1000000/HZ))
-macro_line|#else /* PSCHED_CLOCK_SOURCE != PSCHED_GETTIMEOFDAY */
+macro_line|#else /* !CONFIG_NET_SCH_CLK_GETTIMEOFDAY */
 DECL|typedef|psched_time_t
 r_typedef
 id|u64
@@ -843,11 +832,7 @@ r_typedef
 r_int
 id|psched_tdiff_t
 suffix:semicolon
-r_extern
-id|psched_time_t
-id|psched_time_base
-suffix:semicolon
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_JIFFIES
+macro_line|#ifdef CONFIG_NET_SCH_CLK_JIFFIES
 macro_line|#if HZ &lt; 96
 DECL|macro|PSCHED_JSCALE
 mdefine_line|#define PSCHED_JSCALE 14
@@ -870,7 +855,9 @@ DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+(1&lt;&lt;PSCHED_JSCALE)-1)&gt;&gt;PSCHED_JSCALE)
 DECL|macro|PSCHED_JIFFIE2US
 mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)&lt;&lt;PSCHED_JSCALE)
-macro_line|#elif PSCHED_CLOCK_SOURCE == PSCHED_CPU
+macro_line|#endif /* CONFIG_NET_SCH_CLK_JIFFIES */
+macro_line|#ifdef CONFIG_NET_SCH_CLK_CPU
+macro_line|#include &lt;asm/timex.h&gt;
 r_extern
 id|psched_tdiff_t
 id|psched_clock_per_hz
@@ -879,28 +866,23 @@ r_extern
 r_int
 id|psched_clock_scale
 suffix:semicolon
+r_extern
+id|psched_time_t
+id|psched_time_base
+suffix:semicolon
+r_extern
+id|cycles_t
+id|psched_time_mark
+suffix:semicolon
+DECL|macro|PSCHED_GET_TIME
+mdefine_line|#define PSCHED_GET_TIME(stamp)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;cycles_t cur = get_cycles();&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(cycles_t) == sizeof(u32)) {&t;&t;&t;&t;&bslash;&n;&t;&t;if (cur &lt;= psched_time_mark)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;psched_time_base += 0x100000000ULL;&t;&t;&bslash;&n;&t;&t;psched_time_mark = cur;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(stamp) = (psched_time_base + cur)&gt;&gt;psched_clock_scale;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(stamp) = cur&gt;&gt;psched_clock_scale;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+psched_clock_per_hz-1)/psched_clock_per_hz)
 DECL|macro|PSCHED_JIFFIE2US
 mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)*psched_clock_per_hz)
-macro_line|#ifdef CONFIG_X86_TSC
-DECL|macro|PSCHED_GET_TIME
-mdefine_line|#define PSCHED_GET_TIME(stamp) &bslash;&n;({ u64 __cur; &bslash;&n;   rdtscll(__cur); &bslash;&n;   (stamp) = __cur&gt;&gt;psched_clock_scale; &bslash;&n;})
-macro_line|#elif defined (__alpha__)
-DECL|macro|PSCHED_WATCHER
-mdefine_line|#define PSCHED_WATCHER u32
-r_extern
-id|PSCHED_WATCHER
-id|psched_time_mark
-suffix:semicolon
-DECL|macro|PSCHED_GET_TIME
-mdefine_line|#define PSCHED_GET_TIME(stamp) &bslash;&n;({ u32 __res; &bslash;&n;   __asm__ __volatile__ (&quot;rpcc %0&quot; : &quot;r=&quot;(__res)); &bslash;&n;   if (__res &lt;= psched_time_mark) psched_time_base += 0x100000000UL; &bslash;&n;   psched_time_mark = __res; &bslash;&n;   (stamp) = (psched_time_base + __res)&gt;&gt;psched_clock_scale; &bslash;&n;})
-macro_line|#else
-macro_line|#error PSCHED_CLOCK_SOURCE=PSCHED_CPU is not supported on this arch.
-macro_line|#endif /* ARCH */
-macro_line|#endif /* PSCHED_CLOCK_SOURCE == PSCHED_JIFFIES */
-macro_line|#endif /* PSCHED_CLOCK_SOURCE == PSCHED_GETTIMEOFDAY */
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_GETTIMEOFDAY
+macro_line|#endif /* CONFIG_NET_SCH_CLK_CPU */
+macro_line|#endif /* !CONFIG_NET_SCH_CLK_GETTIMEOFDAY */
+macro_line|#ifdef CONFIG_NET_SCH_CLK_GETTIMEOFDAY
 DECL|macro|PSCHED_TDIFF
 mdefine_line|#define PSCHED_TDIFF(tv1, tv2) &bslash;&n;({ &bslash;&n;&t;   int __delta_sec = (tv1).tv_sec - (tv2).tv_sec; &bslash;&n;&t;   int __delta = (tv1).tv_usec - (tv2).tv_usec; &bslash;&n;&t;   if (__delta_sec) { &bslash;&n;&t;           switch (__delta_sec) { &bslash;&n;&t;&t;   default: &bslash;&n;&t;&t;&t;   __delta = 0; &bslash;&n;&t;&t;   case 2: &bslash;&n;&t;&t;&t;   __delta += 1000000; &bslash;&n;&t;&t;   case 1: &bslash;&n;&t;&t;&t;   __delta += 1000000; &bslash;&n;&t;           } &bslash;&n;&t;   } &bslash;&n;&t;   __delta; &bslash;&n;})
 r_extern
@@ -930,7 +912,7 @@ DECL|macro|PSCHED_IS_PASTPERFECT
 mdefine_line|#define PSCHED_IS_PASTPERFECT(t)&t;((t).tv_sec == 0)
 DECL|macro|PSCHED_AUDIT_TDIFF
 mdefine_line|#define&t;PSCHED_AUDIT_TDIFF(t) ({ if ((t) &gt; 2000000) (t) = 2000000; })
-macro_line|#else
+macro_line|#else /* !CONFIG_NET_SCH_CLK_GETTIMEOFDAY */
 DECL|macro|PSCHED_TDIFF
 mdefine_line|#define PSCHED_TDIFF(tv1, tv2) (long)((tv1) - (tv2))
 DECL|macro|PSCHED_TDIFF_SAFE
@@ -947,7 +929,7 @@ DECL|macro|PSCHED_IS_PASTPERFECT
 mdefine_line|#define PSCHED_IS_PASTPERFECT(t)&t;((t) == 0)
 DECL|macro|PSCHED_AUDIT_TDIFF
 mdefine_line|#define&t;PSCHED_AUDIT_TDIFF(t)
-macro_line|#endif
+macro_line|#endif /* !CONFIG_NET_SCH_CLK_GETTIMEOFDAY */
 DECL|struct|tcf_police
 r_struct
 id|tcf_police

@@ -317,11 +317,11 @@ multiline_comment|/*&n; * Size of the mini ring entries, basically these just sh
 DECL|macro|ACE_MINI_SIZE
 mdefine_line|#define ACE_MINI_SIZE&t;&t;100
 DECL|macro|ACE_MINI_BUFSIZE
-mdefine_line|#define ACE_MINI_BUFSIZE&t;(ACE_MINI_SIZE + 2 + 16)
+mdefine_line|#define ACE_MINI_BUFSIZE&t;ACE_MINI_SIZE
 DECL|macro|ACE_STD_BUFSIZE
-mdefine_line|#define ACE_STD_BUFSIZE&t;&t;(ACE_STD_MTU + ETH_HLEN + 2+4+16)
+mdefine_line|#define ACE_STD_BUFSIZE&t;&t;(ACE_STD_MTU + ETH_HLEN + 4)
 DECL|macro|ACE_JUMBO_BUFSIZE
-mdefine_line|#define ACE_JUMBO_BUFSIZE&t;(ACE_JUMBO_MTU + ETH_HLEN + 2+4+16)
+mdefine_line|#define ACE_JUMBO_BUFSIZE&t;(ACE_JUMBO_MTU + ETH_HLEN + 4)
 multiline_comment|/*&n; * There seems to be a magic difference in the effect between 995 and 996&n; * but little difference between 900 and 995 ... no idea why.&n; *&n; * There is now a default set of tuning parameters which is set, depending&n; * on whether or not the user enables Jumbo frames. It&squot;s assumed that if&n; * Jumbo frames are enabled, the user wants optimal tuning for that case.&n; */
 DECL|macro|DEF_TX_COAL
 mdefine_line|#define DEF_TX_COAL&t;&t;400 /* 996 */
@@ -1621,12 +1621,6 @@ comma
 id|mapping
 comma
 id|ACE_STD_BUFSIZE
-op_minus
-(paren
-l_int|2
-op_plus
-l_int|16
-)paren
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -1732,12 +1726,6 @@ comma
 id|mapping
 comma
 id|ACE_MINI_BUFSIZE
-op_minus
-(paren
-l_int|2
-op_plus
-l_int|16
-)paren
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -1836,12 +1824,6 @@ comma
 id|mapping
 comma
 id|ACE_JUMBO_BUFSIZE
-op_minus
-(paren
-l_int|2
-op_plus
-l_int|16
-)paren
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -4088,11 +4070,7 @@ id|ap-&gt;rx_ring_base_dma
 suffix:semicolon
 id|info-&gt;rx_std_ctrl.max_len
 op_assign
-id|ACE_STD_MTU
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|4
+id|ACE_STD_BUFSIZE
 suffix:semicolon
 id|info-&gt;rx_std_ctrl.flags
 op_assign
@@ -6090,6 +6068,8 @@ id|alloc_skb
 c_func
 (paren
 id|ACE_STD_BUFSIZE
+op_plus
+id|NET_IP_ALIGN
 comma
 id|GFP_ATOMIC
 )paren
@@ -6102,15 +6082,12 @@ id|skb
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure IP header starts on a fresh cache line.&n;&t;&t; */
 id|skb_reserve
 c_func
 (paren
 id|skb
 comma
-l_int|2
-op_plus
-l_int|16
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|mapping
@@ -6133,12 +6110,6 @@ id|skb-&gt;data
 )paren
 comma
 id|ACE_STD_BUFSIZE
-op_minus
-(paren
-l_int|2
-op_plus
-l_int|16
-)paren
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6185,11 +6156,7 @@ id|mapping
 suffix:semicolon
 id|rd-&gt;size
 op_assign
-id|ACE_STD_MTU
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|4
+id|ACE_STD_BUFSIZE
 suffix:semicolon
 id|rd-&gt;idx
 op_assign
@@ -6382,6 +6349,8 @@ id|alloc_skb
 c_func
 (paren
 id|ACE_MINI_BUFSIZE
+op_plus
+id|NET_IP_ALIGN
 comma
 id|GFP_ATOMIC
 )paren
@@ -6394,15 +6363,12 @@ id|skb
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure the IP header ends up on a fresh cache line&n;&t;&t; */
 id|skb_reserve
 c_func
 (paren
 id|skb
 comma
-l_int|2
-op_plus
-l_int|16
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|mapping
@@ -6425,12 +6391,6 @@ id|skb-&gt;data
 )paren
 comma
 id|ACE_MINI_BUFSIZE
-op_minus
-(paren
-l_int|2
-op_plus
-l_int|16
-)paren
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6477,7 +6437,7 @@ id|mapping
 suffix:semicolon
 id|rd-&gt;size
 op_assign
-id|ACE_MINI_SIZE
+id|ACE_MINI_BUFSIZE
 suffix:semicolon
 id|rd-&gt;idx
 op_assign
@@ -6625,6 +6585,8 @@ id|alloc_skb
 c_func
 (paren
 id|ACE_JUMBO_BUFSIZE
+op_plus
+id|NET_IP_ALIGN
 comma
 id|GFP_ATOMIC
 )paren
@@ -6637,15 +6599,12 @@ id|skb
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure the IP header ends up on a fresh cache line&n;&t;&t; */
 id|skb_reserve
 c_func
 (paren
 id|skb
 comma
-l_int|2
-op_plus
-l_int|16
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|mapping
@@ -6668,12 +6627,6 @@ id|skb-&gt;data
 )paren
 comma
 id|ACE_JUMBO_BUFSIZE
-op_minus
-(paren
-l_int|2
-op_plus
-l_int|16
-)paren
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6720,11 +6673,7 @@ id|mapping
 suffix:semicolon
 id|rd-&gt;size
 op_assign
-id|ACE_JUMBO_MTU
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|4
+id|ACE_JUMBO_BUFSIZE
 suffix:semicolon
 id|rd-&gt;idx
 op_assign
@@ -7479,12 +7428,6 @@ suffix:semicolon
 id|mapsize
 op_assign
 id|ACE_STD_BUFSIZE
-op_minus
-(paren
-l_int|2
-op_plus
-l_int|16
-)paren
 suffix:semicolon
 id|rxdesc
 op_assign
@@ -7513,12 +7456,6 @@ suffix:semicolon
 id|mapsize
 op_assign
 id|ACE_JUMBO_BUFSIZE
-op_minus
-(paren
-l_int|2
-op_plus
-l_int|16
-)paren
 suffix:semicolon
 id|rxdesc
 op_assign
@@ -7551,12 +7488,6 @@ suffix:semicolon
 id|mapsize
 op_assign
 id|ACE_MINI_BUFSIZE
-op_minus
-(paren
-l_int|2
-op_plus
-l_int|16
-)paren
 suffix:semicolon
 id|rxdesc
 op_assign

@@ -5903,7 +5903,7 @@ id|sctp_assocs_id_lock
 suffix:semicolon
 id|error
 op_assign
-id|idr_get_new
+id|idr_get_new_above
 c_func
 (paren
 op_amp
@@ -5914,6 +5914,8 @@ r_void
 op_star
 )paren
 id|asoc
+comma
+l_int|1
 comma
 op_amp
 id|assoc_id
