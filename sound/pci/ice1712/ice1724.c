@@ -18,6 +18,7 @@ multiline_comment|/* lowlevel routines */
 macro_line|#include &quot;amp.h&quot;
 macro_line|#include &quot;revo.h&quot;
 macro_line|#include &quot;aureon.h&quot;
+macro_line|#include &quot;vt1720_mobo.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -49,6 +50,7 @@ l_string|&quot;{&quot;
 id|REVO_DEVICE_DESC
 id|AMP_AUDIO2000_DEVICE_DESC
 id|AUREON_DEVICE_DESC
+id|VT1720_MOBO_DEVICE_DESC
 l_string|&quot;{VIA,VT1720},&quot;
 l_string|&quot;{VIA,VT1724},&quot;
 l_string|&quot;{ICEnsemble,Generic ICE1724},&quot;
@@ -2029,7 +2031,7 @@ id|ice-&gt;eeprom.data
 id|ICE_EEP2_ACLINK
 )braket
 op_amp
-l_int|0x80
+id|VT1724_CFG_PRO_I2S
 )paren
 (brace
 id|val
@@ -2246,7 +2248,7 @@ id|ice-&gt;eeprom.data
 id|ICE_EEP2_ACLINK
 )braket
 op_amp
-l_int|0x80
+id|VT1724_CFG_PRO_I2S
 )paren
 op_logical_and
 id|ice-&gt;ac97
@@ -3688,7 +3690,7 @@ id|ice-&gt;eeprom.data
 id|ICE_EEP2_ACLINK
 )braket
 op_amp
-l_int|0x80
+id|VT1724_CFG_PRO_I2S
 )paren
 (brace
 multiline_comment|/* I2S */
@@ -9420,6 +9422,8 @@ id|snd_vt1724_amp_cards
 comma
 id|snd_vt1724_aureon_cards
 comma
+id|snd_vt1720_mobo_cards
+comma
 l_int|0
 comma
 )brace
@@ -10281,24 +10285,6 @@ c_func
 id|ice
 comma
 id|POWERDOWN
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* read back to check the availability of SPDIF out */
-id|ice-&gt;eeprom.data
-(braket
-id|ICE_EEP2_SPDIF
-)braket
-op_assign
-id|inb
-c_func
-(paren
-id|ICEREG1724
-c_func
-(paren
-id|ice
-comma
-id|SPDIF_CFG
 )paren
 )paren
 suffix:semicolon
