@@ -113,6 +113,13 @@ r_int
 r_int
 id|sn_rtc_cycles_per_second
 suffix:semicolon
+DECL|variable|sn_rtc_cycles_per_second
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_rtc_cycles_per_second
+)paren
+suffix:semicolon
 DECL|variable|sn_partid
 id|partid_t
 id|sn_partid
