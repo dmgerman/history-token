@@ -708,6 +708,8 @@ comma
 id|full_path
 comma
 id|inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 r_else
@@ -724,6 +726,8 @@ comma
 l_int|NULL
 comma
 id|inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 r_if
