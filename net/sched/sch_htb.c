@@ -61,7 +61,11 @@ mdefine_line|#define HTB_ARGQ struct htb_sched *q,
 DECL|macro|static
 mdefine_line|#define static
 DECL|macro|__inline__
+macro_line|#undef __inline__
+DECL|macro|__inline__
 mdefine_line|#define __inline__
+DECL|macro|inline
+macro_line|#undef inline
 DECL|macro|inline
 mdefine_line|#define inline
 DECL|macro|HTB_CMAGIC
