@@ -14,7 +14,7 @@ DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#if defined(CONFIG_SND_FM801_TEA575X) &amp;&amp; (defined(CONFIG_VIDEO_DEV) || defined(CONFIG_VIDEO_DEV_MODULE))
+macro_line|#if (defined(CONFIG_SND_FM801_TEA575X) || defined(CONFIG_SND_FM801_TEA575X_MODULE)) &amp;&amp; (defined(CONFIG_VIDEO_DEV) || defined(CONFIG_VIDEO_DEV_MODULE))
 macro_line|#include &lt;sound/tea575x-tuner.h&gt;
 DECL|macro|TEA575X_RADIO
 mdefine_line|#define TEA575X_RADIO 1
