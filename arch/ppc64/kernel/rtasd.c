@@ -680,7 +680,7 @@ comma
 id|err_type
 )paren
 suffix:semicolon
-multiline_comment|/* rtas errors can occur during boot, and we do want to capture&n;&t; * those somewhere, even if nvram isn&squot;t ready (why not?), and even&n;&t; * if rtasd isn&squot;t ready. Put them into the boot log, at least.  */
+multiline_comment|/*&n;&t; * rtas errors can occur during boot, and we do want to capture&n;&t; * those somewhere, even if nvram isn&squot;t ready (why not?), and even&n;&t; * if rtasd isn&squot;t ready. Put them into the boot log, at least.&n;&t; */
 r_if
 c_cond
 (paren
@@ -692,7 +692,6 @@ id|ERR_TYPE_MASK
 op_eq
 id|ERR_TYPE_RTAS_LOG
 )paren
-(brace
 id|printk_log_rtas
 c_func
 (paren
@@ -701,7 +700,6 @@ comma
 id|len
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Check to see if we need to or have stopped logging */
 r_if
 c_cond
@@ -739,15 +737,6 @@ id|ERR_TYPE_MASK
 r_case
 id|ERR_TYPE_RTAS_LOG
 suffix:colon
-multiline_comment|/* put into syslog and error_log file */
-id|printk_log_rtas
-c_func
-(paren
-id|buf
-comma
-id|len
-)paren
-suffix:semicolon
 id|offset
 op_assign
 id|rtas_error_log_buffer_max
