@@ -91,7 +91,7 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

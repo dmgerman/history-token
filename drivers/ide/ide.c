@@ -920,17 +920,16 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME:  --bzolnier */
 id|__save_flags
+c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 id|printk
 c_func
 (paren
@@ -1273,7 +1272,6 @@ id|__restore_flags
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 r_return
 id|err
 suffix:semicolon
@@ -1983,12 +1981,12 @@ suffix:semicolon
 id|ide_startstop_t
 id|ret
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* necessary paranoia: ensure IRQs are masked on local CPU */
+multiline_comment|/* necessary paranoia */
 multiline_comment|/*&n;&t; * Select the next device which will be serviced.  This selects&n;&t; * only between devices on the same channel, since everything&n;&t; * else will be scheduled on the queue level.&n;&t; */
 r_for
 c_loop
@@ -2478,12 +2476,12 @@ c_func
 id|ch-&gt;lock
 )paren
 suffix:semicolon
-id|ide__sti
+multiline_comment|/* allow other IRQs while we start this request */
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* allow other IRQs while we start this request */
 multiline_comment|/*&n;&t;&t; * This initiates handling of a new I/O request.&n;&t;&t; */
 id|BUG_ON
 c_func
@@ -3021,13 +3019,11 @@ id|ch-&gt;irq
 suffix:semicolon
 multiline_comment|/* disable_irq_nosync ?? */
 macro_line|#endif
-multiline_comment|/* FIXME: IRQs are already disabled by spin_lock_irqsave()  --bzolnier */
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only, as if we were handling an interrupt */
 r_if
 c_cond
 (paren
@@ -3244,7 +3240,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * There&squot;s nothing really useful we can do with an unexpected interrupt,&n; * other than reading the status register (to clear it), and logging it.&n; * There should be no way that an irq can happen before we&squot;re ready for it,&n; * so we needn&squot;t worry much about losing an &quot;important&quot; interrupt here.&n; *&n; * On laptops (and &quot;green&quot; PCs), an unexpected interrupt occurs whenever the&n; * drive enters &quot;idle&quot;, &quot;standby&quot;, or &quot;sleep&quot; mode, so if the status looks&n; * &quot;good&quot;, we just ignore the interrupt completely.&n; *&n; * This routine assumes __cli() is in effect when called.&n; *&n; * If an unexpected interrupt happens on irq15 while we are handling irq14&n; * and if the two interfaces are &quot;serialized&quot; (CMD640), then it looks like&n; * we could screw up by interfering with a new request being set up for irq15.&n; *&n; * In reality, this is a non-issue.  The new command is not sent unless the&n; * drive is ready to accept one, in which case we know the drive is not&n; * trying to interrupt us.  And ata_set_handler() is always invoked before&n; * completing the issuance of any new drive command, so we will not be&n; * accidentally invoked as a result of any valid command completion interrupt.&n; *&n; */
+multiline_comment|/*&n; * There&squot;s nothing really useful we can do with an unexpected interrupt,&n; * other than reading the status register (to clear it), and logging it.&n; * There should be no way that an irq can happen before we&squot;re ready for it,&n; * so we needn&squot;t worry much about losing an &quot;important&quot; interrupt here.&n; *&n; * On laptops (and &quot;green&quot; PCs), an unexpected interrupt occurs whenever the&n; * drive enters &quot;idle&quot;, &quot;standby&quot;, or &quot;sleep&quot; mode, so if the status looks&n; * &quot;good&quot;, we just ignore the interrupt completely.&n; *&n; * This routine assumes IRQ are disabled on entry.&n; *&n; * If an unexpected interrupt happens on irq15 while we are handling irq14&n; * and if the two interfaces are &quot;serialized&quot; (CMD640), then it looks like&n; * we could screw up by interfering with a new request being set up for irq15.&n; *&n; * In reality, this is a non-issue.  The new command is not sent unless the&n; * drive is ready to accept one, in which case we know the drive is not&n; * trying to interrupt us.  And ata_set_handler() is always invoked before&n; * completing the issuance of any new drive command, so we will not be&n; * accidentally invoked as a result of any valid command completion interrupt.&n; *&n; */
 DECL|function|unexpected_irq
 r_static
 r_void
@@ -3394,7 +3390,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * Entry point for all interrupts, caller does __cli() for us.&n; */
+multiline_comment|/*&n; * Entry point for all interrupts. Aussumes disabled IRQs.&n; */
 DECL|function|ata_irq_request
 r_void
 id|ata_irq_request
@@ -3583,7 +3579,7 @@ c_cond
 (paren
 id|ch-&gt;unmask
 )paren
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -4141,28 +4137,34 @@ id|ide_fops
 op_assign
 (brace
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|ide_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|ide_release
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|ata_ioctl
 comma
+dot
 id|check_media_change
-suffix:colon
+op_assign
 id|ide_check_media_change
 comma
+dot
 id|revalidate
-suffix:colon
+op_assign
 id|ata_revalidate
 )brace
 )brace

@@ -69,18 +69,12 @@ id|select
 comma
 id|timing
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
+c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 id|select
 op_assign
 id|HT_CONFIG
@@ -209,12 +203,12 @@ id|timing
 suffix:semicolon
 macro_line|#endif
 )brace
-id|__restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 )brace
 multiline_comment|/*&n; * Autodetection and initialization of ht6560b&n; */
 DECL|function|try_to_init_ht6560b

@@ -151,7 +151,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;     *  Probe for Q40 IDE interfaces&n;     */
+multiline_comment|/*&n; *  Probe for Q40 IDE interfaces&n; */
 DECL|function|q40ide_init
 r_void
 id|q40ide_init

@@ -2002,12 +2002,11 @@ comma
 id|SECTOR_WORDS
 )paren
 suffix:semicolon
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 id|ata_fix_driveid
 c_func
 (paren
@@ -2934,19 +2933,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only; some systems need this */
+multiline_comment|/* some systems need this */
 id|do_identify
 c_func
 (paren
@@ -2972,7 +2965,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* clear drive IRQ */
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3471,13 +3464,12 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only; needed for jiffies and irq probing */
+multiline_comment|/* needed for jiffies and irq probing */
 multiline_comment|/*&n;&t; * Check for the presence of a channel by probing for drives on it.&n;&t; */
 r_for
 c_loop
@@ -4018,7 +4010,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 multiline_comment|/*&n;&t; * Now setup the PIO transfer modes of the drives on this channel.&n;&t; */
 r_for
 c_loop

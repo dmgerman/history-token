@@ -379,7 +379,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

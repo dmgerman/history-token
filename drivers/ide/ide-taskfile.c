@@ -513,7 +513,7 @@ id|ret
 op_assign
 id|ATA_OP_FINISHED
 suffix:semicolon
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

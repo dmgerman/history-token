@@ -553,19 +553,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 r_if
 c_cond
 (paren
@@ -581,7 +574,7 @@ l_string|&quot;umc8672&quot;
 )paren
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -615,13 +608,12 @@ op_ne
 l_int|0xa0
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 id|release_region
 c_func
 (paren
@@ -647,17 +639,17 @@ l_int|0x108
 suffix:semicolon
 multiline_comment|/* disable umc */
 id|umc_set_speeds
+c_func
 (paren
 id|current_speeds
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 id|ide_hwifs
 (braket
 l_int|0
@@ -683,7 +675,6 @@ l_int|0
 dot
 id|tuneproc
 op_assign
-op_amp
 id|tune_umc
 suffix:semicolon
 id|ide_hwifs
@@ -693,7 +684,6 @@ l_int|1
 dot
 id|tuneproc
 op_assign
-op_amp
 id|tune_umc
 suffix:semicolon
 id|ide_hwifs
