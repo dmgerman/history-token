@@ -2988,7 +2988,7 @@ id|WARN_ON
 c_func
 (paren
 id|status
-op_ne
+OL
 l_int|0
 )paren
 suffix:semicolon
