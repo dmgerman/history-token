@@ -7994,6 +7994,29 @@ comma
 dot
 id|device
 op_assign
+l_int|0x008a
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Compaq Evo W4000&quot;
+comma
+multiline_comment|/* AD1885 */
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x0e11
+comma
+dot
+id|device
+op_assign
 l_int|0x00b8
 comma
 dot
