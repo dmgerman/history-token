@@ -77,6 +77,7 @@ l_string|&quot;add_gendisk: device major %d is buggy and added a live gendisk!&b
 comma
 id|sgp-&gt;major
 )paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
