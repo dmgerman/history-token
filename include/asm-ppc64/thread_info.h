@@ -47,6 +47,12 @@ r_struct
 id|restart_block
 id|restart_block
 suffix:semicolon
+multiline_comment|/* set by force_successful_syscall_return */
+DECL|member|syscall_noerror
+r_int
+r_char
+id|syscall_noerror
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; *&n; * preempt_count needs to be 1 initially, until the scheduler is functional.&n; */
@@ -117,7 +123,7 @@ suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
-multiline_comment|/*&n; * thread information flag bit numbers&n; * N.B. If TIF_SIGPENDING or TIF_NEED_RESCHED are changed&n; * to be &gt;= 4, code in entry.S will need to be changed.&n; */
+multiline_comment|/*&n; * thread information flag bit numbers&n; */
 DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;0&t;/* syscall trace active */
 DECL|macro|TIF_NOTIFY_RESUME

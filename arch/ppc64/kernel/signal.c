@@ -2293,7 +2293,11 @@ multiline_comment|/* Whee!  Actually deliver the signal.  */
 r_if
 c_cond
 (paren
-id|regs-&gt;trap
+id|TRAP
+c_func
+(paren
+id|regs
+)paren
 op_eq
 l_int|0x0C00
 )paren
@@ -2327,7 +2331,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|regs-&gt;trap
+id|TRAP
+c_func
+(paren
+id|regs
+)paren
 op_eq
 l_int|0x0C00
 )paren
