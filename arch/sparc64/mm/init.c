@@ -70,13 +70,6 @@ r_int
 r_int
 id|pfn_base
 suffix:semicolon
-DECL|variable|tlb_type
-r_enum
-id|ultra_tlb_layout
-id|tlb_type
-op_assign
-id|spitfire
-suffix:semicolon
 multiline_comment|/* get_new_mmu_context() uses &quot;cache + 1&quot;.  */
 DECL|variable|ctx_alloc_lock
 id|spinlock_t
