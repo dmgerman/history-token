@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 DECL|variable|colreg
 r_static
 id|u32
