@@ -9935,7 +9935,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_static
 r_int
 DECL|function|save_ia32_fpstate
 id|save_ia32_fpstate
@@ -10406,7 +10405,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 r_int
 DECL|function|save_ia32_fpxstate
 id|save_ia32_fpxstate
