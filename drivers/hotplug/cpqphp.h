@@ -1571,15 +1571,15 @@ id|u8
 id|push_flag
 suffix:semicolon
 DECL|member|speed
-id|u8
+r_enum
+id|pci_bus_speed
 id|speed
 suffix:semicolon
-multiline_comment|/* 0 = 33MHz, 1 = 66MHz */
 DECL|member|speed_capability
-id|u8
+r_enum
+id|pci_bus_speed
 id|speed_capability
 suffix:semicolon
-multiline_comment|/* 0 = 33MHz, 1 = 66MHz */
 DECL|member|push_button
 id|u8
 id|push_button
@@ -1645,10 +1645,6 @@ suffix:semicolon
 multiline_comment|/* sleep &amp; wake process */
 )brace
 suffix:semicolon
-DECL|macro|CTRL_SPEED_33MHz
-mdefine_line|#define CTRL_SPEED_33MHz&t;0
-DECL|macro|CTRL_SPEED_66MHz
-mdefine_line|#define CTRL_SPEED_66MHz&t;1
 DECL|struct|irq_mapping
 r_struct
 id|irq_mapping
@@ -2982,9 +2978,9 @@ l_int|0x0800
 )paren
 ques
 c_cond
-l_int|1
+id|PCI_SPEED_66MHz
 suffix:colon
-l_int|0
+id|PCI_SPEED_33MHz
 suffix:semicolon
 )brace
 DECL|function|enable_slot_power
