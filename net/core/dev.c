@@ -1628,6 +1628,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev
 op_logical_and
 id|capable
