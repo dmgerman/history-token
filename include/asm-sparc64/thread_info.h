@@ -93,6 +93,10 @@ DECL|member|preempt_count
 r_int
 id|preempt_count
 suffix:semicolon
+DECL|member|__pad
+r_int
+id|__pad
+suffix:semicolon
 DECL|member|utraps
 r_int
 r_int
@@ -243,13 +247,15 @@ DECL|macro|TI_FPREGS
 mdefine_line|#define TI_FPREGS&t;0x00000500
 multiline_comment|/* We embed this in the uppermost byte of thread_info-&gt;flags */
 DECL|macro|FAULT_CODE_WRITE
-mdefine_line|#define FAULT_CODE_WRITE&t;0x01&t;/* Write access, implies D-TLB&t;&t;*/
+mdefine_line|#define FAULT_CODE_WRITE&t;0x01&t;/* Write access, implies D-TLB&t;   */
 DECL|macro|FAULT_CODE_DTLB
-mdefine_line|#define FAULT_CODE_DTLB&t;&t;0x02&t;/* Miss happened in D-TLB&t;&t;*/
+mdefine_line|#define FAULT_CODE_DTLB&t;&t;0x02&t;/* Miss happened in D-TLB&t;   */
 DECL|macro|FAULT_CODE_ITLB
-mdefine_line|#define FAULT_CODE_ITLB&t;&t;0x04&t;/* Miss happened in I-TLB&t;&t;*/
+mdefine_line|#define FAULT_CODE_ITLB&t;&t;0x04&t;/* Miss happened in I-TLB&t;   */
 DECL|macro|FAULT_CODE_WINFIXUP
-mdefine_line|#define FAULT_CODE_WINFIXUP&t;0x08&t;/* Miss happened during spill/fill&t;*/
+mdefine_line|#define FAULT_CODE_WINFIXUP&t;0x08&t;/* Miss happened during spill/fill */
+DECL|macro|FAULT_CODE_BLKCOMMIT
+mdefine_line|#define FAULT_CODE_BLKCOMMIT&t;0x10&t;/* Use blk-commit ASI in copy_page */
 macro_line|#if PAGE_SHIFT == 13
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
@@ -350,9 +356,7 @@ DECL|macro|TIF_32BIT
 mdefine_line|#define TIF_32BIT&t;&t;7&t;/* 32-bit binary */
 DECL|macro|TIF_NEWCHILD
 mdefine_line|#define TIF_NEWCHILD&t;&t;8&t;/* just-spawned child process */
-multiline_comment|/* XXX Make this one FAULT_CODE_BLKCOMMIT XXX */
-DECL|macro|TIF_BLKCOMMIT
-mdefine_line|#define TIF_BLKCOMMIT&t;&t;9&t;/* use ASI_BLK_COMMIT_* in copy_user_page */
+multiline_comment|/* TIF_* value 9 is available */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;10
 DECL|macro|TIF_SYSCALL_SUCCESS
@@ -378,8 +382,6 @@ DECL|macro|_TIF_32BIT
 mdefine_line|#define _TIF_32BIT&t;&t;(1&lt;&lt;TIF_32BIT)
 DECL|macro|_TIF_NEWCHILD
 mdefine_line|#define _TIF_NEWCHILD&t;&t;(1&lt;&lt;TIF_NEWCHILD)
-DECL|macro|_TIF_BLKCOMMIT
-mdefine_line|#define _TIF_BLKCOMMIT&t;&t;(1&lt;&lt;TIF_BLKCOMMIT)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
 DECL|macro|_TIF_ABI_PENDING
