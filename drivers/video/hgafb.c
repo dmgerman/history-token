@@ -316,14 +316,6 @@ id|display
 id|disp
 suffix:semicolon
 multiline_comment|/* Don&squot;t assume that tty1 will be the initial current console. */
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 DECL|variable|release_io_port
 r_static
 r_int
@@ -1862,11 +1854,11 @@ id|info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;hga_setcolreg - set color registers&n; *&t;@regno:register index to set&n; *&t;@red:red value, unused&n; *&t;@green:green value, unused&n; *&t;@blue:blue value, unused&n; *&t;@transp:transparency value, unused&n; *&t;@info:unused&n; *&n; *&t;This callback function is used to set the color registers of a HGA&n; *&t;board. Since we have only two fixed colors only @regno is checked.&n; *&t;A zero is returned on success and 1 for failure.&n; */
-DECL|function|hga_setcolreg
+multiline_comment|/**&n; *&t;hgafb_setcolreg - set color registers&n; *&t;@regno:register index to set&n; *&t;@red:red value, unused&n; *&t;@green:green value, unused&n; *&t;@blue:blue value, unused&n; *&t;@transp:transparency value, unused&n; *&t;@info:unused&n; *&n; *&t;This callback function is used to set the color registers of a HGA&n; *&t;board. Since we have only two fixed colors only @regno is checked.&n; *&t;A zero is returned on success and 1 for failure.&n; */
+DECL|function|hgafb_setcolreg
 r_static
 r_int
-id|hga_setcolreg
+id|hgafb_setcolreg
 c_func
 (paren
 id|u_int
@@ -1902,58 +1894,6 @@ l_int|1
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;hga_set_cmap - set the colormap&n; *&t;@cmap:struct fb_cmap to set&n; *&t;@kspc:called from kernel space?&n; *&t;@con:unused&n; *&t;@info:pointer to fb_info object containing info for current hga board&n; *&n; *&t;This wrapper function passes it&squot;s input parameters to fb_set_cmap().&n; *&t;Callback function hga_setcolreg() is used to set the color registers.&n; */
-DECL|function|hga_set_cmap
-r_int
-id|hga_set_cmap
-c_func
-(paren
-r_struct
-id|fb_cmap
-op_star
-id|cmap
-comma
-r_int
-id|kspc
-comma
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-id|CHKINFO
-c_func
-(paren
-op_minus
-id|EINVAL
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;hga_set_cmap: con:%d&bslash;n&quot;
-comma
-id|con
-)paren
-suffix:semicolon
-r_return
-id|fb_set_cmap
-c_func
-(paren
-id|cmap
-comma
-id|kspc
-comma
-id|hga_setcolreg
-comma
-id|info
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;hga_pan_display - pan or wrap the display&n; *&t;@var:contains new xoffset, yoffset and vmode values&n; *&t;@con:unused&n; *&t;@info:pointer to fb_info object containing info for current hga board&n; *&n; *&t;This function looks only at xoffset, yoffset and the %FB_VMODE_YWRAP&n; *&t;flag in @var. If input parameters are correct it calls hga_pan() to &n; *&t;program the hardware. @info-&gt;var is updated to the new values.&n; *&t;A zero is returned on success and %-EINVAL for failure.&n; */
@@ -2088,6 +2028,56 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;hgafb_blank - (un)blank the screen&n; *&t;@blank_mode:blanking method to use&n; *&t;@info:unused&n; *&t;&n; *&t;Blank the screen if blank_mode != 0, else unblank. &n; *&t;Implements VESA suspend and powerdown modes on hardware that supports &n; *&t;disabling hsync/vsync:&n; *&t;&t;@blank_mode == 2 means suspend vsync,&n; *&t;&t;@blank_mode == 3 means suspend hsync,&n; *&t;&t;@blank_mode == 4 means powerdown.&n; */
+DECL|function|hgafb_blank
+r_static
+r_int
+id|hgafb_blank
+c_func
+(paren
+r_int
+id|blank_mode
+comma
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+(brace
+id|CHKINFO
+c_func
+(paren
+)paren
+suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;hgafb_blank: blank_mode:%d, info:%x, fb_info:%x&bslash;n&quot;
+comma
+id|blank_mode
+comma
+(paren
+r_int
+)paren
+id|info
+comma
+(paren
+r_int
+)paren
+op_amp
+id|fb_info
+)paren
+suffix:semicolon
+id|hga_blank
+c_func
+(paren
+id|blank_mode
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|hgafb_ops
 r_static
 r_struct
@@ -2117,11 +2107,19 @@ id|hga_get_cmap
 comma
 id|fb_set_cmap
 suffix:colon
-id|hga_set_cmap
+id|gen_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|hgafb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon
 id|hga_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|hgafb_blank
 comma
 )brace
 suffix:semicolon
@@ -2154,7 +2152,7 @@ c_func
 (paren
 l_string|&quot;hgafbcon_switch: currcon:%d, con:%d, info:%x, fb_info:%x&bslash;n&quot;
 comma
-id|currcon
+id|info-&gt;currcon
 comma
 id|con
 comma
@@ -2181,7 +2179,7 @@ comma
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -2193,7 +2191,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|currcon
+id|info-&gt;currcon
 op_ne
 op_minus
 l_int|1
@@ -2205,7 +2203,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|var
@@ -2247,8 +2245,6 @@ id|info-&gt;cmap
 comma
 l_int|1
 comma
-id|hga_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -2275,7 +2271,7 @@ id|fb_var_screeninfo
 )paren
 suffix:semicolon
 multiline_comment|/* hga_set_var(&amp;info-&gt;var, con, &amp;fb_info); is it necessary? */
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -2356,53 +2352,6 @@ comma
 id|con
 comma
 id|info
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;hgafbcon_blank - (un)blank the screen&n; *&t;@blank_mode:blanking method to use&n; *&t;@info:unused&n; *&t;&n; *&t;Blank the screen if blank_mode != 0, else unblank. &n; *&t;Implements VESA suspend and powerdown modes on hardware that supports &n; *&t;disabling hsync/vsync:&n; *&t;&t;@blank_mode == 2 means suspend vsync,&n; *&t;&t;@blank_mode == 3 means suspend hsync,&n; *&t;&t;@blank_mode == 4 means powerdown.&n; */
-DECL|function|hgafbcon_blank
-r_static
-r_void
-id|hgafbcon_blank
-c_func
-(paren
-r_int
-id|blank_mode
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-id|CHKINFO
-c_func
-(paren
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;hga_blank: blank_mode:%d, info:%x, fb_info:%x&bslash;n&quot;
-comma
-id|blank_mode
-comma
-(paren
-r_int
-)paren
-id|info
-comma
-(paren
-r_int
-)paren
-op_amp
-id|fb_info
-)paren
-suffix:semicolon
-id|hga_blank
-c_func
-(paren
-id|blank_mode
 )paren
 suffix:semicolon
 )brace
@@ -2491,15 +2440,6 @@ id|disp.var
 op_assign
 id|hga_default_var
 suffix:semicolon
-multiline_comment|/*&t;disp.cmap = ???; */
-id|disp.screen_base
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|hga_fix.smem_start
-suffix:semicolon
 id|disp.visual
 op_assign
 id|hga_fix.visual
@@ -2569,7 +2509,6 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-multiline_comment|/*&t;fb_info.open = ??? */
 id|fb_info.var
 op_assign
 id|hga_default_var
@@ -2616,8 +2555,10 @@ op_assign
 op_amp
 id|disp
 suffix:semicolon
-multiline_comment|/*&t;fb_info.display_fg = ??? */
-multiline_comment|/*&t;fb_info.fontname initialized later */
+id|fb_info.currcon
+op_assign
+l_int|1
+suffix:semicolon
 id|fb_info.changevar
 op_assign
 l_int|NULL
@@ -2629,10 +2570,6 @@ suffix:semicolon
 id|fb_info.updatevar
 op_assign
 id|hgafbcon_updatevar
-suffix:semicolon
-id|fb_info.blank
-op_assign
-id|hgafbcon_blank
 suffix:semicolon
 id|fb_info.pseudo_palette
 op_assign

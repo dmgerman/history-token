@@ -7,7 +7,7 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
 multiline_comment|/* page arguments of these two macros are Emu page (4096 bytes), not like&n; * aligned pages in others&n; */
 DECL|macro|__set_ptb_entry
-mdefine_line|#define __set_ptb_entry(emu,page,addr) &bslash;&n;&t;((emu)-&gt;ptb_pages[page] = ((addr) &lt;&lt; 1) | (page))
+mdefine_line|#define __set_ptb_entry(emu,page,addr) &bslash;&n;&t;((emu)-&gt;ptb_pages[page] = cpu_to_le32(((addr) &lt;&lt; 1) | (page)))
 DECL|macro|UNIT_PAGES
 mdefine_line|#define UNIT_PAGES&t;&t;(PAGE_SIZE / EMUPAGESIZE)
 DECL|macro|MAX_ALIGN_PAGES

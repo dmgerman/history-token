@@ -5931,7 +5931,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_mfm_request
 )paren
 suffix:semicolon
 id|add_gendisk

@@ -65,7 +65,7 @@ DECL|macro|MAX_CURS
 mdefine_line|#define MAX_CURS&t;&t;32
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * prototypes&n; *&n; * ------------------------------------------------------------------------- */
 r_static
-r_void
+r_int
 id|rivafb_blank
 c_func
 (paren
@@ -2445,10 +2445,6 @@ id|disp-&gt;dispsw_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|disp-&gt;screen_base
-op_assign
-id|rinfo-&gt;fb_base
-suffix:semicolon
 id|disp-&gt;type
 op_assign
 id|FB_TYPE_PACKED_PIXELS
@@ -2620,7 +2616,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * riva_wclut - set CLUT entry&n; * @chip: pointer to RIVA_HW_INST object&n; * @regnum: register number&n; * @red: red component&n; * @green: green component&n; * @blue: blue component&n; *&n; * DESCRIPTION:&n; * Sets color register @regnum.&n; *&n; * CALLED FROM:&n; * riva_setcolreg()&n; */
+multiline_comment|/**&n; * riva_wclut - set CLUT entry&n; * @chip: pointer to RIVA_HW_INST object&n; * @regnum: register number&n; * @red: red component&n; * @green: green component&n; * @blue: blue component&n; *&n; * DESCRIPTION:&n; * Sets color register @regnum.&n; *&n; * CALLED FROM:&n; * rivafb_setcolreg()&n; */
 DECL|function|riva_wclut
 r_static
 r_void
@@ -4248,7 +4244,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * internal fb_ops helper functions&n; *&n; * ------------------------------------------------------------------------- */
-multiline_comment|/**&n; * riva_get_cmap_len - query current color map length&n; * @var: standard kernel fb changeable data&n; *&n; * DESCRIPTION:&n; * Get current color map length.&n; *&n; * RETURNS:&n; * Length of color map&n; *&n; * CALLED FROM:&n; * riva_getcolreg()&n; * riva_setcolreg()&n; * rivafb_get_cmap()&n; * rivafb_set_cmap()&n; */
+multiline_comment|/**&n; * riva_get_cmap_len - query current color map length&n; * @var: standard kernel fb changeable data&n; *&n; * DESCRIPTION:&n; * Get current color map length.&n; *&n; * RETURNS:&n; * Length of color map&n; *&n; * CALLED FROM:&n; * riva_getcolreg()&n; * rivafb_setcolreg()&n; * rivafb_get_cmap()&n; * rivafb_set_cmap()&n; */
 DECL|function|riva_get_cmap_len
 r_static
 r_int
@@ -4437,11 +4433,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * riva_setcolreg&n; * @regno: register index&n; * @red: red component&n; * @green: green component&n; * @blue: blue component&n; * @transp: transparency&n; * @info: pointer to rivafb_info object containing info for current riva board&n; *&n; * DESCRIPTION:&n; * Set a single color register. The values supplied have a 16 bit&n; * magnitude.&n; *&n; * RETURNS:&n; * Return != 0 for invalid regno.&n; *&n; * CALLED FROM:&n; * rivafb_set_cmap()&n; * fbcmap.c:fb_set_cmap()&n; *&t;fbgen.c:fbgen_get_cmap()&n; *&t;fbgen.c:fbgen_install_cmap()&n; *&t;&t;fbgen.c:fbgen_set_var()&n; *&t;&t;fbgen.c:fbgen_switch()&n; *&t;&t;fbgen.c:fbgen_blank()&n; *&t;fbgen.c:fbgen_blank()&n; */
-DECL|function|riva_setcolreg
+multiline_comment|/**&n; * rivafb_setcolreg&n; * @regno: register index&n; * @red: red component&n; * @green: green component&n; * @blue: blue component&n; * @transp: transparency&n; * @info: pointer to rivafb_info object containing info for current riva board&n; *&n; * DESCRIPTION:&n; * Set a single color register. The values supplied have a 16 bit&n; * magnitude.&n; *&n; * RETURNS:&n; * Return != 0 for invalid regno.&n; *&n; * CALLED FROM:&n; * rivafb_set_cmap()&n; * fbcmap.c:fb_set_cmap()&n; *&t;fbgen.c:fbgen_get_cmap()&n; *&t;fbgen.c:do_install_cmap()&n; *&t;&t;fbgen.c:fbgen_set_var()&n; *&t;&t;fbgen.c:fbgen_switch()&n; *&t;&t;fbgen.c:fbgen_blank()&n; *&t;fbgen.c:fbgen_blank()&n; */
+DECL|function|rivafb_setcolreg
 r_static
 r_int
-id|riva_setcolreg
+id|rivafb_setcolreg
 c_func
 (paren
 r_int
@@ -5892,7 +5888,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -6116,7 +6112,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -6129,8 +6125,6 @@ c_func
 id|cmap
 comma
 id|kspc
-comma
-id|riva_setcolreg
 comma
 id|info
 )paren
@@ -6337,7 +6331,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 (brace
 id|rivainfo-&gt;riva
@@ -6564,7 +6558,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 op_ge
 l_int|0
 )paren
@@ -6582,7 +6576,7 @@ c_func
 (paren
 l_string|&quot;switch1: con = %d, cmap.len = %d&bslash;n&quot;
 comma
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 comma
 id|cmap-&gt;len
 )paren
@@ -6621,7 +6615,7 @@ id|info
 suffix:semicolon
 )brace
 )brace
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -6724,7 +6718,7 @@ suffix:semicolon
 )brace
 DECL|function|rivafb_blank
 r_static
-r_void
+r_int
 id|rivafb_blank
 c_func
 (paren
@@ -6874,6 +6868,9 @@ c_func
 l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * initialization helper functions&n; *&n; * ------------------------------------------------------------------------- */
 multiline_comment|/* kernel interface */
@@ -6908,9 +6905,17 @@ id|fb_set_cmap
 suffix:colon
 id|rivafb_set_cmap
 comma
+id|fb_setcolreg
+suffix:colon
+id|rivafb_setcolreg
+comma
 id|fb_pan_display
 suffix:colon
 id|rivafb_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|rivafb_blank
 comma
 id|fb_ioctl
 suffix:colon
@@ -7134,10 +7139,19 @@ op_assign
 op_amp
 id|riva_fb_ops
 suffix:semicolon
+id|info-&gt;screen_base
+op_assign
+id|rinfo-&gt;fb_base
+suffix:semicolon
 multiline_comment|/* FIXME: set monspecs to what??? */
 id|info-&gt;display_fg
 op_assign
 l_int|NULL
+suffix:semicolon
+id|info-&gt;currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|strncpy
 c_func
@@ -7175,10 +7189,6 @@ suffix:semicolon
 id|info-&gt;updatevar
 op_assign
 id|rivafb_updatevar
-suffix:semicolon
-id|info-&gt;blank
-op_assign
-id|rivafb_blank
 suffix:semicolon
 r_if
 c_cond

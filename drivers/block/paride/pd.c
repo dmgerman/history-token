@@ -415,12 +415,8 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR   major
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;PD&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_pd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;PD_BITS)
-DECL|macro|DEVICE_ON
-mdefine_line|#define DEVICE_ON(device)
 DECL|macro|DEVICE_OFF
 mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
@@ -1222,7 +1218,7 @@ c_func
 (paren
 id|q
 comma
-id|DEVICE_REQUEST
+id|do_pd_request
 comma
 op_amp
 id|pd_lock

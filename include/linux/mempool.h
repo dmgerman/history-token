@@ -2,17 +2,7 @@ multiline_comment|/*&n; * memory buffer pool support&n; */
 macro_line|#ifndef _LINUX_MEMPOOL_H
 DECL|macro|_LINUX_MEMPOOL_H
 mdefine_line|#define _LINUX_MEMPOOL_H
-macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-r_struct
-id|mempool_s
-suffix:semicolon
-DECL|typedef|mempool_t
-r_typedef
-r_struct
-id|mempool_s
-id|mempool_t
-suffix:semicolon
 DECL|typedef|mempool_alloc_t
 r_typedef
 r_void
@@ -46,6 +36,7 @@ id|pool_data
 )paren
 suffix:semicolon
 DECL|struct|mempool_s
+r_typedef
 r_struct
 id|mempool_s
 (brace
@@ -54,15 +45,19 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 DECL|member|min_nr
-DECL|member|curr_nr
 r_int
 id|min_nr
-comma
+suffix:semicolon
+multiline_comment|/* nr of elements at *elements */
+DECL|member|curr_nr
+r_int
 id|curr_nr
 suffix:semicolon
+multiline_comment|/* Current nr of elements at *elements */
 DECL|member|elements
-r_struct
-id|list_head
+r_void
+op_star
+op_star
 id|elements
 suffix:semicolon
 DECL|member|pool_data
@@ -84,7 +79,9 @@ DECL|member|wait
 id|wait_queue_head_t
 id|wait
 suffix:semicolon
+DECL|typedef|mempool_t
 )brace
+id|mempool_t
 suffix:semicolon
 r_extern
 id|mempool_t
@@ -109,7 +106,7 @@ id|pool_data
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|mempool_resize
 c_func
 (paren

@@ -38,9 +38,14 @@ DECL|macro|TO_READ_FROM_IRQ
 mdefine_line|#define TO_READ_FROM_IRQ &t;&t;TO_DEFAULT_COMMAND
 DECL|macro|TO_GET_READY
 mdefine_line|#define TO_GET_READY&t;&t;&t;TO_DEFAULT_COMMAND
+macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
+DECL|macro|MDC800_DEVICE_MINOR_BASE
+mdefine_line|#define MDC800_DEVICE_MINOR_BASE 0
+macro_line|#else
 multiline_comment|/* Minor Number of the device (create with mknod /dev/mustek c 180 32) */
 DECL|macro|MDC800_DEVICE_MINOR_BASE
 mdefine_line|#define MDC800_DEVICE_MINOR_BASE 32
+macro_line|#endif
 multiline_comment|/**************************************************************************&n;&t;Data and structs&n;***************************************************************************/
 r_typedef
 r_enum
@@ -214,6 +219,10 @@ singleline_comment|// Cache for the Imagesize (-1 for nothing cached )
 DECL|member|pic_len
 r_int
 id|pic_len
+suffix:semicolon
+DECL|member|minor
+r_int
+id|minor
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1252,6 +1261,17 @@ op_amp
 id|mdc800-&gt;io_lock
 )paren
 suffix:semicolon
+id|usb_register_dev
+(paren
+op_amp
+id|mdc800_usb_driver
+comma
+l_int|1
+comma
+op_amp
+id|mdc800-&gt;minor
+)paren
+suffix:semicolon
 id|mdc800-&gt;dev
 op_assign
 id|dev
@@ -1393,6 +1413,16 @@ op_eq
 id|NOT_CONNECTED
 )paren
 r_return
+suffix:semicolon
+id|usb_deregister_dev
+(paren
+op_amp
+id|mdc800_usb_driver
+comma
+l_int|1
+comma
+id|mdc800-&gt;minor
+)paren
 suffix:semicolon
 id|mdc800-&gt;state
 op_assign

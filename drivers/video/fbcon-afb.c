@@ -2168,7 +2168,7 @@ id|p-&gt;next_line
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -2182,7 +2182,7 @@ id|width
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -2246,7 +2246,7 @@ id|sy
 (brace
 id|src0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -2262,7 +2262,7 @@ id|sx
 suffix:semicolon
 id|dest0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -2349,7 +2349,7 @@ r_else
 (brace
 id|src0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 (paren
 id|sy
@@ -2369,7 +2369,7 @@ id|sx
 suffix:semicolon
 id|dest0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 (paren
 id|dy
@@ -2502,7 +2502,7 @@ id|bg
 suffix:semicolon
 id|dest0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -2654,7 +2654,7 @@ id|bg
 suffix:semicolon
 id|dest0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
@@ -2892,7 +2892,7 @@ id|bg
 suffix:semicolon
 id|dest0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
@@ -3437,7 +3437,7 @@ id|mask
 suffix:semicolon
 id|dest0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star

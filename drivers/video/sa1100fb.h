@@ -148,11 +148,6 @@ r_struct
 id|fb_info
 id|fb
 suffix:semicolon
-DECL|member|currcon
-r_int
-r_int
-id|currcon
-suffix:semicolon
 DECL|member|rgb
 r_struct
 id|sa1100fb_rgb

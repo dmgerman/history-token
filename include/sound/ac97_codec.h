@@ -167,9 +167,11 @@ DECL|macro|AC97_SCAP_CENTER_LFE_DAC
 mdefine_line|#define AC97_SCAP_CENTER_LFE_DAC (1&lt;&lt;1)&t;/* center and LFE DACs are present */
 multiline_comment|/* ac97-&gt;flags */
 DECL|macro|AC97_HAS_PC_BEEP
-mdefine_line|#define AC97_HAS_PC_BEEP&t;(1&lt;&lt;0)
+mdefine_line|#define AC97_HAS_PC_BEEP&t;(1&lt;&lt;0)&t;/* force PC Speaker usage */
 DECL|macro|AC97_AD_MULTI
 mdefine_line|#define AC97_AD_MULTI&t;&t;(1&lt;&lt;1)&t;/* Analog Devices - multi codecs */
+DECL|macro|AC97_CS_SPDIF
+mdefine_line|#define AC97_CS_SPDIF&t;&t;(1&lt;&lt;2)&t;/* Cirrus Logic uses funky SPDIF */
 multiline_comment|/*&n;&n; */
 DECL|typedef|ac97_t
 r_typedef

@@ -33149,7 +33149,10 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|DO_SBPCD_REQUEST
+comma
+op_amp
+id|sbpcd_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef DONT_MERGE_REQUESTS

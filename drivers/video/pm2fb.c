@@ -11596,7 +11596,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|disp-&gt;screen_base
+id|i-&gt;gen.info.screen_base
 op_assign
 id|i-&gt;regions.v_fb
 suffix:semicolon
@@ -13203,11 +13203,6 @@ op_assign
 op_amp
 id|fbgen_update_var
 suffix:semicolon
-id|fb_info.gen.info.blank
-op_assign
-op_amp
-id|fbgen_blank
-suffix:semicolon
 id|fbgen_get_var
 c_func
 (paren
@@ -13243,13 +13238,13 @@ op_amp
 id|fb_info.gen
 )paren
 suffix:semicolon
-id|fbgen_install_cmap
+id|do_install_cmap
 c_func
 (paren
 l_int|0
 comma
 op_amp
-id|fb_info.gen
+id|fb_info.gen.info
 )paren
 suffix:semicolon
 r_if

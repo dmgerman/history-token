@@ -12948,7 +12948,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_cdu31a_request
 comma
 op_amp
 id|cdu31a_lock

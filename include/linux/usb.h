@@ -2,6 +2,7 @@ macro_line|#ifndef __LINUX_USB_H
 DECL|macro|__LINUX_USB_H
 mdefine_line|#define __LINUX_USB_H
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 multiline_comment|/* USB constants */
 multiline_comment|/*&n; * Device and/or Interface Class codes&n; */
 DECL|macro|USB_CLASS_PER_INTERFACE
@@ -899,6 +900,553 @@ id|ptr
 suffix:semicolon
 DECL|macro|usb_get_extra_descriptor
 mdefine_line|#define usb_get_extra_descriptor(ifpoint,type,ptr)&bslash;&n;&t;__usb_get_extra_descriptor((ifpoint)-&gt;extra,(ifpoint)-&gt;extralen,&bslash;&n;&t;&t;type,(void**)ptr)
+multiline_comment|/* -------------------------------------------------------------------------- */
+multiline_comment|/* Host Controller Driver (HCD) support */
+r_struct
+id|usb_operations
+suffix:semicolon
+DECL|macro|DEVNUM_ROUND_ROBIN
+mdefine_line|#define DEVNUM_ROUND_ROBIN&t;/***** OPTION *****/
+multiline_comment|/*&n; * Allocated per bus we have&n; */
+DECL|struct|usb_bus
+r_struct
+id|usb_bus
+(brace
+DECL|member|busnum
+r_int
+id|busnum
+suffix:semicolon
+multiline_comment|/* Bus number (in order of reg) */
+DECL|member|bus_name
+r_char
+op_star
+id|bus_name
+suffix:semicolon
+multiline_comment|/* stable id (PCI slot_name etc) */
+macro_line|#ifdef DEVNUM_ROUND_ROBIN
+DECL|member|devnum_next
+r_int
+id|devnum_next
+suffix:semicolon
+multiline_comment|/* Next open device number in round-robin allocation */
+macro_line|#endif /* DEVNUM_ROUND_ROBIN */
+DECL|member|devmap
+r_struct
+id|usb_devmap
+id|devmap
+suffix:semicolon
+multiline_comment|/* device address allocation map */
+DECL|member|op
+r_struct
+id|usb_operations
+op_star
+id|op
+suffix:semicolon
+multiline_comment|/* Operations (specific to the HC) */
+DECL|member|root_hub
+r_struct
+id|usb_device
+op_star
+id|root_hub
+suffix:semicolon
+multiline_comment|/* Root hub */
+DECL|member|bus_list
+r_struct
+id|list_head
+id|bus_list
+suffix:semicolon
+multiline_comment|/* list of busses */
+DECL|member|hcpriv
+r_void
+op_star
+id|hcpriv
+suffix:semicolon
+multiline_comment|/* Host Controller private data */
+DECL|member|bandwidth_allocated
+r_int
+id|bandwidth_allocated
+suffix:semicolon
+multiline_comment|/* on this bus: how much of the time&n;&t;&t;&t;&t;&t; * reserved for periodic (intr/iso)&n;&t;&t;&t;&t;&t; * requests is used, on average?&n;&t;&t;&t;&t;&t; * Units: microseconds/frame.&n;&t;&t;&t;&t;&t; * Limits: Full/low speed reserve 90%,&n;&t;&t;&t;&t;&t; * while high speed reserves 80%.&n;&t;&t;&t;&t;&t; */
+DECL|member|bandwidth_int_reqs
+r_int
+id|bandwidth_int_reqs
+suffix:semicolon
+multiline_comment|/* number of Interrupt requests */
+DECL|member|bandwidth_isoc_reqs
+r_int
+id|bandwidth_isoc_reqs
+suffix:semicolon
+multiline_comment|/* number of Isoc. requests */
+DECL|member|dentry
+r_struct
+id|dentry
+op_star
+id|dentry
+suffix:semicolon
+multiline_comment|/* usbfs dentry entry for the bus */
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
+)brace
+suffix:semicolon
+singleline_comment|// FIXME:  root_hub_string vanishes when &quot;usb_hcd&quot; conversion is done,
+singleline_comment|// along with pre-hcd versions of the OHCI and UHCI drivers.
+r_extern
+r_int
+id|usb_root_hub_string
+c_func
+(paren
+r_int
+id|id
+comma
+r_int
+id|serial
+comma
+r_char
+op_star
+id|type
+comma
+id|__u8
+op_star
+id|data
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * As of USB 2.0, full/low speed devices are segregated into trees.&n; * One type grows from USB 1.1 host controllers (OHCI, UHCI etc).&n; * The other type grows from high speed hubs when they connect to&n; * full/low speed devices using &quot;Transaction Translators&quot; (TTs).&n; *&n; * TTs should only be known to the hub driver, and high speed bus&n; * drivers (only EHCI for now).  They affect periodic scheduling and&n; * sometimes control/bulk error recovery.&n; */
+DECL|struct|usb_tt
+r_struct
+id|usb_tt
+(brace
+DECL|member|hub
+r_struct
+id|usb_device
+op_star
+id|hub
+suffix:semicolon
+multiline_comment|/* upstream highspeed hub */
+DECL|member|multi
+r_int
+id|multi
+suffix:semicolon
+multiline_comment|/* true means one TT per port */
+)brace
+suffix:semicolon
+multiline_comment|/* -------------------------------------------------------------------------- */
+multiline_comment|/* This is arbitrary.&n; * From USB 2.0 spec Table 11-13, offset 7, a hub can&n; * have up to 255 ports. The most yet reported is 10.&n; */
+DECL|macro|USB_MAXCHILDREN
+mdefine_line|#define USB_MAXCHILDREN&t;&t;(16)
+DECL|struct|usb_device
+r_struct
+id|usb_device
+(brace
+DECL|member|devnum
+r_int
+id|devnum
+suffix:semicolon
+multiline_comment|/* Address on USB bus */
+DECL|member|devpath
+r_char
+id|devpath
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* Use in messages: /port/port/... */
+r_enum
+(brace
+DECL|enumerator|USB_SPEED_UNKNOWN
+id|USB_SPEED_UNKNOWN
+op_assign
+l_int|0
+comma
+multiline_comment|/* enumerating */
+DECL|enumerator|USB_SPEED_LOW
+DECL|enumerator|USB_SPEED_FULL
+id|USB_SPEED_LOW
+comma
+id|USB_SPEED_FULL
+comma
+multiline_comment|/* usb 1.1 */
+DECL|enumerator|USB_SPEED_HIGH
+id|USB_SPEED_HIGH
+multiline_comment|/* usb 2.0 */
+DECL|member|speed
+)brace
+id|speed
+suffix:semicolon
+DECL|member|tt
+r_struct
+id|usb_tt
+op_star
+id|tt
+suffix:semicolon
+multiline_comment|/* low/full speed dev, highspeed hub */
+DECL|member|ttport
+r_int
+id|ttport
+suffix:semicolon
+multiline_comment|/* device port on that tt hub */
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
+multiline_comment|/* Reference count */
+DECL|member|serialize
+r_struct
+id|semaphore
+id|serialize
+suffix:semicolon
+DECL|member|toggle
+r_int
+r_int
+id|toggle
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* one bit for each endpoint ([0] = IN, [1] = OUT) */
+DECL|member|halted
+r_int
+r_int
+id|halted
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* endpoint halts; one bit per endpoint # &amp; direction; */
+multiline_comment|/* [0] = IN, [1] = OUT */
+DECL|member|epmaxpacketin
+r_int
+id|epmaxpacketin
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* INput endpoint specific maximums */
+DECL|member|epmaxpacketout
+r_int
+id|epmaxpacketout
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* OUTput endpoint specific maximums */
+DECL|member|parent
+r_struct
+id|usb_device
+op_star
+id|parent
+suffix:semicolon
+multiline_comment|/* our hub, unless we&squot;re the root */
+DECL|member|bus
+r_struct
+id|usb_bus
+op_star
+id|bus
+suffix:semicolon
+multiline_comment|/* Bus we&squot;re part of */
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* Generic device interface */
+DECL|member|descriptor
+r_struct
+id|usb_device_descriptor
+id|descriptor
+suffix:semicolon
+multiline_comment|/* Descriptor */
+DECL|member|config
+r_struct
+id|usb_config_descriptor
+op_star
+id|config
+suffix:semicolon
+multiline_comment|/* All of the configs */
+DECL|member|actconfig
+r_struct
+id|usb_config_descriptor
+op_star
+id|actconfig
+suffix:semicolon
+multiline_comment|/* the active configuration */
+DECL|member|rawdescriptors
+r_char
+op_star
+op_star
+id|rawdescriptors
+suffix:semicolon
+multiline_comment|/* Raw descriptors for each config */
+DECL|member|have_langid
+r_int
+id|have_langid
+suffix:semicolon
+multiline_comment|/* whether string_langid is valid yet */
+DECL|member|string_langid
+r_int
+id|string_langid
+suffix:semicolon
+multiline_comment|/* language ID for strings */
+DECL|member|hcpriv
+r_void
+op_star
+id|hcpriv
+suffix:semicolon
+multiline_comment|/* Host Controller private data */
+DECL|member|filelist
+r_struct
+id|list_head
+id|filelist
+suffix:semicolon
+DECL|member|dentry
+r_struct
+id|dentry
+op_star
+id|dentry
+suffix:semicolon
+multiline_comment|/* usbfs dentry entry for the device */
+multiline_comment|/*&n;&t; * Child devices - these can be either new devices&n;&t; * (if this is a hub device), or different instances&n;&t; * of this same device.&n;&t; *&n;&t; * Each instance needs its own set of data structures.&n;&t; */
+DECL|member|maxchild
+r_int
+id|maxchild
+suffix:semicolon
+multiline_comment|/* Number of ports if hub */
+DECL|member|children
+r_struct
+id|usb_device
+op_star
+id|children
+(braket
+id|USB_MAXCHILDREN
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* for when layers above USB add new non-USB drivers */
+r_extern
+r_void
+id|usb_scan_devices
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* mostly for devices emulating SCSI over USB */
+r_extern
+r_int
+id|usb_reset_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* for drivers using iso endpoints */
+r_extern
+r_int
+id|usb_get_current_frame_number
+(paren
+r_struct
+id|usb_device
+op_star
+id|usb_dev
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * usb_inc_dev_use - record another reference to a device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them usb_dec_dev_use(), in their disconnect() methods.&n; */
+DECL|function|usb_inc_dev_use
+r_static
+r_inline
+r_void
+id|usb_inc_dev_use
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+(brace
+id|atomic_inc
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_dec_dev_use - drop a reference to a device&n; * @dev: the device no longer being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally release such references in&n; * their disconnect() methods, and record them in probe().&n; *&n; * Note that driver disconnect() methods must guarantee that when they&n; * return, all of their outstanding references to the device (and its&n; * interfaces) are cleaned up.  That means that all pending URBs from&n; * this driver must have completed, and that no more copies of the device&n; * handle are saved in driver records (including other kernel threads).&n; */
+DECL|function|usb_dec_dev_use
+r_static
+r_inline
+r_void
+id|usb_dec_dev_use
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+)paren
+(brace
+multiline_comment|/* May only go to zero when usbcore finishes&n;&t;&t; * usb_disconnect() processing:  khubd or HCDs.&n;&t;&t; *&n;&t;&t; * If you hit this BUG() it&squot;s likely a problem&n;&t;&t; * with some driver&squot;s disconnect() routine.&n;&t;&t; */
+id|BUG
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* used these for multi-interface device registration */
+r_extern
+r_int
+id|usb_find_interface_driver_for_ifnum
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|ifnum
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_driver_claim_interface
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|driver
+comma
+r_struct
+id|usb_interface
+op_star
+id|iface
+comma
+r_void
+op_star
+id|priv
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|usb_interface_claimed
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|iface
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_driver_release_interface
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|driver
+comma
+r_struct
+id|usb_interface
+op_star
+id|iface
+)paren
+suffix:semicolon
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|usb_match_id
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_struct
+id|usb_interface
+op_star
+id|interface
+comma
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|id
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * usb_make_path - returns stable device path in the usb tree&n; * @dev: the device whose path is being constructed&n; * @buf: where to put the string&n; * @size: how big is &quot;buf&quot;?&n; *&n; * Returns length of the string (&gt; 0) or negative if size was too small.&n; *&n; * This identifier is intended to be &quot;stable&quot;, reflecting physical paths in&n; * hardware such as physical bus addresses for host controllers or ports on&n; * USB hubs.  That makes it stay the same until systems are physically&n; * reconfigured, by re-cabling a tree of USB devices or by moving USB host&n; * controllers.  Adding and removing devices, including virtual root hubs&n; * in host controller driver modules, does not change these path identifers;&n; * neither does rebooting or re-enumerating.  These are more useful identifiers&n; * than changeable (&quot;unstable&quot;) ones like bus numbers or device addresses.&n; * &n; * With a partial exception for devices connected to USB 2.0 root hubs, these&n; * identifiers are also predictable:  so long as the device tree isn&squot;t changed,&n; * plugging any USB device into a given hub port always gives it the same path.&n; * Because of the use of &quot;companion&quot; controllers, devices connected to ports on&n; * USB 2.0 root hubs (EHCI host controllers) will get one path ID if they are&n; * high speed, and a different one if they are full or low speed.&n; */
+DECL|function|usb_make_path
+r_static
+r_inline
+r_int
+id|usb_make_path
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+comma
+r_int
+id|size
+)paren
+(brace
+r_int
+id|actual
+suffix:semicolon
+id|actual
+op_assign
+id|snprintf
+(paren
+id|buf
+comma
+id|size
+comma
+l_string|&quot;usb-%s-%s&quot;
+comma
+id|dev-&gt;bus-&gt;bus_name
+comma
+id|dev-&gt;devpath
+)paren
+suffix:semicolon
+r_return
+(paren
+id|actual
+op_ge
+id|size
+)paren
+ques
+c_cond
+op_minus
+l_int|1
+suffix:colon
+id|actual
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Device table entry for &quot;new style&quot; table-driven USB drivers.&n; * User mode code can read these tables to choose which modules to load.&n; * Declare the table as a MODULE_DEVICE_TABLE.&n; *&n; * The third probe() parameter will point to a matching entry from this&n; * table.  (Null value reserved.)  Use the driver_data field for each&n; * match to hold information tied to that match:  device quirks, etc.&n; * &n; * Terminate the driver&squot;s table with an all-zeroes entry.&n; * Use the flag values to control which fields are compared.&n; */
 multiline_comment|/**&n; * struct usb_device_id - identifies USB devices for probing and hotplugging&n; * @match_flags: Bit mask controlling of the other fields are used to match&n; *&t;against new devices.  Any field except for driver_info may be used,&n; *&t;although some only make sense in conjunction with other fields.&n; *&t;This is usually set by a USB_DEVICE_*() macro, which sets all&n; *&t;other fields in this structure except for driver_info.&n; * @idVendor: USB vendor ID for a device; numbers are assigned&n; *&t;by the USB forum to its members.&n; * @idProduct: Vendor-assigned product ID.&n; * @bcdDevice_lo: Low end of range of vendor-assigned product version numbers.&n; *&t;This is also used to identify individual product versions, for&n; *&t;a range consisting of a single device.&n; * @bcdDevice_hi: High end of version number range.  The range of product&n; *&t;versions is inclusive.&n; * @bDeviceClass: Class of device; numbers are assigned&n; *&t;by the USB forum.  Products may choose to implement classes,&n; *&t;or be vendor-specific.  Device classes specify behavior of all&n; *&t;the interfaces on a devices.&n; * @bDeviceSubClass: Subclass of device; associated with bDeviceClass.&n; * @bDeviceProtocol: Protocol of device; associated with bDeviceClass.&n; * @bInterfaceClass: Class of interface; numbers are assigned&n; *&t;by the USB forum.  Products may choose to implement classes,&n; *&t;or be vendor-specific.  Interface classes specify behavior only&n; *&t;of a given interface; other interfaces may support other classes.&n; * @bInterfaceSubClass: Subclass of interface; associated with bInterfaceClass.&n; * @bInterfaceProtocol: Protocol of interface; associated with bInterfaceClass.&n; * @driver_info: Holds information used by the driver.  Usually it holds&n; *&t;a pointer to a descriptor understood by the driver, or perhaps&n; *&t;device flags.&n; *&n; * In most cases, drivers will create a table of device IDs by using&n; * USB_DEVICE(), or similar macros designed for that purpose.&n; * They will then export it to userspace using MODULE_DEVICE_TABLE(),&n; * and provide it to the USB core through their usb_driver structure.&n; *&n; * See the usb_match_id() function for information about how matches are&n; * performed.  Briefly, you will normally use one of several macros to help&n; * construct these entries.  Each entry you provide will either identify&n; * one or more specific products, or will identify a class of products&n; * which have agreed to behave the same.  You should put the more specific&n; * matches towards the beginning of your table, so that driver_info can&n; * record quirks of specific products.&n; */
@@ -1148,6 +1696,89 @@ id|usb_driver
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_USB_DYNAMIC_MINORS
+DECL|function|usb_register_dev
+r_static
+r_inline
+r_int
+id|usb_register_dev
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|new_driver
+comma
+r_int
+id|num_minors
+comma
+r_int
+op_star
+id|start_minor
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|usb_deregister_dev
+r_static
+r_inline
+r_void
+id|usb_deregister_dev
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|driver
+comma
+r_int
+id|num_minors
+comma
+r_int
+id|start_minor
+)paren
+(brace
+)brace
+macro_line|#else
+r_extern
+r_int
+id|usb_register_dev
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|new_driver
+comma
+r_int
+id|num_minors
+comma
+r_int
+op_star
+id|start_minor
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_deregister_dev
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|driver
+comma
+r_int
+id|num_minors
+comma
+r_int
+id|start_minor
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * URB support, for asynchronous request completions&n; */
 multiline_comment|/*&n; * urb-&gt;transfer_flags:&n; *&n; * FIXME should be URB_* flags&n; */
@@ -1489,7 +2120,7 @@ op_assign
 id|context
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_fill_int_urb - macro to help initialize a interrupt urb&n; * @urb: pointer to the urb to initialize.&n; * @dev: pointer to the struct usb_device for this urb.&n; * @pipe: the endpoint pipe&n; * @transfer_buffer: pointer to the transfer buffer&n; * @buffer_length: length of the transfer buffer&n; * @complete: pointer to the usb_complete_t function&n; * @context: what to set the urb context to.&n; * @interval: what to set the urb interval to.&n; *&n; * Initializes a interrupt urb with the proper information needed to submit&n; * it to a device.&n; */
+multiline_comment|/**&n; * usb_fill_int_urb - macro to help initialize a interrupt urb&n; * @urb: pointer to the urb to initialize.&n; * @dev: pointer to the struct usb_device for this urb.&n; * @pipe: the endpoint pipe&n; * @transfer_buffer: pointer to the transfer buffer&n; * @buffer_length: length of the transfer buffer&n; * @complete: pointer to the usb_complete_t function&n; * @context: what to set the urb context to.&n; * @interval: what to set the urb interval to, encoded like&n; *&t;the endpoint descriptor&squot;s bInterval value.&n; *&n; * Initializes a interrupt urb with the proper information needed to submit&n; * it to a device.&n; * Note that high speed interrupt endpoints use a logarithmic encoding of&n; * the endpoint interval, and express polling intervals in microframes&n; * (eight per millisecond) rather than in frames (one per millisecond).&n; */
 DECL|function|usb_fill_int_urb
 r_static
 r_inline
@@ -1559,6 +2190,24 @@ id|urb-&gt;context
 op_assign
 id|context
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;speed
+op_eq
+id|USB_SPEED_HIGH
+)paren
+id|urb-&gt;interval
+op_assign
+l_int|1
+op_lshift
+(paren
+id|interval
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_else
 id|urb-&gt;interval
 op_assign
 id|interval
@@ -1869,555 +2518,6 @@ mdefine_line|#define USB_CTRL_GET_TIMEOUT 3
 macro_line|#endif
 DECL|macro|USB_CTRL_SET_TIMEOUT
 mdefine_line|#define USB_CTRL_SET_TIMEOUT 3
-multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/* Host Controller Driver (HCD) support */
-r_struct
-id|usb_operations
-suffix:semicolon
-DECL|macro|DEVNUM_ROUND_ROBIN
-mdefine_line|#define DEVNUM_ROUND_ROBIN&t;/***** OPTION *****/
-multiline_comment|/*&n; * Allocated per bus we have&n; */
-DECL|struct|usb_bus
-r_struct
-id|usb_bus
-(brace
-DECL|member|busnum
-r_int
-id|busnum
-suffix:semicolon
-multiline_comment|/* Bus number (in order of reg) */
-DECL|member|bus_name
-r_char
-op_star
-id|bus_name
-suffix:semicolon
-multiline_comment|/* stable id (PCI slot_name etc) */
-macro_line|#ifdef DEVNUM_ROUND_ROBIN
-DECL|member|devnum_next
-r_int
-id|devnum_next
-suffix:semicolon
-multiline_comment|/* Next open device number in round-robin allocation */
-macro_line|#endif /* DEVNUM_ROUND_ROBIN */
-DECL|member|devmap
-r_struct
-id|usb_devmap
-id|devmap
-suffix:semicolon
-multiline_comment|/* Device map */
-DECL|member|op
-r_struct
-id|usb_operations
-op_star
-id|op
-suffix:semicolon
-multiline_comment|/* Operations (specific to the HC) */
-DECL|member|root_hub
-r_struct
-id|usb_device
-op_star
-id|root_hub
-suffix:semicolon
-multiline_comment|/* Root hub */
-DECL|member|bus_list
-r_struct
-id|list_head
-id|bus_list
-suffix:semicolon
-DECL|member|hcpriv
-r_void
-op_star
-id|hcpriv
-suffix:semicolon
-multiline_comment|/* Host Controller private data */
-DECL|member|bandwidth_allocated
-r_int
-id|bandwidth_allocated
-suffix:semicolon
-multiline_comment|/* on this Host Controller; */
-multiline_comment|/* applies to Int. and Isoc. pipes; */
-multiline_comment|/* measured in microseconds/frame; */
-multiline_comment|/* range is 0..900, where 900 = */
-multiline_comment|/* 90% of a 1-millisecond frame */
-DECL|member|bandwidth_int_reqs
-r_int
-id|bandwidth_int_reqs
-suffix:semicolon
-multiline_comment|/* number of Interrupt requesters */
-DECL|member|bandwidth_isoc_reqs
-r_int
-id|bandwidth_isoc_reqs
-suffix:semicolon
-multiline_comment|/* number of Isoc. requesters */
-DECL|member|dentry
-r_struct
-id|dentry
-op_star
-id|dentry
-suffix:semicolon
-multiline_comment|/* usbfs dentry entry for the bus */
-DECL|member|refcnt
-id|atomic_t
-id|refcnt
-suffix:semicolon
-)brace
-suffix:semicolon
-singleline_comment|// FIXME:  root_hub_string vanishes when &quot;usb_hcd&quot; conversion is done,
-singleline_comment|// along with pre-hcd versions of the OHCI and UHCI drivers.
-r_extern
-r_int
-id|usb_root_hub_string
-c_func
-(paren
-r_int
-id|id
-comma
-r_int
-id|serial
-comma
-r_char
-op_star
-id|type
-comma
-id|__u8
-op_star
-id|data
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * As of USB 2.0, full/low speed devices are segregated into trees.&n; * One type grows from USB 1.1 host controllers (OHCI, UHCI etc).&n; * The other type grows from high speed hubs when they connect to&n; * full/low speed devices using &quot;Transaction Translators&quot; (TTs).&n; *&n; * TTs should only be known to the hub driver, and high speed bus&n; * drivers (only EHCI for now).  They affect periodic scheduling and&n; * sometimes control/bulk error recovery.&n; */
-DECL|struct|usb_tt
-r_struct
-id|usb_tt
-(brace
-DECL|member|hub
-r_struct
-id|usb_device
-op_star
-id|hub
-suffix:semicolon
-multiline_comment|/* upstream highspeed hub */
-DECL|member|multi
-r_int
-id|multi
-suffix:semicolon
-multiline_comment|/* true means one TT per port */
-)brace
-suffix:semicolon
-multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/* This is arbitrary.&n; * From USB 2.0 spec Table 11-13, offset 7, a hub can&n; * have up to 255 ports. The most yet reported is 10.&n; */
-DECL|macro|USB_MAXCHILDREN
-mdefine_line|#define USB_MAXCHILDREN&t;&t;(16)
-DECL|struct|usb_device
-r_struct
-id|usb_device
-(brace
-DECL|member|devnum
-r_int
-id|devnum
-suffix:semicolon
-multiline_comment|/* Address on USB bus */
-DECL|member|devpath
-r_char
-id|devpath
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* Use in messages: /port/port/... */
-r_enum
-(brace
-DECL|enumerator|USB_SPEED_UNKNOWN
-id|USB_SPEED_UNKNOWN
-op_assign
-l_int|0
-comma
-multiline_comment|/* enumerating */
-DECL|enumerator|USB_SPEED_LOW
-DECL|enumerator|USB_SPEED_FULL
-id|USB_SPEED_LOW
-comma
-id|USB_SPEED_FULL
-comma
-multiline_comment|/* usb 1.1 */
-DECL|enumerator|USB_SPEED_HIGH
-id|USB_SPEED_HIGH
-multiline_comment|/* usb 2.0 */
-DECL|member|speed
-)brace
-id|speed
-suffix:semicolon
-DECL|member|tt
-r_struct
-id|usb_tt
-op_star
-id|tt
-suffix:semicolon
-multiline_comment|/* low/full speed dev, highspeed hub */
-DECL|member|ttport
-r_int
-id|ttport
-suffix:semicolon
-multiline_comment|/* device port on that tt hub */
-DECL|member|refcnt
-id|atomic_t
-id|refcnt
-suffix:semicolon
-multiline_comment|/* Reference count */
-DECL|member|serialize
-r_struct
-id|semaphore
-id|serialize
-suffix:semicolon
-DECL|member|toggle
-r_int
-r_int
-id|toggle
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* one bit for each endpoint ([0] = IN, [1] = OUT) */
-DECL|member|halted
-r_int
-r_int
-id|halted
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* endpoint halts; one bit per endpoint # &amp; direction; */
-multiline_comment|/* [0] = IN, [1] = OUT */
-DECL|member|epmaxpacketin
-r_int
-id|epmaxpacketin
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* INput endpoint specific maximums */
-DECL|member|epmaxpacketout
-r_int
-id|epmaxpacketout
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* OUTput endpoint specific maximums */
-DECL|member|parent
-r_struct
-id|usb_device
-op_star
-id|parent
-suffix:semicolon
-DECL|member|bus
-r_struct
-id|usb_bus
-op_star
-id|bus
-suffix:semicolon
-multiline_comment|/* Bus we&squot;re part of */
-DECL|member|dev
-r_struct
-id|device
-id|dev
-suffix:semicolon
-multiline_comment|/* Generic device interface */
-DECL|member|descriptor
-r_struct
-id|usb_device_descriptor
-id|descriptor
-suffix:semicolon
-multiline_comment|/* Descriptor */
-DECL|member|config
-r_struct
-id|usb_config_descriptor
-op_star
-id|config
-suffix:semicolon
-multiline_comment|/* All of the configs */
-DECL|member|actconfig
-r_struct
-id|usb_config_descriptor
-op_star
-id|actconfig
-suffix:semicolon
-multiline_comment|/* the active configuration */
-DECL|member|rawdescriptors
-r_char
-op_star
-op_star
-id|rawdescriptors
-suffix:semicolon
-multiline_comment|/* Raw descriptors for each config */
-DECL|member|have_langid
-r_int
-id|have_langid
-suffix:semicolon
-multiline_comment|/* whether string_langid is valid yet */
-DECL|member|string_langid
-r_int
-id|string_langid
-suffix:semicolon
-multiline_comment|/* language ID for strings */
-DECL|member|hcpriv
-r_void
-op_star
-id|hcpriv
-suffix:semicolon
-multiline_comment|/* Host Controller private data */
-DECL|member|filelist
-r_struct
-id|list_head
-id|filelist
-suffix:semicolon
-DECL|member|dentry
-r_struct
-id|dentry
-op_star
-id|dentry
-suffix:semicolon
-multiline_comment|/* usbfs dentry entry for the device */
-multiline_comment|/*&n;&t; * Child devices - these can be either new devices&n;&t; * (if this is a hub device), or different instances&n;&t; * of this same device.&n;&t; *&n;&t; * Each instance needs its own set of data structures.&n;&t; */
-DECL|member|maxchild
-r_int
-id|maxchild
-suffix:semicolon
-multiline_comment|/* Number of ports if hub */
-DECL|member|children
-r_struct
-id|usb_device
-op_star
-id|children
-(braket
-id|USB_MAXCHILDREN
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* for when layers above USB add new non-USB drivers */
-r_extern
-r_void
-id|usb_scan_devices
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* mostly for devices emulating SCSI over USB */
-r_extern
-r_int
-id|usb_reset_device
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* for drivers using iso endpoints */
-r_extern
-r_int
-id|usb_get_current_frame_number
-(paren
-r_struct
-id|usb_device
-op_star
-id|usb_dev
-)paren
-suffix:semicolon
-multiline_comment|/**&n; * usb_inc_dev_use - record another reference to a device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them usb_dec_dev_use(), in their disconnect() methods.&n; */
-DECL|function|usb_inc_dev_use
-r_static
-r_inline
-r_void
-id|usb_inc_dev_use
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-id|atomic_inc
-(paren
-op_amp
-id|dev-&gt;refcnt
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * usb_dec_dev_use - drop a reference to a device&n; * @dev: the device no longer being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally release such references in&n; * their disconnect() methods, and record them in probe().&n; *&n; * Note that driver disconnect() methods must guarantee that when they&n; * return, all of their outstanding references to the device (and its&n; * interfaces) are cleaned up.  That means that all pending URBs from&n; * this driver must have completed, and that no more copies of the device&n; * handle are saved in driver records (including other kernel threads).&n; */
-DECL|function|usb_dec_dev_use
-r_static
-r_inline
-r_void
-id|usb_dec_dev_use
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|atomic_dec_and_test
-(paren
-op_amp
-id|dev-&gt;refcnt
-)paren
-)paren
-(brace
-multiline_comment|/* May only go to zero when usbcore finishes&n;&t;&t; * usb_disconnect() processing:  khubd or HCDs.&n;&t;&t; *&n;&t;&t; * If you hit this BUG() it&squot;s likely a problem&n;&t;&t; * with some driver&squot;s disconnect() routine.&n;&t;&t; */
-id|BUG
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* used these for multi-interface device registration */
-r_extern
-r_int
-id|usb_find_interface_driver_for_ifnum
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_driver_claim_interface
-c_func
-(paren
-r_struct
-id|usb_driver
-op_star
-id|driver
-comma
-r_struct
-id|usb_interface
-op_star
-id|iface
-comma
-r_void
-op_star
-id|priv
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_interface_claimed
-c_func
-(paren
-r_struct
-id|usb_interface
-op_star
-id|iface
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_driver_release_interface
-c_func
-(paren
-r_struct
-id|usb_driver
-op_star
-id|driver
-comma
-r_struct
-id|usb_interface
-op_star
-id|iface
-)paren
-suffix:semicolon
-r_const
-r_struct
-id|usb_device_id
-op_star
-id|usb_match_id
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_struct
-id|usb_interface
-op_star
-id|interface
-comma
-r_const
-r_struct
-id|usb_device_id
-op_star
-id|id
-)paren
-suffix:semicolon
-multiline_comment|/**&n; * usb_make_path - returns stable device path in the usb tree&n; * @dev: the device whose path is being constructed&n; * @buf: where to put the string&n; * @size: how big is &quot;buf&quot;?&n; *&n; * Returns length of the string (&gt; 0) or negative if size was too small.&n; *&n; * This identifier is intended to be &quot;stable&quot;, reflecting physical paths in&n; * hardware such as physical bus addresses for host controllers or ports on&n; * USB hubs.  That makes it stay the same until systems are physically&n; * reconfigured, by re-cabling a tree of USB devices or by moving USB host&n; * controllers.  Adding and removing devices, including virtual root hubs&n; * in host controller driver modules, does not change these path identifers;&n; * neither does rebooting or re-enumerating.  These are more useful identifiers&n; * than changeable (&quot;unstable&quot;) ones like bus numbers or device addresses.&n; * &n; * With a partial exception for devices connected to USB 2.0 root hubs, these&n; * identifiers are also predictable:  so long as the device tree isn&squot;t changed,&n; * plugging any USB device into a given hub port always gives it the same path.&n; * Because of the use of &quot;companion&quot; controllers, devices connected to ports on&n; * USB 2.0 root hubs (EHCI host controllers) will get one path ID if they are&n; * high speed, and a different one if they are full or low speed.&n; */
-DECL|function|usb_make_path
-r_static
-r_inline
-r_int
-id|usb_make_path
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|size
-)paren
-(brace
-r_int
-id|actual
-suffix:semicolon
-id|actual
-op_assign
-id|snprintf
-(paren
-id|buf
-comma
-id|size
-comma
-l_string|&quot;usb-%s-%s&quot;
-comma
-id|dev-&gt;bus-&gt;bus_name
-comma
-id|dev-&gt;devpath
-)paren
-suffix:semicolon
-r_return
-(paren
-id|actual
-op_ge
-id|size
-)paren
-ques
-c_cond
-op_minus
-l_int|1
-suffix:colon
-id|actual
-suffix:semicolon
-)brace
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit) [Historical and specific to USB 1.1; now gone.]&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;[Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In])&n; *  - device:&t;&t;bits 8-14&n; *  - endpoint:&t;&t;bits 15-18&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - lowspeed:&t;&t;bit 26&t;&t;[Historical; now gone. ]&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
 DECL|macro|PIPE_ISOCHRONOUS

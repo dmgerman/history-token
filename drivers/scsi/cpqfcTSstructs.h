@@ -9,7 +9,7 @@ singleline_comment|// task queue sched
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;cpqfcTSioctl.h&quot;
 DECL|macro|DbgDelay
-mdefine_line|#define DbgDelay(secs) { int wait_time; printk( &quot; DbgDelay %ds &quot;, secs); &bslash;&n;                         for( wait_time=jiffies + (secs*HZ); &bslash;&n;&t;&t;         wait_time &gt; jiffies ;) ; }
+mdefine_line|#define DbgDelay(secs) { int wait_time; printk( &quot; DbgDelay %ds &quot;, secs); &bslash;&n;                         for( wait_time=jiffies + (secs*HZ); &bslash;&n;&t;&t;         time_before(jiffies, wait_time) ;) ; }
 DECL|macro|CPQFCTS_DRIVER_VER
 mdefine_line|#define CPQFCTS_DRIVER_VER(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 singleline_comment|// don&squot;t forget to also change MODULE_DESCRIPTION in cpqfcTSinit.c

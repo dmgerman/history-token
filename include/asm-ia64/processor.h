@@ -216,6 +216,8 @@ DECL|macro|IA64_ISR_RS_BIT
 mdefine_line|#define IA64_ISR_RS_BIT&t;&t;37&t;/* mandatory register-stack exception */
 DECL|macro|IA64_ISR_IR_BIT
 mdefine_line|#define IA64_ISR_IR_BIT&t;&t;38&t;/* invalid register frame exception */
+DECL|macro|IA64_ISR_CODE_MASK
+mdefine_line|#define IA64_ISR_CODE_MASK&t;0xf
 DECL|macro|IA64_ISR_X
 mdefine_line|#define IA64_ISR_X&t;(__IA64_UL(1) &lt;&lt; IA64_ISR_X_BIT)
 DECL|macro|IA64_ISR_W
@@ -230,6 +232,19 @@ DECL|macro|IA64_ISR_RS
 mdefine_line|#define IA64_ISR_RS&t;(__IA64_UL(1) &lt;&lt; IA64_ISR_RS_BIT)
 DECL|macro|IA64_ISR_IR
 mdefine_line|#define IA64_ISR_IR&t;(__IA64_UL(1) &lt;&lt; IA64_ISR_IR_BIT)
+multiline_comment|/* ISR code field for non-access instructions */
+DECL|macro|IA64_ISR_CODE_TPA
+mdefine_line|#define IA64_ISR_CODE_TPA&t;0
+DECL|macro|IA64_ISR_CODE_FC
+mdefine_line|#define IA64_ISR_CODE_FC&t;1
+DECL|macro|IA64_ISR_CODE_PROBE
+mdefine_line|#define IA64_ISR_CODE_PROBE&t;2
+DECL|macro|IA64_ISR_CODE_TAK
+mdefine_line|#define IA64_ISR_CODE_TAK&t;3
+DECL|macro|IA64_ISR_CODE_LFETCH
+mdefine_line|#define IA64_ISR_CODE_LFETCH&t;4
+DECL|macro|IA64_ISR_CODE_PROBEF
+mdefine_line|#define IA64_ISR_CODE_PROBEF&t;5
 DECL|macro|IA64_THREAD_FPH_VALID
 mdefine_line|#define IA64_THREAD_FPH_VALID&t;(__IA64_UL(1) &lt;&lt; 0)&t;/* floating-point high state valid? */
 DECL|macro|IA64_THREAD_DBG_VALID

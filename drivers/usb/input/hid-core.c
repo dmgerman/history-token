@@ -5785,6 +5785,8 @@ DECL|macro|USB_DEVICE_ID_ATEN_CS124U
 mdefine_line|#define USB_DEVICE_ID_ATEN_CS124U      0x2202
 DECL|macro|USB_DEVICE_ID_ATEN_2PORTKVM
 mdefine_line|#define USB_DEVICE_ID_ATEN_2PORTKVM    0x2204
+DECL|macro|USB_DEVICE_ID_ATEN_4PORTKVM
+mdefine_line|#define USB_DEVICE_ID_ATEN_4PORTKVM    0x2205
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -5900,6 +5902,14 @@ comma
 id|USB_VENDOR_ID_ATEN
 comma
 id|USB_DEVICE_ID_ATEN_2PORTKVM
+comma
+id|HID_QUIRK_NOGET
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_ATEN
+comma
+id|USB_DEVICE_ID_ATEN_4PORTKVM
 comma
 id|HID_QUIRK_NOGET
 )brace

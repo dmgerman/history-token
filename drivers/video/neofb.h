@@ -381,10 +381,6 @@ id|pci_dev
 op_star
 id|pcidev
 suffix:semicolon
-DECL|member|currcon
-r_int
-id|currcon
-suffix:semicolon
 DECL|member|accel
 r_int
 id|accel

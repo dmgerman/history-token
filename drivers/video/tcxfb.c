@@ -1020,7 +1020,7 @@ suffix:semicolon
 )brace
 DECL|function|tcx_blank
 r_static
-r_void
+r_int
 id|tcx_blank
 (paren
 r_struct
@@ -1086,10 +1086,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|tcx_unblank
 r_static
-r_void
+r_int
 id|tcx_unblank
 (paren
 r_struct
@@ -1154,6 +1157,9 @@ id|fb-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|tcx_reset
@@ -1292,7 +1298,7 @@ r_int
 id|y_margin
 )paren
 (brace
-id|p-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_add_assign
 (paren
 id|y_margin
@@ -1456,10 +1462,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 )paren
 (brace
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -1482,7 +1488,7 @@ l_string|&quot;tcx ram&quot;
 )paren
 suffix:semicolon
 )brace
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_add_assign
 id|fix-&gt;line_length
 op_star

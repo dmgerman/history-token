@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * I/O SAPIC support.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 2000-2002 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 00/04/19&t;D. Mosberger&t;Rewritten to mirror more closely the x86 I/O APIC code.&n; *&t;&t;&t;&t;In particular, we now have separate handlers for edge&n; *&t;&t;&t;&t;and level triggered interrupts.&n; * 00/10/27&t;Asit Mallick, Goutham Rao &lt;goutham.rao@intel.com&gt; IRQ vector allocation&n; *&t;&t;&t;&t;PCI to vector mapping, shared PCI interrupts.&n; * 00/10/27&t;D. Mosberger&t;Document things a bit more to make them more understandable.&n; *&t;&t;&t;&t;Clean up much of the old IOSAPIC cruft.&n; * 01/07/27&t;J.I. Lee&t;PCI irq routing, Platform/Legacy interrupts and fixes for&n; *&t;&t;&t;&t;ACPI S5(SoftOff) support.&n; * 02/01/23&t;J.I. Lee&t;iosapic pgm fixes for PCI irq routing from _PRT&n; * 02/01/07     E. Focht        &lt;efocht@ess.nec.de&gt; Redirectable interrupt vectors in&n; *                              iosapic_set_affinity(), initializations for&n; *                              /proc/irq/#/smp_affinity&n; * 02/04/02&t;P. Diefenbaugh&t;Cleaned up ACPI PCI IRQ routing.&n; */
+multiline_comment|/*&n; * I/O SAPIC support.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 2000-2002 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 00/04/19&t;D. Mosberger&t;Rewritten to mirror more closely the x86 I/O APIC code.&n; *&t;&t;&t;&t;In particular, we now have separate handlers for edge&n; *&t;&t;&t;&t;and level triggered interrupts.&n; * 00/10/27&t;Asit Mallick, Goutham Rao &lt;goutham.rao@intel.com&gt; IRQ vector allocation&n; *&t;&t;&t;&t;PCI to vector mapping, shared PCI interrupts.&n; * 00/10/27&t;D. Mosberger&t;Document things a bit more to make them more understandable.&n; *&t;&t;&t;&t;Clean up much of the old IOSAPIC cruft.&n; * 01/07/27&t;J.I. Lee&t;PCI irq routing, Platform/Legacy interrupts and fixes for&n; *&t;&t;&t;&t;ACPI S5(SoftOff) support.&n; * 02/01/23&t;J.I. Lee&t;iosapic pgm fixes for PCI irq routing from _PRT&n; * 02/01/07     E. Focht        &lt;efocht@ess.nec.de&gt; Redirectable interrupt vectors in&n; *                              iosapic_set_affinity(), initializations for&n; *                              /proc/irq/#/smp_affinity&n; * 02/04/02&t;P. Diefenbaugh&t;Cleaned up ACPI PCI IRQ routing.&n; * 02/04/18&t;J.I. Lee&t;bug fix in iosapic_init_pci_irq&n; */
 multiline_comment|/*&n; * Here is what the interrupt logic between a PCI device and the CPU looks like:&n; *&n; * (1) A PCI device raises one of the four interrupt pins (INTA, INTB, INTC, INTD).  The&n; *     device is uniquely identified by its bus--, and slot-number (the function&n; *     number does not matter here because all functions share the same interrupt&n; *     lines).&n; *&n; * (2) The motherboard routes the interrupt line to a pin on a IOSAPIC controller.&n; *     Multiple interrupt lines may have to share the same IOSAPIC pin (if they&squot;re level&n; *     triggered and use the same polarity).  Each interrupt line has a unique IOSAPIC&n; *     irq number which can be calculated as the sum of the controller&squot;s base irq number&n; *     and the IOSAPIC pin number to which the line connects.&n; *&n; * (3) The IOSAPIC uses an internal table to map the IOSAPIC pin into the IA-64 interrupt&n; *     vector.  This interrupt vector is then sent to the CPU.&n; *&n; * In other words, there are two levels of indirections involved:&n; *&n; *&t;pci pin -&gt; iosapic irq -&gt; IA-64 vector&n; *&n; * Note: outside this module, IA-64 vectors are called &quot;irqs&quot;.  This is because that&squot;s&n; * the traditional name Linux uses for interrupt vectors.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|DEBUG_IRQ_ROUTING
 macro_line|#undef DEBUG_IRQ_ROUTING
 DECL|macro|OVERRIDE_DEBUG
-macro_line|#undef&t;OVERRIDE_DEBUG
+macro_line|#undef OVERRIDE_DEBUG
 DECL|variable|iosapic_lock
 r_static
 id|spinlock_t
@@ -2748,6 +2748,24 @@ id|vector
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t;&t; * Forget not to program the IOSAPIC RTE per ACPI _PRT&n;&t;&t; */
+id|set_rte
+c_func
+(paren
+id|vector
+comma
+(paren
+id|ia64_get_lid
+c_func
+(paren
+)paren
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xffff
+)paren
+suffix:semicolon
 )brace
 )brace
 r_void

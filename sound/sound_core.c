@@ -629,11 +629,7 @@ id|chain
 op_assign
 id|unit
 op_mod
-(paren
 id|SOUND_STEP
-op_minus
-l_int|1
-)paren
 suffix:semicolon
 r_int
 id|max_unit
@@ -690,6 +686,8 @@ op_assign
 id|unit
 op_plus
 l_int|1
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|2
@@ -1072,8 +1070,8 @@ op_amp
 id|chains
 (braket
 id|unit
-op_amp
-l_int|15
+op_mod
+id|SOUND_STEP
 )braket
 comma
 id|unit

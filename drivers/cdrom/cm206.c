@@ -6350,7 +6350,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_cm206_request
 comma
 op_amp
 id|cm206_lock

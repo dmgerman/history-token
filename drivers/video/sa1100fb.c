@@ -2790,23 +2790,11 @@ r_int
 id|con
 )paren
 (brace
-r_struct
-id|sa1100fb_info
-op_star
-id|fbi
-op_assign
-(paren
-r_struct
-id|sa1100fb_info
-op_star
-)paren
-id|info
-suffix:semicolon
 r_return
 (paren
 id|con
 op_eq
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 op_logical_or
 id|con
 op_eq
@@ -2816,7 +2804,7 @@ l_int|1
 ques
 c_cond
 op_amp
-id|fbi-&gt;fb.var
+id|info-&gt;var
 suffix:colon
 op_amp
 id|fb_display
@@ -2894,23 +2882,11 @@ r_int
 id|con
 )paren
 (brace
-r_struct
-id|sa1100fb_info
-op_star
-id|fbi
-op_assign
-(paren
-r_struct
-id|sa1100fb_info
-op_star
-)paren
-id|info
-suffix:semicolon
 r_return
 (paren
 id|con
 op_eq
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 op_logical_or
 id|con
 op_eq
@@ -2920,7 +2896,7 @@ l_int|1
 ques
 c_cond
 op_amp
-id|fbi-&gt;fb.cmap
+id|info-&gt;cmap
 suffix:colon
 op_amp
 id|fb_display
@@ -3203,7 +3179,7 @@ c_func
 (paren
 id|info
 comma
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 )paren
 suffix:semicolon
 id|u_int
@@ -3736,8 +3712,6 @@ id|fbi-&gt;fb.cmap
 comma
 l_int|1
 comma
-id|sa1100fb_setcolreg
-comma
 op_amp
 id|fbi-&gt;fb
 )paren
@@ -4103,10 +4077,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|display-&gt;screen_base
-op_assign
-id|fbi-&gt;screen_cpu
-suffix:semicolon
 id|display-&gt;next_line
 op_assign
 id|display-&gt;line_length
@@ -4254,7 +4224,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|fbi-&gt;currcon
+id|fbi-&gt;fb.currcon
 )paren
 r_return
 l_int|0
@@ -4334,7 +4304,7 @@ l_int|1
 )paren
 id|con
 op_assign
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 suffix:semicolon
 multiline_comment|/* no colormap allocated? (we always have &quot;this&quot; colour map allocated) */
 r_if
@@ -4370,7 +4340,7 @@ id|err
 op_logical_and
 id|con
 op_eq
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 )paren
 id|err
 op_assign
@@ -4380,8 +4350,6 @@ c_func
 id|cmap
 comma
 id|kspc
-comma
-id|sa1100fb_setcolreg
 comma
 id|info
 )paren
@@ -4648,6 +4616,14 @@ id|fb_set_cmap
 suffix:colon
 id|sa1100fb_set_cmap
 comma
+id|fb_setcolreg
+suffix:colon
+id|sa1100fb_setcolreg
+comma
+id|fb_blank
+suffix:colon
+id|sa1100fb_blank
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  sa1100fb_switch():       &n; *&t;Change to the specified console.  Palette and video mode&n; *      are changed to the console&squot;s stored parameters.&n; *&n; *&t;Uh oh, this can be called from a tasklet (IRQ)&n; */
@@ -4703,7 +4679,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 )paren
 r_return
 l_int|0
@@ -4711,7 +4687,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 op_ge
 l_int|0
 )paren
@@ -4720,7 +4696,7 @@ id|disp
 op_assign
 id|fb_display
 op_plus
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Save the old colormap and video mode.&n;&t;&t; */
 id|disp-&gt;var
@@ -4745,7 +4721,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -4826,7 +4802,7 @@ multiline_comment|/*&n; * Formal definition of the VESA spec:&n; *  On&n; *  &t;
 multiline_comment|/*&n; * sa1100fb_blank():&n; *&t;Blank the display by setting all palette values to zero.  Note, the &n; * &t;12 and 16 bpp modes don&squot;t really use the palette, so this will not&n; *      blank the display in all modes.  &n; */
 DECL|function|sa1100fb_blank
 r_static
-r_void
+r_int
 id|sa1100fb_blank
 c_func
 (paren
@@ -4974,8 +4950,6 @@ id|fbi-&gt;fb.cmap
 comma
 l_int|1
 comma
-id|sa1100fb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -4988,6 +4962,9 @@ id|C_ENABLE
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|sa1100fb_updatevar
 r_static
@@ -6988,7 +6965,7 @@ c_cond
 id|fbi-&gt;map_cpu
 )paren
 (brace
-id|fbi-&gt;screen_cpu
+id|fbi-&gt;fb.screen_base
 op_assign
 id|fbi-&gt;map_cpu
 op_plus
@@ -7114,7 +7091,7 @@ id|display
 )paren
 )paren
 suffix:semicolon
-id|fbi-&gt;currcon
+id|fbi-&gt;fb.currcon
 op_assign
 op_minus
 l_int|1
@@ -7210,10 +7187,6 @@ id|fbi-&gt;fb.updatevar
 op_assign
 id|sa1100fb_updatevar
 suffix:semicolon
-id|fbi-&gt;fb.blank
-op_assign
-id|sa1100fb_blank
-suffix:semicolon
 id|fbi-&gt;fb.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -7225,6 +7198,11 @@ suffix:semicolon
 id|fbi-&gt;fb.monspecs
 op_assign
 id|monspecs
+suffix:semicolon
+id|fbi-&gt;fb.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|fbi-&gt;fb.disp
 op_assign

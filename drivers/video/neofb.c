@@ -3279,7 +3279,7 @@ id|err
 op_logical_and
 id|con
 op_eq
-id|info-&gt;currcon
+id|info-&gt;fb.currcon
 )paren
 (brace
 id|err
@@ -5987,7 +5987,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|info-&gt;currcon
+id|info-&gt;fb.currcon
 )paren
 (brace
 r_if
@@ -6243,7 +6243,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;currcon
+id|info-&gt;fb.currcon
 op_ge
 l_int|0
 )paren
@@ -6252,7 +6252,7 @@ id|disp
 op_assign
 id|fb_display
 op_plus
-id|info-&gt;currcon
+id|info-&gt;fb.currcon
 suffix:semicolon
 multiline_comment|/*&n;       * Save the old colormap and video mode.&n;       */
 id|disp-&gt;var
@@ -6277,7 +6277,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|info-&gt;currcon
+id|info-&gt;fb.currcon
 op_assign
 id|con
 suffix:semicolon
@@ -7912,7 +7912,7 @@ id|display
 )paren
 )paren
 suffix:semicolon
-id|info-&gt;currcon
+id|info-&gt;fb.currcon
 op_assign
 op_minus
 l_int|1

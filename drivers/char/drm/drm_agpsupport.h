@@ -1655,6 +1655,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|ALI_M1644
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;ALi M1644&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|ALI_M1647
 suffix:colon
 id|head-&gt;chipset

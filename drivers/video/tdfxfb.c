@@ -179,14 +179,14 @@ multiline_comment|/* register bitfields (not all, only as needed) */
 DECL|macro|BIT
 mdefine_line|#define BIT(x) (1UL &lt;&lt; (x))
 multiline_comment|/* COMMAND_2D reg. values */
-DECL|macro|ROP_COPY
-mdefine_line|#define ROP_COPY&t;0xcc     
+DECL|macro|TDFX_ROP_COPY
+mdefine_line|#define TDFX_ROP_COPY&t;     0xcc     
 singleline_comment|// src
-DECL|macro|ROP_INVERT
-mdefine_line|#define ROP_INVERT      0x55     
+DECL|macro|TDFX_ROP_INVERT
+mdefine_line|#define TDFX_ROP_INVERT      0x55     
 singleline_comment|// NOT dst
-DECL|macro|ROP_XOR
-mdefine_line|#define ROP_XOR         0x66     
+DECL|macro|TDFX_ROP_XOR
+mdefine_line|#define TDFX_ROP_XOR         0x66     
 singleline_comment|// src XOR dst
 DECL|macro|AUTOINC_DSTX
 mdefine_line|#define AUTOINC_DSTX                    BIT(10)
@@ -814,6 +814,32 @@ id|fb
 suffix:semicolon
 r_static
 r_int
+id|tdfxfb_setcolreg
+c_func
+(paren
+id|u_int
+id|regno
+comma
+id|u_int
+id|red
+comma
+id|u_int
+id|green
+comma
+id|u_int
+id|blue
+comma
+id|u_int
+id|transp
+comma
+r_struct
+id|fb_info
+op_star
+id|fb
+)paren
+suffix:semicolon
+r_static
+r_int
 id|tdfxfb_pan_display
 c_func
 (paren
@@ -905,7 +931,7 @@ id|fb
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|tdfxfb_blank
 c_func
 (paren
@@ -1055,48 +1081,6 @@ r_struct
 id|fb_info
 op_star
 id|fb
-)paren
-suffix:semicolon
-r_static
-r_int
-id|tdfxfb_setcolreg
-c_func
-(paren
-id|u_int
-id|regno
-comma
-id|u_int
-id|red
-comma
-id|u_int
-id|green
-comma
-id|u_int
-id|blue
-comma
-id|u_int
-id|transp
-comma
-r_struct
-id|fb_info
-op_star
-id|fb
-)paren
-suffix:semicolon
-r_static
-r_void
-id|tdfxfb_install_cmap
-c_func
-(paren
-r_struct
-id|display
-op_star
-id|d
-comma
-r_struct
-id|fb_info
-op_star
-id|info
 )paren
 suffix:semicolon
 r_static
@@ -1357,13 +1341,6 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|tdfxfb_ops
 r_static
 r_struct
@@ -1395,9 +1372,17 @@ id|fb_set_cmap
 suffix:colon
 id|tdfxfb_set_cmap
 comma
+id|fb_setcolreg
+suffix:colon
+id|tdfxfb_setcolreg
+comma
 id|fb_pan_display
 suffix:colon
 id|tdfxfb_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|tdfxfb_blank
 comma
 )brace
 suffix:semicolon
@@ -2851,7 +2836,7 @@ op_assign
 id|COMMAND_2D_S2S_BITBLT
 op_or
 (paren
-id|ROP_COPY
+id|TDFX_ROP_COPY
 op_lshift
 l_int|24
 )paren
@@ -3205,7 +3190,7 @@ comma
 id|COMMAND_2D_H2S_BITBLT
 op_or
 (paren
-id|ROP_COPY
+id|TDFX_ROP_COPY
 op_lshift
 l_int|24
 )paren
@@ -3687,7 +3672,7 @@ comma
 id|COMMAND_2D_H2S_BITBLT
 op_or
 (paren
-id|ROP_COPY
+id|TDFX_ROP_COPY
 op_lshift
 l_int|24
 )paren
@@ -4966,7 +4951,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -4995,7 +4980,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -5692,7 +5677,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -5788,7 +5773,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -5884,7 +5869,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -5957,7 +5942,7 @@ id|fb_info.current_par.lpitch
 comma
 id|bpp
 comma
-id|ROP_XOR
+id|TDFX_ROP_XOR
 )paren
 suffix:semicolon
 )brace
@@ -9074,10 +9059,6 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|info-&gt;bufbase_virt
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -9319,10 +9300,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|tdfxfb_install_cmap
+id|do_install_cmap
 c_func
 (paren
-id|display
+id|con
 comma
 op_amp
 (paren
@@ -9427,7 +9408,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|fb-&gt;currcon
 )paren
 id|do_pan_var
 c_func
@@ -9517,7 +9498,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|fb-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -9693,7 +9674,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|fb-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -9704,8 +9685,6 @@ c_func
 id|cmap
 comma
 id|kspc
-comma
-id|tdfxfb_setcolreg
 comma
 id|fb
 )paren
@@ -10006,7 +9985,7 @@ comma
 id|fb_info.bufbase_size
 )paren
 suffix:semicolon
-id|currcon
+id|fb_info.fb_info.currcon
 op_assign
 op_minus
 l_int|1
@@ -10089,6 +10068,11 @@ op_assign
 op_amp
 id|fb_info.disp
 suffix:semicolon
+id|fb_info.fb_info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -10106,11 +10090,6 @@ id|fb_info.fb_info.updatevar
 op_assign
 op_amp
 id|tdfxfb_updatevar
-suffix:semicolon
-id|fb_info.fb_info.blank
-op_assign
-op_amp
-id|tdfxfb_blank
 suffix:semicolon
 id|fb_info.fb_info.flags
 op_assign
@@ -10263,7 +10242,7 @@ id|ENXIO
 suffix:semicolon
 )brace
 )brace
-id|fb_info.disp.screen_base
+id|fb_info.fb_info.screen_base
 op_assign
 id|fb_info.bufbase_virt
 suffix:semicolon
@@ -10743,7 +10722,7 @@ suffix:semicolon
 r_int
 id|old_con
 op_assign
-id|currcon
+id|fb-&gt;currcon
 suffix:semicolon
 r_int
 id|set_par
@@ -10754,7 +10733,7 @@ multiline_comment|/* Do we have to save the colormap? */
 r_if
 c_cond
 (paren
-id|currcon
+id|fb-&gt;currcon
 op_ge
 l_int|0
 )paren
@@ -10763,7 +10742,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -10775,7 +10754,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap
@@ -10788,13 +10767,13 @@ id|fb
 )paren
 suffix:semicolon
 )brace
-id|currcon
+id|fb-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|var.activate
@@ -10989,14 +10968,10 @@ op_amp
 id|FB_ACCELF_TEXT
 )paren
 suffix:semicolon
-id|tdfxfb_install_cmap
+id|do_install_cmap
 c_func
 (paren
-op_amp
-id|fb_display
-(braket
 id|con
-)braket
 comma
 id|fb
 )paren
@@ -11016,7 +10991,7 @@ suffix:semicolon
 multiline_comment|/* 0 unblank, 1 blank, 2 no vsync, 3 no hsync, 4 off */
 DECL|function|tdfxfb_blank
 r_static
-r_void
+r_int
 id|tdfxfb_blank
 c_func
 (paren
@@ -11197,6 +11172,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|tdfxfb_updatevar
@@ -11232,7 +11208,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|fb-&gt;currcon
 )paren
 op_logical_and
 (paren
@@ -11662,77 +11638,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
-DECL|function|tdfxfb_install_cmap
-r_static
-r_void
-id|tdfxfb_install_cmap
-c_func
-(paren
-r_struct
-id|display
-op_star
-id|d
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-r_struct
-id|fb_info_tdfx
-op_star
-id|i
-op_assign
-(paren
-r_struct
-id|fb_info_tdfx
-op_star
-)paren
-id|info
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|d-&gt;cmap.len
-)paren
-(brace
-id|fb_set_cmap
-c_func
-(paren
-op_amp
-(paren
-id|d-&gt;cmap
-)paren
-comma
-l_int|1
-comma
-id|tdfxfb_setcolreg
-comma
-id|info
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|fb_set_cmap
-c_func
-(paren
-id|fb_default_cmap
-c_func
-(paren
-id|i-&gt;current_par.cmap_len
-)paren
-comma
-l_int|1
-comma
-id|tdfxfb_setcolreg
-comma
-id|info
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|function|tdfxfb_createcursorshape
 r_static

@@ -6509,7 +6509,11 @@ op_logical_neg
 id|cpu_rq
 c_func
 (paren
+id|cpu_logical_map
+c_func
+(paren
 id|cpu
+)paren
 )paren
 op_member_access_from_pointer
 id|migration_thread

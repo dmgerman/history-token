@@ -267,6 +267,12 @@ DECL|macro|opl3sa2_t_magic
 mdefine_line|#define opl3sa2_t_magic&t;&t;&t;&t;0xa15a3900
 DECL|macro|serialmidi_t_magic
 mdefine_line|#define serialmidi_t_magic&t;&t;&t;0xa15a3a00
+DECL|macro|sa11xx_uda1341_t_magic
+mdefine_line|#define sa11xx_uda1341_t_magic&t;&t;&t;0xa15a3b00
+DECL|macro|uda1341_t_magic
+mdefine_line|#define uda1341_t_magic                         0xa15a3c00
+DECL|macro|l3_client_t_magic
+mdefine_line|#define l3_client_t_magic                       0xa15a3d00
 macro_line|#else
 DECL|macro|snd_magic_kcalloc
 mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) snd_kcalloc(sizeof(type) + extra, flags)

@@ -1146,6 +1146,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
 )brace
 r_if
 c_cond

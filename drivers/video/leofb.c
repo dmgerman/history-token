@@ -1391,7 +1391,7 @@ op_assign
 id|u32
 op_star
 )paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 )paren
 op_plus
 id|y
@@ -1776,7 +1776,7 @@ op_assign
 id|u32
 op_star
 )paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 )paren
 op_plus
 id|y
@@ -3689,7 +3689,7 @@ suffix:semicolon
 )brace
 DECL|function|leo_blank
 r_static
-r_void
+r_int
 id|leo_blank
 (paren
 r_struct
@@ -3755,10 +3755,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|leo_unblank
 r_static
-r_void
+r_int
 id|leo_unblank
 (paren
 r_struct
@@ -3834,6 +3837,9 @@ id|fb-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -4023,7 +4029,7 @@ r_int
 id|y_margin
 )paren
 (brace
-id|p-&gt;screen_base
+id|fb-&gt;fb_info.screen_base
 op_add_assign
 l_int|8192
 op_star
@@ -4508,10 +4514,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 )paren
 (brace
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -4534,7 +4540,7 @@ l_string|&quot;leo ram&quot;
 )paren
 suffix:semicolon
 )brace
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_add_assign
 l_int|8192
 op_star

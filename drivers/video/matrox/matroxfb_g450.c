@@ -272,7 +272,7 @@ c_func
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 comma
 (paren

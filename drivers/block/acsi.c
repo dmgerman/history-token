@@ -7229,7 +7229,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_acsi_request
 comma
 op_amp
 id|acsi_lock
