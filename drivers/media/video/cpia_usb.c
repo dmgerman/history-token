@@ -1,9 +1,10 @@
 multiline_comment|/*&n; * cpia_usb CPiA USB driver&n; *&n; * Supports CPiA based parallel port Video Camera&squot;s.&n; *&n; * Copyright (C) 1999        Jochen Scharrlach &lt;Jochen.Scharrlach@schwaben.de&gt;&n; * Copyright (C) 1999, 2000  Johannes Erdfelt &lt;johannes@erdfelt.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* define _CPIA_DEBUG_ for verbose debug output (see cpia.h) */
+multiline_comment|/* #define _CPIA_DEBUG_  1 */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -298,8 +299,6 @@ DECL|variable|cam_list_lock_usb
 r_static
 id|spinlock_t
 id|cam_list_lock_usb
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|cpia_usb_complete
 r_static
@@ -2172,28 +2171,29 @@ op_star
 )paren
 id|privdata
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ucpia
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|ucpia-&gt;open
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* ucpia-&gt;present = 0 protects against trying to reset the&n;&t; * alt setting if camera is physically disconnected while open */
 id|cpia_usb_free_resources
 c_func
 (paren
 id|ucpia
 comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|ucpia-&gt;present
-)paren
-id|kfree
-c_func
-(paren
-id|ucpia
 )paren
 suffix:semicolon
 r_return
@@ -2658,6 +2658,12 @@ l_int|NULL
 suffix:semicolon
 id|fail_alloc_0
 suffix:colon
+id|kfree
+c_func
+(paren
+id|ucpia
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -2750,9 +2756,6 @@ id|cpia_id_table
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* don&squot;t use dev, it may be NULL! (see usb_cpia_cleanup) */
-multiline_comment|/* _disconnect from usb_cpia_cleanup is not necessary since usb_deregister */
-multiline_comment|/* will do it for us as well as passing a udev structure - jerdfelt */
 DECL|function|cpia_disconnect
 r_static
 r_void
@@ -2832,15 +2835,6 @@ op_amp
 id|cam_list_lock_usb
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t even try to reset the altsetting if we&squot;re disconnected */
-id|cpia_usb_free_resources
-c_func
-(paren
-id|ucpia
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|ucpia-&gt;present
 op_assign
 l_int|0
@@ -2851,6 +2845,19 @@ c_func
 id|cam
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ucpia-&gt;open
+)paren
+(brace
+id|cpia_usb_close
+c_func
+(paren
+id|cam-&gt;lowlevel_data
+)paren
+suffix:semicolon
+)brace
 id|ucpia-&gt;curbuff-&gt;status
 op_assign
 id|FRAME_ERROR
@@ -2977,24 +2984,16 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ucpia-&gt;open
-)paren
-(brace
+id|cam-&gt;lowlevel_data
+op_assign
+l_int|NULL
+suffix:semicolon
 id|kfree
 c_func
 (paren
 id|ucpia
 )paren
 suffix:semicolon
-id|cam-&gt;lowlevel_data
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 DECL|function|usb_cpia_init
 r_static
@@ -3006,6 +3005,28 @@ c_func
 r_void
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s v%d.%d.%d&bslash;n&quot;
+comma
+id|ABOUT
+comma
+id|CPIA_USB_MAJ_VER
+comma
+id|CPIA_USB_MIN_VER
+comma
+id|CPIA_USB_PATCH_VER
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|cam_list_lock_usb
+)paren
+suffix:semicolon
 r_return
 id|usb_register
 c_func
@@ -3025,7 +3046,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t;struct cam_data *cam;&n;&n;&t;while ((cam = cam_list) != NULL)&n;&t;&t;cpia_disconnect(NULL, cam);&n;*/
 id|usb_deregister
 c_func
 (paren

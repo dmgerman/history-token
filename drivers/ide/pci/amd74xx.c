@@ -400,6 +400,9 @@ r_int
 r_char
 id|t
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
 r_char
 op_star
 id|p
@@ -1256,12 +1259,34 @@ op_mod
 l_int|10
 )paren
 suffix:semicolon
-r_return
+multiline_comment|/* hoping p - buffer is less than 4K... */
+id|len
+op_assign
+(paren
 id|p
 op_minus
 id|buffer
+)paren
+op_minus
+id|offset
 suffix:semicolon
-multiline_comment|/* hoping it is less than 4K... */
+op_star
+id|addr
+op_assign
+id|buffer
+op_plus
+id|offset
+suffix:semicolon
+r_return
+id|len
+OG
+id|count
+ques
+c_cond
+id|count
+suffix:colon
+id|len
+suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * amd_set_speed() writes timing values to the chipset registers&n; */

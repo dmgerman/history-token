@@ -522,6 +522,13 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* NEC 98NOTE SPEAKER PHONE FAX MODEM(33600bps) */
+(brace
+l_string|&quot;nEC8241&quot;
+comma
+l_int|0
+)brace
+comma
 multiline_comment|/* Pace 56 Voice Internal Plug &amp; Play Modem */
 (brace
 l_string|&quot;PMC2430&quot;
@@ -1223,6 +1230,14 @@ op_eq
 l_int|0x2e8
 )paren
 op_logical_or
+macro_line|#ifdef CONFIG_X86_PC9800
+(paren
+id|port-&gt;min
+op_eq
+l_int|0x8b0
+)paren
+op_logical_or
+macro_line|#endif
 (paren
 id|port-&gt;min
 op_eq

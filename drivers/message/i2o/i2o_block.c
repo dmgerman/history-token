@@ -2433,7 +2433,7 @@ id|i2ob_dev
 id|unit
 )braket
 dot
-id|i2odev-&gt;controller-&gt;bus.pci.promise
+id|i2odev-&gt;controller-&gt;promise
 )paren
 (brace
 id|panic
@@ -4066,11 +4066,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;controller-&gt;type
-op_eq
-id|I2O_TYPE_PCI
-op_logical_and
-id|d-&gt;controller-&gt;bus.pci.promise
+id|d-&gt;controller-&gt;promise
 )paren
 (brace
 id|i2ob_dev
@@ -4086,11 +4082,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;controller-&gt;type
-op_eq
-id|I2O_TYPE_PCI
-op_logical_and
-id|d-&gt;controller-&gt;bus.pci.short_req
+id|d-&gt;controller-&gt;short_req
 )paren
 (brace
 id|blk_queue_max_sectors

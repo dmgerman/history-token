@@ -1,0 +1,28 @@
+multiline_comment|/*&n; *&t;PCI BIOS function numbering for conventional PCI BIOS &n; *&t;systems&n; */
+DECL|macro|PCIBIOS_PCI_FUNCTION_ID
+mdefine_line|#define PCIBIOS_PCI_FUNCTION_ID &t;0xb1XX
+DECL|macro|PCIBIOS_PCI_BIOS_PRESENT
+mdefine_line|#define PCIBIOS_PCI_BIOS_PRESENT &t;0xb101
+DECL|macro|PCIBIOS_FIND_PCI_DEVICE
+mdefine_line|#define PCIBIOS_FIND_PCI_DEVICE&t;&t;0xb102
+DECL|macro|PCIBIOS_FIND_PCI_CLASS_CODE
+mdefine_line|#define PCIBIOS_FIND_PCI_CLASS_CODE&t;0xb103
+DECL|macro|PCIBIOS_GENERATE_SPECIAL_CYCLE
+mdefine_line|#define PCIBIOS_GENERATE_SPECIAL_CYCLE&t;0xb106
+DECL|macro|PCIBIOS_READ_CONFIG_BYTE
+mdefine_line|#define PCIBIOS_READ_CONFIG_BYTE&t;0xb108
+DECL|macro|PCIBIOS_READ_CONFIG_WORD
+mdefine_line|#define PCIBIOS_READ_CONFIG_WORD&t;0xb109
+DECL|macro|PCIBIOS_READ_CONFIG_DWORD
+mdefine_line|#define PCIBIOS_READ_CONFIG_DWORD&t;0xb10a
+DECL|macro|PCIBIOS_WRITE_CONFIG_BYTE
+mdefine_line|#define PCIBIOS_WRITE_CONFIG_BYTE&t;0xb10b
+DECL|macro|PCIBIOS_WRITE_CONFIG_WORD
+mdefine_line|#define PCIBIOS_WRITE_CONFIG_WORD&t;0xb10c
+DECL|macro|PCIBIOS_WRITE_CONFIG_DWORD
+mdefine_line|#define PCIBIOS_WRITE_CONFIG_DWORD&t;0xb10d
+DECL|macro|PCIBIOS_GET_ROUTING_OPTIONS
+mdefine_line|#define PCIBIOS_GET_ROUTING_OPTIONS&t;0xb10e
+DECL|macro|PCIBIOS_SET_PCI_HW_INT
+mdefine_line|#define PCIBIOS_SET_PCI_HW_INT&t;&t;0xb10f
+eof

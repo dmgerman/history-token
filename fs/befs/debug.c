@@ -271,7 +271,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;befs_inode infomation&quot;
+l_string|&quot;befs_inode information&quot;
 )paren
 suffix:semicolon
 id|befs_debug

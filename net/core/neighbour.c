@@ -2165,7 +2165,7 @@ op_amp
 id|tbl-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;periodicly recompute ReachableTime from random function&n;&t; */
+multiline_comment|/*&n;&t; *&t;periodically recompute ReachableTime from random function&n;&t; */
 r_if
 c_cond
 (paren

@@ -433,7 +433,6 @@ id|channel
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifndef HWIF_PROBE_CLASSIC_METHOD
 id|probe_hwif_init
 c_func
 (paren
@@ -454,7 +453,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* HWIF_PROBE_CLASSIC_METHOD */
 )brace
 DECL|function|dtc2278_release
 r_void

@@ -99,6 +99,9 @@ l_string|&quot;error&quot;
 )brace
 suffix:semicolon
 r_int
+id|len
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 r_for
@@ -1616,12 +1619,34 @@ suffix:semicolon
 macro_line|#endif /* DEBUG_AEC_REGS */
 )brace
 )brace
-r_return
+multiline_comment|/* p - buffer must be less than 4k! */
+id|len
+op_assign
+(paren
 id|p
 op_minus
 id|buffer
+)paren
+op_minus
+id|offset
 suffix:semicolon
-multiline_comment|/* =&gt; must be less than 4k! */
+op_star
+id|addr
+op_assign
+id|buffer
+op_plus
+id|offset
+suffix:semicolon
+r_return
+id|len
+OG
+id|count
+ques
+c_cond
+id|count
+suffix:colon
+id|len
+suffix:semicolon
 )brace
 macro_line|#endif&t;/* defined(DISPLAY_AEC62xx_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 multiline_comment|/*&n; * TO DO: active tuning and correction of cards without a bios.&n; */
@@ -2614,8 +2639,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|id
-op_logical_and
 (paren
 id|id-&gt;capability
 op_amp
