@@ -969,6 +969,10 @@ id|new_slot-&gt;switch_save
 op_assign
 l_int|0x10
 suffix:semicolon
+id|new_slot-&gt;pwr_save
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* In case of unsupported board */
 id|new_slot-&gt;status
 op_assign

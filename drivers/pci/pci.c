@@ -1339,8 +1339,10 @@ op_rshift_assign
 id|ffs
 c_func
 (paren
-id|value
+id|PCI_PM_CAP_PME_MASK
 )paren
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* First bit of mask */
 multiline_comment|/* Check if it can generate PME# from requested state. */
