@@ -10984,7 +10984,7 @@ c_cond
 (paren
 (paren
 id|cap_rid.len
-op_eq
+op_ge
 r_sizeof
 (paren
 id|cap_rid
