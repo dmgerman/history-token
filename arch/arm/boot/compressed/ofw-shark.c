@@ -45,6 +45,10 @@ r_char
 op_star
 id|c
 suffix:semicolon
+id|k
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Head of the taglist */
 id|tag-&gt;hdr.tag
 op_assign

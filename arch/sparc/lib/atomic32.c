@@ -31,10 +31,17 @@ id|SPIN_LOCK_UNLOCKED
 )brace
 suffix:semicolon
 macro_line|#else /* SMP */
+DECL|variable|dummy
+r_static
+id|spinlock_t
+id|dummy
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|macro|ATOMIC_HASH_SIZE
 mdefine_line|#define ATOMIC_HASH_SIZE&t;1
 DECL|macro|ATOMIC_HASH
-mdefine_line|#define ATOMIC_HASH(a)&t;&t;0
+mdefine_line|#define ATOMIC_HASH(a)&t;&t;(&amp;dummy)
 macro_line|#endif /* SMP */
 DECL|function|__atomic_add_return
 r_int

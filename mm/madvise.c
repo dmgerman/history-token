@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;linux/mm/madvise.c&n; *&n; * Copyright (C) 1999  Lin
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 multiline_comment|/*&n; * We can potentially split a vm area into separate&n; * areas, each area with its own behavior.&n; */
 DECL|function|madvise_behavior
 r_static
@@ -35,6 +36,8 @@ id|vma-&gt;vm_mm
 suffix:semicolon
 r_int
 id|error
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -63,9 +66,8 @@ c_cond
 (paren
 id|error
 )paren
-r_return
-op_minus
-id|EAGAIN
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -95,9 +97,8 @@ c_cond
 (paren
 id|error
 )paren
-r_return
-op_minus
-id|EAGAIN
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * vm_flags is protected by the mmap_sem held in write mode.&n;&t; */
@@ -136,8 +137,23 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+r_if
+c_cond
+(paren
+id|error
+op_eq
+op_minus
+id|ENOMEM
+)paren
+id|error
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
 r_return
-l_int|0
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Schedule all required I/O operations.  Do not wait for completion.&n; */
@@ -263,9 +279,17 @@ id|end
 r_if
 c_cond
 (paren
+(paren
 id|vma-&gt;vm_flags
 op_amp
 id|VM_LOCKED
+)paren
+op_logical_or
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
 )paren
 r_return
 op_minus

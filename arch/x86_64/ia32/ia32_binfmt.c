@@ -616,6 +616,10 @@ DECL|macro|elf_check_arch
 macro_line|#undef elf_check_arch
 DECL|macro|elf_check_arch
 mdefine_line|#define elf_check_arch(x) &bslash;&n;&t;((x)-&gt;e_machine == EM_386)
+r_extern
+r_int
+id|force_personality32
+suffix:semicolon
 DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE PAGE_SIZE
 DECL|macro|ELF_HWCAP
@@ -623,7 +627,7 @@ mdefine_line|#define ELF_HWCAP (boot_cpu_data.x86_capability[0])
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM  (&quot;i686&quot;)
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long new_flags = 0;&t;&t;&t;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&t;&bslash;&n;&t;&t;new_flags = _TIF_IA32;&t;&t;&t;&t;&bslash;&n;&t;if ((current_thread_info()-&gt;flags &amp; _TIF_IA32)&t;&t;&bslash;&n;&t;    != new_flags)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;clear_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long new_flags = 0;&t;&t;&t;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&t;&bslash;&n;&t;&t;new_flags = _TIF_IA32;&t;&t;&t;&t;&bslash;&n;&t;if ((current_thread_info()-&gt;flags &amp; _TIF_IA32)&t;&t;&bslash;&n;&t;    != new_flags)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;clear_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;/* XXX This overwrites the user set personality */&t;&bslash;&n;&t;current-&gt;personality |= force_personality32;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Override some function names */
 DECL|macro|elf_format
 mdefine_line|#define elf_format&t;&t;&t;elf32_format

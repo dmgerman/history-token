@@ -2227,6 +2227,12 @@ c_func
 id|TIF_IA32
 )paren
 suffix:semicolon
+multiline_comment|/* TBD: overwrites user setup. Should have two bits.&n;&t;   But 64bit processes have always behaved this way,&n;&t;   so it&squot;s not too bad. The main problem is just that&n;   &t;   32bit childs are affected again. */
+id|current-&gt;personality
+op_and_assign
+op_complement
+id|READ_IMPLIES_EXEC
+suffix:semicolon
 )brace
 DECL|function|sys_fork
 id|asmlinkage

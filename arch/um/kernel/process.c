@@ -1674,7 +1674,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_SETOPTIONS
+id|PTRACE_OLDSETOPTIONS
 comma
 id|pid
 comma
@@ -1689,7 +1689,6 @@ id|PTRACE_O_TRACESYSGOOD
 OL
 l_int|0
 )paren
-(brace
 id|panic
 c_func
 (paren
@@ -1698,7 +1697,6 @@ comma
 id|errno
 )paren
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren

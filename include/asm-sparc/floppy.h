@@ -619,7 +619,7 @@ r_char
 op_star
 id|pdma_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|variable|pdma_areasize
 r_int

@@ -7,10 +7,18 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 DECL|variable|xfrm_cfg_sem
 id|DECLARE_MUTEX
+c_func
+(paren
+id|xfrm_cfg_sem
+)paren
+suffix:semicolon
+DECL|variable|xfrm_cfg_sem
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|xfrm_cfg_sem
@@ -33,6 +41,13 @@ id|XFRM_POLICY_MAX
 op_star
 l_int|2
 )braket
+suffix:semicolon
+DECL|variable|xfrm_policy_list
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_list
+)paren
 suffix:semicolon
 r_static
 id|DEFINE_RWLOCK
@@ -211,6 +226,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|xfrm_register_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_register_type
+)paren
+suffix:semicolon
 DECL|function|xfrm_unregister_type
 r_int
 id|xfrm_unregister_type
@@ -317,6 +339,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|xfrm_unregister_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_unregister_type
+)paren
+suffix:semicolon
 DECL|function|xfrm_get_type
 r_struct
 id|xfrm_type
@@ -471,6 +500,13 @@ r_return
 id|type
 suffix:semicolon
 )brace
+DECL|variable|xfrm_get_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_get_type
+)paren
+suffix:semicolon
 DECL|function|xfrm_dst_lookup
 r_int
 id|xfrm_dst_lookup
@@ -562,6 +598,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|xfrm_dst_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_dst_lookup
+)paren
+suffix:semicolon
 DECL|function|xfrm_put_type
 r_void
 id|xfrm_put_type
@@ -1044,6 +1087,13 @@ r_return
 id|policy
 suffix:semicolon
 )brace
+DECL|variable|xfrm_policy_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_alloc
+)paren
+suffix:semicolon
 multiline_comment|/* Destroy xfrm_policy: descendant resources must be released to this moment. */
 DECL|function|__xfrm_policy_destroy
 r_void
@@ -1099,6 +1149,13 @@ id|policy
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__xfrm_policy_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__xfrm_policy_destroy
+)paren
+suffix:semicolon
 DECL|function|xfrm_policy_gc_kill
 r_static
 r_void
@@ -1707,6 +1764,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|xfrm_policy_insert
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_insert
+)paren
+suffix:semicolon
 DECL|function|xfrm_policy_bysel
 r_struct
 id|xfrm_policy
@@ -1842,6 +1906,13 @@ r_return
 id|pol
 suffix:semicolon
 )brace
+DECL|variable|xfrm_policy_bysel
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_bysel
+)paren
+suffix:semicolon
 DECL|function|xfrm_policy_byid
 r_struct
 id|xfrm_policy
@@ -1964,6 +2035,13 @@ r_return
 id|pol
 suffix:semicolon
 )brace
+DECL|variable|xfrm_policy_byid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_byid
+)paren
+suffix:semicolon
 DECL|function|xfrm_policy_flush
 r_void
 id|xfrm_policy_flush
@@ -2061,6 +2139,13 @@ id|xfrm_policy_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|xfrm_policy_flush
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_flush
+)paren
+suffix:semicolon
 DECL|function|xfrm_policy_walk
 r_int
 id|xfrm_policy_walk
@@ -2242,6 +2327,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|xfrm_policy_walk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_walk
+)paren
+suffix:semicolon
 multiline_comment|/* Find policy to apply to this flow. */
 DECL|function|xfrm_policy_lookup
 r_static
@@ -4078,6 +4170,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|xfrm_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_lookup
+)paren
+suffix:semicolon
 multiline_comment|/* When skb is transformed back to its &quot;native&quot; form, we have to&n; * check policy restrictions. At the moment we make this in maximally&n; * stupid way. Shame on me. :-) Of course, connected sockets must&n; * have policy cached at them.&n; */
 r_static
 r_inline
@@ -4733,6 +4832,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|__xfrm_policy_check
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__xfrm_policy_check
+)paren
+suffix:semicolon
 DECL|function|__xfrm_route_forward
 r_int
 id|__xfrm_route_forward
@@ -4789,6 +4895,13 @@ op_eq
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|__xfrm_route_forward
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__xfrm_route_forward
+)paren
+suffix:semicolon
 multiline_comment|/* Optimize later using cookies and generation ids. */
 DECL|function|xfrm_dst_check
 r_static
@@ -5569,6 +5682,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|xfrm_policy_register_afinfo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_register_afinfo
+)paren
+suffix:semicolon
 DECL|function|xfrm_policy_unregister_afinfo
 r_int
 id|xfrm_policy_unregister_afinfo
@@ -5713,6 +5833,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|xfrm_policy_unregister_afinfo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_unregister_afinfo
+)paren
+suffix:semicolon
 DECL|function|xfrm_policy_get_afinfo
 r_static
 r_struct

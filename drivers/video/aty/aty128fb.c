@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_PPC_PMAC
+macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &quot;../macmodes.h&quot;
@@ -402,6 +403,17 @@ suffix:semicolon
 r_static
 r_int
 id|aty128_pci_resume
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|aty128_do_resume
 c_func
 (paren
 r_struct
@@ -7692,6 +7704,48 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Initialisation&n; */
+macro_line|#ifdef CONFIG_PPC_PMAC
+DECL|function|aty128_early_resume
+r_static
+r_void
+id|aty128_early_resume
+c_func
+(paren
+r_void
+op_star
+id|data
+)paren
+(brace
+r_struct
+id|aty128fb_par
+op_star
+id|par
+op_assign
+id|data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|try_acquire_console_sem
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+id|aty128_do_resume
+c_func
+(paren
+id|par-&gt;pdev
+)paren
+suffix:semicolon
+id|release_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PPC_PMAC */
 DECL|function|aty128_init
 r_static
 r_int
@@ -7928,6 +7982,37 @@ op_eq
 id|_MACH_Pmac
 )paren
 (brace
+multiline_comment|/* Indicate sleep capability */
+r_if
+c_cond
+(paren
+id|par-&gt;chip_gen
+op_eq
+id|rage_M3
+)paren
+(brace
+id|pmac_call_feature
+c_func
+(paren
+id|PMAC_FTR_DEVICE_CAN_WAKE
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|pmac_set_early_video_resume
+c_func
+(paren
+id|aty128_early_resume
+comma
+id|par
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Find default mode */
 r_if
 c_cond
 (paren
@@ -10648,10 +10733,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|aty128_pci_resume
+DECL|function|aty128_do_resume
 r_static
 r_int
-id|aty128_pci_resume
+id|aty128_do_resume
 c_func
 (paren
 r_struct
@@ -10687,11 +10772,6 @@ l_int|0
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|acquire_console_sem
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* Wakeup chip */
 r_if
@@ -10772,11 +10852,6 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|release_console_sem
-c_func
-(paren
-)paren
-suffix:semicolon
 id|pdev-&gt;dev.power.power_state
 op_assign
 l_int|0
@@ -10790,6 +10865,43 @@ l_string|&quot;aty128fb: resumed !&bslash;n&quot;
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|aty128_pci_resume
+r_static
+r_int
+id|aty128_pci_resume
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+r_int
+id|rc
+suffix:semicolon
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|aty128_do_resume
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|release_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 DECL|function|aty128fb_init

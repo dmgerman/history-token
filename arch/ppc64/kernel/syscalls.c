@@ -48,6 +48,7 @@ r_int
 id|first
 comma
 r_int
+r_int
 id|second
 comma
 r_int
@@ -95,6 +96,7 @@ suffix:colon
 id|ret
 op_assign
 id|sys_semtimedop
+c_func
 (paren
 id|first
 comma
@@ -106,6 +108,9 @@ op_star
 )paren
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 l_int|NULL
@@ -119,6 +124,7 @@ suffix:colon
 id|ret
 op_assign
 id|sys_semtimedop
+c_func
 (paren
 id|first
 comma
@@ -130,6 +136,9 @@ op_star
 )paren
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 (paren
@@ -153,6 +162,9 @@ id|sys_semget
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|third
@@ -208,9 +220,13 @@ suffix:semicolon
 id|ret
 op_assign
 id|sys_semctl
+c_func
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|third
@@ -227,6 +243,7 @@ suffix:colon
 id|ret
 op_assign
 id|sys_msgsnd
+c_func
 (paren
 id|first
 comma
@@ -238,6 +255,9 @@ op_star
 )paren
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|third
@@ -313,11 +333,15 @@ suffix:semicolon
 id|ret
 op_assign
 id|sys_msgrcv
+c_func
 (paren
 id|first
 comma
 id|tmp.msgp
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|tmp.msgtyp
@@ -344,6 +368,9 @@ op_star
 )paren
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|fifth
@@ -368,6 +395,9 @@ id|key_t
 )paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 )paren
 suffix:semicolon
@@ -379,9 +409,13 @@ suffix:colon
 id|ret
 op_assign
 id|sys_msgctl
+c_func
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 (paren
@@ -415,6 +449,7 @@ suffix:semicolon
 id|ret
 op_assign
 id|do_shmat
+c_func
 (paren
 id|first
 comma
@@ -425,6 +460,9 @@ op_star
 )paren
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 op_amp
@@ -487,6 +525,7 @@ suffix:semicolon
 id|ret
 op_assign
 id|do_shmat
+c_func
 (paren
 id|first
 comma
@@ -497,6 +536,9 @@ op_star
 )paren
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 (paren
@@ -537,6 +579,9 @@ id|sys_shmget
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|third
@@ -550,9 +595,13 @@ suffix:colon
 id|ret
 op_assign
 id|sys_shmctl
+c_func
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 (paren

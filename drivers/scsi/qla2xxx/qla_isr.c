@@ -396,7 +396,7 @@ id|ha
 suffix:semicolon
 id|ha-&gt;last_irq_cpu
 op_assign
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren
@@ -876,7 +876,7 @@ id|ha
 suffix:semicolon
 id|ha-&gt;last_irq_cpu
 op_assign
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_fsf.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; *            Volker Sameske &lt;sameske@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_FSF_C_REVISION
-mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.88 $&quot;
+mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.92 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -11830,10 +11830,28 @@ comma
 l_string|&quot;fsf_s_l_sh_vio&quot;
 )paren
 suffix:semicolon
-id|zfcp_erp_unit_failed
+id|zfcp_erp_unit_access_denied
 c_func
 (paren
 id|unit
+)paren
+suffix:semicolon
+id|atomic_clear_mask
+c_func
+(paren
+id|ZFCP_STATUS_UNIT_SHARED
+comma
+op_amp
+id|unit-&gt;status
+)paren
+suffix:semicolon
+id|atomic_clear_mask
+c_func
+(paren
+id|ZFCP_STATUS_UNIT_READONLY
+comma
+op_amp
+id|unit-&gt;status
 )paren
 suffix:semicolon
 id|fsf_req-&gt;status
@@ -15909,7 +15927,7 @@ id|fcp_rsp_iu-&gt;validity.bits.fcp_resid_under
 )paren
 )paren
 (brace
-id|ZFCP_LOG_DEBUG
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;A data underrun was detected for a command. &quot;
@@ -15939,18 +15957,24 @@ id|fcp_cmnd_iu
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * It may not have been possible to send all data and the&n;&t;&t; * underrun on send may already be in scpnt-&gt;resid, so it&squot;s add&n;&t;&t; * not equals in the below statement.&n;&t;&t; */
 id|scpnt-&gt;resid
-op_add_assign
+op_assign
 id|fcp_rsp_iu-&gt;fcp_resid
 suffix:semicolon
-id|ZFCP_LOG_TRACE
-c_func
+r_if
+c_cond
 (paren
-l_string|&quot;scpnt-&gt;resid=0x%x&bslash;n&quot;
-comma
+id|scpnt-&gt;request_bufflen
+op_minus
 id|scpnt-&gt;resid
+OL
+id|scpnt-&gt;underflow
 )paren
+id|scpnt-&gt;result
+op_or_assign
+id|DID_ERROR
+op_lshift
+l_int|16
 suffix:semicolon
 )brace
 id|skip_fsfstatus
@@ -18281,7 +18305,7 @@ c_cond
 (paren
 id|timer
 )paren
-id|del_timer_sync
+id|del_timer
 c_func
 (paren
 id|timer

@@ -1,4 +1,28 @@
 multiline_comment|/*&n; * ATI PCI IDs from XFree86, kept here to make sync&squot;ing with&n; * XFree much simpler. Currently, this list is only used by&n; * radeonfb&n; */
+DECL|macro|PCI_CHIP_RV380_3150
+mdefine_line|#define PCI_CHIP_RV380_3150             0x3150
+DECL|macro|PCI_CHIP_RV380_3151
+mdefine_line|#define PCI_CHIP_RV380_3151             0x3151
+DECL|macro|PCI_CHIP_RV380_3152
+mdefine_line|#define PCI_CHIP_RV380_3152             0x3152
+DECL|macro|PCI_CHIP_RV380_3153
+mdefine_line|#define PCI_CHIP_RV380_3153             0x3153
+DECL|macro|PCI_CHIP_RV380_3154
+mdefine_line|#define PCI_CHIP_RV380_3154             0x3154
+DECL|macro|PCI_CHIP_RV380_3156
+mdefine_line|#define PCI_CHIP_RV380_3156             0x3156
+DECL|macro|PCI_CHIP_RV380_3E50
+mdefine_line|#define PCI_CHIP_RV380_3E50             0x3E50
+DECL|macro|PCI_CHIP_RV380_3E51
+mdefine_line|#define PCI_CHIP_RV380_3E51             0x3E51
+DECL|macro|PCI_CHIP_RV380_3E52
+mdefine_line|#define PCI_CHIP_RV380_3E52             0x3E52
+DECL|macro|PCI_CHIP_RV380_3E53
+mdefine_line|#define PCI_CHIP_RV380_3E53             0x3E53
+DECL|macro|PCI_CHIP_RV380_3E54
+mdefine_line|#define PCI_CHIP_RV380_3E54             0x3E54
+DECL|macro|PCI_CHIP_RV380_3E56
+mdefine_line|#define PCI_CHIP_RV380_3E56             0x3E56
 DECL|macro|PCI_CHIP_RS100_4136
 mdefine_line|#define PCI_CHIP_RS100_4136&t;&t;0x4136
 DECL|macro|PCI_CHIP_RS200_4137
@@ -95,6 +119,22 @@ DECL|macro|PCI_CHIP_RV250_If
 mdefine_line|#define PCI_CHIP_RV250_If&t;&t;0x4966
 DECL|macro|PCI_CHIP_RV250_Ig
 mdefine_line|#define PCI_CHIP_RV250_Ig&t;&t;0x4967
+DECL|macro|PCI_CHIP_R420_JH
+mdefine_line|#define PCI_CHIP_R420_JH                0x4A48
+DECL|macro|PCI_CHIP_R420_JI
+mdefine_line|#define PCI_CHIP_R420_JI                0x4A49
+DECL|macro|PCI_CHIP_R420_JJ
+mdefine_line|#define PCI_CHIP_R420_JJ                0x4A4A
+DECL|macro|PCI_CHIP_R420_JK
+mdefine_line|#define PCI_CHIP_R420_JK                0x4A4B
+DECL|macro|PCI_CHIP_R420_JL
+mdefine_line|#define PCI_CHIP_R420_JL                0x4A4C
+DECL|macro|PCI_CHIP_R420_JM
+mdefine_line|#define PCI_CHIP_R420_JM                0x4A4D
+DECL|macro|PCI_CHIP_R420_JN
+mdefine_line|#define PCI_CHIP_R420_JN                0x4A4E
+DECL|macro|PCI_CHIP_R420_JP
+mdefine_line|#define PCI_CHIP_R420_JP                0x4A50
 DECL|macro|PCI_CHIP_MACH64LB
 mdefine_line|#define PCI_CHIP_MACH64LB&t;&t;0x4C42
 DECL|macro|PCI_CHIP_MACH64LD
@@ -137,6 +177,8 @@ DECL|macro|PCI_CHIP_RV250_Lf
 mdefine_line|#define PCI_CHIP_RV250_Lf&t;&t;0x4C66
 DECL|macro|PCI_CHIP_RV250_Lg
 mdefine_line|#define PCI_CHIP_RV250_Lg&t;&t;0x4C67
+DECL|macro|PCI_CHIP_RV250_Ln
+mdefine_line|#define PCI_CHIP_RV250_Ln&t;&t;0x4C6E
 DECL|macro|PCI_CHIP_RAGE128MF
 mdefine_line|#define PCI_CHIP_RAGE128MF&t;&t;0x4D46
 DECL|macro|PCI_CHIP_RAGE128ML
@@ -287,6 +329,36 @@ DECL|macro|PCI_CHIP_RAGE128TT
 mdefine_line|#define PCI_CHIP_RAGE128TT&t;&t;0x5454
 DECL|macro|PCI_CHIP_RAGE128TU
 mdefine_line|#define PCI_CHIP_RAGE128TU&t;&t;0x5455
+DECL|macro|PCI_CHIP_RV370_5460
+mdefine_line|#define PCI_CHIP_RV370_5460             0x5460
+DECL|macro|PCI_CHIP_RV370_5461
+mdefine_line|#define PCI_CHIP_RV370_5461             0x5461
+DECL|macro|PCI_CHIP_RV370_5462
+mdefine_line|#define PCI_CHIP_RV370_5462             0x5462
+DECL|macro|PCI_CHIP_RV370_5463
+mdefine_line|#define PCI_CHIP_RV370_5463             0x5463
+DECL|macro|PCI_CHIP_RV370_5464
+mdefine_line|#define PCI_CHIP_RV370_5464             0x5464
+DECL|macro|PCI_CHIP_RV370_5465
+mdefine_line|#define PCI_CHIP_RV370_5465             0x5465
+DECL|macro|PCI_CHIP_RV370_5466
+mdefine_line|#define PCI_CHIP_RV370_5466             0x5466
+DECL|macro|PCI_CHIP_RV370_5467
+mdefine_line|#define PCI_CHIP_RV370_5467             0x5467
+DECL|macro|PCI_CHIP_R423_UH
+mdefine_line|#define PCI_CHIP_R423_UH                0x5548
+DECL|macro|PCI_CHIP_R423_UI
+mdefine_line|#define PCI_CHIP_R423_UI                0x5549
+DECL|macro|PCI_CHIP_R423_UJ
+mdefine_line|#define PCI_CHIP_R423_UJ                0x554A
+DECL|macro|PCI_CHIP_R423_UK
+mdefine_line|#define PCI_CHIP_R423_UK                0x554B
+DECL|macro|PCI_CHIP_R423_UQ
+mdefine_line|#define PCI_CHIP_R423_UQ                0x5551
+DECL|macro|PCI_CHIP_R423_UR
+mdefine_line|#define PCI_CHIP_R423_UR                0x5552
+DECL|macro|PCI_CHIP_R423_UT
+mdefine_line|#define PCI_CHIP_R423_UT                0x5554
 DECL|macro|PCI_CHIP_MACH64VT
 mdefine_line|#define PCI_CHIP_MACH64VT&t;&t;0x5654
 DECL|macro|PCI_CHIP_MACH64VU
@@ -301,26 +373,38 @@ DECL|macro|PCI_CHIP_RS300_5836
 mdefine_line|#define PCI_CHIP_RS300_5836&t;&t;0x5836
 DECL|macro|PCI_CHIP_RS300_5837
 mdefine_line|#define PCI_CHIP_RS300_5837&t;&t;0x5837
+DECL|macro|PCI_CHIP_RV370_5B60
+mdefine_line|#define PCI_CHIP_RV370_5B60             0x5B60
+DECL|macro|PCI_CHIP_RV370_5B61
+mdefine_line|#define PCI_CHIP_RV370_5B61             0x5B61
+DECL|macro|PCI_CHIP_RV370_5B62
+mdefine_line|#define PCI_CHIP_RV370_5B62             0x5B62
+DECL|macro|PCI_CHIP_RV370_5B63
+mdefine_line|#define PCI_CHIP_RV370_5B63             0x5B63
+DECL|macro|PCI_CHIP_RV370_5B64
+mdefine_line|#define PCI_CHIP_RV370_5B64             0x5B64
+DECL|macro|PCI_CHIP_RV370_5B65
+mdefine_line|#define PCI_CHIP_RV370_5B65             0x5B65
+DECL|macro|PCI_CHIP_RV370_5B66
+mdefine_line|#define PCI_CHIP_RV370_5B66             0x5B66
+DECL|macro|PCI_CHIP_RV370_5B67
+mdefine_line|#define PCI_CHIP_RV370_5B67             0x5B67
 DECL|macro|PCI_CHIP_RV280_5960
 mdefine_line|#define PCI_CHIP_RV280_5960&t;&t;0x5960
 DECL|macro|PCI_CHIP_RV280_5961
 mdefine_line|#define PCI_CHIP_RV280_5961&t;&t;0x5961
 DECL|macro|PCI_CHIP_RV280_5962
 mdefine_line|#define PCI_CHIP_RV280_5962&t;&t;0x5962
-DECL|macro|PCI_CHIP_RV280_5963
-mdefine_line|#define PCI_CHIP_RV280_5963&t;&t;0x5963
 DECL|macro|PCI_CHIP_RV280_5964
 mdefine_line|#define PCI_CHIP_RV280_5964&t;&t;0x5964
-DECL|macro|PCI_CHIP_RV280_5968
-mdefine_line|#define PCI_CHIP_RV280_5968&t;&t;0x5968
-DECL|macro|PCI_CHIP_RV280_5969
-mdefine_line|#define PCI_CHIP_RV280_5969&t;&t;0x5969
-DECL|macro|PCI_CHIP_RV280_596A
-mdefine_line|#define PCI_CHIP_RV280_596A&t;&t;0x596A
-DECL|macro|PCI_CHIP_RV280_596B
-mdefine_line|#define PCI_CHIP_RV280_596B&t;&t;0x596B
 DECL|macro|PCI_CHIP_RV280_5C61
 mdefine_line|#define PCI_CHIP_RV280_5C61&t;&t;0x5C61
 DECL|macro|PCI_CHIP_RV280_5C63
 mdefine_line|#define PCI_CHIP_RV280_5C63&t;&t;0x5C63
+DECL|macro|PCI_CHIP_R423_5D57
+mdefine_line|#define PCI_CHIP_R423_5D57              0x5D57
+DECL|macro|PCI_CHIP_RS350_7834
+mdefine_line|#define PCI_CHIP_RS350_7834             0x7834
+DECL|macro|PCI_CHIP_RS350_7835
+mdefine_line|#define PCI_CHIP_RS350_7835             0x7835
 eof

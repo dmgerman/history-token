@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: diva_didd.c,v 1.13.6.1 2004/08/28 20:03:53 armin Exp $&n; *&n; * DIDD Interface module for Eicon active cards.&n; * &n; * Functions are in dadapter.c &n; * &n; * Copyright 2002-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2002-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: diva_didd.c,v 1.13.6.4 2005/02/11 19:40:25 armin Exp $&n; *&n; * DIDD Interface module for Eicon active cards.&n; * &n; * Functions are in dadapter.c &n; * &n; * Copyright 2002-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2002-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -15,7 +15,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.13.6.1 $&quot;
+l_string|&quot;$Revision: 1.13.6.4 $&quot;
 suffix:semicolon
 DECL|variable|DRIVERNAME
 r_static
@@ -605,6 +605,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|divadidd_exit
+r_static
 r_void
 id|DIVA_EXIT_FUNCTION
 id|divadidd_exit
