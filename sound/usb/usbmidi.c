@@ -4688,7 +4688,7 @@ l_int|0x0001
 comma
 l_int|8
 comma
-l_string|&quot;%s Broadcast/Control&quot;
+l_string|&quot;%s Broadcast&quot;
 )brace
 comma
 (brace
@@ -4698,7 +4698,7 @@ l_int|0x0002
 comma
 l_int|8
 comma
-l_string|&quot;%s Broadcast/Control&quot;
+l_string|&quot;%s Broadcast&quot;
 )brace
 comma
 (brace
@@ -4708,7 +4708,7 @@ l_int|0x0003
 comma
 l_int|4
 comma
-l_string|&quot;%s Broadcast/Control&quot;
+l_string|&quot;%s Broadcast&quot;
 )brace
 comma
 )brace
