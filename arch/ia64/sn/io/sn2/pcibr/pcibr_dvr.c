@@ -3353,7 +3353,7 @@ l_int|0
 suffix:colon
 id|rfunc
 suffix:semicolon
-multiline_comment|/*&n;     * Create a pciio_info_s for this device.  pciio_device_info_new()&n;     * will set the c_slot (which is suppose to represent the external&n;     * slot (i.e the slot number silk screened on the back of the I/O&n;     * brick)).  So for PIC we need to adjust this &quot;internal slot&quot; num&n;     * passed into us, into it&squot;s external representation.  See comment&n;     * for the PCIBR_DEVICE_TO_SLOT macro for more information.&n;     */
+multiline_comment|/*&n;     * Create a pciio_info_s for this device.  pciio_device_info_new()&n;     * will set the c_slot (which is suppose to represent the external&n;     * slot (i.e the slot number silk screened on the back of the I/O&n;     * brick)).  So for PIC we need to adjust this &quot;internal slot&quot; num&n;     * passed into us, into its external representation.  See comment&n;     * for the PCIBR_DEVICE_TO_SLOT macro for more information.&n;     */
 id|NEW
 c_func
 (paren

@@ -456,7 +456,7 @@ r_return
 id|prom_prev
 suffix:semicolon
 )brace
-multiline_comment|/* Install Linux trap table so PROM uses that instead of it&squot;s own. */
+multiline_comment|/* Install Linux trap table so PROM uses that instead of its own. */
 DECL|function|prom_set_trap_table
 r_void
 id|prom_set_trap_table

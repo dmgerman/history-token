@@ -2220,7 +2220,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* MACH == PC */
 macro_line|#if MACH == COBALT
-multiline_comment|/* the cobalt CMOS has a wider range of it&squot;s checksum */
+multiline_comment|/* the cobalt CMOS has a wider range of its checksum */
 DECL|function|cobalt_check_checksum
 r_static
 r_int

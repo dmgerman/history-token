@@ -1181,7 +1181,7 @@ r_uint32
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Open the device and initialize all of it&squot;s memory.  The device is only &n; * opened once, but can be &quot;queried&quot; by multiple processes that know its&n; * file descriptor.&n; */
+multiline_comment|/*&n; * Open the device and initialize all of its memory.  The device is only &n; * opened once, but can be &quot;queried&quot; by multiple processes that know its&n; * file descriptor.&n; */
 DECL|function|perf_open
 r_static
 r_int

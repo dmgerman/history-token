@@ -304,7 +304,7 @@ id|write_threads
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* an argresp is stored in an allocated page and holds the &n; * size of the argument or response, along with it&squot;s content&n; */
+multiline_comment|/* an argresp is stored in an allocated page and holds the &n; * size of the argument or response, along with its content&n; */
 DECL|struct|argresp
 r_struct
 id|argresp

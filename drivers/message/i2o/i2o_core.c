@@ -971,7 +971,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Each I2O controller has a chain of devices on it.&n; * Each device has a pointer to it&squot;s LCT entry to be used&n; * for fun purposes.&n; */
+multiline_comment|/*&n; *&t;Each I2O controller has a chain of devices on it.&n; * Each device has a pointer to its LCT entry to be used&n; * for fun purposes.&n; */
 multiline_comment|/**&n; *&t;i2o_install_device&t;-&t;attach a device to a controller&n; *&t;@c: controller&n; *&t;@d: device&n; * &t;&n; *&t;Add a new device to an i2o controller. This can be called from&n; *&t;non interrupt contexts only. It adds the device and marks it as&n; *&t;unclaimed. The device memory becomes part of the kernel and must&n; *&t;be uninstalled before being freed or reused. Zero is returned&n; *&t;on success.&n; */
 DECL|function|i2o_install_device
 r_int

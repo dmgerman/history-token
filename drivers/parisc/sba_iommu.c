@@ -3726,7 +3726,7 @@ id|IOVP_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;&t;&t;** Not virtually contigous.&n;&t;&t;&t;** Terminate prev chunk.&n;&t;&t;&t;** Start a new chunk.&n;&t;&t;&t;**&n;&t;&t;&t;** Once we start a new VCONTIG chunk, dma_offset&n;&t;&t;&t;** can&squot;t change. And we need the offset from the first&n;&t;&t;&t;** chunk - not the last one. Ergo Successive chunks&n;&t;&t;&t;** must start on page boundaries and dove tail&n;&t;&t;&t;** with it&squot;s predecessor.&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;** Not virtually contigous.&n;&t;&t;&t;** Terminate prev chunk.&n;&t;&t;&t;** Start a new chunk.&n;&t;&t;&t;**&n;&t;&t;&t;** Once we start a new VCONTIG chunk, dma_offset&n;&t;&t;&t;** can&squot;t change. And we need the offset from the first&n;&t;&t;&t;** chunk - not the last one. Ergo Successive chunks&n;&t;&t;&t;** must start on page boundaries and dove tail&n;&t;&t;&t;** with its predecessor.&n;&t;&t;&t;*/
 id|sg_dma_len
 c_func
 (paren

@@ -7418,7 +7418,7 @@ op_or
 id|ETX_CFG_DMAENABLE
 )paren
 suffix:semicolon
-multiline_comment|/* This chip really rots, for the receiver sometimes when you&n;&t; * write to it&squot;s control registers not all the bits get there&n;&t; * properly.  I cannot think of a sane way to provide complete&n;&t; * coverage for this hardware bug yet.&n;&t; */
+multiline_comment|/* This chip really rots, for the receiver sometimes when you&n;&t; * write to its control registers not all the bits get there&n;&t; * properly.  I cannot think of a sane way to provide complete&n;&t; * coverage for this hardware bug yet.&n;&t; */
 id|HMD
 c_func
 (paren

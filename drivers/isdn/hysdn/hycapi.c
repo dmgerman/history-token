@@ -3241,7 +3241,7 @@ r_void
 )paren
 (brace
 )brace
-multiline_comment|/********************************************************************&n;hycapi_capi_create(hysdn_card *card)&n;&n;Attach the card with it&squot;s capi-ctrl.&n;*********************************************************************/
+multiline_comment|/********************************************************************&n;hycapi_capi_create(hysdn_card *card)&n;&n;Attach the card with its capi-ctrl.&n;*********************************************************************/
 DECL|function|hycapi_fill_profile
 r_static
 r_void

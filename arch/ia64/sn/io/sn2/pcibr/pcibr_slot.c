@@ -5129,7 +5129,7 @@ id|pci_cfg_cmd_reg_add
 op_or_assign
 id|PCI_CMD_IO_SPACE
 suffix:semicolon
-multiline_comment|/*&n;&t; * The Adaptec 1160 FC Controller WAR #767995:&n;&t; * The part incorrectly ignores the upper 32 bits of a 64 bit&n;&t; * address when decoding references to it&squot;s registers so to&n;&t; * keep it from responding to a bus cycle that it shouldn&squot;t&n;&t; * we only use I/O space to get at it&squot;s registers.  Don&squot;t&n;&t; * enable memory space accesses on that PCI device.&n;&t; */
+multiline_comment|/*&n;&t; * The Adaptec 1160 FC Controller WAR #767995:&n;&t; * The part incorrectly ignores the upper 32 bits of a 64 bit&n;&t; * address when decoding references to its registers so to&n;&t; * keep it from responding to a bus cycle that it shouldn&squot;t&n;&t; * we only use I/O space to get at it&squot;s registers.  Don&squot;t&n;&t; * enable memory space accesses on that PCI device.&n;&t; */
 DECL|macro|FCADP_VENDID
 mdefine_line|#define FCADP_VENDID 0x9004 /* Adaptec Vendor ID from fcadp.h */
 DECL|macro|FCADP_DEVID

@@ -460,7 +460,7 @@ id|output_struct-&gt;id
 op_assign
 id|ACPI_RSTYPE_MEM32
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Point to the place in the output buffer where the data portion will&n;&t; *  begin.&n;&t; *  1. Set the RESOURCE_DATA * Data to point to it&squot;s own address, then&n;&t; *  2. Set the pointer to the next address.&n;&t; *&n;&t; *  NOTE: output_struct-&gt;Data is cast to u8, otherwise, this addition adds&n;&t; *  4 * sizeof(RESOURCE_DATA) instead of 4 * sizeof(u8)&n;&t; */
+multiline_comment|/*&n;&t; *  Point to the place in the output buffer where the data portion will&n;&t; *  begin.&n;&t; *  1. Set the RESOURCE_DATA * Data to point to its own address, then&n;&t; *  2. Set the pointer to the next address.&n;&t; *&n;&t; *  NOTE: output_struct-&gt;Data is cast to u8, otherwise, this addition adds&n;&t; *  4 * sizeof(RESOURCE_DATA) instead of 4 * sizeof(u8)&n;&t; */
 multiline_comment|/*&n;&t; * Check Byte 3 the Read/Write bit&n;&t; */
 id|temp8
 op_assign
