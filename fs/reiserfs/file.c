@@ -243,6 +243,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* Sync a reiserfs file. */
+multiline_comment|/*&n; * FIXME: sync_mapping_buffers() never has anything to sync.  Can&n; * be removed...&n; */
 DECL|function|reiserfs_sync_file
 r_static
 r_int
