@@ -140,7 +140,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Access functions.&n; *&n; * Most of these aren&squot;t static because they may be used by the&n; * parport_xxx_yyy macros.  extern __inline__ versions of several&n; * of these are in parport_gsc.h.&n; */
 DECL|function|parport_gsc_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|parport_gsc_interrupt
 c_func
 (paren
@@ -171,6 +171,9 @@ id|dev_id
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|parport_gsc_write_data

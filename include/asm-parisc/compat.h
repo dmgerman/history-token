@@ -3,6 +3,7 @@ DECL|macro|_ASM_PARISC_COMPAT_H
 mdefine_line|#define _ASM_PARISC_COMPAT_H
 multiline_comment|/*&n; * Architecture specific compatibility types&n; */
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 DECL|macro|COMPAT_USER_HZ
 mdefine_line|#define COMPAT_USER_HZ 100
 DECL|typedef|compat_size_t
@@ -415,6 +416,47 @@ r_int
 r_int
 )paren
 id|uptr
+suffix:semicolon
+)brace
+DECL|function|compat_alloc_user_space
+r_static
+id|__inline__
+r_void
+op_star
+id|compat_alloc_user_space
+c_func
+(paren
+r_int
+id|len
+)paren
+(brace
+r_struct
+id|pt_regs
+op_star
+id|regs
+op_assign
+op_amp
+id|current-&gt;thread.regs
+suffix:semicolon
+r_int
+r_int
+id|usp
+op_assign
+id|regs-&gt;gr
+(braket
+l_int|30
+)braket
+suffix:semicolon
+r_return
+(paren
+r_void
+op_star
+)paren
+(paren
+id|usp
+op_plus
+id|len
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* _ASM_PARISC_COMPAT_H */

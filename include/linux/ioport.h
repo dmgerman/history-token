@@ -295,8 +295,6 @@ id|name
 )paren
 suffix:semicolon
 multiline_comment|/* Compatibility cruft */
-DECL|macro|check_region
-mdefine_line|#define check_region(start,n)&t;__check_region(&amp;ioport_resource, (start), (n))
 DECL|macro|release_region
 mdefine_line|#define release_region(start,n)&t;__release_region(&amp;ioport_resource, (start), (n))
 DECL|macro|check_mem_region
@@ -305,7 +303,6 @@ DECL|macro|release_mem_region
 mdefine_line|#define release_mem_region(start,n)&t;__release_region(&amp;iomem_resource, (start), (n))
 r_extern
 r_int
-id|__deprecated
 id|__check_region
 c_func
 (paren
@@ -336,5 +333,35 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|function|check_region
+r_static
+r_inline
+r_int
+id|__deprecated
+id|check_region
+c_func
+(paren
+r_int
+r_int
+id|s
+comma
+r_int
+r_int
+id|n
+)paren
+(brace
+r_return
+id|__check_region
+c_func
+(paren
+op_amp
+id|ioport_resource
+comma
+id|s
+comma
+id|n
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif&t;/* _LINUX_IOPORT_H */
 eof

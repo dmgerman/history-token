@@ -2217,6 +2217,14 @@ id|sdev-&gt;max_device_blocked
 op_assign
 id|SCSI_DEFAULT_DEVICE_BLOCKED
 suffix:semicolon
+id|sdev-&gt;use_10_for_rw
+op_assign
+l_int|1
+suffix:semicolon
+id|sdev-&gt;use_10_for_ms
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -843,7 +843,7 @@ comma
 suffix:semicolon
 DECL|function|eisa_irq
 r_static
-r_void
+id|irqreturn_t
 id|eisa_irq
 c_func
 (paren
@@ -1176,10 +1176,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|dummy_irq2_handler
 r_static
-r_void
+id|irqreturn_t
 id|dummy_irq2_handler
 c_func
 (paren
@@ -1202,6 +1205,9 @@ c_func
 id|KERN_ALERT
 l_string|&quot;eisa: uhh, irq2?&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|init_eisa_pic
