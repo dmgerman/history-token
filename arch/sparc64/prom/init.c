@@ -94,7 +94,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|bufferadj
+id|bufadjust
 suffix:semicolon
 id|prom_vers
 op_assign
