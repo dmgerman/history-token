@@ -407,22 +407,10 @@ id|res
 )paren
 (brace
 multiline_comment|/* we implicitly possess reference to @fs during registration,&n;&t;&t; * so it cannot be unregister from under us. */
-r_if
-c_cond
-(paren
 id|register_fs_subsys
 c_func
 (paren
 id|fs
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Failed to register &squot;%s&squot; in sysfs&bslash;n&quot;
-comma
-id|fs-&gt;name
 )paren
 suffix:semicolon
 )brace
