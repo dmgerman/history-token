@@ -5607,7 +5607,7 @@ multiline_comment|/* SYSCONF: clock 512, spdif-in/ADC, 3DACs */
 l_int|0x80
 comma
 multiline_comment|/* ACLINK: I2S */
-l_int|0xf8
+l_int|0xfc
 comma
 multiline_comment|/* I2S: vol, 96k, 24bit, 192k */
 l_int|0xc3
@@ -5622,13 +5622,13 @@ multiline_comment|/* GPIO_DIR1 */
 l_int|0x5f
 comma
 multiline_comment|/* GPIO_DIR2 */
-l_int|0xff
+l_int|0x00
 comma
 multiline_comment|/* GPIO_MASK */
-l_int|0xff
+l_int|0x00
 comma
 multiline_comment|/* GPIO_MASK1 */
-l_int|0xff
+l_int|0x00
 comma
 multiline_comment|/* GPIO_MASK2 */
 l_int|0x00
@@ -5658,7 +5658,7 @@ multiline_comment|/* SYSCONF: clock 512, spdif-in/ADC, 4DACs */
 l_int|0x80
 comma
 multiline_comment|/* ACLINK: I2S */
-l_int|0xf8
+l_int|0xfc
 comma
 multiline_comment|/* I2S: vol, 96k, 24bit, 192k */
 l_int|0xc3
@@ -5709,7 +5709,7 @@ multiline_comment|/* SYSCONF: clock 512, spdif-in/ADC, 4DACs */
 l_int|0x80
 comma
 multiline_comment|/* ACLINK: I2S */
-l_int|0xf8
+l_int|0xfc
 comma
 multiline_comment|/* I2S: vol, 96k, 24bit, 192k */
 l_int|0xc3
