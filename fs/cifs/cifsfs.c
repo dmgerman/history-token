@@ -20,9 +20,6 @@ macro_line|#include &quot;cifs_fs_sb.h&quot;
 macro_line|#include &lt;linux/mm.h&gt;
 DECL|macro|CIFS_MAGIC_NUMBER
 mdefine_line|#define CIFS_MAGIC_NUMBER 0xFF534D42&t;/* the first four bytes of SMB PDUs */
-multiline_comment|/* BB when mempool_resize is added back in, we will resize pool on new mount */
-DECL|macro|CIFS_MIN_RCV_POOL
-mdefine_line|#define CIFS_MIN_RCV_POOL 11 /* enough for progress to five servers */
 macro_line|#ifdef CONFIG_CIFS_QUOTA
 DECL|variable|cifs_quotactl_ops
 r_static
@@ -2992,6 +2989,15 @@ c_func
 (paren
 op_amp
 id|tconInfoAllocCount
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|tcpSesAllocCount
 comma
 l_int|0
 )paren
