@@ -12,6 +12,14 @@ mdefine_line|#define EPOLL_CTL_MOD 3
 multiline_comment|/* Set the Edge Triggered behaviour for the target file descriptor */
 DECL|macro|EPOLLET
 mdefine_line|#define EPOLLET (1 &lt;&lt; 31)
+multiline_comment|/* &n; * On x86-64 make the 64bit structure have the same alignment as the&n; * 32bit structure. This makes 32bit emulation easier.&n; */
+macro_line|#ifdef __x86_64__
+DECL|macro|EPOLL_PACKED
+mdefine_line|#define EPOLL_PACKED __attribute__((packed))
+macro_line|#else
+DECL|macro|EPOLL_PACKED
+mdefine_line|#define EPOLL_PACKED
+macro_line|#endif
 DECL|struct|epoll_event
 r_struct
 id|epoll_event
@@ -24,7 +32,9 @@ DECL|member|data
 id|__u64
 id|data
 suffix:semicolon
+DECL|variable|EPOLL_PACKED
 )brace
+id|EPOLL_PACKED
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Forward declarations to avoid compiler errors */
