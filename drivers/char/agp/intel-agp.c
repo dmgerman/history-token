@@ -305,6 +305,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|intel_i810_private.registers
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Unable to remap memory.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|INREG32
 c_func
