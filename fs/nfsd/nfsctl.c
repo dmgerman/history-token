@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
