@@ -910,7 +910,8 @@ r_return
 id|error
 ques
 c_cond
-id|error
+op_minus
+id|EFAULT
 suffix:colon
 id|count
 suffix:semicolon
@@ -1088,7 +1089,8 @@ r_return
 id|error
 ques
 c_cond
-id|error
+op_minus
+id|EFAULT
 suffix:colon
 id|count
 suffix:semicolon
