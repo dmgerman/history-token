@@ -546,6 +546,8 @@ op_or
 id|PCI_USES_MASTER
 comma
 id|IS_BOOMERANG
+op_or
+id|EEPROM_RESET
 comma
 l_int|64
 comma
@@ -559,6 +561,8 @@ op_or
 id|PCI_USES_MASTER
 comma
 id|IS_BOOMERANG
+op_or
+id|EEPROM_RESET
 comma
 l_int|64
 comma
