@@ -19,6 +19,14 @@ macro_line|#else
 DECL|macro|MAX_ORDER
 mdefine_line|#define MAX_ORDER CONFIG_FORCE_MAX_ZONEORDER
 macro_line|#endif
+multiline_comment|/*&n; * system hash table size limits&n; * - on large memory machines, we may want to allocate a bigger hash than that&n; *   permitted by MAX_ORDER, so we allocate with the bootmem allocator, and are&n; *   limited to this size&n; */
+macro_line|#if MAX_ORDER &gt; 14
+DECL|macro|MAX_SYS_HASH_TABLE_ORDER
+mdefine_line|#define MAX_SYS_HASH_TABLE_ORDER MAX_ORDER
+macro_line|#else
+DECL|macro|MAX_SYS_HASH_TABLE_ORDER
+mdefine_line|#define MAX_SYS_HASH_TABLE_ORDER 14
+macro_line|#endif
 DECL|struct|free_area
 r_struct
 id|free_area
