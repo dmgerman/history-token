@@ -1057,6 +1057,10 @@ id|hvc_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|hvc_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|hvc_driver.driver_name
 op_assign
 l_string|&quot;hvc&quot;
