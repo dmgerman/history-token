@@ -3336,6 +3336,10 @@ c_cond
 id|ntlmv2_flag
 )paren
 (brace
+r_char
+op_star
+id|v2_response
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -3346,8 +3350,6 @@ l_string|&quot;Can use more secure NTLM version 2 password hash&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* SMBNTv2encrypt( ...);  */
-multiline_comment|/* BB fix this up */
 id|CalcNTLMv2_partial_mac_key
 c_func
 (paren
@@ -3356,8 +3358,48 @@ comma
 id|nls_info
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;&t;&t;cifs_calculate_ntlmv2_mac_key(pSesInfo-&gt;mac_signing_key, ntlm_session_key, */
+id|v2_response
+op_assign
+id|kmalloc
+c_func
+(paren
+l_int|16
+op_plus
+l_int|64
+multiline_comment|/* blob */
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|v2_response
+)paren
+(brace
+id|CalcNTLMv2_response
+c_func
+(paren
+id|pSesInfo
+comma
+id|v2_response
+)paren
+suffix:semicolon
+multiline_comment|/*&t;&t;&t;&t;&t;&t;cifs_calculate_ntlmv2_mac_key(pSesInfo-&gt;mac_signing_key, response, ntlm_session_key, */
+id|kfree
+c_func
+(paren
+id|v2_response
+)paren
+suffix:semicolon
 multiline_comment|/* BB Put dummy sig in SessSetup PDU? */
+)brace
+r_else
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 )brace
 r_else
 (brace

@@ -1687,7 +1687,20 @@ id|nls_table
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* BB routines below not implemented yet BB */
+r_extern
+r_void
+id|CalcNTLMv2_response
+c_func
+(paren
+r_const
+r_struct
+id|cifsSesInfo
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|CIFSBuildServerList
