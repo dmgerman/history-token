@@ -13147,6 +13147,22 @@ c_cond
 id|remove_master
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ctl_find
+c_func
+(paren
+id|ac97
+comma
+l_string|&quot;Headphone Playback Switch&quot;
+)paren
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|snd_ac97_remove_ctl
 c_func
 (paren
