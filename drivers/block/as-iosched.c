@@ -347,18 +347,6 @@ op_star
 id|arq_pool
 suffix:semicolon
 multiline_comment|/*&n; * IO Context helper functions&n; */
-multiline_comment|/* Debug */
-DECL|variable|nr_as_io_requests
-r_static
-id|atomic_t
-id|nr_as_io_requests
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Called to deallocate the as_io_context */
 DECL|function|free_as_io_context
 r_static
@@ -372,13 +360,6 @@ op_star
 id|aic
 )paren
 (brace
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|nr_as_io_requests
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -445,13 +426,6 @@ c_cond
 id|ret
 )paren
 (brace
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|nr_as_io_requests
-)paren
-suffix:semicolon
 id|ret-&gt;dtor
 op_assign
 id|free_as_io_context
