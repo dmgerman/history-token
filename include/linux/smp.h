@@ -247,17 +247,6 @@ id|cpu
 )paren
 (brace
 )brace
-DECL|function|smp_send_reschedule_all
-r_static
-r_inline
-r_void
-id|smp_send_reschedule_all
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 DECL|macro|cpu_online_map
 mdefine_line|#define cpu_online_map&t;&t;&t;&t;1
 DECL|macro|cpu_online

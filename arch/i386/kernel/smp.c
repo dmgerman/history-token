@@ -1005,22 +1005,6 @@ id|RESCHEDULE_VECTOR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * this function sends a reschedule IPI to all (other) CPUs.&n; * This should only be used if some &squot;global&squot; task became runnable,&n; * such as a RT task, that must be handled now. The first CPU&n; * that manages to grab the task will run it.&n; */
-DECL|function|smp_send_reschedule_all
-r_void
-id|smp_send_reschedule_all
-c_func
-(paren
-r_void
-)paren
-(brace
-id|send_IPI_allbutself
-c_func
-(paren
-id|RESCHEDULE_VECTOR
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Structure and data for smp_call_function(). This is designed to minimise&n; * static memory requirements. It also looks cleaner.&n; */
 DECL|variable|call_lock
 r_static

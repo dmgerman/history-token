@@ -18,18 +18,18 @@ macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/*&n; * This source file contains the symbol table used by scsi loadable&n; * modules.&n; */
-DECL|variable|scsi_register_device
+DECL|variable|scsi_register_driver
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|scsi_register_device
+id|scsi_register_driver
 )paren
 suffix:semicolon
-DECL|variable|scsi_unregister_device
+DECL|variable|scsi_register_interface
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|scsi_unregister_device
+id|scsi_register_interface
 )paren
 suffix:semicolon
 DECL|variable|scsi_register_host
