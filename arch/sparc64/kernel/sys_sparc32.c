@@ -24083,7 +24083,7 @@ r_if
 c_cond
 (paren
 id|ret
-op_eq
+OG
 l_int|0
 )paren
 (brace
