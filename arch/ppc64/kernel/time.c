@@ -24,6 +24,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
+macro_line|#include &lt;asm/prom.h&gt;
 r_void
 id|smp_local_timer_interrupt
 c_func

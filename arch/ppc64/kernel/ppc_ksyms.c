@@ -1156,15 +1156,6 @@ id|debugger_fault_handler
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
-DECL|variable|atomic_dec_and_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|atomic_dec_and_lock
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|tb_ticks_per_usec
 id|EXPORT_SYMBOL
 c_func
