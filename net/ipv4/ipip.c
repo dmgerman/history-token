@@ -782,10 +782,6 @@ id|dev-&gt;init
 op_assign
 id|ipip_tunnel_init
 suffix:semicolon
-id|dev-&gt;destructor
-op_assign
-id|free_netdev
-suffix:semicolon
 id|nt-&gt;parms
 op_assign
 op_star
@@ -3276,6 +3272,10 @@ suffix:semicolon
 id|dev-&gt;change_mtu
 op_assign
 id|ipip_tunnel_change_mtu
+suffix:semicolon
+id|dev-&gt;destructor
+op_assign
+id|free_netdev
 suffix:semicolon
 id|dev-&gt;type
 op_assign
