@@ -1332,30 +1332,6 @@ r_return
 id|val
 suffix:semicolon
 )brace
-multiline_comment|/* Make sure we aren&squot;t ISA */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|dn-&gt;type
-comma
-l_string|&quot;isa&quot;
-)paren
-)paren
-(brace
-id|pci_dev_put
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-id|val
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1627,6 +1603,10 @@ r_int
 r_int
 id|buid_lo
 suffix:semicolon
+DECL|member|force_off
+r_int
+id|force_off
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Enable eeh for the given device node. */
@@ -1732,6 +1712,10 @@ suffix:semicolon
 r_int
 id|enable
 suffix:semicolon
+id|dn-&gt;eeh_mode
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1801,6 +1785,30 @@ l_int|0x0302
 r_return
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* There is nothing to check on PCI to ISA bridges */
+r_if
+c_cond
+(paren
+id|dn-&gt;type
+op_logical_and
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|dn-&gt;type
+comma
+l_string|&quot;isa&quot;
+)paren
+)paren
+(brace
+id|dn-&gt;eeh_mode
+op_or_assign
+id|EEH_MODE_NOCHECK
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Now decide if we are going to &quot;Disable&quot; EEH checking&n;&t; * for this device.  We still run with the EEH hardware active,&n;&t; * but we won&squot;t be checking for ff&squot;s.  This means a driver&n;&t; * could return bad data (very bad!), an interrupt handler could&n;&t; * hang waiting on status bits that won&squot;t change, etc.&n;&t; * But there are a few cases like display devices that make sense.&n;&t; */
 id|enable
 op_assign
@@ -1856,7 +1864,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;EEH: %s user requested to run &quot;
-l_string|&quot;without EEH.&bslash;n&quot;
+l_string|&quot;without EEH checking.&bslash;n&quot;
 comma
 id|dn-&gt;full_name
 )paren
@@ -1872,6 +1880,8 @@ c_cond
 (paren
 op_logical_neg
 id|enable
+op_logical_or
+id|info-&gt;force_off
 )paren
 (brace
 id|dn-&gt;eeh_mode
@@ -1999,9 +2009,11 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;EEH: %s: could not enable EEH, rtas_call failed.&bslash;n&quot;
+l_string|&quot;EEH: %s: could not enable EEH, rtas_call failed; rc=%d&bslash;n&quot;
 comma
 id|dn-&gt;full_name
+comma
+id|ret
 )paren
 suffix:semicolon
 )brace
@@ -2036,6 +2048,9 @@ r_struct
 id|device_node
 op_star
 id|phb
+comma
+op_star
+id|np
 suffix:semicolon
 r_struct
 id|eeh_early_enable_info
@@ -2053,6 +2068,37 @@ comma
 l_string|&quot;eeh-force-off&quot;
 )paren
 suffix:semicolon
+id|init_pci_config_tokens
+c_func
+(paren
+)paren
+suffix:semicolon
+id|np
+op_assign
+id|of_find_node_by_path
+c_func
+(paren
+l_string|&quot;/rtas&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;EEH: RTAS not found !&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|ibm_set_eeh_option
 op_assign
 id|rtas_token
@@ -2086,6 +2132,10 @@ id|RTAS_UNKNOWN_SERVICE
 )paren
 r_return
 suffix:semicolon
+id|info.force_off
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2100,15 +2150,12 @@ l_string|&quot;EEH: WARNING: PCI Enhanced I/O Error &quot;
 l_string|&quot;Handling is user disabled&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|info.force_off
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Enable EEH for all adapters.  Note that eeh requires buid&squot;s */
-id|init_pci_config_tokens
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2191,6 +2238,7 @@ c_cond
 (paren
 id|eeh_subsystem_enabled
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -2198,6 +2246,17 @@ id|KERN_INFO
 l_string|&quot;EEH: PCI Enhanced I/O Error Handling Enabled&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;EEH: disabled PCI Enhanced I/O Error Handling&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * eeh_add_device_early - enable EEH for the indicated device_node&n; * @dn: device node for which to set up EEH&n; *&n; * This routine must be used to perform EEH initialization for PCI&n; * devices that were added after system boot (e.g. hotplug, dlpar).&n; * This routine must be called before any i/o is performed to the&n; * adapter (inluding any config-space i/o).&n; * Whether this actually enables EEH or not for this device depends&n; * on the CEC architecture, type of the device, on earlier boot&n; * command-line arguments &amp; etc.&n; */
 DECL|function|eeh_add_device_early
