@@ -81,7 +81,7 @@ DECL|enumerator|SIZE_LastItem
 id|SIZE_LastItem
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This structure lives in uvd_t-&gt;user field.&n; */
+multiline_comment|/*&n; * This structure lives in uvd-&gt;user field.&n; */
 r_typedef
 r_struct
 (brace
@@ -788,7 +788,8 @@ id|ParseState_t
 id|ibmcam_find_header
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -1361,7 +1362,8 @@ id|ParseState_t
 id|ibmcam_parse_lines
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -2198,7 +2200,8 @@ id|ParseState_t
 id|ibmcam_model2_320x240_parse_lines
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -2799,7 +2802,8 @@ id|ParseState_t
 id|ibmcam_model3_parse_lines
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -3384,7 +3388,8 @@ id|ParseState_t
 id|ibmcam_model4_128x96_parse_lines
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -3750,7 +3755,8 @@ r_void
 id|ibmcam_ProcessIsocData
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4112,7 +4118,8 @@ r_int
 id|ibmcam_veio
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4334,7 +4341,8 @@ r_int
 id|ibmcam_calculate_fps
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -4358,7 +4366,8 @@ r_void
 id|ibmcam_send_FF_04_02
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -4406,7 +4415,8 @@ r_void
 id|ibmcam_send_00_04_06
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -4454,7 +4464,8 @@ r_void
 id|ibmcam_send_x_00
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4494,7 +4505,8 @@ r_void
 id|ibmcam_send_x_00_05
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4530,7 +4542,8 @@ r_void
 id|ibmcam_send_x_00_05_02
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4594,7 +4607,8 @@ r_void
 id|ibmcam_send_x_01_00_05
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4658,7 +4672,8 @@ r_void
 id|ibmcam_send_x_00_05_02_01
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4734,7 +4749,8 @@ r_void
 id|ibmcam_send_x_00_05_02_08_01
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4822,7 +4838,8 @@ r_void
 id|ibmcam_Packet_Format1
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4922,7 +4939,8 @@ r_void
 id|ibmcam_PacketFormat2
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -4963,7 +4981,8 @@ r_void
 id|ibmcam_model2_Packet2
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -4999,7 +5018,8 @@ r_void
 id|ibmcam_model2_Packet1
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -5098,7 +5118,8 @@ r_void
 id|ibmcam_model3_Packet1
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -5178,7 +5199,8 @@ r_void
 id|ibmcam_model4_BrightnessPacket
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -5314,7 +5336,8 @@ r_void
 id|ibmcam_adjust_contrast
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -5647,7 +5670,8 @@ r_void
 id|ibmcam_change_lighting_conditions
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -5797,7 +5821,8 @@ r_void
 id|ibmcam_set_sharpness
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -6207,7 +6232,8 @@ r_void
 id|ibmcam_set_brightness
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -6622,7 +6648,8 @@ r_void
 id|ibmcam_set_hue
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -7044,7 +7071,8 @@ r_void
 id|ibmcam_adjust_picture
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -7074,7 +7102,8 @@ r_int
 id|ibmcam_model1_setup
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -8842,7 +8871,8 @@ r_int
 id|ibmcam_model2_setup
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -9370,7 +9400,8 @@ r_void
 id|ibmcam_model1_setup_after_video_if
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -9452,7 +9483,8 @@ r_void
 id|ibmcam_model2_setup_after_video_if
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -10216,7 +10248,8 @@ r_void
 id|ibmcam_model4_setup_after_video_if
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -16670,7 +16703,8 @@ r_void
 id|ibmcam_model3_setup_after_video_if
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -23242,7 +23276,8 @@ r_void
 id|ibmcam_video_stop
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -23615,7 +23650,8 @@ r_void
 id|ibmcam_reinit_iso
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -23742,7 +23778,8 @@ r_void
 id|ibmcam_video_start
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -23775,7 +23812,8 @@ r_int
 id|ibmcam_setup_on_open
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -23874,7 +23912,8 @@ r_void
 id|ibmcam_configure_video
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -24126,7 +24165,8 @@ op_star
 id|devid
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -25069,7 +25109,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* Here uvd is a fully allocated uvd_t object */
+multiline_comment|/* Here uvd is a fully allocated uvd object */
 id|uvd-&gt;flags
 op_assign
 id|flags

@@ -60,7 +60,8 @@ r_void
 id|usbvideo_procfs_level2_create
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -70,7 +71,8 @@ r_void
 id|usbvideo_procfs_level2_destroy
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -149,7 +151,8 @@ r_void
 id|usbvideo_CameraRelease
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -253,7 +256,8 @@ r_int
 id|usbvideo_StartDataPump
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -263,7 +267,8 @@ r_void
 id|usbvideo_StopDataPump
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -273,7 +278,8 @@ r_int
 id|usbvideo_GetFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -286,7 +292,8 @@ r_int
 id|usbvideo_NewFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -299,7 +306,8 @@ r_void
 id|usbvideo_SoftwareContrastAdjustment
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1283,7 +1291,8 @@ r_void
 id|usbvideo_OverlayChar
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1544,7 +1553,8 @@ r_void
 id|usbvideo_OverlayString
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1603,7 +1613,8 @@ r_void
 id|usbvideo_OverlayStats
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -2434,7 +2445,8 @@ id|usbvideo_ReportStatistics
 c_func
 (paren
 r_const
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -3055,7 +3067,8 @@ r_void
 id|usbvideo_TestPattern
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -3645,7 +3658,8 @@ r_void
 id|usbvideo_ClientIncModCount
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -3720,7 +3734,8 @@ r_void
 id|usbvideo_ClientDecModCount
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -3902,7 +3917,8 @@ id|num_cams
 op_star
 r_sizeof
 (paren
-id|uvd_t
+r_struct
+id|uvd
 )paren
 op_plus
 r_sizeof
@@ -4108,7 +4124,8 @@ suffix:semicolon
 id|cams-&gt;cam
 op_assign
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 op_amp
@@ -4159,7 +4176,8 @@ id|i
 op_increment
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|up
 op_assign
@@ -4455,7 +4473,8 @@ id|i
 op_increment
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|up
 op_assign
@@ -4549,7 +4568,7 @@ multiline_comment|/* Whole array was allocated in one chunk */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Freed %d uvd_t structures&quot;
+l_string|&quot;%s: Freed %d uvd structures&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4592,12 +4611,14 @@ op_star
 id|ptr
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 id|ptr
@@ -4783,14 +4804,15 @@ id|uvd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * usbvideo_CameraRelease()&n; *&n; * This code does final release of uvd_t. This happens&n; * after the device is disconnected -and- all clients&n; * closed their files.&n; *&n; * History:&n; * 27-Jan-2000 Created.&n; */
+multiline_comment|/*&n; * usbvideo_CameraRelease()&n; *&n; * This code does final release of uvd. This happens&n; * after the device is disconnected -and- all clients&n; * closed their files.&n; *&n; * History:&n; * 27-Jan-2000 Created.&n; */
 DECL|function|usbvideo_CameraRelease
 r_static
 r_void
 id|usbvideo_CameraRelease
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -4942,7 +4964,8 @@ id|u
 op_increment
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -5071,7 +5094,8 @@ comma
 )brace
 suffix:semicolon
 DECL|function|usbvideo_AllocateDevice
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|usbvideo_AllocateDevice
 c_func
@@ -5086,7 +5110,8 @@ id|i
 comma
 id|devnum
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -5298,7 +5323,8 @@ r_int
 id|usbvideo_RegisterVideoDevice
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -5624,7 +5650,8 @@ op_star
 id|vma
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -5797,12 +5824,14 @@ c_func
 id|file
 )paren
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 id|dev
@@ -6393,12 +6422,14 @@ id|dev
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 id|dev
@@ -6595,7 +6626,8 @@ op_star
 id|arg
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -7495,7 +7527,8 @@ op_star
 id|ppos
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -8016,7 +8049,8 @@ r_int
 id|usbvideo_CompressIsochronous
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -8172,7 +8206,8 @@ id|ret
 comma
 id|len
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -8392,7 +8427,8 @@ r_int
 id|usbvideo_StartDataPump
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -8728,7 +8764,8 @@ r_void
 id|usbvideo_StopDataPump
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -8927,7 +8964,8 @@ r_int
 id|usbvideo_NewFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -9143,7 +9181,8 @@ r_void
 id|usbvideo_CollectRawData
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -9256,7 +9295,8 @@ r_int
 id|usbvideo_GetFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -9779,7 +9819,8 @@ r_void
 id|usbvideo_DeinterlaceFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -10099,7 +10140,8 @@ r_void
 id|usbvideo_SoftwareContrastAdjustment
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -10466,7 +10508,8 @@ r_void
 id|usbvideo_procfs_level2_create
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -10583,7 +10626,8 @@ r_void
 id|usbvideo_procfs_level2_destroy
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren

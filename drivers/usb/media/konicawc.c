@@ -457,7 +457,8 @@ r_int
 id|konicawc_ctrl_msg
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -543,7 +544,8 @@ r_void
 id|konicawc_camera_on
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -576,7 +578,8 @@ r_void
 id|konicawc_camera_off
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -608,7 +611,8 @@ r_void
 id|konicawc_set_camera_size
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -699,7 +703,8 @@ r_int
 id|konicawc_setup_on_open
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -861,7 +866,8 @@ r_void
 id|konicawc_adjust_picture
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -1025,7 +1031,8 @@ r_int
 id|konicawc_compress_iso
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1458,7 +1465,8 @@ r_void
 id|resubmit_urb
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1554,7 +1562,8 @@ op_star
 id|urb
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -1738,7 +1747,8 @@ r_int
 id|konicawc_start_data
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -2192,7 +2202,8 @@ r_void
 id|konicawc_stop_data
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -2372,7 +2383,8 @@ r_void
 id|konicawc_process_isoc
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -2967,7 +2979,8 @@ r_int
 id|konicawc_set_video_mode
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -3358,7 +3371,8 @@ r_int
 id|konicawc_calculate_fps
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -3388,7 +3402,8 @@ r_void
 id|konicawc_configure_video
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -3801,7 +3816,8 @@ op_star
 id|devid
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -4200,7 +4216,7 @@ op_star
 id|uvd-&gt;user_data
 )paren
 suffix:semicolon
-multiline_comment|/* Here uvd is a fully allocated uvd_t object */
+multiline_comment|/* Here uvd is a fully allocated uvd object */
 r_for
 c_loop
 (paren
@@ -4534,7 +4550,8 @@ r_void
 id|konicawc_free_uvd
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren

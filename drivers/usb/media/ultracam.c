@@ -300,7 +300,8 @@ r_void
 id|ultracam_ProcessIsocData
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -414,7 +415,8 @@ r_int
 id|ultracam_veio
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -638,7 +640,8 @@ r_int
 id|ultracam_calculate_fps
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -662,7 +665,8 @@ r_void
 id|ultracam_adjust_contrast
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -675,7 +679,8 @@ r_void
 id|ultracam_change_lighting_conditions
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -688,7 +693,8 @@ r_void
 id|ultracam_set_sharpness
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -701,7 +707,8 @@ r_void
 id|ultracam_set_brightness
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -713,7 +720,8 @@ r_void
 id|ultracam_set_hue
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -726,7 +734,8 @@ r_void
 id|ultracam_adjust_picture
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -757,7 +766,8 @@ r_void
 id|ultracam_video_stop
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -770,7 +780,8 @@ r_void
 id|ultracam_reinit_iso
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -785,7 +796,8 @@ r_void
 id|ultracam_video_start
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -817,7 +829,8 @@ r_int
 id|ultracam_resetPipe
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -840,7 +853,8 @@ r_int
 id|ultracam_alternateSetting
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -908,7 +922,8 @@ r_int
 id|ultracam_setup_on_open
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -3424,7 +3439,8 @@ r_void
 id|ultracam_configure_video
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -3676,7 +3692,8 @@ op_star
 id|devid
 )paren
 (brace
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 op_assign
@@ -4122,7 +4139,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* Here uvd is a fully allocated uvd_t object */
+multiline_comment|/* Here uvd is a fully allocated uvd object */
 id|uvd-&gt;flags
 op_assign
 id|flags

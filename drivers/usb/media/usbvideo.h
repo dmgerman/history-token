@@ -350,8 +350,9 @@ suffix:semicolon
 r_struct
 id|s_usbvideo_t
 suffix:semicolon
-r_typedef
+DECL|struct|uvd
 r_struct
+id|uvd
 (brace
 DECL|member|vdev
 r_struct
@@ -563,9 +564,7 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* Holds name like &quot;video7&quot; */
-DECL|typedef|uvd_t
 )brace
-id|uvd_t
 suffix:semicolon
 multiline_comment|/*&n; * usbvideo callbacks (virtual methods). They are set when usbvideo&n; * services are registered. All of these default to NULL, except those&n; * that default to usbvideo-provided methods.&n; */
 r_typedef
@@ -599,7 +598,8 @@ op_star
 id|userFree
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -625,7 +625,8 @@ op_star
 id|setupOnOpen
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -636,7 +637,8 @@ op_star
 id|videoStart
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -647,7 +649,8 @@ op_star
 id|videoStop
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -658,7 +661,8 @@ op_star
 id|processData
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 comma
 id|usbvideo_frame_t
@@ -672,7 +676,8 @@ op_star
 id|postProcess
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 comma
 id|usbvideo_frame_t
@@ -686,7 +691,8 @@ op_star
 id|adjustPicture
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -697,7 +703,8 @@ op_star
 id|getFPS
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 )paren
 suffix:semicolon
@@ -708,7 +715,8 @@ op_star
 id|overlayHook
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 comma
 id|usbvideo_frame_t
@@ -722,7 +730,8 @@ op_star
 id|getFrame
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 comma
 r_int
@@ -792,7 +801,8 @@ op_star
 id|startDataPump
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -804,7 +814,8 @@ op_star
 id|stopDataPump
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -816,7 +827,8 @@ op_star
 id|setVideoMode
 )paren
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -871,7 +883,8 @@ id|vdt
 suffix:semicolon
 multiline_comment|/* Video device template */
 DECL|member|cam
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|cam
 suffix:semicolon
@@ -903,7 +916,7 @@ r_struct
 id|s_usbvideo_t
 id|usbvideo_t
 suffix:semicolon
-multiline_comment|/*&n; * This macro retrieves callback address from the uvd_t object.&n; * No validity checks are done here, so be sure to check the&n; * callback beforehand with VALID_CALLBACK.&n; */
+multiline_comment|/*&n; * This macro retrieves callback address from the struct uvd object.&n; * No validity checks are done here, so be sure to check the&n; * callback beforehand with VALID_CALLBACK.&n; */
 DECL|macro|GET_CALLBACK
 mdefine_line|#define&t;GET_CALLBACK(uvd,cbName) ((uvd)-&gt;handle-&gt;cb.cbName)
 multiline_comment|/*&n; * This macro returns either callback pointer or NULL. This is safe&n; * macro, meaning that most of components of data structures involved&n; * may be NULL - this only results in NULL being returned. You may&n; * wish to use this macro to make sure that the callback is callable.&n; * However keep in mind that those checks take time.&n; */
@@ -1075,7 +1088,8 @@ r_void
 id|usbvideo_TestPattern
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
@@ -1136,7 +1150,8 @@ op_star
 id|id_table
 )paren
 suffix:semicolon
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|usbvideo_AllocateDevice
 c_func
@@ -1150,7 +1165,8 @@ r_int
 id|usbvideo_RegisterVideoDevice
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 )paren
@@ -1179,7 +1195,8 @@ r_void
 id|usbvideo_DeinterlaceFrame
 c_func
 (paren
-id|uvd_t
+r_struct
+id|uvd
 op_star
 id|uvd
 comma
