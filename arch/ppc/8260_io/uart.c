@@ -194,7 +194,7 @@ l_int|0
 )brace
 comma
 multiline_comment|/* SMC1 ttyS0 */
-macro_line|#if USE_SMC2
+macro_line|#ifdef USE_SMC2
 (brace
 l_int|0
 comma
@@ -9241,7 +9241,7 @@ op_and_assign
 op_complement
 l_int|0x00c00000
 suffix:semicolon
-macro_line|#if USE_SMC2
+macro_line|#ifdef USE_SMC2
 id|io-&gt;iop_ppara
 op_or_assign
 l_int|0x00c00000
