@@ -980,7 +980,7 @@ id|LANCE_IRQ
 comma
 id|lance_interrupt
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;SUN3 Lance&quot;
 comma
@@ -1913,6 +1913,18 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;%s: transmit start.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Transmitter timeout, serious problems. */
 r_if
