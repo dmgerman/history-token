@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  STV0680 USB Camera Driver, by Kevin Sisson (kjsisson@bellsouth.net)&n; *  &n; * Thanks to STMicroelectronics for information on the usb commands, and &n; * to Steve Miller at STM for his help and encouragement while I was &n; * writing this driver.&n; *&n; * This driver is based heavily on the &n; * Endpoints (formerly known as AOX) se401 USB Camera Driver&n; * Copyright (c) 2000 Jeroen B. Vreeken (pe1rxq@amsat.org)&n; *&n; * Still somewhat based on the Linux ov511 driver.&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * History: &n; * ver 0.1 October, 2001. Initial attempt. &n; *&n; * ver 0.2 November, 2001. Fixed asbility to resize, added brightness&n; *                         function, made more stable (?)&n; *&n; * ver 0.21 Nov, 2001.     Added gamma correction and white balance, &n; *                         due to Alexander Schwartz. Still trying to &n; *                         improve stablility. Moved stuff into stv680.h&n; *&n; * ver 0.22 Nov, 2001.&t;   Added sharpen function (by Michael Sweet, &n; *                         mike@easysw.com) from GIMP, also used in pencam. &n; *                         Simple, fast, good integer math routine.&n; *&n; * ver 0.23 Dec, 2001 (gkh)&n; * &t;&t;&t;   Took out sharpen function, ran code through&n; * &t;&t;&t;   Lindent, and did other minor tweaks to get&n; * &t;&t;&t;   things to work properly with 2.5.1&n; *&n; * ver 0.24 Jan, 2002 (kjs) &n; *                         Fixed the problem with webcam crashing after&n; *                         two pictures. Changed the way pic is halved to &n; *                         improve quality. Got rid of green line around &n; *                         frame. Fix brightness reset when changing size &n; *                         bug. Adjusted gamma filters slightly.&n; */
+multiline_comment|/*&n; *  STV0680 USB Camera Driver, by Kevin Sisson (kjsisson@bellsouth.net)&n; *  &n; * Thanks to STMicroelectronics for information on the usb commands, and &n; * to Steve Miller at STM for his help and encouragement while I was &n; * writing this driver.&n; *&n; * This driver is based heavily on the &n; * Endpoints (formerly known as AOX) se401 USB Camera Driver&n; * Copyright (c) 2000 Jeroen B. Vreeken (pe1rxq@amsat.org)&n; *&n; * Still somewhat based on the Linux ov511 driver.&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * History: &n; * ver 0.1 October, 2001. Initial attempt. &n; *&n; * ver 0.2 November, 2001. Fixed asbility to resize, added brightness&n; *                         function, made more stable (?)&n; *&n; * ver 0.21 Nov, 2001.     Added gamma correction and white balance, &n; *                         due to Alexander Schwartz. Still trying to &n; *                         improve stablility. Moved stuff into stv680.h&n; *&n; * ver 0.22 Nov, 2001.&t;   Added sharpen function (by Michael Sweet, &n; *                         mike@easysw.com) from GIMP, also used in pencam. &n; *                         Simple, fast, good integer math routine.&n; *&n; * ver 0.23 Dec, 2001 (gkh)&n; * &t;&t;&t;   Took out sharpen function, ran code through&n; * &t;&t;&t;   Lindent, and did other minor tweaks to get&n; * &t;&t;&t;   things to work properly with 2.5.1&n; *&n; * ver 0.24 Jan, 2002 (kjs) &n; *                         Fixed the problem with webcam crashing after&n; *                         two pictures. Changed the way pic is halved to &n; *                         improve quality. Got rid of green line around &n; *                         frame. Fix brightness reset when changing size &n; *                         bug. Adjusted gamma filters slightly.&n; *&n; * ver 0.25 Jan, 2002 (kjs)&n; *&t;&t;&t;   Fixed a bug in which the driver sometimes attempted&n; *&t;&t;&t;   to set to a non-supported size. This allowed&n; *&t;&t;&t;   gnomemeeting to work.&n; *&t;&t;&t;   Fixed proc entry removal bug.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -52,7 +52,7 @@ DECL|macro|PDEBUG
 mdefine_line|#define PDEBUG(level, fmt, args...) &bslash;&n;&t;do { &bslash;&n;&t;if (debug &gt;= level)&t;&bslash;&n;&t;&t;info(&quot;[&quot; __PRETTY_FUNCTION__ &quot;:%d] &quot; fmt, __LINE__ , ## args);&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.24&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.25&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Kevin Sisson &lt;kjsisson@bellsouth.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -3213,7 +3213,7 @@ r_return
 suffix:semicolon
 id|remove_proc_entry
 (paren
-l_string|&quot;stv&quot;
+l_string|&quot;stv680&quot;
 comma
 id|video_proc_entry
 )paren
@@ -4193,6 +4193,12 @@ id|width
 op_le
 l_int|166
 )paren
+op_logical_and
+(paren
+id|stv680-&gt;QVGA
+op_eq
+l_int|1
+)paren
 )paren
 (brace
 id|width
@@ -4218,6 +4224,12 @@ op_logical_and
 id|width
 op_le
 l_int|180
+)paren
+op_logical_and
+(paren
+id|stv680-&gt;CIF
+op_eq
+l_int|1
 )paren
 )paren
 (brace
@@ -4245,6 +4257,12 @@ id|width
 op_le
 l_int|350
 )paren
+op_logical_and
+(paren
+id|stv680-&gt;QVGA
+op_eq
+l_int|1
+)paren
 )paren
 (brace
 id|width
@@ -4271,6 +4289,12 @@ id|width
 op_le
 l_int|358
 )paren
+op_logical_and
+(paren
+id|stv680-&gt;CIF
+op_eq
+l_int|1
+)paren
 )paren
 (brace
 id|width
@@ -4280,6 +4304,27 @@ suffix:semicolon
 id|height
 op_assign
 l_int|288
+suffix:semicolon
+)brace
+r_else
+(brace
+id|PDEBUG
+(paren
+l_int|1
+comma
+l_string|&quot;STV(e): request for non-supported size: request: v.width = %i, v.height = %i  actual: stv.width = %i, stv.height = %i&quot;
+comma
+id|width
+comma
+id|height
+comma
+id|stv680-&gt;vwidth
+comma
+id|stv680-&gt;vheight
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Stop a current stream and start it again at the new size */
