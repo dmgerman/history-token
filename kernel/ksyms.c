@@ -203,11 +203,11 @@ c_func
 id|get_zeroed_page
 )paren
 suffix:semicolon
-DECL|variable|page_cache_release
+DECL|variable|__page_cache_release
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|page_cache_release
+id|__page_cache_release
 )paren
 suffix:semicolon
 DECL|variable|__free_pages

@@ -460,6 +460,7 @@ id|mapping
 op_assign
 id|page-&gt;mapping
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * FIXME: this is CPU-inefficient for shared mappings.&n;&t;&t; * try_to_unmap() will set the page dirty and -&gt;vm_writeback&n;&t;&t; * will write it.  So we&squot;re back to page-at-a-time writepage&n;&t;&t; * in LRU order.&n;&t;&t; */
 r_if
 c_cond
 (paren
