@@ -9509,15 +9509,10 @@ id|wl3501_irq_list
 (braket
 l_int|0
 )braket
-op_eq
+op_ne
 op_minus
 l_int|1
 )paren
-id|link-&gt;irq.IRQInfo2
-op_assign
-id|wl3501_irq_mask
-suffix:semicolon
-r_else
 r_for
 c_loop
 (paren
