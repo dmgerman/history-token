@@ -153,10 +153,13 @@ id|hotdrop
 )paren
 (brace
 id|u16
-id|ports
+id|_ports
 (braket
 l_int|2
 )braket
+comma
+op_star
+id|pptr
 suffix:semicolon
 r_const
 r_struct
@@ -176,10 +179,9 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* Must be big enough to read ports (both UDP and TCP have&n;           them at the start). */
-r_if
-c_cond
-(paren
-id|skb_copy_bits
+id|pptr
+op_assign
+id|skb_header_pointer
 c_func
 (paren
 id|skb
@@ -188,18 +190,27 @@ id|skb-&gt;nh.iph-&gt;ihl
 op_star
 l_int|4
 comma
-id|ports
-comma
 r_sizeof
 (paren
-id|ports
+id|_ports
 )paren
-)paren
-OL
+comma
+op_amp
+id|_ports
+(braket
 l_int|0
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pptr
+op_eq
+l_int|NULL
 )paren
 (brace
-multiline_comment|/* We&squot;ve been asked to examine this packet, and we&n;&t;&t;   can&squot;t.  Hence, no choice but to drop. */
+multiline_comment|/* We&squot;ve been asked to examine this packet, and we&n;&t;&t; * can&squot;t.  Hence, no choice but to drop.&n;&t;&t; */
 id|duprintf
 c_func
 (paren
@@ -229,7 +240,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|ports
+id|pptr
 (braket
 l_int|0
 )braket
@@ -238,7 +249,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|ports
+id|pptr
 (braket
 l_int|1
 )braket

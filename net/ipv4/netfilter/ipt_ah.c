@@ -145,6 +145,9 @@ id|hotdrop
 (brace
 r_struct
 id|ip_auth_hdr
+id|_ahdr
+comma
+op_star
 id|ah
 suffix:semicolon
 r_const
@@ -164,10 +167,9 @@ id|offset
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb_copy_bits
+id|ah
+op_assign
+id|skb_header_pointer
 c_func
 (paren
 id|skb
@@ -176,19 +178,24 @@ id|skb-&gt;nh.iph-&gt;ihl
 op_star
 l_int|4
 comma
-op_amp
-id|ah
-comma
 r_sizeof
 (paren
+id|_ahdr
+)paren
+comma
+op_amp
+id|_ahdr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|ah
-)paren
-)paren
-OL
-l_int|0
+op_eq
+l_int|NULL
 )paren
 (brace
-multiline_comment|/* We&squot;ve been asked to examine this packet, and we&n;&t;&t;   can&squot;t.  Hence, no choice but to drop. */
+multiline_comment|/* We&squot;ve been asked to examine this packet, and we&n;&t;&t; * can&squot;t.  Hence, no choice but to drop.&n;&t;&t; */
 id|duprintf
 c_func
 (paren
@@ -221,7 +228,7 @@ comma
 id|ntohl
 c_func
 (paren
-id|ah.spi
+id|ah-&gt;spi
 )paren
 comma
 op_logical_neg
