@@ -807,12 +807,9 @@ id|nd_opt-&gt;nd_opt_type
 id|ND_PRINTK2
 c_func
 (paren
-(paren
-id|KERN_WARNING
 l_string|&quot;ndisc_parse_options(): duplicated ND6 option found: type=%d&bslash;n&quot;
 comma
 id|nd_opt-&gt;nd_opt_type
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2939,6 +2936,12 @@ id|ND_PRINTK1
 c_func
 (paren
 l_string|&quot;send_ns: alloc skb failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dst_release
+c_func
+(paren
+id|dst
 )paren
 suffix:semicolon
 r_return
@@ -5571,6 +5574,7 @@ id|mtu
 suffix:semicolon
 )brace
 )brace
+r_else
 r_if
 c_cond
 (paren
