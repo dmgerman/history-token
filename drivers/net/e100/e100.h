@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -72,6 +73,15 @@ DECL|macro|E100_MAX_SCB_WAIT
 mdefine_line|#define E100_MAX_SCB_WAIT&t;100&t;/* Max udelays in wait_scb */
 DECL|macro|E100_MAX_CU_IDLE_WAIT
 mdefine_line|#define E100_MAX_CU_IDLE_WAIT&t;50&t;/* Max udelays in wait_cus_idle */
+multiline_comment|/* HWI feature related constant */
+DECL|macro|HWI_MAX_LOOP
+mdefine_line|#define HWI_MAX_LOOP                    100
+DECL|macro|MAX_SAME_RESULTS
+mdefine_line|#define MAX_SAME_RESULTS&t;&t;3
+DECL|macro|HWI_REGISTER_GRANULARITY
+mdefine_line|#define HWI_REGISTER_GRANULARITY        80&t;/* register granularity = 80 Cm */
+DECL|macro|HWI_NEAR_END_BOUNDARY
+mdefine_line|#define HWI_NEAR_END_BOUNDARY           1000&t;/* Near end is defined as &lt; 10 meters */
 multiline_comment|/* CPUSAVER_BUNDLE_MAX: Sets the maximum number of frames that will be bundled.&n; * In some situations, such as the TCP windowing algorithm, it may be&n; * better to limit the growth of the bundle size than let it go as&n; * high as it can, because that could cause too much added latency.&n; * The default is six, because this is the number of packets in the&n; * default TCP window size.  A value of 1 would make CPUSaver indicate&n; * an interrupt for every frame received.  If you do not want to put&n; * a limit on the bundle size, set this value to xFFFF.&n; */
 DECL|macro|E100_DEFAULT_CPUSAVER_BUNDLE_MAX
 mdefine_line|#define E100_DEFAULT_CPUSAVER_BUNDLE_MAX&t;6
@@ -651,6 +661,8 @@ DECL|macro|DF_SPEED_FORCED
 mdefine_line|#define DF_SPEED_FORCED    0x00000040&t;/* set if speed is forced */
 DECL|macro|LED_IS_ON
 mdefine_line|#define LED_IS_ON&t;   0x00000080&t;/* LED is turned ON by the driver */
+DECL|macro|DF_LINK_FC_TX_ONLY
+mdefine_line|#define DF_LINK_FC_TX_ONLY 0x00000100&t;/* Received PAUSE frames are honored*/
 DECL|typedef|net_dev_stats_t
 r_typedef
 r_struct
@@ -2349,6 +2361,53 @@ DECL|member|driver_isolated
 r_int
 id|driver_isolated
 suffix:semicolon
+DECL|member|id_string
+r_char
+op_star
+id|id_string
+suffix:semicolon
+DECL|member|cable_status
+r_char
+op_star
+id|cable_status
+suffix:semicolon
+DECL|member|mdix_status
+r_char
+op_star
+id|mdix_status
+suffix:semicolon
+multiline_comment|/* Variables for HWI */
+DECL|member|saved_open_circut
+r_int
+id|saved_open_circut
+suffix:semicolon
+DECL|member|saved_short_circut
+r_int
+id|saved_short_circut
+suffix:semicolon
+DECL|member|saved_distance
+r_int
+id|saved_distance
+suffix:semicolon
+DECL|member|saved_i
+r_int
+id|saved_i
+suffix:semicolon
+DECL|member|saved_same
+r_int
+id|saved_same
+suffix:semicolon
+DECL|member|hwi_started
+r_int
+r_char
+id|hwi_started
+suffix:semicolon
+DECL|member|hwi_timer
+r_struct
+id|timer_list
+id|hwi_timer
+suffix:semicolon
+multiline_comment|/* hwi timer id */
 DECL|member|speed_duplex_caps
 id|u32
 id|speed_duplex_caps

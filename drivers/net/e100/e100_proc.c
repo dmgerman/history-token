@@ -24,16 +24,16 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* externs from e100_main.c */
 r_extern
-r_const
 r_char
-op_star
 id|e100_short_driver_name
+(braket
+)braket
 suffix:semicolon
 r_extern
-r_const
 r_char
-op_star
-id|e100_version
+id|e100_driver_version
+(braket
+)braket
 suffix:semicolon
 r_extern
 r_struct
@@ -492,11 +492,7 @@ id|page
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|e100_get_brand_msg
-c_func
-(paren
-id|bdp
-)paren
+id|bdp-&gt;id_string
 )paren
 suffix:semicolon
 r_return
@@ -682,13 +678,6 @@ id|u16
 id|led_mdi_op
 )paren
 (brace
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|bdp-&gt;mdi_access_lock
-)paren
-suffix:semicolon
 id|e100_mdi_write
 c_func
 (paren
@@ -699,13 +688,6 @@ comma
 id|bdp-&gt;phy_addr
 comma
 id|led_mdi_op
-)paren
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|bdp-&gt;mdi_access_lock
 )paren
 suffix:semicolon
 id|set_current_state
@@ -720,13 +702,6 @@ c_func
 id|MDI_SLEEP_TIME
 )paren
 suffix:semicolon
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|bdp-&gt;mdi_access_lock
-)paren
-suffix:semicolon
 multiline_comment|/* turn led ownership to the chip */
 id|e100_mdi_write
 c_func
@@ -738,13 +713,6 @@ comma
 id|bdp-&gt;phy_addr
 comma
 id|PHY_82555_LED_NORMAL_CONTROL
-)paren
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|bdp-&gt;mdi_access_lock
 )paren
 suffix:semicolon
 )brace
@@ -1444,6 +1412,7 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#ifdef E100_EOU
+macro_line|#ifdef MODULE
 multiline_comment|/**********************&n; *  parameter entries&n; **********************/
 r_static
 r_int
@@ -3481,6 +3450,7 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif  /* MODULE */
 macro_line|#endif /* E100_EOU */
 r_static
 r_struct
@@ -3595,6 +3565,7 @@ id|pdep
 suffix:semicolon
 )brace
 macro_line|#ifdef E100_EOU
+macro_line|#ifdef MODULE
 r_static
 r_int
 id|__devinit
@@ -3820,7 +3791,8 @@ id|parent
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* E100_EOU */
+macro_line|#endif /* MODULE */
+macro_line|#endif
 r_void
 DECL|function|e100_remove_proc_subdir
 id|e100_remove_proc_subdir
@@ -3938,7 +3910,8 @@ id|bdp-&gt;proc_parent
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef E100_EOU
+macro_line|#ifdef E100_EOU&t;&t;
+macro_line|#ifdef MODULE
 id|remove_proc_param_subdir
 c_func
 (paren
@@ -3946,6 +3919,7 @@ id|bdp-&gt;proc_parent
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif&t;&t;
 id|remove_proc_entry
 c_func
 (paren
@@ -4220,7 +4194,8 @@ id|ENOMEM
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef E100_EOU
+macro_line|#ifdef E100_EOU&t;
+macro_line|#ifdef MODULE
 r_if
 c_cond
 (paren
@@ -4245,6 +4220,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#endif&t;
 r_return
 l_int|0
 suffix:semicolon

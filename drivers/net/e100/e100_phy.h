@@ -64,6 +64,42 @@ DECL|macro|NSC_CONG_CONTROL_REG
 mdefine_line|#define NSC_CONG_CONTROL_REG&t;    0x17&t;/* National (TX) congestion control */
 DECL|macro|NSC_SPEED_IND_REG
 mdefine_line|#define NSC_SPEED_IND_REG&t;    0x19&t;/* National (TX) speed indication */
+DECL|macro|HWI_CONTROL_REG
+mdefine_line|#define HWI_CONTROL_REG             0x1D&t;/* HWI Control register */
+multiline_comment|/* MDI/MDI-X Control Register bit definitions */
+DECL|macro|MDI_MDIX_RES_TIMER
+mdefine_line|#define MDI_MDIX_RES_TIMER          BIT_0_3&t;/* minimum slot time for resolution timer */
+DECL|macro|MDI_MDIX_CONFIG_IS_OK
+mdefine_line|#define MDI_MDIX_CONFIG_IS_OK       BIT_4&t;/* 1 = resolution algorithm completes OK */
+DECL|macro|MDI_MDIX_STATUS
+mdefine_line|#define MDI_MDIX_STATUS             BIT_5&t;/* 1 = MDIX (croos over), 0 = MDI (straight through) */
+DECL|macro|MDI_MDIX_SWITCH
+mdefine_line|#define MDI_MDIX_SWITCH             BIT_6&t;/* 1 = Forces to MDIX, 0 = Forces to MDI */
+DECL|macro|MDI_MDIX_AUTO_SWITCH_ENABLE
+mdefine_line|#define MDI_MDIX_AUTO_SWITCH_ENABLE BIT_7&t;/* 1 = MDI/MDI-X feature enabled */
+DECL|macro|MDI_MDIX_CONCT_CONFIG
+mdefine_line|#define MDI_MDIX_CONCT_CONFIG       BIT_8&t;/* Sets the MDI/MDI-X connectivity configuration (test prupose only) */
+DECL|macro|MDI_MDIX_CONCT_TEST_ENABLE
+mdefine_line|#define MDI_MDIX_CONCT_TEST_ENABLE  BIT_9&t;/* 1 = Enables connectivity testing */
+DECL|macro|MDI_MDIX_RESET_ALL_MASK
+mdefine_line|#define MDI_MDIX_RESET_ALL_MASK     0x0000
+multiline_comment|/* HWI Control Register bit definitions */
+DECL|macro|HWI_TEST_DISTANCE
+mdefine_line|#define HWI_TEST_DISTANCE           BIT_0_8&t;/* distance to cable problem */
+DECL|macro|HWI_TEST_HIGHZ_PROBLEM
+mdefine_line|#define HWI_TEST_HIGHZ_PROBLEM      BIT_9&t;/* 1 = Open Circuit */
+DECL|macro|HWI_TEST_LOWZ_PROBLEM
+mdefine_line|#define HWI_TEST_LOWZ_PROBLEM       BIT_10&t;/* 1 = Short Circuit */
+DECL|macro|HWI_TEST_RESERVED
+mdefine_line|#define HWI_TEST_RESERVED           (BIT_11 | BIT_12)&t;/* reserved */
+DECL|macro|HWI_TEST_EXECUTE
+mdefine_line|#define HWI_TEST_EXECUTE            BIT_13&t;/* 1 = Execute the HWI test on the PHY */
+DECL|macro|HWI_TEST_ABILITY
+mdefine_line|#define HWI_TEST_ABILITY            BIT_14&t;/* 1 = test passed */
+DECL|macro|HWI_TEST_ENABLE
+mdefine_line|#define HWI_TEST_ENABLE             BIT_15&t;/* 1 = Enables the HWI feature */
+DECL|macro|HWI_RESET_ALL_MASK
+mdefine_line|#define HWI_RESET_ALL_MASK          0x0000
 multiline_comment|/* ############Start of 82555 specific defines################## */
 multiline_comment|/* Intel 82555 specific registers */
 DECL|macro|PHY_82555_CSR
