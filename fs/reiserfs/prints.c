@@ -894,11 +894,11 @@ c_loop
 (paren
 id|k
 op_assign
-id|strstr
+id|strchr
 (paren
 id|k
 comma
-l_string|&quot;%&quot;
+l_char|&squot;%&squot;
 )paren
 )paren
 op_ne
