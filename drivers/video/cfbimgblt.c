@@ -462,6 +462,10 @@ c_cond
 id|n
 )paren
 (brace
+id|end_mask
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -477,10 +481,6 @@ id|j
 op_decrement
 )paren
 (brace
-id|end_mask
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
