@@ -747,16 +747,6 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_station
-op_star
-id|station
-op_assign
-id|llc_station_get
-c_func
-(paren
-)paren
-suffix:semicolon
-r_struct
 id|llc_station_state_ev
 op_star
 id|ev
@@ -778,7 +768,8 @@ suffix:semicolon
 id|llc_station_state_process
 c_func
 (paren
-id|station
+op_amp
+id|llc_main_station
 comma
 id|skb
 )paren

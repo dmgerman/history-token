@@ -127,7 +127,6 @@ id|sap
 )paren
 suffix:semicolon
 DECL|variable|llc_main_station
-r_static
 r_struct
 id|llc_station
 id|llc_main_station
@@ -1179,22 +1178,6 @@ id|sap-&gt;sk_list.lock
 suffix:semicolon
 r_return
 id|rc
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;llc_station_get - get addr of global station.&n; *&n; *&t;Returns address of a place to copy the global station to it.&n; */
-DECL|function|llc_station_get
-r_struct
-id|llc_station
-op_star
-id|llc_station_get
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-op_amp
-id|llc_main_station
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_station_state_process: queue event and try to process queue.&n; *&t;@station: Address of the station&n; *&t;@skb: Address of the event&n; *&n; *&t;Queues an event (on the station event queue) for handling by the&n; *&t;station state machine and attempts to process any queued-up events.&n; */
