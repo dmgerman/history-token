@@ -348,7 +348,9 @@ id|current_irq
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_struct
+id|tty_driver
+op_star
 id|line_register_devfs
 c_func
 (paren
@@ -363,7 +365,7 @@ op_star
 id|line_driver
 comma
 r_struct
-id|tty_driver
+id|tty_operations
 op_star
 id|driver
 comma

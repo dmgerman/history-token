@@ -30,6 +30,7 @@ DECL|variable|ssl_driver
 r_static
 r_struct
 id|tty_driver
+op_star
 id|ssl_driver
 suffix:semicolon
 DECL|macro|NR_PORTS
@@ -768,11 +769,11 @@ id|tty
 )paren
 (brace
 )brace
-DECL|variable|ssl_driver
+DECL|variable|ssl_ops
 r_static
 r_struct
-id|tty_driver
-id|ssl_driver
+id|tty_operations
+id|ssl_ops
 op_assign
 (brace
 dot
@@ -844,6 +845,12 @@ dot
 id|hangup
 op_assign
 id|ssl_hangup
+comma
+dot
+id|write_room
+op_assign
+id|line_write_room
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* Changed by ssl_init and referenced by ssl_exit, which are both serialized&n; * by being an initcall and exitcall, respectively.&n; */
@@ -875,6 +882,8 @@ comma
 id|ssl_version
 )paren
 suffix:semicolon
+id|ssl_driver
+op_assign
 id|line_register_devfs
 c_func
 (paren
@@ -885,7 +894,7 @@ op_amp
 id|driver
 comma
 op_amp
-id|ssl_driver
+id|ssl_ops
 comma
 id|serial_lines
 comma
