@@ -837,6 +837,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *    write_suspend_image - Write entire image to disk.&n; *&n; *    After writing suspend signature to the disk, suspend may no&n; *    longer fail: we have ready-to-run image in swap, and rollback&n; *    would happen on next reboot -- corrupting data.&n; *&n; *    Note: The buffer we allocate to use to write the suspend header is&n; *    not freed; its not needed since system is going down anyway&n; *    (plus it causes oops and I&squot;m lazy^H^H^H^Htoo busy).&n; */
 DECL|function|write_suspend_image
 r_static
 r_int
@@ -1374,16 +1375,6 @@ id|MDELAY
 c_func
 (paren
 l_int|1000
-)paren
-suffix:semicolon
-id|free_page
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|buffer
 )paren
 suffix:semicolon
 r_return
