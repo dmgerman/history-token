@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &lt;asm/hpet.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
 r_static
@@ -2743,7 +2744,9 @@ r_return
 id|count
 suffix:semicolon
 )brace
+multiline_comment|/* next tick in 8254 can be caught by catching timer wraparound */
 DECL|function|wait_8254_wraparound
+r_static
 r_void
 id|__init
 id|wait_8254_wraparound
@@ -2801,6 +2804,19 @@ l_int|300
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Default initialization for 8254 timers. If we use other timers like HPET,&n; * we override this later&n; */
+DECL|variable|wait_timer_tick
+r_void
+(paren
+op_star
+id|wait_timer_tick
+)paren
+(paren
+r_void
+)paren
+op_assign
+id|wait_8254_wraparound
+suffix:semicolon
 multiline_comment|/*&n; * This function sets up the local APIC timer, with a timeout of&n; * &squot;clocks&squot; APIC bus clock. During calibration we actually call&n; * this function twice on the boot CPU, once with a bogus timeout&n; * value, second time for real. The other (noncalibrating) CPUs&n; * call this function only once, with the real, calibrated value.&n; *&n; * We do reads before writes even if unnecessary, to get around the&n; * P5 APIC double write bug.&n; */
 DECL|macro|APIC_DIVISOR
 mdefine_line|#define APIC_DIVISOR 16
@@ -2901,7 +2917,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait for IRQ0&squot;s slice:&n;&t; */
-id|wait_8254_wraparound
+id|wait_timer_tick
 c_func
 (paren
 )paren
@@ -2973,7 +2989,7 @@ l_int|1000000000
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The timer chip counts down to zero. Let&squot;s wait&n;&t; * for a wraparound to start exact measurement:&n;&t; * (the current tick might have been already half done)&n;&t; */
-id|wait_8254_wraparound
+id|wait_timer_tick
 c_func
 (paren
 )paren
@@ -3013,7 +3029,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|wait_8254_wraparound
+id|wait_timer_tick
 c_func
 (paren
 )paren
