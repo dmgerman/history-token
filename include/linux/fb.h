@@ -737,8 +737,8 @@ multiline_comment|/* color map info */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * hardware cursor control&n; */
-DECL|macro|FB_CUR_SETCUR
-mdefine_line|#define FB_CUR_SETCUR   0x01
+DECL|macro|FB_CUR_SETIMAGE
+mdefine_line|#define FB_CUR_SETIMAGE 0x01
 DECL|macro|FB_CUR_SETPOS
 mdefine_line|#define FB_CUR_SETPOS   0x02
 DECL|macro|FB_CUR_SETHOT
@@ -802,18 +802,6 @@ id|fb_image
 id|image
 suffix:semicolon
 multiline_comment|/* Cursor image */
-multiline_comment|/* all fields below are for fbcon use only */
-DECL|member|flash
-r_int
-id|flash
-suffix:semicolon
-multiline_comment|/* cursor blink */
-DECL|member|data
-r_char
-op_star
-id|data
-suffix:semicolon
-multiline_comment|/* copy of bitmap */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
@@ -2107,12 +2095,6 @@ id|fb_monspecs
 id|monspecs
 suffix:semicolon
 multiline_comment|/* Current Monitor specs */
-DECL|member|cursor
-r_struct
-id|fb_cursor
-id|cursor
-suffix:semicolon
-multiline_comment|/* Current cursor */
 DECL|member|queue
 r_struct
 id|work_struct
@@ -2620,16 +2602,6 @@ id|s_pitch
 comma
 id|u32
 id|height
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|fb_load_cursor_image
-c_func
-(paren
-r_struct
-id|fb_info
-op_star
 )paren
 suffix:semicolon
 r_extern
