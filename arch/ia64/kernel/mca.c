@@ -4055,8 +4055,27 @@ id|prfunc_t
 id|prfunc
 )paren
 (brace
-singleline_comment|//char out[40];
-singleline_comment|//printk(KERN_DEBUG &quot;GUID = %s&bslash;n&quot;, efi_guid_unparse(p_guid, out));
+r_char
+id|out
+(braket
+l_int|40
+)braket
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;GUID = %s&bslash;n&quot;
+comma
+id|efi_guid_unparse
+c_func
+(paren
+id|p_guid
+comma
+id|out
+)paren
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
