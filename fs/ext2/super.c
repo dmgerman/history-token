@@ -425,7 +425,7 @@ id|sbi-&gt;s_es
 suffix:semicolon
 id|es-&gt;s_state
 op_assign
-id|le16_to_cpu
+id|cpu_to_le16
 c_func
 (paren
 id|sbi-&gt;s_mount_state
@@ -1880,9 +1880,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|__s16
-)paren
 id|le16_to_cpu
 c_func
 (paren
@@ -1891,9 +1888,6 @@ id|es-&gt;s_max_mnt_count
 )paren
 id|es-&gt;s_max_mnt_count
 op_assign
-(paren
-id|__s16
-)paren
 id|cpu_to_le16
 c_func
 (paren
@@ -2555,7 +2549,7 @@ id|i
 comma
 id|j
 suffix:semicolon
-id|__u32
+id|__le32
 id|features
 suffix:semicolon
 id|sbi
@@ -3188,7 +3182,7 @@ c_cond
 (paren
 id|es-&gt;s_magic
 op_ne
-id|le16_to_cpu
+id|cpu_to_le16
 c_func
 (paren
 id|EXT2_SUPER_MAGIC
@@ -4468,7 +4462,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|__u32
+id|__le32
 id|ret
 op_assign
 id|EXT2_HAS_RO_COMPAT_FEATURE
