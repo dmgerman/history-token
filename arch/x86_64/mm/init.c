@@ -3124,6 +3124,7 @@ id|addr
 r_return
 (paren
 (paren
+(paren
 id|addr
 op_ge
 id|VSYSCALL_START
@@ -3134,7 +3135,9 @@ id|addr
 OL
 id|VSYSCALL_END
 )paren
+)paren
 op_logical_or
+(paren
 (paren
 id|addr
 op_ge
@@ -3145,6 +3148,7 @@ op_logical_and
 id|addr
 OL
 id|VSYSCALL32_END
+)paren
 )paren
 )paren
 suffix:semicolon
