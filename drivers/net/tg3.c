@@ -6731,7 +6731,7 @@ comma
 r_int
 id|src_idx
 comma
-r_int
+id|u32
 id|dest_idx_unmasked
 )paren
 (brace
