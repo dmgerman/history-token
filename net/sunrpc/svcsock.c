@@ -2268,6 +2268,10 @@ id|err
 )paren
 suffix:semicolon
 )brace
+id|svsk-&gt;sk_sk-&gt;sk_stamp
+op_assign
+id|skb-&gt;stamp
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -2278,6 +2282,13 @@ id|svsk-&gt;sk_flags
 )paren
 suffix:semicolon
 multiline_comment|/* there may be more data... */
+multiline_comment|/*&n;&t; * Maybe more packets - kick another thread ASAP.&n;&t; */
+id|svc_sock_received
+c_func
+(paren
+id|svsk
+)paren
+suffix:semicolon
 id|len
 op_assign
 id|skb-&gt;len
@@ -2312,10 +2323,6 @@ suffix:semicolon
 id|rqstp-&gt;rq_daddr
 op_assign
 id|skb-&gt;nh.iph-&gt;daddr
-suffix:semicolon
-id|svsk-&gt;sk_sk-&gt;sk_stamp
-op_assign
-id|skb-&gt;stamp
 suffix:semicolon
 r_if
 c_cond
@@ -2358,12 +2365,6 @@ c_func
 id|svsk-&gt;sk_sk
 comma
 id|skb
-)paren
-suffix:semicolon
-id|svc_sock_received
-c_func
-(paren
-id|svsk
 )paren
 suffix:semicolon
 r_return
@@ -2451,12 +2452,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|svc_sock_received
-c_func
-(paren
-id|svsk
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2535,13 +2530,6 @@ id|serv-&gt;sv_stats
 )paren
 id|serv-&gt;sv_stats-&gt;netudpcnt
 op_increment
-suffix:semicolon
-multiline_comment|/* One down, maybe more to go... */
-id|svc_sock_received
-c_func
-(paren
-id|svsk
-)paren
 suffix:semicolon
 r_return
 id|len
