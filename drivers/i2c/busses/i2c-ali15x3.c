@@ -307,9 +307,8 @@ comma
 id|ali15x3_smba
 )paren
 )paren
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|error
 suffix:semicolon
 r_if
 c_cond
@@ -327,9 +326,8 @@ op_amp
 id|a
 )paren
 )paren
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|error
 suffix:semicolon
 r_if
 c_cond
@@ -358,9 +356,8 @@ comma
 l_string|&quot;force address failed - not supported?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|error
 suffix:semicolon
 )brace
 )brace
@@ -503,6 +500,20 @@ id|ali15x3_smba
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|error
+suffix:colon
+id|release_region
+c_func
+(paren
+id|ali15x3_smba
+comma
+id|ALI15X3_SMB_IOSIZE
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Internally used pause function */
