@@ -1107,19 +1107,6 @@ op_amp
 id|adapter-&gt;not_replenishing
 )paren
 suffix:semicolon
-id|ibmveth_assert
-c_func
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|adapter-&gt;not_replenishing
-)paren
-op_eq
-l_int|1
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* kick the replenish tasklet if we need replenishing and it isn&squot;t already running */
 DECL|function|ibmveth_schedule_replenishing
@@ -3463,6 +3450,11 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+suffix:semicolon
+id|rmb
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
