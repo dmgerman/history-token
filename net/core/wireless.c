@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * This file implement the Wireless Extensions APIs.&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2002 Jean Tourrilhes, All Rights Reserved.&n; *&n; * (As all part of the Linux kernel, this file is GPL)&n; */
 multiline_comment|/************************** DOCUMENTATION **************************/
-multiline_comment|/*&n; * API definition :&n; * --------------&n; * See &lt;linux/wireless.h&gt; for details of the APIs and the rest.&n; *&n; * History :&n; * -------&n; *&n; * v1 - 5.12.01 - Jean II&n; *&t;o Created this file.&n; *&n; * v2 - 13.12.01 - Jean II&n; *&t;o Move /proc/net/wireless stuff from net/core/dev.c to here&n; *&t;o Make Wireless Extension IOCTLs go through here&n; *&t;o Added iw_handler handling ;-)&n; *&t;o Added standard ioctl description&n; *&t;o Initial dumb commit strategy based on orinoco.c&n; *&n; * v3 - 19.12.01 - Jean II&n; *&t;o Make sure we don&squot;t go out of standard_ioctl[] in ioctl_standard_call&n; *&t;o Add event dispatcher function&n; *&t;o Add event description&n; *&t;o Propagate events as rtnetlink IFLA_WIRELESS option&n; *&t;o Generate event on selected SET requests&n; *&n; * v4 - 18.04.01 - Jean II&n; *&t;o Fix stupid off by one in iw_ioctl_description : IW_ESSID_MAX_SIZE + 1&n; */
+multiline_comment|/*&n; * API definition :&n; * --------------&n; * See &lt;linux/wireless.h&gt; for details of the APIs and the rest.&n; *&n; * History :&n; * -------&n; *&n; * v1 - 5.12.01 - Jean II&n; *&t;o Created this file.&n; *&n; * v2 - 13.12.01 - Jean II&n; *&t;o Move /proc/net/wireless stuff from net/core/dev.c to here&n; *&t;o Make Wireless Extension IOCTLs go through here&n; *&t;o Added iw_handler handling ;-)&n; *&t;o Added standard ioctl description&n; *&t;o Initial dumb commit strategy based on orinoco.c&n; *&n; * v3 - 19.12.01 - Jean II&n; *&t;o Make sure we don&squot;t go out of standard_ioctl[] in ioctl_standard_call&n; *&t;o Add event dispatcher function&n; *&t;o Add event description&n; *&t;o Propagate events as rtnetlink IFLA_WIRELESS option&n; *&t;o Generate event on selected SET requests&n; *&n; * v4 - 18.04.02 - Jean II&n; *&t;o Fix stupid off by one in iw_ioctl_description : IW_ESSID_MAX_SIZE + 1&n; *&n; * v5 - 21.06.02 - Jean II&n; *&t;o Add IW_PRIV_TYPE_ADDR in priv_type_size (+cleanup)&n; *&t;o Reshuffle IW_HEADER_TYPE_XXX to map IW_PRIV_TYPE_XXX changes&n; *&t;o Add IWEVCUSTOM for driver specific event/scanning token&n; *&t;o Turn on WE_STRICT_WRITE by default + kernel warning&n; *&t;o Fix WE_STRICT_WRITE in ioctl_export_private() (32 =&gt; iw_num)&n; *&t;o Fix off-by-one in test (extra_size &lt;= IFNAMSIZ)&n; */
 multiline_comment|/***************************** INCLUDES *****************************/
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* copy_to_user() */
 macro_line|#include &lt;linux/config.h&gt;&t;&t;/* Not needed ??? */
@@ -10,9 +10,10 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;&t;&t;/* rtnetlink stuff */
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Pretty obvious */
 macro_line|#include &lt;net/iw_handler.h&gt;&t;&t;/* New driver API */
 multiline_comment|/**************************** CONSTANTS ****************************/
-multiline_comment|/* This will be turned on later on... */
+multiline_comment|/* Enough lenience, let&squot;s make sure things are proper... */
 DECL|macro|WE_STRICT_WRITE
-macro_line|#undef WE_STRICT_WRITE&t;&t;/* Check write buffer size */
+mdefine_line|#define WE_STRICT_WRITE&t;&t;/* Check write buffer size */
+multiline_comment|/* I&squot;ll probably drop both the define and kernel message in the next version */
 multiline_comment|/* Debuging stuff */
 DECL|macro|WE_IOCTL_DEBUG
 macro_line|#undef WE_IOCTL_DEBUG&t;&t;/* Debug IOCTL API */
@@ -321,7 +322,7 @@ id|iw_quality
 comma
 l_int|0
 comma
-id|IW_MAX_SPY
+id|IW_MAX_GET_SPY
 comma
 l_int|0
 )brace
@@ -832,6 +833,51 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* IWEVCUSTOM */
+(brace
+id|IW_HEADER_TYPE_POINT
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_int|0
+comma
+id|IW_CUSTOM_MAX
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IWEVREGISTERED */
+(brace
+id|IW_HEADER_TYPE_ADDR
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IWEVEXPIRED */
+(brace
+id|IW_HEADER_TYPE_ADDR
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|variable|standard_event_num
@@ -865,19 +911,39 @@ op_assign
 (brace
 l_int|0
 comma
+multiline_comment|/* IW_PRIV_TYPE_NONE */
 l_int|1
 comma
+multiline_comment|/* IW_PRIV_TYPE_BYTE */
 l_int|1
 comma
+multiline_comment|/* IW_PRIV_TYPE_CHAR */
 l_int|0
 comma
-l_int|4
+multiline_comment|/* Not defined */
+r_sizeof
+(paren
+id|__u32
+)paren
 comma
-l_int|4
+multiline_comment|/* IW_PRIV_TYPE_INT */
+r_sizeof
+(paren
+r_struct
+id|iw_freq
+)paren
 comma
+multiline_comment|/* IW_PRIV_TYPE_FLOAT */
+r_sizeof
+(paren
+r_struct
+id|sockaddr
+)paren
+comma
+multiline_comment|/* IW_PRIV_TYPE_ADDR */
 l_int|0
 comma
-l_int|0
+multiline_comment|/* Not defined */
 )brace
 suffix:semicolon
 multiline_comment|/* Size (in bytes) of various events */
@@ -892,25 +958,34 @@ op_assign
 (brace
 id|IW_EV_LCP_LEN
 comma
+multiline_comment|/* IW_HEADER_TYPE_NULL */
 l_int|0
 comma
 id|IW_EV_CHAR_LEN
 comma
+multiline_comment|/* IW_HEADER_TYPE_CHAR */
 l_int|0
 comma
 id|IW_EV_UINT_LEN
 comma
+multiline_comment|/* IW_HEADER_TYPE_UINT */
 id|IW_EV_FREQ_LEN
+comma
+multiline_comment|/* IW_HEADER_TYPE_FREQ */
+id|IW_EV_ADDR_LEN
+comma
+multiline_comment|/* IW_HEADER_TYPE_ADDR */
+l_int|0
 comma
 id|IW_EV_POINT_LEN
 comma
 multiline_comment|/* Without variable payload */
 id|IW_EV_PARAM_LEN
 comma
-id|IW_EV_ADDR_LEN
-comma
+multiline_comment|/* IW_HEADER_TYPE_PARAM */
 id|IW_EV_QUAL_LEN
 comma
+multiline_comment|/* IW_HEADER_TYPE_QUAL */
 )brace
 suffix:semicolon
 multiline_comment|/************************ COMMON SUBROUTINES ************************/
@@ -1657,15 +1732,22 @@ c_cond
 (paren
 id|iwr-&gt;u.data.length
 OL
-(paren
-id|SIOCIWLASTPRIV
-op_minus
-id|SIOCIWFIRSTPRIV
-op_plus
-l_int|1
-)paren
+id|dev-&gt;wireless_handlers-&gt;num_private_args
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s (WE) : Buffer for request SIOCGIWPRIV too small (%d&lt;%d)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|iwr-&gt;u.data.length
+comma
+id|dev-&gt;wireless_handlers-&gt;num_private_args
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|E2BIG
@@ -1759,6 +1841,11 @@ id|ret
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_int
+id|user_size
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Get the description of the IOCTL */
 r_if
@@ -1988,22 +2075,11 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#ifdef WE_STRICT_WRITE
-multiline_comment|/* Check if there is enough buffer up there */
-r_if
-c_cond
-(paren
+multiline_comment|/* Save user space buffer size for checking */
+id|user_size
+op_assign
 id|iwr-&gt;u.data.length
-OL
-id|descr-&gt;max_tokens
-)paren
-(brace
-r_return
-op_minus
-id|E2BIG
 suffix:semicolon
-)brace
-macro_line|#endif&t;/* WE_STRICT_WRITE */
 )brace
 macro_line|#ifdef WE_IOCTL_DEBUG
 id|printk
@@ -2143,6 +2219,43 @@ id|cmd
 )paren
 )paren
 (brace
+macro_line|#ifdef WE_STRICT_WRITE
+multiline_comment|/* Check if there is enough buffer up there */
+r_if
+c_cond
+(paren
+id|user_size
+OL
+id|iwr-&gt;u.data.length
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s (WE) : Buffer for request %04X too small (%d&lt;%d)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|cmd
+comma
+id|user_size
+comma
+id|iwr-&gt;u.data.length
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|extra
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|E2BIG
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* WE_STRICT_WRITE */
 id|err
 op_assign
 id|copy_to_user
@@ -2444,6 +2557,33 @@ id|cmd
 )paren
 )paren
 (brace
+r_int
+id|offset
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* For sub-ioctls */
+multiline_comment|/* Check for sub-ioctl handler */
+r_if
+c_cond
+(paren
+id|descr-&gt;name
+(braket
+l_int|0
+)braket
+op_eq
+l_char|&squot;&bslash;0&squot;
+)paren
+(brace
+multiline_comment|/* Reserve one int for sub-ioctl index */
+id|offset
+op_assign
+r_sizeof
+(paren
+id|__u32
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Size of set arguments */
 id|extra_size
 op_assign
@@ -2464,8 +2604,12 @@ id|IW_PRIV_SIZE_FIXED
 )paren
 op_logical_and
 (paren
+(paren
 id|extra_size
-OL
+op_plus
+id|offset
+)paren
+op_le
 id|IFNAMSIZ
 )paren
 )paren
@@ -2499,7 +2643,7 @@ id|IW_PRIV_SIZE_FIXED
 op_logical_and
 (paren
 id|extra_size
-OL
+op_le
 id|IFNAMSIZ
 )paren
 )paren
@@ -3411,7 +3555,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s (WE) : Invalid Wireless Event (0x%04X)&bslash;n&quot;
+l_string|&quot;%s (WE) : Invalid/Unknown Wireless Event (0x%04X)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

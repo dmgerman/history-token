@@ -2,8 +2,10 @@ multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; *&n; * Copy
 macro_line|#ifndef __HDLC_H
 DECL|macro|__HDLC_H
 mdefine_line|#define __HDLC_H
+DECL|macro|GENERIC_HDLC_VERSION
+mdefine_line|#define GENERIC_HDLC_VERSION 3&t;/* For synchronization with sethdlc utility */
 DECL|macro|CLOCK_DEFAULT
-mdefine_line|#define CLOCK_DEFAULT   0&t;/* Default (current) setting */
+mdefine_line|#define CLOCK_DEFAULT   0&t;/* Default setting */
 DECL|macro|CLOCK_EXT
 mdefine_line|#define CLOCK_EXT&t;1&t;/* External TX and RX clock - DTE */
 DECL|macro|CLOCK_INT
@@ -13,7 +15,7 @@ mdefine_line|#define CLOCK_TXINT&t;3&t;/* Internal TX and external RX clock */
 DECL|macro|CLOCK_TXFROMRX
 mdefine_line|#define CLOCK_TXFROMRX&t;4&t;/* TX clock derived from external RX clock */
 DECL|macro|ENCODING_DEFAULT
-mdefine_line|#define ENCODING_DEFAULT&t;0 /* Default (current) setting */
+mdefine_line|#define ENCODING_DEFAULT&t;0 /* Default setting */
 DECL|macro|ENCODING_NRZ
 mdefine_line|#define ENCODING_NRZ&t;&t;1
 DECL|macro|ENCODING_NRZI
@@ -25,7 +27,7 @@ mdefine_line|#define ENCODING_FM_SPACE&t;4
 DECL|macro|ENCODING_MANCHESTER
 mdefine_line|#define ENCODING_MANCHESTER&t;5
 DECL|macro|PARITY_DEFAULT
-mdefine_line|#define PARITY_DEFAULT&t;&t;0 /* Default (current) setting */
+mdefine_line|#define PARITY_DEFAULT&t;&t;0 /* Default setting */
 DECL|macro|PARITY_NONE
 mdefine_line|#define PARITY_NONE&t;&t;1 /* No parity */
 DECL|macro|PARITY_CRC16_PR0
@@ -41,14 +43,13 @@ mdefine_line|#define PARITY_CRC32_PR0_CCITT&t;6 /* CRC32, initial value 0x000000
 DECL|macro|PARITY_CRC32_PR1_CCITT
 mdefine_line|#define PARITY_CRC32_PR1_CCITT&t;7 /* CRC32, initial value 0xFFFFFFFF */
 DECL|macro|LMI_DEFAULT
-mdefine_line|#define LMI_DEFAULT&t;&t;0 /* Default (current) setting */
+mdefine_line|#define LMI_DEFAULT&t;&t;0 /* Default setting */
 DECL|macro|LMI_NONE
 mdefine_line|#define LMI_NONE&t;&t;1 /* No LMI, all PVCs are static */
 DECL|macro|LMI_ANSI
 mdefine_line|#define LMI_ANSI&t;&t;2 /* ANSI Annex D */
 DECL|macro|LMI_CCITT
 mdefine_line|#define LMI_CCITT&t;&t;3 /* ITU-T Annex A */
-multiline_comment|/* PPP doesn&squot;t need any info now - supply length = 0 to ioctl */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -455,11 +456,11 @@ op_star
 id|hdlc
 )paren
 suffix:semicolon
-DECL|member|detach
+DECL|member|proto_detach
 r_void
 (paren
 op_star
-id|detach
+id|proto_detach
 )paren
 (paren
 r_struct
@@ -1126,11 +1127,11 @@ id|hdlc
 suffix:semicolon
 )brace
 multiline_comment|/* May be used by hardware driver to gain control over HDLC device */
-DECL|function|hdlc_detach
+DECL|function|hdlc_proto_detach
 r_static
 id|__inline__
 r_void
-id|hdlc_detach
+id|hdlc_proto_detach
 c_func
 (paren
 id|hdlc_device
@@ -1141,17 +1142,17 @@ id|hdlc
 r_if
 c_cond
 (paren
-id|hdlc-&gt;detach
+id|hdlc-&gt;proto_detach
 )paren
 id|hdlc
 op_member_access_from_pointer
-id|detach
+id|proto_detach
 c_func
 (paren
 id|hdlc
 )paren
 suffix:semicolon
-id|hdlc-&gt;detach
+id|hdlc-&gt;proto_detach
 op_assign
 l_int|NULL
 suffix:semicolon

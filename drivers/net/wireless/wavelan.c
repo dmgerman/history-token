@@ -1016,9 +1016,22 @@ id|u8
 id|d
 )paren
 (brace
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Wait for MMC to go idle */
 r_while
 c_loop
+(paren
+(paren
+id|count
+op_increment
+OL
+l_int|100
+)paren
+op_logical_and
 (paren
 id|inw
 c_func
@@ -1031,6 +1044,12 @@ id|ioaddr
 )paren
 op_amp
 id|HASR_MMC_BUSY
+)paren
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 id|outw
@@ -1140,8 +1159,21 @@ id|u16
 id|o
 )paren
 (brace
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
+(paren
+(paren
+id|count
+op_increment
+OL
+l_int|100
+)paren
+op_logical_and
 (paren
 id|inw
 c_func
@@ -1154,6 +1186,12 @@ id|ioaddr
 )paren
 op_amp
 id|HASR_MMC_BUSY
+)paren
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 id|outw
@@ -1173,6 +1211,14 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
+id|count
+op_increment
+OL
+l_int|100
+)paren
+op_logical_and
+(paren
 id|inw
 c_func
 (paren
@@ -1184,6 +1230,12 @@ id|ioaddr
 )paren
 op_amp
 id|HASR_MMC_BUSY
+)paren
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 r_return
@@ -11922,6 +11974,11 @@ id|nop.nop_h.ac_link
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure the watchdog will keep quiet for a while */
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 multiline_comment|/* Keep stats up to date. */
 id|lp-&gt;stats.tx_bytes
 op_add_assign
@@ -15699,11 +15756,8 @@ op_amp
 id|lp-&gt;spinlock
 )paren
 suffix:semicolon
-multiline_comment|/* Check modem interrupt */
-r_if
-c_cond
-(paren
-(paren
+multiline_comment|/* We always had spurious interrupts at startup, but lately I&n;&t; * saw them comming *between* the request_irq() and the&n;&t; * spin_lock_irqsave() in wavelan_open(), so the spinlock&n;&t; * protection is no enough.&n;&t; * So, we also check lp-&gt;hacr that will tell us is we enabled&n;&t; * irqs or not (see wv_ints_on()).&n;&t; * We can&squot;t use netif_running(dev) because we depend on the&n;&t; * proper processing of the irq generated during the config. */
+multiline_comment|/* Which interrupt it is ? */
 id|hasr
 op_assign
 id|hasr_read
@@ -15711,14 +15765,55 @@ c_func
 (paren
 id|ioaddr
 )paren
+suffix:semicolon
+macro_line|#ifdef DEBUG_INTERRUPT_INFO
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: wavelan_interrupt(): hasr 0x%04x; hacr 0x%04x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|hasr
+comma
+id|lp-&gt;hacr
 )paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Check modem interrupt */
+r_if
+c_cond
+(paren
+(paren
+id|hasr
 op_amp
 id|HASR_MMC_INTR
+)paren
+op_logical_and
+(paren
+id|lp-&gt;hacr
+op_amp
+id|HACR_MMC_INT_ENABLE
+)paren
 )paren
 (brace
 id|u8
 id|dce_status
 suffix:semicolon
+macro_line|#ifdef DEBUG_INTERRUPT_ERROR
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: wavelan_interrupt(): unexpected mmc interrupt: status 0x%04x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|dce_status
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Interrupt from the modem management controller.&n;&t;&t; * This will clear it -- ignored for now.&n;&t;&t; */
 id|mmc_read
 c_func
@@ -15742,23 +15837,11 @@ id|dce_status
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_INTERRUPT_ERROR
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: wavelan_interrupt(): unexpected mmc interrupt: status 0x%04x.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|dce_status
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* Check if not controller interrupt */
 r_if
 c_cond
+(paren
 (paren
 (paren
 id|hasr
@@ -15768,15 +15851,28 @@ id|HASR_82586_INTR
 op_eq
 l_int|0
 )paren
+op_logical_or
+(paren
+(paren
+id|lp-&gt;hacr
+op_amp
+id|HACR_82586_INT_ENABLE
+)paren
+op_eq
+l_int|0
+)paren
+)paren
 (brace
 macro_line|#ifdef DEBUG_INTERRUPT_ERROR
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: wavelan_interrupt(): interrupt not coming from i82586&bslash;n&quot;
+l_string|&quot;%s: wavelan_interrupt(): interrupt not coming from i82586 - hasr 0x%04x.&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|hasr
 )paren
 suffix:semicolon
 macro_line|#endif

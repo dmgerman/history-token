@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SDL Inc. RISCom/N2 synchronous serial card driver for Linux&n; *&n; * Copyright (C) 1998-2001 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * For information see http://hq.pm.waw.pl/hdlc/&n; *&n; * Note: integrated CSU/DSU/DDS are not supported by this driver&n; *&n; * Sources of information:&n; *    Hitachi HD64570 SCA User&squot;s Manual&n; *    SDL Inc. PPP/HDLC/CISCO driver&n; */
+multiline_comment|/*&n; * SDL Inc. RISCom/N2 synchronous serial card driver for Linux&n; *&n; * Copyright (C) 1998-2002 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * For information see http://hq.pm.waw.pl/hdlc/&n; *&n; * Note: integrated CSU/DSU/DDS are not supported by this driver&n; *&n; * Sources of information:&n; *    Hitachi HD64570 SCA User&squot;s Manual&n; *    SDL Inc. PPP/HDLC/CISCO driver&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -22,7 +22,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;SDL RISCom/N2 driver version: 1.09&quot;
+l_string|&quot;SDL RISCom/N2 driver version: 1.10&quot;
 suffix:semicolon
 DECL|variable|devname
 r_static
@@ -382,7 +382,7 @@ suffix:semicolon
 macro_line|#include &quot;hd6457x.c&quot;
 DECL|function|n2_set_iface
 r_static
-r_int
+r_void
 id|n2_set_iface
 c_func
 (paren
@@ -442,32 +442,6 @@ c_cond
 id|port-&gt;settings.clock_type
 )paren
 (brace
-r_case
-id|CLOCK_EXT
-suffix:colon
-id|mcr
-op_and_assign
-id|port-&gt;phy_node
-ques
-c_cond
-op_complement
-id|CLOCK_OUT_PORT1
-suffix:colon
-op_complement
-id|CLOCK_OUT_PORT0
-suffix:semicolon
-id|rxs
-op_or_assign
-id|CLK_LINE_RX
-suffix:semicolon
-multiline_comment|/* RXC input */
-id|txs
-op_or_assign
-id|CLK_LINE_TX
-suffix:semicolon
-multiline_comment|/* TXC input */
-r_break
-suffix:semicolon
 r_case
 id|CLOCK_INT
 suffix:colon
@@ -542,10 +516,28 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
-op_minus
-id|EINVAL
+multiline_comment|/* Clock EXTernal */
+id|mcr
+op_and_assign
+id|port-&gt;phy_node
+ques
+c_cond
+op_complement
+id|CLOCK_OUT_PORT1
+suffix:colon
+op_complement
+id|CLOCK_OUT_PORT0
 suffix:semicolon
+id|rxs
+op_or_assign
+id|CLK_LINE_RX
+suffix:semicolon
+multiline_comment|/* RXC input */
+id|txs
+op_or_assign
+id|CLK_LINE_TX
+suffix:semicolon
+multiline_comment|/* TXC input */
 )brace
 id|outb
 c_func
@@ -594,9 +586,6 @@ c_func
 (paren
 id|port
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|n2_open
@@ -741,12 +730,14 @@ c_func
 id|hdlc
 )paren
 suffix:semicolon
-r_return
 id|n2_set_iface
 c_func
 (paren
 id|port
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|n2_close
@@ -881,6 +872,9 @@ r_sizeof
 id|sync_serial_settings
 )paren
 suffix:semicolon
+id|sync_serial_settings
+id|new_line
+suffix:semicolon
 id|hdlc_device
 op_star
 id|hdlc
@@ -1000,7 +994,7 @@ id|copy_from_user
 c_func
 (paren
 op_amp
-id|port-&gt;settings
+id|new_line
 comma
 op_amp
 id|line-&gt;sync
@@ -1012,13 +1006,66 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* FIXME - put sanity checks here */
+r_if
+c_cond
+(paren
+id|new_line.clock_type
+op_ne
+id|CLOCK_EXT
+op_logical_and
+id|new_line.clock_type
+op_ne
+id|CLOCK_TXFROMRX
+op_logical_and
+id|new_line.clock_type
+op_ne
+id|CLOCK_INT
+op_logical_and
+id|new_line.clock_type
+op_ne
+id|CLOCK_TXINT
+)paren
 r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* No such clock setting */
+r_if
+c_cond
+(paren
+id|new_line.loopback
+op_ne
+l_int|0
+op_logical_and
+id|new_line.loopback
+op_ne
+l_int|1
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|port-&gt;settings
+comma
+op_amp
+id|new_line
+comma
+id|size
+)paren
+suffix:semicolon
+multiline_comment|/* Update settings */
 id|n2_set_iface
 c_func
 (paren
 id|port
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 r_default
 suffix:colon

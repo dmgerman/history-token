@@ -40,7 +40,7 @@ mdefine_line|#define SOCKET_START_PG&t;0x01
 DECL|macro|SOCKET_STOP_PG
 mdefine_line|#define SOCKET_STOP_PG&t;0xff
 DECL|macro|PCNET_RDC_TIMEOUT
-mdefine_line|#define PCNET_RDC_TIMEOUT 0x02&t;/* Max wait in jiffies for Tx RDC */
+mdefine_line|#define PCNET_RDC_TIMEOUT (2*HZ/100)&t;/* Max wait in jiffies for Tx RDC */
 DECL|variable|if_names
 r_static
 r_char
@@ -6111,11 +6111,13 @@ c_cond
 (paren
 id|info-&gt;pna_phy
 op_logical_and
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|info-&gt;mii_reset
-OG
+op_plus
 l_int|6
 op_star
 id|HZ
@@ -7420,11 +7422,15 @@ l_int|0
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|dma_start
-OG
+op_plus
 id|PCNET_RDC_TIMEOUT
+)paren
 )paren
 (brace
 id|printk

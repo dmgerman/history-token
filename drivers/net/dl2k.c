@@ -4070,18 +4070,6 @@ suffix:semicolon
 multiline_comment|/* Let TxStartThresh stay default value */
 )brace
 multiline_comment|/* Maximum Collisions */
-macro_line|#ifdef ETHER_STATS&t;
-r_if
-c_cond
-(paren
-id|tx_status
-op_amp
-l_int|0x08
-)paren
-id|np-&gt;stats.collisions16
-op_increment
-suffix:semicolon
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -4092,7 +4080,6 @@ l_int|0x08
 id|np-&gt;stats.collisions
 op_increment
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Restart the Tx */
 id|writel
 (paren

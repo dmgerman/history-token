@@ -5308,11 +5308,6 @@ id|Tx0ManyColl
 id|tp-&gt;stats.tx_aborted_errors
 op_increment
 suffix:semicolon
-macro_line|#ifdef ETHER_STATS
-id|tp-&gt;stats.collisions16
-op_increment
-suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond

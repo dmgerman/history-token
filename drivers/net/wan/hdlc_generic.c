@@ -21,7 +21,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;HDLC support module revision 1.08&quot;
+l_string|&quot;HDLC support module revision 1.10&quot;
 suffix:semicolon
 DECL|function|hdlc_change_mtu
 r_static
@@ -128,6 +128,26 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_HDLC_RAW
+DECL|macro|hdlc_raw_ioctl
+mdefine_line|#define hdlc_raw_ioctl(hdlc, ifr)&t;-ENOSYS
+macro_line|#endif
+macro_line|#ifndef CONFIG_HDLC_PPP
+DECL|macro|hdlc_ppp_ioctl
+mdefine_line|#define hdlc_ppp_ioctl(hdlc, ifr)&t;-ENOSYS
+macro_line|#endif
+macro_line|#ifndef CONFIG_HDLC_CISCO
+DECL|macro|hdlc_cisco_ioctl
+mdefine_line|#define hdlc_cisco_ioctl(hdlc, ifr)&t;-ENOSYS
+macro_line|#endif
+macro_line|#ifndef CONFIG_HDLC_FR
+DECL|macro|hdlc_fr_ioctl
+mdefine_line|#define hdlc_fr_ioctl(hdlc, ifr)&t;-ENOSYS
+macro_line|#endif
+macro_line|#ifndef CONFIG_HDLC_X25
+DECL|macro|hdlc_x25_ioctl
+mdefine_line|#define hdlc_x25_ioctl(hdlc, ifr)&t;-ENOSYS
+macro_line|#endif
 DECL|function|hdlc_ioctl
 r_int
 id|hdlc_ioctl
@@ -212,7 +232,6 @@ c_cond
 id|proto
 )paren
 (brace
-macro_line|#ifdef CONFIG_HDLC_RAW
 r_case
 id|IF_PROTO_HDLC
 suffix:colon
@@ -225,8 +244,6 @@ comma
 id|ifr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_HDLC_PPP
 r_case
 id|IF_PROTO_PPP
 suffix:colon
@@ -239,8 +256,6 @@ comma
 id|ifr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_HDLC_CISCO
 r_case
 id|IF_PROTO_CISCO
 suffix:colon
@@ -253,8 +268,6 @@ comma
 id|ifr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_HDLC_FR
 r_case
 id|IF_PROTO_FR
 suffix:colon
@@ -267,8 +280,6 @@ comma
 id|ifr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_HDLC_X25
 r_case
 id|IF_PROTO_X25
 suffix:colon
@@ -281,12 +292,11 @@ comma
 id|ifr
 )paren
 suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 r_return
 op_minus
-id|ENOSYS
+id|EINVAL
 suffix:semicolon
 )brace
 )brace
@@ -345,7 +355,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|hdlc-&gt;detach
+id|hdlc-&gt;proto_detach
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -404,7 +414,7 @@ op_star
 id|hdlc
 )paren
 (brace
-id|hdlc_detach
+id|hdlc_proto_detach
 c_func
 (paren
 id|hdlc

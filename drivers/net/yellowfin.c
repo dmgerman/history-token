@@ -4810,18 +4810,6 @@ l_int|0x8000
 id|yp-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
-macro_line|#ifdef ETHER_STATS
-r_if
-c_cond
-(paren
-id|tx_errs
-op_amp
-l_int|0x1000
-)paren
-id|yp-&gt;stats.collisions16
-op_increment
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -4843,18 +4831,6 @@ id|dev-&gt;name
 comma
 id|tx_errs
 )paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHER_STATS
-r_if
-c_cond
-(paren
-id|tx_errs
-op_amp
-l_int|0x0400
-)paren
-id|yp-&gt;stats.tx_deferred
-op_increment
 suffix:semicolon
 macro_line|#endif
 id|yp-&gt;stats.tx_bytes

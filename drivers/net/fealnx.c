@@ -6360,33 +6360,9 @@ l_int|0
 id|np-&gt;stats.tx_heartbeat_errors
 op_increment
 suffix:semicolon
-macro_line|#ifdef ETHER_STATS
-r_if
-c_cond
-(paren
-id|tx_status
-op_amp
-id|EC
-)paren
-id|np-&gt;stats.collisions16
-op_increment
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
-macro_line|#ifdef ETHER_STATS
-r_if
-c_cond
-(paren
-id|tx_status
-op_amp
-id|DFR
-)paren
-id|np-&gt;stats.tx_deferred
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|np-&gt;stats.tx_bytes
 op_add_assign
 (paren
@@ -6563,18 +6539,6 @@ l_int|0x00ff0000
 op_rshift
 l_int|16
 suffix:semicolon
-macro_line|#ifdef ETHER_STATS
-id|np-&gt;stats.collisions16
-op_add_assign
-(paren
-id|data
-op_amp
-l_int|0xff000000
-)paren
-op_rshift
-l_int|24
-suffix:semicolon
-macro_line|#endif
 id|np-&gt;stats.collisions
 op_add_assign
 (paren

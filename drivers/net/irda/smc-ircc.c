@@ -5102,6 +5102,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|smc_init
+r_static
 r_int
 id|__init
 id|smc_init

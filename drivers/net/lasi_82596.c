@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -15,6 +16,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -23,15 +25,15 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/gsc.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|version
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
-l_string|&quot;82596.c $Revision: 1.20 $&bslash;n&quot;
+l_string|&quot;82596.c $Revision: 1.29 $&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* DEBUG flags&n; */
 DECL|macro|DEB_INIT
@@ -69,7 +71,7 @@ mdefine_line|#define DEB_STRUCT&t;0x8000
 DECL|macro|DEB_ANY
 mdefine_line|#define DEB_ANY&t;&t;0xffff
 DECL|macro|DEB
-mdefine_line|#define DEB(x,y)&t;if (i596_debug &amp; (x)) y
+mdefine_line|#define DEB(x,y)&t;if (i596_debug &amp; (x)) { y; }
 DECL|macro|CHECK_WBACK
 mdefine_line|#define  CHECK_WBACK(addr,len) &bslash;&n;&t;do { if (!dma_consistent) dma_cache_wback((unsigned long)addr,len); } while (0)
 DECL|macro|CHECK_INV
@@ -85,19 +87,19 @@ mdefine_line|#define PA_CHANNEL_ATTENTION&t;8
 multiline_comment|/*&n; * Define various macros for Channel Attention, word swapping etc., dependent&n; * on architecture.  MVME and BVME are 680x0 based, otherwise it is Intel.&n; */
 macro_line|#ifdef __BIG_ENDIAN
 DECL|macro|WSWAPrfd
-mdefine_line|#define WSWAPrfd(x)  ((struct i596_rfd *) (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16)))
+mdefine_line|#define WSWAPrfd(x)  (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16))
 DECL|macro|WSWAPrbd
-mdefine_line|#define WSWAPrbd(x)  ((struct i596_rbd *) (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16)))
+mdefine_line|#define WSWAPrbd(x)  (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16))
 DECL|macro|WSWAPiscp
-mdefine_line|#define WSWAPiscp(x) ((struct i596_iscp *)(((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16)))
+mdefine_line|#define WSWAPiscp(x) (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16))
 DECL|macro|WSWAPscb
-mdefine_line|#define WSWAPscb(x)  ((struct i596_scb *) (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16)))
+mdefine_line|#define WSWAPscb(x)  (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16))
 DECL|macro|WSWAPcmd
-mdefine_line|#define WSWAPcmd(x)  ((struct i596_cmd *) (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16)))
+mdefine_line|#define WSWAPcmd(x)  (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16))
 DECL|macro|WSWAPtbd
-mdefine_line|#define WSWAPtbd(x)  ((struct i596_tbd *) (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16)))
+mdefine_line|#define WSWAPtbd(x)  (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16))
 DECL|macro|WSWAPchar
-mdefine_line|#define WSWAPchar(x) ((char *)            (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16)))
+mdefine_line|#define WSWAPchar(x) (((u32)(x)&lt;&lt;16) | ((((u32)(x)))&gt;&gt;16))
 DECL|macro|ISCP_BUSY
 mdefine_line|#define ISCP_BUSY&t;0x00010000
 DECL|macro|MACH_IS_APRICOT
@@ -176,6 +178,8 @@ comma
 l_string|&quot;lasi_82596 debug mask&quot;
 )paren
 suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 multiline_comment|/* Copy frames shorter than rx_copybreak, otherwise pass on up in&n; * a full sized sk_buff.  Value of 100 stolen from tulip.c (!alpha).&n; */
 DECL|variable|rx_copybreak
 r_static
@@ -184,14 +188,14 @@ id|rx_copybreak
 op_assign
 l_int|100
 suffix:semicolon
+DECL|macro|MAX_DRIVERS
+mdefine_line|#define MAX_DRIVERS&t;4&t;/* max count of drivers */
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;1536
 DECL|macro|MAX_MC_CNT
 mdefine_line|#define MAX_MC_CNT&t;64
-DECL|macro|I596_TOTAL_SIZE
-mdefine_line|#define I596_TOTAL_SIZE 17
 DECL|macro|I596_NULL
-mdefine_line|#define I596_NULL ((void *)0xffffffff)
+mdefine_line|#define I596_NULL ((u32)0xffffffff)
 DECL|macro|CMD_EOL
 mdefine_line|#define CMD_EOL&t;&t;0x8000&t;/* The last command of the list, stop. */
 DECL|macro|CMD_SUSP
@@ -288,8 +292,7 @@ r_int
 id|portlo
 suffix:semicolon
 DECL|member|ca
-r_int
-r_int
+id|u32
 id|ca
 suffix:semicolon
 )brace
@@ -313,18 +316,15 @@ r_int
 id|pad
 suffix:semicolon
 DECL|member|next
-r_struct
-id|i596_tbd
-op_star
+id|dma_addr_t
 id|next
 suffix:semicolon
 DECL|member|data
-r_char
-op_star
+id|dma_addr_t
 id|data
 suffix:semicolon
 DECL|member|cache_pad
-r_int
+id|u32
 id|cache_pad
 (braket
 l_int|5
@@ -356,9 +356,7 @@ r_int
 id|command
 suffix:semicolon
 DECL|member|b_next
-r_struct
-id|i596_cmd
-op_star
+id|dma_addr_t
 id|b_next
 suffix:semicolon
 multiline_comment|/* Address from i596 viewpoint */
@@ -374,9 +372,7 @@ id|i596_cmd
 id|cmd
 suffix:semicolon
 DECL|member|tbd
-r_struct
-id|i596_tbd
-op_star
+id|dma_addr_t
 id|tbd
 suffix:semicolon
 DECL|member|size
@@ -400,14 +396,25 @@ DECL|member|dma_addr
 id|dma_addr_t
 id|dma_addr
 suffix:semicolon
+macro_line|#ifdef __LP64__
 DECL|member|cache_pad
-r_int
+id|u32
+id|cache_pad
+(braket
+l_int|6
+)braket
+suffix:semicolon
+multiline_comment|/* Total 64 bytes... */
+macro_line|#else    
+DECL|member|cache_pad
+id|u32
 id|cache_pad
 (braket
 l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* Total 32 bytes... */
+macro_line|#endif    
 )brace
 suffix:semicolon
 DECL|struct|tdr_cmd
@@ -506,16 +513,12 @@ r_int
 id|cmd
 suffix:semicolon
 DECL|member|b_next
-r_struct
-id|i596_rfd
-op_star
+id|dma_addr_t
 id|b_next
 suffix:semicolon
 multiline_comment|/* Address from i596 viewpoint */
 DECL|member|rbd
-r_struct
-id|i596_rbd
-op_star
+id|dma_addr_t
 id|rbd
 suffix:semicolon
 DECL|member|count
@@ -541,20 +544,23 @@ id|i596_rfd
 op_star
 id|v_prev
 suffix:semicolon
+macro_line|#ifndef __LP64__    
 DECL|member|cache_pad
-r_int
+id|u32
 id|cache_pad
 (braket
 l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* Total 32 bytes... */
+macro_line|#endif    
 )brace
 suffix:semicolon
 DECL|struct|i596_rbd
 r_struct
 id|i596_rbd
 (brace
+multiline_comment|/* hardware data */
 DECL|member|count
 r_int
 r_int
@@ -566,15 +572,11 @@ r_int
 id|zero1
 suffix:semicolon
 DECL|member|b_next
-r_struct
-id|i596_rbd
-op_star
+id|dma_addr_t
 id|b_next
 suffix:semicolon
 DECL|member|b_data
-r_int
-r_char
-op_star
+id|dma_addr_t
 id|b_data
 suffix:semicolon
 multiline_comment|/* Address from i596 viewpoint */
@@ -588,6 +590,7 @@ r_int
 r_int
 id|zero2
 suffix:semicolon
+multiline_comment|/* driver data */
 DECL|member|skb
 r_struct
 id|sk_buff
@@ -601,9 +604,7 @@ op_star
 id|v_next
 suffix:semicolon
 DECL|member|b_addr
-r_struct
-id|i596_rbd
-op_star
+id|dma_addr_t
 id|b_addr
 suffix:semicolon
 multiline_comment|/* This rbd addr from i596 view */
@@ -615,6 +616,15 @@ id|v_data
 suffix:semicolon
 multiline_comment|/* Address from CPUs viewpoint */
 multiline_comment|/* Total 32 bytes... */
+macro_line|#ifdef __LP64__
+DECL|member|cache_pad
+id|u32
+id|cache_pad
+(braket
+l_int|4
+)braket
+suffix:semicolon
+macro_line|#endif    
 )brace
 suffix:semicolon
 multiline_comment|/* These values as chosen so struct i596_private fits in one page... */
@@ -637,45 +647,35 @@ r_int
 id|command
 suffix:semicolon
 DECL|member|cmd
-r_struct
-id|i596_cmd
-op_star
+id|dma_addr_t
 id|cmd
 suffix:semicolon
 DECL|member|rfd
-r_struct
-id|i596_rfd
-op_star
+id|dma_addr_t
 id|rfd
 suffix:semicolon
 DECL|member|crc_err
-r_int
-r_int
+id|u32
 id|crc_err
 suffix:semicolon
 DECL|member|align_err
-r_int
-r_int
+id|u32
 id|align_err
 suffix:semicolon
 DECL|member|resource_err
-r_int
-r_int
+id|u32
 id|resource_err
 suffix:semicolon
 DECL|member|over_err
-r_int
-r_int
+id|u32
 id|over_err
 suffix:semicolon
 DECL|member|rcvdt_err
-r_int
-r_int
+id|u32
 id|rcvdt_err
 suffix:semicolon
 DECL|member|short_err
-r_int
-r_int
+id|u32
 id|short_err
 suffix:semicolon
 DECL|member|t_on
@@ -695,14 +695,11 @@ r_struct
 id|i596_iscp
 (brace
 DECL|member|stat
-r_int
-r_int
+id|u32
 id|stat
 suffix:semicolon
 DECL|member|scb
-r_struct
-id|i596_scb
-op_star
+id|dma_addr_t
 id|scb
 suffix:semicolon
 )brace
@@ -712,19 +709,15 @@ r_struct
 id|i596_scp
 (brace
 DECL|member|sysbus
-r_int
-r_int
+id|u32
 id|sysbus
 suffix:semicolon
 DECL|member|pad
-r_int
-r_int
+id|u32
 id|pad
 suffix:semicolon
 DECL|member|iscp
-r_struct
-id|i596_iscp
-op_star
+id|dma_addr_t
 id|iscp
 suffix:semicolon
 )brace
@@ -925,8 +918,7 @@ l_int|32
 )paren
 suffix:semicolon
 DECL|member|stat
-r_int
-r_int
+id|u32
 id|stat
 suffix:semicolon
 DECL|member|last_restart
@@ -962,8 +954,7 @@ r_int
 id|cmd_backlog
 suffix:semicolon
 DECL|member|last_cmd
-r_int
-r_int
+id|u32
 id|last_cmd
 suffix:semicolon
 DECL|member|stats
@@ -1038,6 +1029,14 @@ l_int|0x7f
 multiline_comment|/*  *multi IA */
 )brace
 suffix:semicolon
+DECL|variable|fake_pci_dev
+r_static
+r_struct
+id|pci_dev
+op_star
+id|fake_pci_dev
+suffix:semicolon
+multiline_comment|/* The fake pci_dev needed for &n;&t;&t;&t;&t;&t;pci_* functions under ccio. */
 DECL|variable|dma_consistent
 r_static
 r_int
@@ -1208,15 +1207,9 @@ c_func
 (paren
 l_int|0
 comma
-(paren
-r_void
-op_star
-)paren
-(paren
 id|dev-&gt;base_addr
 op_plus
 id|PA_CHANNEL_ATTENTION
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1235,9 +1228,7 @@ comma
 r_int
 id|c
 comma
-r_volatile
-r_void
-op_star
+id|dma_addr_t
 id|x
 )paren
 (brace
@@ -1270,6 +1261,11 @@ id|u32
 id|x
 )paren
 suffix:semicolon
+id|u16
+id|a
+comma
+id|b
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1277,46 +1273,43 @@ id|lp-&gt;options
 op_amp
 id|OPT_SWAP_PORT
 )paren
-id|v
+(brace
+id|a
 op_assign
-(paren
-(paren
-id|u32
-)paren
-(paren
 id|v
-)paren
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-(paren
-id|u32
-)paren
-(paren
-id|v
-)paren
 op_rshift
 l_int|16
-)paren
 suffix:semicolon
-id|gsc_writel
-c_func
-(paren
+id|b
+op_assign
 id|v
 op_amp
 l_int|0xffff
+suffix:semicolon
+)brace
+r_else
+(brace
+id|a
+op_assign
+id|v
+op_amp
+l_int|0xffff
+suffix:semicolon
+id|b
+op_assign
+id|v
+op_rshift
+l_int|16
+suffix:semicolon
+)brace
+id|gsc_writel
+c_func
+(paren
+id|a
 comma
-(paren
-r_void
-op_star
-)paren
-(paren
 id|dev-&gt;base_addr
 op_plus
 id|PA_CPU_PORT_L_ACCESS
-)paren
 )paren
 suffix:semicolon
 id|udelay
@@ -1328,19 +1321,11 @@ suffix:semicolon
 id|gsc_writel
 c_func
 (paren
-id|v
-op_rshift
-l_int|16
+id|b
 comma
-(paren
-r_void
-op_star
-)paren
-(paren
 id|dev-&gt;base_addr
 op_plus
 id|PA_CPU_PORT_L_ACCESS
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1425,7 +1410,7 @@ id|delcnt
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s, iscp.stat %04lx, didn&squot;t clear&bslash;n&quot;
+l_string|&quot;%s: %s, iscp.stat %04x, didn&squot;t clear&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -1588,7 +1573,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;lp and scp at %p, .sysbus = %08lx, .iscp = %p&bslash;n&quot;
+l_string|&quot;lp and scp at %p, .sysbus = %08x, .iscp = %08x&bslash;n&quot;
 comma
 op_amp
 id|lp-&gt;scp
@@ -1601,7 +1586,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;iscp at %p, iscp.stat = %08lx, .scb = %p&bslash;n&quot;
+l_string|&quot;iscp at %p, iscp.stat = %08x, .scb = %08x&bslash;n&quot;
 comma
 op_amp
 id|lp-&gt;iscp
@@ -1615,7 +1600,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;scb at %p, scb.status = %04x, .command = %04x,&quot;
-l_string|&quot; .cmd = %p, .rfd = %p&bslash;n&quot;
+l_string|&quot; .cmd = %08x, .rfd = %08x&bslash;n&quot;
 comma
 op_amp
 id|lp-&gt;scb
@@ -1632,8 +1617,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;   errors: crc %lx, align %lx, resource %lx,&quot;
-l_string|&quot; over %lx, rcvdt %lx, short %lx&bslash;n&quot;
+l_string|&quot;   errors: crc %x, align %x, resource %x,&quot;
+l_string|&quot; over %x, rcvdt %x, short %x&bslash;n&quot;
 comma
 id|lp-&gt;scb.crc_err
 comma
@@ -1657,13 +1642,13 @@ c_loop
 (paren
 id|cmd
 op_ne
-id|I596_NULL
+l_int|NULL
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;cmd at %p, .status = %04x, .command = %04x, .b_next = %p&bslash;n&quot;
+l_string|&quot;cmd at %p, .status = %04x, .command = %04x, .b_next = %08x&bslash;n&quot;
 comma
 id|cmd
 comma
@@ -1695,7 +1680,7 @@ r_do
 (brace
 id|printk
 (paren
-l_string|&quot;   %p .stat %04x, .cmd %04x, b_next %p, rbd %p,&quot;
+l_string|&quot;   %p .stat %04x, .cmd %04x, b_next %08x, rbd %08x,&quot;
 l_string|&quot; count %04x&bslash;n&quot;
 comma
 id|rfd
@@ -1741,7 +1726,7 @@ r_do
 id|printk
 c_func
 (paren
-l_string|&quot;   %p .count %04x, b_next %p, b_data %p, size %04x&bslash;n&quot;
+l_string|&quot;   %p .count %04x, b_next %08x, b_data %08x, size %04x&bslash;n&quot;
 comma
 id|rbd
 comma
@@ -1851,7 +1836,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|virt_to_dma
-mdefine_line|#define virt_to_dma(lp,v) ((char *)(v)-(char *)(lp)+(char *)((lp)-&gt;dma_addr))
+mdefine_line|#define virt_to_dma(lp,v) ((lp)-&gt;dma_addr + (dma_addr_t)((unsigned long)(v)-(unsigned long)(lp)))
 DECL|function|init_rx_bufs
 r_static
 r_inline
@@ -1955,7 +1940,7 @@ op_assign
 id|pci_map_single
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 id|skb-&gt;tail
 comma
@@ -2139,7 +2124,17 @@ id|lp-&gt;rfds
 suffix:semicolon
 id|rfd-&gt;rbd
 op_assign
+id|WSWAPrbd
+c_func
+(paren
+id|virt_to_dma
+c_func
+(paren
+id|lp
+comma
 id|lp-&gt;rbd_head
+)paren
+)paren
 suffix:semicolon
 id|rfd-&gt;v_prev
 op_assign
@@ -2261,7 +2256,7 @@ suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 (paren
 id|dma_addr_t
@@ -2544,6 +2539,8 @@ l_int|0
 suffix:semicolon
 id|lp-&gt;cmd_head
 op_assign
+l_int|NULL
+suffix:semicolon
 id|lp-&gt;scb.cmd
 op_assign
 id|I596_NULL
@@ -2599,10 +2596,6 @@ id|dev
 comma
 id|PORT_ALTSCP
 comma
-(paren
-r_void
-op_star
-)paren
 id|virt_to_dma
 c_func
 (paren
@@ -3079,7 +3072,7 @@ id|I596_NULL
 )paren
 id|rbd
 op_assign
-id|I596_NULL
+l_int|NULL
 suffix:semicolon
 r_else
 r_if
@@ -3120,7 +3113,7 @@ suffix:semicolon
 multiline_comment|/* XXX Now what? */
 id|rbd
 op_assign
-id|I596_NULL
+l_int|NULL
 suffix:semicolon
 )brace
 id|DEB
@@ -3131,7 +3124,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;  rfd %p, rfd.rbd %p, rfd.stat %04x&bslash;n&quot;
+l_string|&quot;  rfd %p, rfd.rbd %08x, rfd.stat %04x&bslash;n&quot;
 comma
 id|rfd
 comma
@@ -3146,7 +3139,7 @@ c_cond
 (paren
 id|rbd
 op_ne
-id|I596_NULL
+l_int|NULL
 op_logical_and
 (paren
 (paren
@@ -3214,7 +3207,7 @@ suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 (paren
 id|dma_addr_t
@@ -3292,7 +3285,7 @@ op_assign
 id|pci_map_single
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 id|newskb-&gt;tail
 comma
@@ -3376,7 +3369,7 @@ multiline_comment|/* 16 byte align the data fields */
 id|pci_dma_sync_single
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 (paren
 id|dma_addr_t
@@ -3562,7 +3555,7 @@ c_cond
 (paren
 id|rbd
 op_ne
-id|I596_NULL
+l_int|NULL
 op_logical_and
 (paren
 id|rbd-&gt;count
@@ -3711,7 +3704,7 @@ c_loop
 (paren
 id|lp-&gt;cmd_head
 op_ne
-id|I596_NULL
+l_int|NULL
 )paren
 (brace
 id|ptr
@@ -3761,7 +3754,7 @@ suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 id|tx_cmd-&gt;dma_addr
 comma
@@ -3784,6 +3777,8 @@ op_increment
 suffix:semicolon
 id|ptr-&gt;v_next
 op_assign
+l_int|NULL
+suffix:semicolon
 id|ptr-&gt;b_next
 op_assign
 id|I596_NULL
@@ -3800,6 +3795,8 @@ r_default
 suffix:colon
 id|ptr-&gt;v_next
 op_assign
+l_int|NULL
+suffix:semicolon
 id|ptr-&gt;b_next
 op_assign
 id|I596_NULL
@@ -3866,9 +3863,6 @@ r_struct
 id|i596_private
 op_star
 id|lp
-comma
-r_int
-id|ioaddr
 )paren
 (brace
 r_int
@@ -4019,11 +4013,6 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
-r_int
 r_int
 id|flags
 suffix:semicolon
@@ -4055,6 +4044,8 @@ id|CMD_INTR
 suffix:semicolon
 id|cmd-&gt;v_next
 op_assign
+l_int|NULL
+suffix:semicolon
 id|cmd-&gt;b_next
 op_assign
 id|I596_NULL
@@ -4084,7 +4075,7 @@ c_cond
 (paren
 id|lp-&gt;cmd_head
 op_ne
-id|I596_NULL
+l_int|NULL
 )paren
 (brace
 id|lp-&gt;cmd_tail-&gt;v_next
@@ -4233,8 +4224,6 @@ c_func
 id|dev
 comma
 id|lp
-comma
-id|ioaddr
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4464,16 +4453,6 @@ r_goto
 id|out_remove_rx_bufs
 suffix:semicolon
 )brace
-id|request_mem_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|I596_TOTAL_SIZE
-comma
-l_string|&quot;i82596&quot;
-)paren
-suffix:semicolon
 id|netif_start_queue
 c_func
 (paren
@@ -4531,11 +4510,6 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 multiline_comment|/* Transmitter timeout, serious problems. */
 id|DEB
 c_func
@@ -4580,8 +4554,6 @@ id|i596_reset
 id|dev
 comma
 id|lp
-comma
-id|ioaddr
 )paren
 suffix:semicolon
 )brace
@@ -4703,16 +4675,12 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;%s: i596_start_xmit(%x,%x) called&bslash;n&quot;
+l_string|&quot;%s: i596_start_xmit(%x,%p) called&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|skb-&gt;len
 comma
-(paren
-r_int
-r_int
-)paren
 id|skb-&gt;data
 )paren
 )paren
@@ -4829,7 +4797,7 @@ op_assign
 id|pci_map_single
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 id|skb-&gt;data
 comma
@@ -5020,7 +4988,7 @@ mdefine_line|#define LAN_PROM_ADDR&t;0xF0810000
 DECL|function|i82596_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|i82596_probe
 c_func
 (paren
@@ -5028,9 +4996,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_int
-id|options
 )paren
 (brace
 r_int
@@ -5083,13 +5048,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 r_sizeof
 (paren
 r_struct
 id|i596_rbd
 )paren
-op_ne
+op_mod
 l_int|32
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|printk
@@ -5112,13 +5081,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 r_sizeof
 (paren
 r_struct
 id|tx_cmd
 )paren
-op_ne
+op_mod
 l_int|32
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|printk
@@ -5167,6 +5140,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifndef __LP64__
 r_if
 c_cond
 (paren
@@ -5196,7 +5170,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME:&n;&t;    Currently this works only, if set-up from lasi.c.&n;&t;    This should be changed to use probing too !&n;&t;*/
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5216,17 +5190,8 @@ c_cond
 id|pdc_lan_station_id
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
-op_amp
 id|eth_addr
 comma
-(paren
-r_void
-op_star
-)paren
 id|dev-&gt;base_addr
 )paren
 )paren
@@ -5263,7 +5228,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;82596.c: MAC of HP700 LAN blindely read from the prom!&bslash;n&quot;
+l_string|&quot;82596.c: MAC of HP700 LAN read from EEPROM&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5271,11 +5236,12 @@ id|dev-&gt;mem_start
 op_assign
 (paren
 r_int
+r_int
 )paren
 id|pci_alloc_consistent
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 r_sizeof
 (paren
@@ -5341,7 +5307,7 @@ suffix:semicolon
 )brace
 id|dma_addr
 op_assign
-id|virt_to_phys
+id|virt_to_bus
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -5515,10 +5481,6 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|lp
 comma
 l_int|0
@@ -5529,10 +5491,6 @@ r_struct
 id|i596_private
 )paren
 )paren
-suffix:semicolon
-id|lp-&gt;options
-op_assign
-id|options
 suffix:semicolon
 id|lp-&gt;scb.command
 op_assign
@@ -5568,50 +5526,6 @@ id|i596_private
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-DECL|function|lasi_i82596_probe
-r_int
-id|__init
-id|lasi_i82596_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_return
-id|i82596_probe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|asp_i82596_probe
-r_int
-id|__init
-id|asp_i82596_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_return
-id|i82596_probe
-c_func
-(paren
-id|dev
-comma
-id|OPT_SWAP_PORT
-)paren
 suffix:semicolon
 )brace
 DECL|function|i596_interrupt
@@ -5833,7 +5747,7 @@ c_loop
 (paren
 id|lp-&gt;cmd_head
 op_ne
-id|I596_NULL
+l_int|NULL
 )paren
 (brace
 id|CHECK_INV
@@ -6017,7 +5931,7 @@ suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 id|tx_cmd-&gt;dma_addr
 comma
@@ -6164,6 +6078,8 @@ suffix:semicolon
 )brace
 id|ptr-&gt;v_next
 op_assign
+l_int|NULL
+suffix:semicolon
 id|ptr-&gt;b_next
 op_assign
 id|I596_NULL
@@ -6196,7 +6112,7 @@ c_loop
 (paren
 id|ptr
 op_ne
-id|I596_NULL
+l_int|NULL
 )paren
 op_logical_and
 (paren
@@ -6240,7 +6156,7 @@ c_cond
 (paren
 id|lp-&gt;cmd_head
 op_ne
-id|I596_NULL
+l_int|NULL
 )paren
 )paren
 id|ack_cmd
@@ -6600,14 +6516,6 @@ id|remove_rx_bufs
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|release_mem_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|I596_TOTAL_SIZE
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
@@ -7072,72 +6980,6 @@ id|cmd-&gt;cmd
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef HAVE_DEVLIST
-DECL|variable|__initdata
-r_static
-r_int
-r_int
-id|i596_portlist
-(braket
-)braket
-id|__initdata
-op_assign
-(brace
-l_int|0x300
-comma
-l_int|0
-)brace
-suffix:semicolon
-DECL|variable|i596_drv
-r_struct
-id|netdev_entry
-id|i596_drv
-op_assign
-(brace
-l_string|&quot;lasi_i82596&quot;
-comma
-id|lasi_i82596_probe
-comma
-id|I596_TOTAL_SIZE
-comma
-id|i596_portlist
-)brace
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef MODULE
-DECL|variable|devicename
-r_static
-r_char
-id|devicename
-(braket
-l_int|9
-)braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
-suffix:semicolon
-DECL|variable|dev_82596
-r_static
-r_struct
-id|net_device
-id|dev_82596
-op_assign
-(brace
-dot
-id|name
-op_assign
-id|devicename
-comma
-multiline_comment|/* device name inserted by drivers/net/net_init.c */
-dot
-id|init
-op_assign
-id|lasi_i82596_probe
-comma
-)brace
-suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -7162,9 +7004,266 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|function|init_module
+DECL|variable|num_drivers
+r_static
 r_int
-id|init_module
+id|num_drivers
+suffix:semicolon
+DECL|variable|netdevs
+r_static
+r_struct
+id|net_device
+op_star
+id|netdevs
+(braket
+id|MAX_DRIVERS
+)braket
+suffix:semicolon
+r_static
+r_int
+id|__devinit
+DECL|function|lan_init_chip
+id|lan_init_chip
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|net_device
+op_star
+id|netdevice
+suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_drivers
+op_ge
+id|MAX_DRIVERS
+)paren
+(brace
+multiline_comment|/* max count of possible i82596 drivers reached */
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|fake_pci_dev
+op_assign
+id|ccio_get_fake
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;irq
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FILE__
+l_string|&quot;: IRQ not found for i82596 at 0x%lx&bslash;n&quot;
+comma
+id|dev-&gt;hpa
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Found i82596 at 0x%lx, IRQ %d&bslash;n&quot;
+comma
+id|dev-&gt;hpa
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|netdevice
+op_assign
+id|alloc_etherdev
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netdevice
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|netdevice-&gt;base_addr
+op_assign
+id|dev-&gt;hpa
+suffix:semicolon
+id|netdevice-&gt;irq
+op_assign
+id|dev-&gt;irq
+suffix:semicolon
+id|netdevice-&gt;init
+op_assign
+id|i82596_probe
+suffix:semicolon
+id|retval
+op_assign
+id|register_netdev
+c_func
+(paren
+id|netdevice
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|__FILE__
+l_string|&quot;: register_netdevice ret&squot;d %d&bslash;n&quot;
+comma
+id|retval
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|netdevice
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;id.sversion
+op_eq
+l_int|0x72
+)paren
+(brace
+(paren
+(paren
+r_struct
+id|i596_private
+op_star
+)paren
+id|netdevice-&gt;priv
+)paren
+op_member_access_from_pointer
+id|options
+op_assign
+id|OPT_SWAP_PORT
+suffix:semicolon
+)brace
+id|netdevs
+(braket
+id|num_drivers
+op_increment
+)braket
+op_assign
+id|netdevice
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
+DECL|variable|lan_tbl
+r_static
+r_struct
+id|parisc_device_id
+id|lan_tbl
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|HPHW_FIO
+comma
+id|HVERSION_REV_ANY_ID
+comma
+id|HVERSION_ANY_ID
+comma
+l_int|0x0008a
+)brace
+comma
+(brace
+id|HPHW_FIO
+comma
+id|HVERSION_REV_ANY_ID
+comma
+id|HVERSION_ANY_ID
+comma
+l_int|0x00072
+)brace
+comma
+(brace
+l_int|0
+comma
+)brace
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|parisc
+comma
+id|lan_tbl
+)paren
+suffix:semicolon
+DECL|variable|lan_driver
+r_static
+r_struct
+id|parisc_driver
+id|lan_driver
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;Apricot&quot;
+comma
+id|id_table
+suffix:colon
+id|lan_tbl
+comma
+id|probe
+suffix:colon
+id|lan_init_chip
+comma
+)brace
+suffix:semicolon
+DECL|function|lasi_82596_init
+r_static
+r_int
+id|__devinit
+id|lasi_82596_init
 c_func
 (paren
 r_void
@@ -7181,39 +7280,79 @@ id|i596_debug
 op_assign
 id|debug
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|register_netdev
+r_return
+id|register_parisc_driver
 c_func
 (paren
 op_amp
-id|dev_82596
+id|lan_driver
 )paren
-op_ne
-l_int|0
-)paren
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|variable|lasi_82596_init
+id|module_init
+c_func
+(paren
+id|lasi_82596_init
+)paren
+suffix:semicolon
+DECL|function|lasi_82596_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|lasi_82596_exit
 c_func
 (paren
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_DRIVERS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_struct
+id|i596_private
+op_star
+id|lp
+suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|netdevice
+suffix:semicolon
+id|netdevice
+op_assign
+id|netdevs
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netdevice
+)paren
+r_continue
+suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
-op_amp
-id|dev_82596
+id|netdevice
 )paren
 suffix:semicolon
 id|lp
@@ -7223,7 +7362,7 @@ r_struct
 id|i596_private
 op_star
 )paren
-id|dev_82596.priv
+id|netdevice-&gt;priv
 suffix:semicolon
 r_if
 c_cond
@@ -7233,7 +7372,7 @@ id|dma_consistent
 id|pci_free_consistent
 c_func
 (paren
-l_int|NULL
+id|fake_pci_dev
 comma
 r_sizeof
 (paren
@@ -7241,26 +7380,40 @@ r_struct
 id|i596_private
 )paren
 comma
-id|dev_82596.mem_start
+(paren
+r_void
+op_star
+)paren
+id|netdevice-&gt;mem_start
 comma
 id|lp-&gt;dma_addr
 )paren
 suffix:semicolon
 r_else
 id|free_page
+c_func
 (paren
-(paren
-id|u32
-)paren
-(paren
-id|dev_82596.mem_start
-)paren
+id|netdevice-&gt;mem_start
 )paren
 suffix:semicolon
-id|dev_82596.priv
+id|netdevice-&gt;priv
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* MODULE */
+id|unregister_parisc_driver
+c_func
+(paren
+op_amp
+id|lan_driver
+)paren
+suffix:semicolon
+)brace
+DECL|variable|lasi_82596_exit
+id|module_exit
+c_func
+(paren
+id|lasi_82596_exit
+)paren
+suffix:semicolon
 eof
