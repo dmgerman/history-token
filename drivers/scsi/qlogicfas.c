@@ -2903,6 +2903,20 @@ c_cond
 (paren
 id|shost-&gt;irq
 )paren
+(brace
+id|REG1
+suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|0
+comma
+id|qbase
+op_plus
+l_int|0xb
+)paren
+suffix:semicolon
+multiline_comment|/* disable ints */
 id|free_irq
 c_func
 (paren
@@ -2911,6 +2925,7 @@ comma
 id|shost
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
