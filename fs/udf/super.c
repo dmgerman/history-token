@@ -875,6 +875,7 @@ id|options
 comma
 l_string|&quot;,&quot;
 )paren
+)paren
 op_ne
 l_int|NULL
 )paren
