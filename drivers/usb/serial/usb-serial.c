@@ -72,7 +72,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;serial&quot;
+l_string|&quot;usbserial&quot;
 comma
 dot
 id|probe
@@ -4275,7 +4275,7 @@ comma
 dot
 id|driver_name
 op_assign
-l_string|&quot;usb-serial&quot;
+l_string|&quot;usbserial&quot;
 comma
 macro_line|#ifndef CONFIG_DEVFS_FS
 dot
