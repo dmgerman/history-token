@@ -6622,6 +6622,9 @@ r_int
 id|min
 comma
 r_int
+id|rsvd
+comma
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -6718,6 +6721,8 @@ id|random_read_wakeup_thresh
 op_div
 l_int|8
 comma
+l_int|0
+comma
 id|EXTRACT_ENTROPY_LIMIT
 )paren
 suffix:semicolon
@@ -6749,7 +6754,7 @@ l_int|8
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This function extracts randomness from the &quot;entropy pool&quot;, and&n; * returns it in a buffer.  This function computes how many remaining&n; * bits of entropy are left in the pool, but it does not restrict the&n; * number of bytes that are actually obtained.  If the EXTRACT_ENTROPY_USER&n; * flag is given, then the buf pointer is assumed to be in user space.&n; *&n; * If the EXTRACT_ENTROPY_SECONDARY flag is given, then we are actually&n; * extracting entropy from the secondary pool, and can refill from the&n; * primary pool if needed.&n; *&n; * If we have less than min bytes of entropy available, exit without&n; * transferring any. This helps avoid racing when reseeding.&n; *&n; * Note: extract_entropy() assumes that .poolwords is a multiple of 16 words.&n; */
+multiline_comment|/*&n; * This function extracts randomness from the &quot;entropy pool&quot;, and&n; * returns it in a buffer.  This function computes how many remaining&n; * bits of entropy are left in the pool, but it does not restrict the&n; * number of bytes that are actually obtained.  If the EXTRACT_ENTROPY_USER&n; * flag is given, then the buf pointer is assumed to be in user space.&n; *&n; * If the EXTRACT_ENTROPY_SECONDARY flag is given, then we are actually&n; * extracting entropy from the secondary pool, and can refill from the&n; * primary pool if needed.&n; *&n; * The min parameter specifies the minimum amount we can pull before&n; * failing to avoid races that defeat catastrophic reseeding while the&n; * reserved parameter indicates how much entropy we must leave in the&n; * pool after each pull to avoid starving other readers.&n; *&n; * Note: extract_entropy() assumes that .poolwords is a multiple of 16 words.&n; */
 DECL|function|extract_entropy
 r_static
 id|ssize_t
@@ -6770,6 +6775,9 @@ id|nbytes
 comma
 r_int
 id|min
+comma
+r_int
+id|reserved
 comma
 r_int
 id|flags
@@ -6849,6 +6857,7 @@ comma
 id|r-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* Can we pull enough? */
 r_if
 c_cond
 (paren
@@ -6857,6 +6866,8 @@ op_div
 l_int|8
 OL
 id|min
+op_plus
+id|reserved
 )paren
 (brace
 id|nbytes
@@ -6866,6 +6877,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* If limited, never pull more than available */
 r_if
 c_cond
 (paren
@@ -6874,6 +6886,8 @@ op_amp
 id|EXTRACT_ENTROPY_LIMIT
 op_logical_and
 id|nbytes
+op_plus
+id|reserved
 op_ge
 id|r-&gt;entropy_count
 op_div
@@ -6884,6 +6898,8 @@ op_assign
 id|r-&gt;entropy_count
 op_div
 l_int|8
+op_minus
+id|reserved
 suffix:semicolon
 r_if
 c_cond
@@ -6893,17 +6909,21 @@ op_div
 l_int|8
 op_ge
 id|nbytes
+op_plus
+id|reserved
 )paren
+(brace
 id|r-&gt;entropy_count
 op_sub_assign
 id|nbytes
 op_star
 l_int|8
 suffix:semicolon
+)brace
 r_else
 id|r-&gt;entropy_count
 op_assign
-l_int|0
+id|reserved
 suffix:semicolon
 r_if
 c_cond
@@ -7333,6 +7353,8 @@ id|nbytes
 comma
 l_int|0
 comma
+l_int|0
+comma
 id|EXTRACT_ENTROPY_SECONDARY
 )paren
 suffix:semicolon
@@ -7714,6 +7736,8 @@ id|n
 comma
 l_int|0
 comma
+l_int|0
+comma
 id|EXTRACT_ENTROPY_USER
 op_or
 id|EXTRACT_ENTROPY_LIMIT
@@ -7933,6 +7957,8 @@ comma
 id|buf
 comma
 id|nbytes
+comma
+l_int|0
 comma
 l_int|0
 comma
