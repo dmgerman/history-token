@@ -518,6 +518,9 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|module
+suffix:semicolon
 DECL|struct|net_proto_family
 r_struct
 id|net_proto_family
@@ -554,6 +557,12 @@ suffix:semicolon
 DECL|member|encrypt_net
 r_int
 id|encrypt_net
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 )brace
 suffix:semicolon
