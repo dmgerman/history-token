@@ -7334,11 +7334,7 @@ c_cond
 (paren
 id|tp-&gt;tg3_flags
 op_amp
-(paren
 id|TG3_FLAG_USE_LINKCHG_REG
-op_or
-id|TG3_FLAG_POLL_SERDES
-)paren
 )paren
 (brace
 multiline_comment|/* Polled via timer. */
@@ -9899,32 +9895,13 @@ c_func
 id|tp
 )paren
 suffix:semicolon
-multiline_comment|/* Enable link change interrupt unless serdes polling.  */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|tp-&gt;tg3_flags
-op_amp
-id|TG3_FLAG_POLL_SERDES
-)paren
-)paren
+multiline_comment|/* Enable link change event even when serdes polling.  */
 id|tw32_f
 c_func
 (paren
 id|MAC_EVENT
 comma
 id|MAC_EVENT_LNKSTATE_CHANGED
-)paren
-suffix:semicolon
-r_else
-id|tw32_f
-c_func
-(paren
-id|MAC_EVENT
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|udelay
