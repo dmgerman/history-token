@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;cpqphp.h&quot;
 macro_line|#include &quot;cpqphp_nvram.h&quot;
-macro_line|#include &quot;../../arch/i386/pci/pci.h&quot;&t;/* horrible hack showing how processor dependent we are... */
+macro_line|#include &quot;../../../arch/i386/pci/pci.h&quot;&t;/* horrible hack showing how processor dependent we are... */
 multiline_comment|/* Global variables */
 DECL|variable|cpqhp_debug
 r_int
