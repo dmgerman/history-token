@@ -223,19 +223,19 @@ DECL|macro|PMU_IOC_SLEEP
 mdefine_line|#define PMU_IOC_SLEEP&t;&t;_IO(&squot;B&squot;, 0)
 multiline_comment|/* out param: u32*&t;backlight value: 0 to 15 */
 DECL|macro|PMU_IOC_GET_BACKLIGHT
-mdefine_line|#define PMU_IOC_GET_BACKLIGHT&t;_IOR(&squot;B&squot;, 1, sizeof(__u32*))
+mdefine_line|#define PMU_IOC_GET_BACKLIGHT&t;_IOR(&squot;B&squot;, 1, size_t)
 multiline_comment|/* in param: u32&t;backlight value: 0 to 15 */
 DECL|macro|PMU_IOC_SET_BACKLIGHT
-mdefine_line|#define PMU_IOC_SET_BACKLIGHT&t;_IOW(&squot;B&squot;, 2, sizeof(__u32))
+mdefine_line|#define PMU_IOC_SET_BACKLIGHT&t;_IOW(&squot;B&squot;, 2, size_t)
 multiline_comment|/* out param: u32*&t;PMU model */
 DECL|macro|PMU_IOC_GET_MODEL
-mdefine_line|#define PMU_IOC_GET_MODEL&t;_IOR(&squot;B&squot;, 3, sizeof(__u32*))
+mdefine_line|#define PMU_IOC_GET_MODEL&t;_IOR(&squot;B&squot;, 3, size_t)
 multiline_comment|/* out param: u32*&t;has_adb: 0 or 1 */
 DECL|macro|PMU_IOC_HAS_ADB
-mdefine_line|#define PMU_IOC_HAS_ADB&t;&t;_IOR(&squot;B&squot;, 4, sizeof(__u32*)) 
+mdefine_line|#define PMU_IOC_HAS_ADB&t;&t;_IOR(&squot;B&squot;, 4, size_t) 
 multiline_comment|/* out param: u32*&t;can_sleep: 0 or 1 */
 DECL|macro|PMU_IOC_CAN_SLEEP
-mdefine_line|#define PMU_IOC_CAN_SLEEP&t;_IOR(&squot;B&squot;, 5, sizeof(__u32*)) 
+mdefine_line|#define PMU_IOC_CAN_SLEEP&t;_IOR(&squot;B&squot;, 5, size_t) 
 multiline_comment|/* no param */
 DECL|macro|PMU_IOC_GRAB_BACKLIGHT
 mdefine_line|#define PMU_IOC_GRAB_BACKLIGHT&t;_IOR(&squot;B&squot;, 6, 0) 

@@ -271,17 +271,18 @@ DECL|macro|BLKSSZGET
 mdefine_line|#define BLKSSZGET  _IO(0x12,104)/* get block device sector size */
 macro_line|#if 0
 mdefine_line|#define BLKPG      _IO(0x12,105)/* See blkpg.h */
-mdefine_line|#define BLKELVGET  _IOR(0x12,106,sizeof(blkelv_ioctl_arg_t))/* elevator get */
-mdefine_line|#define BLKELVSET  _IOW(0x12,107,sizeof(blkelv_ioctl_arg_t))/* elevator set */
+multiline_comment|/* Some people are morons.  Do not use sizeof! */
+mdefine_line|#define BLKELVGET  _IOR(0x12,106,size_t)/* elevator get */
+mdefine_line|#define BLKELVSET  _IOW(0x12,107,size_t)/* elevator set */
 multiline_comment|/* This was here just to show that the number is taken -&n;   probably all these _IO(0x12,*) ioctls should be moved to blkpg.h. */
 macro_line|#endif
 multiline_comment|/* A jump here: 108-111 have been used for various private purposes. */
 DECL|macro|BLKBSZGET
-mdefine_line|#define BLKBSZGET  _IOR(0x12,112,sizeof(int))
+mdefine_line|#define BLKBSZGET  _IOR(0x12,112,size_t)
 DECL|macro|BLKBSZSET
-mdefine_line|#define BLKBSZSET  _IOW(0x12,113,sizeof(int))
+mdefine_line|#define BLKBSZSET  _IOW(0x12,113,size_t)
 DECL|macro|BLKGETSIZE64
-mdefine_line|#define BLKGETSIZE64 _IOR(0x12,114,sizeof(u64))&t;/* return device size in bytes (u64 *arg) */
+mdefine_line|#define BLKGETSIZE64 _IOR(0x12,114,size_t)&t;/* return device size in bytes (u64 *arg) */
 DECL|macro|BMAP_IOCTL
 mdefine_line|#define BMAP_IOCTL 1&t;&t;/* obsolete - kept for compatibility */
 DECL|macro|FIBMAP

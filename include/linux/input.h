@@ -117,7 +117,7 @@ mdefine_line|#define EVIOCGABS(abs)&t;&t;_IOR(&squot;E&squot;, 0x40 + abs, struc
 DECL|macro|EVIOCSABS
 mdefine_line|#define EVIOCSABS(abs)&t;&t;_IOW(&squot;E&squot;, 0xc0 + abs, struct input_absinfo)&t;&t;/* set abs value/limits */
 DECL|macro|EVIOCSFF
-mdefine_line|#define EVIOCSFF&t;&t;_IOC(_IOC_WRITE, &squot;E&squot;, 0x80, sizeof(struct ff_effect))&t;/* send a force effect to a force feedback device */
+mdefine_line|#define EVIOCSFF&t;&t;_IOC(_IOC_WRITE, &squot;E&squot;, 0x80, size_t)&t;/* send a force effect to a force feedback device */
 DECL|macro|EVIOCRMFF
 mdefine_line|#define EVIOCRMFF&t;&t;_IOW(&squot;E&squot;, 0x81, int)&t;&t;&t;/* Erase a force effect */
 DECL|macro|EVIOCGEFFECTS
