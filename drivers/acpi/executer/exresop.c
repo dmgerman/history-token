@@ -655,8 +655,9 @@ r_goto
 id|next_operand
 suffix:semicolon
 r_case
-id|ARGI_ANYTYPE
+id|ARGI_DATAREFOBJ
 suffix:colon
+multiline_comment|/* Store operator only */
 multiline_comment|/*&n;&t;&t;&t; * We don&squot;t want to resolve index_op reference objects during&n;&t;&t;&t; * a store because this would be an implicit de_ref_of operation.&n;&t;&t;&t; * Instead, we just want to store the reference object.&n;&t;&t;&t; * -- All others must be resolved below.&n;&t;&t;&t; */
 r_if
 c_cond

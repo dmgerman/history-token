@@ -6,6 +6,7 @@ macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
