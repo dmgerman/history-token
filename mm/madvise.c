@@ -470,7 +470,7 @@ r_int
 id|start
 comma
 r_int
-id|len
+id|len_in
 comma
 r_int
 id|behavior
@@ -496,6 +496,9 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -517,13 +520,25 @@ suffix:semicolon
 id|len
 op_assign
 (paren
-id|len
+id|len_in
 op_plus
 op_complement
 id|PAGE_MASK
 )paren
 op_amp
 id|PAGE_MASK
+suffix:semicolon
+multiline_comment|/* Check to see whether len was rounded up from small -ve to zero */
+r_if
+c_cond
+(paren
+id|len_in
+op_logical_and
+op_logical_neg
+id|len
+)paren
+r_goto
+id|out
 suffix:semicolon
 id|end
 op_assign
