@@ -5795,10 +5795,7 @@ id|sk
 suffix:semicolon
 id|msg-&gt;msg_namelen
 op_assign
-r_sizeof
-(paren
-r_int
-)paren
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -8042,5 +8039,10 @@ c_func
 id|af_unix_exit
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -g -D__KERNEL__ -Wall -O6 -I/usr/src/linux/include -c af_unix.c&quot;&n; * End:&n; */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof
