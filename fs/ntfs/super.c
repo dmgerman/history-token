@@ -3915,10 +3915,15 @@ op_assign
 op_amp
 id|ntfs_mftbmp_aops
 suffix:semicolon
-multiline_comment|/* Not inode data, set to NULL. Our mft bitmap access kludge... */
+multiline_comment|/*&n;&t; * Not inode data, set to volume. Our mft bitmap access kludge...&n;&t; * We can only pray this is not going to cause problems... If it does&n;&t; * cause problems we will need a fake inode for this.&n;&t; */
 id|vol-&gt;mftbmp_mapping.host
 op_assign
-l_int|NULL
+(paren
+r_struct
+id|inode
+op_star
+)paren
+id|vol
 suffix:semicolon
 singleline_comment|// FIXME: If mounting read-only, it would be ok to ignore errors when
 singleline_comment|// loading the mftbmp but we then need to make sure nobody remounts the
