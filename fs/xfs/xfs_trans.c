@@ -824,7 +824,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|PFLAGS_RESTORE
+id|PFLAGS_RESTORE_FSTRANS
 c_func
 (paren
 op_amp
@@ -1105,7 +1105,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|PFLAGS_RESTORE
+id|PFLAGS_RESTORE_FSTRANS
 c_func
 (paren
 op_amp
@@ -2415,7 +2415,7 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-id|PFLAGS_RESTORE
+id|PFLAGS_RESTORE_FSTRANS
 c_func
 (paren
 op_amp
@@ -2709,7 +2709,7 @@ op_minus
 l_int|1
 )paren
 (brace
-id|PFLAGS_RESTORE
+id|PFLAGS_RESTORE_FSTRANS
 c_func
 (paren
 op_amp
@@ -2785,7 +2785,7 @@ id|tp-&gt;t_logcb
 )paren
 suffix:semicolon
 multiline_comment|/* mark this thread as no longer being in a transaction */
-id|PFLAGS_RESTORE
+id|PFLAGS_RESTORE_FSTRANS
 c_func
 (paren
 op_amp
@@ -3466,7 +3466,7 @@ id|log_flags
 suffix:semicolon
 )brace
 multiline_comment|/* mark this thread as no longer being in a transaction */
-id|PFLAGS_RESTORE
+id|PFLAGS_RESTORE_FSTRANS
 c_func
 (paren
 op_amp
