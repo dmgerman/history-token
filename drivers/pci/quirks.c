@@ -2121,7 +2121,7 @@ suffix:semicolon
 DECL|function|quirk_via_bridge
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_via_bridge
 c_func
 (paren

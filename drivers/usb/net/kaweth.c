@@ -4275,6 +4275,8 @@ comma
 id|kaweth
 )paren
 suffix:semicolon
+macro_line|#if 0
+singleline_comment|// dma_supported() is deeply broken on almost all architectures
 r_if
 c_cond
 (paren
@@ -4290,6 +4292,7 @@ id|kaweth-&gt;net-&gt;features
 op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
+macro_line|#endif
 id|SET_NETDEV_DEV
 c_func
 (paren
