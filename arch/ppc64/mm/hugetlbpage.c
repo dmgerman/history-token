@@ -1036,10 +1036,25 @@ OL
 id|TASK_HPAGE_END_32
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Low HTLB region busy: PID=%d  vma @ %lx-%lx&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|vma-&gt;vm_start
+comma
+id|vma-&gt;vm_end
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+)brace
 multiline_comment|/* Clean up any leftover PTE pages in the region */
 id|spin_lock
 c_func
