@@ -1,7 +1,7 @@
 multiline_comment|/******************************************************************************&n;*                  QLOGIC LINUX SOFTWARE&n;*&n;* QLogic ISP1280 (Ultra2) /12160 (Ultra3) SCSI driver&n;* Copyright (C) 2000 Qlogic Corporation&n;* (www.qlogic.com)&n;*&n;* This program is free software; you can redistribute it and/or modify it&n;* under the terms of the GNU General Public License as published by the&n;* Free Software Foundation; either version 2, or (at your option) any&n;* later version.&n;*&n;* This program is distributed in the hope that it will be useful, but&n;* WITHOUT ANY WARRANTY; without even the implied warranty of&n;* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;* General Public License for more details.&n;*&n;******************************************************************************/
-macro_line|#ifndef&t;_IO_HBA_QLA1280_H&t;/* wrapper symbol for kernel use */
-DECL|macro|_IO_HBA_QLA1280_H
-mdefine_line|#define&t;_IO_HBA_QLA1280_H&t;/* subject to change without notice */
+macro_line|#ifndef&t;_QLA1280_H
+DECL|macro|_QLA1280_H
+mdefine_line|#define&t;_QLA1280_H
 multiline_comment|/*&n; * Data bit definitions.&n; */
 DECL|macro|BIT_0
 mdefine_line|#define BIT_0&t;0x1
@@ -115,26 +115,31 @@ DECL|struct|srb
 r_struct
 id|srb
 (brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* (8/16) LU queue */
 DECL|member|cmd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
 multiline_comment|/* (4/8) SCSI command block */
-DECL|member|s_next
+multiline_comment|/* NOTE: the sp-&gt;cmd will be NULL when this completion is&n;&t; * called, so you should know the scsi_cmnd when using this */
+DECL|member|wait
 r_struct
-id|srb
+id|completion
 op_star
-id|s_next
+id|wait
 suffix:semicolon
-multiline_comment|/* (4/8) Next block on LU queue */
-DECL|member|s_prev
-r_struct
-id|srb
-op_star
-id|s_prev
+DECL|member|saved_dma_handle
+id|dma_addr_t
+id|saved_dma_handle
 suffix:semicolon
-multiline_comment|/* (4/8) Previous block on LU queue */
+multiline_comment|/* for unmap of single transfers */
 DECL|member|flags
 r_uint8
 id|flags
@@ -145,116 +150,17 @@ r_uint8
 id|dir
 suffix:semicolon
 multiline_comment|/* direction of transfer */
-multiline_comment|/*&n;&t; * This should be moved around to save space.&n;&t; */
-DECL|member|saved_dma_handle
-id|dma_addr_t
-id|saved_dma_handle
-suffix:semicolon
-multiline_comment|/* for unmap of single transfers */
-multiline_comment|/* NOTE: the sp-&gt;cmd will be NULL when this completion is&n;&t; * called, so you should know the scsi_cmnd when using this */
-DECL|member|wait
-r_struct
-id|completion
-op_star
-id|wait
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * SRB flag definitions&n; */
 DECL|macro|SRB_TIMEOUT
-mdefine_line|#define SRB_TIMEOUT&t;&t;BIT_0&t;/* Command timed out */
+mdefine_line|#define SRB_TIMEOUT&t;&t;(1 &lt;&lt; 0)&t;/* Command timed out */
 DECL|macro|SRB_SENT
-mdefine_line|#define SRB_SENT&t;&t;BIT_1&t;/* Command sent to ISP */
+mdefine_line|#define SRB_SENT&t;&t;(1 &lt;&lt; 1)&t;/* Command sent to ISP */
 DECL|macro|SRB_ABORT_PENDING
-mdefine_line|#define SRB_ABORT_PENDING&t;BIT_2&t;/* Command abort sent to device */
+mdefine_line|#define SRB_ABORT_PENDING&t;(1 &lt;&lt; 2)&t;/* Command abort sent to device */
 DECL|macro|SRB_ABORTED
-mdefine_line|#define SRB_ABORTED&t;&t;BIT_3&t;/* Command aborted command already */
-multiline_comment|/*&n; * Logical Unit Queue structure&n; */
-DECL|struct|scsi_lu
-r_struct
-id|scsi_lu
-(brace
-DECL|member|q_first
-r_struct
-id|srb
-op_star
-id|q_first
-suffix:semicolon
-multiline_comment|/* First block on LU queue */
-DECL|member|q_last
-r_struct
-id|srb
-op_star
-id|q_last
-suffix:semicolon
-multiline_comment|/* Last block on LU queue */
-DECL|member|q_flag
-r_uint8
-id|q_flag
-suffix:semicolon
-multiline_comment|/* LU queue state flags */
-DECL|member|q_sense
-r_uint8
-id|q_sense
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* sense data */
-DECL|member|io_cnt
-r_int
-r_int
-id|io_cnt
-suffix:semicolon
-multiline_comment|/* total xfer count */
-DECL|member|resp_time
-r_int
-r_int
-id|resp_time
-suffix:semicolon
-multiline_comment|/* total response time (start - finish) */
-DECL|member|act_time
-r_int
-r_int
-id|act_time
-suffix:semicolon
-multiline_comment|/* total actived time (minus queuing time) */
-DECL|member|w_cnt
-r_int
-r_int
-id|w_cnt
-suffix:semicolon
-multiline_comment|/* total writes */
-DECL|member|r_cnt
-r_int
-r_int
-id|r_cnt
-suffix:semicolon
-multiline_comment|/* total reads */
-DECL|member|q_outcnt
-r_uint16
-id|q_outcnt
-suffix:semicolon
-multiline_comment|/* Pending jobs for this LU */
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Logical Unit flags&n; */
-DECL|macro|QLA1280_QBUSY
-mdefine_line|#define QLA1280_QBUSY&t;BIT_0
-DECL|macro|QLA1280_QWAIT
-mdefine_line|#define QLA1280_QWAIT&t;BIT_1
-DECL|macro|QLA1280_QSUSP
-mdefine_line|#define QLA1280_QSUSP&t;BIT_2
-DECL|macro|QLA1280_QSENSE
-mdefine_line|#define QLA1280_QSENSE&t;BIT_3&t;/* Sense data cache valid */
-DECL|macro|QLA1280_QRESET
-mdefine_line|#define QLA1280_QRESET&t;BIT_4
-DECL|macro|QLA1280_QHBA
-mdefine_line|#define QLA1280_QHBA&t;BIT_5
-DECL|macro|QLA1280_BSUSP
-mdefine_line|#define QLA1280_BSUSP&t;BIT_6&t;/* controller is suspended */
-DECL|macro|QLA1280_BREM
-mdefine_line|#define QLA1280_BREM&t;BIT_7&t;/* controller is removed */
+mdefine_line|#define SRB_ABORTED&t;&t;(1 &lt;&lt; 3)&t;/* Command aborted command already */
 multiline_comment|/*&n; *  ISP I/O Register Set structure definitions.&n; */
 DECL|struct|device_reg
 r_struct
@@ -3173,28 +3079,11 @@ r_int
 r_int
 id|host_no
 suffix:semicolon
-DECL|member|instance
-r_int
-r_int
-id|instance
-suffix:semicolon
 DECL|member|pdev
 r_struct
 id|pci_dev
 op_star
 id|pdev
-suffix:semicolon
-DECL|member|device_id
-r_uint32
-id|device_id
-suffix:semicolon
-DECL|member|pci_bus
-r_uint8
-id|pci_bus
-suffix:semicolon
-DECL|member|pci_device_fn
-r_uint8
-id|pci_device_fn
 suffix:semicolon
 DECL|member|devnum
 r_uint8
@@ -3243,13 +3132,6 @@ id|bus_settings
 id|MAX_BUSES
 )braket
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* bottom half run queue */
-r_struct
-id|tq_struct
-id|run_qla_bh
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Received ISP mailbox data. */
 DECL|member|mailbox_out
 r_volatile
@@ -3259,16 +3141,6 @@ id|mailbox_out
 id|MAILBOX_REGISTER_COUNT
 )braket
 suffix:semicolon
-macro_line|#ifdef UNUSED
-DECL|member|dev_timer
-r_struct
-id|timer_list
-id|dev_timer
-(braket
-id|MAX_TARGETS
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|member|request_dma
 id|dma_addr_t
 id|request_dma
@@ -3320,51 +3192,12 @@ r_uint16
 id|rsp_ring_index
 suffix:semicolon
 multiline_comment|/* Current index. */
-macro_line|#if WATCHDOGTIMER
-multiline_comment|/* Watchdog queue, lock and total timer */
-DECL|member|watchdog_q_lock
-r_uint8
-id|watchdog_q_lock
-suffix:semicolon
-multiline_comment|/* Lock for watchdog queue */
-DECL|member|wdg_q_first
+DECL|member|done_q
 r_struct
-id|srb
-op_star
-id|wdg_q_first
+id|list_head
+id|done_q
 suffix:semicolon
-multiline_comment|/* First job on watchdog queue */
-DECL|member|wdg_q_last
-r_struct
-id|srb
-op_star
-id|wdg_q_last
-suffix:semicolon
-multiline_comment|/* Last job on watchdog queue */
-DECL|member|total_timeout
-r_uint32
-id|total_timeout
-suffix:semicolon
-multiline_comment|/* Total timeout (quantum count) */
-DECL|member|watchdogactive
-r_uint32
-id|watchdogactive
-suffix:semicolon
-macro_line|#endif
-DECL|member|done_q_first
-r_struct
-id|srb
-op_star
-id|done_q_first
-suffix:semicolon
-multiline_comment|/* First job on done queue */
-DECL|member|done_q_last
-r_struct
-id|srb
-op_star
-id|done_q_last
-suffix:semicolon
-multiline_comment|/* Last job on done queue */
+multiline_comment|/* Done queue */
 DECL|member|mailbox_wait
 r_struct
 id|completion
@@ -3374,69 +3207,62 @@ suffix:semicolon
 r_volatile
 r_struct
 (brace
-DECL|member|mbox_busy
-r_uint32
-id|mbox_busy
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 0 */
 DECL|member|online
 r_uint32
 id|online
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 1 */
+multiline_comment|/* 0 */
 DECL|member|reset_marker
 r_uint32
 id|reset_marker
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 2 */
+multiline_comment|/* 1 */
 DECL|member|disable_host_adapter
 r_uint32
 id|disable_host_adapter
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 4 */
+multiline_comment|/* 2 */
 DECL|member|reset_active
 r_uint32
 id|reset_active
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 5 */
+multiline_comment|/* 3 */
 DECL|member|abort_isp_active
 r_uint32
 id|abort_isp_active
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 6 */
+multiline_comment|/* 4 */
 DECL|member|disable_risc_code_load
 r_uint32
 id|disable_risc_code_load
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 7 */
+multiline_comment|/* 5 */
 DECL|member|enable_64bit_addressing
 r_uint32
 id|enable_64bit_addressing
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 8 */
+multiline_comment|/* 6 */
 DECL|member|in_reset
 r_uint32
 id|in_reset
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 9 */
+multiline_comment|/* 7 */
 DECL|member|ints_enabled
 r_uint32
 id|ints_enabled
@@ -3472,10 +3298,5 @@ id|nvram_valid
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Macros to help code, maintain, etc.&n; */
-DECL|macro|SUBDEV
-mdefine_line|#define SUBDEV(b, t, l)&t;&t;((b &lt;&lt; (MAX_T_BITS + MAX_L_BITS)) | (t &lt;&lt; MAX_L_BITS) | l)
-DECL|macro|LU_Q
-mdefine_line|#define LU_Q(ha, b, t, l)&t;(ha-&gt;dev[SUBDEV(b, t, l)])
-macro_line|#endif&t;&t;&t;&t;/* _IO_HBA_QLA1280_H */
+macro_line|#endif /* _QLA1280_H */
 eof
