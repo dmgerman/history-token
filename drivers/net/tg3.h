@@ -4031,8 +4031,9 @@ id|spinlock_t
 id|indirect_lock
 suffix:semicolon
 DECL|member|regs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|regs
 suffix:semicolon
 DECL|member|dev
