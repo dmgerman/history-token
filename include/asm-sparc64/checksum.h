@@ -50,7 +50,7 @@ r_int
 id|sum
 )paren
 suffix:semicolon
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -128,7 +128,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -209,7 +209,7 @@ r_int
 id|sum
 )paren
 suffix:semicolon
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -266,7 +266,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ihl is always 5 or greater, almost always is 5, and iph is word aligned&n; * the majority of the time.&n; */
 DECL|function|ip_fast_csum
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -353,7 +353,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Fold a partial checksum without adding pseudo headers. */
 DECL|function|csum_fold
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -412,7 +412,7 @@ l_int|0xffff
 suffix:semicolon
 )brace
 DECL|function|csum_tcpudp_nofold
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -656,7 +656,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* this routine is used for miscellaneous IP-like checksums, mainly in icmp.c */
 DECL|function|ip_compute_csum
-r_extern
+r_static
 id|__inline__
 r_int
 r_int

@@ -230,7 +230,7 @@ mdefine_line|#define page_pte_prot(page, prot)&t;mk_pte(page, prot)
 DECL|macro|page_pte
 mdefine_line|#define page_pte(page)&t;&t;&t;page_pte_prot(page, __pgprot(0))
 DECL|function|pte_modify
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_modify
@@ -389,7 +389,7 @@ id|pte_t
 suffix:semicolon
 multiline_comment|/* Make a non-present pseudo-TTE. */
 DECL|function|mk_pte_io
-r_extern
+r_static
 r_inline
 id|pte_t
 id|mk_pte_io
@@ -482,7 +482,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -581,7 +581,7 @@ op_amp
 id|_PAGE_PADDR
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -600,7 +600,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|__get_iospace

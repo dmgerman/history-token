@@ -364,7 +364,7 @@ id|dev_id
 )paren
 suffix:semicolon
 DECL|function|set_softint
-r_extern
+r_static
 id|__inline__
 r_void
 id|set_softint
@@ -391,7 +391,7 @@ id|bits
 suffix:semicolon
 )brace
 DECL|function|clear_softint
-r_extern
+r_static
 id|__inline__
 r_void
 id|clear_softint
@@ -418,7 +418,7 @@ id|bits
 suffix:semicolon
 )brace
 DECL|function|get_softint
-r_extern
+r_static
 id|__inline__
 r_int
 r_int

@@ -357,7 +357,7 @@ id|SPARC_PHYS_BANKS
 suffix:semicolon
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
-r_extern
+r_static
 id|__inline__
 r_int
 id|get_order

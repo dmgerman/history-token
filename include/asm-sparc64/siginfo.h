@@ -405,7 +405,7 @@ id|sigevent_t32
 suffix:semicolon
 macro_line|#include &lt;linux/string.h&gt;
 DECL|function|copy_siginfo
-r_extern
+r_static
 r_inline
 r_void
 id|copy_siginfo

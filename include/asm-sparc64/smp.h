@@ -204,7 +204,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;General functions that each host system must provide.&n; */
 DECL|function|hard_smp_processor_id
-r_extern
+r_static
 id|__inline__
 r_int
 id|hard_smp_processor_id
@@ -353,7 +353,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This is a nop as well because we capture all other cpus&n; * anyways when making the PROM active.&n; */
 DECL|function|smp_send_stop
-r_extern
+r_static
 id|__inline__
 r_void
 id|smp_send_stop
