@@ -1056,6 +1056,7 @@ suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                          SYSFS INTERFACE                          *&n; *********************************************************************/
 multiline_comment|/**&n; * cpufreq_parse_governor - parse a governor string&n; */
 DECL|function|cpufreq_parse_governor
+r_static
 r_int
 id|cpufreq_parse_governor
 (paren

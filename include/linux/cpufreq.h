@@ -778,26 +778,6 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-multiline_comment|/* the proc_intf.c needs this */
-r_int
-id|cpufreq_parse_governor
-(paren
-r_char
-op_star
-id|str_governor
-comma
-r_int
-r_int
-op_star
-id|policy
-comma
-r_struct
-id|cpufreq_governor
-op_star
-op_star
-id|governor
-)paren
-suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                       CPUFREQ DEFAULT GOVERNOR                    *&n; *********************************************************************/
 macro_line|#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE
 r_extern
