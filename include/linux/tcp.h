@@ -1218,11 +1218,6 @@ id|open_request
 op_star
 id|accept_queue_tail
 suffix:semicolon
-DECL|member|write_pending
-r_int
-id|write_pending
-suffix:semicolon
-multiline_comment|/* A write to socket waits to start. */
 DECL|member|keepalive_time
 r_int
 r_int

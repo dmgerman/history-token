@@ -17007,7 +17007,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;write_pending
+id|sk-&gt;sk_write_pending
 op_logical_or
 id|tp-&gt;defer_accept
 op_logical_or
