@@ -1483,11 +1483,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|masks
-op_assign
-id|hp_zx1_masks
-comma
-dot
 id|size_type
 op_assign
 id|FIXED_APER_SIZE
@@ -1516,6 +1511,11 @@ dot
 id|mask_memory
 op_assign
 id|hp_zx1_mask_memory
+comma
+dot
+id|masks
+op_assign
+id|hp_zx1_masks
 comma
 dot
 id|agp_enable
@@ -1785,7 +1785,6 @@ suffix:semicolon
 DECL|variable|agp_hp_pci_driver
 r_static
 r_struct
-id|__initdata
 id|pci_driver
 id|agp_hp_pci_driver
 op_assign

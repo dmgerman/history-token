@@ -1368,9 +1368,6 @@ r_struct
 id|agp_bridge_data
 op_star
 id|bridge
-comma
-id|u32
-id|mode
 )paren
 (brace
 r_struct
@@ -1937,6 +1934,12 @@ l_string|&quot;Something bad happened setting &quot;
 l_string|&quot;up isochronous xfers.  Falling back to &quot;
 l_string|&quot;non-isochronous xfer mode.&bslash;n&quot;
 )paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_goto
+id|free_and_exit
 suffix:semicolon
 )brace
 )brace
