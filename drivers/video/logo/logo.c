@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  Linux logo to be displayed on boot&n; *&n; *  Copyright (C) 1996 Larry Ewing (lewing@isc.tamu.edu)&n; *  Copyright (C) 1996,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *  Copyright (C) 2001 Greg Banks &lt;gnb@alphalink.com.au&gt;&n; *  Copyright (C) 2001 Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&n; *  Copyright (C) 2003 Geert Uytterhoeven &lt;geert@linux-m68k.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linux_logo.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#ifdef CONFIG_M68K
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
