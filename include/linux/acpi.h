@@ -1407,7 +1407,6 @@ id|add
 )paren
 (paren
 id|acpi_handle
-op_star
 id|handle
 )paren
 suffix:semicolon
@@ -1419,7 +1418,6 @@ id|remove
 )paren
 (paren
 id|acpi_handle
-op_star
 id|handle
 )paren
 suffix:semicolon
