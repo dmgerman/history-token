@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/blinken.h&gt;
-macro_line|#include &lt;asm/io.h&gt;                               /* readb() and writeb() */
 macro_line|#include &lt;asm/hwtest.h&gt;                           /* hwreg_present() */
 macro_line|#include &quot;ints.h&quot;
 macro_line|#include &quot;time.h&quot;
@@ -53,32 +52,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-r_extern
-r_int
-id|hp300_keyb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|function|hp300_kbdrate
-r_static
-r_int
-id|hp300_kbdrate
-c_func
-(paren
-r_struct
-id|kbd_repeat
-op_star
-id|k
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT
 DECL|function|hp300_pulse
 r_static
@@ -143,16 +116,6 @@ id|mach_sched_init
 op_assign
 id|hp300_sched_init
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|mach_keyb_init
-op_assign
-id|hp300_keyb_init
-suffix:semicolon
-id|mach_kbdrate
-op_assign
-id|hp300_kbdrate
-suffix:semicolon
-macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|hp300_init_IRQ

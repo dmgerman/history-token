@@ -499,6 +499,13 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|amibkd_dev
+)paren
+suffix:semicolon
 id|amikbd_dev.evbit
 (braket
 l_int|0

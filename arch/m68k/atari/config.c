@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/hwtest.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -90,50 +89,6 @@ c_func
 r_char
 op_star
 id|buffer
-)paren
-suffix:semicolon
-multiline_comment|/* atari specific keyboard functions */
-r_extern
-r_int
-id|atari_keyb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|atari_kbdrate
-(paren
-r_struct
-id|kbd_repeat
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|atari_kbd_translate
-c_func
-(paren
-r_int
-r_char
-id|keycode
-comma
-r_int
-r_char
-op_star
-id|keycodep
-comma
-r_char
-id|raw_mode
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|atari_kbd_leds
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/* atari specific irq functions */
@@ -221,20 +176,6 @@ op_star
 comma
 r_void
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|atari_mksound
-c_func
-(paren
-r_int
-r_int
-id|count
-comma
-r_int
-r_int
-id|ticks
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HEARTBEAT
@@ -325,33 +266,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-DECL|variable|atari_sysrq_xlate
-r_static
-r_char
-id|atari_sysrq_xlate
-(braket
-l_int|128
-)braket
-op_assign
-l_string|&quot;&bslash;000&bslash;0331234567890-=&bslash;177&bslash;t&quot;
-multiline_comment|/* 0x00 - 0x0f */
-l_string|&quot;qwertyuiop[]&bslash;r&bslash;000as&quot;
-multiline_comment|/* 0x10 - 0x1f */
-l_string|&quot;dfghjkl;&squot;`&bslash;000&bslash;&bslash;zxcv&quot;
-multiline_comment|/* 0x20 - 0x2f */
-l_string|&quot;bnm,./&bslash;000&bslash;000&bslash;000 &bslash;000&bslash;201&bslash;202&bslash;203&bslash;204&bslash;205&quot;
-multiline_comment|/* 0x30 - 0x3f */
-l_string|&quot;&bslash;206&bslash;207&bslash;210&bslash;211&bslash;212&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000-&bslash;000&bslash;000&bslash;000+&bslash;000&quot;
-multiline_comment|/* 0x40 - 0x4f */
-l_string|&quot;&bslash;000&bslash;000&bslash;000&bslash;177&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
-multiline_comment|/* 0x50 - 0x5f */
-l_string|&quot;&bslash;000&bslash;000&bslash;000()/*789456123&quot;
-multiline_comment|/* 0x60 - 0x6f */
-l_string|&quot;0.&bslash;r&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
-suffix:semicolon
-multiline_comment|/* 0x70 - 0x7f */
-macro_line|#endif
 multiline_comment|/* I&squot;ve moved hwreg_present() and hwreg_present_bywrite() out into&n; * mm/hwtest.c, to avoid having multiple copies of the same routine&n; * in the kernel [I wanted them in hp300 and they were already used&n; * in the nubus code. NB: I don&squot;t have an Atari so this might (just&n; * conceivably) break something.&n; * I&squot;ve preserved the #if 0 version of hwreg_present_bywrite() here&n; * for posterity.&n; *   -- Peter Maydell &lt;pmaydell@chiark.greenend.org.uk&gt;, 05/1998&n; */
 macro_line|#if 0
 r_static
@@ -912,24 +826,6 @@ id|mach_sched_init
 op_assign
 id|atari_sched_init
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|mach_keyb_init
-op_assign
-id|atari_keyb_init
-suffix:semicolon
-id|mach_kbdrate
-op_assign
-id|atari_kbdrate
-suffix:semicolon
-id|mach_kbd_translate
-op_assign
-id|atari_kbd_translate
-suffix:semicolon
-id|mach_kbd_leds
-op_assign
-id|atari_kbd_leds
-suffix:semicolon
-macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|atari_init_IRQ
@@ -987,35 +883,10 @@ id|mach_max_dma_address
 op_assign
 l_int|0xffffff
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|kd_mksound
+macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+id|mach_beep
 op_assign
 id|atari_mksound
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|SYSRQ_KEY
-op_assign
-l_int|0xff
-suffix:semicolon
-id|mach_sysrq_key
-op_assign
-l_int|98
-suffix:semicolon
-multiline_comment|/* HELP */
-id|mach_sysrq_shift_state
-op_assign
-l_int|8
-suffix:semicolon
-multiline_comment|/* Alt */
-id|mach_sysrq_shift_mask
-op_assign
-l_int|0xff
-suffix:semicolon
-multiline_comment|/* all modifiers except CapsLock */
-id|mach_sysrq_xlate
-op_assign
-id|atari_sysrq_xlate
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT

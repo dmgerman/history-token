@@ -2241,6 +2241,13 @@ id|analog_pad_btn
 suffix:colon
 id|analog_joy_btn
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|analog-&gt;dev
+)paren
+suffix:semicolon
 id|analog-&gt;dev.name
 op_assign
 id|analog-&gt;name

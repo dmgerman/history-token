@@ -2532,6 +2532,16 @@ comma
 id|original_handler_id
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|adbhid
+(braket
+id|id
+)braket
+)paren
+suffix:semicolon
 id|adbhid
 (braket
 id|id

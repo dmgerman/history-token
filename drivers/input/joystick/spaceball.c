@@ -1207,6 +1207,13 @@ comma
 id|serio-&gt;phys
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|spaceball-&gt;dev
+)paren
+suffix:semicolon
 id|spaceball-&gt;dev.name
 op_assign
 id|spaceball_names

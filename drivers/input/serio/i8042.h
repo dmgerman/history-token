@@ -10,9 +10,6 @@ macro_line|#include &quot;i8042-sparcio.h&quot;
 macro_line|#else
 macro_line|#include &quot;i8042-io.h&quot;
 macro_line|#endif
-multiline_comment|/*&n; * If you want to trace all the i/o the i8042 module does for&n; * debugging purposes, define this.&n; */
-DECL|macro|I8042_DEBUG_IO
-macro_line|#undef I8042_DEBUG_IO
 multiline_comment|/*&n; * This is in 50us units, the time we wait for the i8042 to react. This&n; * has to be long enough for the i8042 itself to timeout on sending a byte&n; * to a non-existent mouse.&n; */
 DECL|macro|I8042_CTL_TIMEOUT
 mdefine_line|#define I8042_CTL_TIMEOUT&t;10000
@@ -30,6 +27,8 @@ DECL|macro|I8042_STR_KEYLOCK
 mdefine_line|#define I8042_STR_KEYLOCK&t;0x10
 DECL|macro|I8042_STR_CMDDAT
 mdefine_line|#define I8042_STR_CMDDAT&t;0x08
+DECL|macro|I8042_STR_MUXERR
+mdefine_line|#define I8042_STR_MUXERR&t;0x04
 DECL|macro|I8042_STR_IBF
 mdefine_line|#define I8042_STR_IBF&t;&t;0x02
 DECL|macro|I8042_STR_OBF
@@ -72,11 +71,33 @@ DECL|macro|I8042_CMD_AUX_SEND
 mdefine_line|#define I8042_CMD_AUX_SEND&t;0x10d4
 DECL|macro|I8042_CMD_AUX_LOOP
 mdefine_line|#define I8042_CMD_AUX_LOOP&t;0x11d3
+DECL|macro|I8042_CMD_MUX_PFX
+mdefine_line|#define I8042_CMD_MUX_PFX&t;0x0090
+DECL|macro|I8042_CMD_MUX_SEND
+mdefine_line|#define I8042_CMD_MUX_SEND&t;0x1090
 multiline_comment|/*&n; * Return codes.&n; */
 DECL|macro|I8042_RET_CTL_TEST
 mdefine_line|#define I8042_RET_CTL_TEST&t;0x55
 multiline_comment|/*&n; * Expected maximum internal i8042 buffer size. This is used for flushing&n; * the i8042 buffers. 32 should be more than enough.&n; */
 DECL|macro|I8042_BUFFER_SIZE
 mdefine_line|#define I8042_BUFFER_SIZE&t;32
+multiline_comment|/*&n; * Debug.&n; */
+macro_line|#ifdef DEBUG
+DECL|variable|i8042_start
+r_static
+r_int
+r_int
+id|i8042_start
+suffix:semicolon
+DECL|macro|dbg_init
+mdefine_line|#define dbg_init() do { i8042_start = jiffies; } while (0);
+DECL|macro|dbg
+mdefine_line|#define dbg(format, arg...) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;[%d]&bslash;n&quot; ,&bslash;&n;&t; ## arg, (int) (jiffies - i8042_start))
+macro_line|#else
+DECL|macro|dbg_init
+mdefine_line|#define dbg_init() do { } while (0);
+DECL|macro|dbg
+mdefine_line|#define dbg(format, arg...) do {} while (0)
+macro_line|#endif
 macro_line|#endif /* _I8042_H */
 eof
