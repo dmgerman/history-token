@@ -18,6 +18,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|function|sigio_interrupt
+r_static
 id|irqreturn_t
 id|sigio_interrupt
 c_func
@@ -62,9 +63,11 @@ r_int
 id|fd
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_int
+id|err
+suffix:semicolon
+id|err
+op_assign
 id|um_request_irq
 c_func
 (paren
@@ -84,12 +87,19 @@ l_string|&quot;write sigio&quot;
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;write_sigio_irq : um_request_irq failed&bslash;n&quot;
+l_string|&quot;write_sigio_irq : um_request_irq failed, err = %d&bslash;n&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 r_return

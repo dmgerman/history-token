@@ -426,7 +426,9 @@ id|status
 id|printk
 c_func
 (paren
-l_string|&quot;process exited with status %d&bslash;n&quot;
+l_string|&quot;process %d exited with status %d&bslash;n&quot;
+comma
+id|pid
 comma
 id|WEXITSTATUS
 c_func
@@ -450,7 +452,9 @@ id|status
 id|printk
 c_func
 (paren
-l_string|&quot;process exited with signal %d&bslash;n&quot;
+l_string|&quot;process %d exited with signal %d&bslash;n&quot;
+comma
+id|pid
 comma
 id|WTERMSIG
 c_func
@@ -600,7 +604,9 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;process stopped with signal %d&bslash;n&quot;
+l_string|&quot;process %d stopped with signal %d&bslash;n&quot;
+comma
+id|pid
 comma
 id|WSTOPSIG
 c_func

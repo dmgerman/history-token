@@ -163,9 +163,9 @@ id|buf
 comma
 l_string|&quot;%*d &quot;
 id|COMM_SCANF
-l_string|&quot; %*c %*d %*d %*d %*d %*d %*d %*d %*d &quot;
+l_string|&quot; %*c %*d %*d %*d %*d %*d %*d %*d &quot;
 l_string|&quot;%*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d &quot;
-l_string|&quot;%*d %*d %*d %*d %lu&quot;
+l_string|&quot;%*d %*d %*d %*d %*d %lu&quot;
 comma
 op_amp
 id|pc

@@ -310,6 +310,7 @@ l_string|&quot;    The default values are &squot;xterm=xterm,-T,-e&squot;.  Valu
 l_string|&quot;    are &squot;xterm=gnome-terminal,-t,-x&squot;.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* XXX This badly needs some cleaning up in the error paths */
 DECL|function|xterm_open
 r_int
 id|xterm_open
