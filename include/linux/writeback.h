@@ -16,6 +16,23 @@ r_struct
 id|list_head
 id|inode_unused
 suffix:semicolon
+multiline_comment|/*&n; * Yes, writeback.h requires sched.h&n; * No, sched.h is not included from here.&n; */
+DECL|function|current_is_pdflush
+r_static
+r_inline
+r_int
+id|current_is_pdflush
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|current-&gt;flags
+op_amp
+id|PF_FLUSHER
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * fs/fs-writeback.c&n; */
 DECL|macro|WB_SYNC_NONE
 mdefine_line|#define WB_SYNC_NONE&t;0&t;/* Don&squot;t wait on anything */

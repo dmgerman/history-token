@@ -168,8 +168,6 @@ DECL|macro|MS_REC
 mdefine_line|#define MS_REC&t;&t;16384
 DECL|macro|MS_VERBOSE
 mdefine_line|#define MS_VERBOSE&t;32768
-DECL|macro|MS_FLUSHING
-mdefine_line|#define MS_FLUSHING&t;(1&lt;&lt;16)&t;/* inodes are currently under writeout */
 DECL|macro|MS_ACTIVE
 mdefine_line|#define MS_ACTIVE&t;(1&lt;&lt;30)
 DECL|macro|MS_NOUSER
@@ -206,8 +204,6 @@ DECL|macro|IS_SYNC
 mdefine_line|#define IS_SYNC(inode)&t;&t;(__IS_FLG(inode, MS_SYNCHRONOUS) || ((inode)-&gt;i_flags &amp; S_SYNC))
 DECL|macro|IS_MANDLOCK
 mdefine_line|#define IS_MANDLOCK(inode)&t;__IS_FLG(inode, MS_MANDLOCK)
-DECL|macro|IS_FLUSHING
-mdefine_line|#define IS_FLUSHING(inode)&t;__IS_FLG(inode, MS_FLUSHING)
 DECL|macro|IS_QUOTAINIT
 mdefine_line|#define IS_QUOTAINIT(inode)&t;((inode)-&gt;i_flags &amp; S_QUOTA)
 DECL|macro|IS_NOQUOTA

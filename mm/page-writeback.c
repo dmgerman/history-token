@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 multiline_comment|/*&n; * Memory thresholds, in percentages&n; * FIXME: expose these via /proc or whatever.&n; */
 multiline_comment|/*&n; * Start background writeback (via pdflush) at this level&n; */
 DECL|variable|dirty_background_ratio
@@ -208,14 +209,13 @@ c_cond
 id|wake_pdflush
 op_logical_and
 op_logical_neg
-id|IS_FLUSHING
+id|writeback_in_progress
 c_func
 (paren
-id|mapping-&gt;host
+id|mapping-&gt;backing_dev_info
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * There is no flush thread against this device. Start one now.&n;&t;&t; */
 r_if
 c_cond
 (paren
