@@ -2721,13 +2721,6 @@ op_star
 id|MAX_DRIVES
 )braket
 suffix:semicolon
-DECL|variable|idetape_chrdev_present
-r_static
-r_int
-id|idetape_chrdev_present
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_LOG_VERBOSE
 multiline_comment|/*&n; * DO NOT REMOVE, BUILDING A VERBOSE DEBUG SCHEME FOR ATAPI&n; */
 DECL|function|idetape_sense_key_verbose
@@ -26944,13 +26937,6 @@ mdefine_line|#define&t;idetape_proc&t;NULL
 macro_line|#endif
 r_static
 r_int
-id|idetape_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_int
 id|idetape_reinit
 c_func
 (paren
@@ -27073,10 +27059,6 @@ id|proc
 suffix:colon
 id|idetape_proc
 comma
-id|init
-suffix:colon
-id|idetape_init
-comma
 id|reinit
 suffix:colon
 id|idetape_reinit
@@ -27105,14 +27087,11 @@ id|ide_module_t
 id|idetape_module
 op_assign
 (brace
-id|IDE_DRIVER_MODULE
-comma
-id|idetape_init
-comma
+id|info
+suffix:colon
 op_amp
 id|idetape_driver
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Our character device supporting functions, passed to register_chrdev.&n; */
@@ -27493,10 +27472,6 @@ comma
 l_string|&quot;ht&quot;
 )paren
 suffix:semicolon
-id|idetape_chrdev_present
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idetape_init will register the driver for each tape.&n; */
 DECL|function|idetape_init
@@ -27507,19 +27482,6 @@ id|idetape_init
 r_void
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|idetape_chrdev_present
-)paren
-(brace
-id|idetape_chrdev_present
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -27542,13 +27504,10 @@ id|KERN_ERR
 l_string|&quot;ide-tape: Failed to register character device interface&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 )brace
 id|ide_register_module
 c_func
@@ -27556,8 +27515,6 @@ c_func
 op_amp
 id|idetape_module
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

@@ -3055,16 +3055,6 @@ id|ide_proc_entry_t
 op_star
 id|proc
 suffix:semicolon
-DECL|member|init
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|member|reinit
 r_int
 (paren
@@ -3114,8 +3104,6 @@ DECL|macro|IDE_CHIPSET_MODULE
 mdefine_line|#define IDE_CHIPSET_MODULE&t;&t;0&t;/* not supported yet */
 DECL|macro|IDE_PROBE_MODULE
 mdefine_line|#define IDE_PROBE_MODULE&t;&t;1
-DECL|macro|IDE_DRIVER_MODULE
-mdefine_line|#define IDE_DRIVER_MODULE&t;&t;2
 DECL|typedef|ide_module_init_proc
 r_typedef
 r_int
