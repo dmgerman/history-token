@@ -759,14 +759,6 @@ r_int
 r_int
 id|bttv_num
 suffix:semicolon
-r_extern
-r_struct
-id|bttv
-id|bttvs
-(braket
-id|BTTV_MAX
-)braket
-suffix:semicolon
 DECL|macro|BTTV_MAX_FBUF
 mdefine_line|#define BTTV_MAX_FBUF   0x208000
 DECL|macro|VBIBUF_SIZE
@@ -1282,6 +1274,14 @@ id|bttv_fh
 id|init
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|bttv
+id|bttvs
+(braket
+id|BTTV_MAX
+)braket
 suffix:semicolon
 multiline_comment|/* private ioctls */
 DECL|macro|BTTV_VERSION
