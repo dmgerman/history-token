@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PPP async serial channel driver for Linux.&n; *&n; * Copyright 1999 Paul Mackerras.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; * This driver provides the encapsulation and framing for sending&n; * and receiving PPP frames over async serial lines.  It relies on&n; * the generic PPP layer to give it frames to send and to process&n; * received frames.  It implements the PPP line discipline.&n; *&n; * Part of the code in this driver was inspired by the old async-only&n; * PPP driver, written by Michael Callahan and Al Longyear, and&n; * subsequently hacked by Paul Mackerras.&n; *&n; * ==FILEVERSION 20000227==&n; */
+multiline_comment|/*&n; * PPP async serial channel driver for Linux.&n; *&n; * Copyright 1999 Paul Mackerras.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; * This driver provides the encapsulation and framing for sending&n; * and receiving PPP frames over async serial lines.  It relies on&n; * the generic PPP layer to give it frames to send and to process&n; * received frames.  It implements the PPP line discipline.&n; *&n; * Part of the code in this driver was inspired by the old async-only&n; * PPP driver, written by Michael Callahan and Al Longyear, and&n; * subsequently hacked by Paul Mackerras.&n; *&n; * ==FILEVERSION 20020125==&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|PPP_VERSION
-mdefine_line|#define PPP_VERSION&t;&quot;2.4.1&quot;
+mdefine_line|#define PPP_VERSION&t;&quot;2.4.2&quot;
 DECL|macro|OBUFSIZE
 mdefine_line|#define OBUFSIZE&t;256
 multiline_comment|/* Structure for storing local state. */
@@ -119,6 +119,15 @@ suffix:semicolon
 DECL|member|lcp_fcs
 r_int
 id|lcp_fcs
+suffix:semicolon
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
+DECL|member|dead_sem
+r_struct
+id|semaphore
+id|dead_sem
 suffix:semicolon
 DECL|member|chan
 r_struct
@@ -308,6 +317,99 @@ id|ppp_async_ioctl
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Routines implementing the PPP line discipline.&n; */
+multiline_comment|/*&n; * We have a potential race on dereferencing tty-&gt;disc_data,&n; * because the tty layer provides no locking at all - thus one&n; * cpu could be running ppp_asynctty_receive while another&n; * calls ppp_asynctty_close, which zeroes tty-&gt;disc_data and&n; * frees the memory that ppp_asynctty_receive is using.  The best&n; * way to fix this is to use a rwlock in the tty struct, but for now&n; * we use a single global rwlock for all ttys in ppp line discipline.&n; */
+DECL|variable|disc_data_lock
+r_static
+id|rwlock_t
+id|disc_data_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
+DECL|function|ap_get
+r_static
+r_struct
+id|asyncppp
+op_star
+id|ap_get
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+r_struct
+id|asyncppp
+op_star
+id|ap
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|disc_data_lock
+)paren
+suffix:semicolon
+id|ap
+op_assign
+id|tty-&gt;disc_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap
+op_ne
+l_int|NULL
+)paren
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|ap-&gt;refcnt
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|disc_data_lock
+)paren
+suffix:semicolon
+r_return
+id|ap
+suffix:semicolon
+)brace
+DECL|function|ap_put
+r_static
+r_void
+id|ap_put
+c_func
+(paren
+r_struct
+id|asyncppp
+op_star
+id|ap
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|ap-&gt;refcnt
+)paren
+)paren
+id|up
+c_func
+(paren
+op_amp
+id|ap-&gt;dead_sem
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Called when a tty is put into PPP line discipline.&n; */
 r_static
 r_int
@@ -430,6 +532,22 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|ap-&gt;refcnt
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|init_MUTEX_LOCKED
+c_func
+(paren
+op_amp
+id|ap-&gt;dead_sem
+)paren
+suffix:semicolon
 id|ap-&gt;chan
 dot
 r_private
@@ -485,7 +603,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called when the tty is put into another line discipline&n; * or it hangs up.&n; * We assume that while we are in this routine, the tty layer&n; * won&squot;t call any of the other line discipline entries for the&n; * same tty.&n; */
+multiline_comment|/*&n; * Called when the tty is put into another line discipline&n; * or it hangs up.  We have to wait for any cpu currently&n; * executing in any of the other ppp_asynctty_* routines to&n; * finish before we can call ppp_unregister_channel and free&n; * the asyncppp struct.  This routine must be called from&n; * process context, not interrupt or softirq context.&n; */
 r_static
 r_void
 DECL|function|ppp_asynctty_close
@@ -502,8 +620,28 @@ r_struct
 id|asyncppp
 op_star
 id|ap
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|disc_data_lock
+)paren
+suffix:semicolon
+id|ap
 op_assign
 id|tty-&gt;disc_data
+suffix:semicolon
+id|tty-&gt;disc_data
+op_assign
+l_int|0
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|disc_data_lock
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -514,9 +652,24 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-id|tty-&gt;disc_data
-op_assign
-l_int|0
+multiline_comment|/*&n;&t; * We have now ensured that nobody can start using ap from now&n;&t; * on, but we have to wait for all existing users to finish.&n;&t; * Note that ppp_unregister_channel ensures that no calls to&n;&t; * our channel ops (i.e. ppp_async_send/ioctl) are in progress&n;&t; * by the time it returns.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|ap-&gt;refcnt
+)paren
+)paren
+id|down
+c_func
+(paren
+op_amp
+id|ap-&gt;dead_sem
+)paren
 suffix:semicolon
 id|ppp_unregister_channel
 c_func
@@ -653,12 +806,27 @@ id|asyncppp
 op_star
 id|ap
 op_assign
-id|tty-&gt;disc_data
+id|ap_get
+c_func
+(paren
+id|tty
+)paren
 suffix:semicolon
 r_int
 id|err
 comma
 id|val
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|ENXIO
 suffix:semicolon
 id|err
 op_assign
@@ -868,6 +1036,12 @@ op_minus
 id|ENOIOCTLCMD
 suffix:semicolon
 )brace
+id|ap_put
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -945,7 +1119,11 @@ id|asyncppp
 op_star
 id|ap
 op_assign
-id|tty-&gt;disc_data
+id|ap_get
+c_func
+(paren
+id|tty
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -980,6 +1158,12 @@ c_func
 (paren
 op_amp
 id|ap-&gt;recv_lock
+)paren
+suffix:semicolon
+id|ap_put
+c_func
+(paren
+id|ap
 )paren
 suffix:semicolon
 r_if
@@ -1022,7 +1206,11 @@ id|asyncppp
 op_star
 id|ap
 op_assign
-id|tty-&gt;disc_data
+id|ap_get
+c_func
+(paren
+id|tty
+)paren
 suffix:semicolon
 id|clear_bit
 c_func
@@ -1056,6 +1244,12 @@ c_func
 (paren
 op_amp
 id|ap-&gt;chan
+)paren
+suffix:semicolon
+id|ap_put
+c_func
+(paren
+id|ap
 )paren
 suffix:semicolon
 )brace
