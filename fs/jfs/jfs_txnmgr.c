@@ -367,6 +367,7 @@ id|completion
 id|jfsIOwait
 suffix:semicolon
 multiline_comment|/*&n; * forward references&n; */
+r_static
 r_int
 id|diLog
 c_func
@@ -397,6 +398,7 @@ op_star
 id|cd
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dataLog
 c_func
@@ -422,6 +424,7 @@ op_star
 id|tlck
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dtLog
 c_func
@@ -447,31 +450,7 @@ op_star
 id|tlck
 )paren
 suffix:semicolon
-r_void
-id|inlineLog
-c_func
-(paren
-r_struct
-id|jfs_log
-op_star
-id|log
-comma
-r_struct
-id|tblock
-op_star
-id|tblk
-comma
-r_struct
-id|lrd
-op_star
-id|lrd
-comma
-r_struct
-id|tlock
-op_star
-id|tlck
-)paren
-suffix:semicolon
+r_static
 r_void
 id|mapLog
 c_func
@@ -529,6 +508,7 @@ op_star
 id|tblk
 )paren
 suffix:semicolon
+r_static
 r_void
 id|txForce
 c_func
@@ -560,13 +540,6 @@ op_star
 id|cd
 )paren
 suffix:semicolon
-r_int
-id|txMoreLock
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_void
 id|txUpdateMap
@@ -589,6 +562,7 @@ op_star
 id|tblk
 )paren
 suffix:semicolon
+r_static
 r_void
 id|xtLog
 c_func
@@ -4187,6 +4161,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      diLog()&n; *&n; * function:    log inode tlock and format maplock to update bmap;&n; */
 DECL|function|diLog
+r_static
 r_int
 id|diLog
 c_func
@@ -4550,6 +4525,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      dataLog()&n; *&n; * function:    log data tlock&n; */
 DECL|function|dataLog
+r_static
 r_int
 id|dataLog
 c_func
@@ -4706,6 +4682,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      dtLog()&n; *&n; * function:    log dtree tlock and format maplock to update bmap;&n; */
 DECL|function|dtLog
+r_static
 r_void
 id|dtLog
 c_func
@@ -5046,6 +5023,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      xtLog()&n; *&n; * function:    log xtree tlock and format maplock to update bmap;&n; */
 DECL|function|xtLog
+r_static
 r_void
 id|xtLog
 c_func
@@ -8685,6 +8663,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      txLazyCommit(void)&n; *&n; *&t;All transactions except those changing ipimap (COMMIT_FORCE) are&n; *&t;processed by this routine.  This insures that the inode and block&n; *&t;allocation maps are updated in order.  For synchronous transactions,&n; *&t;let the user thread finish processing after txUpdateMap() is called.&n; */
 DECL|function|txLazyCommit
+r_static
 r_void
 id|txLazyCommit
 c_func

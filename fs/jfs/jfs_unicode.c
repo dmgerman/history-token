@@ -253,6 +253,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;jfs_strtoUCS()&n; *&n; * FUNCTION:&t;Convert character string to unicode string&n; *&n; */
 DECL|function|jfs_strtoUCS
+r_static
 r_int
 id|jfs_strtoUCS
 c_func
