@@ -1,7 +1,7 @@
-multiline_comment|/* $Id: fcntl.h,v 1.4 1998/09/19 19:19:36 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998 by Ralf Baechle&n; */
-macro_line|#ifndef __ASM_MIPS_FCNTL_H
-DECL|macro|__ASM_MIPS_FCNTL_H
-mdefine_line|#define __ASM_MIPS_FCNTL_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998 by Ralf Baechle&n; */
+macro_line|#ifndef __ASM_FCNTL_H
+DECL|macro|__ASM_FCNTL_H
+mdefine_line|#define __ASM_FCNTL_H
 multiline_comment|/* open/fcntl - O_SYNC is only implemented on blocks devices and on files&n;   located on an ext2 file system */
 DECL|macro|O_ACCMODE
 mdefine_line|#define O_ACCMODE&t;0x0003
@@ -61,6 +61,12 @@ DECL|macro|F_SETSIG
 mdefine_line|#define F_SETSIG&t;10&t;/*  for sockets. */
 DECL|macro|F_GETSIG
 mdefine_line|#define F_GETSIG&t;11&t;/*  for sockets. */
+DECL|macro|F_GETLK64
+mdefine_line|#define F_GETLK64&t;33&t;/*  using &squot;struct flock64&squot; */
+DECL|macro|F_SETLK64
+mdefine_line|#define F_SETLK64&t;34
+DECL|macro|F_SETLKW64
+mdefine_line|#define F_SETLKW64&t;35
 multiline_comment|/* for F_[GET|SET]FL */
 DECL|macro|FD_CLOEXEC
 mdefine_line|#define FD_CLOEXEC&t;1&t;/* actually anything with low bit set goes */
@@ -121,7 +127,7 @@ DECL|member|l_sysid
 r_int
 id|l_sysid
 suffix:semicolon
-multiline_comment|/* XXXXXXXXXXXXXXXXXXXXXXXXX */
+multiline_comment|/* ABI junk, unused on Linux */
 DECL|member|l_pid
 id|__kernel_pid_t
 id|l_pid
@@ -133,12 +139,41 @@ id|pad
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* ZZZZZZZZZZZZZZZZZZZZZZZZZZ */
+multiline_comment|/* ABI junk, unused on Linux */
 DECL|typedef|flock_t
 )brace
 id|flock_t
 suffix:semicolon
+DECL|struct|flock64
+r_typedef
+r_struct
+id|flock64
+(brace
+DECL|member|l_type
+r_int
+id|l_type
+suffix:semicolon
+DECL|member|l_whence
+r_int
+id|l_whence
+suffix:semicolon
+DECL|member|l_start
+id|loff_t
+id|l_start
+suffix:semicolon
+DECL|member|l_len
+id|loff_t
+id|l_len
+suffix:semicolon
+DECL|member|l_pid
+id|pid_t
+id|l_pid
+suffix:semicolon
+DECL|typedef|flock64_t
+)brace
+id|flock64_t
+suffix:semicolon
 DECL|macro|F_LINUX_SPECIFIC_BASE
 mdefine_line|#define F_LINUX_SPECIFIC_BASE&t;1024
-macro_line|#endif /* __ASM_MIPS_FCNTL_H */
+macro_line|#endif /* __ASM_FCNTL_H */
 eof

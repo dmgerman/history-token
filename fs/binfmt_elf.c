@@ -1689,6 +1689,8 @@ op_assign
 l_int|0
 comma
 id|load_bias
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|load_addr_set
@@ -2555,22 +2557,6 @@ id|current-&gt;mm-&gt;start_stack
 op_assign
 id|bprm-&gt;p
 suffix:semicolon
-multiline_comment|/* Try and get dynamic programs out of the way of the default mmap&n;&t;   base, as well as whatever program they might try to exec.  This&n;&t;   is because the brk will follow the loader, and is not movable.  */
-id|load_bias
-op_assign
-id|ELF_PAGESTART
-c_func
-(paren
-id|elf_ex.e_type
-op_eq
-id|ET_DYN
-ques
-c_cond
-id|ELF_ET_DYN_BASE
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Now we do a little grungy work by mmaping the ELF image into&n;&t;   the correct location in memory.  At this point, we assume that&n;&t;   the image should be loaded at fixed address, not at a variable&n;&t;   address. */
 id|old_fs
 op_assign
@@ -2688,6 +2674,27 @@ id|load_addr_set
 id|elf_flags
 op_or_assign
 id|MAP_FIXED
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|elf_ex.e_type
+op_eq
+id|ET_DYN
+)paren
+(brace
+multiline_comment|/* Try and get dynamic programs out of the way of the default mmap&n;&t;&t;&t;   base, as well as whatever program they might try to exec.  This&n;&t;&t;           is because the brk will follow the loader, and is not movable.  */
+id|load_bias
+op_assign
+id|ELF_PAGESTART
+c_func
+(paren
+id|ELF_ET_DYN_BASE
+op_minus
+id|vaddr
+)paren
 suffix:semicolon
 )brace
 id|error

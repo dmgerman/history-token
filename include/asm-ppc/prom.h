@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prom.h 1.11 05/18/01 08:18:10 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prom.h 1.14 06/13/01 15:28:43 paulus&n; */
 multiline_comment|/*&n; * Definitions for talking to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PROM_H
@@ -114,6 +114,7 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Note: don&squot;t change this structure for now or you&squot;ll break BootX !&n; */
 DECL|struct|device_node
 r_struct
 id|device_node
@@ -195,14 +196,6 @@ op_star
 id|allnext
 suffix:semicolon
 multiline_comment|/* next in list of all nodes */
-macro_line|#if 0 /* Don&squot;t change this structure for now or you&squot;ll break BootX ! */
-r_int
-id|n_addr_cells
-suffix:semicolon
-r_int
-id|n_size_cells
-suffix:semicolon
-macro_line|#endif&t;
 )brace
 suffix:semicolon
 r_struct
@@ -543,6 +536,22 @@ r_int
 id|pitch
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * When we call back to the Open Firmware client interface, we usually&n; * have to do that before the kernel is relocated to its final location&n; * (this is because we can&squot;t use OF after we have overwritten the&n; * exception vectors with our exception handlers).  These macros assist&n; * in performing the address calculations that we need to do to access&n; * data when the kernel is running at an address that is different from&n; * the address that the kernel is linked at.  The reloc_offset() function&n; * returns the difference between these two addresses and the macros&n; * simplify the process of adding or subtracting this offset to/from&n; * pointer values.  See arch/ppc/kernel/prom.c for how these are used.&n; */
+r_extern
+r_int
+r_int
+id|reloc_offset
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|PTRRELOC
+mdefine_line|#define PTRRELOC(x)&t;((typeof(x))((unsigned long)(x) + offset))
+DECL|macro|PTRUNRELOC
+mdefine_line|#define PTRUNRELOC(x)&t;((typeof(x))((unsigned long)(x) - offset))
+DECL|macro|RELOC
+mdefine_line|#define RELOC(x)&t;(*PTRRELOC(&amp;(x)))
 macro_line|#endif /* _PPC_PROM_H */
 macro_line|#endif /* __KERNEL__ */
 eof

@@ -1,10 +1,17 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mmu_context.h 1.9 05/17/01 18:14:25 cort&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * BK Id: SCCS/s.mmu_context.h 1.12 06/28/01 15:50:17 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_MMU_CONTEXT_H
 DECL|macro|__PPC_MMU_CONTEXT_H
 mdefine_line|#define __PPC_MMU_CONTEXT_H
-multiline_comment|/* the way contexts are handled on the ppc they are vsid&squot;s and&n;   don&squot;t need any special treatment right now.&n;   perhaps I can defer flushing the tlb by keeping a list of&n;   zombie vsid/context&squot;s and handling that through destroy_context&n;   later -- Cort&n;&n;   The MPC8xx has only 16 contexts.  We rotate through them on each&n;   task switch.  A better way would be to keep track of tasks that&n;   own contexts, and implement an LRU usage.  That way very active&n;   tasks don&squot;t always have to pay the TLB reload overhead.  The&n;   kernel pages are mapped shared, so the kernel can run on behalf&n;   of any task that makes a kernel entry.  Shared does not mean they&n;   are not protected, just that the ASID comparison is not performed.&n;        -- Dan&n;&n;   The IBM4xx has 256 contexts, so we can just rotate through these&n;   as a way of &quot;switching&quot; contexts.  If the TID of the TLB is zero,&n;   the PID/TID comparison is disabled, so we can use a TID of zero&n;   to represent all kernel pages as shared among all contexts.&n;   &t;-- Dan&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/mmu.h&gt;
+multiline_comment|/*&n; * On 32-bit PowerPC 6xx/7xx/7xxx CPUs, we use a set of 16 VSIDs&n; * (virtual segment identifiers) for each context.  Although the&n; * hardware supports 24-bit VSIDs, and thus &gt;1 million contexts,&n; * we only use 32,768 of them.  That is ample, since there can be&n; * at most around 30,000 tasks in the system anyway, and it means&n; * that we can use a bitmap to indicate which contexts are in use.&n; * Using a bitmap means that we entirely avoid all of the problems&n; * that we used to have when the context number overflowed,&n; * particularly on SMP systems.&n; *  -- paulus.&n; */
+multiline_comment|/*&n; * This function defines the mapping from contexts to VSIDs (virtual&n; * segment IDs).  We use a skew on both the context and the high 4 bits&n; * of the 32-bit virtual address (the &quot;effective segment ID&quot;) in order&n; * to spread out the entries in the MMU hash table.  Note, if this&n; * function is changed then arch/ppc/mm/hashtable.S will have to be&n; * changed correspondly.&n; */
+DECL|macro|CTX_TO_VSID
+mdefine_line|#define CTX_TO_VSID(ctx, va)&t;(((ctx) * (897 * 16) + ((va) &gt;&gt; 28) * 0x111) &bslash;&n;&t;&t;&t;&t; &amp; 0xffffff)
+multiline_comment|/*&n;   The MPC8xx has only 16 contexts.  We rotate through them on each&n;   task switch.  A better way would be to keep track of tasks that&n;   own contexts, and implement an LRU usage.  That way very active&n;   tasks don&squot;t always have to pay the TLB reload overhead.  The&n;   kernel pages are mapped shared, so the kernel can run on behalf&n;   of any task that makes a kernel entry.  Shared does not mean they&n;   are not protected, just that the ASID comparison is not performed.&n;        -- Dan&n;&n;   The IBM4xx has 256 contexts, so we can just rotate through these&n;   as a way of &quot;switching&quot; contexts.  If the TID of the TLB is zero,&n;   the PID/TID comparison is disabled, so we can use a TID of zero&n;   to represent all kernel pages as shared among all contexts.&n;   &t;-- Dan&n; */
 DECL|function|enter_lazy_tlb
 r_static
 r_inline
@@ -32,70 +39,243 @@ DECL|macro|NO_CONTEXT
 mdefine_line|#define NO_CONTEXT      &t;16
 DECL|macro|LAST_CONTEXT
 mdefine_line|#define LAST_CONTEXT    &t;15
-DECL|macro|BASE_CONTEXT
-mdefine_line|#define BASE_CONTEXT&t;&t;(-1)
-DECL|macro|MUNGE_CONTEXT
-mdefine_line|#define MUNGE_CONTEXT(n)        (n)
-DECL|macro|flush_hash_segments
-mdefine_line|#define flush_hash_segments(X, Y)&t;do { } while (0)
 macro_line|#elif CONFIG_4xx
 DECL|macro|NO_CONTEXT
 mdefine_line|#define NO_CONTEXT      &t;256
 DECL|macro|LAST_CONTEXT
 mdefine_line|#define LAST_CONTEXT    &t;255
-DECL|macro|BASE_CONTEXT
-mdefine_line|#define BASE_CONTEXT&t;&t;(0)
-DECL|macro|MUNGE_CONTEXT
-mdefine_line|#define MUNGE_CONTEXT(n)        (n)
-DECL|macro|flush_hash_segments
-mdefine_line|#define flush_hash_segments(X, Y)&t;do { } while (0)
 macro_line|#else
 multiline_comment|/* PPC 6xx, 7xx CPUs */
 DECL|macro|NO_CONTEXT
-mdefine_line|#define NO_CONTEXT      &t;0
-DECL|macro|BASE_CONTEXT
-mdefine_line|#define BASE_CONTEXT&t;&t;(0)
+mdefine_line|#define NO_CONTEXT      &t;((mm_context_t) -1)
 DECL|macro|LAST_CONTEXT
-mdefine_line|#define LAST_CONTEXT    &t;0xfffff
-multiline_comment|/*&n; * Allocating context numbers this way tends to spread out&n; * the entries in the hash table better than a simple linear&n; * allocation.&n; */
-DECL|macro|MUNGE_CONTEXT
-mdefine_line|#define MUNGE_CONTEXT(n)        (((n) * 897) &amp; LAST_CONTEXT)
+mdefine_line|#define LAST_CONTEXT    &t;32767
 macro_line|#endif
-r_extern
-id|atomic_t
-id|next_mmu_context
-suffix:semicolon
-r_extern
-r_void
-id|mmu_context_overflow
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Set the current MMU context.&n; * On 32-bit PowerPCs (other than the 8xx embedded chips), this is done by&n; * loading up the segment registers for the user part of the address space.&n; *&n; * On the 8xx parts, the context currently includes the page directory,&n; * and once I implement a real TLB context manager this will disappear.&n; * The PGD is ignored on other processors. - Dan&n; */
 r_extern
 r_void
 id|set_context
 c_func
 (paren
-r_int
+id|mm_context_t
 id|context
-comma
-r_void
-op_star
-id|pgd
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Get a new mmu context for task tsk if necessary.&n; */
-DECL|macro|get_mmu_context
-mdefine_line|#define get_mmu_context(mm)&t;&t;&t;&t;&t;&bslash;&n;do { &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (mm-&gt;context == NO_CONTEXT) {&t;&t;&t;&bslash;&n;&t;&t;if (atomic_read(&amp;next_mmu_context) == LAST_CONTEXT)&t;&t;&bslash;&n;&t;&t;&t;mmu_context_overflow();&t;&t;&t;&bslash;&n;&t;&t;mm-&gt;context = MUNGE_CONTEXT(atomic_inc_return(&amp;next_mmu_context));&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * Bitmap of contexts in use.&n; * The size of this bitmap is LAST_CONTEXT + 1 bits.&n; */
+r_extern
+r_int
+r_int
+id|context_map
+(braket
+(paren
+id|LAST_CONTEXT
+op_plus
+l_int|1
+)paren
+op_div
+(paren
+l_int|8
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
+)braket
+suffix:semicolon
+multiline_comment|/*&n; * This caches the next context number that we expect to be free.&n; * Its use is an optimization only, we can&squot;t rely on this context&n; * number to be free, but it usually will be.&n; */
+r_extern
+id|mm_context_t
+id|next_mmu_context
+suffix:semicolon
+multiline_comment|/*&n; * If we don&squot;t have sufficient contexts to give one to every task&n; * that could be in the system, we need to be able to steal contexts.&n; * These variables support that.&n; */
+macro_line|#if LAST_CONTEXT &lt; 30000
+DECL|macro|FEW_CONTEXTS
+mdefine_line|#define FEW_CONTEXTS&t;1
+r_extern
+id|atomic_t
+id|nr_free_contexts
+suffix:semicolon
+r_extern
+r_struct
+id|mm_struct
+op_star
+id|context_mm
+(braket
+id|LAST_CONTEXT
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+r_extern
+r_void
+id|steal_context
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n; * Get a new mmu context for the address space described by `mm&squot;.&n; */
+DECL|function|get_mmu_context
+r_static
+r_inline
+r_void
+id|get_mmu_context
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+id|mm_context_t
+id|ctx
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mm-&gt;context
+op_ne
+id|NO_CONTEXT
+)paren
+r_return
+suffix:semicolon
+macro_line|#ifdef FEW_CONTEXTS
+r_while
+c_loop
+(paren
+id|atomic_dec_if_positive
+c_func
+(paren
+op_amp
+id|nr_free_contexts
+)paren
+OL
+l_int|0
+)paren
+id|steal_context
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ctx
+op_assign
+id|next_mmu_context
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|ctx
+comma
+id|context_map
+)paren
+)paren
+(brace
+id|ctx
+op_assign
+id|find_next_zero_bit
+c_func
+(paren
+id|context_map
+comma
+id|LAST_CONTEXT
+op_plus
+l_int|1
+comma
+id|ctx
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx
+OG
+id|LAST_CONTEXT
+)paren
+id|ctx
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|next_mmu_context
+op_assign
+(paren
+id|ctx
+op_plus
+l_int|1
+)paren
+op_amp
+id|LAST_CONTEXT
+suffix:semicolon
+id|mm-&gt;context
+op_assign
+id|ctx
+suffix:semicolon
+macro_line|#ifdef FEW_CONTEXTS
+id|context_mm
+(braket
+id|ctx
+)braket
+op_assign
+id|mm
+suffix:semicolon
+macro_line|#endif
+)brace
 multiline_comment|/*&n; * Set up the context for a new address space.&n; */
 DECL|macro|init_new_context
 mdefine_line|#define init_new_context(tsk,mm)&t;(((mm)-&gt;context = NO_CONTEXT), 0)
 multiline_comment|/*&n; * We&squot;re finished using the context for an address space.&n; */
-DECL|macro|destroy_context
-mdefine_line|#define destroy_context(mm)     do { } while (0)
+DECL|function|destroy_context
+r_static
+r_inline
+r_void
+id|destroy_context
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mm-&gt;context
+op_ne
+id|NO_CONTEXT
+)paren
+(brace
+id|clear_bit
+c_func
+(paren
+id|mm-&gt;context
+comma
+id|context_map
+)paren
+suffix:semicolon
+id|mm-&gt;context
+op_assign
+id|NO_CONTEXT
+suffix:semicolon
+macro_line|#ifdef FEW_CONTEXTS
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|nr_free_contexts
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+)brace
 DECL|function|switch_mm
 r_static
 r_inline
@@ -136,8 +316,6 @@ id|set_context
 c_func
 (paren
 id|next-&gt;context
-comma
-id|next-&gt;pgd
 )paren
 suffix:semicolon
 )brace
@@ -174,14 +352,9 @@ id|set_context
 c_func
 (paren
 id|mm-&gt;context
-comma
-id|mm-&gt;pgd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * compute the vsid from the context and segment&n; * segments &gt; 7 are kernel segments and their&n; * vsid is the segment -- Cort&n; */
-DECL|macro|VSID_FROM_CONTEXT
-mdefine_line|#define&t;VSID_FROM_CONTEXT(segment,context) &bslash;&n;   ((segment &lt; 8) ? ((segment) | (context)&lt;&lt;4) : (segment))
-macro_line|#endif
+macro_line|#endif /* __PPC_MMU_CONTEXT_H */
 macro_line|#endif /* __KERNEL__ */
 eof

@@ -49,7 +49,7 @@ id|rxdmacount
 multiline_comment|/* = 0 */
 suffix:semicolon
 multiline_comment|/* Set the copy breakpoint for the copy-only-tiny-buffer Rx method.&n;   Lower values use more memory, but are faster. */
-macro_line|#if defined(__alpha__) || defined(__sparc__)
+macro_line|#if defined(__alpha__) || defined(__sparc__) || defined(__arm__)
 DECL|variable|rx_copybreak
 r_static
 r_int
@@ -200,6 +200,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -331,7 +332,7 @@ c_func
 (paren
 id|options
 comma
-l_string|&quot;epro100: Bits 0-3: tranceiver type, bit 4: full duplex, bit 5: 100Mbps&quot;
+l_string|&quot;eepro100: Bits 0-3: tranceiver type, bit 4: full duplex, bit 5: 100Mbps&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -339,7 +340,7 @@ c_func
 (paren
 id|full_duplex
 comma
-l_string|&quot;epro100 full duplex setting(s) (1)&quot;
+l_string|&quot;eepro100 full duplex setting(s) (1)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -347,7 +348,7 @@ c_func
 (paren
 id|congenb
 comma
-l_string|&quot;epro100  Enable congestion control (1)&quot;
+l_string|&quot;eepro100  Enable congestion control (1)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -355,7 +356,7 @@ c_func
 (paren
 id|txfifo
 comma
-l_string|&quot;epro100 Tx FIFO threshold in 4 byte units, (0-15)&quot;
+l_string|&quot;eepro100 Tx FIFO threshold in 4 byte units, (0-15)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -363,7 +364,7 @@ c_func
 (paren
 id|rxfifo
 comma
-l_string|&quot;epro100 Rx FIFO threshold in 4 byte units, (0-15)&quot;
+l_string|&quot;eepro100 Rx FIFO threshold in 4 byte units, (0-15)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -371,7 +372,7 @@ c_func
 (paren
 id|txdmaccount
 comma
-l_string|&quot;epro100 Tx DMA burst length; 128 - disable (0-128)&quot;
+l_string|&quot;eepro100 Tx DMA burst length; 128 - disable (0-128)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -379,7 +380,7 @@ c_func
 (paren
 id|rxdmaccount
 comma
-l_string|&quot;epro100 Rx DMA burst length; 128 - disable (0-128)&quot;
+l_string|&quot;eepro100 Rx DMA burst length; 128 - disable (0-128)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -387,7 +388,7 @@ c_func
 (paren
 id|rx_copybreak
 comma
-l_string|&quot;epro100 copy breakpoint for copy-only-tiny-frames&quot;
+l_string|&quot;eepro100 copy breakpoint for copy-only-tiny-frames&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -395,7 +396,7 @@ c_func
 (paren
 id|max_interrupt_work
 comma
-l_string|&quot;epro100 maximum events handled per interrupt&quot;
+l_string|&quot;eepro100 maximum events handled per interrupt&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -403,7 +404,7 @@ c_func
 (paren
 id|multicast_filter_limit
 comma
-l_string|&quot;epro100 maximum number of filtered multicast addresses&quot;
+l_string|&quot;eepro100 maximum number of filtered multicast addresses&quot;
 )paren
 suffix:semicolon
 DECL|macro|RUN_AT
@@ -441,10 +442,6 @@ DECL|macro|netdevice_stop
 mdefine_line|#define netdevice_stop(dev)
 DECL|macro|netif_set_tx_timeout
 mdefine_line|#define netif_set_tx_timeout(dev, tf, tm) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;do { &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;(dev)-&gt;tx_timeout = (tf); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;(dev)-&gt;watchdog_timeo = (tm); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;} while(0)
-DECL|macro|netif_device_attach
-mdefine_line|#define netif_device_attach(dev) netif_start_queue(dev)
-DECL|macro|netif_device_detach
-mdefine_line|#define netif_device_detach(dev) netif_stop_queue(dev)
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_ID1029
 DECL|macro|PCI_DEVICE_ID_INTEL_ID1029
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ID1029 0x1029
@@ -1328,12 +1325,6 @@ r_int
 id|last_rx_time
 suffix:semicolon
 multiline_comment|/* Last Rx, in jiffies, to handle Rx hang. */
-DECL|member|product_name
-r_const
-r_char
-op_star
-id|product_name
-suffix:semicolon
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -3439,9 +3430,12 @@ comma
 id|acpi_idle_state
 )paren
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+(paren
+id|pdev
+comma
 id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
@@ -9295,12 +9289,14 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 id|data
 op_assign
 (paren
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 )paren
 op_amp
@@ -9329,22 +9325,27 @@ id|cmd
 )paren
 (brace
 r_case
+id|SIOCGMIIPHY
+suffix:colon
+multiline_comment|/* Get address of MII PHY in use. */
+r_case
 id|SIOCDEVPRIVATE
 suffix:colon
-multiline_comment|/* Get the address of the PHY in use. */
-id|data
-(braket
-l_int|0
-)braket
+multiline_comment|/* for binary compat, remove in 2.5 */
+id|data-&gt;phy_id
 op_assign
 id|phy
 suffix:semicolon
+r_case
+id|SIOCGMIIREG
+suffix:colon
+multiline_comment|/* Read MII PHY register. */
 r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|1
 suffix:colon
-multiline_comment|/* Read the specified MII register. */
+multiline_comment|/* for binary compat, remove in 2.5 */
 multiline_comment|/* FIXME: these operations need to be serialized with MDIO&n;&t;&t;   access from the timeout handler.&n;&t;&t;   They are currently serialized only with MDIO access from the&n;&t;&t;   timer routine.  2000/05/09 SAW */
 id|saved_acpi
 op_assign
@@ -9365,27 +9366,18 @@ op_amp
 id|sp-&gt;timer
 )paren
 suffix:semicolon
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 id|mdio_read
 c_func
 (paren
 id|ioaddr
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 )paren
@@ -9415,11 +9407,15 @@ r_return
 l_int|0
 suffix:semicolon
 r_case
+id|SIOCSMIIREG
+suffix:colon
+multiline_comment|/* Write MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|2
 suffix:colon
-multiline_comment|/* Write the specified MII register */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
@@ -9458,20 +9454,11 @@ c_func
 (paren
 id|ioaddr
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 comma
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 )paren
 suffix:semicolon
 r_if
@@ -10625,12 +10612,28 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|netif_device_detach
 c_func
@@ -10670,7 +10673,10 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_struct
 id|speedo_private
@@ -10688,6 +10694,19 @@ r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* I&squot;m absolutely uncertain if this part of code may work.&n;&t;   The problems are:&n;&t;    - correct hardware reinitialization;&n;&t;&t;- correct driver behavior between different steps of the&n;&t;&t;  reinitialization;&n;&t;&t;- serialization with other driver calls.&n;&t;   2000/03/08  SAW */
 id|outw
@@ -10751,7 +10770,10 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_struct
 id|speedo_private

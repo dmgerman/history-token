@@ -6,6 +6,9 @@ r_struct
 id|address_info
 op_star
 id|hw_config
+comma
+r_int
+id|useisapnp
 )paren
 suffix:semicolon
 r_void

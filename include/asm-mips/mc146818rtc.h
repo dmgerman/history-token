@@ -5,8 +5,13 @@ mdefine_line|#define _ASM_MC146818RTC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef RTC_PORT
+macro_line|#if defined(CONFIG_MIPS_ITE8172) || defined(CONFIG_MIPS_IVR)
+DECL|macro|RTC_PORT
+mdefine_line|#define RTC_PORT(x)&t;(0x14014800 + (x))
+macro_line|#else
 DECL|macro|RTC_PORT
 mdefine_line|#define RTC_PORT(x)&t;(0x70 + (x))
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * The yet supported machines all access the RTC index register via&n; * an ISA port access but the way to access the date register differs ...&n; */
 DECL|macro|CMOS_READ
@@ -71,9 +76,15 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DECSTATION
 DECL|macro|RTC_IRQ
 mdefine_line|#define RTC_IRQ 0
+macro_line|#elif defined(CONFIG_MIPS_ITE8172) || defined(CONFIG_MIPS_IVR)
+macro_line|#include &lt;asm/it8172/it8172_int.h&gt;
+DECL|macro|RTC_IRQ
+mdefine_line|#define RTC_IRQ&t;IT8172_RTC_IRQ
 macro_line|#else
 DECL|macro|RTC_IRQ
 mdefine_line|#define RTC_IRQ&t;8
 macro_line|#endif
+DECL|macro|RTC_DEC_YEAR
+mdefine_line|#define RTC_DEC_YEAR&t;0x3f&t;/* Where we store the real year on DECs.  */
 macro_line|#endif /* _ASM_MC146818RTC_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_common.c,v 1.114.6.11 2001/04/20 02:41:58 keil Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_common.c,v 1.114.6.12 2001/06/09 15:14:15 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -37,7 +37,7 @@ r_char
 op_star
 id|isdn_revision
 op_assign
-l_string|&quot;$Revision: 1.114.6.11 $&quot;
+l_string|&quot;$Revision: 1.114.6.12 $&quot;
 suffix:semicolon
 r_extern
 r_char
@@ -798,73 +798,6 @@ c_func
 id|TmpMsn1
 comma
 id|TmpMsn2
-)paren
-suffix:semicolon
-)brace
-r_static
-r_void
-DECL|function|isdn_free_queue
-id|isdn_free_queue
-c_func
-(paren
-r_struct
-id|sk_buff_head
-op_star
-id|queue
-)paren
-(brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb_queue_len
-c_func
-(paren
-id|queue
-)paren
-)paren
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-id|queue
-)paren
-)paren
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -3237,7 +3170,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|isdn_free_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -9513,7 +9446,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|isdn_free_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -10469,7 +10402,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|isdn_free_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp

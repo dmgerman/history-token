@@ -8167,8 +8167,6 @@ id|set_context
 c_func
 (paren
 id|current-&gt;mm-&gt;context
-comma
-id|current-&gt;mm-&gt;pgd
 )paren
 suffix:semicolon
 multiline_comment|/* Re-enable DEC interrupts and kick DEC */
@@ -8729,8 +8727,6 @@ id|set_context
 c_func
 (paren
 id|current-&gt;mm-&gt;context
-comma
-id|current-&gt;mm-&gt;pgd
 )paren
 suffix:semicolon
 multiline_comment|/* Restore L2 cache */

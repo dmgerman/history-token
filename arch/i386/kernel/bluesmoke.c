@@ -1012,7 +1012,7 @@ suffix:semicolon
 )brace
 DECL|function|mcheck_disable
 r_static
-r_void
+r_int
 id|__init
 id|mcheck_disable
 c_func
@@ -1020,10 +1020,6 @@ c_func
 r_char
 op_star
 id|str
-comma
-r_int
-op_star
-id|unused
 )paren
 (brace
 id|mce_disabled

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.feature.c 1.10 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.feature.c 1.14 06/17/01 09:33:37 trini&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/feature.c&n; *&n; *  Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *                     Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1681,6 +1681,15 @@ id|FTR_CAN_SLEEP
 comma
 multiline_comment|/* iBook */
 (brace
+l_string|&quot;PowerBook4,1&quot;
+comma
+id|FTR_CAN_NAP
+op_or
+id|FTR_CAN_SLEEP
+)brace
+comma
+multiline_comment|/* iBook Dual USB */
+(brace
 l_string|&quot;PowerBook2,2&quot;
 comma
 id|FTR_CAN_SLEEP
@@ -1708,15 +1717,6 @@ id|FTR_CAN_SLEEP
 )brace
 comma
 multiline_comment|/* PowerBook Titanium */
-(brace
-l_string|&quot;PowerBook4,1&quot;
-comma
-id|FTR_CAN_NAP
-op_or
-id|FTR_CAN_SLEEP
-)brace
-comma
-multiline_comment|/* New polycarbonate iBook */
 (brace
 l_int|NULL
 comma

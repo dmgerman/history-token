@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isar.c,v 1.17.6.2 2001/04/08 17:51:42 kai Exp $&n; *&n; * isar.c   ISAR (Siemens PSB 7110) specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: isar.c,v 1.17.6.3 2001/06/09 15:14:17 kai Exp $&n; *&n; * isar.c   ISAR (Siemens PSB 7110) specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -9412,14 +9412,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|bcs-&gt;rqueue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp

@@ -1208,7 +1208,6 @@ id|EINVAL
 suffix:colon
 l_int|0
 suffix:semicolon
-multiline_comment|/* Enable PME# Generation */
 id|pci_read_config_word
 c_func
 (paren
@@ -1222,20 +1221,23 @@ op_amp
 id|value
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|enable
-)paren
+multiline_comment|/* Clear PME_Status by writing 1 to it and enable PME# */
 id|value
 op_or_assign
 id|PCI_PM_CTRL_PME_STATUS
+op_or
+id|PCI_PM_CTRL_PME_ENABLE
 suffix:semicolon
-r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|enable
+)paren
 id|value
 op_and_assign
 op_complement
-id|PCI_PM_CTRL_PME_STATUS
+id|PCI_PM_CTRL_PME_ENABLE
 suffix:semicolon
 id|pci_write_config_word
 c_func

@@ -1039,7 +1039,7 @@ id|type
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|cs46xx_suspend_tbl
 c_func
 (paren
@@ -1047,10 +1047,13 @@ r_struct
 id|pci_dev
 op_star
 id|pcidev
+comma
+id|u32
+id|state
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|cs46xx_resume_tbl
 c_func
 (paren
@@ -17618,6 +17621,9 @@ r_struct
 id|cs_card
 op_star
 id|card
+comma
+id|u32
+id|state
 )paren
 (brace
 r_int
@@ -19779,6 +19785,8 @@ id|cs46xx_suspend
 c_func
 (paren
 id|card
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -25885,6 +25893,8 @@ id|cs46xx_suspend
 c_func
 (paren
 id|card
+comma
+l_int|0
 )paren
 )paren
 (brace
@@ -26012,6 +26022,8 @@ id|cs46xx_suspend
 c_func
 (paren
 id|s
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return

@@ -13,8 +13,8 @@ multiline_comment|/* used to track different protocol revisions */
 multiline_comment|/* define a single TCB &amp; buffer */
 r_typedef
 r_struct
-multiline_comment|/* a single buffer */
 (brace
+multiline_comment|/* a single buffer */
 DECL|member|context
 id|U32
 id|context
@@ -37,7 +37,6 @@ suffix:semicolon
 multiline_comment|/* segment physical address */
 )brace
 id|__attribute__
-c_func
 (paren
 (paren
 id|packed
@@ -52,9 +51,9 @@ id|psingleB
 suffix:semicolon
 r_typedef
 r_struct
-multiline_comment|/* a single TCB */
 (brace
-multiline_comment|/*&n;     **  +-----------------------+&n;     **  |         1             |  one buffer in the TCB&n;     **  +-----------------------+&n;     **  |  &lt;user&squot;s Context&gt;     |  user&squot;s buffer reference&n;     **  +-----------------------+&n;     **  |         1             |  one segment buffer&n;     **  +-----------------------+                            _&n;     **  |    &lt;buffer size&gt;      |  size                       &bslash; &n;     **  +-----------------------+                              &bslash; segment descriptor&n;     **  |  &lt;physical address&gt;   |  physical address of buffer  /&n;     **  +-----------------------+                            _/&n;     */
+multiline_comment|/* a single TCB */
+multiline_comment|/*&n;&t;   **  +-----------------------+&n;&t;   **  |         1             |  one buffer in the TCB&n;&t;   **  +-----------------------+&n;&t;   **  |  &lt;user&squot;s Context&gt;     |  user&squot;s buffer reference&n;&t;   **  +-----------------------+&n;&t;   **  |         1             |  one segment buffer&n;&t;   **  +-----------------------+                            _&n;&t;   **  |    &lt;buffer size&gt;      |  size                       &bslash; &n;&t;   **  +-----------------------+                              &bslash; segment descriptor&n;&t;   **  |  &lt;physical address&gt;   |  physical address of buffer  /&n;&t;   **  +-----------------------+                            _/&n;&t; */
 DECL|member|bcount
 id|U32
 id|bcount
@@ -67,7 +66,6 @@ suffix:semicolon
 multiline_comment|/* buffer */
 )brace
 id|__attribute__
-c_func
 (paren
 (paren
 id|packed
@@ -571,5 +569,5 @@ mdefine_line|#define RCU_PROTOCOL_REV         SIOCDEVPRIVATE
 DECL|macro|RCU_COMMAND
 mdefine_line|#define RCU_COMMAND              SIOCDEVPRIVATE+1
 multiline_comment|/*&n;   Intended use for the above defines is shown below (GETINFO, as this example):&n;&n;      RCuser_struct RCuser;           // declare RCuser structure&n;      struct ifreq ifr;               // declare an interface request structure&n;&n;      RCuser.cmd = RCUC_GETINFO;           // set user command to GETINFO&n;      ifr-&gt;ifr_data = (caddr_t) &amp;RCuser;   // set point to user structure&n;&n;      sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);   // get a socket&n;      ioctl(sock, RCU_COMMAND, &amp;ifr);                  // do ioctl on socket&n;&n;      RCUD_GETINFO = &amp;RCuser.RCUS_GETINFO;   // set data pointer for GETINFO&n;&n;      // print results&n;      printf(&quot;memory 0x%lx-0x%lx, base address 0x%x, irq 0x%x&bslash;n&quot;,&n;              RCUD_GETINFO-&gt;mem_start, RCUD_GETINFO-&gt;mem_end,&n;              RCUD_GETINFO-&gt;base_addr, RCUD_GETINFO-&gt;irq);&n;*/
-macro_line|#endif   /* RCIF_H */
+macro_line|#endif&t;&t;&t;&t;/* RCIF_H */
 eof

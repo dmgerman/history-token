@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.11 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.14 06/28/01 16:13:50 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MACHDEP_H
 DECL|macro|_PPC_MACHDEP_H
@@ -343,7 +343,7 @@ id|ppc_kbd_sysrq_xlate
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * optional PCI &quot;hooks&quot;&n;&t; */
-multiline_comment|/* Called after scanning the bus, before allocating&n;&t; &t; * resources&n;&t; &t; */
+multiline_comment|/* Called after scanning the bus, before allocating resources */
 DECL|member|pcibios_fixup
 r_void
 (paren
@@ -354,7 +354,7 @@ id|pcibios_fixup
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Called for each PCI bus in the system&n;&t;&t; * when it&squot;s probed&n;&t;&t; */
+multiline_comment|/* Called for each PCI bus in the system when it&squot;s probed */
 DECL|member|pcibios_fixup_bus
 r_void
 (paren
@@ -367,7 +367,7 @@ id|pci_bus
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Called when pci_enable_device() is called (initial=0) or&n;&t;&t; * when a device with no assigned resource is found (initial=1).&n;&t;&t; * Returns 0 to allow assignement/enabling of the device&n;&t;&t; */
+multiline_comment|/* Called when pci_enable_device() is called (initial=0) or&n;&t; * when a device with no assigned resource is found (initial=1).&n;&t; * Returns 0 to allow assignment/enabling of the device. */
 DECL|member|pcibios_enable_device_hook
 r_int
 (paren
@@ -383,7 +383,7 @@ r_int
 id|initial
 )paren
 suffix:semicolon
-multiline_comment|/* Called at then very end of pcibios_init()&n;&t;&t; */
+multiline_comment|/* Called at then very end of pcibios_init() */
 DECL|member|pcibios_after_init
 r_void
 (paren

@@ -7134,31 +7134,15 @@ id|net_device
 id|dev_82596
 op_assign
 (brace
+id|name
+suffix:colon
 id|devicename
 comma
 multiline_comment|/* device name inserted by drivers/net/net_init.c */
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* base, irq */
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
+id|init
+suffix:colon
 id|lasi_i82596_probe
+comma
 )brace
 suffix:semicolon
 id|MODULE_PARM
@@ -7167,6 +7151,14 @@ c_func
 id|debug
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;lasi_82596 debug mask&quot;
 )paren
 suffix:semicolon
 DECL|variable|debug

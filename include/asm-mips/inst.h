@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Format of an instruction in memory.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996 by Ralf Baechle&n; */
-macro_line|#ifndef __ASM_MIPS_INST_H
-DECL|macro|__ASM_MIPS_INST_H
-mdefine_line|#define __ASM_MIPS_INST_H
+multiline_comment|/*&n; * Format of an instruction in memory.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 2000 by Ralf Baechle&n; */
+macro_line|#ifndef _ASM_INST_H
+DECL|macro|_ASM_INST_H
+mdefine_line|#define _ASM_INST_H
 multiline_comment|/*&n; * Major opcodes; before MIPS IV cop1x was called cop3.&n; */
 DECL|enum|major_op
 r_enum
@@ -92,12 +92,12 @@ comma
 id|ldr_op
 comma
 DECL|enumerator|major_1c_op
-DECL|enumerator|major_1d_op
+DECL|enumerator|jalx_op
 DECL|enumerator|major_1e_op
 DECL|enumerator|major_1f_op
 id|major_1c_op
 comma
-id|major_1d_op
+id|jalx_op
 comma
 id|major_1e_op
 comma
@@ -516,6 +516,24 @@ DECL|enumerator|copm_op
 id|copm_op
 op_assign
 l_int|0x18
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * rt field of cop.bc_op opcodes&n; */
+DECL|enum|bcop_op
+r_enum
+id|bcop_op
+(brace
+DECL|enumerator|bcf_op
+DECL|enumerator|bct_op
+DECL|enumerator|bcfl_op
+DECL|enumerator|bctl_op
+id|bcf_op
+comma
+id|bct_op
+comma
+id|bcfl_op
+comma
+id|bctl_op
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * func field of cop0 coi opcodes.&n; */
@@ -1617,5 +1635,85 @@ id|ma_format
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* __ASM_MIPS_INST_H */
+multiline_comment|/* HACHACHAHCAHC ...  */
+multiline_comment|/* In case some other massaging is needed, keep MIPSInst as wrapper */
+DECL|macro|MIPSInst
+mdefine_line|#define MIPSInst(x) x
+DECL|macro|I_OPCODE_SFT
+mdefine_line|#define I_OPCODE_SFT&t;26
+DECL|macro|MIPSInst_OPCODE
+mdefine_line|#define MIPSInst_OPCODE(x) (MIPSInst(x) &gt;&gt; I_OPCODE_SFT)
+DECL|macro|I_JTARGET_SFT
+mdefine_line|#define I_JTARGET_SFT&t;0
+DECL|macro|MIPSInst_JTARGET
+mdefine_line|#define MIPSInst_JTARGET(x) (MIPSInst(x) &amp; 0x03ffffff)
+DECL|macro|I_RS_SFT
+mdefine_line|#define I_RS_SFT&t;21
+DECL|macro|MIPSInst_RS
+mdefine_line|#define MIPSInst_RS(x) ((MIPSInst(x) &amp; 0x03e00000) &gt;&gt; I_RS_SFT)
+DECL|macro|I_RT_SFT
+mdefine_line|#define I_RT_SFT&t;16
+DECL|macro|MIPSInst_RT
+mdefine_line|#define MIPSInst_RT(x) ((MIPSInst(x) &amp; 0x001f0000) &gt;&gt; I_RT_SFT)
+DECL|macro|I_IMM_SFT
+mdefine_line|#define I_IMM_SFT&t;0
+DECL|macro|MIPSInst_SIMM
+mdefine_line|#define MIPSInst_SIMM(x) ((int)((short)(MIPSInst(x) &amp; 0xffff)))
+DECL|macro|MIPSInst_UIMM
+mdefine_line|#define MIPSInst_UIMM(x) (MIPSInst(x) &amp; 0xffff)
+DECL|macro|I_CACHEOP_SFT
+mdefine_line|#define I_CACHEOP_SFT&t;18
+DECL|macro|MIPSInst_CACHEOP
+mdefine_line|#define MIPSInst_CACHEOP(x) ((MIPSInst(x) &amp; 0x001c0000) &gt;&gt; I_CACHEOP_SFT)
+DECL|macro|I_CACHESEL_SFT
+mdefine_line|#define I_CACHESEL_SFT&t;16
+DECL|macro|MIPSInst_CACHESEL
+mdefine_line|#define MIPSInst_CACHESEL(x) ((MIPSInst(x) &amp; 0x00030000) &gt;&gt; I_CACHESEL_SFT)
+DECL|macro|I_RD_SFT
+mdefine_line|#define I_RD_SFT&t;11
+DECL|macro|MIPSInst_RD
+mdefine_line|#define MIPSInst_RD(x) ((MIPSInst(x) &amp; 0x0000f800) &gt;&gt; I_RD_SFT)
+DECL|macro|I_RE_SFT
+mdefine_line|#define I_RE_SFT&t;6
+DECL|macro|MIPSInst_RE
+mdefine_line|#define MIPSInst_RE(x) ((MIPSInst(x) &amp; 0x000007c0) &gt;&gt; I_RE_SFT)
+DECL|macro|I_FUNC_SFT
+mdefine_line|#define I_FUNC_SFT&t;0
+DECL|macro|MIPSInst_FUNC
+mdefine_line|#define MIPSInst_FUNC(x) (MIPSInst(x) &amp; 0x0000003f)
+DECL|macro|I_FFMT_SFT
+mdefine_line|#define I_FFMT_SFT&t;21
+DECL|macro|MIPSInst_FFMT
+mdefine_line|#define MIPSInst_FFMT(x) ((MIPSInst(x) &amp; 0x01e00000) &gt;&gt; I_FFMT_SFT)
+DECL|macro|I_FT_SFT
+mdefine_line|#define I_FT_SFT&t;16
+DECL|macro|MIPSInst_FT
+mdefine_line|#define MIPSInst_FT(x) ((MIPSInst(x) &amp; 0x001f0000) &gt;&gt; I_FT_SFT)
+DECL|macro|I_FS_SFT
+mdefine_line|#define I_FS_SFT&t;11
+DECL|macro|MIPSInst_FS
+mdefine_line|#define MIPSInst_FS(x) ((MIPSInst(x) &amp; 0x0000f800) &gt;&gt; I_FS_SFT)
+DECL|macro|I_FD_SFT
+mdefine_line|#define I_FD_SFT&t;6
+DECL|macro|MIPSInst_FD
+mdefine_line|#define MIPSInst_FD(x) ((MIPSInst(x) &amp; 0x000007c0) &gt;&gt; I_FD_SFT)
+DECL|macro|I_FR_SFT
+mdefine_line|#define I_FR_SFT&t;21
+DECL|macro|MIPSInst_FR
+mdefine_line|#define MIPSInst_FR(x) ((MIPSInst(x) &amp; 0x03e00000) &gt;&gt; I_FR_SFT)
+DECL|macro|I_FMA_FUNC_SFT
+mdefine_line|#define I_FMA_FUNC_SFT&t;2
+DECL|macro|MIPSInst_FMA_FUNC
+mdefine_line|#define MIPSInst_FMA_FUNC(x) ((MIPSInst(x) &amp; 0x0000003c) &gt;&gt; I_FMA_FUNC_SFT)
+DECL|macro|I_FMA_FFMT_SFT
+mdefine_line|#define I_FMA_FFMT_SFT&t;0
+DECL|macro|MIPSInst_FMA_FFMT
+mdefine_line|#define MIPSInst_FMA_FFMT(x) (MIPSInst(x) &amp; 0x00000003)
+DECL|typedef|mips_instruction
+r_typedef
+r_int
+r_int
+id|mips_instruction
+suffix:semicolon
+macro_line|#endif /* _ASM_INST_H */
 eof

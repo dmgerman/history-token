@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jade.c,v 1.6.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * jade.c   JADE stuff (derived from original hscx.c)&n; *&n; * Author   Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: jade.c,v 1.6.6.2 2001/06/09 15:14:18 kai Exp $&n; *&n; * jade.c   JADE stuff (derived from original hscx.c)&n; *&n; * Author   Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -1151,14 +1151,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|bcs-&gt;rqueue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hisax.h,v 2.52.6.5 2001/05/26 15:19:57 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: hisax.h,v 2.52.6.6 2001/06/09 15:14:17 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -4718,16 +4718,6 @@ id|iestart
 comma
 r_int
 id|ieoffset
-)paren
-suffix:semicolon
-r_int
-id|discard_queue
-c_func
-(paren
-r_struct
-id|sk_buff_head
-op_star
-id|q
 )paren
 suffix:semicolon
 macro_line|#ifdef ISDN_CHIP_ISAC

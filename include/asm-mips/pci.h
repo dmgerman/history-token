@@ -1,11 +1,12 @@
-multiline_comment|/* $Id: pci.h,v 1.10 2000/03/23 02:26:00 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 macro_line|#ifndef _ASM_PCI_H
 DECL|macro|_ASM_PCI_H
 mdefine_line|#define _ASM_PCI_H
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
+singleline_comment|//#define pcibios_assign_all_busses()&t;0
 DECL|macro|pcibios_assign_all_busses
-mdefine_line|#define pcibios_assign_all_busses()&t;0
+mdefine_line|#define pcibios_assign_all_busses()&t;1
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
@@ -437,9 +438,41 @@ id|sg-&gt;length
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* Return the index of the PCI controller for device PDEV. */
+multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
+DECL|function|pci_dma_supported
+r_extern
+r_inline
+r_int
+id|pci_dma_supported
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|mask
+)paren
+(brace
+multiline_comment|/*&n;&t; * we fall back to GFP_DMA when the mask isn&squot;t all 1s,&n;&t; * so we can&squot;t guarantee allocations that must be&n;&t; * within a tighter range than GFP_DMA..&n;&t; */
+r_if
+c_cond
+(paren
+id|mask
+OL
+l_int|0x00ffffff
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Return the index of the PCI controller for device. */
 DECL|macro|pci_controller_num
-mdefine_line|#define pci_controller_num(PDEV)&t;(0)
+mdefine_line|#define pci_controller_num(pdev)&t;(0)
 multiline_comment|/*&n; * These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns, or alternatively stop on the first sg_dma_len(sg) which&n; * is 0.&n; */
 DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)&t;(virt_to_bus((sg)-&gt;address))

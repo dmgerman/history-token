@@ -5286,10 +5286,18 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* memory pressure can sometimes initiate write_inode calls with sync == 1,&n;    ** these cases are just when the system needs ram, not when the &n;    ** inode needs to reach disk for safety, and they can safely be&n;    ** ignored because the altered inode has already been logged.&n;    */
 r_if
 c_cond
 (paren
 id|do_sync
+op_logical_and
+op_logical_neg
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_MEMALLOC
+)paren
 )paren
 (brace
 id|lock_kernel

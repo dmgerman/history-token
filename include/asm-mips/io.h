@@ -1,11 +1,30 @@
-multiline_comment|/* $Id: io.h,v 1.13 2000/02/24 00:13:19 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995 Waldorf GmbH&n; * Copyright (C) 1994 - 2000 Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995 Waldorf GmbH&n; * Copyright (C) 1994 - 2000 Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 FSMLabs, Inc.&n; */
 macro_line|#ifndef _ASM_IO_H
 DECL|macro|_ASM_IO_H
 mdefine_line|#define _ASM_IO_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * Slowdown I/O port space accesses for antique hardware.&n; */
 DECL|macro|CONF_SLOWDOWN_IO
 macro_line|#undef CONF_SLOWDOWN_IO
-macro_line|#include &lt;asm/addrspace.h&gt;
+multiline_comment|/*&n; * Sane hardware offers swapping of I/O space accesses in hardware; less&n; * sane hardware forces software to fiddle with this ...&n; */
+macro_line|#if defined(CONFIG_SWAP_IO_SPACE) &amp;&amp; defined(__MIPSEB__)
+DECL|macro|__ioswab8
+mdefine_line|#define __ioswab8(x) (x)
+DECL|macro|__ioswab16
+mdefine_line|#define __ioswab16(x) swab16(x)
+DECL|macro|__ioswab32
+mdefine_line|#define __ioswab32(x) swab32(x)
+macro_line|#else
+DECL|macro|__ioswab8
+mdefine_line|#define __ioswab8(x) (x)
+DECL|macro|__ioswab16
+mdefine_line|#define __ioswab16(x) (x)
+DECL|macro|__ioswab32
+mdefine_line|#define __ioswab32(x) (x)
+macro_line|#endif
 multiline_comment|/*&n; * This file contains the definitions for the MIPS counterpart of the&n; * x86 in/out instructions. This heap of macros and C results in much&n; * better code than the approach of doing it in plain C.  The macros&n; * result in code that is to fast for certain hardware.  On the other&n; * side the performance of the string functions should be improved for&n; * sake of certain devices like EIDE disks that do highspeed polled I/O.&n; *&n; *   Ralf&n; *&n; * This file contains the definitions for the x86 IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated&n; * to (a) handle it all in a way that makes gcc able to optimize it&n; * as well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; */
 multiline_comment|/*&n; * On MIPS I/O ports are memory mapped, so we access them using normal&n; * load/store instructions. mips_io_port_base is the virtual address to&n; * which all ports are being mapped.  For sake of efficiency some code&n; * assumes that this is an address that can be loaded with a single lui&n; * instruction, so the lower 16 bits must be zero.  Should be true on&n; * on any sane architecture; generic code does not use this assumption.&n; */
 r_extern
@@ -76,31 +95,6 @@ id|address
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-op_star
-id|ioremap
-c_func
-(paren
-r_int
-r_int
-id|phys_addr
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|iounmap
-c_func
-(paren
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * IO bus memory addresses are also 1:1 with the physical address&n; */
 DECL|function|virt_to_bus
 r_extern
@@ -155,7 +149,25 @@ r_int
 r_int
 id|isa_slot_offset
 suffix:semicolon
-multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; *&n; * On MIPS, we have the whole physical address space mapped at all&n; * times, so &quot;ioremap()&quot; and &quot;iounmap()&quot; do not need to do anything.&n; * (This isn&squot;t true for all machines but we still handle these cases&n; * with wired TLB entries anyway ...)&n; *&n; * We cheat a bit and always return uncachable areas until we&squot;ve fixed&n; * the drivers to handle caching properly.&n; */
+r_extern
+r_void
+op_star
+id|__ioremap
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
 DECL|function|ioremap
 r_extern
 r_inline
@@ -174,24 +186,24 @@ id|size
 )paren
 (brace
 r_return
-(paren
-r_void
-op_star
-)paren
-id|KSEG1ADDR
+id|__ioremap
 c_func
 (paren
 id|offset
+comma
+id|size
+comma
+id|_CACHE_UNCACHED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This one maps high address device memory and turns off caching for that area.&n; * it&squot;s useful if some control registers are in such an area and write combining&n; * or read caching is not desirable:&n; */
 DECL|function|ioremap_nocache
 r_extern
 r_inline
 r_void
 op_star
 id|ioremap_nocache
+c_func
 (paren
 r_int
 r_int
@@ -203,20 +215,18 @@ id|size
 )paren
 (brace
 r_return
-(paren
-r_void
-op_star
-)paren
-id|KSEG1ADDR
+id|__ioremap
 c_func
 (paren
 id|offset
+comma
+id|size
+comma
+id|_CACHE_UNCACHED
 )paren
 suffix:semicolon
 )brace
-DECL|function|iounmap
 r_extern
-r_inline
 r_void
 id|iounmap
 c_func
@@ -225,15 +235,14 @@ r_void
 op_star
 id|addr
 )paren
-(brace
-)brace
+suffix:semicolon
 multiline_comment|/*&n; * XXX We need system specific versions of these to handle EISA address bits&n; * 24-31 on SNI.&n; * XXX more SNI hacks.&n; */
 DECL|macro|readb
 mdefine_line|#define readb(addr) (*(volatile unsigned char *)(addr))
 DECL|macro|readw
-mdefine_line|#define readw(addr) (*(volatile unsigned short *)(addr))
+mdefine_line|#define readw(addr) __ioswab16((*(volatile unsigned short *)(addr)))
 DECL|macro|readl
-mdefine_line|#define readl(addr) (*(volatile unsigned int *)(addr))
+mdefine_line|#define readl(addr) __ioswab32((*(volatile unsigned int *)(addr)))
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb readb
 DECL|macro|__raw_readw
@@ -243,9 +252,9 @@ mdefine_line|#define __raw_readl readl
 DECL|macro|writeb
 mdefine_line|#define writeb(b,addr) (*(volatile unsigned char *)(addr)) = (b)
 DECL|macro|writew
-mdefine_line|#define writew(b,addr) (*(volatile unsigned short *)(addr)) = (b)
+mdefine_line|#define writew(b,addr) (*(volatile unsigned short *)(addr)) = (__ioswab16(b))
 DECL|macro|writel
-mdefine_line|#define writel(b,addr) (*(volatile unsigned int *)(addr)) = (b)
+mdefine_line|#define writel(b,addr) (*(volatile unsigned int *)(addr)) = (__ioswab32(b))
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb writeb
 DECL|macro|__raw_writew
@@ -362,20 +371,20 @@ mdefine_line|#define __OUT1(s) &bslash;&n;extern inline void __out##s(unsigned i
 DECL|macro|__OUT2
 mdefine_line|#define __OUT2(m) &bslash;&n;__asm__ __volatile__ (&quot;s&quot; #m &quot;&bslash;t%0,%1(%2)&quot;
 DECL|macro|__OUT
-mdefine_line|#define __OUT(m,s) &bslash;&n;__OUT1(s) __OUT2(m) : : &quot;r&quot; (value), &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); } &bslash;&n;__OUT1(s##c) __OUT2(m) : : &quot;r&quot; (value), &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); } &bslash;&n;__OUT1(s##_p) __OUT2(m) : : &quot;r&quot; (value), &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); &bslash;&n;&t;SLOW_DOWN_IO; } &bslash;&n;__OUT1(s##c_p) __OUT2(m) : : &quot;r&quot; (value), &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); &bslash;&n;&t;SLOW_DOWN_IO; }
+mdefine_line|#define __OUT(m,s,w) &bslash;&n;__OUT1(s) __OUT2(m) : : &quot;r&quot; (__ioswab##w(value)), &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); } &bslash;&n;__OUT1(s##c) __OUT2(m) : : &quot;r&quot; (__ioswab##w(value)), &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); } &bslash;&n;__OUT1(s##_p) __OUT2(m) : : &quot;r&quot; (__ioswab##w(value)), &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); &bslash;&n;&t;SLOW_DOWN_IO; } &bslash;&n;__OUT1(s##c_p) __OUT2(m) : : &quot;r&quot; (__ioswab##w(value)), &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); &bslash;&n;&t;SLOW_DOWN_IO; }
 DECL|macro|__IN1
 mdefine_line|#define __IN1(t,s) &bslash;&n;extern __inline__ t __in##s(unsigned int port) { t _v;
 multiline_comment|/*&n; * Required nops will be inserted by the assembler&n; */
 DECL|macro|__IN2
 mdefine_line|#define __IN2(m) &bslash;&n;__asm__ __volatile__ (&quot;l&quot; #m &quot;&bslash;t%0,%1(%2)&quot;
 DECL|macro|__IN
-mdefine_line|#define __IN(t,m,s) &bslash;&n;__IN1(t,s) __IN2(m) : &quot;=r&quot; (_v) : &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); return _v; } &bslash;&n;__IN1(t,s##c) __IN2(m) : &quot;=r&quot; (_v) : &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); return _v; } &bslash;&n;__IN1(t,s##_p) __IN2(m) : &quot;=r&quot; (_v) : &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); SLOW_DOWN_IO; return _v; } &bslash;&n;__IN1(t,s##c_p) __IN2(m) : &quot;=r&quot; (_v) : &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); SLOW_DOWN_IO; return _v; }
+mdefine_line|#define __IN(t,m,s,w) &bslash;&n;__IN1(t,s) __IN2(m) : &quot;=r&quot; (_v) : &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); return __ioswab##w(_v); } &bslash;&n;__IN1(t,s##c) __IN2(m) : &quot;=r&quot; (_v) : &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); return __ioswab##w(_v); } &bslash;&n;__IN1(t,s##_p) __IN2(m) : &quot;=r&quot; (_v) : &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); SLOW_DOWN_IO; return __ioswab##w(_v); } &bslash;&n;__IN1(t,s##c_p) __IN2(m) : &quot;=r&quot; (_v) : &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); SLOW_DOWN_IO; return __ioswab##w(_v); }
 DECL|macro|__INS1
 mdefine_line|#define __INS1(s) &bslash;&n;extern inline void __ins##s(unsigned int port, void * addr, unsigned long count) {
 DECL|macro|__INS2
 mdefine_line|#define __INS2(m) &bslash;&n;if (count) &bslash;&n;__asm__ __volatile__ ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;tnoat&bslash;n&quot; &bslash;&n;&t;&quot;1:&bslash;tl&quot; #m &quot;&bslash;t$1,%4(%5)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;subu&bslash;t%1,1&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;s&quot; #m &quot;&bslash;t$1,(%0)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;bne&bslash;t$0,%1,1b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;addiu&bslash;t%0,%6&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;tat&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot;
 DECL|macro|__INS
-mdefine_line|#define __INS(m,s,i) &bslash;&n;__INS1(s) __INS2(m) &bslash;&n;&t;: &quot;=r&quot; (addr), &quot;=r&quot; (count) &bslash;&n;&t;: &quot;0&quot; (addr), &quot;1&quot; (count), &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port), &quot;I&quot; (i) &bslash;&n;&t;: &quot;$1&quot;);} &bslash;&n;__INS1(s##c) __INS2(m) &bslash;&n;&t;: &quot;=r&quot; (addr), &quot;=r&quot; (count) &bslash;&n;&t;: &quot;0&quot; (addr), &quot;1&quot; (count), &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base), &quot;I&quot; (i) &bslash;&n;&t;: &quot;$1&quot;);}
+mdefine_line|#define __INS(m,s,i) &bslash;&n;__INS1(s) __INS2(m) &bslash;&n;&t;: &quot;=r&quot; (addr), &quot;=r&quot; (count) &bslash;&n;&t;: &quot;0&quot; (addr), &quot;1&quot; (count), &quot;i&quot; (0), &bslash;&n;&t;  &quot;r&quot; (mips_io_port_base+port), &quot;I&quot; (i) &bslash;&n;&t;: &quot;$1&quot;);} &bslash;&n;__INS1(s##c) __INS2(m) &bslash;&n;&t;: &quot;=r&quot; (addr), &quot;=r&quot; (count) &bslash;&n;&t;: &quot;0&quot; (addr), &quot;1&quot; (count), &quot;ir&quot; (port), &bslash;&n;&t;  &quot;r&quot; (mips_io_port_base), &quot;I&quot; (i) &bslash;&n;&t;: &quot;$1&quot;);}
 DECL|macro|__OUTS1
 mdefine_line|#define __OUTS1(s) &bslash;&n;extern inline void __outs##s(unsigned int port, const void * addr, unsigned long count) {
 DECL|macro|__OUTS2
@@ -391,6 +400,8 @@ comma
 id|b
 comma
 id|b
+comma
+l_int|8
 )paren
 id|__IN
 c_func
@@ -401,6 +412,8 @@ comma
 id|h
 comma
 id|w
+comma
+l_int|16
 )paren
 id|__IN
 c_func
@@ -411,6 +424,8 @@ comma
 id|w
 comma
 id|l
+comma
+l_int|32
 )paren
 id|__OUT
 c_func
@@ -418,6 +433,8 @@ c_func
 id|b
 comma
 id|b
+comma
+l_int|8
 )paren
 id|__OUT
 c_func
@@ -425,6 +442,8 @@ c_func
 id|h
 comma
 id|w
+comma
+l_int|16
 )paren
 id|__OUT
 c_func
@@ -432,6 +451,8 @@ c_func
 id|w
 comma
 id|l
+comma
+l_int|32
 )paren
 id|__INS
 c_func

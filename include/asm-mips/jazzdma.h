@@ -1,22 +1,17 @@
-multiline_comment|/*&n; * Helpfile for jazzdma.c -- Mips Jazz R4030 DMA controller support&n; *&n; * $Id:$&n; */
-macro_line|#ifndef __ASM_MIPS_JAZZDMA_H
-DECL|macro|__ASM_MIPS_JAZZDMA_H
-mdefine_line|#define __ASM_MIPS_JAZZDMA_H
+multiline_comment|/*&n; * Helpfile for jazzdma.c -- Mips Jazz R4030 DMA controller support&n; */
+macro_line|#ifndef _ASM_JAZZDMA_H
+DECL|macro|_ASM_JAZZDMA_H
+mdefine_line|#define _ASM_JAZZDMA_H
 multiline_comment|/*&n; * Prototypes and macros&n; */
-r_int
-r_int
+r_extern
+r_void
 id|vdma_init
 c_func
 (paren
-r_int
-r_int
-id|memory_start
-comma
-r_int
-r_int
-id|memory_end
+r_void
 )paren
 suffix:semicolon
+r_extern
 r_int
 r_int
 id|vdma_alloc
@@ -31,6 +26,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|vdma_free
 c_func
@@ -40,6 +36,7 @@ r_int
 id|laddr
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|vdma_remap
 c_func
@@ -57,6 +54,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
+r_extern
 r_int
 r_int
 id|vdma_phys2log
@@ -67,6 +65,7 @@ r_int
 id|paddr
 )paren
 suffix:semicolon
+r_extern
 r_int
 r_int
 id|vdma_log2phys
@@ -77,6 +76,7 @@ r_int
 id|laddr
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|vdma_stats
 c_func
@@ -85,6 +85,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* for debugging only */
+r_extern
 r_void
 id|vdma_enable
 c_func
@@ -93,6 +94,7 @@ r_int
 id|channel
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|vdma_disable
 c_func
@@ -101,6 +103,7 @@ r_int
 id|channel
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|vdma_set_mode
 c_func
@@ -112,6 +115,7 @@ r_int
 id|mode
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|vdma_set_addr
 c_func
@@ -123,6 +127,7 @@ r_int
 id|addr
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|vdma_set_count
 c_func
@@ -134,6 +139,7 @@ r_int
 id|count
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|vdma_get_residue
 c_func
@@ -142,6 +148,7 @@ r_int
 id|channel
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|vdma_get_enable
 c_func
@@ -243,5 +250,5 @@ DECL|macro|R4030_MODE_BURST
 mdefine_line|#define R4030_MODE_BURST         (1&lt;&lt;6)&t;/* Rev. 2 only */
 DECL|macro|R4030_MODE_FAST_ACK
 mdefine_line|#define R4030_MODE_FAST_ACK      (1&lt;&lt;7)&t;/* Rev. 2 only */
-macro_line|#endif /* __ASM_MIPS_JAZZDMA_H */
+macro_line|#endif /* _ASM_JAZZDMA_H */
 eof

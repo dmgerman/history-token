@@ -1759,6 +1759,8 @@ c_func
 (paren
 id|nd.dentry
 )paren
+comma
+l_int|NULL
 )paren
 )paren
 id|err

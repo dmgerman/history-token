@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: amd7930.c,v 1.5.6.1 2001/02/16 16:43:25 kai Exp $&n; *&n; * HiSax ISDN driver - chip specific routines for AMD 7930&n; *&n; * Author       Brent Baccala (baccala@FreeSoft.org)&n; *&n; *    - Existing ISDN HiSax driver provides all the smarts&n; *    - it compiles, runs, talks to an isolated phone switch, connects&n; *      to a Cisco, pings go through&n; *    - AMD 7930 support only (no DBRI yet)&n; *    - no US NI-1 support (may not work on US phone system - untested)&n; *    - periodic packet loss, apparently due to lost interrupts&n; *    - ISDN sometimes freezes, requiring reboot before it will work again&n; *&n; * The code is unreliable enough to be consider alpha&n; *&n; * This file is (c) under GNU General Public License&n; *&n; * Advanced Micro Devices&squot; Am79C30A is an ISDN/audio chip used in the&n; * SparcStation 1+.  The chip provides microphone and speaker interfaces&n; * which provide mono-channel audio at 8K samples per second via either&n; * 8-bit A-law or 8-bit mu-law encoding.  Also, the chip features an&n; * ISDN BRI Line Interface Unit (LIU), I.430 S/T physical interface,&n; * which performs basic D channel LAPD processing and provides raw&n; * B channel data.  The digital audio channel, the two ISDN B channels,&n; * and two 64 Kbps channels to the microprocessor are all interconnected&n; * via a multiplexer.&n; *&n; * This driver interfaces to the Linux HiSax ISDN driver, which performs&n; * all high-level Q.921 and Q.931 ISDN functions.  The file is not&n; * itself a hardware driver; rather it uses functions exported by&n; * the AMD7930 driver in the sparcaudio subsystem (drivers/sbus/audio),&n; * allowing the chip to be simultaneously used for both audio and ISDN data.&n; * The hardware driver does _no_ buffering, but provides several callbacks&n; * which are called during interrupt service and should therefore run quickly.&n; *&n; * D channel transmission is performed by passing the hardware driver the&n; * address and size of an skb&squot;s data area, then waiting for a callback&n; * to signal successful transmission of the packet.  A task is then&n; * queued to notify the HiSax driver that another packet may be transmitted.&n; *&n; * D channel reception is quite simple, mainly because of:&n; *   1) the slow speed of the D channel - 16 kbps, and&n; *   2) the presence of an 8- or 32-byte (depending on chip version) FIFO&n; *      to buffer the D channel data on the chip&n; * Worst case scenario of back-to-back packets with the 8 byte buffer&n; * at 16 kbps yields an service time of 4 ms - long enough to preclude&n; * the need for fancy buffering.  We queue a background task that copies&n; * data out of the receive buffer into an skb, and the hardware driver&n; * simply does nothing until we&squot;re done with the receive buffer and&n; * reset it for a new packet.&n; *&n; * B channel processing is more complex, because of:&n; *   1) the faster speed - 64 kbps,&n; *   2) the lack of any on-chip buffering (it interrupts for every byte), and&n; *   3) the lack of any chip support for HDLC encapsulation&n; *&n; * The HiSax driver can put each B channel into one of three modes -&n; * L1_MODE_NULL (channel disabled), L1_MODE_TRANS (transparent data relay),&n; * and L1_MODE_HDLC (HDLC encapsulation by low-level driver).&n; * L1_MODE_HDLC is the most common, used for almost all &quot;pure&quot; digital&n; * data sessions.  L1_MODE_TRANS is used for ISDN audio.&n; *&n; * HDLC B channel transmission is performed via a large buffer into&n; * which the skb is copied while performing HDLC bit-stuffing.  A CRC&n; * is computed and attached to the end of the buffer, which is then&n; * passed to the low-level routines for raw transmission.  Once&n; * transmission is complete, the hardware driver is set to enter HDLC&n; * idle by successive transmission of mark (all 1) bytes, waiting for&n; * the ISDN driver to prepare another packet for transmission and&n; * deliver it.&n; *&n; * HDLC B channel reception is performed via an X-byte ring buffer&n; * divided into N sections of X/N bytes each.  Defaults: X=256 bytes, N=4.&n; * As the hardware driver notifies us that each section is full, we&n; * hand it the next section and schedule a background task to peruse&n; * the received section, bit-by-bit, with an HDLC decoder.  As&n; * packets are detected, they are copied into a large buffer while&n; * decoding HDLC bit-stuffing.  The ending CRC is verified, and if&n; * it is correct, we alloc a new skb of the correct length (which we&n; * now know), copy the packet into it, and hand it to the upper layers.&n; * Optimization: for large packets, we hand the buffer (which also&n; * happens to be an skb) directly to the upper layer after an skb_trim,&n; * and alloc a new large buffer for future packets, thus avoiding a copy.&n; * Then we return to HDLC processing; state is saved between calls.&n; * &n; */
+multiline_comment|/* $Id: amd7930.c,v 1.5.6.3 2001/06/11 22:08:37 kai Exp $&n; *&n; * HiSax ISDN driver - chip specific routines for AMD 7930&n; *&n; * Author       Brent Baccala (baccala@FreeSoft.org)&n; *&n; *    - Existing ISDN HiSax driver provides all the smarts&n; *    - it compiles, runs, talks to an isolated phone switch, connects&n; *      to a Cisco, pings go through&n; *    - AMD 7930 support only (no DBRI yet)&n; *    - no US NI-1 support (may not work on US phone system - untested)&n; *    - periodic packet loss, apparently due to lost interrupts&n; *    - ISDN sometimes freezes, requiring reboot before it will work again&n; *&n; * The code is unreliable enough to be consider alpha&n; *&n; * This file is (c) under GNU General Public License&n; *&n; * Advanced Micro Devices&squot; Am79C30A is an ISDN/audio chip used in the&n; * SparcStation 1+.  The chip provides microphone and speaker interfaces&n; * which provide mono-channel audio at 8K samples per second via either&n; * 8-bit A-law or 8-bit mu-law encoding.  Also, the chip features an&n; * ISDN BRI Line Interface Unit (LIU), I.430 S/T physical interface,&n; * which performs basic D channel LAPD processing and provides raw&n; * B channel data.  The digital audio channel, the two ISDN B channels,&n; * and two 64 Kbps channels to the microprocessor are all interconnected&n; * via a multiplexer.&n; *&n; * This driver interfaces to the Linux HiSax ISDN driver, which performs&n; * all high-level Q.921 and Q.931 ISDN functions.  The file is not&n; * itself a hardware driver; rather it uses functions exported by&n; * the AMD7930 driver in the sparcaudio subsystem (drivers/sbus/audio),&n; * allowing the chip to be simultaneously used for both audio and ISDN data.&n; * The hardware driver does _no_ buffering, but provides several callbacks&n; * which are called during interrupt service and should therefore run quickly.&n; *&n; * D channel transmission is performed by passing the hardware driver the&n; * address and size of an skb&squot;s data area, then waiting for a callback&n; * to signal successful transmission of the packet.  A task is then&n; * queued to notify the HiSax driver that another packet may be transmitted.&n; *&n; * D channel reception is quite simple, mainly because of:&n; *   1) the slow speed of the D channel - 16 kbps, and&n; *   2) the presence of an 8- or 32-byte (depending on chip version) FIFO&n; *      to buffer the D channel data on the chip&n; * Worst case scenario of back-to-back packets with the 8 byte buffer&n; * at 16 kbps yields an service time of 4 ms - long enough to preclude&n; * the need for fancy buffering.  We queue a background task that copies&n; * data out of the receive buffer into an skb, and the hardware driver&n; * simply does nothing until we&squot;re done with the receive buffer and&n; * reset it for a new packet.&n; *&n; * B channel processing is more complex, because of:&n; *   1) the faster speed - 64 kbps,&n; *   2) the lack of any on-chip buffering (it interrupts for every byte), and&n; *   3) the lack of any chip support for HDLC encapsulation&n; *&n; * The HiSax driver can put each B channel into one of three modes -&n; * L1_MODE_NULL (channel disabled), L1_MODE_TRANS (transparent data relay),&n; * and L1_MODE_HDLC (HDLC encapsulation by low-level driver).&n; * L1_MODE_HDLC is the most common, used for almost all &quot;pure&quot; digital&n; * data sessions.  L1_MODE_TRANS is used for ISDN audio.&n; *&n; * HDLC B channel transmission is performed via a large buffer into&n; * which the skb is copied while performing HDLC bit-stuffing.  A CRC&n; * is computed and attached to the end of the buffer, which is then&n; * passed to the low-level routines for raw transmission.  Once&n; * transmission is complete, the hardware driver is set to enter HDLC&n; * idle by successive transmission of mark (all 1) bytes, waiting for&n; * the ISDN driver to prepare another packet for transmission and&n; * deliver it.&n; *&n; * HDLC B channel reception is performed via an X-byte ring buffer&n; * divided into N sections of X/N bytes each.  Defaults: X=256 bytes, N=4.&n; * As the hardware driver notifies us that each section is full, we&n; * hand it the next section and schedule a background task to peruse&n; * the received section, bit-by-bit, with an HDLC decoder.  As&n; * packets are detected, they are copied into a large buffer while&n; * decoding HDLC bit-stuffing.  The ending CRC is verified, and if&n; * it is correct, we alloc a new skb of the correct length (which we&n; * now know), copy the packet into it, and hand it to the upper layers.&n; * Optimization: for large packets, we hand the buffer (which also&n; * happens to be an skb) directly to the upper layer after an skb_trim,&n; * and alloc a new large buffer for future packets, thus avoiding a copy.&n; * Then we return to HDLC processing; state is saved between calls.&n; * &n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|amd7930_revision
 op_assign
-l_string|&quot;$Revision: 1.5.6.1 $&quot;
+l_string|&quot;$Revision: 1.5.6.3 $&quot;
 suffix:semicolon
 DECL|macro|RCV_BUFSIZE
 mdefine_line|#define RCV_BUFSIZE&t;1024&t;/* Size of raw receive buffer in bytes */
@@ -1263,50 +1263,20 @@ id|bcs-&gt;Flag
 )paren
 )paren
 (brace
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|bcs-&gt;rqueue
 )paren
-)paren
-)paren
-(brace
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|bcs-&gt;squeue
 )paren
-)paren
-)paren
-(brace
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
 suffix:semicolon
-)brace
 )brace
 id|test_and_clear_bit
 c_func

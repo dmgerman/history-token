@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sgint23.h,v 1.4 1999/09/28 21:02:12 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * sgint23.h: Defines for the SGI INT2 and INT3 chipsets.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1999 Andrew R. Baker (andrewb@uab.edu) - INT2 corrections&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * sgint23.h: Defines for the SGI INT2 and INT3 chipsets.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 98, 1999, 2000 Ralf Baechle&n; * Copyright (C) 1999 Andrew R. Baker (andrewb@uab.edu) - INT2 corrections&n; */
 macro_line|#ifndef _ASM_SGI_SGINT23_H
 DECL|macro|_ASM_SGI_SGINT23_H
 mdefine_line|#define _ASM_SGI_SGINT23_H
@@ -17,22 +17,7 @@ DECL|macro|SGINT_HPCDMA
 mdefine_line|#define SGINT_HPCDMA   41  /* INDY has 11 HPCDMA irq _sources_ */
 DECL|macro|SGINT_END
 mdefine_line|#define SGINT_END      52  /* End of &squot;spaces&squot; */
-multiline_comment|/* Individual interrupt definitions for the INDY and Indigo2&n; */
-DECL|macro|SGI_WD93_0_IRQ
-mdefine_line|#define SGI_WD93_0_IRQ&t;SGINT_LOCAL0 + 1&t;/* 1st onboard WD93 */
-DECL|macro|SGI_WD93_1_IRQ
-mdefine_line|#define SGI_WD93_1_IRQ&t;SGINT_LOCAL0 + 2&t;/* 2nd onboard WD93 */
-DECL|macro|SGI_ENET_IRQ
-mdefine_line|#define SGI_ENET_IRQ&t;SGINT_LOCAL0 + 3&t;/* onboard ethernet */
-DECL|macro|SGI_PANEL_IRQ
-mdefine_line|#define SGI_PANEL_IRQ&t;SGINT_LOCAL1 + 1&t;/* front panel */
-DECL|macro|SGI_EISA_IRQ
-mdefine_line|#define SGI_EISA_IRQ&t;SGINT_LOCAL2 + 3&t;/* EISA interrupts */
-DECL|macro|SGI_KEYBOARD_IRQ
-mdefine_line|#define SGI_KEYBOARD_IRQ&t;SGINT_LOCAL2 + 4&t;/* keyboard */
-DECL|macro|SGI_SERIAL_IRQ
-mdefine_line|#define SGI_SERIAL_IRQ&t;SGINT_LOCAL2 + 5&t;/* onboard serial */
-multiline_comment|/* Individual interrupt definitions for the INDY and Indigo2&n; */
+multiline_comment|/*&n; * Individual interrupt definitions for the INDY and Indigo2&n; */
 DECL|macro|SGI_WD93_0_IRQ
 mdefine_line|#define SGI_WD93_0_IRQ&t;SGINT_LOCAL0 + 1&t;/* 1st onboard WD93 */
 DECL|macro|SGI_WD93_1_IRQ
@@ -683,5 +668,5 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* !(_ASM_SGINT23_H) */
+macro_line|#endif /* _ASM_SGI_SGINT23_H */
 eof

@@ -22,6 +22,9 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &quot;sound_config.h&quot;
+macro_line|#include &quot;dev_table.h&quot;
+macro_line|#include &quot;mpu401.h&quot;
 DECL|macro|VIA_DEBUG
 macro_line|#undef VIA_DEBUG&t;/* define to enable debugging output and checks */
 macro_line|#ifdef VIA_DEBUG
@@ -195,6 +198,10 @@ DECL|macro|VIA_CR42_FM_ENABLE
 mdefine_line|#define VIA_CR42_FM_ENABLE&t;0x04
 DECL|macro|VIA_CR42_GAME_ENABLE
 mdefine_line|#define VIA_CR42_GAME_ENABLE&t;0x08
+DECL|macro|VIA_CR42_MIDI_IRQMASK
+mdefine_line|#define VIA_CR42_MIDI_IRQMASK   0x40
+DECL|macro|VIA_CR42_MIDI_PNP
+mdefine_line|#define VIA_CR42_MIDI_PNP&t;0x80
 DECL|macro|VIA_CR44_SECOND_CODEC_SUPPORT
 mdefine_line|#define VIA_CR44_SECOND_CODEC_SUPPORT&t;(1 &lt;&lt; 6)
 DECL|macro|VIA_CR44_AC_LINK_ACCESS
@@ -485,6 +492,18 @@ r_struct
 id|via_channel
 id|ch_fm
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIDI_VIA82CXXX
+DECL|member|midi_devc
+r_void
+op_star
+id|midi_devc
+suffix:semicolon
+DECL|member|midi_info
+r_struct
+id|address_info
+id|midi_info
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* number of cards, used for assigning unique numbers to cards */
@@ -1903,10 +1922,7 @@ id|DPRINTK
 (paren
 l_string|&quot;outl (0x%X, 0x%04lX)&bslash;n&quot;
 comma
-id|cpu_to_le32
-(paren
 id|chan-&gt;sgt_handle
-)paren
 comma
 id|chan-&gt;iobase
 op_plus
@@ -1920,10 +1936,7 @@ id|card
 suffix:semicolon
 id|outl
 (paren
-id|cpu_to_le32
-(paren
 id|chan-&gt;sgt_handle
-)paren
 comma
 id|chan-&gt;iobase
 op_plus
@@ -3325,6 +3338,7 @@ id|card
 op_assign
 id|codec-&gt;private_data
 suffix:semicolon
+multiline_comment|/* Every time we write to register 80 we cause a transaction.&n;&t;   The only safe way to clear the valid bit is to write it at&n;&t;   the same time as the command */
 id|data
 op_assign
 (paren
@@ -3334,6 +3348,8 @@ l_int|16
 )paren
 op_or
 id|VIA_CR80_READ
+op_or
+id|VIA_CR80_VALID
 suffix:semicolon
 id|outl
 (paren
@@ -3342,11 +3358,6 @@ comma
 id|card-&gt;baseaddr
 op_plus
 id|VIA_BASE0_AC97_CTRL
-)paren
-suffix:semicolon
-id|udelay
-(paren
-l_int|20
 )paren
 suffix:semicolon
 r_for
@@ -3364,25 +3375,40 @@ id|counter
 op_decrement
 )paren
 (brace
+id|udelay
+(paren
+l_int|1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+(paren
+(paren
+id|data
+op_assign
 id|inl
+c_func
 (paren
 id|card-&gt;baseaddr
 op_plus
 l_int|0x80
 )paren
+)paren
 op_amp
+(paren
 id|VIA_CR80_VALID
+op_or
+id|VIA_CR80_BUSY
+)paren
+)paren
+op_eq
+id|VIA_CR80_VALID
+)paren
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|udelay
-(paren
-l_int|15
-)paren
 suffix:semicolon
 )brace
 id|printk
@@ -3399,6 +3425,13 @@ id|err_out
 suffix:semicolon
 id|out
 suffix:colon
+multiline_comment|/* Once the valid bit has become set, we must wait a complete AC97&n;&t;   frame before the data has settled. */
+id|udelay
+c_func
+(paren
+l_int|25
+)paren
+suffix:semicolon
 id|data
 op_assign
 (paren
@@ -3410,15 +3443,6 @@ id|inl
 id|card-&gt;baseaddr
 op_plus
 l_int|0x80
-)paren
-suffix:semicolon
-id|outb
-(paren
-l_int|0x02
-comma
-id|card-&gt;baseaddr
-op_plus
-l_int|0x83
 )paren
 suffix:semicolon
 r_if
@@ -3936,9 +3960,6 @@ op_star
 id|pdev
 op_assign
 id|card-&gt;pdev
-suffix:semicolon
-id|u8
-id|tmp8
 suffix:semicolon
 id|u16
 id|tmp16
@@ -4663,6 +4684,8 @@ id|n
 dot
 id|count
 op_assign
+id|cpu_to_le32
+c_func
 (paren
 id|chan-&gt;frag_size
 op_or
@@ -4687,6 +4710,8 @@ id|n
 dot
 id|count
 op_assign
+id|cpu_to_le32
+c_func
 (paren
 id|chan-&gt;frag_size
 op_or
@@ -4883,8 +4908,22 @@ op_amp
 id|VIA_INTR_MASK
 )paren
 )paren
+(brace
+macro_line|#ifdef CONFIG_MIDI_VIA82CXXX
+id|uart401intr
+c_func
+(paren
+id|irq
+comma
+id|card-&gt;midi_devc
+comma
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 suffix:semicolon
+)brace
 id|DPRINTK
 (paren
 l_string|&quot;intr, status32 == 0x%08X&bslash;n&quot;
@@ -5333,8 +5372,6 @@ op_amp
 (paren
 id|VIA_CR42_SB_ENABLE
 op_or
-id|VIA_CR42_MIDI_ENABLE
-op_or
 id|VIA_CR42_FM_ENABLE
 )paren
 )paren
@@ -5344,8 +5381,6 @@ op_and_assign
 op_complement
 (paren
 id|VIA_CR42_SB_ENABLE
-op_or
-id|VIA_CR42_MIDI_ENABLE
 op_or
 id|VIA_CR42_FM_ENABLE
 )paren
@@ -9128,6 +9163,10 @@ id|DPRINTK
 l_string|&quot;DSP_SYNC&bslash;n&quot;
 )paren
 suffix:semicolon
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10497,6 +10536,11 @@ op_star
 id|id
 )paren
 (brace
+macro_line|#ifdef CONFIG_MIDI_VIA82CXXX
+id|u8
+id|r42
+suffix:semicolon
+macro_line|#endif
 r_int
 id|rc
 suffix:semicolon
@@ -10532,64 +10576,38 @@ id|VIA_VERSION
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|rc
+op_assign
 id|pci_enable_device
 (paren
 id|pdev
 )paren
-)paren
-(brace
-id|rc
-op_assign
-op_minus
-id|EIO
 suffix:semicolon
-r_goto
-id|err_out_none
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-op_logical_neg
-id|request_region
-(paren
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-comma
-id|pci_resource_len
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-comma
-id|VIA_MODULE_NAME
-)paren
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;unable to obtain I/O resources, aborting&bslash;n&quot;
-)paren
-suffix:semicolon
 id|rc
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
+)paren
 r_goto
 id|err_out
 suffix:semicolon
-)brace
+id|rc
+op_assign
+id|pci_request_regions
+(paren
+id|pdev
+comma
+l_string|&quot;via82cxxx_audio&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|err_out_disable
+suffix:semicolon
 id|card
 op_assign
 id|kmalloc
@@ -10623,7 +10641,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|err_out_none
+id|err_out_res
 suffix:semicolon
 )brace
 id|pci_set_drvdata
@@ -10897,6 +10915,142 @@ comma
 id|pdev-&gt;irq
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIDI_VIA82CXXX
+multiline_comment|/* Disable by default */
+id|card-&gt;midi_info.io_base
+op_assign
+l_int|0
+suffix:semicolon
+id|pci_read_config_byte
+(paren
+id|pdev
+comma
+l_int|0x42
+comma
+op_amp
+id|r42
+)paren
+suffix:semicolon
+multiline_comment|/* Disable MIDI interrupt */
+id|pci_write_config_byte
+(paren
+id|pdev
+comma
+l_int|0x42
+comma
+id|r42
+op_or
+id|VIA_CR42_MIDI_IRQMASK
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|r42
+op_amp
+id|VIA_CR42_MIDI_ENABLE
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|r42
+op_amp
+id|VIA_CR42_MIDI_PNP
+)paren
+multiline_comment|/* Address selected by iobase 2 - not tested */
+id|card-&gt;midi_info.io_base
+op_assign
+id|pci_resource_start
+(paren
+id|pdev
+comma
+l_int|2
+)paren
+suffix:semicolon
+r_else
+multiline_comment|/* Address selected by byte 0x43 */
+(brace
+id|u8
+id|r43
+suffix:semicolon
+id|pci_read_config_byte
+(paren
+id|pdev
+comma
+l_int|0x43
+comma
+op_amp
+id|r43
+)paren
+suffix:semicolon
+id|card-&gt;midi_info.io_base
+op_assign
+l_int|0x300
+op_plus
+(paren
+(paren
+id|r43
+op_amp
+l_int|0x0c
+)paren
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+)brace
+id|card-&gt;midi_info.irq
+op_assign
+op_minus
+id|pdev-&gt;irq
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|probe_uart401
+c_func
+(paren
+op_amp
+id|card-&gt;midi_info
+comma
+id|THIS_MODULE
+)paren
+)paren
+(brace
+id|card-&gt;midi_devc
+op_assign
+id|midi_devs
+(braket
+id|card-&gt;midi_info.slots
+(braket
+l_int|4
+)braket
+)braket
+op_member_access_from_pointer
+id|devc
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|pdev
+comma
+l_int|0x42
+comma
+id|r42
+op_amp
+op_complement
+id|VIA_CR42_MIDI_IRQMASK
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Enabled Via MIDI&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 id|DPRINTK
 (paren
 l_string|&quot;EXIT, returning 0&bslash;n&quot;
@@ -10949,23 +11103,18 @@ id|kfree
 id|card
 )paren
 suffix:semicolon
-id|err_out_none
+id|err_out_res
 suffix:colon
-id|release_region
-(paren
-id|pci_resource_start
+id|pci_release_regions
 (paren
 id|pdev
-comma
-l_int|0
 )paren
-comma
-id|pci_resource_len
+suffix:semicolon
+id|err_out_disable
+suffix:colon
+id|pci_disable_device
 (paren
 id|pdev
-comma
-l_int|0
-)paren
 )paren
 suffix:semicolon
 id|err_out
@@ -11031,6 +11180,20 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIDI_VIA82CXXX
+r_if
+c_cond
+(paren
+id|card-&gt;midi_info.io_base
+)paren
+id|unload_uart401
+c_func
+(paren
+op_amp
+id|card-&gt;midi_info
+)paren
+suffix:semicolon
+macro_line|#endif
 id|via_interrupt_cleanup
 (paren
 id|card
@@ -11049,23 +11212,6 @@ suffix:semicolon
 id|via_ac97_cleanup
 (paren
 id|card
-)paren
-suffix:semicolon
-id|release_region
-(paren
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-comma
-id|pci_resource_len
-(paren
-id|pdev
-comma
-l_int|0
-)paren
 )paren
 suffix:semicolon
 macro_line|#ifndef VIA_NDEBUG
@@ -11096,6 +11242,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|pci_release_regions
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|pci_set_power_state
 (paren
 id|pdev
@@ -11104,6 +11255,11 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* ...zzzzzz */
+id|pci_disable_device
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|DPRINTK
 (paren
 l_string|&quot;EXIT&bslash;n&quot;

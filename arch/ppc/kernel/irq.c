@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.irq.c 1.26 06/06/01 22:33:09 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.irq.c 1.28 06/28/01 16:15:56 paulus&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/irq.c&n; *&n; *  Derived from arch/i386/kernel/irq.c&n; *    Copyright (C) 1992 Linus Torvalds&n; *  Adapted from arch/i386 by Gary Thomas&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *  Updated and modified by Cort Dougan &lt;cort@fsmlabs.com&gt;&n; *    Copyright (C) 1996-2001 Cort Dougan&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *  &n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * The MPC8xx has an interrupt mask in the SIU.  If a bit is set, the&n; * interrupt is _enabled_.  As expected, IRQ0 is bit 0 in the 32-bit&n; * mask register (of which only 16 are defined), hence the weird shifting&n; * and compliment of the cached_irq_mask.  I want to be able to stuff&n; * this right into the SIU SMASK register.&n; * Many of the prep/chrp functions are conditional compiled on CONFIG_8xx&n; * to reduce code space and undefined function references.&n; */
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1976,11 +1976,20 @@ r_if
 c_cond
 (paren
 id|irq
-OL
+op_ge
 l_int|0
 )paren
 (brace
-multiline_comment|/* -2 means ignore, already handled */
+id|ppc_irq_dispatch_handler
+c_func
+(paren
+id|regs
+comma
+id|irq
+)paren
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -1990,6 +1999,14 @@ op_minus
 l_int|2
 )paren
 (brace
+multiline_comment|/* -2 means ignore, already handled */
+r_if
+c_cond
+(paren
+id|ppc_spurious_interrupts
+OL
+l_int|10
+)paren
 id|printk
 c_func
 (paren
@@ -2006,20 +2023,6 @@ id|ppc_spurious_interrupts
 op_increment
 suffix:semicolon
 )brace
-r_goto
-id|out
-suffix:semicolon
-)brace
-id|ppc_irq_dispatch_handler
-c_func
-(paren
-id|regs
-comma
-id|irq
-)paren
-suffix:semicolon
-id|out
-suffix:colon
 id|hardirq_exit
 c_func
 (paren

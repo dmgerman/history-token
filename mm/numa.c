@@ -386,6 +386,7 @@ id|_alloc_pages
 c_func
 (paren
 r_int
+r_int
 id|gfp_mask
 comma
 r_int

@@ -1675,14 +1675,6 @@ suffix:semicolon
 macro_line|#ifdef TIME_STAT
 r_int
 r_int
-id|low
-op_assign
-l_int|0
-comma
-id|high
-op_assign
-l_int|0
-comma
 id|loop_time
 suffix:semicolon
 r_int
@@ -1696,33 +1688,11 @@ id|time_stat_tmp2
 op_assign
 l_int|0
 suffix:semicolon
-id|__asm__
+id|rdtscll
 c_func
 (paren
-l_string|&quot;.byte 0x0f,0x31&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|low
-)paren
-comma
-l_string|&quot;=d&quot;
-(paren
-id|high
-)paren
-)paren
-suffix:semicolon
 id|time_stat_tmp
-op_assign
-id|high
-suffix:semicolon
-id|time_stat_tmp
-op_lshift_assign
-l_int|32
-suffix:semicolon
-id|time_stat_tmp
-op_add_assign
-id|low
+)paren
 suffix:semicolon
 macro_line|#endif /* TIME_STAT */
 r_for
@@ -1941,33 +1911,11 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef TIME_STAT
-id|__asm__
+id|rdtscll
 c_func
 (paren
-l_string|&quot;.byte 0x0f,0x31&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|low
-)paren
-comma
-l_string|&quot;=d&quot;
-(paren
-id|high
-)paren
-)paren
-suffix:semicolon
 id|time_stat_tmp2
-op_assign
-id|high
-suffix:semicolon
-id|time_stat_tmp2
-op_lshift_assign
-l_int|32
-suffix:semicolon
-id|time_stat_tmp2
-op_add_assign
-id|low
+)paren
 suffix:semicolon
 id|time_stat_tmp2
 op_sub_assign

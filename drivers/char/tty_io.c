@@ -7815,6 +7815,14 @@ op_star
 id|tty
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tty
+)paren
+r_return
+suffix:semicolon
 id|PREPARE_TQUEUE
 c_func
 (paren

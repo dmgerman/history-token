@@ -1478,6 +1478,83 @@ l_string|&quot;ALi M1541&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|ALI_M1621
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;ALi M1621&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ALI_M1631
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;ALi M1631&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ALI_M1632
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;ALi M1632&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ALI_M1641
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;ALi M1641&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ALI_M1647
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;ALi M1647&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ALI_M1651
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;ALi M1651&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SVWRKS_GENERIC
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;Serverworks Generic&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SVWRKS_HE
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;Serverworks HE&quot;
+suffix:semicolon
+r_case
+id|SVWRKS_LE
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;Serverworks LE&quot;
+suffix:semicolon
 r_default
 suffix:colon
 id|head-&gt;chipset

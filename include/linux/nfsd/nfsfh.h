@@ -454,6 +454,10 @@ comma
 r_struct
 id|dentry
 op_star
+comma
+r_struct
+id|svc_fh
+op_star
 )paren
 suffix:semicolon
 r_int

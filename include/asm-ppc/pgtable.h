@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pgtable.h 1.9 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pgtable.h 1.12 06/28/01 15:50:17 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PGTABLE_H
 DECL|macro|_PPC_PGTABLE_H
@@ -64,22 +64,8 @@ r_int
 id|end
 )paren
 suffix:semicolon
-DECL|function|flush_hash_page
-r_static
-r_inline
-r_void
-id|flush_hash_page
-c_func
-(paren
-r_int
-id|context
-comma
-r_int
-r_int
-id|va
-)paren
-(brace
-)brace
+DECL|macro|update_mmu_cache
+mdefine_line|#define update_mmu_cache(vma, addr, pte)&t;do { } while (0)
 macro_line|#elif defined(CONFIG_8xx)
 DECL|macro|__tlbia
 mdefine_line|#define __tlbia()&t;asm volatile (&quot;tlbia&quot; : : )
@@ -168,23 +154,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|flush_hash_page
-r_static
-r_inline
-r_void
-id|flush_hash_page
-c_func
-(paren
-r_int
-id|context
-comma
-r_int
-r_int
-id|va
-)paren
-(brace
-)brace
-macro_line|#else
+DECL|macro|update_mmu_cache
+mdefine_line|#define update_mmu_cache(vma, addr, pte)&t;do { } while (0)
+macro_line|#else&t;/* 6xx, 7xx, 7xxx cpus */
 r_struct
 id|mm_struct
 suffix:semicolon
@@ -244,6 +216,22 @@ r_int
 id|end
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * This gets called at the end of handling a page fault, when&n; * the kernel has put a new PTE into the page table for the process.&n; * We use it to put a corresponding HPTE into the hash table&n; * ahead of time, instead of waiting for the inevitable extra&n; * hash-table miss exception.&n; */
+r_extern
+r_void
+id|update_mmu_cache
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+comma
+r_int
+r_int
+comma
+id|pte_t
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|macro|flush_tlb_all
 mdefine_line|#define flush_tlb_all local_flush_tlb_all
@@ -253,6 +241,7 @@ DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page local_flush_tlb_page
 DECL|macro|flush_tlb_range
 mdefine_line|#define flush_tlb_range local_flush_tlb_range
+multiline_comment|/*&n; * This is called in munmap when we have freed up some page-table&n; * pages.  We don&squot;t need to do anything here, there&squot;s nothing special&n; * about our page-table pages.  -- paulus&n; */
 DECL|function|flush_tlb_pgtables
 r_static
 r_inline
@@ -274,9 +263,8 @@ r_int
 id|end
 )paren
 (brace
-multiline_comment|/* PPC has hw page tables. */
 )brace
-multiline_comment|/*&n; * No cache flushing is required when address mappings are&n; * changed, because the caches on PowerPCs are physically&n; * addressed.&n; * Also, when SMP we use the coherency (M) bit of the&n; * BATs and PTEs.  -- Cort&n; */
+multiline_comment|/*&n; * No cache flushing is required when address mappings are&n; * changed, because the caches on PowerPCs are physically&n; * addressed.  -- paulus&n; * Also, when SMP we use the coherency (M) bit of the&n; * BATs and PTEs.  -- Cort&n; */
 DECL|macro|flush_cache_all
 mdefine_line|#define flush_cache_all()&t;&t;do { } while (0)
 DECL|macro|flush_cache_mm
@@ -352,7 +340,7 @@ comma
 id|ioremap_base
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
-multiline_comment|/*&n; * The PowerPC MMU uses a hash table containing PTEs, together with&n; * a set of 16 segment registers (on 32-bit implementations), to define&n; * the virtual to physical address mapping.&n; *&n; * We use the hash table as an extended TLB, i.e. a cache of currently&n; * active mappings.  We maintain a two-level page table tree, much like&n; * that used by the i386, for the sake of the Linux memory management code.&n; * Low-level assembler code in head.S (procedure hash_page) is responsible&n; * for extracting ptes from the tree and putting them into the hash table&n; * when necessary, and updating the accessed and modified bits in the&n; * page table tree.&n; */
+multiline_comment|/*&n; * The PowerPC MMU uses a hash table containing PTEs, together with&n; * a set of 16 segment registers (on 32-bit implementations), to define&n; * the virtual to physical address mapping.&n; *&n; * We use the hash table as an extended TLB, i.e. a cache of currently&n; * active mappings.  We maintain a two-level page table tree, much&n; * like that used by the i386, for the sake of the Linux memory&n; * management code.  Low-level assembler code in hashtable.S&n; * (procedure hash_page) is responsible for extracting ptes from the&n; * tree and putting them into the hash table when necessary, and&n; * updating the accessed and modified bits in the page table tree.&n; */
 multiline_comment|/*&n; * The PowerPC MPC8xx uses a TLB with hardware assisted, software tablewalk.&n; * We also use the two level tables, but we can put the real bits in them&n; * needed for the TLB and tablewalk.  These definitions require Mx_CTR.PPM = 0,&n; * Mx_CTR.PPCS = 0, and MD_CTR.TWAM = 1.  The level 2 descriptor has&n; * additional page protection (when Mx_CTR.PPCS = 1) that allows TLB hit&n; * based upon user/super access.  The TLB does not have accessed nor write&n; * protect.  We assume that if the TLB get loaded with an entry it is&n; * accessed, and overload the changed bit for write protect.  We use&n; * two bits in the software pte that are supposed to be set to zero in&n; * the TLB entry (24 and 25) for these indicators.  Although the level 1&n; * descriptor contains the guarded and writethrough/copyback bits, we can&n; * set these at the page level since they get copied from the Mx_TWC&n; * register when the TLB entry is loaded.  We will use bit 27 for guard, since&n; * that is where it exists in the MD_TWC, and bit 26 for writethrough.&n; * These will get masked from the level 2 descriptor at TLB load time, and&n; * copied to the MD_TWC before it gets loaded.&n; */
 multiline_comment|/*&n; * At present, all PowerPC 400-class processors share a similar TLB&n; * architecture. The instruction and data sides share a unified,&n; * 64-entry, fully-associative TLB which is maintained totally under&n; * software control. In addition, the instruction side has a&n; * hardware-managed, 4-entry, fully-associative TLB which serves as a&n; * first level to the shared TLB. These two TLBs are known as the UTLB&n; * and ITLB, respectively (see &quot;mmu.h&quot; for definitions).&n; */
 multiline_comment|/* PMD_SHIFT determines the size of the area mapped by the second-level page tables */
@@ -412,6 +400,8 @@ DECL|macro|_PAGE_WRITETHRU
 mdefine_line|#define&t;_PAGE_WRITETHRU&t;0x008&t;/* W: caching is write-through */
 DECL|macro|_PAGE_USER
 mdefine_line|#define&t;_PAGE_USER&t;0x010&t;/* matches one of the zone permission bits */
+DECL|macro|_PAGE_EXEC
+mdefine_line|#define _PAGE_EXEC&t;0x020&t;/* software: i-cache coherency required */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define&t;_PAGE_PRESENT&t;0x040&t;/* software: PTE contains a translation */
 DECL|macro|_PAGE_DIRTY
@@ -420,10 +410,6 @@ DECL|macro|_PAGE_RW
 mdefine_line|#define&t;_PAGE_RW&t;0x200&t;/* Writes permitted */
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x400&t;/* R: page referenced */
-DECL|macro|_PAGE_HWWRITE
-mdefine_line|#define _PAGE_HWWRITE&t;0x800&t;/* software: _PAGE_RW &amp; _PAGE_DIRTY */
-DECL|macro|_PAGE_SHARED
-mdefine_line|#define&t;_PAGE_SHARED&t;0
 macro_line|#elif defined(CONFIG_8xx)
 multiline_comment|/* Definitions for 8xx embedded chips. */
 DECL|macro|_PAGE_PRESENT
@@ -433,8 +419,8 @@ mdefine_line|#define _PAGE_NO_CACHE&t;0x0002&t;/* I: cache inhibit */
 DECL|macro|_PAGE_SHARED
 mdefine_line|#define _PAGE_SHARED&t;0x0004&t;/* No ASID (context) compare */
 multiline_comment|/* These five software bits must be masked out when the entry is loaded&n; * into the TLB.&n; */
-DECL|macro|_PAGE_DIRTY
-mdefine_line|#define _PAGE_DIRTY&t;0x0008&t;/* software: page changed */
+DECL|macro|_PAGE_EXEC
+mdefine_line|#define _PAGE_EXEC&t;0x0008&t;/* software: i-cache coherency required */
 DECL|macro|_PAGE_GUARDED
 mdefine_line|#define _PAGE_GUARDED&t;0x0010&t;/* software: guarded access */
 DECL|macro|_PAGE_WRITETHRU
@@ -443,20 +429,20 @@ DECL|macro|_PAGE_RW
 mdefine_line|#define _PAGE_RW&t;0x0040&t;/* software: user write access allowed */
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x0080&t;/* software: page referenced */
-DECL|macro|_PAGE_HWWRITE
-mdefine_line|#define _PAGE_HWWRITE&t;0x0100&t;/* C: page changed (write protect) */
+DECL|macro|_PAGE_DIRTY
+mdefine_line|#define _PAGE_DIRTY&t;0x0100&t;/* C: page changed (write protect) */
 DECL|macro|_PAGE_USER
-mdefine_line|#define _PAGE_USER&t;0x0800&t;/* One of the PP bits, the other must be 0 */
+mdefine_line|#define _PAGE_USER&t;0x0800&t;/* One of the PP bits, the other is USER&amp;~RW */
 macro_line|#else /* CONFIG_6xx */
 multiline_comment|/* Definitions for 60x, 740/750, etc. */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x001&t;/* software: pte contains a translation */
+DECL|macro|_PAGE_HASHPTE
+mdefine_line|#define _PAGE_HASHPTE&t;0x002&t;/* hash_page has made an HPTE for this pte */
 DECL|macro|_PAGE_USER
-mdefine_line|#define _PAGE_USER&t;0x002&t;/* matches one of the PP bits */
-DECL|macro|_PAGE_RW
-mdefine_line|#define _PAGE_RW&t;0x004&t;/* software: user write access allowed */
+mdefine_line|#define _PAGE_USER&t;0x004&t;/* usermode access allowed */
 DECL|macro|_PAGE_GUARDED
-mdefine_line|#define _PAGE_GUARDED&t;0x008
+mdefine_line|#define _PAGE_GUARDED&t;0x008&t;/* G: prohibit speculative access */
 DECL|macro|_PAGE_COHERENT
 mdefine_line|#define _PAGE_COHERENT&t;0x010&t;/* M: enforce memory coherence (SMP systems) */
 DECL|macro|_PAGE_NO_CACHE
@@ -467,67 +453,83 @@ DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;0x080&t;/* C: page changed */
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x100&t;/* R: page referenced */
-DECL|macro|_PAGE_HWWRITE
-mdefine_line|#define _PAGE_HWWRITE&t;0x200&t;/* software: _PAGE_RW &amp; _PAGE_DIRTY */
+DECL|macro|_PAGE_EXEC
+mdefine_line|#define _PAGE_EXEC&t;0x200&t;/* software: i-cache coherency required */
+DECL|macro|_PAGE_RW
+mdefine_line|#define _PAGE_RW&t;0x400&t;/* software: user write access allowed */
+macro_line|#endif
+macro_line|#ifndef _PAGE_HASHPTE
+DECL|macro|_PAGE_HASHPTE
+mdefine_line|#define _PAGE_HASHPTE&t;0
+macro_line|#endif
+macro_line|#ifndef _PAGE_SHARED
 DECL|macro|_PAGE_SHARED
 mdefine_line|#define _PAGE_SHARED&t;0
 macro_line|#endif
 DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK&t;(PAGE_MASK | _PAGE_ACCESSED | _PAGE_DIRTY)
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|_PAGE_BASE
-mdefine_line|#define _PAGE_BASE&t;_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_COHERENT
-macro_line|#else
+multiline_comment|/*&n; * Note: the _PAGE_COHERENT bit automatically gets set in the hardware&n; * PTE if CONFIG_SMP is defined (hash_page does this); there is no need&n; * to have it in the Linux PTE, and in fact the bit could be reused for&n; * another purpose.  -- paulus.&n; */
 DECL|macro|_PAGE_BASE
 mdefine_line|#define _PAGE_BASE&t;_PAGE_PRESENT | _PAGE_ACCESSED
-macro_line|#endif
 DECL|macro|_PAGE_WRENABLE
-mdefine_line|#define _PAGE_WRENABLE&t;_PAGE_RW | _PAGE_DIRTY | _PAGE_HWWRITE
+mdefine_line|#define _PAGE_WRENABLE&t;_PAGE_RW | _PAGE_DIRTY
+DECL|macro|_PAGE_KERNEL
+mdefine_line|#define _PAGE_KERNEL&t;_PAGE_BASE | _PAGE_WRENABLE | _PAGE_SHARED
+DECL|macro|_PAGE_IO
+mdefine_line|#define _PAGE_IO&t;_PAGE_KERNEL | _PAGE_NO_CACHE | _PAGE_GUARDED
 DECL|macro|PAGE_NONE
-mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PRESENT | _PAGE_ACCESSED)
-DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED&t;__pgprot(_PAGE_BASE | _PAGE_RW | _PAGE_USER | &bslash;&n;&t;&t;&t;&t; _PAGE_SHARED)
-DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;__pgprot(_PAGE_BASE | _PAGE_USER)
+mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_BASE)
 DECL|macro|PAGE_READONLY
 mdefine_line|#define PAGE_READONLY&t;__pgprot(_PAGE_BASE | _PAGE_USER)
+DECL|macro|PAGE_READONLY_X
+mdefine_line|#define PAGE_READONLY_X&t;__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_EXEC)
+DECL|macro|PAGE_SHARED
+mdefine_line|#define PAGE_SHARED&t;__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW)
+DECL|macro|PAGE_SHARED_X
+mdefine_line|#define PAGE_SHARED_X&t;__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW | _PAGE_EXEC)
+DECL|macro|PAGE_COPY
+mdefine_line|#define PAGE_COPY&t;__pgprot(_PAGE_BASE | _PAGE_USER)
+DECL|macro|PAGE_COPY_X
+mdefine_line|#define PAGE_COPY_X&t;__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_EXEC)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_BASE | _PAGE_WRENABLE | _PAGE_SHARED)
+mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_KERNEL)
+DECL|macro|PAGE_KERNEL_RO
+mdefine_line|#define PAGE_KERNEL_RO&t;__pgprot(_PAGE_BASE | _PAGE_SHARED)
 DECL|macro|PAGE_KERNEL_CI
-mdefine_line|#define PAGE_KERNEL_CI&t;__pgprot(_PAGE_BASE | _PAGE_WRENABLE | _PAGE_SHARED | &bslash;&n;&t;&t;&t;&t; _PAGE_NO_CACHE )
+mdefine_line|#define PAGE_KERNEL_CI&t;__pgprot(_PAGE_IO)
 multiline_comment|/*&n; * The PowerPC can only do execute protection on a segment (256MB) basis,&n; * not on a page basis.  So we consider execute permission the same as read.&n; * Also, write permissions imply read permissions.&n; * This is the closest we can get..&n; */
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
 DECL|macro|__P001
-mdefine_line|#define __P001&t;PAGE_READONLY
+mdefine_line|#define __P001&t;PAGE_READONLY_X
 DECL|macro|__P010
 mdefine_line|#define __P010&t;PAGE_COPY
 DECL|macro|__P011
-mdefine_line|#define __P011&t;PAGE_COPY
+mdefine_line|#define __P011&t;PAGE_COPY_X
 DECL|macro|__P100
 mdefine_line|#define __P100&t;PAGE_READONLY
 DECL|macro|__P101
-mdefine_line|#define __P101&t;PAGE_READONLY
+mdefine_line|#define __P101&t;PAGE_READONLY_X
 DECL|macro|__P110
 mdefine_line|#define __P110&t;PAGE_COPY
 DECL|macro|__P111
-mdefine_line|#define __P111&t;PAGE_COPY
+mdefine_line|#define __P111&t;PAGE_COPY_X
 DECL|macro|__S000
 mdefine_line|#define __S000&t;PAGE_NONE
 DECL|macro|__S001
-mdefine_line|#define __S001&t;PAGE_READONLY
+mdefine_line|#define __S001&t;PAGE_READONLY_X
 DECL|macro|__S010
 mdefine_line|#define __S010&t;PAGE_SHARED
 DECL|macro|__S011
-mdefine_line|#define __S011&t;PAGE_SHARED
+mdefine_line|#define __S011&t;PAGE_SHARED_X
 DECL|macro|__S100
 mdefine_line|#define __S100&t;PAGE_READONLY
 DECL|macro|__S101
-mdefine_line|#define __S101&t;PAGE_READONLY
+mdefine_line|#define __S101&t;PAGE_READONLY_X
 DECL|macro|__S110
 mdefine_line|#define __S110&t;PAGE_SHARED
 DECL|macro|__S111
-mdefine_line|#define __S111&t;PAGE_SHARED
+mdefine_line|#define __S111&t;PAGE_SHARED_X
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
@@ -540,45 +542,13 @@ l_int|1024
 suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-multiline_comment|/*&n; * BAD_PAGETABLE is used when we need a bogus page-table, while&n; * BAD_PAGE is used for a bogus page.&n; *&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
-r_extern
-id|pte_t
-id|__bad_page
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|pte_t
-op_star
-id|__bad_pagetable
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|BAD_PAGETABLE
-mdefine_line|#define BAD_PAGETABLE&t;__bad_pagetable()
-DECL|macro|BAD_PAGE
-mdefine_line|#define BAD_PAGE&t;__bad_page()
 macro_line|#endif /* __ASSEMBLY__ */
-multiline_comment|/* number of bits that fit into a memory pointer */
-DECL|macro|BITS_PER_PTR
-mdefine_line|#define BITS_PER_PTR&t;(8*sizeof(unsigned long))
-multiline_comment|/* to align the pointer to a pointer address */
-DECL|macro|PTR_MASK
-mdefine_line|#define PTR_MASK&t;(~(sizeof(void*)-1))
-multiline_comment|/* sizeof(void*) == 1&lt;&lt;SIZEOF_PTR_LOG2 */
-multiline_comment|/* 64-bit machines, beware!  SRB. */
-DECL|macro|SIZEOF_PTR_LOG2
-mdefine_line|#define SIZEOF_PTR_LOG2&t;2
 DECL|macro|pte_none
-mdefine_line|#define pte_none(pte)&t;&t;(!pte_val(pte))
+mdefine_line|#define pte_none(pte)&t;&t;((pte_val(pte) &amp; ~_PAGE_HASHPTE) == 0)
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;(pte_val(pte) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(ptep)&t;&t;do { pte_val(*(ptep)) = 0; } while (0)
+mdefine_line|#define pte_clear(ptep)&t;&t;do { set_pte((ptep), __pte(0)); } while (0)
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_bad
@@ -589,9 +559,7 @@ DECL|macro|pmd_clear
 mdefine_line|#define&t;pmd_clear(pmdp)&t;&t;do { pmd_val(*(pmdp)) = 0; } while (0)
 multiline_comment|/*&n; * Permanent address of a page.&n; */
 DECL|macro|page_address
-mdefine_line|#define page_address(page)  ((page)-&gt;virtual)
-DECL|macro|pages_to_mb
-mdefine_line|#define pages_to_mb(x)&t;&t;((x) &gt;&gt; (20-PAGE_SHIFT))
+mdefine_line|#define page_address(page)&t;((page)-&gt;virtual)
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;(mem_map+(unsigned long)((pte_val(x) &gt;&gt; PAGE_SHIFT)))
 macro_line|#ifndef __ASSEMBLY__
@@ -706,7 +674,7 @@ c_func
 id|pte
 )paren
 op_amp
-id|_PAGE_USER
+id|_PAGE_EXEC
 suffix:semicolon
 )brace
 DECL|function|pte_dirty
@@ -816,30 +784,6 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-DECL|function|pte_exprotect
-r_static
-r_inline
-id|pte_t
-id|pte_exprotect
-c_func
-(paren
-id|pte_t
-id|pte
-)paren
-(brace
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_and_assign
-op_complement
-id|_PAGE_USER
-suffix:semicolon
-r_return
-id|pte
-suffix:semicolon
-)brace
 DECL|function|pte_wrprotect
 r_static
 r_inline
@@ -858,11 +802,31 @@ id|pte
 )paren
 op_and_assign
 op_complement
-(paren
 id|_PAGE_RW
-op_or
-id|_PAGE_HWWRITE
+suffix:semicolon
+r_return
+id|pte
+suffix:semicolon
+)brace
+DECL|function|pte_exprotect
+r_static
+r_inline
+id|pte_t
+id|pte_exprotect
+c_func
+(paren
+id|pte_t
+id|pte
 )paren
+(brace
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_and_assign
+op_complement
+id|_PAGE_EXEC
 suffix:semicolon
 r_return
 id|pte
@@ -886,11 +850,7 @@ id|pte
 )paren
 op_and_assign
 op_complement
-(paren
 id|_PAGE_DIRTY
-op_or
-id|_PAGE_HWWRITE
-)paren
 suffix:semicolon
 r_return
 id|pte
@@ -961,6 +921,8 @@ id|pte
 )paren
 op_or_assign
 id|_PAGE_USER
+op_or
+id|_PAGE_EXEC
 suffix:semicolon
 r_return
 id|pte
@@ -985,25 +947,6 @@ id|pte
 op_or_assign
 id|_PAGE_RW
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-id|_PAGE_DIRTY
-)paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_or_assign
-id|_PAGE_HWWRITE
-suffix:semicolon
 r_return
 id|pte
 suffix:semicolon
@@ -1026,25 +969,6 @@ id|pte
 )paren
 op_or_assign
 id|_PAGE_DIRTY
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-id|_PAGE_RW
-)paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_or_assign
-id|_PAGE_HWWRITE
 suffix:semicolon
 r_return
 id|pte
@@ -1073,9 +997,6 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
-DECL|macro|set_pte
-mdefine_line|#define set_pte(pteptr, pteval)&t;((*(pteptr)) = (pteval))
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|function|mk_pte_phys
 r_static
@@ -1187,7 +1108,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;andc&t;%1,%0,%4 &bslash;n&bslash;&n;&t;or&t;%1,%1,%5 &bslash;n&bslash;&n;&t;stwcx.&t;%1,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;&bslash;&n;1:&t;lwarx&t;%0,0,%3&bslash;n&bslash;&n;&t;andc&t;%1,%0,%4&bslash;n&bslash;&n;&t;or&t;%1,%1,%5&bslash;n&bslash;&n;&t;stwcx.&t;%1,0,%3&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -1233,6 +1154,20 @@ r_return
 id|old
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Writing a new value into the PTE doesn&squot;t disturb the state of the&n; * _PAGE_HASHPTE bit, on those machines which use an MMU hash table.&n; */
+r_extern
+r_void
+id|set_pte
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+comma
+id|pte_t
+id|pte
+)paren
+suffix:semicolon
 DECL|function|ptep_test_and_clear_young
 r_static
 r_inline
@@ -1283,8 +1218,6 @@ c_func
 id|ptep
 comma
 id|_PAGE_DIRTY
-op_or
-id|_PAGE_HWWRITE
 comma
 l_int|0
 )paren
@@ -1317,7 +1250,7 @@ c_func
 id|ptep
 comma
 op_complement
-l_int|0UL
+id|_PAGE_HASHPTE
 comma
 l_int|0
 )paren
@@ -1342,8 +1275,6 @@ c_func
 id|ptep
 comma
 id|_PAGE_RW
-op_or
-id|_PAGE_HWWRITE
 comma
 l_int|0
 )paren
@@ -1361,7 +1292,6 @@ op_star
 id|ptep
 )paren
 (brace
-multiline_comment|/*&n;&t; * N.B. this doesn&squot;t set the _PAGE_HWWRITE bit in the case&n;&t; * where _PAGE_RW is set and _PAGE_DIRTY was clear.  This&n;&t; * doesn&squot;t matter; all it will mean is that if the next call&n;&t; * to hash_page for this page is for a read, it will put a&n;&t; * readonly HPTE into the hash table rather than a R/W HPTE.&n;&t; * A call to hash_page for a write to this page will set&n;&t; * _PAGE_HWWRITE and put a R/W HPTE into the hash table.&n;&t; *  -- paulus.&n;&t; */
 id|pte_update
 c_func
 (paren
@@ -1374,7 +1304,7 @@ id|_PAGE_DIRTY
 suffix:semicolon
 )brace
 DECL|macro|pte_same
-mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
+mdefine_line|#define pte_same(A,B)&t;(((pte_val(A) ^ pte_val(B)) &amp; ~_PAGE_HASHPTE) == 0)
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;(pmd_val(pmd))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
@@ -1471,24 +1401,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Page tables may have changed.  We don&squot;t need to do anything here&n; * as entries are faulted into the hash table by the low-level&n; * data/instruction access exception handlers.&n; */
-DECL|macro|update_mmu_cache
-mdefine_line|#define update_mmu_cache(vma, addr, pte)&t;do { } while (0)
-multiline_comment|/*&n; * When flushing the tlb entry for a page, we also need to flush the&n; * hash table entry.  flush_hash_page is assembler (for speed) in head.S.&n; */
+multiline_comment|/*&n; * When flushing the tlb entry for a page, we also need to flush the hash&n; * table entry.  flush_hash_page is assembler (for speed) in hashtable.S.&n; */
 r_extern
-r_void
-id|flush_hash_segments
-c_func
-(paren
 r_int
-id|low_vsid
-comma
-r_int
-id|high_vsid
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|flush_hash_page
 c_func
 (paren
@@ -1498,19 +1413,41 @@ comma
 r_int
 r_int
 id|va
+comma
+id|pte_t
+op_star
+id|ptep
 )paren
 suffix:semicolon
-multiline_comment|/* Encode and de-code a swap entry */
+multiline_comment|/* Add an HPTE to the hash table */
+r_extern
+r_void
+id|add_hash_page
+c_func
+(paren
+r_int
+id|context
+comma
+r_int
+r_int
+id|va
+comma
+id|pte_t
+op_star
+id|ptep
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Encode and decode a swap entry.&n; * Note that the bits we use in a PTE for representing a swap entry&n; * must not include the _PAGE_PRESENT bit, or the _PAGE_HASHPTE bit&n; * (if used).  -- paulus&n; */
 DECL|macro|SWP_TYPE
-mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)
+mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;((entry).val &amp; 0x3f)
 DECL|macro|SWP_OFFSET
-mdefine_line|#define SWP_OFFSET(entry)&t;&t;((entry).val &gt;&gt; 8)
+mdefine_line|#define SWP_OFFSET(entry)&t;&t;((entry).val &gt;&gt; 6)
 DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type, offset)&t;&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 8) })
+mdefine_line|#define SWP_ENTRY(type, offset)&t;&t;((swp_entry_t) { (type) | ((offset) &lt;&lt; 6) })
 DECL|macro|pte_to_swp_entry
-mdefine_line|#define pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
+mdefine_line|#define pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) &gt;&gt; 2 })
 DECL|macro|swp_entry_to_pte
-mdefine_line|#define swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
+mdefine_line|#define swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val &lt;&lt; 2 })
 multiline_comment|/* CONFIG_APUS */
 multiline_comment|/* For virtual address to physical address conversion */
 r_extern
@@ -1630,8 +1567,6 @@ id|cmode
 )paren
 suffix:semicolon
 multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
-DECL|macro|PageSkip
-mdefine_line|#define PageSkip(page)&t;&t;(0)
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 DECL|macro|io_remap_page_range

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Export MIPS-specific functions needed for loadable modules.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000 by Ralf Baechle&n; */
+multiline_comment|/*&n; * Export MIPS-specific functions needed for loadable modules.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000, 2001 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -350,25 +350,32 @@ id|invalid_pte_table
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Semaphore stuff&n; */
-DECL|variable|__down_read
+DECL|variable|__down
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__down_read
+id|__down
 )paren
 suffix:semicolon
-DECL|variable|__down_write
+DECL|variable|__down_interruptible
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__down_write
+id|__down_interruptible
 )paren
 suffix:semicolon
-DECL|variable|__rwsem_wake
+DECL|variable|__down_trylock
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__rwsem_wake
+id|__down_trylock
+)paren
+suffix:semicolon
+DECL|variable|__up
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__up
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Base address of ports for Intel style I/O.&n; */

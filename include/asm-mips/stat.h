@@ -78,15 +78,13 @@ DECL|member|st_blocks
 r_int
 id|st_blocks
 suffix:semicolon
-DECL|member|st_flags
+DECL|member|st_unused0
 r_int
 r_int
-id|st_flags
-suffix:semicolon
-DECL|member|st_gen
-r_int
-r_int
-id|st_gen
+id|st_unused0
+(braket
+l_int|2
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -178,31 +176,12 @@ DECL|member|st_blocks
 r_int
 id|st_blocks
 suffix:semicolon
-DECL|member|st_fstype
-r_char
-id|st_fstype
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* Filesystem type name */
 DECL|member|st_pad4
 r_int
 id|st_pad4
 (braket
-l_int|8
+l_int|14
 )braket
-suffix:semicolon
-multiline_comment|/* Linux specific fields */
-DECL|member|st_flags
-r_int
-r_int
-id|st_flags
-suffix:semicolon
-DECL|member|st_gen
-r_int
-r_int
-id|st_gen
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -226,7 +205,9 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* Reserved for st_dev expansion  */
 DECL|member|st_ino
-id|ino_t
+r_int
+r_int
+r_int
 id|st_ino
 suffix:semicolon
 DECL|member|st_mode
@@ -284,7 +265,7 @@ r_int
 r_int
 id|reserved1
 suffix:semicolon
-multiline_comment|/* Reserved for st_atime expansion  */
+multiline_comment|/* Reserved for st_mtime expansion  */
 DECL|member|st_ctime
 id|time_t
 id|st_ctime
@@ -294,11 +275,16 @@ r_int
 r_int
 id|reserved2
 suffix:semicolon
-multiline_comment|/* Reserved for st_atime expansion  */
+multiline_comment|/* Reserved for st_ctime expansion  */
 DECL|member|st_blksize
 r_int
 r_int
 id|st_blksize
+suffix:semicolon
+DECL|member|st_pad2
+r_int
+r_int
+id|st_pad2
 suffix:semicolon
 DECL|member|st_blocks
 r_int

@@ -255,6 +255,10 @@ id|resp-&gt;fh
 comma
 op_amp
 id|argp-&gt;attrs
+comma
+id|argp-&gt;check_guard
+comma
+id|argp-&gt;guardtime
 )paren
 suffix:semicolon
 id|RETURN_STATUS

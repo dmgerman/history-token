@@ -3,7 +3,7 @@ macro_line|#ifndef _SPARC_VADDRS_H
 DECL|macro|_SPARC_VADDRS_H
 mdefine_line|#define _SPARC_VADDRS_H
 macro_line|#include &lt;asm/head.h&gt;
-multiline_comment|/*&n; * asm-sparc/vaddrs.h:  Here we define the virtual addresses at&n; *                      which important things will be mapped.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2000 Anton Blanchard (anton@linuxcare.com)&n; */
+multiline_comment|/*&n; * asm-sparc/vaddrs.h:  Here we define the virtual addresses at&n; *                      which important things will be mapped.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2000 Anton Blanchard (anton@samba.org)&n; */
 DECL|macro|SRMMU_MAXMEM
 mdefine_line|#define SRMMU_MAXMEM&t;&t;0x0c000000
 DECL|macro|SRMMU_NOCACHE_VADDR

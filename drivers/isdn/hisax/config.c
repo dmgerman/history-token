@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: config.c,v 2.57.6.14 2001/05/26 15:19:57 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: config.c,v 2.57.6.15 2001/06/09 15:14:17 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -2819,14 +2819,14 @@ id|csta-&gt;bcs
 )paren
 suffix:semicolon
 )brace
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|csta-&gt;rq
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -5122,7 +5122,7 @@ id|i
 comma
 id|retval
 suffix:semicolon
-macro_line|#ifdef MODULE
+macro_line|#ifdef MODULE 
 r_int
 id|j
 suffix:semicolon

@@ -1249,20 +1249,8 @@ DECL|macro|NUM_TX_DESC
 mdefine_line|#define NUM_TX_DESC     16      &t;/* Number of Tx descriptor registers. */
 DECL|macro|NUM_RX_DESC
 mdefine_line|#define NUM_RX_DESC     16       &t;/* Number of Rx descriptor registers. */
-multiline_comment|/* PCI stuff, should be move to pic.h */
-DECL|macro|PCI_DEVICE_ID_SI_900
-mdefine_line|#define PCI_DEVICE_ID_SI_900&t;0x900   
-DECL|macro|PCI_DEVICE_ID_SI_7016
-mdefine_line|#define PCI_DEVICE_ID_SI_7016&t;0x7016
 DECL|macro|SIS630_VENDOR_ID
 mdefine_line|#define SIS630_VENDOR_ID        0x1039
 DECL|macro|SIS630_DEVICE_ID
 mdefine_line|#define SIS630_DEVICE_ID        0x0630
-multiline_comment|/* ioctl for accessing MII transceiver */
-DECL|macro|SIOCGMIIPHY
-mdefine_line|#define SIOCGMIIPHY (SIOCDEVPRIVATE)&t;&t;/* Get the PHY in use. */
-DECL|macro|SIOCGMIIREG
-mdefine_line|#define SIOCGMIIREG (SIOCDEVPRIVATE+1)&t;&t;/* Read a PHY register. */
-DECL|macro|SIOCSMIIREG
-mdefine_line|#define SIOCSMIIREG (SIOCDEVPRIVATE+2)&t;&t;/* Write a PHY register */
 eof

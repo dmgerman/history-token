@@ -795,9 +795,15 @@ r_int
 r_int
 id|proc_alloc_map
 (braket
+(paren
 id|PROC_NDYNAMIC
+op_plus
+id|BITS_PER_LONG
+op_minus
+l_int|1
+)paren
 op_div
-l_int|8
+id|BITS_PER_LONG
 )braket
 suffix:semicolon
 DECL|variable|proc_alloc_map_lock

@@ -58,8 +58,6 @@ DECL|variable|system_base
 r_int
 r_int
 id|system_base
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dmaptr
 r_int

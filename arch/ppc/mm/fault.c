@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.fault.c 1.10 05/17/01 18:14:23 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.fault.c 1.13 06/28/01 15:50:17 paulus&n; */
 multiline_comment|/*&n; *  arch/ppc/mm/fault.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/i386/mm/fault.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  Modified by Cort Dougan and Paul Mackerras.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -65,40 +65,36 @@ DECL|variable|htab_reloads
 r_int
 r_int
 id|htab_reloads
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* updated by head.S:hash_page() */
+multiline_comment|/* updated by hashtable.S:hash_page() */
 DECL|variable|htab_evicts
 r_int
 r_int
 id|htab_evicts
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* updated by head.S:hash_page() */
+multiline_comment|/* updated by hashtable.S:hash_page() */
+DECL|variable|htab_preloads
+r_int
+r_int
+id|htab_preloads
+suffix:semicolon
+multiline_comment|/* updated by hashtable.S:add_hash_page() */
 DECL|variable|pte_misses
 r_int
 r_int
 id|pte_misses
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* updated by do_page_fault() */
 DECL|variable|pte_errors
 r_int
 r_int
 id|pte_errors
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* updated by do_page_fault() */
 DECL|variable|probingmem
 r_int
 r_int
 id|probingmem
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 r_void

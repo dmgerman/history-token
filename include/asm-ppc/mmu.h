@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mmu.h 1.7 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.mmu.h 1.10 06/28/01 15:50:17 paulus&n; */
 multiline_comment|/*&n; * PowerPC memory management structures&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MMU_H_
@@ -524,66 +524,6 @@ DECL|typedef|P601_BAT
 )brace
 id|P601_BAT
 suffix:semicolon
-multiline_comment|/*&n; * Simulated two-level MMU.  This structure is used by the kernel&n; * to keep track of MMU mappings and is used to update/maintain&n; * the hardware HASH table which is really a cache of mappings.&n; *&n; * The simulated structures mimic the hardware available on other&n; * platforms, notably the 80x86 and 680x0.&n; */
-DECL|struct|_pte
-r_typedef
-r_struct
-id|_pte
-(brace
-DECL|member|page_num
-r_int
-r_int
-id|page_num
-suffix:colon
-l_int|20
-suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:colon
-l_int|12
-suffix:semicolon
-multiline_comment|/* Page flags (some unused bits) */
-DECL|typedef|pte
-)brace
-id|pte
-suffix:semicolon
-DECL|macro|PD_SHIFT
-mdefine_line|#define PD_SHIFT (10+12)&t;&t;/* Page directory */
-DECL|macro|PD_MASK
-mdefine_line|#define PD_MASK  0x02FF
-DECL|macro|PT_SHIFT
-mdefine_line|#define PT_SHIFT (12)&t;&t;&t;/* Page Table */
-DECL|macro|PT_MASK
-mdefine_line|#define PT_MASK  0x02FF
-DECL|macro|PG_SHIFT
-mdefine_line|#define PG_SHIFT (12)&t;&t;&t;/* Page Entry */
-multiline_comment|/* MMU context */
-DECL|struct|_MMU_context
-r_typedef
-r_struct
-id|_MMU_context
-(brace
-DECL|member|segs
-id|SEGREG
-id|segs
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* Segment registers */
-DECL|member|pmap
-id|pte
-op_star
-op_star
-id|pmap
-suffix:semicolon
-multiline_comment|/* Two-level page-map structure */
-DECL|typedef|MMU_context
-)brace
-id|MMU_context
-suffix:semicolon
 r_extern
 r_void
 id|_tlbie
@@ -637,35 +577,6 @@ DECL|macro|BPP_RX
 mdefine_line|#define BPP_RX&t;0x01&t;&t;/* Read only */
 DECL|macro|BPP_RW
 mdefine_line|#define BPP_RW&t;0x02&t;&t;/* Read/write */
-multiline_comment|/* Used to set up SDR1 register */
-DECL|macro|HASH_TABLE_SIZE_64K
-mdefine_line|#define HASH_TABLE_SIZE_64K&t;0x00010000
-DECL|macro|HASH_TABLE_SIZE_128K
-mdefine_line|#define HASH_TABLE_SIZE_128K&t;0x00020000
-DECL|macro|HASH_TABLE_SIZE_256K
-mdefine_line|#define HASH_TABLE_SIZE_256K&t;0x00040000
-DECL|macro|HASH_TABLE_SIZE_512K
-mdefine_line|#define HASH_TABLE_SIZE_512K&t;0x00080000
-DECL|macro|HASH_TABLE_SIZE_1M
-mdefine_line|#define HASH_TABLE_SIZE_1M&t;0x00100000
-DECL|macro|HASH_TABLE_SIZE_2M
-mdefine_line|#define HASH_TABLE_SIZE_2M&t;0x00200000
-DECL|macro|HASH_TABLE_SIZE_4M
-mdefine_line|#define HASH_TABLE_SIZE_4M&t;0x00400000
-DECL|macro|HASH_TABLE_MASK_64K
-mdefine_line|#define HASH_TABLE_MASK_64K&t;0x000   
-DECL|macro|HASH_TABLE_MASK_128K
-mdefine_line|#define HASH_TABLE_MASK_128K&t;0x001   
-DECL|macro|HASH_TABLE_MASK_256K
-mdefine_line|#define HASH_TABLE_MASK_256K&t;0x003   
-DECL|macro|HASH_TABLE_MASK_512K
-mdefine_line|#define HASH_TABLE_MASK_512K&t;0x007
-DECL|macro|HASH_TABLE_MASK_1M
-mdefine_line|#define HASH_TABLE_MASK_1M&t;0x00F   
-DECL|macro|HASH_TABLE_MASK_2M
-mdefine_line|#define HASH_TABLE_MASK_2M&t;0x01F   
-DECL|macro|HASH_TABLE_MASK_4M
-mdefine_line|#define HASH_TABLE_MASK_4M&t;0x03F   
 multiline_comment|/* Control/status registers for the MPC8xx.&n; * A write operation to these registers causes serialized access.&n; * During software tablewalk, the registers used perform mask/shift-add&n; * operations when written/read.  A TLB entry is created when the Mx_RPN&n; * is written, and the contents of several registers are used to&n; * create the entry.&n; */
 DECL|macro|MI_CTR
 mdefine_line|#define MI_CTR&t;&t;784&t;/* Instruction TLB control register */

@@ -1,7 +1,7 @@
-multiline_comment|/* $Id: ptrace.h,v 1.7 1999/09/28 22:27:17 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1997, 1998 by Ralf Baechle&n; *&n; * Machine dependent structs and defines to help the user use&n; * the ptrace system call.&n; */
-macro_line|#ifndef __ASM_MIPS_PTRACE_H
-DECL|macro|__ASM_MIPS_PTRACE_H
-mdefine_line|#define __ASM_MIPS_PTRACE_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000 by Ralf Baechle&n; *&n; * Machine dependent structs and defines to help the user use&n; * the ptrace system call.&n; */
+macro_line|#ifndef _ASM_PTRACE_H
+DECL|macro|_ASM_PTRACE_H
+mdefine_line|#define _ASM_PTRACE_H
 macro_line|#include &lt;asm/isadep.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* 0 - 31 are integer registers, 32 - 63 are fp registers.  */
@@ -80,6 +80,18 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* !(_LANGUAGE_ASSEMBLY) */
+multiline_comment|/* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
+multiline_comment|/* #define PTRACE_GETREGS&t;&t;12 */
+multiline_comment|/* #define PTRACE_SETREGS&t;&t;13 */
+multiline_comment|/* #define PTRACE_GETFPREGS&t;&t;14 */
+multiline_comment|/* #define PTRACE_SETFPREGS&t;&t;15 */
+multiline_comment|/* #define PTRACE_GETFPXREGS&t;&t;18 */
+multiline_comment|/* #define PTRACE_SETFPXREGS&t;&t;19 */
+DECL|macro|PTRACE_SETOPTIONS
+mdefine_line|#define PTRACE_SETOPTIONS&t;21
+multiline_comment|/* options set using PTRACE_SETOPTIONS */
+DECL|macro|PTRACE_O_TRACESYSGOOD
+mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
 macro_line|#ifdef _LANGUAGE_ASSEMBLY
 macro_line|#include &lt;asm/offset.h&gt;
 macro_line|#endif
@@ -102,5 +114,5 @@ op_star
 suffix:semicolon
 macro_line|#endif /* !(_LANGUAGE_ASSEMBLY) */
 macro_line|#endif
-macro_line|#endif /* __ASM_MIPS_PTRACE_H */
+macro_line|#endif /* _ASM_PTRACE_H */
 eof

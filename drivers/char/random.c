@@ -1585,20 +1585,12 @@ id|boot_cpu_data.x86_capability
 id|__u32
 id|high
 suffix:semicolon
-id|__asm__
+id|rdtsc
 c_func
 (paren
-l_string|&quot;.byte 0x0f,0x31&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
 id|time
-)paren
 comma
-l_string|&quot;=d&quot;
-(paren
 id|high
-)paren
 )paren
 suffix:semicolon
 id|num

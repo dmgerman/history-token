@@ -1,8 +1,13 @@
-multiline_comment|/* $Id: delay.h,v 1.2 1999/01/04 16:09:20 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 by Waldorf Electronics&n; * Copyright (C) 1995 - 1998 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 by Waldorf Electronics&n; * Copyright (C) 1995 - 1998, 2001 by Ralf Baechle&n; */
 macro_line|#ifndef _ASM_DELAY_H
 DECL|macro|_ASM_DELAY_H
 mdefine_line|#define _ASM_DELAY_H
 macro_line|#include &lt;linux/config.h&gt;
+r_extern
+r_int
+r_int
+id|loops_per_jiffy
+suffix:semicolon
 r_extern
 id|__inline__
 r_void
@@ -49,7 +54,7 @@ id|usecs
 comma
 r_int
 r_int
-id|lps
+id|lpj
 )paren
 (brace
 r_int
@@ -58,9 +63,9 @@ id|lo
 suffix:semicolon
 id|usecs
 op_mul_assign
-l_int|0x000010c6
+l_int|0x00068db8
 suffix:semicolon
-multiline_comment|/* 2**32 / 1000000 */
+multiline_comment|/* 2**32 / (1000000 / HZ) */
 id|__asm__
 c_func
 (paren
@@ -83,7 +88,7 @@ id|usecs
 comma
 l_string|&quot;r&quot;
 (paren
-id|lps
+id|lpj
 )paren
 )paren
 suffix:semicolon
@@ -99,7 +104,7 @@ DECL|macro|__udelay_val
 mdefine_line|#define __udelay_val cpu_data[smp_processor_id()].udelay_val
 macro_line|#else
 DECL|macro|__udelay_val
-mdefine_line|#define __udelay_val loops_per_sec
+mdefine_line|#define __udelay_val loops_per_jiffy
 macro_line|#endif
 DECL|macro|udelay
 mdefine_line|#define udelay(usecs) __udelay((usecs),__udelay_val)

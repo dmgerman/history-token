@@ -1032,16 +1032,6 @@ id|io
 (braket
 l_int|4
 )braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|irq
 r_static
@@ -1050,16 +1040,6 @@ id|irq
 (braket
 l_int|4
 )braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|name
 r_static
@@ -1071,16 +1051,6 @@ l_int|4
 (braket
 id|IFNAMSIZ
 )braket
-op_assign
-(brace
-l_string|&quot;&quot;
-comma
-l_string|&quot;&quot;
-comma
-l_string|&quot;&quot;
-comma
-l_string|&quot;&quot;
-)brace
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -1109,6 +1079,30 @@ c_func
 (paren
 id|IFNAMSIZ
 )paren
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;WaveLAN I/O base address(es),required&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;WaveLAN IRQ number(s)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|name
+comma
+l_string|&quot;WaveLAN interface neme(s)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* MODULE */

@@ -794,7 +794,7 @@ c_cond
 (paren
 id|sys_size
 OG
-l_int|0xffff
+l_int|0xefff
 )paren
 id|fprintf
 c_func

@@ -1,10 +1,10 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * This file contains the MIPS architecture specific IDE code.&n; *&n; * Copyright (C) 1994-1996  Linus Torvalds &amp; authors&n; */
-multiline_comment|/*&n; *  This file contains the MIPS architecture specific IDE code.&n; */
 macro_line|#ifndef __ASM_IDE_H
 DECL|macro|__ASM_IDE_H
 mdefine_line|#define __ASM_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef MAX_HWIFS
 macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|macro|MAX_HWIFS
@@ -411,23 +411,10 @@ suffix:semicolon
 multiline_comment|/* all of the bits together */
 r_struct
 (brace
-DECL|member|head
+macro_line|#ifdef __MIPSEB__
+DECL|member|bit7
 r_int
-id|head
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* always zeros here */
-DECL|member|unit
-r_int
-id|unit
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* drive select number, 0 or 1 */
-DECL|member|bit5
-r_int
-id|bit5
+id|bit7
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -439,13 +426,59 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* using LBA instead of CHS */
-DECL|member|bit7
+DECL|member|bit5
+r_int
+id|bit5
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* always 1 */
+DECL|member|unit
+r_int
+id|unit
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* drive select number, 0 or 1 */
+DECL|member|head
+r_int
+id|head
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* always zeros here */
+macro_line|#else
+r_int
+id|head
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* always zeros here */
+r_int
+id|unit
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* drive select number, 0 or 1 */
+r_int
+id|bit5
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* always 1 */
+r_int
+id|lba
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* using LBA instead of CHS */
 r_int
 id|bit7
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* always 1 */
+macro_line|#endif
 DECL|member|b
 )brace
 id|b
@@ -625,11 +658,400 @@ id|extent
 )paren
 suffix:semicolon
 )brace
+DECL|macro|SUPPORT_VLB_SYNC
+macro_line|#undef  SUPPORT_VLB_SYNC
+DECL|macro|SUPPORT_VLB_SYNC
+mdefine_line|#define SUPPORT_VLB_SYNC 0
+macro_line|#if defined(__MIPSEB__)
+DECL|macro|T_CHAR
+mdefine_line|#define T_CHAR          (0x0000)        /* char:  don&squot;t touch  */
+DECL|macro|T_SHORT
+mdefine_line|#define T_SHORT         (0x4000)        /* short: 12 -&gt; 21     */
+DECL|macro|T_INT
+mdefine_line|#define T_INT           (0x8000)        /* int:   1234 -&gt; 4321 */
+DECL|macro|T_TEXT
+mdefine_line|#define T_TEXT          (0xc000)        /* text:  12 -&gt; 21     */
+DECL|macro|T_MASK_TYPE
+mdefine_line|#define T_MASK_TYPE     (0xc000)
+DECL|macro|T_MASK_COUNT
+mdefine_line|#define T_MASK_COUNT    (0x3fff)
+DECL|macro|D_CHAR
+mdefine_line|#define D_CHAR(cnt)     (T_CHAR  | (cnt))
+DECL|macro|D_SHORT
+mdefine_line|#define D_SHORT(cnt)    (T_SHORT | (cnt))
+DECL|macro|D_INT
+mdefine_line|#define D_INT(cnt)      (T_INT   | (cnt))
+DECL|macro|D_TEXT
+mdefine_line|#define D_TEXT(cnt)     (T_TEXT  | (cnt))
+DECL|variable|driveid_types
+r_static
+id|u_short
+id|driveid_types
+(braket
+)braket
+op_assign
+(brace
+id|D_SHORT
+c_func
+(paren
+l_int|10
+)paren
+comma
+multiline_comment|/* config - vendor2 */
+id|D_TEXT
+c_func
+(paren
+l_int|20
+)paren
+comma
+multiline_comment|/* serial_no */
+id|D_SHORT
+c_func
+(paren
+l_int|3
+)paren
+comma
+multiline_comment|/* buf_type - ecc_bytes */
+id|D_TEXT
+c_func
+(paren
+l_int|48
+)paren
+comma
+multiline_comment|/* fw_rev - model */
+id|D_CHAR
+c_func
+(paren
+l_int|2
+)paren
+comma
+multiline_comment|/* max_multsect - vendor3 */
+id|D_SHORT
+c_func
+(paren
+l_int|1
+)paren
+comma
+multiline_comment|/* dword_io */
+id|D_CHAR
+c_func
+(paren
+l_int|2
+)paren
+comma
+multiline_comment|/* vendor4 - capability */
+id|D_SHORT
+c_func
+(paren
+l_int|1
+)paren
+comma
+multiline_comment|/* reserved50 */
+id|D_CHAR
+c_func
+(paren
+l_int|4
+)paren
+comma
+multiline_comment|/* vendor5 - tDMA */
+id|D_SHORT
+c_func
+(paren
+l_int|4
+)paren
+comma
+multiline_comment|/* field_valid - cur_sectors */
+id|D_INT
+c_func
+(paren
+l_int|1
+)paren
+comma
+multiline_comment|/* cur_capacity */
+id|D_CHAR
+c_func
+(paren
+l_int|2
+)paren
+comma
+multiline_comment|/* multsect - multsect_valid */
+id|D_INT
+c_func
+(paren
+l_int|1
+)paren
+comma
+multiline_comment|/* lba_capacity */
+id|D_SHORT
+c_func
+(paren
+l_int|194
+)paren
+multiline_comment|/* dma_1word - reservedyy */
+)brace
+suffix:semicolon
+DECL|macro|num_driveid_types
+mdefine_line|#define num_driveid_types       (sizeof(driveid_types)/sizeof(*driveid_types))
+DECL|function|ide_fix_driveid
+r_static
+id|__inline__
+r_void
+id|ide_fix_driveid
+c_func
+(paren
+r_struct
+id|hd_driveid
+op_star
+id|id
+)paren
+(brace
+id|u_char
+op_star
+id|p
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|id
+suffix:semicolon
+r_int
+id|i
+comma
+id|j
+comma
+id|cnt
+suffix:semicolon
+id|u_char
+id|t
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|num_driveid_types
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|cnt
+op_assign
+id|driveid_types
+(braket
+id|i
+)braket
+op_amp
+id|T_MASK_COUNT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|driveid_types
+(braket
+id|i
+)braket
+op_amp
+id|T_MASK_TYPE
+)paren
+(brace
+r_case
+id|T_CHAR
+suffix:colon
+id|p
+op_add_assign
+id|cnt
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|T_SHORT
+suffix:colon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|cnt
+suffix:semicolon
+id|j
+op_increment
+)paren
+(brace
+id|t
+op_assign
+id|p
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|p
+(braket
+l_int|0
+)braket
+op_assign
+id|p
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|p
+(braket
+l_int|1
+)braket
+op_assign
+id|t
+suffix:semicolon
+id|p
+op_add_assign
+l_int|2
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|T_INT
+suffix:colon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|cnt
+suffix:semicolon
+id|j
+op_increment
+)paren
+(brace
+id|t
+op_assign
+id|p
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|p
+(braket
+l_int|0
+)braket
+op_assign
+id|p
+(braket
+l_int|3
+)braket
+suffix:semicolon
+id|p
+(braket
+l_int|3
+)braket
+op_assign
+id|t
+suffix:semicolon
+id|t
+op_assign
+id|p
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|p
+(braket
+l_int|1
+)braket
+op_assign
+id|p
+(braket
+l_int|2
+)braket
+suffix:semicolon
+id|p
+(braket
+l_int|2
+)braket
+op_assign
+id|t
+suffix:semicolon
+id|p
+op_add_assign
+l_int|4
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|T_TEXT
+suffix:colon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|cnt
+suffix:semicolon
+id|j
+op_add_assign
+l_int|2
+)paren
+(brace
+id|t
+op_assign
+id|p
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|p
+(braket
+l_int|0
+)braket
+op_assign
+id|p
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|p
+(braket
+l_int|1
+)braket
+op_assign
+id|t
+suffix:semicolon
+id|p
+op_add_assign
+l_int|2
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
+suffix:semicolon
+)brace
+)brace
+macro_line|#else /* defined(CONFIG_SWAP_IO_SPACE) &amp;&amp; defined(__MIPSEB__)  */
+DECL|macro|ide_fix_driveid
+mdefine_line|#define ide_fix_driveid(id)&t;&t;do {} while (0)
+macro_line|#endif
 multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
 DECL|macro|ide_ack_intr
 mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
-DECL|macro|ide_fix_driveid
-mdefine_line|#define ide_fix_driveid(id)&t;&t;do {} while (0)
 DECL|macro|ide_release_lock
 mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
 DECL|macro|ide_get_lock

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnl2.c,v 2.25.6.2 2001/05/26 15:19:57 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: isdnl2.c,v 2.25.6.3 2001/06/09 15:14:17 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -10,7 +10,7 @@ r_char
 op_star
 id|l2_revision
 op_assign
-l_string|&quot;$Revision: 2.25.6.2 $&quot;
+l_string|&quot;$Revision: 2.25.6.3 $&quot;
 suffix:semicolon
 r_static
 r_void
@@ -3223,7 +3223,7 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -3275,7 +3275,7 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -3401,7 +3401,7 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -3760,7 +3760,7 @@ op_ne
 id|st-&gt;l2.va
 )paren
 (brace
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -3967,7 +3967,7 @@ comma
 id|RSP
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -4111,7 +4111,7 @@ op_ne
 id|st-&gt;l2.va
 )paren
 (brace
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -4442,7 +4442,7 @@ op_amp
 id|st-&gt;l2.flag
 )paren
 )paren
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -6451,7 +6451,7 @@ op_amp
 id|st-&gt;l2.flag
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -8004,7 +8004,7 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -8051,7 +8051,7 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -8112,14 +8112,14 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|st-&gt;l2.i_queue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -8186,7 +8186,7 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -8255,14 +8255,14 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|st-&gt;l2.i_queue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -8346,14 +8346,14 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|st-&gt;l2.i_queue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -8413,14 +8413,14 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|st-&gt;l2.i_queue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -8482,7 +8482,7 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -8546,14 +8546,14 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|st-&gt;l2.i_queue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -10582,14 +10582,14 @@ comma
 l_int|16
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|st-&gt;l2.i_queue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp

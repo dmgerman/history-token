@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: callc.c,v 2.51.6.3 2001/05/26 15:19:57 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: callc.c,v 2.51.6.4 2001/06/09 15:14:17 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|lli_revision
 op_assign
-l_string|&quot;$Revision: 2.51.6.3 $&quot;
+l_string|&quot;$Revision: 2.51.6.4 $&quot;
 suffix:semicolon
 r_extern
 r_struct
@@ -158,55 +158,6 @@ id|IsdnCardState
 op_star
 )paren
 l_int|0
-suffix:semicolon
-)brace
-r_int
-DECL|function|discard_queue
-id|discard_queue
-c_func
-(paren
-r_struct
-id|sk_buff_head
-op_star
-id|q
-)paren
-(brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-id|q
-)paren
-)paren
-)paren
-(brace
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-id|ret
-op_increment
-suffix:semicolon
-)brace
-r_return
-id|ret
 suffix:semicolon
 )brace
 r_static

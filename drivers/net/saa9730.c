@@ -28,8 +28,6 @@ r_static
 r_int
 r_int
 id|pci_irq_line
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|INL
 mdefine_line|#define INL(a)     inl((unsigned long)a)

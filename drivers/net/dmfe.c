@@ -112,7 +112,7 @@ mdefine_line|#define DMFE_TX_TIMEOUT (HZ * 1.5)&t;/* tx packet time-out time 1.5
 DECL|macro|DMFE_TX_KICK
 mdefine_line|#define DMFE_TX_KICK &t;(HZ * 0.5)&t;/* tx packet Kick-out time 0.5 s&quot; */
 DECL|macro|DMFE_DBUG
-mdefine_line|#define DMFE_DBUG(dbug_now, msg, vaule) if (dmfe_debug || dbug_now) printk(KERN_ERR &quot;&lt;DMFE&gt;: %s %x&bslash;n&quot;, msg, vaule)
+mdefine_line|#define DMFE_DBUG(dbug_now, msg, value) if (dmfe_debug || (dbug_now)) printk(KERN_ERR &quot;&lt;DMFE&gt;: %s %lx&bslash;n&quot;, (msg), (long) (value))
 DECL|macro|SHOW_MEDIA_TYPE
 mdefine_line|#define SHOW_MEDIA_TYPE(mode) printk(KERN_ERR &quot;&lt;DMFE&gt;: Change Speed to %sMhz %s duplex&bslash;n&quot;,mode &amp; 1 ?&quot;100&quot;:&quot;10&quot;, mode &amp; 4 ? &quot;full&quot;:&quot;half&quot;);
 multiline_comment|/* CR9 definition: SROM/MII */
@@ -251,7 +251,7 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 DECL|member|ioaddr
-id|u32
+r_int
 id|ioaddr
 suffix:semicolon
 multiline_comment|/* I/O base address */
@@ -359,22 +359,26 @@ id|rx_ready_ptr
 suffix:semicolon
 multiline_comment|/* packet come pointer */
 DECL|member|tx_packet_cnt
-id|u32
+r_int
+r_int
 id|tx_packet_cnt
 suffix:semicolon
 multiline_comment|/* transmitted packet count */
 DECL|member|tx_queue_cnt
-id|u32
+r_int
+r_int
 id|tx_queue_cnt
 suffix:semicolon
 multiline_comment|/* wait to send packet count */
 DECL|member|rx_avail_cnt
-id|u32
+r_int
+r_int
 id|rx_avail_cnt
 suffix:semicolon
 multiline_comment|/* available rx descriptor count */
 DECL|member|interval_rx_cnt
-id|u32
+r_int
+r_int
 id|interval_rx_cnt
 suffix:semicolon
 multiline_comment|/* rx packet count a callback time */
@@ -683,8 +687,6 @@ DECL|variable|dmfe_debug
 r_static
 r_int
 id|dmfe_debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dmfe_media_mode
 r_static
@@ -698,23 +700,17 @@ DECL|variable|dmfe_cr6_user_set
 r_static
 id|u32
 id|dmfe_cr6_user_set
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* For module input parameter */
 DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|cr6set
 r_static
 id|u32
 id|cr6set
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|mode
 r_static
@@ -735,40 +731,30 @@ DECL|variable|HPNA_mode
 r_static
 id|u8
 id|HPNA_mode
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Default: Low Power/High Speed */
 DECL|variable|HPNA_rx_cmd
 r_static
 id|u8
 id|HPNA_rx_cmd
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Default: Disable Rx remote command */
 DECL|variable|HPNA_tx_cmd
 r_static
 id|u8
 id|HPNA_tx_cmd
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Default: Don&squot;t issue remote command */
 DECL|variable|HPNA_NoiseFloor
 r_static
 id|u8
 id|HPNA_NoiseFloor
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Default: HPNA NoiseFloor */
 DECL|variable|SF_mode
 r_static
 id|u8
 id|SF_mode
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Special Function: 1:VLAN, 2:RX Flow Control&n;&t;&t;&t;&t;   4: TX pause packet */
 DECL|variable|CrcTable
@@ -1400,7 +1386,8 @@ r_struct
 id|dmfe_board_info
 op_star
 comma
-id|u32
+r_int
+r_int
 )paren
 suffix:semicolon
 r_static
@@ -1420,7 +1407,8 @@ c_func
 (paren
 id|u32
 comma
-id|u32
+r_int
+r_int
 )paren
 suffix:semicolon
 r_static
@@ -1452,7 +1440,8 @@ id|u16
 id|phy_read
 c_func
 (paren
-id|u32
+r_int
+r_int
 comma
 id|u8
 comma
@@ -1466,7 +1455,8 @@ r_void
 id|phy_write
 c_func
 (paren
-id|u32
+r_int
+r_int
 comma
 id|u8
 comma
@@ -1482,7 +1472,8 @@ r_void
 id|phy_write_1bit
 c_func
 (paren
-id|u32
+r_int
+r_int
 comma
 id|u32
 )paren
@@ -1492,7 +1483,8 @@ id|u16
 id|phy_read_1bit
 c_func
 (paren
-id|u32
+r_int
+r_int
 )paren
 suffix:semicolon
 r_static
@@ -2606,7 +2598,8 @@ id|db
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|ioaddr
 op_assign
 id|db-&gt;ioaddr
@@ -2957,7 +2950,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;&lt;DMFE&gt;: No Tx resource %d&bslash;n&quot;
+l_string|&quot;&lt;DMFE&gt;: No Tx resource %ld&bslash;n&quot;
 comma
 id|db-&gt;tx_queue_cnt
 )paren
@@ -3149,7 +3142,8 @@ id|db
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -3298,7 +3292,8 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -3561,7 +3556,8 @@ id|tx_desc
 op_star
 id|txptr
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -5365,7 +5361,8 @@ id|dmfe_board_info
 op_star
 id|db
 comma
-id|u32
+r_int
+r_int
 id|ioaddr
 )paren
 (brace
@@ -5731,7 +5728,7 @@ id|db
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Update CR6 vaule&n; *&t;Firstly stop DM910X , then written value and start&n; */
+multiline_comment|/*&n; *&t;Update CR6 value&n; *&t;Firstly stop DM910X , then written value and start&n; */
 DECL|function|update_cr6
 r_static
 r_void
@@ -5741,7 +5738,8 @@ c_func
 id|u32
 id|cr6_data
 comma
-id|u32
+r_int
+r_int
 id|ioaddr
 )paren
 (brace
@@ -5814,7 +5812,8 @@ id|u16
 op_star
 id|addrptr
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -6368,6 +6367,7 @@ id|u32
 )paren
 id|skb
 suffix:semicolon
+multiline_comment|/* FIXME */
 id|rxptr-&gt;rdes2
 op_assign
 id|cpu_to_le32
@@ -7271,7 +7271,8 @@ r_void
 id|phy_write
 c_func
 (paren
-id|u32
+r_int
+r_int
 id|iobase
 comma
 id|u8
@@ -7290,7 +7291,8 @@ id|chip_id
 id|u16
 id|i
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|ioaddr
 suffix:semicolon
 r_if
@@ -7509,7 +7511,8 @@ id|u16
 id|phy_read
 c_func
 (paren
-id|u32
+r_int
+r_int
 id|iobase
 comma
 id|u8
@@ -7528,7 +7531,8 @@ suffix:semicolon
 id|u16
 id|phy_data
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|ioaddr
 suffix:semicolon
 r_if
@@ -7743,7 +7747,8 @@ r_void
 id|phy_write_1bit
 c_func
 (paren
-id|u32
+r_int
+r_int
 id|ioaddr
 comma
 id|u32
@@ -7805,7 +7810,8 @@ id|u16
 id|phy_read_1bit
 c_func
 (paren
-id|u32
+r_int
+r_int
 id|ioaddr
 )paren
 (brace

@@ -1,7 +1,7 @@
 macro_line|#ifndef _SYSV_FS_I
 DECL|macro|_SYSV_FS_I
 mdefine_line|#define _SYSV_FS_I
-multiline_comment|/*&n; * SystemV/Coherent FS inode data in memory&n; */
+multiline_comment|/*&n; * SystemV/V7/Coherent FS inode data in memory&n; */
 DECL|struct|sysv_inode_info
 r_struct
 id|sysv_inode_info

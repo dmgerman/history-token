@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: offset.c,v 1.11 1999/09/28 22:25:50 ralf Exp $&n; *&n; * offset.c: Calculate pt_regs and task_struct offsets.&n; *&n; * Copyright (C) 1996 David S. Miller&n; * Copyright (C) 1997, 1998, 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * offset.c: Calculate pt_regs and task_struct offsets.&n; *&n; * Copyright (C) 1996 David S. Miller&n; * Copyright (C) 1997, 1998, 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; *&n; * Kevin Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -677,6 +677,17 @@ comma
 id|mm
 )paren
 suffix:semicolon
+id|offset
+c_func
+(paren
+l_string|&quot;#define TASK_PID           &quot;
+comma
+r_struct
+id|task_struct
+comma
+id|pid
+)paren
+suffix:semicolon
 id|size
 c_func
 (paren
@@ -939,6 +950,30 @@ id|task_struct
 comma
 "&bslash;"
 id|thread.irix_oldctx
+)paren
+suffix:semicolon
+id|offset
+c_func
+(paren
+l_string|&quot;#define THREAD_DSEEPC  &quot;
+comma
+r_struct
+id|task_struct
+comma
+"&bslash;"
+id|thread.dsemul_epc
+)paren
+suffix:semicolon
+id|offset
+c_func
+(paren
+l_string|&quot;#define THREAD_DSEAERPC &quot;
+comma
+r_struct
+id|task_struct
+comma
+"&bslash;"
+id|thread.dsemul_aerpc
 )paren
 suffix:semicolon
 id|linefeed

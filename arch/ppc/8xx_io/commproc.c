@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.commproc.c 1.8 05/18/01 07:54:04 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.commproc.c 1.11 06/15/01 13:00:20 paulus&n; */
 multiline_comment|/*&n; * General Purpose functions for the global management of the&n; * Communication Processor Module.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * In addition to the individual control of the communication&n; * channels, there are a few functions that globally affect the&n; * communication processor.&n; *&n; * Buffer descriptors must be allocated from the dual ported memory&n; * space.  The allocator for that is here.  When the communication&n; * process is reset, we reclaim the memory available.  There is&n; * currently no deallocator for this memory.&n; * The amount of space available is platform dependent.  On the&n; * MBX, the EPPC software loads additional microcode into the&n; * communication processor, and uses some of the DP ram for this&n; * purpose.  Current, the first 512 bytes and the last 256 bytes of&n; * memory are used.  Right now I am conservative and only use the&n; * memory that can never be used for microcode.  If there are&n; * applications that require more DP ram, we can expand the boundaries&n; * but then we have to be careful of any downloaded microcode.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -57,6 +57,11 @@ id|handler
 (paren
 r_void
 op_star
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 DECL|member|dev_id
@@ -100,6 +105,11 @@ c_func
 (paren
 r_void
 op_star
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_void
@@ -391,6 +401,8 @@ id|vec
 )braket
 dot
 id|dev_id
+comma
+id|regs
 )paren
 suffix:semicolon
 r_else
@@ -439,6 +451,11 @@ c_func
 r_void
 op_star
 id|dev
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 )brace
@@ -459,6 +476,11 @@ id|handler
 (paren
 r_void
 op_star
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 comma
 r_void

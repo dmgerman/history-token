@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.main.c 1.7 05/18/01 06:20:29 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.main.c 1.9 06/12/01 16:42:26 paulus&n; */
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;zlib.h&quot;
@@ -522,6 +522,8 @@ r_struct
 id|bi_record
 )paren
 op_plus
+l_int|2
+op_star
 r_sizeof
 (paren
 r_int
@@ -576,6 +578,8 @@ r_struct
 id|bi_record
 )paren
 op_plus
+l_int|2
+op_star
 r_sizeof
 (paren
 r_int

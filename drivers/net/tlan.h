@@ -39,22 +39,6 @@ mdefine_line|#define TX_TIMEOUT&t;&t;(10*HZ)&t; /* We need time for auto-neg */
 DECL|macro|MAX_TLAN_BOARDS
 mdefine_line|#define MAX_TLAN_BOARDS&t;&t;8&t; /* Max number of boards installed at a time */
 multiline_comment|/*****************************************************************&n;&t; * Device Identification Definitions&n;&t; *&n;&t; ****************************************************************/
-DECL|macro|PCI_DEVICE_ID_NETELLIGENT_10
-mdefine_line|#define PCI_DEVICE_ID_NETELLIGENT_10&t;&t;&t;0xAE34
-DECL|macro|PCI_DEVICE_ID_NETELLIGENT_10_100
-mdefine_line|#define PCI_DEVICE_ID_NETELLIGENT_10_100&t;&t;0xAE32
-DECL|macro|PCI_DEVICE_ID_NETFLEX_3P_INTEGRATED
-mdefine_line|#define PCI_DEVICE_ID_NETFLEX_3P_INTEGRATED&t;&t;0xAE35
-DECL|macro|PCI_DEVICE_ID_NETFLEX_3P
-mdefine_line|#define PCI_DEVICE_ID_NETFLEX_3P&t;&t;&t;0xF130
-DECL|macro|PCI_DEVICE_ID_NETFLEX_3P_BNC
-mdefine_line|#define PCI_DEVICE_ID_NETFLEX_3P_BNC&t;&t;&t;0xF150
-DECL|macro|PCI_DEVICE_ID_NETELLIGENT_10_100_PROLIANT
-mdefine_line|#define PCI_DEVICE_ID_NETELLIGENT_10_100_PROLIANT&t;0xAE43
-DECL|macro|PCI_DEVICE_ID_NETELLIGENT_10_100_DUAL
-mdefine_line|#define PCI_DEVICE_ID_NETELLIGENT_10_100_DUAL&t;&t;0xAE40
-DECL|macro|PCI_DEVICE_ID_DESKPRO_4000_5233MMX
-mdefine_line|#define PCI_DEVICE_ID_DESKPRO_4000_5233MMX&t;&t;0xB011
 DECL|macro|PCI_DEVICE_ID_NETELLIGENT_10_T2
 mdefine_line|#define PCI_DEVICE_ID_NETELLIGENT_10_T2&t;&t;&t;0xB012
 DECL|macro|PCI_DEVICE_ID_NETELLIGENT_10_100_WS_5100

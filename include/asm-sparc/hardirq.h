@@ -1,4 +1,4 @@
-multiline_comment|/* hardirq.h: 32-bit Sparc hard IRQ support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998-2000 Anton Blanchard (anton@linuxcare.com)&n; */
+multiline_comment|/* hardirq.h: 32-bit Sparc hard IRQ support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998-2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#ifndef __SPARC_HARDIRQ_H
 DECL|macro|__SPARC_HARDIRQ_H
 mdefine_line|#define __SPARC_HARDIRQ_H

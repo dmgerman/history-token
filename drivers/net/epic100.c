@@ -1,11 +1,11 @@
 multiline_comment|/* epic100.c: A SMC 83c170 EPIC/100 Fast Ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Written/copyright 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the SMC83c170/175 &quot;EPIC&quot; series, as used on the&n;&t;SMC EtherPower II 9432 PCI adapter, and several CardBus cards.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Information and updates available at&n;&t;http://www.scyld.com/network/epic100.html&n;&n;&t;---------------------------------------------------------------------&n;&t;&n;&t;Linux kernel-specific changes:&n;&t;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge becker version 1.09 (4/08/2000)&n;&n;&t;LK1.1.3:&n;&t;* Major bugfix to 1.09 driver (Francis Romieu)&n;&t;&n;&t;LK1.1.4 (jgarzik):&n;&t;* Merge becker test version 1.09 (5/29/2000)&n;&n;&t;LK1.1.5:&n;&t;* Fix locking (jgarzik)&n;&t;* Limit 83c175 probe to ethernet-class PCI devices (rgooch)&n;&n;&t;LK1.1.6:&n;&t;* Merge becker version 1.11&n;&t;* Move pci_enable_device before any PCI BAR len checks&n;&n;&t;LK1.1.7:&n;&t;* { fill me in }&n;&n;&t;LK1.1.8:&n;&t;* ethtool support (jgarzik)&n;&n;*/
+multiline_comment|/*&n;&t;Written/copyright 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the SMC83c170/175 &quot;EPIC&quot; series, as used on the&n;&t;SMC EtherPower II 9432 PCI adapter, and several CardBus cards.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Information and updates available at&n;&t;http://www.scyld.com/network/epic100.html&n;&n;&t;---------------------------------------------------------------------&n;&t;&n;&t;Linux kernel-specific changes:&n;&t;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge becker version 1.09 (4/08/2000)&n;&n;&t;LK1.1.3:&n;&t;* Major bugfix to 1.09 driver (Francis Romieu)&n;&t;&n;&t;LK1.1.4 (jgarzik):&n;&t;* Merge becker test version 1.09 (5/29/2000)&n;&n;&t;LK1.1.5:&n;&t;* Fix locking (jgarzik)&n;&t;* Limit 83c175 probe to ethernet-class PCI devices (rgooch)&n;&n;&t;LK1.1.6:&n;&t;* Merge becker version 1.11&n;&t;* Move pci_enable_device before any PCI BAR len checks&n;&n;&t;LK1.1.7:&n;&t;* { fill me in }&n;&n;&t;LK1.1.8:&n;&t;* ethtool driver info support (jgarzik)&n;&n;&t;LK1.1.9:&n;&t;* MII ioctl support (jgarzik)&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;epic100&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.11+LK1.1.8&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.11+LK1.1.9&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;May 18, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;July 2, 2001&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -7001,7 +7001,6 @@ DECL|function|netdev_ethtool_ioctl
 r_static
 r_int
 id|netdev_ethtool_ioctl
-c_func
 (paren
 r_struct
 id|net_device
@@ -7027,7 +7026,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|ethcmd
@@ -7063,7 +7061,6 @@ id|ETHTOOL_GDRVINFO
 )brace
 suffix:semicolon
 id|strcpy
-c_func
 (paren
 id|info.driver
 comma
@@ -7071,7 +7068,6 @@ id|DRV_NAME
 )paren
 suffix:semicolon
 id|strcpy
-c_func
 (paren
 id|info.version
 comma
@@ -7079,7 +7075,6 @@ id|DRV_VERSION
 )paren
 suffix:semicolon
 id|strcpy
-c_func
 (paren
 id|info.bus_info
 comma
@@ -7090,7 +7085,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 id|useraddr
 comma
@@ -7111,6 +7105,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 r_return
 op_minus
@@ -7149,12 +7147,14 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 id|data
 op_assign
 (paren
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 )paren
 op_amp
@@ -7183,13 +7183,14 @@ id|rq-&gt;ifr_data
 )paren
 suffix:semicolon
 r_case
+id|SIOCGMIIPHY
+suffix:colon
+multiline_comment|/* Get address of MII PHY in use. */
+r_case
 id|SIOCDEVPRIVATE
 suffix:colon
-multiline_comment|/* Get the address of the PHY in use. */
-id|data
-(braket
-l_int|0
-)braket
+multiline_comment|/* for binary compat, remove in 2.5 */
+id|data-&gt;phy_id
 op_assign
 id|ep-&gt;phys
 (braket
@@ -7200,11 +7201,15 @@ l_int|0x1f
 suffix:semicolon
 multiline_comment|/* Fall Through */
 r_case
+id|SIOCGMIIREG
+suffix:colon
+multiline_comment|/* Read MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|1
 suffix:colon
-multiline_comment|/* Read the specified MII register. */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
@@ -7250,27 +7255,18 @@ id|NVCTL
 )paren
 suffix:semicolon
 )brace
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 id|mdio_read
 c_func
 (paren
 id|dev
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 )paren
@@ -7326,11 +7322,15 @@ r_return
 l_int|0
 suffix:semicolon
 r_case
+id|SIOCSMIIREG
+suffix:colon
+multiline_comment|/* Write MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|2
 suffix:colon
-multiline_comment|/* Write the specified MII register */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
@@ -7393,10 +7393,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_eq
 id|ep-&gt;phys
 (braket
@@ -7407,18 +7404,12 @@ l_int|0
 id|u16
 id|value
 op_assign
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 )paren
 (brace
 r_case
@@ -7475,24 +7466,15 @@ c_func
 (paren
 id|dev
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 )paren
 suffix:semicolon
 macro_line|#if 0&t;&t;&t;&t;&t;/* Leave on if the ioctl() is used. */

@@ -3689,7 +3689,7 @@ id|SIGCHLD
 suffix:semicolon
 )brace
 r_else
-id|release
+id|release_task
 c_func
 (paren
 id|p

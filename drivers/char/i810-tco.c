@@ -859,7 +859,7 @@ l_int|0x02
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;i810tco init: failed to reset NO_REBOOT flag&bslash;n&quot;
+l_string|&quot;i810tco init: failed to reset NO_REBOOT flag, reboot disabled by hardware&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

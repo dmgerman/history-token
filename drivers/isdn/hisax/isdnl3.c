@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnl3.c,v 2.17.6.3 2001/05/26 15:19:57 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: isdnl3.c,v 2.17.6.4 2001/06/09 15:14:17 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -11,7 +11,7 @@ r_char
 op_star
 id|l3_revision
 op_assign
-l_string|&quot;$Revision: 2.17.6.3 $&quot;
+l_string|&quot;$Revision: 2.17.6.4 $&quot;
 suffix:semicolon
 DECL|variable|l3fsm
 r_static
@@ -1667,7 +1667,7 @@ comma
 l_int|54
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -2305,7 +2305,7 @@ comma
 id|ST_L3_LC_REL
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -2357,7 +2357,7 @@ comma
 id|ST_L3_LC_REL
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp

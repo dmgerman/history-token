@@ -5,9 +5,11 @@ mdefine_line|#define _ASM_KEYBOARD_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 DECL|macro|DISABLE_KBD_DURING_INTERRUPTS
 mdefine_line|#define DISABLE_KBD_DURING_INTERRUPTS 0
+macro_line|#ifdef CONFIG_PC_KEYB
 r_extern
 r_int
 id|pckbd_setkeycode
@@ -108,6 +110,84 @@ DECL|macro|kbd_init_hw
 mdefine_line|#define kbd_init_hw&t;&t;pckbd_init_hw
 DECL|macro|kbd_sysrq_xlate
 mdefine_line|#define kbd_sysrq_xlate         pckbd_sysrq_xlate
+macro_line|#else
+r_extern
+r_int
+id|kbd_setkeycode
+c_func
+(paren
+r_int
+r_int
+id|scancode
+comma
+r_int
+r_int
+id|keycode
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|kbd_getkeycode
+c_func
+(paren
+r_int
+r_int
+id|scancode
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|kbd_translate
+c_func
+(paren
+r_int
+r_char
+id|scancode
+comma
+r_int
+r_char
+op_star
+id|keycode
+comma
+r_char
+id|raw_mode
+)paren
+suffix:semicolon
+r_extern
+r_char
+id|kbd_unexpected_up
+c_func
+(paren
+r_int
+r_char
+id|keycode
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|kbd_leds
+c_func
+(paren
+r_int
+r_char
+id|leds
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|kbd_init_hw
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+op_star
+id|kbd_sysrq_xlate
+suffix:semicolon
+macro_line|#endif
 DECL|macro|SYSRQ_KEY
 mdefine_line|#define SYSRQ_KEY 0x54
 multiline_comment|/* Some stoneage hardware needs delays after some operations.  */

@@ -229,15 +229,11 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|num_instances
 r_static
 r_int
 id|num_instances
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 r_static

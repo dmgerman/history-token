@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: elsa_ser.c,v 2.10.6.1 2001/02/16 16:43:26 kai Exp $&n; *&n; * stuff for the serial modem on ELSA cards&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: elsa_ser.c,v 2.10.6.2 2001/06/09 15:14:17 kai Exp $&n; *&n; * stuff for the serial modem on ELSA cards&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
@@ -2064,11 +2064,6 @@ op_star
 id|bcs
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 id|modehscx
 c_func
 (paren
@@ -2116,50 +2111,20 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|bcs-&gt;rqueue
 )paren
-)paren
-)paren
-(brace
-id|dev_kfree_skb_any
-c_func
-(paren
-id|skb
-)paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|bcs-&gt;squeue
 )paren
-)paren
-)paren
-(brace
-id|dev_kfree_skb_any
-c_func
-(paren
-id|skb
-)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

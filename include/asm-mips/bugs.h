@@ -1,5 +1,6 @@
-multiline_comment|/* $Id: bugs.h,v 1.4 1999/08/18 23:37:49 ralf Exp $&n; *&n; * Copyright (C) 1995  Waldorf Electronics&n; * Copyright (C) 1997, 1999  Ralf Baechle&n; */
+multiline_comment|/*&n; * Copyright (C) 1995  Waldorf Electronics&n; * Copyright (C) 1997, 1999  Ralf Baechle&n; */
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 multiline_comment|/*&n; * This is included by init/main.c to check for architecture-dependent bugs.&n; *&n; * Needs:&n; *&t;void check_bugs(void);&n; */
 DECL|function|check_wait
 r_static
@@ -20,7 +21,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|mips_cputype
+id|mips_cpu.cputype
 )paren
 (brace
 r_case
@@ -64,6 +65,9 @@ id|CPU_R5000
 suffix:colon
 r_case
 id|CPU_NEVADA
+suffix:colon
+r_case
+id|CPU_RM7000
 suffix:colon
 id|cpu_wait
 op_assign

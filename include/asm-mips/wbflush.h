@@ -20,7 +20,7 @@ mdefine_line|#define wbflush() __wbflush()
 macro_line|#else
 multiline_comment|/*&n; * we don&squot;t need no stinkin&squot; wbflush&n; */
 DECL|macro|wbflush
-mdefine_line|#define wbflush()
+mdefine_line|#define wbflush()  do { } while(0)
 macro_line|#endif
 r_extern
 r_void

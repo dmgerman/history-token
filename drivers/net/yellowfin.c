@@ -7024,12 +7024,14 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 id|data
 op_assign
 (paren
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 )paren
 op_amp
@@ -7058,13 +7060,14 @@ id|rq-&gt;ifr_data
 )paren
 suffix:semicolon
 r_case
+id|SIOCGMIIPHY
+suffix:colon
+multiline_comment|/* Get address of MII PHY in use. */
+r_case
 id|SIOCDEVPRIVATE
 suffix:colon
-multiline_comment|/* Get the address of the PHY in use. */
-id|data
-(braket
-l_int|0
-)braket
+multiline_comment|/* for binary compat, remove in 2.5 */
+id|data-&gt;phy_id
 op_assign
 id|np-&gt;phys
 (braket
@@ -7075,32 +7078,27 @@ l_int|0x1f
 suffix:semicolon
 multiline_comment|/* Fall Through */
 r_case
+id|SIOCGMIIREG
+suffix:colon
+multiline_comment|/* Read MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|1
 suffix:colon
-multiline_comment|/* Read the specified MII register. */
-id|data
-(braket
-l_int|3
-)braket
+multiline_comment|/* for binary compat, remove in 2.5 */
+id|data-&gt;val_out
 op_assign
 id|mdio_read
 c_func
 (paren
 id|ioaddr
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 )paren
@@ -7109,11 +7107,15 @@ r_return
 l_int|0
 suffix:semicolon
 r_case
+id|SIOCSMIIREG
+suffix:colon
+multiline_comment|/* Write MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|2
 suffix:colon
-multiline_comment|/* Write the specified MII register */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
@@ -7131,10 +7133,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_eq
 id|np-&gt;phys
 (braket
@@ -7145,18 +7144,12 @@ l_int|0
 id|u16
 id|value
 op_assign
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 )paren
 (brace
 r_case
@@ -7213,24 +7206,15 @@ c_func
 (paren
 id|ioaddr
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 )paren
 suffix:semicolon
 r_return

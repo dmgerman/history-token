@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.commproc.h 1.8 05/17/01 18:14:20 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.commproc.h 1.13 06/15/01 13:00:20 paulus&n; */
 multiline_comment|/*&n; * MPC8xx Communication Processor Module.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * This file contains structures and information for the communication&n; * processor channels.  Some CPM control and status is available&n; * throught the MPC8xx internal memory map.  See immap.h for details.&n; * This file only contains what I need for the moment, not the total&n; * CPM capabilities.  I (or someone else) will add definitions as they&n; * are needed.  -- Dan&n; *&n; * On the MBX board, EPPC-Bug loads CPM microcode into the first 512&n; * bytes of the DP RAM and relocates the I2C parameter area to the&n; * IDMA1 space.  The remaining DP RAM is available for buffer descriptors&n; * or other use.&n; */
 macro_line|#ifndef __CPM_8XX__
 DECL|macro|__CPM_8XX__
@@ -1667,6 +1667,11 @@ id|handler
 (paren
 r_void
 op_star
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 comma
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.main.c 1.7 05/18/01 06:20:29 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.main.c 1.9 06/15/01 13:16:10 paulus&n; */
 multiline_comment|/*&n; *    Copyright (c) 1997 Paul Mackerras &lt;paulus@cs.anu.edu.au&gt;&n; *      Initial Power Macintosh COFF version.&n; *    Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *      Modifications for an ELF-based IBM evaluation board version.&n; *    Copyright 2000-2001 MontaVista Software Inc.&n; *&t;PPC405GP modifications&n; * &t;Author: MontaVista Software, Inc.&n; *         &t;frank_rowand@mvista.com or source@mvista.com&n; * &t;   &t;debbie_chu@mvista.com&n; *&n; *    Module name: main.c&n; *&n; *    Description:&n; *      This module does most of the real work for the boot loader. It&n; *      checks the variables holding the absolute start address and size&n; *      of the Linux kernel &quot;image&quot; and initial RAM disk &quot;initrd&quot; sections&n; *      and if they are present, moves them to their &quot;proper&quot; locations.&n; *&n; *      For the Linux kernel, &quot;proper&quot; is physical address 0x00000000.&n; *      For the RAM disk, &quot;proper&quot; is the image&squot;s size below the top&n; *      of physical memory. The Linux kernel may be in either raw&n; *      binary form or compressed with GNU zip (aka gzip).&n; *&n; *    This program is free software; you can redistribute it and/or&n; *    modify it under the terms of the GNU General Public License &n; *    as published by the Free Software Foundation; either version&n; *    2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ppc4xx.h&gt;
@@ -33,18 +33,6 @@ mdefine_line|#define&t;PROG_START&t;RAM_START
 multiline_comment|/* Function Macros */
 DECL|macro|ALIGN_UP
 mdefine_line|#define&t;ALIGN_UP(x, align)&t;(((x) + ((align) - 1)) &amp; ~((align) - 1))
-DECL|macro|stringify
-mdefine_line|#define stringify(s)    tostring(s)
-DECL|macro|tostring
-mdefine_line|#define tostring(s)     #s
-DECL|macro|mtdcr
-mdefine_line|#define mtdcr(rn, v)    asm volatile(&quot;mtdcr &quot; stringify(rn) &quot;,%0&quot; : : &quot;r&quot; (v))
-DECL|macro|mfdcr
-mdefine_line|#define mfdcr(rn)       ({unsigned int rval; &bslash;&n;                        asm volatile(&quot;mfdcr %0,&quot; stringify(rn) &bslash;&n;                                     : &quot;=r&quot; (rval)); rval;})
-DECL|macro|DCRN_MALCR
-mdefine_line|#define DCRN_MALCR      0x180   /* MAL Configuration                          */
-DECL|macro|MALCR_SR
-mdefine_line|#define   MALCR_SR      0x80000000      /* Software Reset                     */
 multiline_comment|/* Global Variables */
 multiline_comment|/* Needed by zalloc and zfree for allocating memory */
 DECL|variable|avail_ram
@@ -59,11 +47,17 @@ op_star
 id|end_avail
 suffix:semicolon
 multiline_comment|/* Indicates end of RAM available for heap */
+multiline_comment|/* Needed for serial I/O.&n;*/
+r_extern
+r_int
+r_int
+op_star
+id|com_port
+suffix:semicolon
 DECL|variable|board_info
 id|bd_t
 id|board_info
 suffix:semicolon
-multiline_comment|/*&n; * XXX - Until either the IBM boot ROM provides a way of passing arguments to&n; *       the program it launches or until I/O is working in the boot loader,&n; *       this is a good spot to pass in command line arguments to the kernel&n; *       (e.g. console=tty0).&n; */
 multiline_comment|/*&n;** The bootrom may change bootrom_cmdline to point to a buffer in the&n;** bootrom.&n;*/
 DECL|variable|bootrom_cmdline
 r_char
@@ -99,138 +93,48 @@ macro_line|#endif
 multiline_comment|/* Function Prototypes */
 r_extern
 r_void
-op_star
-id|zalloc
+id|gunzip
 c_func
 (paren
 r_void
 op_star
-id|x
+id|dst
 comma
 r_int
-id|items
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
-multiline_comment|/* serial I/O functions.&n; * These should have generic names, although this is similar to 16550....&n; */
-DECL|variable|uart0_lsr
-r_static
-r_volatile
-r_int
-r_char
-op_star
-id|uart0_lsr
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0xef600305
-suffix:semicolon
-DECL|variable|uart0_xcvr
-r_static
-r_volatile
-r_int
-r_char
-op_star
-id|uart0_xcvr
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0xef600300
-suffix:semicolon
-r_void
-DECL|function|serial_putc
-id|serial_putc
-c_func
-(paren
-r_void
-op_star
-id|unused
+id|dstlen
 comma
 r_int
 r_char
-id|c
-)paren
-(brace
-r_while
-c_loop
-(paren
-(paren
 op_star
-id|uart0_lsr
-op_amp
-id|LSR_THRE
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-op_star
-id|uart0_xcvr
-op_assign
-id|c
-suffix:semicolon
-)brace
+id|src
+comma
 r_int
-r_char
-DECL|function|serial_getc
-id|serial_getc
+op_star
+id|lenp
+)paren
+suffix:semicolon
+r_void
+DECL|function|kick_watchdog
+id|kick_watchdog
 c_func
 (paren
 r_void
-op_star
-id|unused
 )paren
 (brace
-r_while
-c_loop
-(paren
-(paren
-op_star
-id|uart0_lsr
-op_amp
-id|LSR_DR
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-r_return
-(paren
-op_star
-id|uart0_xcvr
-)paren
-suffix:semicolon
-)brace
-r_int
-DECL|function|serial_tstc
-id|serial_tstc
+macro_line|#ifdef CONFIG_405GP
+id|mtspr
 c_func
 (paren
-r_void
-op_star
-id|unused
-)paren
-(brace
-r_return
+id|SPRN_TSR
+comma
 (paren
-(paren
-op_star
-id|uart0_lsr
-op_amp
-id|LSR_DR
+id|TSR_ENW
+op_or
+id|TSR_WIS
 )paren
-op_ne
-l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|start
 r_void
@@ -308,28 +212,43 @@ id|bip
 op_assign
 l_int|NULL
 suffix:semicolon
-r_volatile
-r_int
-r_int
-op_star
-id|em0mr0
+id|com_port
 op_assign
 (paren
-r_int
+r_struct
+id|NS16550
 op_star
 )paren
-l_int|0xEF600800
+id|serial_init
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
-multiline_comment|/* ftr fixup */
-macro_line|#if defined(CONFIG_WALNUT)
-multiline_comment|/* turn off ethernet */
+macro_line|#ifdef CONFIG_405GP
+multiline_comment|/* turn off on-chip ethernet */
 multiline_comment|/* This is to fix a problem with early walnut bootrom. */
+(brace
+multiline_comment|/* Physical mapping of ethernet register space. */
+r_static
+r_struct
+id|ppc405_enet_regs
+op_star
+id|ppc405_enet_regp
+op_assign
+(paren
+r_struct
+id|ppc405_enet_regs
+op_star
+)paren
+id|PPC405_EM0_REG_ADDR
+suffix:semicolon
 id|mtdcr
 c_func
 (paren
 id|DCRN_MALCR
 comma
-id|MALCR_SR
+id|MALCR_MMSR
 )paren
 suffix:semicolon
 multiline_comment|/* 1st reset MAL */
@@ -342,61 +261,17 @@ c_func
 id|DCRN_MALCR
 )paren
 op_amp
-id|MALCR_SR
+id|MALCR_MMSR
 )paren
 (brace
 )brace
 suffix:semicolon
 multiline_comment|/* wait for the reset */
-op_star
-id|em0mr0
+id|ppc405_enet_regp-&gt;em0mr0
 op_assign
 l_int|0x20000000
 suffix:semicolon
 multiline_comment|/* then reset EMAC */
-macro_line|#endif
-macro_line|#if 0
-multiline_comment|/* ftr revisit - remove printf()s */
-id|printf
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;nbootrom_cmdline = &gt;%s&lt;&bslash;n&bslash;n&quot;
-comma
-id|bootrom_cmdline
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|bootrom_cmdline
-op_ne
-l_char|&squot;&bslash;0&squot;
-)paren
-(brace
-id|printf
-c_func
-(paren
-l_string|&quot;bootrom_cmdline != NULL, copying it into cmdline&bslash;n&bslash;n&quot;
-)paren
-suffix:semicolon
-op_star
-id|treeboot_bootrom_cmdline
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|strcat
-c_func
-(paren
-id|treeboot_bootrom_cmdline
-comma
-id|bootrom_cmdline
-)paren
-suffix:semicolon
-id|cmdline
-op_assign
-id|treeboot_bootrom_cmdline
-suffix:semicolon
 )brace
 macro_line|#endif
 r_if
@@ -428,6 +303,11 @@ id|bd_t
 )paren
 suffix:semicolon
 multiline_comment|/* Init RAM disk (initrd) section */
+id|kick_watchdog
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -512,6 +392,11 @@ id|RAM_END
 suffix:semicolon
 )brace
 multiline_comment|/* Linux kernel image section */
+id|kick_watchdog
+c_func
+(paren
+)paren
+suffix:semicolon
 id|im
 op_assign
 (paren
@@ -633,6 +518,11 @@ id|len
 )paren
 suffix:semicolon
 )brace
+id|kick_watchdog
+c_func
+(paren
+)paren
+suffix:semicolon
 id|flush_cache
 c_func
 (paren

@@ -17,6 +17,7 @@ DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536&t;&t;&t;/* Size of each temporary Rx buffer.*/
 multiline_comment|/* &quot;Knobs&quot; that adjust features and parameters. */
 multiline_comment|/* Set the copy breakpoint for the copy-only-tiny-frames scheme.&n;   Setting to &gt; 1512 effectively disables this feature. */
+macro_line|#ifndef __arm__
 DECL|variable|rx_copybreak
 r_static
 r_const
@@ -25,6 +26,17 @@ id|rx_copybreak
 op_assign
 l_int|200
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* ARM systems perform better by disregarding the bus-master&n;   transfer capability of these cards. -- rmk */
+DECL|variable|rx_copybreak
+r_static
+r_const
+r_int
+id|rx_copybreak
+op_assign
+l_int|1513
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Allow setting MTU to a larger size, bypassing the normal ethernet setup. */
 DECL|variable|mtu
 r_static
@@ -90,6 +102,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -14068,12 +14081,14 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 id|data
 op_assign
 (paren
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 )paren
 op_amp
@@ -14115,49 +14130,45 @@ id|rq-&gt;ifr_data
 )paren
 suffix:semicolon
 r_case
+id|SIOCGMIIPHY
+suffix:colon
+multiline_comment|/* Get address of MII PHY in use. */
+r_case
 id|SIOCDEVPRIVATE
 suffix:colon
-multiline_comment|/* Get the address of the PHY in use. */
-id|data
-(braket
-l_int|0
-)braket
+multiline_comment|/* for binary compat, remove in 2.5 */
+id|data-&gt;phy_id
 op_assign
 id|phy
 suffix:semicolon
+r_case
+id|SIOCGMIIREG
+suffix:colon
+multiline_comment|/* Read MII PHY register. */
 r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|1
 suffix:colon
-multiline_comment|/* Read the specified MII register. */
+multiline_comment|/* for binary compat, remove in 2.5 */
 id|EL3WINDOW
 c_func
 (paren
 l_int|4
 )paren
 suffix:semicolon
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 id|mdio_read
 c_func
 (paren
 id|dev
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 )paren
@@ -14169,11 +14180,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|SIOCSMIIREG
+suffix:colon
+multiline_comment|/* Write MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|2
 suffix:colon
-multiline_comment|/* Write the specified MII register */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
@@ -14204,24 +14219,15 @@ c_func
 (paren
 id|dev
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 )paren
 suffix:semicolon
 id|retval

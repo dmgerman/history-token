@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: w6692.c,v 1.12.6.4 2001/02/16 16:43:29 kai Exp $&n; *&n; * w6692.c   Winbond W6692 specific routines&n; *&n; * Author       Petr Novak &lt;petr.novak@i.cz&gt;&n; *              (based on HiSax driver by Karsten Keil)&n; *&n; *              This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: w6692.c,v 1.12.6.5 2001/06/09 15:14:18 kai Exp $&n; *&n; * w6692.c   Winbond W6692 specific routines&n; *&n; * Author       Petr Novak &lt;petr.novak@i.cz&gt;&n; *              (based on HiSax driver by Karsten Keil)&n; *&n; *              This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|__NO_VERSION__
@@ -88,7 +88,7 @@ r_char
 op_star
 id|w6692_revision
 op_assign
-l_string|&quot;$Revision: 1.12.6.4 $&quot;
+l_string|&quot;$Revision: 1.12.6.5 $&quot;
 suffix:semicolon
 DECL|macro|DBUSY_TIMER_VALUE
 mdefine_line|#define DBUSY_TIMER_VALUE 80
@@ -3649,14 +3649,14 @@ op_or
 id|RESPONSE
 )paren
 suffix:colon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|cs-&gt;rq
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -4572,14 +4572,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|bcs-&gt;rqueue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp

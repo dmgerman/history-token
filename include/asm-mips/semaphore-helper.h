@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: semaphore-helper.h,v 1.6 1999/10/20 21:10:58 ralf Exp $&n; *&n; * SMP- and interrupt-safe semaphores helper functions.&n; *&n; * (C) Copyright 1996 Linus Torvalds&n; * (C) Copyright 1999 Andrea Arcangeli&n; * (C) Copyright 1999 Ralf Baechle&n; * (C) Copyright 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * SMP- and interrupt-safe semaphores helper functions.&n; *&n; * Copyright (C) 1996 Linus Torvalds&n; * Copyright (C) 1999 Andrea Arcangeli&n; * Copyright (C) 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) 2000 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_SEMAPHORE_HELPER_H
 DECL|macro|_ASM_SEMAPHORE_HELPER_H
 mdefine_line|#define _ASM_SEMAPHORE_HELPER_H
@@ -25,7 +25,7 @@ id|sem-&gt;waking
 )paren
 suffix:semicolon
 )brace
-macro_line|#if !defined(CONFIG_CPU_HAS_LLSC)
+macro_line|#if !defined(CONFIG_CPU_HAS_LLSC) || defined(CONFIG_CPU_MIPS32)
 multiline_comment|/*&n; * It doesn&squot;t make sense, IMHO, to endlessly turn interrupts off and on again.&n; * Do it once and that&squot;s it. ll/sc *has* it&squot;s advantages. HK&n; */
 DECL|macro|read
 mdefine_line|#define read(a) ((a)-&gt;counter)
@@ -301,12 +301,7 @@ id|tmp
 comma
 l_string|&quot;=m&quot;
 (paren
-id|__atomic_fool_gcc
-c_func
-(paren
-op_amp
 id|sem-&gt;waking
-)paren
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -347,103 +342,23 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|push
-dot
-id|set
-id|mips3
-dot
-id|set
-id|noat
-l_int|0
-suffix:colon
-id|lld
-op_mod
-l_int|1
-comma
-op_mod
-l_int|2
-id|li
-op_mod
-l_int|0
-comma
-l_int|0
-id|sll
-"$"
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-l_int|0
-id|blez
-"$"
-l_int|1
-comma
-l_float|1f
-id|daddiu
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-op_minus
-l_int|1
-id|li
-op_mod
-l_int|0
-comma
-l_int|1
-id|b
-l_float|2f
-l_int|1
-suffix:colon
-id|beqz
-op_mod
-l_int|3
-comma
-l_float|2f
-id|li
-op_mod
-l_int|0
-comma
-op_mod
-l_int|4
-id|dli
-"$"
-l_int|1
-comma
-l_int|0x0000000100000000
-id|daddu
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-"$"
-l_int|1
-l_int|2
-suffix:colon
-id|scd
-op_mod
-l_int|1
-comma
-op_mod
-l_int|2
-id|beqz
-op_mod
-l_int|1
-comma
-l_int|0
-id|b
-dot
-id|set
-id|pop
-"&quot;"
+l_string|&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoat&bslash;n&quot;
+l_string|&quot;0:&bslash;tlld&bslash;t%1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, 0&bslash;n&bslash;t&quot;
+l_string|&quot;sll&bslash;t$1, %1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;blez&bslash;t$1, 1f&bslash;n&bslash;t&quot;
+l_string|&quot;daddiu&bslash;t%1, %1, -1&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, 1&bslash;n&bslash;t&quot;
+l_string|&quot;b&bslash;t2f&bslash;n&quot;
+l_string|&quot;1:&bslash;tbeqz&bslash;t%3, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, %4&bslash;n&bslash;t&quot;
+l_string|&quot;dli&bslash;t$1, 0x0000000100000000&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%1, %1, $1&bslash;n&quot;
+l_string|&quot;2:&bslash;tscd&bslash;t%1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;beqz&bslash;t%1, 0b&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

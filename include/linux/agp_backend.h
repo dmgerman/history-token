@@ -98,6 +98,15 @@ id|ALI_M1651
 comma
 DECL|enumerator|ALI_GENERIC
 id|ALI_GENERIC
+comma
+DECL|enumerator|SVWRKS_HE
+id|SVWRKS_HE
+comma
+DECL|enumerator|SVWRKS_LE
+id|SVWRKS_LE
+comma
+DECL|enumerator|SVWRKS_GENERIC
+id|SVWRKS_GENERIC
 )brace
 suffix:semicolon
 DECL|struct|_agp_version

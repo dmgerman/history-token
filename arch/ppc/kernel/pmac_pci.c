@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pci.c 1.14 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pci.c 1.18 07/01/01 12:23:31 trini&n; */
 multiline_comment|/*&n; * Support for PCI bridges found on Power Macintoshes.&n; * At present the &quot;bandit&quot; and &quot;chaos&quot; bridges are supported.&n; * Fortunately you access configuration space in the same&n; * way with either bridge.&n; *&n; * Copyright (C) 1997 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -33,10 +33,6 @@ r_int
 id|has_uninorth
 suffix:semicolon
 multiline_comment|/*&n; * Magic constants for enabling cache coherency in the bandit/PSX bridge.&n; */
-DECL|macro|APPLE_VENDID
-mdefine_line|#define APPLE_VENDID&t;0x106b
-DECL|macro|BANDIT_DEVID
-mdefine_line|#define BANDIT_DEVID&t;1
 DECL|macro|BANDIT_DEVID_2
 mdefine_line|#define BANDIT_DEVID_2&t;8
 DECL|macro|BANDIT_REVID
@@ -286,7 +282,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Apple MacRISC (UniNorth, Bandit) PCI controllers.&n; * &n; * The &quot;Bandit&quot; version is present in all early PCI PowerMacs,&n; * and up to the first ones using Grackle. Some machines may&n; * have 2 bandit controllers (2 PCI busses).&n; * &n; * The &quot;UniNorth&quot; version is present in all Core99 machines&n; * (iBook, G4, new IMacs, and all the recent Apple machines).&n; * It contains 3 controllers in one ASIC.&n; */
+multiline_comment|/*&n; * Apple MacRISC (UniNorth, Bandit, Chaos) PCI controllers.&n; * &n; * The &quot;Bandit&quot; version is present in all early PCI PowerMacs,&n; * and up to the first ones using Grackle. Some machines may&n; * have 2 bandit controllers (2 PCI busses).&n; * &n; * &quot;Chaos&quot; is used in some &quot;Bandit&quot;-type machines as a bridge&n; * for the separate display bus. It is accessed the same&n; * way as bandit, but cannot be probed for devices. It therefore&n; * has its own config access functions.&n; *&n; * The &quot;UniNorth&quot; version is present in all Core99 machines&n; * (iBook, G4, new IMacs, and all the recent Apple machines).&n; * It contains 3 controllers in one ASIC.&n; */
 DECL|macro|MACRISC_CFA0
 mdefine_line|#define MACRISC_CFA0(devfn, off)&t;&bslash;&n;&t;((1 &lt;&lt; (unsigned long)PCI_SLOT(dev_fn)) &bslash;&n;&t;| (((unsigned long)PCI_FUNC(dev_fn)) &lt;&lt; 8) &bslash;&n;&t;| (((unsigned long)(off)) &amp; 0xFCUL))
 DECL|macro|MACRISC_CFA1
@@ -318,10 +314,6 @@ r_int
 r_int
 id|caddr
 suffix:semicolon
-macro_line|#ifdef DEBUG
-singleline_comment|//&t;printk(&quot;macrisc_config_access(hose: 0x%08lx, bus: 0x%x, devfb: 0x%x, offset: 0x%x)&bslash;n&quot;,
-singleline_comment|//&t;&t;hose, bus, dev_fn, offset);
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -536,11 +528,12 @@ comma
 id|macrisc_write_config_dword
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Apple &quot;Chaos&quot; PCI controller.&n; * &n; * This controller is present on some first generation &quot;PowerSurge&quot;&n; * machines (8500, 8600, ...). It&squot;s a very weird beast and will die&n; * in flames if we try to probe the config space.&n; * The long-term solution is to provide a config space &quot;emulation&quot;&n; * based on what we find in OF device tree&n; */
-DECL|function|chaos_config_read_byte
+multiline_comment|/*&n; * Verifiy that a specific (bus, dev_fn) exists on chaos&n; */
 r_static
 r_int
-id|chaos_config_read_byte
+id|__pmac
+DECL|function|chaos_validate_dev
+id|chaos_validate_dev
 c_func
 (paren
 r_struct
@@ -550,128 +543,131 @@ id|dev
 comma
 r_int
 id|offset
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pci_device_to_OF_node
+c_func
+(paren
+id|dev
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_return
+id|PCIBIOS_DEVICE_NOT_FOUND
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;vendor
+op_eq
+l_int|0x106b
+)paren
+op_logical_and
+(paren
+id|dev-&gt;device
+op_eq
+l_int|3
+)paren
+op_logical_and
+(paren
+id|offset
+op_ge
+l_int|0x10
+)paren
+op_logical_and
+(paren
+id|offset
+op_ne
+l_int|0x14
+)paren
+op_logical_and
+(paren
+id|offset
+op_ne
+l_int|0x18
+)paren
+op_logical_and
+(paren
+id|offset
+op_le
+l_int|0x24
+)paren
+)paren
+(brace
+r_return
+id|PCIBIOS_BAD_REGISTER_NUMBER
+suffix:semicolon
+)brace
+r_return
+id|PCIBIOS_SUCCESSFUL
+suffix:semicolon
+)brace
+DECL|macro|CHAOS_PCI_OP
+mdefine_line|#define CHAOS_PCI_OP(rw, size, type)&t;&t;&t;&t;&t;&bslash;&n;static int __pmac&t;&t;&t;&t;&t;&t;&t;&bslash;&n;chaos_##rw##_config_##size(struct pci_dev *dev, int off, type val)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int result = chaos_validate_dev(dev, off);&t;&t;&t;&bslash;&n;&t;if(result == PCIBIOS_BAD_REGISTER_NUMBER) {&t;&t;&t;&bslash;&n;&t;&t;cfg_##rw##_bad(val, size)&t;&t;&t;&t;&bslash;&n;&t;&t;return PCIBIOS_BAD_REGISTER_NUMBER;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if(result == PCIBIOS_SUCCESSFUL)&t;&t;&t;&t;&bslash;&n;&t;&t;return macrisc_##rw##_config_##size(dev, off, val);&t;&bslash;&n;&t;return result;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+id|CHAOS_PCI_OP
+c_func
+(paren
+id|read
+comma
+id|byte
 comma
 id|u8
 op_star
-id|val
 )paren
-(brace
-r_return
-id|PCIBIOS_DEVICE_NOT_FOUND
-suffix:semicolon
-)brace
-DECL|function|chaos_config_read_word
-r_static
-r_int
-id|chaos_config_read_word
+id|CHAOS_PCI_OP
 c_func
 (paren
-r_struct
-id|pci_dev
-op_star
-id|dev
+id|read
 comma
-r_int
-id|offset
+id|word
 comma
 id|u16
 op_star
-id|val
 )paren
-(brace
-r_return
-id|PCIBIOS_DEVICE_NOT_FOUND
-suffix:semicolon
-)brace
-DECL|function|chaos_config_read_dword
-r_static
-r_int
-id|chaos_config_read_dword
+id|CHAOS_PCI_OP
 c_func
 (paren
-r_struct
-id|pci_dev
-op_star
-id|dev
+id|read
 comma
-r_int
-id|offset
+id|dword
 comma
 id|u32
 op_star
-id|val
 )paren
-(brace
-r_return
-id|PCIBIOS_DEVICE_NOT_FOUND
-suffix:semicolon
-)brace
-DECL|function|chaos_config_write_byte
-r_static
-r_int
-id|chaos_config_write_byte
+id|CHAOS_PCI_OP
 c_func
 (paren
-r_struct
-id|pci_dev
-op_star
-id|dev
+id|write
 comma
-r_int
-id|offset
+id|byte
 comma
 id|u8
-id|val
 )paren
-(brace
-r_return
-id|PCIBIOS_DEVICE_NOT_FOUND
-suffix:semicolon
-)brace
-DECL|function|chaos_config_write_word
-r_static
-r_int
-id|chaos_config_write_word
+id|CHAOS_PCI_OP
 c_func
 (paren
-r_struct
-id|pci_dev
-op_star
-id|dev
+id|write
 comma
-r_int
-id|offset
+id|word
 comma
 id|u16
-id|val
 )paren
-(brace
-r_return
-id|PCIBIOS_DEVICE_NOT_FOUND
-suffix:semicolon
-)brace
-DECL|function|chaos_config_write_dword
-r_static
-r_int
-id|chaos_config_write_dword
+id|CHAOS_PCI_OP
 c_func
 (paren
-r_struct
-id|pci_dev
-op_star
-id|dev
+id|write
 comma
-r_int
-id|offset
+id|dword
 comma
 id|u32
-id|val
 )paren
-(brace
-r_return
-id|PCIBIOS_DEVICE_NOT_FOUND
-suffix:semicolon
-)brace
 DECL|variable|chaos_pci_ops
 r_static
 r_struct
@@ -679,24 +675,24 @@ id|pci_ops
 id|chaos_pci_ops
 op_assign
 (brace
-id|chaos_config_read_byte
+id|chaos_read_config_byte
 comma
-id|chaos_config_read_word
+id|chaos_read_config_word
 comma
-id|chaos_config_read_dword
+id|chaos_read_config_dword
 comma
-id|chaos_config_write_byte
+id|chaos_write_config_byte
 comma
-id|chaos_config_write_word
+id|chaos_write_config_word
 comma
-id|chaos_config_write_dword
+id|chaos_write_config_dword
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * For a bandit bridge, turn on cache coherency if necessary.&n; * N.B. we could clean this up using the hose ops directly.&n; */
-DECL|function|init_bandit
 r_static
 r_void
 id|__init
+DECL|function|init_bandit
 id|init_bandit
 c_func
 (paren
@@ -756,12 +752,12 @@ c_cond
 id|vendev
 op_eq
 (paren
-id|BANDIT_DEVID
+id|PCI_VENDOR_ID_APPLE_BANDIT
 op_lshift
 l_int|16
 )paren
 op_plus
-id|APPLE_VENDID
+id|PCI_VENDOR_ID_APPLE
 )paren
 (brace
 multiline_comment|/* read the revision id */
@@ -824,7 +820,7 @@ op_lshift
 l_int|16
 )paren
 op_plus
-id|APPLE_VENDID
+id|PCI_VENDOR_ID_APPLE
 )paren
 (brace
 id|printk
@@ -1659,10 +1655,10 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * We assume that if we have a G3 powermac, we have one bridge called&n; * &quot;pci&quot; (a MPC106) and no bandit or chaos bridges, and contrariwise,&n; * if we have one or more bandit or chaos bridges, we don&squot;t have a MPC106.&n; */
-DECL|function|add_bridges
 r_static
 r_void
 id|__init
+DECL|function|add_bridges
 id|add_bridges
 c_func
 (paren
@@ -2027,6 +2023,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__init
 DECL|function|pcibios_fixup_OF_interrupts
 id|pcibios_fixup_OF_interrupts
 c_func
@@ -2039,7 +2036,6 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME: This is broken: We should not assign IRQ&squot;s to IRQless&n;&t; *&t;  devices (look at PCI_INTERRUPT_PIN) and we also should&n;&t; *&t;  honor the existence of multi-function devices where&n;&t; *&t;  different functions have different interrupt pins. [mj]&n;&t; */
 id|pci_for_each_dev
 c_func
 (paren
@@ -2152,6 +2148,7 @@ c_func
 suffix:semicolon
 )brace
 r_int
+id|__pmac
 DECL|function|pmac_pci_enable_device_hook
 id|pmac_pci_enable_device_hook
 c_func
@@ -2244,6 +2241,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* We power down some devices after they have been probed. They&squot;ll&n; * be powered back on later on&n; */
 r_void
+id|__init
 DECL|function|pmac_pcibios_after_init
 id|pmac_pcibios_after_init
 c_func
@@ -2256,6 +2254,40 @@ id|device_node
 op_star
 id|nd
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* OF fails to initialize IDE controllers on macs&n;&t; * (and maybe other machines)&n;&t; * &n;&t; * Ideally, this should be moved to the IDE layer, but we need&n;&t; * to check specifically with Andre Hedrick how to do it cleanly&n;&t; * since the common IDE code seem to care about the fact that the&n;&t; * BIOS may have disabled a controller.&n;&t; * &n;&t; * -- BenH&n;&t; */
+id|pci_for_each_dev
+c_func
+(paren
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|dev
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|16
+)paren
+op_eq
+id|PCI_BASE_CLASS_STORAGE
+)paren
+id|pci_enable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_BLK_DEV_IDE */
 id|nd
 op_assign
 id|find_devices

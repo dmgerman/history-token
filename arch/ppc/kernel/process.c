@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.process.c 1.15 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.process.c 1.19 06/15/01 13:56:56 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/process.c&n; *&n; *  Derived from &quot;arch/i386/kernel/process.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; *&n; *  Updated and modified by Cort Dougan (cort@cs.nmt.edu) and&n; *  Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1030,6 +1030,56 @@ comma
 id|last_task_used_altivec
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_4xx
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;nPLB0: bear= 0x%8.8x acr=   0x%8.8x besr=  0x%8.8x&bslash;n&quot;
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_POB0_BEAR
+)paren
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_PLB0_ACR
+)paren
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_PLB0_BESR
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;PLB0 to OPB: bear= 0x%8.8x besr0= 0x%8.8x besr1= 0x%8.8x&bslash;n&quot;
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_PLB0_BEAR
+)paren
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_POB0_BESR0
+)paren
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_POB0_BESR1
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 id|printk
 c_func
@@ -1135,6 +1185,19 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|print_backtrace
+c_func
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|regs-&gt;gpr
+(braket
+l_int|1
+)braket
+)paren
 suffix:semicolon
 )brace
 DECL|function|exit_thread

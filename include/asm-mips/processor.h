@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: processor.h,v 1.25 2000/02/05 06:47:37 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 Waldorf GMBH&n; * Copyright (C) 1995, 1996, 1997, 1998 Ralf Baechle&n; * Copyright (C) 1996 Paul M. Antoine&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 Waldorf GMBH&n; * Copyright (C) 1995, 1996, 1997, 1998, 1999, 2001 Ralf Baechle&n; * Copyright (C) 1996 Paul M. Antoine&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_PROCESSOR_H
 DECL|macro|_ASM_PROCESSOR_H
 mdefine_line|#define _ASM_PROCESSOR_H
@@ -17,6 +17,11 @@ DECL|struct|mips_cpuinfo
 r_struct
 id|mips_cpuinfo
 (brace
+DECL|member|udelay_val
+r_int
+r_int
+id|udelay_val
+suffix:semicolon
 DECL|member|pgd_quick
 r_int
 r_int
@@ -75,11 +80,6 @@ id|dedicated_iv_available
 suffix:semicolon
 multiline_comment|/* some embedded MIPS like Nevada */
 r_extern
-r_char
-id|vce_available
-suffix:semicolon
-multiline_comment|/* Supports VCED / VCEI exceptions */
-r_extern
 r_struct
 id|mips_cpuinfo
 id|boot_cpu_data
@@ -130,7 +130,7 @@ id|last_task_used_math
 suffix:semicolon
 multiline_comment|/*&n; * User space process size: 2GB. This is hardcoded into a few places,&n; * so don&squot;t change it unless you know what you are doing.  TASK_SIZE&n; * for a 64 bit kernel expandable to 8192EB, of which the current MIPS&n; * implementations will &quot;only&quot; be able to use 1TB ...&n; */
 DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;(0x80000000UL)
+mdefine_line|#define TASK_SIZE&t;(0x7fff8000UL)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(TASK_SIZE / 3)

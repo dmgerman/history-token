@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Make a bootable image from a Linux/MIPS kernel.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996 by Ralf Baechle&n; *&n; * This file is written in plain Kernighan &amp; Ritchie C as it has to run&n; * on all crosscompile hosts no matter how braindead.  This code might&n; * also become part of Milo.  It&squot;s therefore important that we don&squot;t use&n; * seek because the Seek() call of the Magnum 4000 ARC BIOS is broken.&n; */
+multiline_comment|/*&n; * Make a bootable image from a Linux/MIPS kernel.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 2001 by Ralf Baechle&n; *&n; * This file is written in plain Kernighan &amp; Ritchie C as it has to run&n; * on all crosscompile hosts no matter how braindead.  This code might&n; * also become part of Milo.  It&squot;s therefore important that we don&squot;t use&n; * seek because the Seek() call of the Magnum 4000 ARC BIOS is broken.&n; */
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;string.h&gt;
@@ -150,8 +150,6 @@ mdefine_line|#define EV_CURRENT      1               /* Current version */
 multiline_comment|/*&n; * Acceptable machine type in e_machine.&n; */
 DECL|macro|EM_MIPS
 mdefine_line|#define EM_MIPS         8               /* MIPS R3000 big-endian */
-DECL|macro|EM_MIPS_RS4_BE
-mdefine_line|#define EM_MIPS_RS4_BE 10               /* MIPS R4000 big-endian */
 multiline_comment|/*&n; * The type of ELF file we accept.&n; */
 DECL|macro|ET_EXEC
 mdefine_line|#define ET_EXEC         2               /* Executable file */
@@ -1800,10 +1798,6 @@ c_cond
 id|eh.e_machine
 op_ne
 id|EM_MIPS
-op_logical_and
-id|eh.e_machine
-op_ne
-id|EM_MIPS_RS4_BE
 )paren
 (brace
 id|fprintf

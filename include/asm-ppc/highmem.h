@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.highmem.h 1.7 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.highmem.h 1.10 06/28/01 15:50:17 paulus&n; */
 multiline_comment|/*&n; * highmem.h: virtual kernel memory mappings for high memory&n; *&n; * PowerPC version, stolen from the i386 version.&n; *&n; * Used in CONFIG_HIGHMEM systems for memory pages which&n; * are not addressable by direct kernel virtual addresses.&n; *&n; * Copyright (C) 1999 Gerhard Wichert, Siemens AG&n; *&t;&t;      Gerhard.Wichert@pdb.siemens.de&n; *&n; *&n; * Redesigned the x86 32-bit VM architecture to deal with &n; * up to 16 Terrabyte physical memory. With current x86 CPUs&n; * we now support up to 64 Gigabytes physical RAM.&n; *&n; * Copyright (C) 1999 Ingo Molnar &lt;mingo@redhat.com&gt;&n; */
 macro_line|#ifndef _ASM_HIGHMEM_H
 DECL|macro|_ASM_HIGHMEM_H
@@ -259,7 +259,7 @@ id|kmap_prot
 )paren
 )paren
 suffix:semicolon
-id|flush_hash_page
+id|flush_tlb_page
 c_func
 (paren
 l_int|0
@@ -350,7 +350,7 @@ op_plus
 id|idx
 )paren
 suffix:semicolon
-id|flush_hash_page
+id|flush_tlb_page
 c_func
 (paren
 l_int|0

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * MIPS specific syscalls&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 2000 by Ralf Baechle&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -11,6 +12,15 @@ macro_line|#include &lt;asm/cachectl.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/sysmips.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+r_extern
+id|asmlinkage
+r_void
+id|syscall_trace
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * How long a hostname can we get from user space?&n; *  -EFAULT if invalid area or too long&n; *  0 if ok&n; *  &gt;0 EFAULT after xx bytes&n; */
 r_static
 r_inline
@@ -126,8 +136,6 @@ op_star
 id|name
 suffix:semicolon
 r_int
-id|flags
-comma
 id|tmp
 comma
 id|len
@@ -241,7 +249,7 @@ r_case
 id|MIPS_ATOMIC_SET
 suffix:colon
 (brace
-multiline_comment|/* This is broken in case of page faults and SMP ...&n;&t;&t;    Risc/OS faults after maximum 20 tries with EAGAIN.  */
+macro_line|#ifdef CONFIG_CPU_HAS_LLSC
 r_int
 r_int
 id|tmp
@@ -282,36 +290,66 @@ id|errno
 op_assign
 l_int|0
 suffix:semicolon
-id|save_and_cli
+id|__asm__
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|errno
-op_or_assign
-id|__get_user
-c_func
+l_string|&quot;.set&bslash;tpush&bslash;t&bslash;t&bslash;t# sysmips(MIPS_ATOMIC, ...)&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tmips2&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tll&bslash;t%0, %4&bslash;n&bslash;t&quot;
+l_string|&quot;move&bslash;t$1, %3&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;tsc&bslash;t$1, %1&bslash;n&bslash;t&quot;
+l_string|&quot;beqz&bslash;t$1, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;
+l_string|&quot;.section&bslash;t.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;3:&bslash;tli&bslash;t%2, 1&bslash;t&bslash;t&bslash;t# error&bslash;n&bslash;t&quot;
+l_string|&quot;.previous&bslash;n&bslash;t&quot;
+l_string|&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;
+l_string|&quot;.word&bslash;t1b, 3b&bslash;n&bslash;t&quot;
+l_string|&quot;.word&bslash;t2b, 3b&bslash;n&bslash;t&quot;
+l_string|&quot;.previous&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
+)paren
 comma
+l_string|&quot;=o&quot;
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
 id|p
 )paren
-suffix:semicolon
+comma
+l_string|&quot;=r&quot;
+(paren
 id|errno
-op_or_assign
-id|__put_user
-c_func
+)paren
+suffix:colon
+l_string|&quot;r&quot;
 (paren
 id|arg2
+)paren
 comma
+l_string|&quot;o&quot;
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
 id|p
 )paren
-suffix:semicolon
-id|restore_flags
-c_func
+comma
+l_string|&quot;2&quot;
 (paren
-id|flags
+id|errno
+)paren
+suffix:colon
+l_string|&quot;$1&quot;
 )paren
 suffix:semicolon
 r_if
@@ -320,12 +358,81 @@ c_cond
 id|errno
 )paren
 r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+multiline_comment|/* We&squot;re skipping error handling etc.  */
+r_if
+c_cond
+(paren
+id|current-&gt;ptrace
+op_amp
+id|PT_TRACESYS
+)paren
+id|syscall_trace
+c_func
+(paren
+)paren
+suffix:semicolon
+(paren
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+op_amp
+id|cmd
+)paren
+op_member_access_from_pointer
+id|regs
+(braket
+l_int|2
+)braket
+op_assign
 id|tmp
 suffix:semicolon
-r_return
-id|tmp
+(paren
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+op_amp
+id|cmd
+)paren
+op_member_access_from_pointer
+id|regs
+(braket
+l_int|7
+)braket
+op_assign
+l_int|0
 suffix:semicolon
-multiline_comment|/* This is broken ...  */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;move&bslash;t$29, %0&bslash;n&bslash;t&quot;
+l_string|&quot;j&bslash;to32_ret_from_sys_call&quot;
+suffix:colon
+multiline_comment|/* No outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+op_amp
+id|cmd
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Unreached */
+macro_line|#else
+id|printk
+c_func
+(paren
+l_string|&quot;sys_sysmips(MIPS_ATOMIC_SET, ...) not ready for !CONFIG_CPU_HAS_LLSC&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_case
 id|MIPS_FIXADE

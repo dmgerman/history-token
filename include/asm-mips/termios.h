@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: termios.h,v 1.8 2000/01/27 23:45:30 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 2001 by Ralf Baechle&n; */
 macro_line|#ifndef _ASM_TERMIOS_H
 DECL|macro|_ASM_TERMIOS_H
 mdefine_line|#define _ASM_TERMIOS_H

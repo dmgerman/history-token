@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.processor.h 1.19 05/18/01 08:18:10 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.processor.h 1.24 06/15/01 13:56:56 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PPC_PROCESSOR_H
 DECL|macro|__ASM_PPC_PROCESSOR_H
@@ -816,6 +816,8 @@ DECL|macro|PVR_403GCX
 mdefine_line|#define&t;PVR_403GCX&t;0x00201400
 DECL|macro|PVR_405GP
 mdefine_line|#define&t;PVR_405GP&t;0x40110000
+DECL|macro|PVR_STB03XXX
+mdefine_line|#define&t;PVR_STB03XXX&t;0x40310000 
 DECL|macro|PVR_601
 mdefine_line|#define&t;PVR_601&t;&t;0x00010000
 DECL|macro|PVR_602
@@ -844,6 +846,10 @@ DECL|macro|PVR_740P
 mdefine_line|#define&t;PVR_740P&t;0x10080000
 DECL|macro|PVR_750P
 mdefine_line|#define&t;PVR_750P&t;PVR_740P
+DECL|macro|PVR_7400
+mdefine_line|#define&t;PVR_7400&t;0x000C0000
+DECL|macro|PVR_7410
+mdefine_line|#define&t;PVR_7410&t;0x800C0000
 multiline_comment|/*&n; * For the 8xx processors, all of them report the same PVR family for&n; * the PowerPC core. The various versions of these processors must be&n; * differentiated by the version number in the Communication Processor&n; * Module (CPM).&n; */
 DECL|macro|PVR_821
 mdefine_line|#define&t;PVR_821&t;&t;0x00500000
@@ -853,8 +859,6 @@ DECL|macro|PVR_850
 mdefine_line|#define&t;PVR_850&t;&t;PVR_821
 DECL|macro|PVR_860
 mdefine_line|#define&t;PVR_860&t;&t;PVR_821
-DECL|macro|PVR_7400
-mdefine_line|#define&t;PVR_7400       &t;0x000C0000
 DECL|macro|PVR_8240
 mdefine_line|#define&t;PVR_8240&t;0x00810100
 DECL|macro|PVR_8260

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prom.c 1.23 06/06/01 22:49:01 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prom.c 1.26 06/28/01 15:50:16 paulus&n; */
 multiline_comment|/*&n; * Procedures for interfacing to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * In particular, we are interested in the device tree&n; * and in using some of its services (exit, write to stdout).&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -651,15 +651,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|reloc_offset
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_void
 id|phys_call_rtas
 c_func
@@ -713,6 +704,7 @@ DECL|macro|BOOT_INFO_IS_V2_COMPATIBLE
 mdefine_line|#define BOOT_INFO_IS_V2_COMPATIBLE(bi)&t;((bi)-&gt;version &gt;= 2)
 DECL|macro|BOOT_INFO_IS_V4_COMPATIBLE
 mdefine_line|#define BOOT_INFO_IS_V4_COMPATIBLE(bi)&t;((bi)-&gt;version &gt;= 4)
+multiline_comment|/*&n; * Note that prom_init() and anything called from prom_init() must&n; * use the RELOC/PTRRELOC macros to access any static data in&n; * memory, since the kernel may be running at an address that is&n; * different from the address that it was linked at.&n; * (Note that strings count as static variables.)&n; */
 id|__init
 r_static
 r_void
@@ -2205,21 +2197,33 @@ r_int
 id|hash
 comma
 id|i
+comma
+id|vsid
+suffix:semicolon
+id|vsid
+op_assign
+(paren
+(paren
+id|va
+op_rshift
+l_int|28
+)paren
+op_star
+l_int|0x111
+)paren
+op_lshift
+l_int|12
 suffix:semicolon
 id|hash
 op_assign
 (paren
 (paren
 id|va
+op_xor
+id|vsid
+)paren
 op_rshift
 l_int|5
-)paren
-op_xor
-(paren
-id|va
-op_rshift
-l_int|21
-)paren
 )paren
 op_amp
 l_int|0x7fff80
@@ -2284,6 +2288,8 @@ id|pteg
 l_int|1
 )braket
 op_assign
+id|vsid
+op_or
 (paren
 (paren
 id|va
@@ -2291,7 +2297,7 @@ op_rshift
 l_int|16
 )paren
 op_amp
-l_int|0xff80
+l_int|0xf80
 )paren
 op_or
 l_int|1

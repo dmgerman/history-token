@@ -488,9 +488,9 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Keep PID */
-id|skb-&gt;nh.raw
+id|ourskb-&gt;nh.raw
 op_assign
-id|skb-&gt;data
+id|ourskb-&gt;data
 suffix:semicolon
 id|ax25_send_frame
 c_func

@@ -397,6 +397,10 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* ----------- 2.01 ------------- */
+multiline_comment|/* UDF 2.01 6.11 */
+DECL|macro|FILE_TYPE_REALTIME
+mdefine_line|#define FILE_TYPE_REALTIME&t;0xf9U
 multiline_comment|/* Sparing maps, see UDF 1.5 2.2.11 */
 r_typedef
 r_struct

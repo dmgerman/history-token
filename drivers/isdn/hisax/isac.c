@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isac.c,v 1.28.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * isac.c   ISAC specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; */
+multiline_comment|/* $Id: isac.c,v 1.28.6.2 2001/06/09 15:14:17 kai Exp $&n; *&n; * isac.c   ISAC specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
@@ -3214,14 +3214,14 @@ op_or
 id|RESPONSE
 )paren
 suffix:colon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|cs-&gt;rq
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp

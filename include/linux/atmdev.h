@@ -15,6 +15,12 @@ multiline_comment|/* OC3 link rate:  155520000 bps&n;&t;&t;&t;   SONET overhead:
 DECL|macro|ATM_25_PCR
 mdefine_line|#define ATM_25_PCR&t;((25600000/8-8000)/54)
 multiline_comment|/* 25 Mbps ATM cell rate (59111) */
+DECL|macro|ATM_OC12_PCR
+mdefine_line|#define ATM_OC12_PCR&t;(622080000/1080*1040/8/53)
+multiline_comment|/* OC12 link rate: 622080000 bps&n;&t;&t;&t;   SONET overhead: /1080*1040&n;&t;&t;&t;   bits per cell:  /8/53&n;&t;&t;&t;   max cell rate:  1412830.188 cells/sec */
+DECL|macro|ATM_DS3_PCR
+mdefine_line|#define ATM_DS3_PCR&t;(8000*12)
+multiline_comment|/* DS3: 12 cells in a 125 usec time slot */
 DECL|macro|ATM_PDU_OVHD
 mdefine_line|#define ATM_PDU_OVHD&t;0&t;/* number of bytes to charge against buffer&n;&t;&t;&t;&t;   quota per PDU */
 DECL|macro|ATM_SD

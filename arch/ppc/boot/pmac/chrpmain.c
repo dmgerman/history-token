@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.chrpmain.c 1.9 05/18/01 06:20:29 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.chrpmain.c 1.12 06/12/01 16:42:26 paulus&n; */
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;zlib.h&quot;
@@ -115,35 +115,6 @@ DECL|macro|PROG_SIZE
 mdefine_line|#define PROG_SIZE&t;0x003f0000
 DECL|macro|SCRATCH_SIZE
 mdefine_line|#define SCRATCH_SIZE&t;(128 &lt;&lt; 10)
-macro_line|#ifdef CONFIG_CMDLINE
-DECL|macro|CMDLINE
-mdefine_line|#define CMDLINE CONFIG_CMDLINE
-macro_line|#else
-DECL|macro|CMDLINE
-mdefine_line|#define CMDLINE &quot;&quot;
-macro_line|#endif
-DECL|variable|cmd_preset
-r_char
-id|cmd_preset
-(braket
-)braket
-op_assign
-id|CMDLINE
-suffix:semicolon
-DECL|variable|cmd_buf
-r_char
-id|cmd_buf
-(braket
-l_int|256
-)braket
-suffix:semicolon
-DECL|variable|cmd_line
-r_char
-op_star
-id|cmd_line
-op_assign
-id|cmd_buf
-suffix:semicolon
 DECL|variable|avail_ram
 r_char
 op_star
@@ -480,18 +451,6 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|memcpy
-(paren
-id|cmd_line
-comma
-id|cmd_preset
-comma
-r_sizeof
-(paren
-id|cmd_preset
-)paren
-)paren
-suffix:semicolon
 id|make_bi_recs
 c_func
 (paren
@@ -722,68 +681,13 @@ r_struct
 id|bi_record
 )paren
 op_plus
+l_int|2
+op_star
 r_sizeof
 (paren
 r_int
 r_int
 )paren
-suffix:semicolon
-id|rec
-op_assign
-(paren
-r_struct
-id|bi_record
-op_star
-)paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|rec
-op_plus
-id|rec-&gt;size
-)paren
-suffix:semicolon
-id|rec-&gt;tag
-op_assign
-id|BI_CMD_LINE
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-(paren
-r_char
-op_star
-)paren
-id|rec-&gt;data
-comma
-id|cmd_line
-comma
-id|strlen
-c_func
-(paren
-id|cmd_line
-)paren
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-id|rec-&gt;size
-op_assign
-r_sizeof
-(paren
-r_struct
-id|bi_record
-)paren
-op_plus
-id|strlen
-c_func
-(paren
-id|cmd_line
-)paren
-op_plus
-l_int|1
 suffix:semicolon
 id|rec
 op_assign
@@ -829,6 +733,8 @@ r_struct
 id|bi_record
 )paren
 op_plus
+l_int|2
+op_star
 r_sizeof
 (paren
 r_int

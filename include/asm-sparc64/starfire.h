@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: starfire.h,v 1.1 2000/09/21 06:18:53 anton Exp $&n; * starfire.h: Group all starfire specific code together.&n; *&n; * Copyright (C) 2000 Anton Blanchard (anton@linuxcare.com)&n; */
+multiline_comment|/* $Id: starfire.h,v 1.1 2000/09/21 06:18:53 anton Exp $&n; * starfire.h: Group all starfire specific code together.&n; *&n; * Copyright (C) 2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#ifndef _SPARC64_STARFIRE_H
 DECL|macro|_SPARC64_STARFIRE_H
 mdefine_line|#define _SPARC64_STARFIRE_H

@@ -15511,30 +15511,7 @@ l_string|&quot;airo:  Finished probing for PCI adapters&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* arguably, we should clean up and error exit if pci_module_init&n;&t; * fails with an error other than -ENODEV, instead of proceeding,&n;&t; * if ISA devs are present.&n;&t; */
-r_if
-c_cond
-(paren
-id|have_isa_dev
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_logical_and
-(paren
-id|rc
-op_ne
-op_minus
-id|ENODEV
-)paren
-)paren
-r_return
-id|rc
-suffix:semicolon
+multiline_comment|/* Always exit with success, as we are a library module&n;&t; * as well as a driver module&n;&t; */
 r_return
 l_int|0
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: serial.h,v 1.9 2000/02/16 01:45:55 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
@@ -53,15 +53,68 @@ macro_line|#else
 DECL|macro|JAZZ_SERIAL_PORT_DEFNS
 mdefine_line|#define JAZZ_SERIAL_PORT_DEFNS
 macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_ATLAS
+macro_line|#include &lt;asm/mips-boards/atlas.h&gt;
+macro_line|#include &lt;asm/mips-boards/atlasint.h&gt;
+DECL|macro|ATLAS_SERIAL_PORT_DEFNS
+mdefine_line|#define ATLAS_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;/* UART CLK   PORT IRQ     FLAGS        */&t;&t;&t;&bslash;&n;&t;{ 0, ATLAS_BASE_BAUD, ATLAS_UART_REGS_BASE, ATLASINT_UART, STD_COM_FLAGS },     /* ttyS0 */
+macro_line|#else
+DECL|macro|ATLAS_SERIAL_PORT_DEFNS
+mdefine_line|#define ATLAS_SERIAL_PORT_DEFNS
+macro_line|#endif
+multiline_comment|/*&n; * Both Galileo boards have the same UART mappings.&n; */
+macro_line|#if defined (CONFIG_MIPS_EV96100) || defined (CONFIG_MIPS_EV64120)
+macro_line|#include &lt;asm/galileo-boards/ev96100.h&gt;
+macro_line|#include &lt;asm/galileo-boards/ev96100int.h&gt;
+DECL|macro|EV96100_SERIAL_PORT_DEFNS
+mdefine_line|#define EV96100_SERIAL_PORT_DEFNS                                  &bslash;&n;    { baud_base: EV96100_BASE_BAUD, port: EV96100_UART0_REGS_BASE, &bslash;&n;      irq: EV96100INT_UART_0, flags: STD_COM_FLAGS, type: 0x3,   &bslash;&n;      iomem_base: EV96100_UART0_REGS_BASE },                       &bslash;&n;    { baud_base: EV96100_BASE_BAUD, port: EV96100_UART1_REGS_BASE, &bslash;&n;      irq: EV96100INT_UART_0, flags: STD_COM_FLAGS, type: 0x3,   &bslash;&n;      iomem_base: EV96100_UART1_REGS_BASE },
+macro_line|#else
+DECL|macro|EV96100_SERIAL_PORT_DEFNS
+mdefine_line|#define EV96100_SERIAL_PORT_DEFNS
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_ITE8172
+macro_line|#include &lt;asm/it8172/it8172.h&gt;
+macro_line|#include &lt;asm/it8172/it8172_int.h&gt;
+macro_line|#include &lt;asm/it8712.h&gt;
+DECL|macro|ITE_SERIAL_PORT_DEFNS
+mdefine_line|#define ITE_SERIAL_PORT_DEFNS                                  &bslash;&n;    { baud_base: BASE_BAUD, port: (IT8172_PCI_IO_BASE + IT_UART_BASE), &bslash;&n;      irq: IT8172_UART_IRQ, flags: STD_COM_FLAGS, type: 0x3 }, &bslash;&n;    { baud_base: (24000000/(16*13)), port: (IT8172_PCI_IO_BASE + IT8712_UART1_PORT), &bslash;&n;      irq: IT8172_SERIRQ_4, flags: STD_COM_FLAGS, type: 0x3 }, &bslash;&n;    /* Smart Card Reader 0 */ &bslash;&n;    { baud_base: BASE_BAUD, port: (IT8172_PCI_IO_BASE + IT_SCR0_BASE), &bslash;&n;      irq: IT8172_SCR0_IRQ, flags: STD_COM_FLAGS, type: 0x3 }, &bslash;&n;    /* Smart Card Reader 1 */ &bslash;&n;    { baud_base: BASE_BAUD, port: (IT8172_PCI_IO_BASE + IT_SCR1_BASE), &bslash;&n;      irq: IT8172_SCR1_IRQ, flags: STD_COM_FLAGS, type: 0x3 },
+macro_line|#else
+DECL|macro|ITE_SERIAL_PORT_DEFNS
+mdefine_line|#define ITE_SERIAL_PORT_DEFNS
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_IVR
+macro_line|#include &lt;asm/it8172/it8172.h&gt;
+macro_line|#include &lt;asm/it8172/it8172_int.h&gt;
+DECL|macro|IVR_SERIAL_PORT_DEFNS
+mdefine_line|#define IVR_SERIAL_PORT_DEFNS                                  &bslash;&n;    { baud_base: BASE_BAUD, port: (IT8172_PCI_IO_BASE + IT_UART_BASE), &bslash;&n;      irq: IT8172_UART_IRQ, flags: STD_COM_FLAGS, type: 0x3 },         &bslash;&n;    /* Smart Card Reader 1 */ &bslash;&n;    { baud_base: BASE_BAUD, port: (IT8172_PCI_IO_BASE + IT_SCR1_BASE), &bslash;&n;      irq: IT8172_SCR1_IRQ, flags: STD_COM_FLAGS, type: 0x3 },
+macro_line|#else
+DECL|macro|IVR_SERIAL_PORT_DEFNS
+mdefine_line|#define IVR_SERIAL_PORT_DEFNS
+macro_line|#endif
+macro_line|#ifdef CONFIG_AU1000_UART
+macro_line|#include &lt;asm/au1000.h&gt;
+DECL|macro|AU1000_SERIAL_PORT_DEFNS
+mdefine_line|#define AU1000_SERIAL_PORT_DEFNS                              &bslash;&n;    { baud_base: 0, port: UART0_ADDR, irq: AU1000_UART0_INT,  &bslash;&n;      flags: STD_COM_FLAGS, type: 1 },                        &bslash;&n;    { baud_base: 0, port: UART1_ADDR, irq: AU1000_UART1_INT,  &bslash;&n;      flags: STD_COM_FLAGS, type: 1 },     &bslash;&n;    { baud_base: 0, port: UART2_ADDR, irq: AU1000_UART2_INT,  &bslash;&n;      flags: STD_COM_FLAGS, type: 1 },    &bslash;&n;    { baud_base: 0, port: UART3_ADDR, irq: AU1000_UART3_INT,  &bslash;&n;      flags: STD_COM_FLAGS, type: 1 },
+macro_line|#else
+DECL|macro|AU1000_SERIAL_PORT_DEFNS
+mdefine_line|#define AU1000_SERIAL_PORT_DEFNS
+macro_line|#endif
+macro_line|#ifdef CONFIG_HAVE_STD_PC_SERIAL_PORT
 DECL|macro|STD_SERIAL_PORT_DEFNS
 mdefine_line|#define STD_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;/* UART CLK   PORT IRQ     FLAGS        */&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3F8, 4, STD_COM_FLAGS },&t;/* ttyS0 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2F8, 3, STD_COM_FLAGS },&t;/* ttyS1 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3E8, 4, STD_COM_FLAGS },&t;/* ttyS2 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2E8, 3, STD_COM4_FLAGS },&t;/* ttyS3 */
 macro_line|#ifdef CONFIG_SERIAL_MANY_PORTS
 DECL|macro|EXTRA_SERIAL_PORT_DEFNS
-mdefine_line|#define EXTRA_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x1A0, 9, FOURPORT_FLAGS }, &t;/* ttyS4 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x1A8, 9, FOURPORT_FLAGS },&t;/* ttyS5 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x1B0, 9, FOURPORT_FLAGS },&t;/* ttyS6 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x1B8, 9, FOURPORT_FLAGS },&t;/* ttyS7 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2A0, 5, FOURPORT_FLAGS },&t;/* ttyS8 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2A8, 5, FOURPORT_FLAGS },&t;/* ttyS9 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2B0, 5, FOURPORT_FLAGS },&t;/* ttyS10 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2B8, 5, FOURPORT_FLAGS },&t;/* ttyS11 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x330, 4, ACCENT_FLAGS },&t;/* ttyS12 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x338, 4, ACCENT_FLAGS },&t;/* ttyS13 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x000, 0, 0 },&t;/* ttyS14 (spare) */&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x000, 0, 0 },&t;/* ttyS15 (spare) */&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x100, 12, BOCA_FLAGS },&t;/* ttyS16 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x108, 12, BOCA_FLAGS },&t;/* ttyS17 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x110, 12, BOCA_FLAGS },&t;/* ttyS18 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x118, 12, BOCA_FLAGS },&t;/* ttyS19 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x120, 12, BOCA_FLAGS },&t;/* ttyS20 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x128, 12, BOCA_FLAGS },&t;/* ttyS21 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x130, 12, BOCA_FLAGS },&t;/* ttyS22 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x138, 12, BOCA_FLAGS },&t;/* ttyS23 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x140, 12, BOCA_FLAGS },&t;/* ttyS24 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x148, 12, BOCA_FLAGS },&t;/* ttyS25 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x150, 12, BOCA_FLAGS },&t;/* ttyS26 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x158, 12, BOCA_FLAGS },&t;/* ttyS27 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x160, 12, BOCA_FLAGS },&t;/* ttyS28 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x168, 12, BOCA_FLAGS },&t;/* ttyS29 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x170, 12, BOCA_FLAGS },&t;/* ttyS30 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x178, 12, BOCA_FLAGS },&t;/* ttyS31 */
-macro_line|#else
+mdefine_line|#define EXTRA_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x1A0, 9, FOURPORT_FLAGS }, &t;/* ttyS4 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x1A8, 9, FOURPORT_FLAGS },&t;/* ttyS5 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x1B0, 9, FOURPORT_FLAGS },&t;/* ttyS6 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x1B8, 9, FOURPORT_FLAGS },&t;/* ttyS7 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2A0, 5, FOURPORT_FLAGS },&t;/* ttyS8 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2A8, 5, FOURPORT_FLAGS },&t;/* ttyS9 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2B0, 5, FOURPORT_FLAGS },&t;/* ttyS10 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2B8, 5, FOURPORT_FLAGS },&t;/* ttyS11 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x330, 4, ACCENT_FLAGS },&t;/* ttyS12 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x338, 4, ACCENT_FLAGS },&t;/* ttyS13 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x000, 0, 0 },&t;&t;&t;/* ttyS14 (spare) */ &bslash;&n;&t;{ 0, BASE_BAUD, 0x000, 0, 0 },&t;&t;&t;/* ttyS15 (spare) */ &bslash;&n;&t;{ 0, BASE_BAUD, 0x100, 12, BOCA_FLAGS },&t;/* ttyS16 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x108, 12, BOCA_FLAGS },&t;/* ttyS17 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x110, 12, BOCA_FLAGS },&t;/* ttyS18 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x118, 12, BOCA_FLAGS },&t;/* ttyS19 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x120, 12, BOCA_FLAGS },&t;/* ttyS20 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x128, 12, BOCA_FLAGS },&t;/* ttyS21 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x130, 12, BOCA_FLAGS },&t;/* ttyS22 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x138, 12, BOCA_FLAGS },&t;/* ttyS23 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x140, 12, BOCA_FLAGS },&t;/* ttyS24 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x148, 12, BOCA_FLAGS },&t;/* ttyS25 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x150, 12, BOCA_FLAGS },&t;/* ttyS26 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x158, 12, BOCA_FLAGS },&t;/* ttyS27 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x160, 12, BOCA_FLAGS },&t;/* ttyS28 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x168, 12, BOCA_FLAGS },&t;/* ttyS29 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x170, 12, BOCA_FLAGS },&t;/* ttyS30 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x178, 12, BOCA_FLAGS },&t;/* ttyS31 */
+macro_line|#else /* CONFIG_SERIAL_MANY_PORTS */
 DECL|macro|EXTRA_SERIAL_PORT_DEFNS
 mdefine_line|#define EXTRA_SERIAL_PORT_DEFNS
-macro_line|#endif
+macro_line|#endif /* CONFIG_SERIAL_MANY_PORTS */
+macro_line|#else /* CONFIG_HAVE_STD_PC_SERIAL_PORTS */
+DECL|macro|STD_SERIAL_PORT_DEFNS
+mdefine_line|#define STD_SERIAL_PORT_DEFNS
+DECL|macro|EXTRA_SERIAL_PORT_DEFNS
+mdefine_line|#define EXTRA_SERIAL_PORT_DEFNS
+macro_line|#endif /* CONFIG_HAVE_STD_PC_SERIAL_PORTS */
 multiline_comment|/* You can have up to four HUB6&squot;s in the system, but I&squot;ve only&n; * included two cards here for a total of twelve ports.&n; */
 macro_line|#if (defined(CONFIG_HUB6) &amp;&amp; defined(CONFIG_SERIAL_MANY_PORTS))
 DECL|macro|HUB6_SERIAL_PORT_DFNS
@@ -77,6 +130,29 @@ macro_line|#else
 DECL|macro|MCA_SERIAL_PORT_DFNS
 mdefine_line|#define MCA_SERIAL_PORT_DFNS
 macro_line|#endif
+macro_line|#ifdef CONFIG_MOMENCO_OCELOT
+multiline_comment|/* Ordinary NS16552 duart with a 20MHz crystal.  */
+DECL|macro|OCELOT_BASE_BAUD
+mdefine_line|#define OCELOT_BASE_BAUD ( 20000000 / 16 )
+DECL|macro|OCELOT_SERIAL1_IRQ
+mdefine_line|#define OCELOT_SERIAL1_IRQ&t;4
+DECL|macro|OCELOT_SERIAL1_BASE
+mdefine_line|#define OCELOT_SERIAL1_BASE&t;0xe0001020
+DECL|macro|_OCELOT_SERIAL_INIT
+mdefine_line|#define _OCELOT_SERIAL_INIT(int, base)&t;&t;&t;&t;&t;&bslash;&n;&t;{ baud_base: OCELOT_BASE_BAUD, irq: int, flags: STD_COM_FLAGS,&t;&bslash;&n;&t;  iomem_base: (u8 *) base, iomem_reg_shift: 2,&t;&t;&t;&bslash;&n;&t;  io_type: SERIAL_IO_MEM }
+DECL|macro|MOMENCO_OCELOT_SERIAL_PORT_DEFNS
+mdefine_line|#define MOMENCO_OCELOT_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;_OCELOT_SERIAL_INIT(OCELOT_SERIAL1_IRQ, OCELOT_SERIAL1_BASE)
+macro_line|#else
+DECL|macro|MOMENCO_OCELOT_SERIAL_PORT_DEFNS
+mdefine_line|#define MOMENCO_OCELOT_SERIAL_PORT_DEFNS
+macro_line|#endif
+macro_line|#ifdef CONFIG_DDB5477
+DECL|macro|DDB5477_SERIAL_PORT_DEFNS
+mdefine_line|#define DDB5477_SERIAL_PORT_DEFNS                                       &bslash;&n;        { baud_base: BASE_BAUD, irq: 12, flags: STD_COM_FLAGS,          &bslash;&n;          iomem_base: (u8*)0xbfa04200, iomem_reg_shift: 3,              &bslash;&n;          io_type: SERIAL_IO_MEM},&bslash;&n;        { baud_base: BASE_BAUD, irq: 28, flags: STD_COM_FLAGS,          &bslash;&n;          iomem_base: (u8*)0xbfa04240, iomem_reg_shift: 3,              &bslash;&n;          io_type: SERIAL_IO_MEM},
+macro_line|#else
+DECL|macro|DDB5477_SERIAL_PORT_DEFNS
+mdefine_line|#define DDB5477_SERIAL_PORT_DEFNS
+macro_line|#endif
 DECL|macro|SERIAL_PORT_DFNS
-mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;JAZZ_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;IVR_SERIAL_PORT_DEFNS           &bslash;&n;&t;ITE_SERIAL_PORT_DEFNS           &bslash;&n;&t;ATLAS_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;EV96100_SERIAL_PORT_DEFNS&t;&bslash;&n;&t;JAZZ_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_SERIAL_PORT_DEFNS&bslash;&n;&t;AU1000_SERIAL_PORT_DEFNS&t;&bslash;&n;&t;DDB5477_SERIAL_PORT_DEFNS
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_tty.c,v 1.94.6.1 2001/02/16 16:43:22 kai Exp $&n;&n; * Linux ISDN subsystem, tty functions and AT-command emulator (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_tty.c,v 1.94.6.2 2001/06/09 15:14:15 kai Exp $&n;&n; * Linux ISDN subsystem, tty functions and AT-command emulator (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 DECL|macro|ISDN_TTY_STAT_DEBUG
 macro_line|#undef ISDN_TTY_STAT_DEBUG
 DECL|macro|__NO_VERSION__
@@ -211,7 +211,7 @@ r_char
 op_star
 id|isdn_tty_revision
 op_assign
-l_string|&quot;$Revision: 1.94.6.1 $&quot;
+l_string|&quot;$Revision: 1.94.6.2 $&quot;
 suffix:semicolon
 multiline_comment|/* isdn_tty_try_read() is called from within isdn_tty_rcv_skb()&n; * to stuff incoming data directly into a tty&squot;s flip-buffer. This&n; * is done to speed up tty-receiving if the receive-queue is empty.&n; * This routine MUST be called with interrupts off.&n; * Return:&n; *  1 = Success&n; *  0 = Failure, data has to be buffered and later processed by&n; *      isdn_tty_readmodem().&n; */
 r_static
@@ -1293,11 +1293,6 @@ op_star
 id|info
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -1313,65 +1308,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb_queue_len
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|info-&gt;xmit_queue
-)paren
-)paren
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|info-&gt;xmit_queue
-)paren
-)paren
-)paren
-id|kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_AUDIO
-r_if
-c_cond
-(paren
-id|skb_queue_len
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|info-&gt;dtmf_queue
-)paren
-)paren
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|info-&gt;dtmf_queue
-)paren
-)paren
-)paren
-id|kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 macro_line|#endif

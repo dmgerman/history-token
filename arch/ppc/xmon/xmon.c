@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.xmon.c 1.12 06/09/01 22:18:05 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.xmon.c 1.14 06/28/01 15:50:17 paulus&n; */
 multiline_comment|/*&n; * Routines providing a simple monitor for use on the PowerMac.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -5543,7 +5543,11 @@ op_lshift
 l_int|4
 )paren
 op_plus
+(paren
 id|seg
+op_star
+l_int|0x111
+)paren
 comma
 id|seg_start
 comma

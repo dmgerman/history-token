@@ -50,7 +50,7 @@ mdefine_line|#define PA_LED&t;&t;0xb0c00000&t;/* LED */
 DECL|macro|PA_BCR
 mdefine_line|#define PA_BCR&t;&t;0xb1400000&t;/* FPGA */
 DECL|macro|PA_MRSHPC
-mdefine_line|#define PA_MRSHPC&t;0xb83fffe0&t;/* MR-SHPC-01 PCMCIA controler */
+mdefine_line|#define PA_MRSHPC&t;0xb83fffe0&t;/* MR-SHPC-01 PCMCIA controller */
 DECL|macro|PA_MRSHPC_MW1
 mdefine_line|#define PA_MRSHPC_MW1&t;0xb8400000&t;/* MR-SHPC-01 memory window base */
 DECL|macro|PA_MRSHPC_MW2

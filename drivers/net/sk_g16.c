@@ -629,7 +629,7 @@ id|dev
 suffix:semicolon
 "&f;"
 multiline_comment|/*-&n; * Function       : SK_init&n; * Author         : Patrick J.D. Weichmann&n; * Date Created   : 94/05/26&n; *&n; * Description    : Check for a SK_G16 network adaptor and initialize it.&n; *                  This function gets called by dev_init which initializes&n; *                  all Network devices.&n; *&n; * Parameters     : I : struct net_device *dev - structure preconfigured &n; *                                           from Space.c&n; * Return Value   : 0 = Driver Found and initialized &n; * Errors         : ENODEV - no device found&n; *                  ENXIO  - not probed&n; * Globals        : None&n; * Update History :&n; *     YY/MM/DD  uid  Description&n;-*/
-multiline_comment|/* &n; * Check for a network adaptor of this type, and return &squot;0&squot; if one exists.&n; * If dev-&gt;base_addr == 0, probe all likely locations.&n; * If dev-&gt;base_addr == 1, always return failure.&n; * If dev-&gt;base_addr == 2, allocate space for the device and return success&n; *                         (detachable devices only).&n; */
+multiline_comment|/* &n; * Check for a network adaptor of this type, and return &squot;0&squot; if one exists.&n; * If dev-&gt;base_addr == 0, probe all likely locations.&n; * If dev-&gt;base_addr == 1, always return failure.&n; */
 DECL|function|SK_init
 r_int
 id|__init

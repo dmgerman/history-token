@@ -4029,6 +4029,8 @@ comma
 id|exp
 comma
 id|dchild
+comma
+id|cd-&gt;dirfh
 )paren
 op_ne
 l_int|0

@@ -3,9 +3,9 @@ multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;tulip&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.9.15-pre5&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.9.15-pre6&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;June 16, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;July 2, 2001&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;tulip.h&quot;
@@ -5252,12 +5252,14 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 id|data
 op_assign
 (paren
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 )paren
 op_amp
@@ -5284,10 +5286,7 @@ r_int
 r_int
 id|regnum
 op_assign
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 suffix:semicolon
 r_switch
 c_cond
@@ -5312,18 +5311,19 @@ id|rq-&gt;ifr_data
 )paren
 suffix:semicolon
 r_case
+id|SIOCGMIIPHY
+suffix:colon
+multiline_comment|/* Get address of MII PHY in use. */
+r_case
 id|SIOCDEVPRIVATE
 suffix:colon
-multiline_comment|/* Get the address of the PHY in use. */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
 id|tp-&gt;mii_cnt
 )paren
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_assign
 id|phy
 suffix:semicolon
@@ -5335,10 +5335,7 @@ id|tp-&gt;flags
 op_amp
 id|HAS_NWAY
 )paren
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_assign
 l_int|32
 suffix:semicolon
@@ -5350,10 +5347,7 @@ id|tp-&gt;chip_id
 op_eq
 id|COMET
 )paren
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_assign
 l_int|1
 suffix:semicolon
@@ -5363,18 +5357,19 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_case
+id|SIOCGMIIREG
+suffix:colon
+multiline_comment|/* Read MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|1
 suffix:colon
-multiline_comment|/* Read the specified MII register. */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_eq
 l_int|32
 op_logical_and
@@ -5435,18 +5430,12 @@ op_logical_and
 id|tp-&gt;nwayset
 )paren
 )paren
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 l_int|0x1000
 suffix:semicolon
 r_else
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 (paren
 id|tulip_media_cap
@@ -5481,10 +5470,7 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 l_int|0x1848
 op_plus
@@ -5525,10 +5511,7 @@ id|tp-&gt;chip_id
 op_ne
 id|DC21041
 )paren
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_or_assign
 l_int|0x6048
 suffix:semicolon
@@ -5538,10 +5521,7 @@ r_case
 l_int|4
 suffix:colon
 multiline_comment|/* Advertised value, bogus 10baseTx-FD value from CSR6. */
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 (paren
 (paren
@@ -5578,10 +5558,7 @@ id|tp-&gt;chip_id
 op_ne
 id|DC21041
 )paren
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_or_assign
 (paren
 (paren
@@ -5598,10 +5575,7 @@ suffix:semicolon
 r_case
 l_int|5
 suffix:colon
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 id|tp-&gt;lpar
 suffix:semicolon
@@ -5609,10 +5583,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 l_int|0
 suffix:semicolon
@@ -5622,19 +5593,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 op_assign
 id|tulip_mdio_read
 (paren
 id|dev
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
@@ -5646,11 +5611,15 @@ r_return
 l_int|0
 suffix:semicolon
 r_case
+id|SIOCSMIIREG
+suffix:colon
+multiline_comment|/* Write MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|2
 suffix:colon
-multiline_comment|/* Write the specified MII register */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
@@ -5679,10 +5648,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_eq
 id|phy
 )paren
@@ -5690,10 +5656,7 @@ id|phy
 id|u16
 id|value
 op_assign
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 suffix:semicolon
 r_switch
 c_cond
@@ -5748,10 +5711,7 @@ id|phy_idx
 op_assign
 id|tp-&gt;mii_advertise
 op_assign
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5760,10 +5720,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_eq
 l_int|32
 op_logical_and
@@ -5777,10 +5734,7 @@ id|HAS_NWAY
 id|u16
 id|value
 op_assign
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 suffix:semicolon
 r_if
 c_cond
@@ -5826,19 +5780,13 @@ id|tulip_mdio_write
 (paren
 id|dev
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
 id|regnum
 comma
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 )paren
 suffix:semicolon
 )brace

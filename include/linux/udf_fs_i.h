@@ -24,10 +24,6 @@ DECL|struct|udf_inode_info
 r_struct
 id|udf_inode_info
 (brace
-DECL|member|i_uatime
-r_int
-id|i_uatime
-suffix:semicolon
 DECL|member|i_umtime
 r_int
 id|i_umtime
@@ -35,6 +31,14 @@ suffix:semicolon
 DECL|member|i_uctime
 r_int
 id|i_uctime
+suffix:semicolon
+DECL|member|i_crtime
+r_int
+id|i_crtime
+suffix:semicolon
+DECL|member|i_ucrtime
+r_int
+id|i_ucrtime
 suffix:semicolon
 multiline_comment|/* Physical address of inode */
 DECL|member|i_location

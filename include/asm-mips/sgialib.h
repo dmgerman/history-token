@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sgialib.h,v 1.5 2000/03/19 01:28:58 ralf Exp $&n; * sgialib.h: SGI ARCS firmware interface library for the Linux kernel.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * sgialib.h: SGI ARCS firmware interface library for the Linux kernel.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#ifndef _ASM_SGIALIB_H
 DECL|macro|_ASM_SGIALIB_H
 mdefine_line|#define _ASM_SGIALIB_H
@@ -37,7 +37,7 @@ DECL|macro|PROM_FLAG_ARCS
 mdefine_line|#define PROM_FLAG_ARCS  1
 multiline_comment|/*&n; * Init the PROM library and it&squot;s internal data structures.  Called&n; * at boot time from head.S before start_kernel is invoked.&n; */
 r_extern
-r_int
+r_void
 id|prom_init
 c_func
 (paren
@@ -92,78 +92,12 @@ dot
 dot
 )paren
 suffix:semicolon
-multiline_comment|/* Memory descriptor management. */
-DECL|macro|PROM_MAX_PMEMBLOCKS
-mdefine_line|#define PROM_MAX_PMEMBLOCKS    32
-DECL|struct|prom_pmemblock
-r_struct
-id|prom_pmemblock
-(brace
-DECL|member|base
-r_int
-r_int
-id|base
-suffix:semicolon
-multiline_comment|/* Within KSEG0. */
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
-multiline_comment|/* In bytes. */
-DECL|member|type
-r_int
-r_int
-id|type
-suffix:semicolon
-multiline_comment|/* free or prom memory */
-)brace
-suffix:semicolon
-multiline_comment|/* Get next memory descriptor after CURR, returns first descriptor&n; * in chain is CURR is NULL.&n; */
-r_extern
-r_struct
-id|linux_mdesc
-op_star
-id|prom_getmdesc
-c_func
-(paren
-r_struct
-id|linux_mdesc
-op_star
-id|curr
-)paren
-suffix:semicolon
 DECL|macro|PROM_NULL_MDESC
 mdefine_line|#define PROM_NULL_MDESC   ((struct linux_mdesc *) 0)
 multiline_comment|/* Called by prom_init to setup the physical memory pmemblock&n; * array.&n; */
 r_extern
 r_void
 id|prom_meminit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|prom_fixup_mem_map
-c_func
-(paren
-r_int
-r_int
-id|start_mem
-comma
-r_int
-r_int
-id|end_mem
-)paren
-suffix:semicolon
-multiline_comment|/* Returns pointer to PROM physical memory block array. */
-r_extern
-r_struct
-id|prom_pmemblock
-op_star
-id|prom_getpblock_array
 c_func
 (paren
 r_void
@@ -273,7 +207,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Environemt variable routines. */
+multiline_comment|/* Environment variable routines. */
 r_extern
 id|PCHAR
 id|ArcGetEnvironmentVariable
@@ -286,7 +220,7 @@ id|name
 suffix:semicolon
 r_extern
 id|LONG
-id|SetEnvironmentVariable
+id|ArcSetEnvironmentVariable
 c_func
 (paren
 id|PCHAR
@@ -648,7 +582,7 @@ id|noreturn
 suffix:semicolon
 r_extern
 r_void
-id|prom_imode
+id|ArcEnterInteractiveMode
 c_func
 (paren
 r_void

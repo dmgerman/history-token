@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.34 06/09/01 22:38:13 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.36 06/28/01 15:50:16 paulus&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -1758,21 +1758,6 @@ c_func
 id|set_context
 )paren
 suffix:semicolon
-DECL|variable|mmu_context_overflow
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mmu_context_overflow
-)paren
-suffix:semicolon
-DECL|variable|flush_hash_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|flush_hash_page
-)paren
-suffix:semicolon
-multiline_comment|/* For MOL */
 DECL|variable|handle_mm_fault
 id|EXPORT_SYMBOL
 c_func
@@ -1789,6 +1774,14 @@ id|disarm_decr
 )paren
 suffix:semicolon
 macro_line|#if !defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx)
+DECL|variable|flush_hash_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_hash_page
+)paren
+suffix:semicolon
+multiline_comment|/* For MOL */
 r_extern
 r_int
 op_star

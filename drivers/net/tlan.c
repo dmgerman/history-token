@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 DECL|typedef|TLanIntVectorFunc
 r_typedef
 id|u32
@@ -436,7 +437,7 @@ op_assign
 (brace
 id|PCI_VENDOR_ID_COMPAQ
 comma
-id|PCI_DEVICE_ID_NETELLIGENT_10
+id|PCI_DEVICE_ID_COMPAQ_NETEL10
 comma
 id|PCI_ANY_ID
 comma
@@ -452,7 +453,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_COMPAQ
 comma
-id|PCI_DEVICE_ID_NETELLIGENT_10_100
+id|PCI_DEVICE_ID_COMPAQ_NETEL100
 comma
 id|PCI_ANY_ID
 comma
@@ -468,7 +469,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_COMPAQ
 comma
-id|PCI_DEVICE_ID_NETFLEX_3P_INTEGRATED
+id|PCI_DEVICE_ID_COMPAQ_NETFLEX3I
 comma
 id|PCI_ANY_ID
 comma
@@ -484,7 +485,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_COMPAQ
 comma
-id|PCI_DEVICE_ID_NETFLEX_3P
+id|PCI_DEVICE_ID_COMPAQ_THUNDER
 comma
 id|PCI_ANY_ID
 comma
@@ -500,7 +501,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_COMPAQ
 comma
-id|PCI_DEVICE_ID_NETFLEX_3P_BNC
+id|PCI_DEVICE_ID_COMPAQ_NETFLEX3B
 comma
 id|PCI_ANY_ID
 comma
@@ -516,7 +517,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_COMPAQ
 comma
-id|PCI_DEVICE_ID_NETELLIGENT_10_100_PROLIANT
+id|PCI_DEVICE_ID_COMPAQ_NETEL100PI
 comma
 id|PCI_ANY_ID
 comma
@@ -532,7 +533,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_COMPAQ
 comma
-id|PCI_DEVICE_ID_NETELLIGENT_10_100_DUAL
+id|PCI_DEVICE_ID_COMPAQ_NETEL100D
 comma
 id|PCI_ANY_ID
 comma
@@ -548,7 +549,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_COMPAQ
 comma
-id|PCI_DEVICE_ID_DESKPRO_4000_5233MMX
+id|PCI_DEVICE_ID_COMPAQ_NETEL100I
 comma
 id|PCI_ANY_ID
 comma
@@ -3168,12 +3169,14 @@ id|priv
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 id|data
 op_assign
 (paren
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 )paren
 op_amp
@@ -3204,56 +3207,57 @@ id|cmd
 )paren
 (brace
 r_case
+id|SIOCGMIIPHY
+suffix:colon
+multiline_comment|/* Get address of MII PHY in use. */
+r_case
 id|SIOCDEVPRIVATE
 suffix:colon
-id|data
-(braket
-l_int|0
-)braket
+multiline_comment|/* for binary compat, remove in 2.5 */
+id|data-&gt;phy_id
 op_assign
 id|phy
 suffix:semicolon
+r_case
+id|SIOCGMIIREG
+suffix:colon
+multiline_comment|/* Read MII PHY register. */
 r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|1
 suffix:colon
-multiline_comment|/* Read MII register */
+multiline_comment|/* for binary compat, remove in 2.5 */
 id|TLan_MiiReadReg
 c_func
 (paren
 id|dev
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 comma
 op_amp
-id|data
-(braket
-l_int|3
-)braket
+id|data-&gt;val_out
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 r_case
+id|SIOCSMIIREG
+suffix:colon
+multiline_comment|/* Write MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|2
 suffix:colon
-multiline_comment|/* Write MII register */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
@@ -3273,24 +3277,15 @@ c_func
 (paren
 id|dev
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 )paren
 suffix:semicolon
 r_return

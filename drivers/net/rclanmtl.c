@@ -6,10 +6,10 @@ mdefine_line|#define RC_LINUX_MODULE
 macro_line|#include &quot;rclanmtl.h&quot;
 multiline_comment|/* RedCreek LAN device Target ID */
 DECL|macro|RC_LAN_TARGET_ID
-mdefine_line|#define RC_LAN_TARGET_ID  0x10 
+mdefine_line|#define RC_LAN_TARGET_ID  0x10
 multiline_comment|/* RedCreek&squot;s OSM default LAN receive Initiator */
 DECL|macro|DEFAULT_RECV_INIT_CONTEXT
-mdefine_line|#define DEFAULT_RECV_INIT_CONTEXT  0xA17  
+mdefine_line|#define DEFAULT_RECV_INIT_CONTEXT  0xA17
 multiline_comment|/*&n;** I2O message structures&n;*/
 DECL|macro|I2O_TID_SZ
 mdefine_line|#define    I2O_TID_SZ                                  12
@@ -248,7 +248,7 @@ DECL|macro|I2O_HOST_TID
 mdefine_line|#define I2O_HOST_TID  0xB91
 multiline_comment|/* RedCreek I2O private message codes */
 DECL|macro|RC_PRIVATE_GET_MAC_ADDR
-mdefine_line|#define RC_PRIVATE_GET_MAC_ADDR     0x0001/**/ /* OBSOLETE */
+mdefine_line|#define RC_PRIVATE_GET_MAC_ADDR     0x0001/**/&t;/* OBSOLETE */
 DECL|macro|RC_PRIVATE_SET_MAC_ADDR
 mdefine_line|#define RC_PRIVATE_SET_MAC_ADDR     0x0002
 DECL|macro|RC_PRIVATE_GET_NIC_STATS
@@ -267,7 +267,7 @@ DECL|macro|RC_PRIVATE_GET_FIRMWARE_REV
 mdefine_line|#define RC_PRIVATE_GET_FIRMWARE_REV 0x0009
 multiline_comment|/* #define RC_PRIVATE_GET_MAC_ADDR     0x000A */
 DECL|macro|RC_PRIVATE_GET_IP_AND_MASK
-mdefine_line|#define RC_PRIVATE_GET_IP_AND_MASK  0x000B 
+mdefine_line|#define RC_PRIVATE_GET_IP_AND_MASK  0x000B
 DECL|macro|RC_PRIVATE_DEBUG_MSG
 mdefine_line|#define RC_PRIVATE_DEBUG_MSG        0x000C
 DECL|macro|RC_PRIVATE_REPORT_DRIVER_CAPABILITY
@@ -323,9 +323,9 @@ id|U32
 id|InitiatorContext
 suffix:semicolon
 multiline_comment|/* SGL[] */
-)brace
 DECL|typedef|I2O_MESSAGE_FRAME
 DECL|typedef|PI2O_MESSAGE_FRAME
+)brace
 id|I2O_MESSAGE_FRAME
 comma
 op_star
@@ -336,7 +336,7 @@ DECL|macro|MSG_FRAME_SIZE
 mdefine_line|#define MSG_FRAME_SIZE  512
 DECL|macro|NMBR_MSG_FRAMES
 mdefine_line|#define NMBR_MSG_FRAMES 30
-multiline_comment|/* &n; ** in reserved space right after PAB in host memory is area for returning&n; ** values from card &n; */
+multiline_comment|/* &n;    ** in reserved space right after PAB in host memory is area for returning&n;    ** values from card &n;  */
 multiline_comment|/*&n;** typedef NICSTAT&n;**&n;** Data structure for NIC statistics retruned from PCI card.  Data copied from&n;** here to user allocated RCLINKSTATS (see rclanmtl.h) structure.&n;*/
 DECL|struct|tag_NicStat
 r_typedef
@@ -433,18 +433,18 @@ r_int
 id|dump_status
 suffix:semicolon
 multiline_comment|/* last field directly from the chip */
-)brace
 DECL|typedef|NICSTAT
 DECL|typedef|P_NICSTAT
+)brace
 id|NICSTAT
 comma
 op_star
 id|P_NICSTAT
 suffix:semicolon
 DECL|macro|DUMP_DONE
-mdefine_line|#define DUMP_DONE   0x0000A005      /* completed statistical dump */
+mdefine_line|#define DUMP_DONE   0x0000A005&t;/* completed statistical dump */
 DECL|macro|DUMP_CLEAR
-mdefine_line|#define DUMP_CLEAR  0x0000A007      /* completed stat dump and clear counters */
+mdefine_line|#define DUMP_CLEAR  0x0000A007&t;/* completed stat dump and clear counters */
 DECL|variable|msgFlag
 r_static
 r_volatile
@@ -455,7 +455,6 @@ multiline_comment|/* local function prototypes */
 r_static
 r_void
 id|ProcessOutboundI2OMsg
-c_func
 (paren
 id|PPAB
 id|pPab
@@ -467,7 +466,6 @@ suffix:semicolon
 r_static
 r_int
 id|FillI2OMsgSGLFromTCB
-c_func
 (paren
 id|PU32
 id|pMsg
@@ -479,7 +477,6 @@ suffix:semicolon
 r_static
 r_int
 id|GetI2OStatus
-c_func
 (paren
 id|PPAB
 id|pPab
@@ -488,7 +485,6 @@ suffix:semicolon
 r_static
 r_int
 id|SendI2OOutboundQInitMsg
-c_func
 (paren
 id|PPAB
 id|pPab
@@ -497,7 +493,6 @@ suffix:semicolon
 r_static
 r_int
 id|SendEnableSysMsg
-c_func
 (paren
 id|PPAB
 id|pPab
@@ -507,7 +502,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCInitI2OMsgLayer
 id|RCInitI2OMsgLayer
-c_func
 (paren
 r_struct
 id|net_device
@@ -552,7 +546,6 @@ op_assign
 id|PU8
 )paren
 id|virt_to_bus
-c_func
 (paren
 (paren
 r_void
@@ -562,7 +555,6 @@ id|p_msgbuf
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;InitI2O: Adapter:0x%04ux ATU:0x%08ulx msgbuf:0x%08ulx phymsgbuf:0x%08ulx&bslash;n&quot;
 l_string|&quot;TransmitCallbackFunction:0x%08ulx  ReceiveCallbackFunction:0x%08ulx&bslash;n&quot;
@@ -602,7 +594,6 @@ l_int|NULL
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;(rcpci45 driver:) pDpa-&gt;pPab [%d] != NULL&bslash;n&quot;
@@ -616,11 +607,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* store adapter instance values in adapter block.&n;     * Adapter block is at beginning of message buffer */
+multiline_comment|/* store adapter instance values in adapter block.&n;&t; * Adapter block is at beginning of message buffer */
 id|pPab
 op_assign
 id|kmalloc
-c_func
 (paren
 r_sizeof
 (paren
@@ -639,7 +629,6 @@ id|pPab
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_ERR
 l_string|&quot;(rcpci45 driver:) RCInitI2OMsgLayer: Could not allocate memory for PAB struct!&bslash;n&quot;
@@ -654,7 +643,6 @@ id|err_out
 suffix:semicolon
 )brace
 id|memset
-c_func
 (paren
 id|pPab
 comma
@@ -720,11 +708,10 @@ id|PFNCALLBACK
 )paren
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;    ** Initialize I2O IOP&n;    */
+multiline_comment|/*&n;&t;   ** Initialize I2O IOP&n;&t; */
 id|result
 op_assign
 id|GetI2OStatus
-c_func
 (paren
 id|pPab
 )paren
@@ -748,14 +735,12 @@ id|I2O_IOP_STATE_OPERATIONAL
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_INFO
 l_string|&quot;(rcpci45 driver:) pPab-&gt;IOPState == op: resetting adapter&bslash;n&quot;
 )paren
 suffix:semicolon
 id|RCResetLANCard
-c_func
 (paren
 id|dev
 comma
@@ -776,7 +761,6 @@ suffix:semicolon
 id|result
 op_assign
 id|SendI2OOutboundQInitMsg
-c_func
 (paren
 id|pPab
 )paren
@@ -794,7 +778,6 @@ suffix:semicolon
 id|result
 op_assign
 id|SendEnableSysMsg
-c_func
 (paren
 id|pPab
 )paren
@@ -815,7 +798,6 @@ suffix:semicolon
 id|err_out_dealloc
 suffix:colon
 id|kfree
-c_func
 (paren
 id|pPab
 )paren
@@ -828,11 +810,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;** =========================================================================&n;** Disable and Enable I2O interrupts.  I2O interrupts are enabled at Init time&n;** but can be disabled and re-enabled through these two function calls.&n;** Packets will still be put into any posted received buffers and packets will&n;** be sent through RCI2OSendPacket() functions.  Disabling I2O interrupts&n;** will prevent hardware interrupt to host even though the outbound I2O msg&n;** queue is not emtpy.&n;** =========================================================================&n;*/
 DECL|macro|i960_OUT_POST_Q_INT_BIT
-mdefine_line|#define i960_OUT_POST_Q_INT_BIT        0x0008 /* bit set masks interrupts */
-DECL|function|RCDisableI2OInterrupts
+mdefine_line|#define i960_OUT_POST_Q_INT_BIT        0x0008&t;/* bit set masks interrupts */
 id|RC_RETURN
+DECL|function|RCDisableI2OInterrupts
 id|RCDisableI2OInterrupts
-c_func
 (paren
 r_struct
 id|net_device
@@ -870,10 +851,9 @@ r_return
 id|RC_RTN_NO_ERROR
 suffix:semicolon
 )brace
-DECL|function|RCEnableI2OInterrupts
 id|RC_RETURN
+DECL|function|RCEnableI2OInterrupts
 id|RCEnableI2OInterrupts
-c_func
 (paren
 r_struct
 id|net_device
@@ -916,7 +896,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCI2OSendPacket
 id|RCI2OSendPacket
-c_func
 (paren
 r_struct
 id|net_device
@@ -952,7 +931,6 @@ op_member_access_from_pointer
 id|pPab
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCI2OSendPacket()...&bslash;n&quot;
 )paren
@@ -982,7 +960,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCI2OSendPacket(): Inbound Free Q empty!&bslash;n&quot;
 )paren
@@ -1006,7 +983,6 @@ suffix:semicolon
 id|size
 op_assign
 id|FillI2OMsgSGLFromTCB
-c_func
 (paren
 id|pMsg
 op_plus
@@ -1023,10 +999,9 @@ op_eq
 op_minus
 l_int|1
 )paren
-multiline_comment|/* error processing TCB - send NOP msg */
 (brace
+multiline_comment|/* error processing TCB - send NOP msg */
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCI2OSendPacket(): Error Rrocess TCB!&bslash;n&quot;
 )paren
@@ -1060,8 +1035,8 @@ id|RC_RTN_TCB_ERROR
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* send over msg header */
 (brace
+multiline_comment|/* send over msg header */
 id|pMsg
 (braket
 l_int|0
@@ -1122,7 +1097,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCPostRecvBuffers
 id|RCPostRecvBuffers
-c_func
 (paren
 r_struct
 id|net_device
@@ -1155,7 +1129,6 @@ op_member_access_from_pointer
 id|pPab
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCPostRecvBuffers()...&bslash;n&quot;
 )paren
@@ -1186,7 +1159,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCPostRecvBuffers(): Inbound Free Q empty!&bslash;n&quot;
 )paren
@@ -1210,7 +1182,6 @@ suffix:semicolon
 id|size
 op_assign
 id|FillI2OMsgSGLFromTCB
-c_func
 (paren
 id|pMsg
 op_plus
@@ -1227,10 +1198,9 @@ op_eq
 op_minus
 l_int|1
 )paren
-multiline_comment|/* error prcessing TCB - send 3 DWORD private msg == NOP */
 (brace
+multiline_comment|/* error prcessing TCB - send 3 DWORD private msg == NOP */
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCPostRecvBuffers(): Error Processing TCB! size = %d&bslash;n&quot;
 comma
@@ -1271,8 +1241,8 @@ id|RC_RTN_TCB_ERROR
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* send over size msg header */
 (brace
+multiline_comment|/* send over size msg header */
 id|pMsg
 (braket
 l_int|0
@@ -1337,7 +1307,6 @@ multiline_comment|/*&n;** ======================================================
 r_void
 DECL|function|RCProcI2OMsgQ
 id|RCProcI2OMsgQ
-c_func
 (paren
 r_struct
 id|net_device
@@ -1415,7 +1384,6 @@ id|PU32
 id|p8Msg
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;msg: 0x%x  0x%x &bslash;n&quot;
 comma
@@ -1499,7 +1467,6 @@ l_int|7
 (brace
 multiline_comment|/* Receive Packet Reply Msg */
 id|dprintk
-c_func
 (paren
 l_string|&quot;I2O_RECV_REPLY pPab:0x%08ulx p8Msg:0x%08ulx p32:0x%08ulx&bslash;n&quot;
 comma
@@ -1520,7 +1487,6 @@ id|p32
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;msg: 0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -1546,7 +1512,6 @@ l_int|3
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;     0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -1572,7 +1537,6 @@ l_int|7
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;     0x%08ulx:0X%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -1687,7 +1651,6 @@ l_int|7
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;i2o private 0x%x, 0x%x &bslash;n&quot;
 comma
@@ -1719,7 +1682,6 @@ op_assign
 l_int|1
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;Received I2O_PRIVATE msg&bslash;n&quot;
 )paren
@@ -1980,7 +1942,6 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;%s&quot;
 comma
@@ -1993,7 +1954,6 @@ r_case
 id|RC_PRIVATE_REBOOT
 suffix:colon
 id|dprintk
-c_func
 (paren
 l_string|&quot;Adapter reboot initiated...&bslash;n&quot;
 )paren
@@ -2022,7 +1982,6 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;(rcpci45 driver:) Unknown private I2O msg received: 0x%x&bslash;n&quot;
@@ -2037,17 +1996,16 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n;        ** Process other Msg&squot;s&n;        */
+multiline_comment|/* &n;&t;&t;   ** Process other Msg&squot;s&n;&t;&t; */
 r_else
 id|ProcessOutboundI2OMsg
-c_func
 (paren
 id|pPab
 comma
 id|phyAddrMsg
 )paren
 suffix:semicolon
-multiline_comment|/* return MFA to outbound free Q*/
+multiline_comment|/* return MFA to outbound free Q */
 id|pPab-&gt;p_atu-&gt;OutQueue
 op_assign
 id|phyAddrMsg
@@ -2063,7 +2021,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCGetLinkStatistics
 id|RCGetLinkStatistics
-c_func
 (paren
 r_struct
 id|net_device
@@ -2136,7 +2093,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Get8255XStats(): Inbound Free Q empty!&bslash;n&quot;
 )paren
@@ -2262,7 +2218,6 @@ id|WaitCallback
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -2285,7 +2240,6 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGet82558Stats() Timeout waiting for NIC statistics&bslash;n&quot;
 )paren
@@ -2343,7 +2297,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCGetLinkStatus
 id|RCGetLinkStatus
-c_func
 (paren
 r_struct
 id|net_device
@@ -2385,7 +2338,6 @@ op_member_access_from_pointer
 id|pPab
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;Get82558LinkStatus() ReturnPhysAddr:0x%08ulx&bslash;n&quot;
 comma
@@ -2418,7 +2370,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Get82558LinkStatus(): Inbound Free Q empty!&bslash;n&quot;
 )paren
@@ -2538,7 +2489,6 @@ id|WaitCallback
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -2562,7 +2512,6 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Timeout waiting for link status&bslash;n&quot;
 )paren
@@ -2587,7 +2536,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCGetMAC
 id|RCGetMAC
-c_func
 (paren
 r_struct
 id|net_device
@@ -2683,7 +2631,6 @@ id|off
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGetMAC: p_atu 0x%08x, off 0x%08x, p 0x%08x&bslash;n&quot;
 comma
@@ -2761,7 +2708,6 @@ id|off
 suffix:semicolon
 multiline_comment|/* send it to the I2O device */
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGetMAC: p_atu 0x%08x, off 0x%08x, p 0x%08x&bslash;n&quot;
 comma
@@ -2807,7 +2753,6 @@ id|WaitCallback
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -2821,7 +2766,6 @@ op_decrement
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;rc_getmac: Timeout&bslash;n&quot;
 )paren
@@ -2847,7 +2791,6 @@ op_assign
 id|p_atu-&gt;EtherMacHi
 suffix:semicolon
 id|memcpy
-c_func
 (paren
 (paren
 r_char
@@ -2865,7 +2808,6 @@ l_int|6
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;rc_getmac: 0x%x&bslash;n&quot;
 comma
@@ -2883,7 +2825,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCSetMAC
 id|RCSetMAC
-c_func
 (paren
 r_struct
 id|net_device
@@ -3043,7 +2984,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCSetLinkSpeed
 id|RCSetLinkSpeed
-c_func
 (paren
 r_struct
 id|net_device
@@ -3181,7 +3121,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCSetPromiscuousMode
 id|RCSetPromiscuousMode
-c_func
 (paren
 r_struct
 id|net_device
@@ -3319,7 +3258,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCGetPromiscuousMode
 id|RCGetPromiscuousMode
-c_func
 (paren
 r_struct
 id|net_device
@@ -3370,7 +3308,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;(rcpci45 driver:) RCGetLinkSpeed(): Inbound Free Q empty!&bslash;n&quot;
@@ -3497,7 +3434,6 @@ id|WaitCallback
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -3524,13 +3460,11 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Timeout waiting for promiscuous mode from adapter&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;0x%8x&bslash;n&quot;
 comma
@@ -3573,7 +3507,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCSetBroadcastMode
 id|RCSetBroadcastMode
-c_func
 (paren
 r_struct
 id|net_device
@@ -3711,7 +3644,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCGetBroadcastMode
 id|RCGetBroadcastMode
-c_func
 (paren
 r_struct
 id|net_device
@@ -3762,7 +3694,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;(rcpci45 driver:) RCGetLinkSpeed(): Inbound Free Q empty!&bslash;n&quot;
@@ -3889,7 +3820,6 @@ id|WaitCallback
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -3916,14 +3846,12 @@ op_decrement
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;(rcpci45 driver:) Timeout waiting for promiscuous mode from adapter&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;(rcpci45 driver:) 0x%8x&bslash;n&quot;
@@ -3967,7 +3895,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCGetLinkSpeed
 id|RCGetLinkSpeed
-c_func
 (paren
 r_struct
 id|net_device
@@ -4021,7 +3948,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;(rcpci45 driver:) RCGetLinkSpeed(): Inbound Free Q empty!&bslash;n&quot;
@@ -4148,7 +4074,6 @@ id|WaitCallback
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -4175,13 +4100,11 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Timeout waiting for link speed from IOP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;0x%8x&bslash;n&quot;
 comma
@@ -4228,7 +4151,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCReportDriverCapability
 id|RCReportDriverCapability
-c_func
 (paren
 r_struct
 id|net_device
@@ -4365,7 +4287,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCGetFirmwareVer
 id|RCGetFirmwareVer
-c_func
 (paren
 r_struct
 id|net_device
@@ -4416,7 +4337,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGetFirmwareVer(): Inbound Free Q empty!&bslash;n&quot;
 )paren
@@ -4542,7 +4462,6 @@ id|WaitCallback
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -4569,7 +4488,6 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Timeout waiting for link speed from IOP&bslash;n&quot;
 )paren
@@ -4580,7 +4498,6 @@ suffix:semicolon
 )brace
 )brace
 id|strcpy
-c_func
 (paren
 id|pFirmString
 comma
@@ -4598,7 +4515,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCResetLANCard
 id|RCResetLANCard
-c_func
 (paren
 r_struct
 id|net_device
@@ -4737,7 +4653,7 @@ id|PFNCALLBACK
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* call RCProcI2OMsgQ() until something in pPab-&gt;pCallbackFunc&n;           or until timer goes off */
+multiline_comment|/* call RCProcI2OMsgQ() until something in pPab-&gt;pCallbackFunc&n;&t;&t;   or until timer goes off */
 r_while
 c_loop
 (paren
@@ -4750,13 +4666,11 @@ l_int|NULL
 )paren
 (brace
 id|RCProcI2OMsgQ
-c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|1000
 )paren
@@ -4804,7 +4718,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCResetIOP
 id|RCResetIOP
-c_func
 (paren
 r_struct
 id|net_device
@@ -4983,7 +4896,6 @@ l_int|1
 )paren
 (brace
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -5013,7 +4925,6 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCResetIOP timeout&bslash;n&quot;
 )paren
@@ -5031,7 +4942,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCShutdownLANCard
 id|RCShutdownLANCard
-c_func
 (paren
 r_struct
 id|net_device
@@ -5170,7 +5080,7 @@ id|PFNCALLBACK
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* call RCProcI2OMsgQ() until something in pPab-&gt;pCallbackFunc&n;           or until timer goes off */
+multiline_comment|/* call RCProcI2OMsgQ() until something in pPab-&gt;pCallbackFunc&n;&t;&t;   or until timer goes off */
 r_while
 c_loop
 (paren
@@ -5183,13 +5093,11 @@ l_int|NULL
 )paren
 (brace
 id|RCProcI2OMsgQ
-c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|1000
 )paren
@@ -5207,7 +5115,6 @@ l_int|10000
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;(rcpci45 driver:) RCShutdownLANCard(): timeout&bslash;n&quot;
@@ -5244,7 +5151,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCSetRavlinIPandMask
 id|RCSetRavlinIPandMask
-c_func
 (paren
 r_struct
 id|net_device
@@ -5392,7 +5298,6 @@ multiline_comment|/*&n;** ======================================================
 id|RC_RETURN
 DECL|function|RCGetRavlinIPandMask
 id|RCGetRavlinIPandMask
-c_func
 (paren
 r_struct
 id|net_device
@@ -5436,7 +5341,6 @@ id|PATU
 id|p_atu
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGetRavlinIPandMask: pIpAddr is 0x%08ulx, *IpAddr is 0x%08ulx&bslash;n&quot;
 comma
@@ -5503,7 +5407,6 @@ id|off
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGetRavlinIPandMask: p_atu 0x%08ulx, off 0x%08ulx, p32 0x%08ulx&bslash;n&quot;
 comma
@@ -5585,7 +5488,6 @@ id|off
 suffix:semicolon
 multiline_comment|/* send it to the I2O device */
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGetRavlinIPandMask: p_atu 0x%08ulx, off 0x%08ulx, p32 0x%08ulx&bslash;n&quot;
 comma
@@ -5629,7 +5531,6 @@ id|WaitCallback
 )paren
 suffix:semicolon
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -5643,7 +5544,6 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGetRavlinIPandMask: Timeout&bslash;n&quot;
 )paren
@@ -5654,7 +5554,6 @@ suffix:semicolon
 )brace
 )brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGetRavlinIPandMask: after time out&bslash;np32[0] (IpAddr) 0x%08ulx, p32[1] (IPmask) 0x%08ulx&bslash;n&quot;
 comma
@@ -5687,7 +5586,6 @@ l_int|1
 )braket
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;RCGetRavlinIPandMask: pIpAddr is 0x%08ulx, *IpAddr is 0x%08ulx&bslash;n&quot;
 comma
@@ -5710,7 +5608,6 @@ r_static
 r_int
 DECL|function|SendI2OOutboundQInitMsg
 id|SendI2OOutboundQInitMsg
-c_func
 (paren
 id|PPAB
 id|pPab
@@ -5746,7 +5643,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;SendI2OOutboundQInitMsg(): Inbound Free Q empty!&bslash;n&quot;
 )paren
@@ -5768,7 +5664,6 @@ id|msgOffset
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;SendI2OOutboundQInitMsg - pMsg = 0x%08ulx, InQ msgOffset = 0x%08ulx&bslash;n&quot;
 comma
@@ -5887,7 +5782,6 @@ l_int|1
 )paren
 (brace
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -5912,7 +5806,6 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Timeout wait for InitOutQ InPrgress status from IOP&bslash;n&quot;
 )paren
@@ -5933,7 +5826,6 @@ l_int|1
 )paren
 (brace
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -5960,7 +5852,6 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Timeout wait for InitOutQ Complete status from IOP&bslash;n&quot;
 )paren
@@ -6008,7 +5899,6 @@ r_static
 r_int
 DECL|function|GetI2OStatus
 id|GetI2OStatus
-c_func
 (paren
 id|PPAB
 id|pPab
@@ -6031,7 +5921,6 @@ op_assign
 id|pPab-&gt;p_atu-&gt;InQueue
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;GetI2OStatus: msg offset = 0x%x&bslash;n&quot;
 comma
@@ -6047,7 +5936,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;GetI2OStatus(): Inbound Free Q empty!&bslash;n&quot;
 )paren
@@ -6171,7 +6059,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;GetI2OStatus - pMsg:0x%08ulx, msgOffset:0x%08ulx, [1]:0x%08ulx, [6]:0x%08ulx&bslash;n&quot;
 comma
@@ -6199,7 +6086,6 @@ op_assign
 id|msgOffset
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;Return status to p32 = 0x%08ulx&bslash;n&quot;
 comma
@@ -6221,7 +6107,6 @@ l_int|1
 )paren
 (brace
 id|udelay
-c_func
 (paren
 l_int|10
 )paren
@@ -6251,13 +6136,11 @@ op_decrement
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Timeout waiting for status from IOP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -6283,7 +6166,6 @@ l_int|3
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -6309,7 +6191,6 @@ l_int|7
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -6340,7 +6221,6 @@ suffix:semicolon
 )brace
 )brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -6366,7 +6246,6 @@ l_int|3
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -6392,7 +6271,6 @@ l_int|7
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -6445,7 +6323,6 @@ l_int|6
 )braket
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;IOP state 0x%02x InFrameSize = 0x%04x&bslash;n&quot;
 comma
@@ -6463,7 +6340,6 @@ r_static
 r_int
 DECL|function|SendEnableSysMsg
 id|SendEnableSysMsg
-c_func
 (paren
 id|PPAB
 id|pPab
@@ -6489,7 +6365,6 @@ l_int|0xFFFFFFFF
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;SendEnableSysMsg(): Inbound Free Q empty!&bslash;n&quot;
 )paren
@@ -6511,7 +6386,6 @@ id|msgOffset
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;SendEnableSysMsg - pMsg = 0x%08ulx, InQ msgOffset = 0x%08ulx&bslash;n&quot;
 comma
@@ -6584,7 +6458,6 @@ r_static
 r_int
 DECL|function|FillI2OMsgSGLFromTCB
 id|FillI2OMsgSGLFromTCB
-c_func
 (paren
 id|PU32
 id|pMsgFrame
@@ -6635,13 +6508,11 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;FillI2OMsgSGLFromTCBX&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;TCB  0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -6672,7 +6543,6 @@ l_int|4
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;pTCB 0x%08ulx, pMsg 0x%08ulx&bslash;n&quot;
 comma
@@ -6906,7 +6776,6 @@ r_static
 r_void
 DECL|function|ProcessOutboundI2OMsg
 id|ProcessOutboundI2OMsg
-c_func
 (paren
 id|PPAB
 id|pPab
@@ -6940,7 +6809,6 @@ id|PU32
 id|p8Msg
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;VXD: ProcessOutboundI2OMsg - pPab 0x%08ulx, phyAdr 0x%08ulx, linAdr 0x%08ulx&bslash;n&quot;
 comma
@@ -6958,7 +6826,6 @@ id|p8Msg
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;msg :0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -6984,7 +6851,6 @@ l_int|3
 )paren
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;msg :0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
@@ -7023,7 +6889,6 @@ id|I2O_REPLY_STATUS_SUCCESS
 )paren
 (brace
 id|dprintk
-c_func
 (paren
 l_string|&quot;Message reply status not success&bslash;n&quot;
 )paren
@@ -7039,8 +6904,8 @@ id|p8Msg
 l_int|7
 )braket
 )paren
-multiline_comment|/* function code byte */
 (brace
+multiline_comment|/* function code byte */
 r_case
 id|I2O_EXEC_SYS_TAB_SET
 suffix:colon
@@ -7049,7 +6914,6 @@ op_assign
 l_int|1
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;Received I2O_EXEC_SYS_TAB_SET reply&bslash;n&quot;
 )paren
@@ -7064,7 +6928,6 @@ op_assign
 l_int|1
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;Received I2O_EXEC_HRT_GET reply&bslash;n&quot;
 )paren
@@ -7079,7 +6942,6 @@ op_assign
 l_int|1
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;Received I2O_EXEC_LCT_NOTIFY reply&bslash;n&quot;
 )paren
@@ -7094,7 +6956,6 @@ op_assign
 l_int|1
 suffix:semicolon
 id|dprintk
-c_func
 (paren
 l_string|&quot;Received I2O_EXEC_SYS_ENABLE reply&bslash;n&quot;
 )paren
@@ -7104,7 +6965,6 @@ suffix:semicolon
 r_default
 suffix:colon
 id|dprintk
-c_func
 (paren
 l_string|&quot;Received UNKNOWN reply&bslash;n&quot;
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: unaligned.c,v 1.7 1999/12/04 03:59:00 ralf Exp $&n; *&n; * Handle unaligned accesses by emulation.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1998 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; *&n; * This file contains exception handler for address error exception with the&n; * special capability to execute faulting instructions in software.  The&n; * handler does not try to handle the case when the program counter points&n; * to an address not aligned to a word boundary.&n; *&n; * Putting data to unaligned addresses is a bad practice even on Intel where&n; * only the performance is affected.  Much worse is that such code is non-&n; * portable.  Due to several programs that die on MIPS due to alignment&n; * problems I decided to implement this handler anyway though I originally&n; * didn&squot;t intend to do this at all for user code.&n; *&n; * For now I enable fixing of address errors by default to make life easier.&n; * I however intend to disable this somewhen in the future when the alignment&n; * problems with user programs have been fixed.  For programmers this is the&n; * right way to go.&n; *&n; * Fixing address errors is a per process option.  The option is inherited&n; * across fork(2) and execve(2) calls.  If you really want to use the&n; * option in your user programs - I discourage the use of the software&n; * emulation strongly - use the following code in your userland stuff:&n; *&n; * #include &lt;sys/sysmips.h&gt;&n; *&n; * ...&n; * sysmips(MIPS_FIXADE, x);&n; * ...&n; *&n; * The argument x is 0 for disabling software emulation, enabled otherwise.&n; *&n; * Below a little program to play around with this feature.&n; *&n; * #include &lt;stdio.h&gt;&n; * #include &lt;asm/sysmips.h&gt;&n; * &n; * struct foo {&n; *         unsigned char bar[8];&n; * };&n; *&n; * main(int argc, char *argv[])&n; * {&n; *         struct foo x = {0, 1, 2, 3, 4, 5, 6, 7};&n; *         unsigned int *p = (unsigned int *) (x.bar + 3);&n; *         int i;&n; *&n; *         if (argc &gt; 1)&n; *                 sysmips(MIPS_FIXADE, atoi(argv[1]));&n; *&n; *         printf(&quot;*p = %08lx&bslash;n&quot;, *p);&n; *&n; *         *p = 0xdeadface;&n; *&n; *         for(i = 0; i &lt;= 7; i++)&n; *         printf(&quot;%02x &quot;, x.bar[i]);&n; *         printf(&quot;&bslash;n&quot;);&n; * }&n; *&n; * Coprocessor loads are not supported; I think this case is unimportant&n; * in the practice.&n; *&n; * TODO: Handle ndc (attempted store to doubleword in uncached memory)&n; *       exception for the R6000.&n; *       A store crossing a page boundary might be executed only partially.&n; *       Undo the partial store in this case.&n; */
+multiline_comment|/*&n; * Handle unaligned accesses by emulation.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1998 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; *&n; * This file contains exception handler for address error exception with the&n; * special capability to execute faulting instructions in software.  The&n; * handler does not try to handle the case when the program counter points&n; * to an address not aligned to a word boundary.&n; *&n; * Putting data to unaligned addresses is a bad practice even on Intel where&n; * only the performance is affected.  Much worse is that such code is non-&n; * portable.  Due to several programs that die on MIPS due to alignment&n; * problems I decided to implement this handler anyway though I originally&n; * didn&squot;t intend to do this at all for user code.&n; *&n; * For now I enable fixing of address errors by default to make life easier.&n; * I however intend to disable this somewhen in the future when the alignment&n; * problems with user programs have been fixed.  For programmers this is the&n; * right way to go.&n; *&n; * Fixing address errors is a per process option.  The option is inherited&n; * across fork(2) and execve(2) calls.  If you really want to use the&n; * option in your user programs - I discourage the use of the software&n; * emulation strongly - use the following code in your userland stuff:&n; *&n; * #include &lt;sys/sysmips.h&gt;&n; *&n; * ...&n; * sysmips(MIPS_FIXADE, x);&n; * ...&n; *&n; * The argument x is 0 for disabling software emulation, enabled otherwise.&n; *&n; * Below a little program to play around with this feature.&n; *&n; * #include &lt;stdio.h&gt;&n; * #include &lt;asm/sysmips.h&gt;&n; * &n; * struct foo {&n; *         unsigned char bar[8];&n; * };&n; *&n; * main(int argc, char *argv[])&n; * {&n; *         struct foo x = {0, 1, 2, 3, 4, 5, 6, 7};&n; *         unsigned int *p = (unsigned int *) (x.bar + 3);&n; *         int i;&n; *&n; *         if (argc &gt; 1)&n; *                 sysmips(MIPS_FIXADE, atoi(argv[1]));&n; *&n; *         printf(&quot;*p = %08lx&bslash;n&quot;, *p);&n; *&n; *         *p = 0xdeadface;&n; *&n; *         for(i = 0; i &lt;= 7; i++)&n; *         printf(&quot;%02x &quot;, x.bar[i]);&n; *         printf(&quot;&bslash;n&quot;);&n; * }&n; *&n; * Coprocessor loads are not supported; I think this case is unimportant&n; * in the practice.&n; *&n; * TODO: Handle ndc (attempted store to doubleword in uncached memory)&n; *       exception for the R6000.&n; *       A store crossing a page boundary might be executed only partially.&n; *       Undo the partial store in this case.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -8,13 +8,14 @@ macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|STR
 mdefine_line|#define STR(x)  __STR(x)
 DECL|macro|__STR
 mdefine_line|#define __STR(x)  #x
 multiline_comment|/*&n; * User code may only access USEG; kernel code may access the&n; * entire address space.&n; */
 DECL|macro|check_axs
-mdefine_line|#define check_axs(p,a,s)                                &bslash;&n;&t;if ((long)(~(pc) &amp; ((a) | ((a)+(s)))) &lt; 0)      &bslash;&n;&t;&t;goto sigbus;
+mdefine_line|#define check_axs(pc,a,s)&t;&t;&t;&t;&bslash;&n;&t;if ((long)(~(pc) &amp; ((a) | ((a)+(s)))) &lt; 0)&t;&bslash;&n;&t;&t;goto sigbus;
 r_static
 r_inline
 r_void
@@ -768,6 +769,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|die_if_kernel
+(paren
+l_string|&quot;Unhandled kernel unaligned access&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
 id|send_sig
 c_func
 (paren
@@ -782,6 +790,13 @@ r_return
 suffix:semicolon
 id|sigbus
 suffix:colon
+id|die_if_kernel
+(paren
+l_string|&quot;Unhandled kernel unaligned access&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
 id|send_sig
 c_func
 (paren
@@ -796,6 +811,13 @@ r_return
 suffix:semicolon
 id|sigill
 suffix:colon
+id|die_if_kernel
+(paren
+l_string|&quot;Unhandled kernel unaligned access or invalid instruction&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
 id|send_sig
 c_func
 (paren
@@ -830,6 +852,43 @@ r_int
 r_int
 id|pc
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_extern
+r_int
+id|do_dsemulret
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* &n;         * Address errors may be deliberately induced&n;         * by the FPU emulator to take retake control&n;         * of the CPU after executing the instruction&n;         * in the delay slot of an emulated branch.&n;         */
+r_if
+c_cond
+(paren
+(paren
+r_int
+r_int
+)paren
+id|regs-&gt;cp0_epc
+op_eq
+id|current-&gt;thread.dsemul_aerpc
+)paren
+(brace
+(paren
+r_void
+)paren
+id|do_dsemulret
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_MIPS_FPU_EMULATOR */
 multiline_comment|/*&n;&t; * Did we catch a fault trying to load an instruction?&n;&t; * This also catches attempts to activate MIPS16 code on&n;&t; * CPUs which don&squot;t support it.&n;&t; */
 r_if
 c_cond
@@ -900,6 +959,13 @@ r_return
 suffix:semicolon
 id|sigbus
 suffix:colon
+id|die_if_kernel
+(paren
+l_string|&quot;Kernel unaligned instruction access&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
 id|force_sig
 c_func
 (paren

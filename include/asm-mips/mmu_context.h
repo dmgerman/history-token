@@ -1,8 +1,9 @@
-multiline_comment|/* $Id: mmu_context.h,v 1.7 2000/02/04 07:40:53 ralf Exp $&n; *&n; * Switch a MMU context.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * Switch a MMU context.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_MMU_CONTEXT_H
 DECL|macro|_ASM_MMU_CONTEXT_H
 mdefine_line|#define _ASM_MMU_CONTEXT_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 multiline_comment|/* Fuck.  The f-word is here so you can grep for it :-)  */
 r_extern
@@ -14,6 +15,8 @@ r_extern
 id|pgd_t
 op_star
 id|current_pgd
+(braket
+)braket
 suffix:semicolon
 macro_line|#if defined(CONFIG_CPU_R3000)
 DECL|macro|ASID_INC
@@ -129,10 +132,65 @@ op_star
 id|mm
 )paren
 (brace
+macro_line|#ifndef CONFIG_SMP
 id|mm-&gt;context
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#else
+id|mm-&gt;context
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|kmalloc
+c_func
+(paren
+id|smp_num_cpus
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+multiline_comment|/*&n; &t; * Init the &quot;context&quot; values so that a tlbpid allocation &n;&t; * happens on the first switch.&n; &t; */
+r_if
+c_cond
+(paren
+id|mm-&gt;context
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|memset
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|mm-&gt;context
+comma
+l_int|0
+comma
+id|smp_num_cpus
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -190,6 +248,9 @@ id|asid
 )paren
 suffix:semicolon
 id|current_pgd
+(braket
+id|cpu
+)braket
 op_assign
 id|next-&gt;pgd
 suffix:semicolon
@@ -245,6 +306,12 @@ id|asid_cache
 )paren
 suffix:semicolon
 id|current_pgd
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
 op_assign
 id|next-&gt;pgd
 suffix:semicolon

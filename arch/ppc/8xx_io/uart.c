@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.uart.c 1.10 05/17/01 18:14:20 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.uart.c 1.14 06/27/01 14:49:55 trini&n; */
 multiline_comment|/*&n; *  UART driver for MPC860 CPM SCC or SMC&n; *  Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I used the serial.c driver as the framework for this driver.&n; * Give credit to those guys.&n; * The original code was written for the MBX860 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs, but this has never been tested, nor is it complete.&n; * Only the SCCs support modem control, so that is not complete either.&n; *&n; * This module exports the following rs232 io functions:&n; *&n; *&t;int rs_8xx_init(void);&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -23,6 +23,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#include &quot;commproc.h&quot;
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_KGDB
 r_extern
 r_void
@@ -136,6 +139,56 @@ op_star
 id|options
 )paren
 suffix:semicolon
+r_static
+r_int
+id|serial_console_wait_key
+c_func
+(paren
+r_struct
+id|console
+op_star
+id|co
+)paren
+suffix:semicolon
+r_static
+r_void
+id|serial_console_write
+c_func
+(paren
+r_struct
+id|console
+op_star
+id|c
+comma
+r_const
+r_char
+op_star
+id|s
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+r_static
+id|kdev_t
+id|serial_console_device
+c_func
+(paren
+r_struct
+id|console
+op_star
+id|c
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
+DECL|variable|break_pressed
+r_static
+r_int
+r_int
+id|break_pressed
+suffix:semicolon
+multiline_comment|/* break, really ... */
+macro_line|#endif
 multiline_comment|/*&n; * Serial driver configuration section.  Here are the various options:&n; */
 DECL|macro|SERIAL_PARANOIA_CHECK
 mdefine_line|#define SERIAL_PARANOIA_CHECK
@@ -447,6 +500,43 @@ suffix:semicolon
 DECL|typedef|ser_info_t
 )brace
 id|ser_info_t
+suffix:semicolon
+DECL|variable|sercons
+r_static
+r_struct
+id|console
+id|sercons
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;ttyS&quot;
+comma
+id|write
+suffix:colon
+id|serial_console_write
+comma
+id|device
+suffix:colon
+id|serial_console_device
+comma
+id|wait_key
+suffix:colon
+id|serial_console_wait_key
+comma
+id|setup
+suffix:colon
+id|serial_console_setup
+comma
+id|flags
+suffix:colon
+id|CON_PRINTBUFFER
+comma
+id|index
+suffix:colon
+id|CONFIG_SERIAL_CONSOLE_PORT
+comma
+)brace
 suffix:semicolon
 r_static
 r_void
@@ -902,6 +992,11 @@ c_func
 id|ser_info_t
 op_star
 id|info
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -1201,6 +1296,64 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
+r_if
+c_cond
+(paren
+id|break_pressed
+op_logical_and
+id|info-&gt;line
+op_eq
+id|sercons.index
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ch
+op_ne
+l_int|0
+op_logical_and
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|break_pressed
+op_plus
+id|HZ
+op_star
+l_int|5
+)paren
+)paren
+(brace
+id|handle_sysrq
+c_func
+(paren
+id|ch
+comma
+id|regs
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|break_pressed
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|ignore_char
+suffix:semicolon
+)brace
+r_else
+id|break_pressed
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1220,6 +1373,8 @@ id|tty-&gt;flip.count
 op_increment
 suffix:semicolon
 )brace
+id|ignore_char
+suffix:colon
 multiline_comment|/* This BD is ready to be used again.  Clear status.&n;&t;&t; * Get next BD.&n;&t;&t; */
 id|bdp-&gt;cbd_sc
 op_or_assign
@@ -1283,6 +1438,11 @@ c_func
 id|ser_info_t
 op_star
 id|info
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -1295,6 +1455,36 @@ suffix:semicolon
 id|info-&gt;state-&gt;icount.brk
 op_increment
 suffix:semicolon
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
+r_if
+c_cond
+(paren
+id|info-&gt;line
+op_eq
+id|sercons.index
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|break_pressed
+)paren
+(brace
+id|break_pressed
+op_assign
+id|jiffies
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_else
+id|break_pressed
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Check to see if there is room in the tty buffer for&n;&t; * the break.  If not, we exit now, losing the break.  FIXME&n;&t; */
 r_if
 c_cond
@@ -1349,6 +1539,11 @@ c_func
 id|ser_info_t
 op_star
 id|info
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_if
@@ -1720,6 +1915,11 @@ c_func
 r_void
 op_star
 id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|u_char
@@ -1783,12 +1983,29 @@ c_cond
 (paren
 id|events
 op_amp
+id|SMCM_BRKE
+)paren
+id|receive_break
+c_func
+(paren
+id|info
+comma
+id|regs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|events
+op_amp
 id|SCCM_RX
 )paren
 id|receive_chars
 c_func
 (paren
 id|info
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -1802,6 +2019,8 @@ id|transmit_chars
 c_func
 (paren
 id|info
+comma
+id|regs
 )paren
 suffix:semicolon
 id|sccp-&gt;scc_scce
@@ -1834,6 +2053,8 @@ id|receive_break
 c_func
 (paren
 id|info
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -1847,6 +2068,8 @@ id|receive_chars
 c_func
 (paren
 id|info
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -1860,6 +2083,8 @@ id|transmit_chars
 c_func
 (paren
 id|info
+comma
+id|regs
 )paren
 suffix:semicolon
 id|smcp-&gt;smc_smce
@@ -8838,43 +9063,6 @@ id|c-&gt;index
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sercons
-r_static
-r_struct
-id|console
-id|sercons
-op_assign
-(brace
-id|name
-suffix:colon
-l_string|&quot;ttyS&quot;
-comma
-id|write
-suffix:colon
-id|serial_console_write
-comma
-id|device
-suffix:colon
-id|serial_console_device
-comma
-id|wait_key
-suffix:colon
-id|serial_console_wait_key
-comma
-id|setup
-suffix:colon
-id|serial_console_setup
-comma
-id|flags
-suffix:colon
-id|CON_PRINTBUFFER
-comma
-id|index
-suffix:colon
-id|CONFIG_SERIAL_CONSOLE_PORT
-comma
-)brace
-suffix:semicolon
 multiline_comment|/*&n; *&t;Register console.&n; */
 DECL|function|console_8xx_init
 r_int
@@ -10047,7 +10235,7 @@ op_complement
 id|iobits
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_ALTSMC2 */
 multiline_comment|/* Connect the baud rate generator to the&n;&t;&t;&t;&t; * SMC based upon index in rs_table.  Also&n;&t;&t;&t;&t; * make sure it is connected to NMSI.&n;&t;&t;&t;&t; */
 id|cp-&gt;cp_simode
 op_and_assign

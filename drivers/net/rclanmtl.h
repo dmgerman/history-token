@@ -4,12 +4,12 @@ DECL|macro|RCLANMTL_H
 mdefine_line|#define RCLANMTL_H
 multiline_comment|/* Linux specific includes */
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#ifdef RC_LINUX_MODULE     /* linux modules need non-library version of string functions */
+macro_line|#ifdef RC_LINUX_MODULE&t;&t;/* linux modules need non-library version of string functions */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#else
 macro_line|#include &lt;string.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/delay.h&gt; /* for udelay() */
+macro_line|#include &lt;linux/delay.h&gt;&t;/* for udelay() */
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -71,7 +71,7 @@ r_typedef
 r_int
 id|RC_RETURN
 suffix:semicolon
-multiline_comment|/* &n; ** type PFNWAITCALLBACK&n; **&n; ** pointer to void function - type used for WaitCallback in some functions &n; */
+multiline_comment|/* &n;    ** type PFNWAITCALLBACK&n;    **&n;    ** pointer to void function - type used for WaitCallback in some functions &n;  */
 DECL|typedef|PFNWAITCALLBACK
 r_typedef
 r_void
@@ -84,7 +84,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* void argument avoids compiler complaint */
-multiline_comment|/*&n; ** type PFNTXCALLBACK &n; **&n; ** Pointer to user&squot;s transmit callback function.  This user function is&n; ** called from RCProcI2OMsgQ() when packet have been transmitted from buffers&n; ** given in the RCI2OSendPacket() function.  BufferContext is a pointer to&n; ** an array of 32 bit context values.  These are the values the user assigned&n; ** and passed in the TCB to the RCI2OSendPacket() function.  PcktCount&n; ** indicates the number of buffer context values in the BufferContext[] array.&n; ** The User&squot;s TransmitCallbackFunction should recover (put back in free queue)&n; ** the packet buffers associated with the buffer context values.&n; */
+multiline_comment|/*&n;    ** type PFNTXCALLBACK &n;    **&n;    ** Pointer to user&squot;s transmit callback function.  This user function is&n;    ** called from RCProcI2OMsgQ() when packet have been transmitted from buffers&n;    ** given in the RCI2OSendPacket() function.  BufferContext is a pointer to&n;    ** an array of 32 bit context values.  These are the values the user assigned&n;    ** and passed in the TCB to the RCI2OSendPacket() function.  PcktCount&n;    ** indicates the number of buffer context values in the BufferContext[] array.&n;    ** The User&squot;s TransmitCallbackFunction should recover (put back in free queue)&n;    ** the packet buffers associated with the buffer context values.&n;  */
 DECL|typedef|PFNTXCALLBACK
 r_typedef
 r_void
@@ -107,7 +107,7 @@ id|net_device
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* &n; ** type PFNRXCALLBACK &n; **&n; ** Pointer to user&squot;s receive callback function.  This user function&n; ** is called from RCProcI2OMsgQ() when packets have been received into&n; ** previously posted packet buffers throught the RCPostRecvBuffers() function.&n; ** The received callback function should process the Packet Descriptor Block&n; ** pointed to by PacketDescBlock. See Packet Decription Block below.&n; */
+multiline_comment|/* &n;    ** type PFNRXCALLBACK &n;    **&n;    ** Pointer to user&squot;s receive callback function.  This user function&n;    ** is called from RCProcI2OMsgQ() when packets have been received into&n;    ** previously posted packet buffers throught the RCPostRecvBuffers() function.&n;    ** The received callback function should process the Packet Descriptor Block&n;    ** pointed to by PacketDescBlock. See Packet Decription Block below.&n;  */
 DECL|typedef|PFNRXCALLBACK
 r_typedef
 r_void
@@ -133,7 +133,7 @@ id|net_device
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* &n; ** type PFNCALLBACK &n; **&n; ** Pointer to user&squot;s generic callback function.  This user function&n; ** can be passed to LANReset or LANShutdown and is called when the &n; ** the reset or shutdown is complete.&n; ** Param1 and Param2 are invalid for LANReset and LANShutdown.&n; */
+multiline_comment|/* &n;    ** type PFNCALLBACK &n;    **&n;    ** Pointer to user&squot;s generic callback function.  This user function&n;    ** can be passed to LANReset or LANShutdown and is called when the &n;    ** the reset or shutdown is complete.&n;    ** Param1 and Param2 are invalid for LANReset and LANShutdown.&n;  */
 DECL|typedef|PFNCALLBACK
 r_typedef
 r_void
@@ -327,7 +327,7 @@ DECL|typedef|PATU
 op_star
 id|PATU
 suffix:semicolon
-multiline_comment|/* &n; ** typedef PAB&n; **&n; ** PCI Adapter Block - holds instance specific information.&n; */
+multiline_comment|/* &n;    ** typedef PAB&n;    **&n;    ** PCI Adapter Block - holds instance specific information.&n;  */
 r_typedef
 r_struct
 (brace
@@ -386,7 +386,7 @@ id|U8
 id|id
 suffix:semicolon
 multiline_comment|/* the AdapterID */
-multiline_comment|/* These two field are basically for the RCioctl function.&n;     * I could not determine if they could be avoided. (RAA)*/
+multiline_comment|/* These two field are basically for the RCioctl function.&n;&t; * I could not determine if they could be avoided. (RAA)*/
 DECL|member|pci_addr
 id|U32
 id|pci_addr
@@ -413,7 +413,7 @@ r_int
 r_int
 id|numOutRcvBuffers
 suffix:semicolon
-multiline_comment|/* number of outstanding receive buffers*/
+multiline_comment|/* number of outstanding receive buffers */
 DECL|member|shutdown
 r_int
 r_char
@@ -539,9 +539,9 @@ DECL|member|phyAddress
 id|U32
 id|phyAddress
 suffix:semicolon
-)brace
 DECL|typedef|BSD
 DECL|typedef|PBSD
+)brace
 id|BSD
 comma
 op_star
@@ -553,10 +553,9 @@ id|PU32
 id|PRCTCB
 suffix:semicolon
 multiline_comment|/*&n;** -------------------------------------------------------------------------&n;** Exported functions comprising the API to the LAN I2O message transport layer&n;** -------------------------------------------------------------------------&n;*/
-multiline_comment|/*&n; ** InitRCI2OMsgLayer()&n; ** &n; ** Called once prior to using the I2O LAN message transport layer.  User &n; ** provides both the physical and virual address of a locked page buffer &n; ** that is used as a private buffer for the RedCreek I2O message&n; ** transport layer.  This buffer must be a contigous memory block of a &n; ** minimum of 16K bytes and long word aligned.  The user also must provide&n; ** the base address of the RedCreek PCI adapter assigned by BIOS or operating&n; ** system.  &n; **&n; ** Inputs:  dev - the net_device struct for the device.&n; **          TransmitCallbackFunction - address of user&squot;s TX callback function&n; **          ReceiveCallbackFunction  - address of user&squot;s RX callback function&n; **          RebootCallbackFunction  - address of user&squot;s reboot callback function&n; **&n; */
+multiline_comment|/*&n;    ** InitRCI2OMsgLayer()&n;    ** &n;    ** Called once prior to using the I2O LAN message transport layer.  User &n;    ** provides both the physical and virual address of a locked page buffer &n;    ** that is used as a private buffer for the RedCreek I2O message&n;    ** transport layer.  This buffer must be a contigous memory block of a &n;    ** minimum of 16K bytes and long word aligned.  The user also must provide&n;    ** the base address of the RedCreek PCI adapter assigned by BIOS or operating&n;    ** system.  &n;    **&n;    ** Inputs:  dev - the net_device struct for the device.&n;    **          TransmitCallbackFunction - address of user&squot;s TX callback function&n;    **          ReceiveCallbackFunction  - address of user&squot;s RX callback function&n;    **          RebootCallbackFunction  - address of user&squot;s reboot callback function&n;    **&n;  */
 id|RC_RETURN
 id|RCInitI2OMsgLayer
-c_func
 (paren
 r_struct
 id|net_device
@@ -573,10 +572,9 @@ id|PFNCALLBACK
 id|RebootCallbackFunction
 )paren
 suffix:semicolon
-multiline_comment|/*&n; ** RCSetRavlinIPandMask()&n; **&n; ** Set the Ravlin 45/PCI cards IP address and network mask.&n; **&n; ** IP address and mask must be in network byte order.&n; ** For example, IP address 1.2.3.4 and mask 255.255.255.0 would be&n; ** 0x04030201 and 0x00FFFFFF on a little endian machine.&n; **&n; */
+multiline_comment|/*&n;    ** RCSetRavlinIPandMask()&n;    **&n;    ** Set the Ravlin 45/PCI cards IP address and network mask.&n;    **&n;    ** IP address and mask must be in network byte order.&n;    ** For example, IP address 1.2.3.4 and mask 255.255.255.0 would be&n;    ** 0x04030201 and 0x00FFFFFF on a little endian machine.&n;    **&n;  */
 id|RC_RETURN
 id|RCSetRavlinIPandMask
-c_func
 (paren
 r_struct
 id|net_device
@@ -593,7 +591,6 @@ suffix:semicolon
 multiline_comment|/*&n;** =========================================================================&n;** RCGetRavlinIPandMask()&n;**&n;** get the IP address and MASK from the card&n;** &n;** =========================================================================&n;*/
 id|RC_RETURN
 id|RCGetRavlinIPandMask
-c_func
 (paren
 r_struct
 id|net_device
@@ -610,10 +607,9 @@ id|PFNWAITCALLBACK
 id|WaitCallback
 )paren
 suffix:semicolon
-multiline_comment|/* &n; ** RCProcI2OMsgQ()&n; ** &n; ** Called from user&squot;s polling loop or Interrupt Service Routine for a PCI &n; ** interrupt from the RedCreek PCI adapter.  User responsible for determining&n; ** and hooking the PCI interrupt. This function will call the registered&n; ** callback functions, TransmitCallbackFunction or ReceiveCallbackFunction,&n; ** if a TX or RX transaction has completed.&n; */
+multiline_comment|/* &n;    ** RCProcI2OMsgQ()&n;    ** &n;    ** Called from user&squot;s polling loop or Interrupt Service Routine for a PCI &n;    ** interrupt from the RedCreek PCI adapter.  User responsible for determining&n;    ** and hooking the PCI interrupt. This function will call the registered&n;    ** callback functions, TransmitCallbackFunction or ReceiveCallbackFunction,&n;    ** if a TX or RX transaction has completed.&n;  */
 r_void
 id|RCProcI2OMsgQ
-c_func
 (paren
 r_struct
 id|net_device
@@ -621,10 +617,9 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; ** Disable and Enable I2O interrupts.  I2O interrupts are enabled at Init time&n; ** but can be disabled and re-enabled through these two function calls.&n; ** Packets will still be put into any posted received buffers and packets will&n; ** be sent through RCI2OSendPacket() functions.  Disabling I2O interrupts&n; ** will prevent hardware interrupt to host even though the outbound I2O msg&n; ** queue is not emtpy.&n; */
+multiline_comment|/*&n;    ** Disable and Enable I2O interrupts.  I2O interrupts are enabled at Init time&n;    ** but can be disabled and re-enabled through these two function calls.&n;    ** Packets will still be put into any posted received buffers and packets will&n;    ** be sent through RCI2OSendPacket() functions.  Disabling I2O interrupts&n;    ** will prevent hardware interrupt to host even though the outbound I2O msg&n;    ** queue is not emtpy.&n;  */
 id|RC_RETURN
 id|RCEnableI2OInterrupts
-c_func
 (paren
 r_struct
 id|net_device
@@ -634,7 +629,6 @@ id|dev
 suffix:semicolon
 id|RC_RETURN
 id|RCDisableI2OInterrupts
-c_func
 (paren
 r_struct
 id|net_device
@@ -642,10 +636,9 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* &n; ** RCPostRecvBuffers()&n; ** &n; ** Post user&squot;s page locked buffers for use by the PCI adapter to&n; ** return ethernet packets received from the LAN.  Transaction Control Block,&n; ** provided by user, contains buffer descriptor(s) which includes a buffer&n; ** context number along with buffer size and physical address.  See TCB above.&n; ** The buffer context and actual packet length are returned to the &n; ** ReceiveCallbackFunction when packets have been received.  Buffers posted&n; ** to the RedCreek adapter are considered owned by the adapter until the&n; ** context is return to user through the ReceiveCallbackFunction.&n; */
+multiline_comment|/* &n;    ** RCPostRecvBuffers()&n;    ** &n;    ** Post user&squot;s page locked buffers for use by the PCI adapter to&n;    ** return ethernet packets received from the LAN.  Transaction Control Block,&n;    ** provided by user, contains buffer descriptor(s) which includes a buffer&n;    ** context number along with buffer size and physical address.  See TCB above.&n;    ** The buffer context and actual packet length are returned to the &n;    ** ReceiveCallbackFunction when packets have been received.  Buffers posted&n;    ** to the RedCreek adapter are considered owned by the adapter until the&n;    ** context is return to user through the ReceiveCallbackFunction.&n;  */
 id|RC_RETURN
 id|RCPostRecvBuffers
-c_func
 (paren
 r_struct
 id|net_device
@@ -658,10 +651,9 @@ id|pTransactionCtrlBlock
 suffix:semicolon
 DECL|macro|MAX_NMBR_POST_BUFFERS_PER_MSG
 mdefine_line|#define MAX_NMBR_POST_BUFFERS_PER_MSG 32
-multiline_comment|/*&n; ** RCI2OSendPacket()&n; ** &n; ** Send user&squot;s ethernet packet from a locked page buffer.  &n; ** Packet must have full MAC header, however without a CRC.  &n; ** Initiator context is a user provided value that is returned &n; ** to the TransmitCallbackFunction when packet buffer is free.&n; ** Transmit buffer are considered owned by the adapter until context&squot;s&n; ** returned to user through the TransmitCallbackFunction.&n; */
+multiline_comment|/*&n;    ** RCI2OSendPacket()&n;    ** &n;    ** Send user&squot;s ethernet packet from a locked page buffer.  &n;    ** Packet must have full MAC header, however without a CRC.  &n;    ** Initiator context is a user provided value that is returned &n;    ** to the TransmitCallbackFunction when packet buffer is free.&n;    ** Transmit buffer are considered owned by the adapter until context&squot;s&n;    ** returned to user through the TransmitCallbackFunction.&n;  */
 id|RC_RETURN
 id|RCI2OSendPacket
-c_func
 (paren
 r_struct
 id|net_device
@@ -761,18 +753,17 @@ id|U32
 id|Rcv_runt
 suffix:semicolon
 multiline_comment|/* RX frames shorter than 64 bytes */
-)brace
 DECL|typedef|RCLINKSTATS
 DECL|typedef|P_RCLINKSTATS
+)brace
 id|RCLINKSTATS
 comma
 op_star
 id|P_RCLINKSTATS
 suffix:semicolon
-multiline_comment|/*&n; ** RCGetLinkStatistics()&n; **&n; ** Returns link statistics in user&squot;s structure at address StatsReturnAddr&n; ** If given, not NULL, the function WaitCallback is called during the wait&n; ** loop while waiting for the adapter to respond.&n; */
+multiline_comment|/*&n;    ** RCGetLinkStatistics()&n;    **&n;    ** Returns link statistics in user&squot;s structure at address StatsReturnAddr&n;    ** If given, not NULL, the function WaitCallback is called during the wait&n;    ** loop while waiting for the adapter to respond.&n;  */
 id|RC_RETURN
 id|RCGetLinkStatistics
-c_func
 (paren
 r_struct
 id|net_device
@@ -786,10 +777,9 @@ id|PFNWAITCALLBACK
 id|WaitCallback
 )paren
 suffix:semicolon
-multiline_comment|/*&n; ** RCGetLinkStatus()&n; **&n; ** Return link status, up or down, to user&squot;s location addressed by ReturnAddr.&n; ** If given, not NULL, the function WaitCallback is called during the wait&n; ** loop while waiting for the adapter to respond.&n; */
+multiline_comment|/*&n;    ** RCGetLinkStatus()&n;    **&n;    ** Return link status, up or down, to user&squot;s location addressed by ReturnAddr.&n;    ** If given, not NULL, the function WaitCallback is called during the wait&n;    ** loop while waiting for the adapter to respond.&n;  */
 id|RC_RETURN
 id|RCGetLinkStatus
-c_func
 (paren
 r_struct
 id|net_device
@@ -808,10 +798,9 @@ DECL|macro|RC_LAN_LINK_STATUS_DOWN
 mdefine_line|#define RC_LAN_LINK_STATUS_DOWN     0
 DECL|macro|RC_LAN_LINK_STATUS_UP
 mdefine_line|#define RC_LAN_LINK_STATUS_UP       1
-multiline_comment|/*&n; ** RCGetMAC()&n; **&n; ** Get the current MAC address assigned to user.  RedCreek Ravlin 45/PCI &n; ** has two MAC addresses.  One which is private to the PCI Card, and &n; ** another MAC which is given to the user as its link layer MAC address. The&n; ** adapter runs in promiscous mode because of the dual address requirement.&n; ** The MAC address is returned to the unsigned char array pointer to by mac.&n; */
+multiline_comment|/*&n;    ** RCGetMAC()&n;    **&n;    ** Get the current MAC address assigned to user.  RedCreek Ravlin 45/PCI &n;    ** has two MAC addresses.  One which is private to the PCI Card, and &n;    ** another MAC which is given to the user as its link layer MAC address. The&n;    ** adapter runs in promiscous mode because of the dual address requirement.&n;    ** The MAC address is returned to the unsigned char array pointer to by mac.&n;  */
 id|RC_RETURN
 id|RCGetMAC
-c_func
 (paren
 r_struct
 id|net_device
@@ -822,10 +811,9 @@ id|PFNWAITCALLBACK
 id|WaitCallback
 )paren
 suffix:semicolon
-multiline_comment|/*&n; ** RCSetMAC()&n; **&n; ** Set a new user port MAC address.  This address will be returned on&n; ** subsequent RCGetMAC() calls.&n; */
+multiline_comment|/*&n;    ** RCSetMAC()&n;    **&n;    ** Set a new user port MAC address.  This address will be returned on&n;    ** subsequent RCGetMAC() calls.&n;  */
 id|RC_RETURN
 id|RCSetMAC
-c_func
 (paren
 r_struct
 id|net_device
@@ -836,10 +824,9 @@ id|PU8
 id|mac
 )paren
 suffix:semicolon
-multiline_comment|/*&n; ** RCSetLinkSpeed()&n; **&n; ** set adapter&squot;s link speed based on given input code.&n; */
+multiline_comment|/*&n;    ** RCSetLinkSpeed()&n;    **&n;    ** set adapter&squot;s link speed based on given input code.&n;  */
 id|RC_RETURN
 id|RCSetLinkSpeed
-c_func
 (paren
 r_struct
 id|net_device
@@ -861,7 +848,7 @@ DECL|macro|LNK_SPD_10MB_FULL
 mdefine_line|#define LNK_SPD_10MB_FULL       3
 DECL|macro|LNK_SPD_10MB_HALF
 mdefine_line|#define LNK_SPD_10MB_HALF       4
-multiline_comment|/*&n; ** RCGetLinkSpeed()&n; **&n; ** Return link speed code.&n; */
+multiline_comment|/*&n;    ** RCGetLinkSpeed()&n;    **&n;    ** Return link speed code.&n;  */
 multiline_comment|/* Return link speed codes */
 DECL|macro|LNK_SPD_UNKNOWN
 mdefine_line|#define LNK_SPD_UNKNOWN         0
@@ -875,7 +862,6 @@ DECL|macro|LNK_SPD_10MB_HALF
 mdefine_line|#define LNK_SPD_10MB_HALF       4
 id|RC_RETURN
 id|RCGetLinkSpeed
-c_func
 (paren
 r_struct
 id|net_device
@@ -896,7 +882,6 @@ DECL|macro|PROMISCUOUS_MODE_ON
 mdefine_line|#define PROMISCUOUS_MODE_ON  1
 id|RC_RETURN
 id|RCSetPromiscuousMode
-c_func
 (paren
 r_struct
 id|net_device
@@ -910,7 +895,6 @@ suffix:semicolon
 multiline_comment|/*&n;** =========================================================================&n;** RCGetPromiscuousMode(struct net_device *dev, PU32 pMode, PFNWAITCALLBACK WaitCallback)&n;**&n;** get promiscuous mode setting&n;**&n;** Possible return values placed in pMode:&n;**  0 = promisuous mode not set&n;**  1 = promisuous mode is set&n;**&n;** =========================================================================&n;*/
 id|RC_RETURN
 id|RCGetPromiscuousMode
-c_func
 (paren
 r_struct
 id|net_device
@@ -931,7 +915,6 @@ DECL|macro|BROADCAST_MODE_ON
 mdefine_line|#define BROADCAST_MODE_ON  1
 id|RC_RETURN
 id|RCSetBroadcastMode
-c_func
 (paren
 r_struct
 id|net_device
@@ -945,7 +928,6 @@ suffix:semicolon
 multiline_comment|/*&n;** =========================================================================&n;** RCGetBroadcastMode(struct net_device *dev, PU32 pMode, PFNWAITCALLBACK WaitCallback)&n;**&n;** get broadcast mode setting&n;**&n;** Possible return values placed in pMode:&n;**  0 = broadcast mode not set&n;**  1 = broadcast mode is set&n;**&n;** =========================================================================&n;*/
 id|RC_RETURN
 id|RCGetBroadcastMode
-c_func
 (paren
 r_struct
 id|net_device
@@ -962,7 +944,6 @@ suffix:semicolon
 multiline_comment|/*&n;** =========================================================================&n;** RCReportDriverCapability(struct net_device *dev, U32 capability)&n;**&n;** Currently defined bits:&n;** WARM_REBOOT_CAPABLE   0x01&n;**&n;** =========================================================================&n;*/
 id|RC_RETURN
 id|RCReportDriverCapability
-c_func
 (paren
 r_struct
 id|net_device
@@ -976,7 +957,6 @@ suffix:semicolon
 multiline_comment|/*&n;** RCGetFirmwareVer()&n;**&n;** Return firmware version in the form &quot;SoftwareVersion : Bt BootVersion&quot;&n;**&n;** WARNING: user&squot;s space pointed to by pFirmString should be at least 60 bytes.&n;*/
 id|RC_RETURN
 id|RCGetFirmwareVer
-c_func
 (paren
 r_struct
 id|net_device
@@ -993,13 +973,12 @@ suffix:semicolon
 multiline_comment|/*&n;** ----------------------------------------------&n;** LAN adapter Reset and Shutdown functions&n;** ----------------------------------------------&n;*/
 multiline_comment|/* resource flag bit assignments for RCResetLANCard() &amp; RCShutdownLANCard() */
 DECL|macro|RC_RESOURCE_RETURN_POSTED_RX_BUCKETS
-mdefine_line|#define RC_RESOURCE_RETURN_POSTED_RX_BUCKETS  0x0001 
+mdefine_line|#define RC_RESOURCE_RETURN_POSTED_RX_BUCKETS  0x0001
 DECL|macro|RC_RESOURCE_RETURN_PEND_TX_BUFFERS
 mdefine_line|#define RC_RESOURCE_RETURN_PEND_TX_BUFFERS    0x0002
-multiline_comment|/*&n; ** RCResetLANCard()&n; **&n; ** Reset LAN card operation.  Causes a software reset of the ethernet&n; ** controller and restarts the command and receive units. Depending on &n; ** the ResourceFlags given, the buffers are either returned to the&n; ** host with reply status of I2O_REPLY_STATUS_ABORT_NO_DATA_TRANSFER and&n; ** detailed status of I2O_LAN_DSC_CANCELED (new receive buffers must be&n; ** posted after issuing this) OR the buffers are kept and reused by&n; ** the ethernet controller. If CallbackFunction is not NULL, the function&n; ** will be called when the reset is complete.  If the CallbackFunction is&n; ** NULL,a 1 will be put into the ReturnAddr after waiting for the reset &n; ** to complete (please disable I2O interrupts during this method).&n; ** Any outstanding transmit or receive buffers that are complete will be&n; ** returned via the normal reply messages before the requested resource&n; ** buffers are returned.&n; ** A call to RCPostRecvBuffers() is needed to return the ethernet to full&n; ** operation if the receive buffers were returned during LANReset.&n; ** Note: The IOP status is not affected by a LAN reset.&n; */
+multiline_comment|/*&n;    ** RCResetLANCard()&n;    **&n;    ** Reset LAN card operation.  Causes a software reset of the ethernet&n;    ** controller and restarts the command and receive units. Depending on &n;    ** the ResourceFlags given, the buffers are either returned to the&n;    ** host with reply status of I2O_REPLY_STATUS_ABORT_NO_DATA_TRANSFER and&n;    ** detailed status of I2O_LAN_DSC_CANCELED (new receive buffers must be&n;    ** posted after issuing this) OR the buffers are kept and reused by&n;    ** the ethernet controller. If CallbackFunction is not NULL, the function&n;    ** will be called when the reset is complete.  If the CallbackFunction is&n;    ** NULL,a 1 will be put into the ReturnAddr after waiting for the reset &n;    ** to complete (please disable I2O interrupts during this method).&n;    ** Any outstanding transmit or receive buffers that are complete will be&n;    ** returned via the normal reply messages before the requested resource&n;    ** buffers are returned.&n;    ** A call to RCPostRecvBuffers() is needed to return the ethernet to full&n;    ** operation if the receive buffers were returned during LANReset.&n;    ** Note: The IOP status is not affected by a LAN reset.&n;  */
 id|RC_RETURN
 id|RCResetLANCard
-c_func
 (paren
 r_struct
 id|net_device
@@ -1016,10 +995,9 @@ id|PFNCALLBACK
 id|CallbackFunction
 )paren
 suffix:semicolon
-multiline_comment|/*&n; ** RCShutdownLANCard()&n; **&n; ** Shutdown LAN card operation and put into an idle (suspended) state.&n; ** The LAN card is restarted with RCResetLANCard() function.&n; ** Depending on the ResourceFlags given, the buffers are either returned &n; ** to the host with reply status of I2O_REPLY_STATUS_ABORT_NO_DATA_TRANSFER &n; ** and detailed status of I2O_LAN_DSC_CANCELED (new receive buffers must be&n; ** posted after issuing this) OR the buffers are kept and reused by&n; ** the ethernet controller. If CallbackFunction is not NULL, the function&n; ** will be called when the reset is complete.  If the CallbackFunction is&n; ** NULL,a 1 will be put into the ReturnAddr after waiting for the reset &n; ** to complete (please disable I2O interrupts during this method).&n; ** Any outstanding transmit or receive buffers that are complete will be&n; ** returned via the normal reply messages before the requested resource&n; ** buffers are returned.&n; ** Note: The IOP status is not affected by a LAN shutdown.&n; */
+multiline_comment|/*&n;    ** RCShutdownLANCard()&n;    **&n;    ** Shutdown LAN card operation and put into an idle (suspended) state.&n;    ** The LAN card is restarted with RCResetLANCard() function.&n;    ** Depending on the ResourceFlags given, the buffers are either returned &n;    ** to the host with reply status of I2O_REPLY_STATUS_ABORT_NO_DATA_TRANSFER &n;    ** and detailed status of I2O_LAN_DSC_CANCELED (new receive buffers must be&n;    ** posted after issuing this) OR the buffers are kept and reused by&n;    ** the ethernet controller. If CallbackFunction is not NULL, the function&n;    ** will be called when the reset is complete.  If the CallbackFunction is&n;    ** NULL,a 1 will be put into the ReturnAddr after waiting for the reset &n;    ** to complete (please disable I2O interrupts during this method).&n;    ** Any outstanding transmit or receive buffers that are complete will be&n;    ** returned via the normal reply messages before the requested resource&n;    ** buffers are returned.&n;    ** Note: The IOP status is not affected by a LAN shutdown.&n;  */
 id|RC_RETURN
 id|RCShutdownLANCard
-c_func
 (paren
 r_struct
 id|net_device
@@ -1036,10 +1014,9 @@ id|PFNCALLBACK
 id|CallbackFunction
 )paren
 suffix:semicolon
-multiline_comment|/*&n; ** RCResetIOP();&n; **     Initializes IOPState to I2O_IOP_STATE_RESET.&n; **     Stops access to outbound message Q.&n; **     Discards any outstanding transmit or posted receive buffers.&n; **     Clears outbound message Q. &n; */
+multiline_comment|/*&n;    ** RCResetIOP();&n;    **     Initializes IOPState to I2O_IOP_STATE_RESET.&n;    **     Stops access to outbound message Q.&n;    **     Discards any outstanding transmit or posted receive buffers.&n;    **     Clears outbound message Q. &n;  */
 id|RC_RETURN
 id|RCResetIOP
-c_func
 (paren
 r_struct
 id|net_device
@@ -1047,5 +1024,5 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif /* RCLANMTL_H */
+macro_line|#endif&t;&t;&t;&t;/* RCLANMTL_H */
 eof

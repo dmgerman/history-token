@@ -86,10 +86,6 @@ id|dev
 )paren
 (brace
 multiline_comment|/* Initialize the device structure. */
-id|dev-&gt;hard_start_xmit
-op_assign
-id|dummy_xmit
-suffix:semicolon
 id|dev-&gt;priv
 op_assign
 id|kmalloc
@@ -133,11 +129,21 @@ id|dev-&gt;get_stats
 op_assign
 id|dummy_get_stats
 suffix:semicolon
+id|dev-&gt;hard_start_xmit
+op_assign
+id|dummy_xmit
+suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 id|set_multicast_list
 suffix:semicolon
-multiline_comment|/* Fill in the fields of the device structure with ethernet-generic values. */
+macro_line|#ifdef CONFIG_NET_FASTROUTE
+id|dev-&gt;accept_fastpath
+op_assign
+id|dummy_accept_fastpath
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Fill in device structure with ethernet-generic values. */
 id|ether_setup
 c_func
 (paren
@@ -157,12 +163,6 @@ op_and_assign
 op_complement
 id|IFF_MULTICAST
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_FASTROUTE
-id|dev-&gt;accept_fastpath
-op_assign
-id|dummy_accept_fastpath
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -188,14 +188,7 @@ r_struct
 id|net_device_stats
 op_star
 id|stats
-suffix:semicolon
-id|stats
 op_assign
-(paren
-r_struct
-id|net_device_stats
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|stats-&gt;tx_packets
@@ -287,21 +280,24 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|register_netdev
 c_func
 (paren
 op_amp
 id|dev_dummy
 )paren
-op_ne
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
 l_int|0
 )paren
 r_return
-op_minus
-id|EIO
+id|err
 suffix:semicolon
 r_return
 l_int|0

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: system.h,v 1.20 1999/12/06 23:13:21 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999 by Ralf Baechle&n; * Copyright (C) 1996 by Paul M. Antoine&n; * Copyright (C) 1994 - 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999 by Ralf Baechle&n; * Copyright (C) 1996 by Paul M. Antoine&n; * Copyright (C) 1994 - 1999 by Ralf Baechle&n; *&n; * Changed set_except_vector declaration to allow return of previous&n; * vector address value - necessary for &quot;borrowing&quot; vectors. &n; *&n; * Kevin D. Kissell, kevink@mips.org and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_SYSTEM_H
 DECL|macro|_ASM_SYSTEM_H
 mdefine_line|#define _ASM_SYSTEM_H
@@ -78,64 +78,68 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x)                  &bslash;&n;__asm__ __volatile__(                    &bslash;&n;&t;&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;&t;&t; &bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;              &bslash;&n;&t;&quot;mfc0&bslash;t%0,$12&bslash;n&bslash;t&quot;               &bslash;&n;&t;&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;                      &bslash;&n;&t;: &quot;=r&quot; (x)                       &bslash;&n;&t;: /* no inputs */                &bslash;&n;&t;: &quot;memory&quot;)
+mdefine_line|#define __save_flags(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mfc0&bslash;t%0,$12&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (x))
 DECL|macro|__save_and_cli
-mdefine_line|#define __save_and_cli(x)                &bslash;&n;__asm__ __volatile__(                    &bslash;&n;&t;&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;&t;&t; &bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;              &bslash;&n;&t;&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;                 &bslash;&n;&t;&quot;mfc0&bslash;t%0,$12&bslash;n&bslash;t&quot;               &bslash;&n;&t;&quot;ori&bslash;t$1,%0,1&bslash;n&bslash;t&quot;               &bslash;&n;&t;&quot;xori&bslash;t$1,1&bslash;n&bslash;t&quot;                 &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;&t;&t; &bslash;&n;&t;&quot;mtc0&bslash;t$1,$12&bslash;n&bslash;t&quot;               &bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;                        &bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;                        &bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;                        &bslash;&n;&t;&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;                  &bslash;&n;&t;: &quot;=r&quot; (x)                       &bslash;&n;&t;: /* no inputs */                &bslash;&n;&t;: &quot;$1&quot;, &quot;memory&quot;)
+mdefine_line|#define __save_and_cli(x)&t;&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mfc0&bslash;t%0,$12&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ori&bslash;t$1,%0,1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;xori&bslash;t$1,1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mtc0&bslash;t$1,$12&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: /* no inputs */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;$1&quot;, &quot;memory&quot;)
+DECL|macro|__restore_flags
+mdefine_line|#define __restore_flags(flags)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# __restore_flags&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;mfc0&bslash;t$1, $12&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;andi&bslash;t%0, 1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;ori&bslash;t$1, 1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;xori&bslash;t$1, 1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;or&bslash;t%0, $1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;mtc0&bslash;t%0, $12&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&bslash;tat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&bslash;treorder&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__tmp1)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (flags)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;$1&quot;, &quot;memory&quot;);&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
-id|__inline__
-DECL|function|__restore_flags
-id|__restore_flags
+id|__global_sti
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__global_cli
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|__global_save_flags
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__global_restore_flags
 c_func
 (paren
 r_int
-id|flags
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;
-l_string|&quot;mfc0&bslash;t$8,$12&bslash;n&bslash;t&quot;
-l_string|&quot;li&bslash;t$9,0xff00&bslash;n&bslash;t&quot;
-l_string|&quot;and&bslash;t$8,$9&bslash;n&bslash;t&quot;
-l_string|&quot;nor&bslash;t$9,$0,$9&bslash;n&bslash;t&quot;
-l_string|&quot;and&bslash;t%0,$9&bslash;n&bslash;t&quot;
-l_string|&quot;or&bslash;t%0,$8&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
-l_string|&quot;mtc0&bslash;t%0,$12&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|flags
-)paren
-suffix:colon
-l_string|&quot;$8&quot;
-comma
-l_string|&quot;$9&quot;
-comma
-l_string|&quot;memory&quot;
+r_int
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * Non-SMP versions ...&n; */
 DECL|macro|sti
-mdefine_line|#define sti() __sti()
+macro_line|#  define sti() __global_sti()
 DECL|macro|cli
-mdefine_line|#define cli() __cli()
+macro_line|#  define cli() __global_cli() 
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x) __save_flags(x)
-DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(x) __save_and_cli(x)
+macro_line|#  define save_flags(x) do { x = __global_save_flags(); } while (0)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __restore_flags(x)
+macro_line|#  define restore_flags(x) __global_restore_flags(x)
+DECL|macro|save_and_cli
+macro_line|#  define save_and_cli(x) do { save_flags(x); cli(); } while(0)
+macro_line|#else /* Single processor */
+DECL|macro|sti
+macro_line|#  define sti() __sti()
+DECL|macro|cli
+macro_line|#  define cli() __cli()
+DECL|macro|save_flags
+macro_line|#  define save_flags(x) __save_flags(x)
+DECL|macro|save_and_cli
+macro_line|#  define save_and_cli(x) __save_and_cli(x)
+DECL|macro|restore_flags
+macro_line|#  define restore_flags(x) __restore_flags(x)
+macro_line|#endif /* SMP */
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;__save_and_cli(x);
@@ -149,18 +153,33 @@ multiline_comment|/*&n; * These are probably defined overly paranoid ...&n; */
 macro_line|#ifdef CONFIG_CPU_HAS_WB
 macro_line|#include &lt;asm/wbflush.h&gt;
 DECL|macro|rmb
-mdefine_line|#define rmb()
+mdefine_line|#define rmb()&t;do { } while(0)
 DECL|macro|wmb
-mdefine_line|#define wmb() wbflush()
+mdefine_line|#define wmb()&t;wbflush()
 DECL|macro|mb
-mdefine_line|#define mb() wbflush()
-macro_line|#else
+mdefine_line|#define mb()&t;wbflush()
+macro_line|#else /* CONFIG_CPU_HAS_WB  */
 DECL|macro|mb
 mdefine_line|#define mb()&t;&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;# prevent instructions being moved around&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;# 8 nops to fool the R4400 pipeline&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&quot;nop;nop;nop;nop;nop;nop;nop;nop&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: /* no output */&t;&t;&t;&t;&bslash;&n;&t;: /* no input */&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;)
 DECL|macro|rmb
 mdefine_line|#define rmb() mb()
 DECL|macro|wmb
 mdefine_line|#define wmb() mb()
+macro_line|#endif /* CONFIG_CPU_HAS_WB  */
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|smp_mb
+mdefine_line|#define smp_mb()&t;mb()
+DECL|macro|smp_rmb
+mdefine_line|#define smp_rmb()&t;rmb()
+DECL|macro|smp_wmb
+mdefine_line|#define smp_wmb()&t;wmb()
+macro_line|#else
+DECL|macro|smp_mb
+mdefine_line|#define smp_mb()&t;barrier()
+DECL|macro|smp_rmb
+mdefine_line|#define smp_rmb()&t;barrier()
+DECL|macro|smp_wmb
+mdefine_line|#define smp_wmb()&t;barrier()
 macro_line|#endif
 DECL|macro|set_mb
 mdefine_line|#define set_mb(var, value) &bslash;&n;do { var = value; mb(); } while (0)
@@ -217,13 +236,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# xchg_u32&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
-l_string|&quot;ll&bslash;t%0,(%1)&bslash;n&quot;
-l_string|&quot;1:&bslash;tmove&bslash;t$1,%2&bslash;n&bslash;t&quot;
-l_string|&quot;sc&bslash;t$1,(%1)&bslash;n&bslash;t&quot;
-l_string|&quot;beqzl&bslash;t$1,1b&bslash;n&bslash;t&quot;
-l_string|&quot;ll&bslash;t%0,(%1)&bslash;n&bslash;t&quot;
+l_string|&quot;ll&bslash;t%0, %3&bslash;n&quot;
+l_string|&quot;1:&bslash;tmove&bslash;t$1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;sc&bslash;t$1, %1&bslash;n&bslash;t&quot;
+l_string|&quot;beqzl&bslash;t$1, 1b&bslash;n&bslash;t&quot;
+l_string|&quot; ll&bslash;t%0, %3&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tat&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
@@ -232,8 +251,9 @@ l_string|&quot;=r&quot;
 id|val
 )paren
 comma
-l_string|&quot;=r&quot;
+l_string|&quot;=o&quot;
 (paren
+op_star
 id|m
 )paren
 comma
@@ -242,8 +262,9 @@ l_string|&quot;=r&quot;
 id|dummy
 )paren
 suffix:colon
-l_string|&quot;1&quot;
+l_string|&quot;o&quot;
 (paren
+op_star
 id|m
 )paren
 comma
@@ -297,93 +318,15 @@ id|retval
 suffix:semicolon
 macro_line|#endif /* Processor-dependent optimization */
 )brace
-multiline_comment|/*&n; * Only used for 64 bit kernel.&n; */
-DECL|function|xchg_u64
-r_extern
-id|__inline__
-r_int
-r_int
-id|xchg_u64
-c_func
-(paren
-r_volatile
-r_int
-op_star
-id|m
-comma
-r_int
-r_int
-id|val
-)paren
-(brace
-r_int
-r_int
-id|dummy
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
-l_string|&quot;lld&bslash;t%0,(%1)&bslash;n&quot;
-l_string|&quot;1:&bslash;tmove&bslash;t$1,%2&bslash;n&bslash;t&quot;
-l_string|&quot;scd&bslash;t$1,(%1)&bslash;n&bslash;t&quot;
-l_string|&quot;beqzl&bslash;t$1,1b&bslash;n&bslash;t&quot;
-l_string|&quot;lld&bslash;t%0,(%1)&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tat&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;treorder&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|val
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|m
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|dummy
-)paren
-suffix:colon
-l_string|&quot;1&quot;
-(paren
-id|m
-)paren
-comma
-l_string|&quot;2&quot;
-(paren
-id|val
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-id|val
-suffix:semicolon
-)brace
 DECL|macro|xchg
 mdefine_line|#define xchg(ptr,x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))
 DECL|macro|tas
 mdefine_line|#define tas(ptr) (xchg((ptr),1))
-multiline_comment|/*&n; * This function doesn&squot;t exist, so you&squot;ll get a linker error&n; * if something tries to do an invalid xchg().&n; *&n; * This only works if the compiler isn&squot;t horribly bad at optimizing.&n; * gcc-2.5.8 reportedly can&squot;t handle this, but I define that one to&n; * be dead anyway.&n; */
-r_extern
-r_void
-id|__xchg_called_with_bad_pointer
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|function|__xchg
 r_static
 id|__inline__
 r_int
 r_int
+DECL|function|__xchg
 id|__xchg
 c_func
 (paren
@@ -418,32 +361,14 @@ comma
 id|x
 )paren
 suffix:semicolon
-macro_line|#if defined(__mips64)
-r_case
-l_int|8
-suffix:colon
-r_return
-id|xchg_u64
-c_func
-(paren
-id|ptr
-comma
-id|x
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-id|__xchg_called_with_bad_pointer
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|x
 suffix:semicolon
 )brace
 r_extern
 r_void
+op_star
 id|set_except_vector
 c_func
 (paren
@@ -506,14 +431,6 @@ comma
 r_int
 r_int
 id|line
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|abs
-c_func
-(paren
-r_int
 )paren
 suffix:semicolon
 DECL|macro|die

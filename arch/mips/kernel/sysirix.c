@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sysirix.c: IRIX system call emulation.&n; *&n; * Copyright (C) 1996 David S. Miller&n; * Copyright (C) 1997 Miguel de Icaza&n; * Copyright (C) 1997, 1998 Ralf Baechle&n; */
+multiline_comment|/*&n; * sysirix.c: IRIX system call emulation.&n; *&n; * Copyright (C) 1996 David S. Miller&n; * Copyright (C) 1997 Miguel de Icaza&n; * Copyright (C) 1997, 1998, 1999, 2000 Ralf Baechle&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -20,7 +20,6 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/inventory.h&gt;
 multiline_comment|/* 2,191 lines of complete and utter shit coming up... */
 r_extern
@@ -5792,20 +5791,12 @@ r_int
 )paren
 id|sb-&gt;st_blocks
 suffix:semicolon
-id|memcpy
+id|memset
 c_func
 (paren
-op_amp
 id|ks.st_fstype
-(braket
-l_int|0
-)braket
 comma
-op_amp
-id|sb-&gt;st_fstype
-(braket
 l_int|0
-)braket
 comma
 l_int|16
 )paren
@@ -5830,6 +5821,8 @@ id|ks.st_pad4
 l_int|3
 )braket
 op_assign
+l_int|0
+suffix:semicolon
 id|ks.st_pad4
 (braket
 l_int|4

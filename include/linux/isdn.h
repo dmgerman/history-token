@@ -1,8 +1,20 @@
-multiline_comment|/* $Id: isdn.h,v 1.111.6.6 2001/05/17 21:15:34 kai Exp $&n;&n; * Main header for the Linux ISDN subsystem (linklevel).&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
+multiline_comment|/* $Id: isdn.h,v 1.111.6.7 2001/06/30 19:47:51 kai Exp $&n;&n; * Main header for the Linux ISDN subsystem (linklevel).&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
 macro_line|#ifndef __ISDN_H__
 DECL|macro|__ISDN_H__
 mdefine_line|#define __ISDN_H__
 macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#ifdef CONFIG_COBALT_MICRO_SERVER
+multiline_comment|/* Save memory */
+DECL|macro|ISDN_MAX_DRIVERS
+mdefine_line|#define ISDN_MAX_DRIVERS    2
+DECL|macro|ISDN_MAX_CHANNELS
+mdefine_line|#define ISDN_MAX_CHANNELS   8
+macro_line|#else
+DECL|macro|ISDN_MAX_DRIVERS
+mdefine_line|#define ISDN_MAX_DRIVERS    32
+DECL|macro|ISDN_MAX_CHANNELS
+mdefine_line|#define ISDN_MAX_CHANNELS   64
+macro_line|#endif
 multiline_comment|/* New ioctl-codes */
 DECL|macro|IIOCNETAIF
 mdefine_line|#define IIOCNETAIF  _IO(&squot;I&squot;,1)
@@ -357,18 +369,6 @@ mdefine_line|#define ISDN_TTYAUX_MAJOR 44
 DECL|macro|ISDN_MAJOR
 mdefine_line|#define ISDN_MAJOR        45
 multiline_comment|/* The minor-devicenumbers for Channel 0 and 1 are used as arguments for&n; * physical Channel-Mapping, so they MUST NOT be changed without changing&n; * the correspondent code in isdn.c&n; */
-macro_line|#ifdef CONFIG_COBALT_MICRO_SERVER
-multiline_comment|/* Save memory */
-DECL|macro|ISDN_MAX_DRIVERS
-mdefine_line|#define ISDN_MAX_DRIVERS    2
-DECL|macro|ISDN_MAX_CHANNELS
-mdefine_line|#define ISDN_MAX_CHANNELS   8
-macro_line|#else
-DECL|macro|ISDN_MAX_DRIVERS
-mdefine_line|#define ISDN_MAX_DRIVERS    32
-DECL|macro|ISDN_MAX_CHANNELS
-mdefine_line|#define ISDN_MAX_CHANNELS   64
-macro_line|#endif
 DECL|macro|ISDN_MINOR_B
 mdefine_line|#define ISDN_MINOR_B        0
 DECL|macro|ISDN_MINOR_BMAX

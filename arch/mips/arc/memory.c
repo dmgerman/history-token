@@ -57,7 +57,7 @@ l_string|&quot;Generic Free RAM&quot;
 comma
 l_string|&quot;Bad Memory&quot;
 comma
-l_string|&quot;Standlong Program Pages&quot;
+l_string|&quot;Standalone Program Pages&quot;
 comma
 l_string|&quot;ARCS Temp Storage Area&quot;
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.17 05/18/01 07:54:04 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.20 06/27/01 14:49:58 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -247,26 +247,6 @@ c_func
 id|uint
 )paren
 suffix:semicolon
-r_static
-r_void
-id|ide_interrupt_handler
-c_func
-(paren
-r_void
-op_star
-id|dev_id
-)paren
-suffix:semicolon
-DECL|function|adbdev_init
-r_void
-id|__init
-id|adbdev_init
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 r_void
 id|__init
 DECL|function|m8xx_setup_arch
@@ -1070,6 +1050,18 @@ macro_line|#endif
 )brace
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 multiline_comment|/*&n; * IDE stuff.&n; */
+macro_line|#ifdef CONFIG_BLK_DEV_MPC8xx_IDE
+DECL|function|ide_interrupt_handler
+r_void
+id|ide_interrupt_handler
+(paren
+r_void
+op_star
+id|dev
+)paren
+(brace
+)brace
+macro_line|#endif
 r_void
 DECL|function|m8xx_ide_insw
 id|m8xx_ide_insw
@@ -1717,9 +1709,6 @@ r_return
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_BLK_DEV_MPC8xx_IDE */
 )brace
-macro_line|#endif&t;/* CONFIG_BLK_DEV_IDE || CONFIG_BLK_DEV_IDE_MODULE */
-multiline_comment|/* -------------------------------------------------------------------- */
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 macro_line|#ifdef CONFIG_BLK_DEV_MPC8xx_IDE
 multiline_comment|/* PCMCIA Timing */
 macro_line|#ifndef&t;PCMCIA_SHT
@@ -2030,16 +2019,6 @@ id|reg
 op_or
 id|timing
 suffix:semicolon
-)brace
-DECL|function|ide_interrupt_handler
-r_void
-id|ide_interrupt_handler
-(paren
-r_void
-op_star
-id|dev
-)paren
-(brace
 )brace
 macro_line|#endif&t;/* CONFIG_BLK_DEV_MPC8xx_IDE */
 macro_line|#endif&t;/* CONFIG_BLK_DEV_IDE || CONFIG_BLK_DEV_IDE_MODULE */

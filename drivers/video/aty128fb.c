@@ -238,7 +238,6 @@ id|FB_VMODE_NONINTERLACED
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC */
-macro_line|#ifndef MODULE
 multiline_comment|/* default modedb mode */
 multiline_comment|/* 640x480, 60 Hz, Non-Interlaced (25.172 MHz dotclock) */
 DECL|variable|__initdata
@@ -298,7 +297,6 @@ suffix:colon
 id|FB_VMODE_NONINTERLACED
 )brace
 suffix:semicolon
-macro_line|#endif /* MODULE */
 multiline_comment|/* struct to hold chip description information */
 DECL|struct|aty128_chip_info
 r_struct
@@ -731,7 +729,32 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifndef MODULE
+DECL|variable|__initdata
+r_static
+r_char
+op_star
+id|font
+id|__initdata
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+op_star
+id|mode
+id|__initdata
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_int
+id|nomtrr
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_const
@@ -742,7 +765,6 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PPC
 DECL|variable|__initdata
 r_static
@@ -2308,7 +2330,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;aty128fb: PLL write timeout!&quot;
+l_string|&quot;aty128fb: PLL write timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7120,7 +7142,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef MODULE
 r_int
 id|__init
 DECL|function|aty128fb_setup
@@ -7442,7 +7463,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* !MODULE */
 multiline_comment|/*&n;     *  Initialisation&n;     */
 r_static
 r_int
@@ -7661,25 +7681,9 @@ id|info-&gt;fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|var
 op_assign
 id|default_var
-suffix:semicolon
-macro_line|#else
-id|memset
-c_func
-(paren
-op_amp
-id|var
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|var
-)paren
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC
 r_if
@@ -7801,7 +7805,6 @@ op_assign
 id|default_var
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 r_if
 c_cond
 (paren
@@ -11963,6 +11966,72 @@ c_func
 l_string|&quot;FBDev driver for ATI Rage128 / Pro cards&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|noaccel
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|noaccel
+comma
+l_string|&quot;Disable hardware acceleration (0 or 1=disabled) (default=0)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|font
+comma
+l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|font
+comma
+l_string|&quot;Specify one of the compiled-in fonts (default=none)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|mode
+comma
+l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mode
+comma
+l_string|&quot;Specify resolution as &bslash;&quot;&lt;xres&gt;x&lt;yres&gt;[-&lt;bpp&gt;][@&lt;refresh&gt;]&bslash;&quot; &quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_MTRR
+id|MODULE_PARM
+c_func
+(paren
+id|nomtrr
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nomtrr
+comma
+l_string|&quot;Disable MTRR support (0 or 1=disabled) (default=0)&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 r_int
 id|__init
 DECL|function|init_module
@@ -11972,6 +12041,95 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|noaccel
+)paren
+(brace
+id|noaccel
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;aty128fb: Parameter NOACCEL set&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|font
+)paren
+(brace
+id|strncpy
+c_func
+(paren
+id|fontname
+comma
+id|font
+comma
+r_sizeof
+(paren
+id|fontname
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;aty128fb: Parameter FONT set to %s&bslash;n&quot;
+comma
+id|font
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|mode
+)paren
+(brace
+id|mode_option
+op_assign
+id|mode
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;aty128fb: Parameter MODE set to %s&bslash;n&quot;
+comma
+id|mode
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_MTRR
+r_if
+c_cond
+(paren
+id|nomtrr
+)paren
+(brace
+id|mtrr
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;aty128fb: Parameter NOMTRR set&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|aty128fb_init
 c_func
 (paren

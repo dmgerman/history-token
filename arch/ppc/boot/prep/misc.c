@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.10 06/05/01 20:20:05 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.14 06/16/01 20:43:20 trini&n; */
 multiline_comment|/*&n; * misc.c&n; *&n; * Adapted for PowerPC by Gary Thomas&n; *&n; * Rewritten by Cort Dougan (cort@cs.nmt.edu)&n; * One day to be replaced by a single bootloader for chrp/prep/pmac. -- Cort&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &quot;zlib.h&quot;
 macro_line|#include &lt;asm/residual.h&gt;
-macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/pci_ids.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -430,6 +431,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_VGA_CONSOLE
 r_void
 DECL|function|scroll
 id|scroll
@@ -496,6 +498,7 @@ op_assign
 l_char|&squot; &squot;
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_VGA_CONSOLE */
 multiline_comment|/*&n; * This routine is used to control the second processor on the &n; * Motorola dual processor platforms.  &n; */
 r_void
 DECL|function|park_cpus
@@ -736,15 +739,19 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SERIAL_CONSOLE */
+macro_line|#if defined(CONFIG_VGA_CONSOLE)
 id|vga_init
 c_func
 (paren
 (paren
+r_int
 r_char
+op_star
 )paren
 l_int|0xC0000000
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_VGA_CONSOLE */
 r_if
 c_cond
 (paren
@@ -1823,16 +1830,54 @@ op_ne
 l_char|&squot;&bslash;r&squot;
 )paren
 (brace
+multiline_comment|/* Test for backspace/delete */
 r_if
 c_cond
 (paren
 id|ch
 op_eq
 l_char|&squot;&bslash;b&squot;
+op_logical_or
+id|ch
+op_eq
+l_char|&squot;&bslash;177&squot;
 )paren
 (brace
 r_if
 c_cond
+(paren
+id|cp
+op_ne
+id|cmd_line
+)paren
+(brace
+id|cp
+op_decrement
+suffix:semicolon
+id|puts
+c_func
+(paren
+l_string|&quot;&bslash;b &bslash;b&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Test for ^x/^u (and wipe the line) */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|ch
+op_eq
+l_char|&squot;&bslash;030&squot;
+op_logical_or
+id|ch
+op_eq
+l_char|&squot;&bslash;025&squot;
+)paren
+(brace
+r_while
+c_loop
 (paren
 id|cp
 op_ne

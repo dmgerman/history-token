@@ -1,4 +1,4 @@
-singleline_comment|// $Id: icc.c,v 1.5.6.2 2001/03/13 16:17:08 kai Exp $
+singleline_comment|// $Id: icc.c,v 1.5.6.3 2001/06/09 15:14:17 kai Exp $
 singleline_comment|//-----------------------------------------------------------------------------
 singleline_comment|//
 singleline_comment|// ICC specific routines
@@ -3214,14 +3214,14 @@ op_or
 id|RESPONSE
 )paren
 suffix:colon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|cs-&gt;rq
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp

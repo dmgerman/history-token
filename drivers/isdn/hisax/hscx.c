@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hscx.c,v 1.21.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * hscx.c   HSCX specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: hscx.c,v 1.21.6.2 2001/06/09 15:14:17 kai Exp $&n; *&n; * hscx.c   HSCX specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -1059,14 +1059,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|bcs-&gt;rqueue
 )paren
 suffix:semicolon
-id|discard_queue
+id|skb_queue_purge
 c_func
 (paren
 op_amp

@@ -219,6 +219,13 @@ id|resp-&gt;fh
 comma
 op_amp
 id|argp-&gt;attrs
+comma
+l_int|0
+comma
+(paren
+id|time_t
+)paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -818,6 +825,8 @@ comma
 id|dirfhp-&gt;fh_export
 comma
 id|dchild
+comma
+id|dirfhp
 )paren
 suffix:semicolon
 r_if
@@ -1227,6 +1236,13 @@ comma
 id|newfhp
 comma
 id|attr
+comma
+l_int|0
+comma
+(paren
+id|time_t
+)paren
+l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.bootinfo.h 1.7 05/23/01 00:38:42 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.bootinfo.h 1.9 06/13/01 15:28:43 paulus&n; */
 multiline_comment|/*&n; * Non-machine dependent bootinfo structure.  Basic idea&n; * borrowed from the m68k.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@ppc.kernel.org&gt;&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_BOOTINFO_H
@@ -50,13 +50,6 @@ mdefine_line|#define BI_SYSMAP&t;&t;0x1015
 DECL|macro|BI_MACHTYPE
 mdefine_line|#define BI_MACHTYPE&t;&t;0x1016
 macro_line|#endif /* CONFIG_APUS */
-multiline_comment|/*&n; * prom_init() is called very early on, before the kernel text&n; * and data have been mapped to KERNELBASE.  At this point the code&n; * is running at whatever address it has been loaded at, so&n; * references to extern and static variables must be relocated&n; * explicitly.  The procedure reloc_offset() returns the address&n; * we&squot;re currently running at minus the address we were linked at.&n; * (Note that strings count as static variables.)&n; *&n; * Because OF may have mapped I/O devices into the area starting at&n; * KERNELBASE, particularly on CHRP machines, we can&squot;t safely call&n; * OF once the kernel has been mapped to KERNELBASE.  Therefore all&n; * OF calls should be done within prom_init(), and prom_init()&n; * and all routines called within it must be careful to relocate&n; * references as necessary.&n; */
-DECL|macro|PTRRELOC
-mdefine_line|#define PTRRELOC(x)   ((typeof(x))((unsigned long)(x) + offset))
-DECL|macro|PTRUNRELOC
-mdefine_line|#define PTRUNRELOC(x) ((typeof(x))((unsigned long)(x) - offset))
-DECL|macro|RELOC
-mdefine_line|#define RELOC(x)      (*PTRRELOC(&amp;(x)))
 macro_line|#endif /* _PPC_BOOTINFO_H */
 macro_line|#endif /* __KERNEL__ */
 eof

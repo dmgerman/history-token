@@ -25,11 +25,13 @@ DECL|macro|UDF_I_NEXT_ALLOC_BLOCK
 mdefine_line|#define UDF_I_NEXT_ALLOC_BLOCK(X)&t;( UDF_I(X)-&gt;i_next_alloc_block )
 DECL|macro|UDF_I_NEXT_ALLOC_GOAL
 mdefine_line|#define UDF_I_NEXT_ALLOC_GOAL(X)&t;( UDF_I(X)-&gt;i_next_alloc_goal )
-DECL|macro|UDF_I_UATIME
-mdefine_line|#define UDF_I_UATIME(X)&t;&t;( UDF_I(X)-&gt;i_uatime )
 DECL|macro|UDF_I_UMTIME
 mdefine_line|#define UDF_I_UMTIME(X)&t;&t;( UDF_I(X)-&gt;i_umtime )
 DECL|macro|UDF_I_UCTIME
 mdefine_line|#define UDF_I_UCTIME(X)&t;&t;( UDF_I(X)-&gt;i_uctime )
+DECL|macro|UDF_I_CRTIME
+mdefine_line|#define UDF_I_CRTIME(X)&t;&t;( UDF_I(X)-&gt;i_crtime )
+DECL|macro|UDF_I_UCRTIME
+mdefine_line|#define UDF_I_UCRTIME(X)&t;( UDF_I(X)-&gt;i_ucrtime )
 macro_line|#endif /* !defined(_LINUX_UDF_I_H) */
 eof

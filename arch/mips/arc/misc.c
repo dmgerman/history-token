@@ -158,9 +158,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|prom_imode
+DECL|function|ArcEnterInteractiveMode
 r_void
-id|prom_imode
+id|ArcEnterInteractiveMode
 c_func
 (paren
 r_void

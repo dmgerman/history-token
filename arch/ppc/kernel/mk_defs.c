@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mk_defs.c 1.5 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.mk_defs.c 1.8 06/28/01 15:50:16 paulus&n; */
 multiline_comment|/*&n; * This program is used to generate definitions needed by&n; * assembly language modules.&n; *&n; * We use the technique used in the OSF Mach kernel code:&n; * generate asm statements containing #defines,&n; * compile this file to assembler, and then extract the&n; * #defines from the assembly-language output.&n; */
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -1210,6 +1210,20 @@ c_func
 id|CLONE_VM
 comma
 id|CLONE_VM
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|MM_PGD
+comma
+m_offsetof
+(paren
+r_struct
+id|mm_struct
+comma
+id|pgd
+)paren
 )paren
 suffix:semicolon
 r_return

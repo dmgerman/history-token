@@ -74,8 +74,6 @@ DECL|variable|print_version
 r_static
 r_int
 id|print_version
-op_assign
-l_int|0
 suffix:semicolon
 DECL|struct|ncr885e_private
 r_struct
@@ -190,8 +188,6 @@ r_struct
 id|net_device
 op_star
 id|root_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 r_static
 r_int

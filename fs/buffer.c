@@ -681,7 +681,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The buffers have been marked clean and locked. Just submit the dang things.. */
+multiline_comment|/*&n; * The buffers have been marked clean and locked.  Just submit the dang&n; * things.. &n; *&n; * We&squot;ll wait for the first one of them - &quot;sync&quot; is not exactly&n; * performance-critical, and this makes us not hog the IO subsystem&n; * completely, while still allowing for a fair amount of concurrent IO. &n; */
 DECL|function|write_locked_buffers
 r_static
 r_void
@@ -699,6 +699,21 @@ r_int
 id|count
 )paren
 (brace
+r_struct
+id|buffer_head
+op_star
+id|wait
+op_assign
+op_star
+id|array
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|wait-&gt;b_count
+)paren
+suffix:semicolon
 r_do
 (brace
 r_struct
@@ -728,6 +743,19 @@ c_loop
 (paren
 op_decrement
 id|count
+)paren
+suffix:semicolon
+id|wait_on_buffer
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|wait-&gt;b_count
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: watch.h,v 1.3 1998/08/19 21:58:15 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000, 2001 by Ralf Baechle&n; */
 macro_line|#ifndef __ASM_WATCH_H
 DECL|macro|__ASM_WATCH_H
 mdefine_line|#define __ASM_WATCH_H
@@ -62,5 +62,5 @@ DECL|macro|watch_clear
 mdefine_line|#define watch_clear()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (watch_available)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_clear()
 DECL|macro|watch_reenable
 mdefine_line|#define watch_reenable()&t;&t;&t;&t;&t;&bslash;&n;&t;if (watch_available)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_reenable()
-macro_line|#endif __ASM_WATCH_H
+macro_line|#endif /* __ASM_WATCH_H */
 eof

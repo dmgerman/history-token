@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.time.h 1.10 05/17/01 18:14:26 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.time.h 1.13 06/27/01 14:49:58 trini&n; */
 multiline_comment|/*&n; * Common time prototypes and such for all ppc machines.&n; *&n; * Written by Cort Dougan (cort@fsmlabs.com) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
@@ -43,6 +43,16 @@ suffix:semicolon
 r_extern
 id|time_t
 id|last_rtc_update
+suffix:semicolon
+r_extern
+r_void
+id|set_dec_cpu6
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
 suffix:semicolon
 r_int
 id|via_calibrate_decr

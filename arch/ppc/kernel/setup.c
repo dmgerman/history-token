@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.32 05/23/01 00:38:42 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.44 06/28/01 08:01:06 trini&n; */
 multiline_comment|/*&n; * Common prep/pmac/chrp boot and setup code.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -30,16 +30,16 @@ macro_line|#ifdef CONFIG_8260
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/immap_8260.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_4xx
+macro_line|#include &lt;asm/ppc4xx.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/feature.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_OAK
-macro_line|#include &quot;oak_setup.h&quot;
-macro_line|#endif /* CONFIG_OAK */
 r_extern
 r_void
-id|pmac_init
+id|apus_init
 c_func
 (paren
 r_int
@@ -91,7 +91,7 @@ id|r7
 suffix:semicolon
 r_extern
 r_void
-id|prep_init
+id|gemini_init
 c_func
 (paren
 r_int
@@ -143,7 +143,7 @@ id|r7
 suffix:semicolon
 r_extern
 r_void
-id|apus_init
+id|m8260_init
 c_func
 (paren
 r_int
@@ -169,7 +169,33 @@ id|r7
 suffix:semicolon
 r_extern
 r_void
-id|gemini_init
+id|pmac_init
+c_func
+(paren
+r_int
+r_int
+id|r3
+comma
+r_int
+r_int
+id|r4
+comma
+r_int
+r_int
+id|r5
+comma
+r_int
+r_int
+id|r6
+comma
+r_int
+r_int
+id|r7
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|prep_init
 c_func
 (paren
 r_int
@@ -1214,7 +1240,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Assume here that all clock rates are the same in a&n;&t;&t; * smp system.  -- Cort&n;&t;&t; */
-macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_8260)
+macro_line|#if defined(CONFIG_ALL_PPC)
 r_if
 c_cond
 (paren
@@ -1333,7 +1359,7 @@ l_int|1000000
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_4xx &amp;&amp; !CONFIG_8xx */
+macro_line|#endif /* CONFIG_ALL_PPC */
 r_if
 c_cond
 (paren
@@ -1443,11 +1469,23 @@ id|len
 op_plus
 id|buffer
 comma
-l_string|&quot;revision&bslash;t: %hd.%hd&bslash;n&quot;
+l_string|&quot;revision&bslash;t: %hd.%hd (pvr %04x %04x)&bslash;n&quot;
 comma
 id|maj
 comma
 id|min
+comma
+id|PVR_VER
+c_func
+(paren
+id|pvr
+)paren
+comma
+id|PVR_REV
+c_func
+(paren
+id|pvr
+)paren
 )paren
 suffix:semicolon
 id|len
@@ -1461,14 +1499,10 @@ id|len
 comma
 l_string|&quot;bogomips&bslash;t: %lu.%02lu&bslash;n&quot;
 comma
-(paren
 id|CD
 c_func
 (paren
 id|loops_per_jiffy
-)paren
-op_plus
-l_int|2500
 )paren
 op_div
 (paren
@@ -1477,14 +1511,10 @@ op_div
 id|HZ
 )paren
 comma
-(paren
 id|CD
 c_func
 (paren
 id|loops_per_jiffy
-)paren
-op_plus
-l_int|2500
 )paren
 op_div
 (paren
@@ -1534,11 +1564,7 @@ id|len
 comma
 l_string|&quot;total bogomips&bslash;t: %lu.%02lu&bslash;n&quot;
 comma
-(paren
 id|bogosum
-op_plus
-l_int|2500
-)paren
 op_div
 (paren
 l_int|500000
@@ -1546,11 +1572,7 @@ op_div
 id|HZ
 )paren
 comma
-(paren
 id|bogosum
-op_plus
-l_int|2500
-)paren
 op_div
 (paren
 l_int|5000
@@ -1799,8 +1821,8 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_ALL_PPC */
-macro_line|#ifdef CONFIG_6xx
-multiline_comment|/*&n; * We&squot;re called here very early in the boot.  We determine the machine&n; * type and call the appropriate low-level setup functions.&n; *  -- Cort &lt;cort@fsmlabs.com&gt;&n; */
+macro_line|#if defined(CONFIG_6xx) || defined(CONFIG_PPC64BRIDGE)
+multiline_comment|/*&n; * We&squot;re called here very early in the boot.  We determine the machine&n; * type and call the appropriate low-level setup functions.&n; *  -- Cort &lt;cort@fsmlabs.com&gt;&n; *&n; * Note that the kernel may be running at an address which is different&n; * from the address that it was linked at, so we must use RELOC/PTRRELOC&n; * to access static data (including strings).  -- paulus&n; */
 id|__init
 r_int
 r_int
@@ -1837,19 +1859,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_int
-r_int
-id|local_have_of
-op_assign
-l_int|1
-comma
-id|local_machine
-suffix:semicolon
-r_struct
-id|bi_record
-op_star
-id|rec
-suffix:semicolon
 multiline_comment|/* Default */
 id|phys
 op_assign
@@ -1857,11 +1866,6 @@ id|offset
 op_plus
 id|KERNELBASE
 suffix:semicolon
-macro_line|#if defined(CONFIG_APUS)
-r_return
-id|phys
-suffix:semicolon
-macro_line|#endif&t;
 multiline_comment|/* First zero the BSS -- use memset, some arches don&squot;t have&n;&t; * caches on yet */
 id|memset_io
 c_func
@@ -1882,9 +1886,8 @@ op_amp
 id|__bss_start
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_ALL_PPC) || defined(CONFIG_GEMINI)
+macro_line|#if defined(CONFIG_ALL_PPC)
 multiline_comment|/* If we came here from BootX, clear the screen,&n;&t; * set up some pointers and return. */
-macro_line|#if defined(CONFIG_ALL_PPC)&t;
 r_if
 c_cond
 (paren
@@ -1913,7 +1916,6 @@ r_return
 id|phys
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* check if we&squot;re prep, return if we are */
 r_if
 c_cond
@@ -1933,111 +1935,7 @@ l_int|0xdeadc0de
 r_return
 id|phys
 suffix:semicolon
-multiline_comment|/*&n;&t; * See if we have any bootloader info passed along.  If we do,&n;&t; * get the machine type and find out if we have OF.&n;&t; *&n;&t; * The strategy here is to assume that we want to call prom_init()&n;&t; * unless the bootinfo data passed to us tell us that we don&squot;t&n;&t; * have OF.&n;&t; * -- Cort &lt;cort@fsmlabs.com&gt;&n;&t; */
-id|rec
-op_assign
-(paren
-r_struct
-id|bi_record
-op_star
-)paren
-id|_ALIGN
-c_func
-(paren
-(paren
-id|ulong
-)paren
-id|PTRRELOC
-c_func
-(paren
-op_amp
-id|__bss_start
-)paren
-op_plus
-(paren
-l_int|1
-op_lshift
-l_int|20
-)paren
-op_minus
-l_int|1
-comma
-(paren
-l_int|1
-op_lshift
-l_int|20
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rec-&gt;tag
-op_eq
-id|BI_FIRST
-)paren
-(brace
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|rec-&gt;tag
-op_ne
-id|BI_LAST
-suffix:semicolon
-id|rec
-op_assign
-(paren
-r_struct
-id|bi_record
-op_star
-)paren
-(paren
-(paren
-id|ulong
-)paren
-id|rec
-op_plus
-id|rec-&gt;size
-)paren
-)paren
-(brace
-id|ulong
-op_star
-id|data
-op_assign
-id|rec-&gt;data
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rec-&gt;tag
-op_eq
-id|BI_MACHTYPE
-)paren
-(brace
-id|local_machine
-op_assign
-id|data
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|local_have_of
-op_assign
-id|data
-(braket
-l_int|1
-)braket
-suffix:semicolon
-)brace
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|local_have_of
-)paren
+multiline_comment|/* &n;&t; * for now, don&squot;t use bootinfo because it breaks yaboot 0.5&n;&t; * and assume that if we didn&squot;t find a magic number, we have OF&n;&t; */
 id|phys
 op_assign
 id|prom_init
@@ -2053,12 +1951,12 @@ id|prom_entry
 id|r5
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 r_return
 id|phys
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_6xx */
+macro_line|#endif /* CONFIG_6xx || CONFIG_PPC64BRIDGE */
 multiline_comment|/*&n; * Find out what kind of machine we&squot;re on and save any data we need&n; * from the early boot process (devtree is copied on pmac by prom_init() )&n; */
 r_int
 r_int
@@ -2088,6 +1986,16 @@ r_int
 id|r7
 )paren
 (brace
+macro_line|#ifdef CONFIG_CMDLINE
+id|strcpy
+c_func
+(paren
+id|cmd_line
+comma
+id|CONFIG_CMDLINE
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_CMDLINE */
 id|parse_bootinfo
 c_func
 (paren
@@ -3414,7 +3322,7 @@ comma
 l_int|0x3eab
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
+macro_line|#if defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_ALL_PPC)
 multiline_comment|/* We create the &quot;pci-OF-bus-map&quot; property now so it appear in the&n;&t; * /proc device tree&n;&t; */
 r_if
 c_cond
@@ -3510,7 +3418,7 @@ id|of_prop
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_PCI */
+macro_line|#endif /* CONFIG_PCI &amp;&amp; CONFIG_ALL_PPC */
 id|paging_init
 c_func
 (paren

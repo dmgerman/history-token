@@ -231,6 +231,10 @@ comma
 r_struct
 id|iattr
 op_star
+comma
+r_int
+comma
+id|time_t
 )paren
 suffix:semicolon
 r_int
@@ -689,6 +693,8 @@ DECL|macro|nfserr_io
 mdefine_line|#define&t;nfserr_io&t;&t;__constant_htonl(NFSERR_IO)
 DECL|macro|nfserr_nxio
 mdefine_line|#define&t;nfserr_nxio&t;&t;__constant_htonl(NFSERR_NXIO)
+DECL|macro|nfserr_eagain
+mdefine_line|#define&t;nfserr_eagain&t;&t;__constant_htonl(NFSERR_EAGAIN)
 DECL|macro|nfserr_acces
 mdefine_line|#define&t;nfserr_acces&t;&t;__constant_htonl(NFSERR_ACCES)
 DECL|macro|nfserr_exist
@@ -723,12 +729,14 @@ DECL|macro|nfserr_stale
 mdefine_line|#define&t;nfserr_stale&t;&t;__constant_htonl(NFSERR_STALE)
 DECL|macro|nfserr_remote
 mdefine_line|#define&t;nfserr_remote&t;&t;__constant_htonl(NFSERR_REMOTE)
+DECL|macro|nfserr_wflush
+mdefine_line|#define&t;nfserr_wflush&t;&t;__constant_htonl(NFSERR_WFLUSH)
 DECL|macro|nfserr_badhandle
 mdefine_line|#define&t;nfserr_badhandle&t;__constant_htonl(NFSERR_BADHANDLE)
 DECL|macro|nfserr_notsync
-mdefine_line|#define&t;nfserr_notsync&t;&t;__constant_htonl(NFSERR_NOTSYNC)
+mdefine_line|#define&t;nfserr_notsync&t;&t;__constant_htonl(NFSERR_NOT_SYNC)
 DECL|macro|nfserr_badcookie
-mdefine_line|#define&t;nfserr_badcookie&t;__constant_htonl(NFSERR_BADCOOKIE)
+mdefine_line|#define&t;nfserr_badcookie&t;__constant_htonl(NFSERR_BAD_COOKIE)
 DECL|macro|nfserr_notsupp
 mdefine_line|#define&t;nfserr_notsupp&t;&t;__constant_htonl(NFSERR_NOTSUPP)
 DECL|macro|nfserr_toosmall

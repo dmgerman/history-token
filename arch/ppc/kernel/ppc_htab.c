@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_htab.c 1.8 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_htab.c 1.11 06/28/01 15:50:16 paulus&n; */
 multiline_comment|/*&n; * PowerPC hash table management proc entry.  Will show information&n; * about the current hash table and will allow changes to it.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -130,6 +130,11 @@ suffix:semicolon
 r_extern
 r_int
 r_int
+id|htab_preloads
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|htab_evicts
 suffix:semicolon
 r_extern
@@ -141,6 +146,16 @@ r_extern
 r_int
 r_int
 id|pte_errors
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|primary_pteg_full
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|htab_hash_searches
 suffix:semicolon
 multiline_comment|/* these will go into processor.h when I&squot;m done debugging -- Cort */
 DECL|macro|MMCR0
@@ -344,10 +359,6 @@ id|kptes
 op_assign
 l_int|0
 comma
-id|overflow
-op_assign
-l_int|0
-comma
 id|uptes
 op_assign
 l_int|0
@@ -530,7 +541,7 @@ r_goto
 id|return_string
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * compute user/kernel pte&squot;s table this info can be&n;&t; * misleading since there can be valid (v bit set) entries&n;&t; * in the table but their vsid is used by no process (mm-&gt;context)&n;&t; * due to the way tlb invalidation is handled on the ppc&n;&t; * -- Cort&n;&t; */
+macro_line|#if !defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx)
 r_for
 c_loop
 (paren
@@ -546,13 +557,73 @@ id|ptr
 op_increment
 )paren
 (brace
+r_int
+r_int
+id|ctx
+comma
+id|mctx
+comma
+id|vsid
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ptr-&gt;v
 )paren
-(brace
+r_continue
+suffix:semicolon
 multiline_comment|/* make sure someone is using this context/vsid */
+multiline_comment|/* first undo the esid skew */
+id|vsid
+op_assign
+id|ptr-&gt;vsid
+suffix:semicolon
+id|mctx
+op_assign
+(paren
+(paren
+id|vsid
+op_minus
+(paren
+id|vsid
+op_amp
+l_int|0xf
+)paren
+op_star
+l_int|0x111
+)paren
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0xfffff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mctx
+op_eq
+l_int|0
+)paren
+(brace
+id|kptes
+op_increment
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* now undo the context skew; 801921 * 897 == 1 mod 2^20 */
+id|ctx
+op_assign
+(paren
+id|mctx
+op_star
+l_int|801921
+)paren
+op_amp
+l_int|0xfffff
+suffix:semicolon
 id|valid
 op_assign
 l_int|0
@@ -567,12 +638,10 @@ r_if
 c_cond
 (paren
 id|p-&gt;mm
+op_ne
+l_int|NULL
 op_logical_and
-(paren
-id|ptr-&gt;vsid
-op_rshift
-l_int|4
-)paren
+id|ctx
 op_eq
 id|p-&gt;mm-&gt;context
 )paren
@@ -580,6 +649,9 @@ id|p-&gt;mm-&gt;context
 id|valid
 op_assign
 l_int|1
+suffix:semicolon
+id|uptes
+op_increment
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -591,39 +663,9 @@ c_cond
 op_logical_neg
 id|valid
 )paren
-(brace
 id|zombie_ptes
 op_increment
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/* user not allowed read or write */
-r_if
-c_cond
-(paren
-id|ptr-&gt;pp
-op_eq
-id|PP_RWXX
-)paren
-id|kptes
-op_increment
-suffix:semicolon
-r_else
-id|uptes
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ptr-&gt;h
-op_eq
-l_int|1
-)paren
-id|overflow
-op_increment
-suffix:semicolon
-)brace
 )brace
 id|n
 op_add_assign
@@ -641,9 +683,8 @@ l_string|&quot;Address&bslash;t&bslash;t: %08lx&bslash;n&quot;
 l_string|&quot;Entries&bslash;t&bslash;t: %lu&bslash;n&quot;
 l_string|&quot;User ptes&bslash;t: %u&bslash;n&quot;
 l_string|&quot;Kernel ptes&bslash;t: %u&bslash;n&quot;
-l_string|&quot;Overflows&bslash;t: %u&bslash;n&quot;
 l_string|&quot;Zombies&bslash;t&bslash;t: %u&bslash;n&quot;
-l_string|&quot;Percent full&bslash;t: %%%lu&bslash;n&quot;
+l_string|&quot;Percent full&bslash;t: %lu%%&bslash;n&quot;
 comma
 (paren
 r_int
@@ -685,8 +726,6 @@ id|uptes
 comma
 id|kptes
 comma
-id|overflow
-comma
 id|zombie_ptes
 comma
 (paren
@@ -718,14 +757,24 @@ id|buffer
 op_plus
 id|n
 comma
-l_string|&quot;Reloads&bslash;t&bslash;t: %08lx&bslash;n&quot;
-l_string|&quot;Evicts&bslash;t&bslash;t: %08lx&bslash;n&quot;
+l_string|&quot;Reloads&bslash;t&bslash;t: %lu&bslash;n&quot;
+l_string|&quot;Preloads&bslash;t: %lu&bslash;n&quot;
+l_string|&quot;Searches&bslash;t: %u&bslash;n&quot;
+l_string|&quot;Overflows&bslash;t: %u&bslash;n&quot;
+l_string|&quot;Evicts&bslash;t&bslash;t: %lu&bslash;n&quot;
 comma
 id|htab_reloads
+comma
+id|htab_preloads
+comma
+id|htab_hash_searches
+comma
+id|primary_pteg_full
 comma
 id|htab_evicts
 )paren
 suffix:semicolon
+macro_line|#endif /* !8xx &amp;&amp; !4xx */
 id|return_string
 suffix:colon
 id|n
@@ -737,8 +786,8 @@ id|buffer
 op_plus
 id|n
 comma
-l_string|&quot;Non-error misses: %08lx&bslash;n&quot;
-l_string|&quot;Error misses&bslash;t: %08lx&bslash;n&quot;
+l_string|&quot;Non-error misses: %lu&bslash;n&quot;
+l_string|&quot;Error misses&bslash;t: %lu&bslash;n&quot;
 comma
 id|pte_misses
 comma

@@ -457,13 +457,13 @@ mdefine_line|#define OUTREG32(mmap, addr, val)   __raw_writel((val), (mmap)+(add
 DECL|macro|OUTREG16
 mdefine_line|#define OUTREG16(mmap, addr, val)   __raw_writew((val), (mmap)+(addr))
 DECL|macro|OUTREG8
-mdefine_line|#define OUTREG8 (mmap, addr, val)   __raw_writeb((val), (mmap)+(addr))
+mdefine_line|#define OUTREG8(mmap, addr, val)   __raw_writeb((val), (mmap)+(addr))
 DECL|macro|INREG32
 mdefine_line|#define INREG32(mmap, addr)         __raw_readl((mmap)+(addr))
 DECL|macro|INREG16
 mdefine_line|#define INREG16(mmap, addr)         __raw_readw((mmap)+(addr))
 DECL|macro|INREG8
-mdefine_line|#define INREG8 (mmap, addr)         __raw_readb((mmap)+(addr))
+mdefine_line|#define INREG8(mmap, addr)         __raw_readb((mmap)+(addr))
 DECL|macro|CACHE_FLUSH
 mdefine_line|#define CACHE_FLUSH&t;agp_bridge.cache_flush
 DECL|macro|A_SIZE_8
@@ -706,5 +706,32 @@ DECL|macro|ALI_CACHE_FLUSH_ADDR_MASK
 mdefine_line|#define ALI_CACHE_FLUSH_ADDR_MASK&t;0xFFFFF000
 DECL|macro|ALI_CACHE_FLUSH_EN
 mdefine_line|#define ALI_CACHE_FLUSH_EN&t;0x100
+multiline_comment|/* Serverworks Registers */
+DECL|macro|SVWRKS_APSIZE
+mdefine_line|#define SVWRKS_APSIZE 0x10
+DECL|macro|SVWRKS_SIZE_MASK
+mdefine_line|#define SVWRKS_SIZE_MASK 0xfe000000
+DECL|macro|SVWRKS_MMBASE
+mdefine_line|#define SVWRKS_MMBASE 0x14
+DECL|macro|SVWRKS_CACHING
+mdefine_line|#define SVWRKS_CACHING 0x4b
+DECL|macro|SVWRKS_FEATURE
+mdefine_line|#define SVWRKS_FEATURE 0x68
+multiline_comment|/* func 1 registers */
+DECL|macro|SVWRKS_AGP_ENABLE
+mdefine_line|#define SVWRKS_AGP_ENABLE 0x60
+DECL|macro|SVWRKS_COMMAND
+mdefine_line|#define SVWRKS_COMMAND 0x04
+multiline_comment|/* Memory mapped registers */
+DECL|macro|SVWRKS_GART_CACHE
+mdefine_line|#define SVWRKS_GART_CACHE 0x02
+DECL|macro|SVWRKS_GATTBASE
+mdefine_line|#define SVWRKS_GATTBASE   0x04
+DECL|macro|SVWRKS_TLBFLUSH
+mdefine_line|#define SVWRKS_TLBFLUSH   0x10
+DECL|macro|SVWRKS_POSTFLUSH
+mdefine_line|#define SVWRKS_POSTFLUSH  0x14
+DECL|macro|SVWRKS_DIRFLUSH
+mdefine_line|#define SVWRKS_DIRFLUSH   0x0c
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
 eof
