@@ -1,0 +1,211 @@
+multiline_comment|/*&n; * $Id: saa7134-dvb.c,v 1.4 2004/11/07 14:44:59 kraxel Exp $&n; *&n; * (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/kthread.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &quot;saa7134-reg.h&quot;
+macro_line|#include &quot;saa7134.h&quot;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* ------------------------------------------------------------------ */
+DECL|function|dvb_init
+r_static
+r_int
+id|dvb_init
+c_func
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: %s&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* init struct videobuf_dvb */
+id|dev-&gt;dvb.name
+op_assign
+id|dev-&gt;name
+suffix:semicolon
+id|videobuf_queue_init
+c_func
+(paren
+op_amp
+id|dev-&gt;dvb.dvbq
+comma
+op_amp
+id|saa7134_ts_qops
+comma
+id|dev-&gt;pci
+comma
+op_amp
+id|dev-&gt;slock
+comma
+id|V4L2_BUF_TYPE_VIDEO_CAPTURE
+comma
+id|V4L2_FIELD_TOP
+comma
+r_sizeof
+(paren
+r_struct
+id|saa7134_buf
+)paren
+comma
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* TODO: init frontend */
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+id|dev-&gt;dvb.frontend
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* register everything else */
+r_return
+id|videobuf_dvb_register
+c_func
+(paren
+op_amp
+id|dev-&gt;dvb
+)paren
+suffix:semicolon
+)brace
+DECL|function|dvb_fini
+r_static
+r_int
+id|dvb_fini
+c_func
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: %s&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|videobuf_dvb_unregister
+c_func
+(paren
+op_amp
+id|dev-&gt;dvb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|dvb_ops
+r_static
+r_struct
+id|saa7134_mpeg_ops
+id|dvb_ops
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|SAA7134_MPEG_DVB
+comma
+dot
+id|init
+op_assign
+id|dvb_init
+comma
+dot
+id|fini
+op_assign
+id|dvb_fini
+comma
+)brace
+suffix:semicolon
+DECL|function|dvb_register
+r_static
+r_int
+id|__init
+id|dvb_register
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|saa7134_ts_register
+c_func
+(paren
+op_amp
+id|dvb_ops
+)paren
+suffix:semicolon
+)brace
+DECL|function|dvb_unregister
+r_static
+r_void
+id|__exit
+id|dvb_unregister
+c_func
+(paren
+r_void
+)paren
+(brace
+id|saa7134_ts_unregister
+c_func
+(paren
+op_amp
+id|dvb_ops
+)paren
+suffix:semicolon
+)brace
+DECL|variable|dvb_register
+id|module_init
+c_func
+(paren
+id|dvb_register
+)paren
+suffix:semicolon
+DECL|variable|dvb_unregister
+id|module_exit
+c_func
+(paren
+id|dvb_unregister
+)paren
+suffix:semicolon
+multiline_comment|/* ------------------------------------------------------------------ */
+multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * compile-command: &quot;make DVB=1&quot;&n; * End:&n; */
+eof

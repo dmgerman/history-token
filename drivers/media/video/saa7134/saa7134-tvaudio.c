@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: saa7134-tvaudio.c,v 1.13 2004/09/22 11:47:11 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * tv audio decoder (fm stereo, nicam, ...)&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134-tvaudio.c,v 1.17 2004/11/07 13:17:15 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * tv audio decoder (fm stereo, nicam, ...)&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -18,12 +18,14 @@ id|audio_debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|audio_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -42,12 +44,14 @@ id|audio_ddep
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|audio_ddep
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -65,12 +69,14 @@ id|audio_clock_override
 op_assign
 id|UNSET
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|audio_clock_override
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 DECL|variable|audio_clock_tweak
@@ -80,12 +86,14 @@ id|audio_clock_tweak
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|audio_clock_tweak
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1501,12 +1509,34 @@ c_func
 suffix:semicolon
 )brace
 r_else
+(brace
+macro_line|#if 0
+multiline_comment|/* hmm, that one doesn&squot;t return on wakeup ... */
 id|msleep_interruptible
 c_func
 (paren
 id|timeout
 )paren
 suffix:semicolon
+macro_line|#else
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|msecs_to_jiffies
+c_func
+(paren
+id|timeout
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 )brace
 id|remove_wait_queue
 c_func
@@ -4805,12 +4835,11 @@ multiline_comment|/* enable I2S audio output */
 r_if
 c_cond
 (paren
-id|saa7134_boards
-(braket
-id|dev-&gt;board
-)braket
-dot
-id|has_ts
+id|card_is_empress
+c_func
+(paren
+id|dev
+)paren
 )paren
 (brace
 r_int
