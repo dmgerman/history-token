@@ -66,6 +66,10 @@ comma
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|pfn
 )paren
 suffix:semicolon
 r_extern

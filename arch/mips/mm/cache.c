@@ -79,6 +79,10 @@ comma
 r_int
 r_int
 id|page
+comma
+r_int
+r_int
+id|pfn
 )paren
 suffix:semicolon
 DECL|variable|flush_icache_range
